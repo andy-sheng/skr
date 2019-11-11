@@ -33,7 +33,7 @@ class RacePlayerInfoModel : PlayerInfoModel() {
 
 internal fun parseFromROnlineInfoPB(pb: ROnlineInfo): RacePlayerInfoModel {
     val model = RacePlayerInfoModel()
-    model.userInfo = UserInfoModel.parseFromPB(pb.user)
+    model.userInfo = UserInfoModel.parseFromPB(pb.userInfo)
     model.userID = model.userInfo.userId
     model.isOnline = pb.isOnline
     model.role = pb.role.value

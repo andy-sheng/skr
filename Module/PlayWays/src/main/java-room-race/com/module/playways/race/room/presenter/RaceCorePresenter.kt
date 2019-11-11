@@ -632,10 +632,10 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RJoinNoticeEvent) {
-        DebugLogView.println(TAG, "RJoinNoticeEvent ${event.pb.user.userID} 加入房间 角色为${event.pb.role}")
+        DebugLogView.println(TAG, "RJoinNoticeEvent ${event.pb.userInfo.userID} 加入房间 角色为${event.pb.role}")
         ensureInRcRoom()
         val racePlayerInfoModel = RacePlayerInfoModel()
-        racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.pb.user)
+        racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.pb.userInfo)
         racePlayerInfoModel.role = event.pb.role.value
         mRoomData.realRoundInfo?.joinUser(racePlayerInfoModel)
 
@@ -645,7 +645,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 mRoomData.realRoundInfo?.updateStatus(true, ERaceRoundStatus.ERRS_CHOCING.value)
             }
         }
-        mIRaceRoomView.joinNotice(UserInfoModel.parseFromPB(event.pb.user))
+        mIRaceRoomView.joinNotice(UserInfoModel.parseFromPB(event.pb.userInfo))
     }
 
     /**

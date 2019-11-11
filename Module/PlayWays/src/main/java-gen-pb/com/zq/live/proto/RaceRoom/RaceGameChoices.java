@@ -22,6 +22,9 @@ public final class RaceGameChoices extends Message<RaceGameChoices, RaceGameChoi
 
   private static final long serialVersionUID = 0L;
 
+  /**
+   * 当前轮次的游戏列表
+   */
   @WireField(
       tag = 1,
       adapter = "com.zq.live.proto.RaceRoom.RaceGameInfo#ADAPTER",
@@ -29,19 +32,32 @@ public final class RaceGameChoices extends Message<RaceGameChoices, RaceGameChoi
   )
   private final List<RaceGameInfo> games;
 
-  public RaceGameChoices(List<RaceGameInfo> games) {
-    this(games, ByteString.EMPTY);
+  /**
+   * 可以报名选择的游戏列表
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.zq.live.proto.RaceRoom.RaceGameInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<RaceGameInfo> couldChoiceGames;
+
+  public RaceGameChoices(List<RaceGameInfo> games, List<RaceGameInfo> couldChoiceGames) {
+    this(games, couldChoiceGames, ByteString.EMPTY);
   }
 
-  public RaceGameChoices(List<RaceGameInfo> games, ByteString unknownFields) {
+  public RaceGameChoices(List<RaceGameInfo> games, List<RaceGameInfo> couldChoiceGames,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.games = Internal.immutableCopyOf("games", games);
+    this.couldChoiceGames = Internal.immutableCopyOf("couldChoiceGames", couldChoiceGames);
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.games = Internal.copyOf("games", games);
+    builder.couldChoiceGames = Internal.copyOf("couldChoiceGames", couldChoiceGames);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -52,7 +68,8 @@ public final class RaceGameChoices extends Message<RaceGameChoices, RaceGameChoi
     if (!(other instanceof RaceGameChoices)) return false;
     RaceGameChoices o = (RaceGameChoices) other;
     return unknownFields().equals(o.unknownFields())
-        && games.equals(o.games);
+        && games.equals(o.games)
+        && couldChoiceGames.equals(o.couldChoiceGames);
   }
 
   @Override
@@ -61,6 +78,7 @@ public final class RaceGameChoices extends Message<RaceGameChoices, RaceGameChoi
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + games.hashCode();
+      result = result * 37 + couldChoiceGames.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -70,6 +88,7 @@ public final class RaceGameChoices extends Message<RaceGameChoices, RaceGameChoi
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (!games.isEmpty()) builder.append(", games=").append(games);
+    if (!couldChoiceGames.isEmpty()) builder.append(", couldChoiceGames=").append(couldChoiceGames);
     return builder.replace(0, 2, "RaceGameChoices{").append('}').toString();
   }
 
@@ -83,6 +102,9 @@ public final class RaceGameChoices extends Message<RaceGameChoices, RaceGameChoi
     return c;
   }
 
+  /**
+   * 当前轮次的游戏列表
+   */
   public List<RaceGameInfo> getGamesList() {
     if(games==null){
         return new java.util.ArrayList<RaceGameInfo>();
@@ -90,26 +112,61 @@ public final class RaceGameChoices extends Message<RaceGameChoices, RaceGameChoi
     return games;
   }
 
+  /**
+   * 可以报名选择的游戏列表
+   */
+  public List<RaceGameInfo> getCouldChoiceGamesList() {
+    if(couldChoiceGames==null){
+        return new java.util.ArrayList<RaceGameInfo>();
+    }
+    return couldChoiceGames;
+  }
+
+  /**
+   * 当前轮次的游戏列表
+   */
   public boolean hasGamesList() {
     return games!=null;
+  }
+
+  /**
+   * 可以报名选择的游戏列表
+   */
+  public boolean hasCouldChoiceGamesList() {
+    return couldChoiceGames!=null;
   }
 
   public static final class Builder extends Message.Builder<RaceGameChoices, Builder> {
     private List<RaceGameInfo> games;
 
+    private List<RaceGameInfo> couldChoiceGames;
+
     public Builder() {
       games = Internal.newMutableList();
+      couldChoiceGames = Internal.newMutableList();
     }
 
+    /**
+     * 当前轮次的游戏列表
+     */
     public Builder addAllGames(List<RaceGameInfo> games) {
       Internal.checkElementsNotNull(games);
       this.games = games;
       return this;
     }
 
+    /**
+     * 可以报名选择的游戏列表
+     */
+    public Builder addAllCouldChoiceGames(List<RaceGameInfo> couldChoiceGames) {
+      Internal.checkElementsNotNull(couldChoiceGames);
+      this.couldChoiceGames = couldChoiceGames;
+      return this;
+    }
+
     @Override
     public RaceGameChoices build() {
-      return new RaceGameChoices(games, super.buildUnknownFields());
+      return new RaceGameChoices(games, couldChoiceGames, super.buildUnknownFields());
     }
   }
 
@@ -121,12 +178,14 @@ public final class RaceGameChoices extends Message<RaceGameChoices, RaceGameChoi
     @Override
     public int encodedSize(RaceGameChoices value) {
       return RaceGameInfo.ADAPTER.asRepeated().encodedSizeWithTag(1, value.games)
+          + RaceGameInfo.ADAPTER.asRepeated().encodedSizeWithTag(2, value.couldChoiceGames)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, RaceGameChoices value) throws IOException {
       RaceGameInfo.ADAPTER.asRepeated().encodeWithTag(writer, 1, value.games);
+      RaceGameInfo.ADAPTER.asRepeated().encodeWithTag(writer, 2, value.couldChoiceGames);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -137,6 +196,7 @@ public final class RaceGameChoices extends Message<RaceGameChoices, RaceGameChoi
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.games.add(RaceGameInfo.ADAPTER.decode(reader)); break;
+          case 2: builder.couldChoiceGames.add(RaceGameInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -152,6 +212,7 @@ public final class RaceGameChoices extends Message<RaceGameChoices, RaceGameChoi
     public RaceGameChoices redact(RaceGameChoices value) {
       Builder builder = value.newBuilder();
       Internal.redactElements(builder.games, RaceGameInfo.ADAPTER);
+      Internal.redactElements(builder.couldChoiceGames, RaceGameInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

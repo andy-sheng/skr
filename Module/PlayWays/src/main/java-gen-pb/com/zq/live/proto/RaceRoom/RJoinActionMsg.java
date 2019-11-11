@@ -29,6 +29,8 @@ public final class RJoinActionMsg extends Message<RJoinActionMsg, RJoinActionMsg
 
   public static final String DEFAULT_AGORATOKEN = "";
 
+  public static final ERUserRole DEFAULT_ROLE = ERUserRole.ERUR_UNKNOWN;
+
   /**
    * 游戏ID
    */
@@ -65,17 +67,28 @@ public final class RJoinActionMsg extends Message<RJoinActionMsg, RJoinActionMsg
   )
   private final RGameConfig config;
 
-  public RJoinActionMsg(Integer gameID, Long createTimeMs, String agoraToken, RGameConfig config) {
-    this(gameID, createTimeMs, agoraToken, config, ByteString.EMPTY);
+  /**
+   * 角色
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.zq.live.proto.RaceRoom.ERUserRole#ADAPTER"
+  )
+  private final ERUserRole role;
+
+  public RJoinActionMsg(Integer gameID, Long createTimeMs, String agoraToken, RGameConfig config,
+      ERUserRole role) {
+    this(gameID, createTimeMs, agoraToken, config, role, ByteString.EMPTY);
   }
 
   public RJoinActionMsg(Integer gameID, Long createTimeMs, String agoraToken, RGameConfig config,
-      ByteString unknownFields) {
+      ERUserRole role, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.gameID = gameID;
     this.createTimeMs = createTimeMs;
     this.agoraToken = agoraToken;
     this.config = config;
+    this.role = role;
   }
 
   @Override
@@ -85,6 +98,7 @@ public final class RJoinActionMsg extends Message<RJoinActionMsg, RJoinActionMsg
     builder.createTimeMs = createTimeMs;
     builder.agoraToken = agoraToken;
     builder.config = config;
+    builder.role = role;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -98,7 +112,8 @@ public final class RJoinActionMsg extends Message<RJoinActionMsg, RJoinActionMsg
         && Internal.equals(gameID, o.gameID)
         && Internal.equals(createTimeMs, o.createTimeMs)
         && Internal.equals(agoraToken, o.agoraToken)
-        && Internal.equals(config, o.config);
+        && Internal.equals(config, o.config)
+        && Internal.equals(role, o.role);
   }
 
   @Override
@@ -110,6 +125,7 @@ public final class RJoinActionMsg extends Message<RJoinActionMsg, RJoinActionMsg
       result = result * 37 + (createTimeMs != null ? createTimeMs.hashCode() : 0);
       result = result * 37 + (agoraToken != null ? agoraToken.hashCode() : 0);
       result = result * 37 + (config != null ? config.hashCode() : 0);
+      result = result * 37 + (role != null ? role.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -122,6 +138,7 @@ public final class RJoinActionMsg extends Message<RJoinActionMsg, RJoinActionMsg
     if (createTimeMs != null) builder.append(", createTimeMs=").append(createTimeMs);
     if (agoraToken != null) builder.append(", agoraToken=").append(agoraToken);
     if (config != null) builder.append(", config=").append(config);
+    if (role != null) builder.append(", role=").append(role);
     return builder.replace(0, 2, "RJoinActionMsg{").append('}').toString();
   }
 
@@ -176,6 +193,16 @@ public final class RJoinActionMsg extends Message<RJoinActionMsg, RJoinActionMsg
   }
 
   /**
+   * 角色
+   */
+  public ERUserRole getRole() {
+    if(role==null){
+        return new ERUserRole.Builder().build();
+    }
+    return role;
+  }
+
+  /**
    * 游戏ID
    */
   public boolean hasGameID() {
@@ -203,6 +230,13 @@ public final class RJoinActionMsg extends Message<RJoinActionMsg, RJoinActionMsg
     return config!=null;
   }
 
+  /**
+   * 角色
+   */
+  public boolean hasRole() {
+    return role!=null;
+  }
+
   public static final class Builder extends Message.Builder<RJoinActionMsg, Builder> {
     private Integer gameID;
 
@@ -211,6 +245,8 @@ public final class RJoinActionMsg extends Message<RJoinActionMsg, RJoinActionMsg
     private String agoraToken;
 
     private RGameConfig config;
+
+    private ERUserRole role;
 
     public Builder() {
     }
@@ -247,9 +283,17 @@ public final class RJoinActionMsg extends Message<RJoinActionMsg, RJoinActionMsg
       return this;
     }
 
+    /**
+     * 角色
+     */
+    public Builder setRole(ERUserRole role) {
+      this.role = role;
+      return this;
+    }
+
     @Override
     public RJoinActionMsg build() {
-      return new RJoinActionMsg(gameID, createTimeMs, agoraToken, config, super.buildUnknownFields());
+      return new RJoinActionMsg(gameID, createTimeMs, agoraToken, config, role, super.buildUnknownFields());
     }
   }
 
@@ -264,6 +308,7 @@ public final class RJoinActionMsg extends Message<RJoinActionMsg, RJoinActionMsg
           + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.createTimeMs)
           + ProtoAdapter.STRING.encodedSizeWithTag(3, value.agoraToken)
           + RGameConfig.ADAPTER.encodedSizeWithTag(4, value.config)
+          + ERUserRole.ADAPTER.encodedSizeWithTag(5, value.role)
           + value.unknownFields().size();
     }
 
@@ -273,6 +318,7 @@ public final class RJoinActionMsg extends Message<RJoinActionMsg, RJoinActionMsg
       ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.createTimeMs);
       ProtoAdapter.STRING.encodeWithTag(writer, 3, value.agoraToken);
       RGameConfig.ADAPTER.encodeWithTag(writer, 4, value.config);
+      ERUserRole.ADAPTER.encodeWithTag(writer, 5, value.role);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -286,6 +332,14 @@ public final class RJoinActionMsg extends Message<RJoinActionMsg, RJoinActionMsg
           case 2: builder.setCreateTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
           case 3: builder.setAgoraToken(ProtoAdapter.STRING.decode(reader)); break;
           case 4: builder.setConfig(RGameConfig.ADAPTER.decode(reader)); break;
+          case 5: {
+            try {
+              builder.setRole(ERUserRole.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

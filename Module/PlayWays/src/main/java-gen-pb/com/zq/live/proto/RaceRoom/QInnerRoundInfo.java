@@ -17,36 +17,6 @@ import java.lang.String;
 import java.lang.StringBuilder;
 import okio.ByteString;
 
-/**
- * message RaceCommonMusic
- * {
- *    uint32 itemID           = 1; //音乐条目标识
- *    string itemName         = 2; //音乐条目名称
- *    string cover            = 3; //音乐条目封页图片
- *    string owner            = 4; //音乐条目所属（歌手）
- *    string lyric            = 5; //音乐条目对应歌词
- *    string ori              = 6; //原唱:origin
- *    string acc              = 7; //伴奏:accompany
- *    string midi             = 8; //音乐条目对应midi文件
- *    string zip              = 9; //资源压缩文件
- *    string rankBgm          = 10; //匹配玩法的伴奏
- *    uint32 beginMs          = 11; //beginTimeMs,匹配玩法的伴奏开始毫秒
- *    uint32 endMs            = 12; //endTimeMs,匹配玩法的伴奏结束毫秒
- *    string standIntro       = 13; //standIntro,擂台赛的导唱
- *    uint32 standIntroBeginT = 14; //standIntroBeginT,擂台赛导唱的开始毫秒
- *    uint32 standIntroEndT   = 15; //standIntroEndT,擂台赛导唱的结束毫秒
- *    uint32 totalMs          = 16; //totalTimeMs,匹配玩法伴奏总时长
- *    uint32 rankLrcBeginT    = 17; //rankLrcBeginT,匹配玩法第一句歌词开始时间,毫秒
- *    uint32 standLrcBeginT   = 18; //standLrcBeginT,擂台赛第一句歌词的开始毫秒
- *    uint32 standLrcEndT     = 19; //standLrcEndT,擂台赛歌词的结束毫秒
- *    bool isBlank            = 20; //isBlank,是否擂台赛的白板item
- *    string standLrc         = 21; //standLrc,擂台赛歌词URL
- *    string rankUserVoice    = 22; //rankUserVoice,匹配进入游戏前的背景音乐
- *    uint32 rankLrcEndT      = 23; //rankLrcEndT,匹配玩法最后一句歌词的结束时间,毫秒
- *    uint32 task             = 24; //任务等级，若为0，表示非任务歌曲
- *    uint32 standTotalMs     = 25; //擂台赛伴奏模式的时长
- * }
- */
 public final class QInnerRoundInfo extends Message<QInnerRoundInfo, QInnerRoundInfo.Builder> {
   public static final ProtoAdapter<QInnerRoundInfo> ADAPTER = new ProtoAdapter_QInnerRoundInfo();
 

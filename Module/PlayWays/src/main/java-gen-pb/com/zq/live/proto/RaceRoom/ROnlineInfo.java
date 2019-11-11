@@ -34,7 +34,7 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
       tag = 1,
       adapter = "com.zq.live.proto.Common.UserInfo#ADAPTER"
   )
-  private final UserInfo user;
+  private final UserInfo userInfo;
 
   /**
    * 是否在线
@@ -54,23 +54,36 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
   )
   private final ERUserRole role;
 
-  public ROnlineInfo(UserInfo user, Boolean isOnline, ERUserRole role) {
-    this(user, isOnline, role, ByteString.EMPTY);
+  /**
+   * 蒙面用户信息
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.zq.live.proto.RaceRoom.FakeUserInfo#ADAPTER"
+  )
+  private final FakeUserInfo fakeUserInfo;
+
+  public ROnlineInfo(UserInfo userInfo, Boolean isOnline, ERUserRole role,
+      FakeUserInfo fakeUserInfo) {
+    this(userInfo, isOnline, role, fakeUserInfo, ByteString.EMPTY);
   }
 
-  public ROnlineInfo(UserInfo user, Boolean isOnline, ERUserRole role, ByteString unknownFields) {
+  public ROnlineInfo(UserInfo userInfo, Boolean isOnline, ERUserRole role,
+      FakeUserInfo fakeUserInfo, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
-    this.user = user;
+    this.userInfo = userInfo;
     this.isOnline = isOnline;
     this.role = role;
+    this.fakeUserInfo = fakeUserInfo;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
-    builder.user = user;
+    builder.userInfo = userInfo;
     builder.isOnline = isOnline;
     builder.role = role;
+    builder.fakeUserInfo = fakeUserInfo;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -81,9 +94,10 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
     if (!(other instanceof ROnlineInfo)) return false;
     ROnlineInfo o = (ROnlineInfo) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(user, o.user)
+        && Internal.equals(userInfo, o.userInfo)
         && Internal.equals(isOnline, o.isOnline)
-        && Internal.equals(role, o.role);
+        && Internal.equals(role, o.role)
+        && Internal.equals(fakeUserInfo, o.fakeUserInfo);
   }
 
   @Override
@@ -91,9 +105,10 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
-      result = result * 37 + (user != null ? user.hashCode() : 0);
+      result = result * 37 + (userInfo != null ? userInfo.hashCode() : 0);
       result = result * 37 + (isOnline != null ? isOnline.hashCode() : 0);
       result = result * 37 + (role != null ? role.hashCode() : 0);
+      result = result * 37 + (fakeUserInfo != null ? fakeUserInfo.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -102,9 +117,10 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (user != null) builder.append(", user=").append(user);
+    if (userInfo != null) builder.append(", userInfo=").append(userInfo);
     if (isOnline != null) builder.append(", isOnline=").append(isOnline);
     if (role != null) builder.append(", role=").append(role);
+    if (fakeUserInfo != null) builder.append(", fakeUserInfo=").append(fakeUserInfo);
     return builder.replace(0, 2, "ROnlineInfo{").append('}').toString();
   }
 
@@ -121,11 +137,11 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
   /**
    * 用户信息
    */
-  public UserInfo getUser() {
-    if(user==null){
+  public UserInfo getUserInfo() {
+    if(userInfo==null){
         return new UserInfo.Builder().build();
     }
-    return user;
+    return userInfo;
   }
 
   /**
@@ -149,10 +165,20 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
   }
 
   /**
+   * 蒙面用户信息
+   */
+  public FakeUserInfo getFakeUserInfo() {
+    if(fakeUserInfo==null){
+        return new FakeUserInfo.Builder().build();
+    }
+    return fakeUserInfo;
+  }
+
+  /**
    * 用户信息
    */
-  public boolean hasUser() {
-    return user!=null;
+  public boolean hasUserInfo() {
+    return userInfo!=null;
   }
 
   /**
@@ -169,12 +195,21 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
     return role!=null;
   }
 
+  /**
+   * 蒙面用户信息
+   */
+  public boolean hasFakeUserInfo() {
+    return fakeUserInfo!=null;
+  }
+
   public static final class Builder extends Message.Builder<ROnlineInfo, Builder> {
-    private UserInfo user;
+    private UserInfo userInfo;
 
     private Boolean isOnline;
 
     private ERUserRole role;
+
+    private FakeUserInfo fakeUserInfo;
 
     public Builder() {
     }
@@ -182,8 +217,8 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
     /**
      * 用户信息
      */
-    public Builder setUser(UserInfo user) {
-      this.user = user;
+    public Builder setUserInfo(UserInfo userInfo) {
+      this.userInfo = userInfo;
       return this;
     }
 
@@ -203,9 +238,17 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
       return this;
     }
 
+    /**
+     * 蒙面用户信息
+     */
+    public Builder setFakeUserInfo(FakeUserInfo fakeUserInfo) {
+      this.fakeUserInfo = fakeUserInfo;
+      return this;
+    }
+
     @Override
     public ROnlineInfo build() {
-      return new ROnlineInfo(user, isOnline, role, super.buildUnknownFields());
+      return new ROnlineInfo(userInfo, isOnline, role, fakeUserInfo, super.buildUnknownFields());
     }
   }
 
@@ -216,17 +259,19 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
 
     @Override
     public int encodedSize(ROnlineInfo value) {
-      return UserInfo.ADAPTER.encodedSizeWithTag(1, value.user)
+      return UserInfo.ADAPTER.encodedSizeWithTag(1, value.userInfo)
           + ProtoAdapter.BOOL.encodedSizeWithTag(2, value.isOnline)
           + ERUserRole.ADAPTER.encodedSizeWithTag(3, value.role)
+          + FakeUserInfo.ADAPTER.encodedSizeWithTag(4, value.fakeUserInfo)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, ROnlineInfo value) throws IOException {
-      UserInfo.ADAPTER.encodeWithTag(writer, 1, value.user);
+      UserInfo.ADAPTER.encodeWithTag(writer, 1, value.userInfo);
       ProtoAdapter.BOOL.encodeWithTag(writer, 2, value.isOnline);
       ERUserRole.ADAPTER.encodeWithTag(writer, 3, value.role);
+      FakeUserInfo.ADAPTER.encodeWithTag(writer, 4, value.fakeUserInfo);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -236,7 +281,7 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setUser(UserInfo.ADAPTER.decode(reader)); break;
+          case 1: builder.setUserInfo(UserInfo.ADAPTER.decode(reader)); break;
           case 2: builder.setIsOnline(ProtoAdapter.BOOL.decode(reader)); break;
           case 3: {
             try {
@@ -246,6 +291,7 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
             }
             break;
           }
+          case 4: builder.setFakeUserInfo(FakeUserInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -260,7 +306,8 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
     @Override
     public ROnlineInfo redact(ROnlineInfo value) {
       Builder builder = value.newBuilder();
-      if (builder.user != null) builder.user = UserInfo.ADAPTER.redact(builder.user);
+      if (builder.userInfo != null) builder.userInfo = UserInfo.ADAPTER.redact(builder.userInfo);
+      if (builder.fakeUserInfo != null) builder.fakeUserInfo = FakeUserInfo.ADAPTER.redact(builder.fakeUserInfo);
       builder.clearUnknownFields();
       return builder.build();
     }

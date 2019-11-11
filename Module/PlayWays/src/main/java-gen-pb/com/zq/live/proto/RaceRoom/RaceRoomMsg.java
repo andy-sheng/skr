@@ -98,7 +98,7 @@ public final class RaceRoomMsg extends Message<RaceRoomMsg, RaceRoomMsg.Builder>
   private final RBLightMsg rBLightMsg;
 
   /**
-   * 擂台赛：想唱消息,即抢唱
+   * [废弃]擂台赛：想唱消息,即抢唱
    */
   @WireField(
       tag = 104,
@@ -316,7 +316,7 @@ public final class RaceRoomMsg extends Message<RaceRoomMsg, RaceRoomMsg.Builder>
   }
 
   /**
-   * 擂台赛：想唱消息,即抢唱
+   * [废弃]擂台赛：想唱消息,即抢唱
    */
   public RWantSingChanceMsg getRWantSingChanceMsg() {
     if(rWantSingChanceMsg==null){
@@ -405,7 +405,7 @@ public final class RaceRoomMsg extends Message<RaceRoomMsg, RaceRoomMsg.Builder>
   }
 
   /**
-   * 擂台赛：想唱消息,即抢唱
+   * [废弃]擂台赛：想唱消息,即抢唱
    */
   public boolean hasRWantSingChanceMsg() {
     return rWantSingChanceMsg!=null;
@@ -515,7 +515,7 @@ public final class RaceRoomMsg extends Message<RaceRoomMsg, RaceRoomMsg.Builder>
     }
 
     /**
-     * 擂台赛：想唱消息,即抢唱
+     * [废弃]擂台赛：想唱消息,即抢唱
      */
     public Builder setRWantSingChanceMsg(RWantSingChanceMsg rWantSingChanceMsg) {
       this.rWantSingChanceMsg = rWantSingChanceMsg;

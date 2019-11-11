@@ -37,7 +37,7 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
       tag = 1,
       adapter = "com.zq.live.proto.Common.UserInfo#ADAPTER"
   )
-  private final UserInfo user;
+  private final UserInfo userInfo;
 
   /**
    * 加入毫秒时间戳
@@ -66,26 +66,38 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
   )
   private final Boolean newRoundBegin;
 
-  public RJoinNoticeMsg(UserInfo user, Long joinTimeMs, ERUserRole role, Boolean newRoundBegin) {
-    this(user, joinTimeMs, role, newRoundBegin, ByteString.EMPTY);
+  /**
+   * 蒙面用户信息
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.zq.live.proto.RaceRoom.FakeUserInfo#ADAPTER"
+  )
+  private final FakeUserInfo fakeUserInfo;
+
+  public RJoinNoticeMsg(UserInfo userInfo, Long joinTimeMs, ERUserRole role, Boolean newRoundBegin,
+      FakeUserInfo fakeUserInfo) {
+    this(userInfo, joinTimeMs, role, newRoundBegin, fakeUserInfo, ByteString.EMPTY);
   }
 
-  public RJoinNoticeMsg(UserInfo user, Long joinTimeMs, ERUserRole role, Boolean newRoundBegin,
-      ByteString unknownFields) {
+  public RJoinNoticeMsg(UserInfo userInfo, Long joinTimeMs, ERUserRole role, Boolean newRoundBegin,
+      FakeUserInfo fakeUserInfo, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
-    this.user = user;
+    this.userInfo = userInfo;
     this.joinTimeMs = joinTimeMs;
     this.role = role;
     this.newRoundBegin = newRoundBegin;
+    this.fakeUserInfo = fakeUserInfo;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
-    builder.user = user;
+    builder.userInfo = userInfo;
     builder.joinTimeMs = joinTimeMs;
     builder.role = role;
     builder.newRoundBegin = newRoundBegin;
+    builder.fakeUserInfo = fakeUserInfo;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -96,10 +108,11 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
     if (!(other instanceof RJoinNoticeMsg)) return false;
     RJoinNoticeMsg o = (RJoinNoticeMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(user, o.user)
+        && Internal.equals(userInfo, o.userInfo)
         && Internal.equals(joinTimeMs, o.joinTimeMs)
         && Internal.equals(role, o.role)
-        && Internal.equals(newRoundBegin, o.newRoundBegin);
+        && Internal.equals(newRoundBegin, o.newRoundBegin)
+        && Internal.equals(fakeUserInfo, o.fakeUserInfo);
   }
 
   @Override
@@ -107,10 +120,11 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
-      result = result * 37 + (user != null ? user.hashCode() : 0);
+      result = result * 37 + (userInfo != null ? userInfo.hashCode() : 0);
       result = result * 37 + (joinTimeMs != null ? joinTimeMs.hashCode() : 0);
       result = result * 37 + (role != null ? role.hashCode() : 0);
       result = result * 37 + (newRoundBegin != null ? newRoundBegin.hashCode() : 0);
+      result = result * 37 + (fakeUserInfo != null ? fakeUserInfo.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -119,10 +133,11 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (user != null) builder.append(", user=").append(user);
+    if (userInfo != null) builder.append(", userInfo=").append(userInfo);
     if (joinTimeMs != null) builder.append(", joinTimeMs=").append(joinTimeMs);
     if (role != null) builder.append(", role=").append(role);
     if (newRoundBegin != null) builder.append(", newRoundBegin=").append(newRoundBegin);
+    if (fakeUserInfo != null) builder.append(", fakeUserInfo=").append(fakeUserInfo);
     return builder.replace(0, 2, "RJoinNoticeMsg{").append('}').toString();
   }
 
@@ -139,11 +154,11 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
   /**
    * 加入游戏的信息
    */
-  public UserInfo getUser() {
-    if(user==null){
+  public UserInfo getUserInfo() {
+    if(userInfo==null){
         return new UserInfo.Builder().build();
     }
-    return user;
+    return userInfo;
   }
 
   /**
@@ -177,10 +192,20 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
   }
 
   /**
+   * 蒙面用户信息
+   */
+  public FakeUserInfo getFakeUserInfo() {
+    if(fakeUserInfo==null){
+        return new FakeUserInfo.Builder().build();
+    }
+    return fakeUserInfo;
+  }
+
+  /**
    * 加入游戏的信息
    */
-  public boolean hasUser() {
-    return user!=null;
+  public boolean hasUserInfo() {
+    return userInfo!=null;
   }
 
   /**
@@ -204,8 +229,15 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
     return newRoundBegin!=null;
   }
 
+  /**
+   * 蒙面用户信息
+   */
+  public boolean hasFakeUserInfo() {
+    return fakeUserInfo!=null;
+  }
+
   public static final class Builder extends Message.Builder<RJoinNoticeMsg, Builder> {
-    private UserInfo user;
+    private UserInfo userInfo;
 
     private Long joinTimeMs;
 
@@ -213,14 +245,16 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
 
     private Boolean newRoundBegin;
 
+    private FakeUserInfo fakeUserInfo;
+
     public Builder() {
     }
 
     /**
      * 加入游戏的信息
      */
-    public Builder setUser(UserInfo user) {
-      this.user = user;
+    public Builder setUserInfo(UserInfo userInfo) {
+      this.userInfo = userInfo;
       return this;
     }
 
@@ -248,9 +282,17 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
       return this;
     }
 
+    /**
+     * 蒙面用户信息
+     */
+    public Builder setFakeUserInfo(FakeUserInfo fakeUserInfo) {
+      this.fakeUserInfo = fakeUserInfo;
+      return this;
+    }
+
     @Override
     public RJoinNoticeMsg build() {
-      return new RJoinNoticeMsg(user, joinTimeMs, role, newRoundBegin, super.buildUnknownFields());
+      return new RJoinNoticeMsg(userInfo, joinTimeMs, role, newRoundBegin, fakeUserInfo, super.buildUnknownFields());
     }
   }
 
@@ -261,19 +303,21 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
 
     @Override
     public int encodedSize(RJoinNoticeMsg value) {
-      return UserInfo.ADAPTER.encodedSizeWithTag(1, value.user)
+      return UserInfo.ADAPTER.encodedSizeWithTag(1, value.userInfo)
           + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.joinTimeMs)
           + ERUserRole.ADAPTER.encodedSizeWithTag(3, value.role)
           + ProtoAdapter.BOOL.encodedSizeWithTag(4, value.newRoundBegin)
+          + FakeUserInfo.ADAPTER.encodedSizeWithTag(5, value.fakeUserInfo)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, RJoinNoticeMsg value) throws IOException {
-      UserInfo.ADAPTER.encodeWithTag(writer, 1, value.user);
+      UserInfo.ADAPTER.encodeWithTag(writer, 1, value.userInfo);
       ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.joinTimeMs);
       ERUserRole.ADAPTER.encodeWithTag(writer, 3, value.role);
       ProtoAdapter.BOOL.encodeWithTag(writer, 4, value.newRoundBegin);
+      FakeUserInfo.ADAPTER.encodeWithTag(writer, 5, value.fakeUserInfo);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -283,7 +327,7 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setUser(UserInfo.ADAPTER.decode(reader)); break;
+          case 1: builder.setUserInfo(UserInfo.ADAPTER.decode(reader)); break;
           case 2: builder.setJoinTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
           case 3: {
             try {
@@ -294,6 +338,7 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
             break;
           }
           case 4: builder.setNewRoundBegin(ProtoAdapter.BOOL.decode(reader)); break;
+          case 5: builder.setFakeUserInfo(FakeUserInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -308,7 +353,8 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
     @Override
     public RJoinNoticeMsg redact(RJoinNoticeMsg value) {
       Builder builder = value.newBuilder();
-      if (builder.user != null) builder.user = UserInfo.ADAPTER.redact(builder.user);
+      if (builder.userInfo != null) builder.userInfo = UserInfo.ADAPTER.redact(builder.userInfo);
+      if (builder.fakeUserInfo != null) builder.fakeUserInfo = FakeUserInfo.ADAPTER.redact(builder.fakeUserInfo);
       builder.clearUnknownFields();
       return builder.build();
     }
