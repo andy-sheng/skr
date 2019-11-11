@@ -21,6 +21,7 @@ import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.CircleCountDownView
+import com.component.busilib.view.VoiceChartView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
@@ -48,6 +49,8 @@ class RaceTopVsView : ExConstraintLayout {
     val rightCircleCountDownView: CircleCountDownView
     val leftSvgaIv: SVGAImageView
     val rightSvgaIv: SVGAImageView
+    var leftVoiceChartView: VoiceChartView
+    var rightVoiceChartView: VoiceChartView
 
     val raceTopVsIv: ImageView
     var roomData: RaceRoomData? = null
@@ -79,6 +82,8 @@ class RaceTopVsView : ExConstraintLayout {
         raceTopVsIv = this.findViewById(com.module.playways.R.id.race_top_vs_iv)
         leftSvgaIv = this.findViewById(R.id.left_svga_iv)
         rightSvgaIv = this.findViewById(R.id.right_svga_iv)
+        leftVoiceChartView = this.findViewById(R.id.left_voice_chart_view)
+        rightVoiceChartView = this.findViewById(R.id.right_voice_chart_view)
 
         leftAvatarIv.setDebounceViewClickListener {
             roomData?.realRoundInfo?.subRoundInfo?.let {
@@ -237,6 +242,14 @@ class RaceTopVsView : ExConstraintLayout {
                     }
                 }
             }
+
+            if (roomData?.realRoundInfo?.subRoundSeq == 1) {
+                leftVoiceChartView.start()
+                rightVoiceChartView.stop()
+            } else {
+                rightVoiceChartView.start()
+                leftVoiceChartView.stop()
+            }
         }
     }
 
@@ -310,6 +323,8 @@ class RaceTopVsView : ExConstraintLayout {
         rightSvgaIv.stopAnimation()
         leftPlayCount = 0
         rightPlayCount = 0
+        leftVoiceChartView.stop()
+        rightVoiceChartView.stop()
 
         EventBus.getDefault().unregister(this)
     }

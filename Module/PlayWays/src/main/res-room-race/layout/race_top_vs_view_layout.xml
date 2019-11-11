@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:VoiceChartView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -88,6 +89,22 @@
             app:layout_constraintBottom_toBottomOf="@+id/left_bg"
             app:layout_constraintRight_toRightOf="@+id/left_guideline"
             app:layout_constraintTop_toTopOf="@+id/left_bg" />
+
+        <com.component.busilib.view.VoiceChartView
+            android:id="@+id/left_voice_chart_view"
+            android:layout_width="@dimen/view_26_dp"
+            android:layout_height="@dimen/view_20_dp"
+            android:layout_marginLeft="@dimen/view_1_dp"
+            VoiceChartView:chartBackColor="@color/white"
+            VoiceChartView:chartDuration="200"
+            VoiceChartView:chartFitWidth="true"
+            VoiceChartView:chartHeight="@dimen/view_16_dp"
+            VoiceChartView:chartMarginLeft="@dimen/view_2_dp"
+            VoiceChartView:chartWidth="@dimen/view_2_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/left_avatar_iv"
+            app:layout_constraintLeft_toLeftOf="@+id/left_avatar_iv"
+            app:layout_constraintRight_toRightOf="@+id/left_avatar_iv"
+            app:layout_constraintTop_toTopOf="@+id/left_avatar_iv" />
 
         <com.component.busilib.view.CircleCountDownView
             android:id="@+id/left_circle_count_down_view"
@@ -181,6 +198,22 @@
             app:layout_constraintBottom_toBottomOf="@+id/right_bg"
             app:layout_constraintLeft_toLeftOf="@+id/right_guideline"
             app:layout_constraintTop_toTopOf="@+id/right_bg" />
+
+        <com.component.busilib.view.VoiceChartView
+            android:id="@+id/right_voice_chart_view"
+            android:layout_width="@dimen/view_26_dp"
+            android:layout_height="@dimen/view_20_dp"
+            android:layout_marginLeft="@dimen/view_1_dp"
+            VoiceChartView:chartBackColor="@color/white"
+            VoiceChartView:chartDuration="200"
+            VoiceChartView:chartFitWidth="true"
+            VoiceChartView:chartHeight="@dimen/view_16_dp"
+            VoiceChartView:chartMarginLeft="@dimen/view_2_dp"
+            VoiceChartView:chartWidth="@dimen/view_2_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/right_avatar_iv"
+            app:layout_constraintLeft_toLeftOf="@+id/right_avatar_iv"
+            app:layout_constraintRight_toRightOf="@+id/right_avatar_iv"
+            app:layout_constraintTop_toTopOf="@+id/right_avatar_iv" />
 
         <com.component.busilib.view.CircleCountDownView
             android:id="@+id/right_circle_count_down_view"
