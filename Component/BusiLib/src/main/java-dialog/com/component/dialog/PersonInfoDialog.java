@@ -106,7 +106,7 @@ public class PersonInfoDialog {
             public void onClickFollow(int userID, boolean isFriend, boolean isFollow) {
                 // 关注
                 if (isFollow || isFriend) {
-                    UserInfoManager.getInstance().mateRelation(userID, UserInfoManager.RA_UNBUILD, isFriend, mRoomID, null);
+                    unFollow(userID, isFriend);
                 } else {
                     UserInfoManager.getInstance().mateRelation(userID, UserInfoManager.RA_BUILD, isFriend, mRoomID, null);
                     if (RA.hasTestList()) {
@@ -207,6 +207,43 @@ public class PersonInfoDialog {
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(useAnimation);
         }
+    }
+
+    private void unFollow(int userID, boolean isFriend) {
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(mActivity)
+                .setTitleTip("取消关注")
+                .setMessageTip("是否取消关注")
+                .setConfirmTip("取消关注")
+                .setCancelTip("不了")
+                .setConfirmBtnClickListener(new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                        UserInfoManager.getInstance().mateRelation(userID, UserInfoManager.RA_UNBUILD, isFriend, mRoomID, null);
+                    }
+                })
+                .setCancelBtnClickListener(new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                    }
+                })
+                .build();
+
+        mDialogPlus = DialogPlus.newDialog(mActivity)
+                .setContentHolder(new ViewHolder(tipsDialogView))
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setInAnimation(R.anim.fade_in)
+                .setOutAnimation(R.anim.fade_out)
+                .setExpanded(false)
+                .setGravity(Gravity.BOTTOM)
+                .create();
+        mDialogPlus.show();
     }
 
     private void showVipOpenDialog() {
