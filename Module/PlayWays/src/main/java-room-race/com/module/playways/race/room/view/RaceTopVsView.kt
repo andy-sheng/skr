@@ -24,10 +24,13 @@ import com.component.busilib.view.CircleCountDownView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.event.RaceBlightEvent
 import com.opensource.svgaplayer.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class RaceTopVsView : ExConstraintLayout {
@@ -91,6 +94,18 @@ class RaceTopVsView : ExConstraintLayout {
                     EventBus.getDefault().post(ShowPersonCardEvent(it[1].userID))
                 }
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RaceBlightEvent) {
+        updateAvatar()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
         }
     }
 
@@ -191,8 +206,7 @@ class RaceTopVsView : ExConstraintLayout {
     fun updateData() {
         roomData?.realRoundInfo?.scores?.let {
             if (it.size == 2) {
-                if (!(roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.uid.toInt())
-                                ?: false)) {
+                if ((roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.uid.toInt()) == false)) {
 
                     resetLeftPlayCount(it[0].bLightCnt - getTextContentInt(leftTicketCountTv))
                     leftTicketCountTv.text = it[0].bLightCnt.toString()
@@ -201,8 +215,7 @@ class RaceTopVsView : ExConstraintLayout {
                 } else {
                     if (roomData?.realRoundInfo?.subRoundSeq == 1) {
 
-                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.uid.toInt())
-                                        ?: true) {
+                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.uid.toInt()) == true) {
                             resetLeftPlayCount(it[0].bLightCnt - getTextContentInt(leftTicketCountTv))
                             leftTicketCountTv.text = it[0].bLightCnt.toString()
                             rightTicketCountTv.text = "**"
@@ -212,8 +225,7 @@ class RaceTopVsView : ExConstraintLayout {
                         }
                     } else if (roomData?.realRoundInfo?.subRoundSeq == 2) {
 
-                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.uid.toInt())
-                                        ?: true) {
+                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.uid.toInt()) == true) {
                             leftTicketCountTv.text = "**"
                             resetRightPlayCount(it[1].bLightCnt - getTextContentInt(rightTicketCountTv))
                             rightTicketCountTv.text = it[1].bLightCnt.toString()
@@ -298,28 +310,39 @@ class RaceTopVsView : ExConstraintLayout {
         rightSvgaIv.stopAnimation()
         leftPlayCount = 0
         rightPlayCount = 0
+
+        EventBus.getDefault().unregister(this)
     }
 
     fun bindData() {
         leftCircleCountDownView.visibility = View.GONE
         rightCircleCountDownView.visibility = View.GONE
-        roomData?.realRoundInfo?.subRoundInfo?.let {
-            AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerOrWaiterInfo(it.getOrNull(0)?.userID)?.avatar)
-                    .setCornerRadius(U.getDisplayUtils().dip2px(21f).toFloat())
-                    .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                    .setBorderColor(U.getColor(R.color.white))
-                    .build())
-        }
 
-        roomData?.realRoundInfo?.subRoundInfo?.let {
-            AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerOrWaiterInfo(it.getOrNull(1)?.userID)?.avatar)
-                    .setCornerRadius(U.getDisplayUtils().dip2px(21f).toFloat())
-                    .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                    .setBorderColor(U.getColor(R.color.white))
-                    .build())
-        }
-
+        updateAvatar()
         updateData()
+    }
+
+    private fun updateAvatar() {
+        roomData?.realRoundInfo?.subRoundInfo?.let {
+            var avatarUrl = if (roomData?.isFakeForMe(roomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.userID
+                            ?: 0) == true) roomData?.getPlayerOrWaiterInfoModel(it.getOrNull(0)?.userID)?.toFakeUserInfo()?.avatar else roomData?.getPlayerOrWaiterInfo(it.getOrNull(0)?.userID)?.avatar
+            AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(avatarUrl)
+                    .setCornerRadius(U.getDisplayUtils().dip2px(21f).toFloat())
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                    .setBorderColor(U.getColor(R.color.white))
+                    .build())
+        }
+
+        roomData?.realRoundInfo?.subRoundInfo?.let {
+            var avatarUrl = if (roomData?.isFakeForMe(roomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.userID
+                            ?: 0) == true) roomData?.getPlayerOrWaiterInfoModel(it.getOrNull(1)?.userID)?.toFakeUserInfo()?.avatar else roomData?.getPlayerOrWaiterInfo(it.getOrNull(1)?.userID)?.avatar
+
+            AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(avatarUrl)
+                    .setCornerRadius(U.getDisplayUtils().dip2px(21f).toFloat())
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                    .setBorderColor(U.getColor(R.color.white))
+                    .build())
+        }
     }
 
     fun startVs() {

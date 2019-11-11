@@ -252,6 +252,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 callback?.invoke(true)
                 mRoomData?.realRoundInfo?.getSingerIdNow()?.let {
                     mRoomData?.realRoundInfo?.unfakeSetForMe?.add(it)
+                    EventBus.getDefault().post(RaceBlightEvent())
                 }
             } else {
                 if (result.errno == 8412159) {
