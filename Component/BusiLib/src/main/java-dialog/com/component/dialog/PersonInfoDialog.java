@@ -331,7 +331,7 @@ public class PersonInfoDialog {
                     Boolean isFollow = obj.getData().getJSONObject("relationInfo").getBooleanValue("isFollow");
                     Boolean isSpFollow = obj.getData().getJSONObject("relationInfo").getBooleanValue("isSPFollow");
                     EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.SP_FOLLOW_TYPE, userId, isFriend, isFollow, isSpFollow));
-                    U.getToastUtil().showShort("取消特别关注成功");
+                    U.getToastUtil().showShort("开启特别关注成功");
                 } else {
                     if (obj.getErrno() == 8302701) {
                         // 普通关注数量触上限
