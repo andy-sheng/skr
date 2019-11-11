@@ -340,7 +340,7 @@ class RaceTopVsView : ExConstraintLayout {
     private fun updateAvatar() {
         roomData?.realRoundInfo?.subRoundInfo?.let {
             var avatarUrl = if (roomData?.isFakeForMe(roomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.userID
-                            ?: 0) == true) roomData?.getPlayerOrWaiterInfoModel(it.getOrNull(0)?.userID)?.toFakeUserInfo()?.avatar else roomData?.getPlayerOrWaiterInfo(it.getOrNull(0)?.userID)?.avatar
+                            ?: 0) == true) roomData?.getPlayerOrWaiterInfoModel(it.getOrNull(0)?.userID)?.fakeUserInfo?.avatarUrl else roomData?.getPlayerOrWaiterInfo(it.getOrNull(0)?.userID)?.avatar
             AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(avatarUrl)
                     .setCornerRadius(U.getDisplayUtils().dip2px(21f).toFloat())
                     .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
@@ -350,7 +350,7 @@ class RaceTopVsView : ExConstraintLayout {
 
         roomData?.realRoundInfo?.subRoundInfo?.let {
             var avatarUrl = if (roomData?.isFakeForMe(roomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.userID
-                            ?: 0) == true) roomData?.getPlayerOrWaiterInfoModel(it.getOrNull(1)?.userID)?.toFakeUserInfo()?.avatar else roomData?.getPlayerOrWaiterInfo(it.getOrNull(1)?.userID)?.avatar
+                            ?: 0) == true) roomData?.getPlayerOrWaiterInfoModel(it.getOrNull(1)?.userID)?.fakeUserInfo?.avatarUrl else roomData?.getPlayerOrWaiterInfo(it.getOrNull(1)?.userID)?.avatar
 
             AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(avatarUrl)
                     .setCornerRadius(U.getDisplayUtils().dip2px(21f).toFloat())
