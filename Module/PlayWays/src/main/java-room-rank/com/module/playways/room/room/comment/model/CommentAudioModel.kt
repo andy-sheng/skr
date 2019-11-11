@@ -3,6 +3,7 @@ package com.module.playways.room.room.comment.model
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.SpanUtils
 import com.module.playways.BaseRoomData
+import com.module.playways.race.room.RaceRoomData
 import com.module.playways.room.msg.event.AudioMsgEvent
 
 class CommentAudioModel : CommentModel() {
@@ -31,10 +32,22 @@ class CommentAudioModel : CommentModel() {
             } else {
                 commentModel.userInfo = UserInfoModel.parseFromPB(event.mInfo.sender)
             }
-            val nameBuilder = SpanUtils()
-                    .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(GRAB_NAME_COLOR)
-                    .create()
-            commentModel.nameBuilder = nameBuilder
+
+            if (roomData != null && roomData is RaceRoomData && roomData.isFakeForMe(commentModel.userInfo.userId)) {
+                val playInfoModel = roomData.getPlayerOrWaiterInfoModel(commentModel.userInfo.userId)
+                commentModel.userInfo = playInfoModel?.toFakeUserInfo()
+                commentModel.isFake = true
+                val nameBuilder = SpanUtils()
+                        .append(commentModel.userInfo.nickname + " ").setForegroundColor(GRAB_NAME_COLOR)
+                        .create()
+                commentModel.nameBuilder = nameBuilder
+            } else {
+                commentModel.isFake = false
+                val nameBuilder = SpanUtils()
+                        .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(GRAB_NAME_COLOR)
+                        .create()
+                commentModel.nameBuilder = nameBuilder
+            }
             commentModel.localPath = event.localPath
             commentModel.duration = event.duration
             commentModel.msgUrl = event.msgUrl

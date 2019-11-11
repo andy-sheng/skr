@@ -14,6 +14,10 @@ class FakeUserInfoModel : Serializable {
             }
             return userInfoModel
         }
+
+        // todo 待补全
+        const val maleAvatar = ""
+        const val femaleAvatarUrl = ""
     }
 
 }

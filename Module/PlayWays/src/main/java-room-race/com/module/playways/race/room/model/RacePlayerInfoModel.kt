@@ -2,6 +2,7 @@ package com.module.playways.race.room.model
 
 import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
+import com.zq.live.proto.Common.ESex
 import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ROnlineInfo
 
@@ -31,6 +32,17 @@ class RacePlayerInfoModel : PlayerInfoModel() {
         return result
     }
 
+    // 用在弹幕区域的userInfo 蒙面时使用
+    fun toFakeUserInfo(): UserInfoModel {
+        val userInfoModel = userInfo.clone() as UserInfoModel
+        userInfoModel.nickname = fakeUserInfo?.nickName
+        if (userInfoModel.sex == ESex.SX_MALE.value) {
+            userInfoModel.avatar = FakeUserInfoModel.maleAvatar
+        } else {
+            userInfoModel.avatar = FakeUserInfoModel.femaleAvatarUrl
+        }
+        return userInfoModel
+    }
 }
 
 internal fun parseFromROnlineInfoPB(pb: ROnlineInfo): RacePlayerInfoModel {

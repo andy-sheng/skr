@@ -34,6 +34,7 @@ public abstract class CommentModel {
     private int commentType = 0;                   //消息类型
 
     private UserInfoModel userInfo;                //消息发送者信息(头像，昵称，vip和id)
+    private boolean isFake = false;                //消息发送者是否蒙面(默认false)
     private int avatarColor;                       //消息发送者头像颜色
     private SpannableStringBuilder mNameBuilder;   //昵称的内容
     private SpannableStringBuilder mStringBuilder; //消息的内容
@@ -76,5 +77,13 @@ public abstract class CommentModel {
 
     public void setAvatarColor(int avatarColor) {
         this.avatarColor = avatarColor;
+    }
+
+    public boolean isFake() {
+        return isFake;
+    }
+
+    public void setFake(boolean fake) {
+        isFake = fake;
     }
 }

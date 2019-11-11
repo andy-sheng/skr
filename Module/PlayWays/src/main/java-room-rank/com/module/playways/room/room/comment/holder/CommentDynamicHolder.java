@@ -32,7 +32,7 @@ public class CommentDynamicHolder extends RecyclerView.ViewHolder {
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mCommentItemListener != null) {
+                if (mCommentItemListener != null && !commentModel.isFake()) {
                     mCommentItemListener.clickAvatar(commentModel.getUserInfo().getUserId());
                 }
             }

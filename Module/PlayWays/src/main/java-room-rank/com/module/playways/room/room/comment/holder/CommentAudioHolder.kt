@@ -37,8 +37,10 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
     init {
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                mCommentAudioModel?.let {
-                    listener?.clickAvatar(it.userInfo.userId)
+                if (mCommentAudioModel?.isFake == false) {
+                    mCommentAudioModel?.let {
+                        listener?.clickAvatar(it.userInfo.userId)
+                    }
                 }
             }
         })

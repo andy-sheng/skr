@@ -678,19 +678,38 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     private fun pretendVote(userInfoModel: UserInfoModel?, singer: UserInfoModel?) {
         if (userInfoModel != null && singer != null) {
             val commentModel = CommentTextModel()
-            commentModel.userInfo = userInfoModel
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
-            val nameBuilder = SpanUtils()
-                    .append(userInfoModel.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
-                    .create()
-            commentModel.nameBuilder = nameBuilder
+            if (mRoomData.isFakeForMe(userInfoModel.userId)) {
+                commentModel.userInfo = mRoomData.getPlayerOrWaiterInfoModel(userInfoModel.userId)?.toFakeUserInfo()
+                commentModel.isFake = true
+                val nameBuilder = SpanUtils()
+                        .append(userInfoModel.nickname + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                        .create()
+                commentModel.nameBuilder = nameBuilder
+            } else {
+                commentModel.userInfo = userInfoModel
+                val nameBuilder = SpanUtils()
+                        .append(userInfoModel.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                        .create()
+                commentModel.nameBuilder = nameBuilder
+            }
 
-            val stringBuilder = SpanUtils()
-                    .append("给").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
-                    .append(singer.nicknameRemark).setForegroundColor(CommentModel.GRAB_NAME_COLOR)
-                    .append("投了一票").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
-                    .create()
-            commentModel.stringBuilder = stringBuilder
+            if (mRoomData.isFakeForMe(singer.userId)) {
+                val stringBuilder = SpanUtils()
+                        .append("给").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                        .append(mRoomData.getPlayerOrWaiterInfoModel(singer.userId)?.fakeUserInfo?.nickName + "").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                        .append("投了一票").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                        .create()
+                commentModel.stringBuilder = stringBuilder
+            } else {
+                val stringBuilder = SpanUtils()
+                        .append("给").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                        .append(singer.nicknameRemark).setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                        .append("投了一票").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                        .create()
+                commentModel.stringBuilder = stringBuilder
+            }
+
             EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
         }
     }
@@ -736,14 +755,25 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     private fun pretendGiveUp(userInfoModel: UserInfoModel?) {
         if (userInfoModel != null) {
             val commentModel = CommentTextModel()
-            commentModel.userInfo = userInfoModel
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
+            if (mRoomData.isFakeForMe(userInfoModel.userId)) {
+                commentModel.userInfo = mRoomData.getPlayerOrWaiterInfoModel(userInfoModel.userId)?.toFakeUserInfo()
+                commentModel.isFake = true
+            } else {
+                commentModel.userInfo = userInfoModel
+                commentModel.isFake = false
+            }
+
+            var name = userInfoModel.nicknameRemark
+            if (commentModel.isFake) {
+                name = userInfoModel.nickname
+            }
             val nameBuilder = SpanUtils()
-                    .append(userInfoModel.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .append(name + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
                     .create()
             commentModel.nameBuilder = nameBuilder
             val stringBuilder = SpanUtils()
-                    .append(userInfoModel.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .append("$name ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
                     .append("不唱了").setForegroundColor(CommentModel.GRAB_TEXT_COLOR).create()
             commentModel.stringBuilder = stringBuilder
             EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
