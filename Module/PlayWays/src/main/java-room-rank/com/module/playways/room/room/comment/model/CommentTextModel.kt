@@ -28,16 +28,17 @@ class CommentTextModel : CommentModel() {
                     commentModel.userInfo = UserInfoModel.parseFromPB(event.info.sender)
                 }
 
-                if (roomData is RaceRoomData && roomData.isFakeForMe(commentModel.userInfo.userId)) {
-                    val playInfoModel = roomData.getPlayerOrWaiterInfoModel(commentModel.userInfo.userId)
-                    commentModel.userInfo = playInfoModel?.toFakeUserInfo()
-                    commentModel.isFake = true
+                if (roomData is RaceRoomData && roomData.isFakeForMe(commentModel.userInfo?.userId)) {
+                    val playInfoModel = roomData.getPlayerOrWaiterInfoModel(commentModel.userInfo?.userId)
+                    commentModel.fakeUserInfo = playInfoModel?.fakeUserInfo
                 }
 
                 if (event.mUserInfoModelList == null || event.mUserInfoModelList.size == 0) {
                     // 普通消息
                     val nameSsb = SpanUtils()
-                            .append((if (commentModel.isFake) commentModel.userInfo.nickname else commentModel.userInfo.nicknameRemark) + " ").setForegroundColor(GRAB_NAME_COLOR)
+                            .append(commentModel.fakeUserInfo?.nickName
+                                    ?: commentModel.userInfo?.nicknameRemark
+                                    + " ").setForegroundColor(GRAB_NAME_COLOR)
                             .create()
                     commentModel.nameBuilder = nameSsb
 
@@ -49,7 +50,7 @@ class CommentTextModel : CommentModel() {
                 } else {
                     // @消息
                     val nameSsb = SpanUtils()
-                            .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                            .append(commentModel.userInfo?.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
                             .create()
                     commentModel.nameBuilder = nameSsb
 

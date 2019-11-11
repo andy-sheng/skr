@@ -89,9 +89,9 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
-        if (mDataList.get(position).getCommentType() == CommentModel.TYPE_DYNAMIC) {
+        if (mDataList.get(position).getCommentType() == CommentModel.Companion.getTYPE_DYNAMIC()) {
             return VIEW_HOLDER_TYPE_DYNAMIC;
-        } else if (mDataList.get(position).getCommentType() == CommentModel.TYPE_AUDIO) {
+        } else if (mDataList.get(position).getCommentType() == CommentModel.Companion.getTYPE_AUDIO()) {
             return VIEW_HOLDER_TYPE_AUDIO;
         }
         return VIEW_HOLDER_TYPE_NORMAL;

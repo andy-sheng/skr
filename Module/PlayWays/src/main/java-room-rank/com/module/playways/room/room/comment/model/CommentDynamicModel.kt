@@ -30,10 +30,8 @@ class CommentDynamicModel : CommentModel() {
                 }
             }
 
-            if (roomData != null && roomData is RaceRoomData && roomData.isFakeForMe(commentModel.userInfo.userId)) {
-                val playInfoModel = roomData.getPlayerOrWaiterInfoModel(commentModel.userInfo.userId)
-                commentModel.userInfo = playInfoModel?.toFakeUserInfo()
-                commentModel.isFake = true
+            if (roomData != null && roomData is RaceRoomData && roomData.isFakeForMe(commentModel.userInfo?.userId)) {
+                commentModel.fakeUserInfo = roomData.getPlayerOrWaiterInfoModel(commentModel.userInfo?.userId)?.fakeUserInfo
             }
 
             commentModel.dynamicModel = event.mDynamicModel

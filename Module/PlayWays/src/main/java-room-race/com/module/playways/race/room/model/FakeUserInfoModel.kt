@@ -4,9 +4,11 @@ import com.zq.live.proto.RaceRoom.FakeUserInfo
 import java.io.Serializable
 
 class FakeUserInfoModel : Serializable {
-    var nickName:String?=null
 
-    companion object{
+    var nickName: String? = null
+    var avatarUrl: String? = null
+
+    companion object {
         fun parseFromPB(model: FakeUserInfo): FakeUserInfoModel {
             val userInfoModel = FakeUserInfoModel()
             if (model != null) {

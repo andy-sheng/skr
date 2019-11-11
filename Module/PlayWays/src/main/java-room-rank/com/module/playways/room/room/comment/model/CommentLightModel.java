@@ -15,15 +15,15 @@ public class CommentLightModel extends CommentModel {
     PlayerInfoModel singer;  // 演唱者
 
     public CommentLightModel(int gameType, PlayerInfoModel voter, PlayerInfoModel singer, boolean isBao, boolean isChorus, boolean isMiniGame) {
-        setCommentType(CommentModel.TYPE_LIGHT);
+        setCommentType(CommentModel.Companion.getTYPE_LIGHT());
         this.mGameType = gameType;
         this.voter = voter;
         this.singer = singer;
 
         setUserInfo(voter.getUserInfo());
-        setAvatarColor(CommentModel.AVATAR_COLOR);
+        setAvatarColor(CommentModel.Companion.getAVATAR_COLOR());
         SpannableStringBuilder nameBuilder = new SpanUtils()
-                .append(voter.getUserInfo().getNicknameRemark() + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                .append(voter.getUserInfo().getNicknameRemark() + " ").setForegroundColor(CommentModel.Companion.getGRAB_NAME_COLOR())
                 .create();
         setNameBuilder(nameBuilder);
 
@@ -31,24 +31,24 @@ public class CommentLightModel extends CommentModel {
         if (mGameType == GameModeType.GAME_MODE_GRAB) {
             SpanUtils spanUtils = new SpanUtils();
             if (isMiniGame) {
-                stringBuilder = spanUtils.append(isBao ? "对表演爆灯啦" : "对表演灭灯啦").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                stringBuilder = spanUtils.append(isBao ? "对表演爆灯啦" : "对表演灭灯啦").setForegroundColor(CommentModel.Companion.getGRAB_TEXT_COLOR())
                         .create();
             } else {
                 if (isChorus) {
-                    spanUtils.append("为").setForegroundColor(CommentModel.GRAB_TEXT_COLOR);
-                    spanUtils.append("合唱").setForegroundColor(CommentModel.GRAB_TEXT_COLOR);
+                    spanUtils.append("为").setForegroundColor(CommentModel.Companion.getGRAB_TEXT_COLOR());
+                    spanUtils.append("合唱").setForegroundColor(CommentModel.Companion.getGRAB_TEXT_COLOR());
                 } else {
-                    spanUtils.append("对").setForegroundColor(CommentModel.GRAB_TEXT_COLOR);
-                    spanUtils.append(singer.getUserInfo().getNicknameRemark()).setForegroundColor(CommentModel.GRAB_NAME_COLOR);
+                    spanUtils.append("对").setForegroundColor(CommentModel.Companion.getGRAB_TEXT_COLOR());
+                    spanUtils.append(singer.getUserInfo().getNicknameRemark()).setForegroundColor(CommentModel.Companion.getGRAB_NAME_COLOR());
                 }
-                stringBuilder = spanUtils.append(isBao ? "爆灯啦" : "灭了盏灯").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                stringBuilder = spanUtils.append(isBao ? "爆灯啦" : "灭了盏灯").setForegroundColor(CommentModel.Companion.getGRAB_TEXT_COLOR())
                         .create();
             }
         } else if (mGameType == GameModeType.GAME_MODE_CLASSIC_RANK) {
             stringBuilder = new SpanUtils()
-                    .append("对").setForegroundColor(CommentModel.RANK_TEXT_COLOR)
-                    .append(singer.getUserInfo().getNicknameRemark()).setForegroundColor(CommentModel.RANK_NAME_COLOR)
-                    .append(isBao ? "爆了个灯" : "按了“x”").setForegroundColor(CommentModel.RANK_TEXT_COLOR)
+                    .append("对").setForegroundColor(CommentModel.Companion.getRANK_TEXT_COLOR())
+                    .append(singer.getUserInfo().getNicknameRemark()).setForegroundColor(CommentModel.Companion.getRANK_NAME_COLOR())
+                    .append(isBao ? "爆了个灯" : "按了“x”").setForegroundColor(CommentModel.Companion.getRANK_TEXT_COLOR())
                     .create();
         }
         setStringBuilder(stringBuilder);

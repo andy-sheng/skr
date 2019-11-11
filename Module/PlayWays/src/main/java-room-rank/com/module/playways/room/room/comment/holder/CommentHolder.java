@@ -36,7 +36,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
         mAvatarIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mCommentItemListener != null && !mCommentModel.isFake()) {
+                if (mCommentItemListener != null && mCommentModel != null && mCommentModel.getFakeUserInfo() == null) {
                     mCommentItemListener.clickAvatar(mCommentModel.getUserInfo().getUserId());
                 }
             }

@@ -33,21 +33,15 @@ class CommentAudioModel : CommentModel() {
                 commentModel.userInfo = UserInfoModel.parseFromPB(event.mInfo.sender)
             }
 
-            if (roomData != null && roomData is RaceRoomData && roomData.isFakeForMe(commentModel.userInfo.userId)) {
-                val playInfoModel = roomData.getPlayerOrWaiterInfoModel(commentModel.userInfo.userId)
-                commentModel.userInfo = playInfoModel?.toFakeUserInfo()
-                commentModel.isFake = true
-                val nameBuilder = SpanUtils()
-                        .append(commentModel.userInfo.nickname + " ").setForegroundColor(GRAB_NAME_COLOR)
-                        .create()
-                commentModel.nameBuilder = nameBuilder
-            } else {
-                commentModel.isFake = false
-                val nameBuilder = SpanUtils()
-                        .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(GRAB_NAME_COLOR)
-                        .create()
-                commentModel.nameBuilder = nameBuilder
+            if (roomData != null && roomData is RaceRoomData && roomData.isFakeForMe(commentModel.userInfo?.userId)) {
+                commentModel.fakeUserInfo = roomData.getPlayerOrWaiterInfoModel(commentModel.userInfo?.userId)?.fakeUserInfo
             }
+
+            val nameBuilder = SpanUtils()
+                    .append("${commentModel.fakeUserInfo?.nickName
+                            ?: commentModel.userInfo?.nicknameRemark} ").setForegroundColor(GRAB_NAME_COLOR)
+                    .create()
+            commentModel.nameBuilder = nameBuilder
             commentModel.localPath = event.localPath
             commentModel.duration = event.duration
             commentModel.msgUrl = event.msgUrl

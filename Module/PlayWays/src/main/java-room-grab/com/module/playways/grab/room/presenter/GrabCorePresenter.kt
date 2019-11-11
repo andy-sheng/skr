@@ -271,7 +271,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     }
 
     private fun pretendRoomNameSystemMsg(roomName: String?, type: Int) {
-        val commentSysModel = CommentSysModel(roomName, type)
+        val commentSysModel = CommentSysModel(roomName ?: "", type)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
 
@@ -1513,14 +1513,14 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     /**
      * 为了方便服务器亲密度结算
      */
-    private fun userStatisticForIntimacy(){
+    private fun userStatisticForIntimacy() {
         launch {
-            while(true) {
-                delay(10*60*1000)
+            while (true) {
+                delay(10 * 60 * 1000)
                 val l1 = java.util.ArrayList<Int>()
                 for (m in mRoomData.getPlayerAndWaiterInfoList()) {
-                    if(m.userID!=MyUserInfoManager.uid.toInt()){
-                        if(mRoomData.preUserIDsSnapShots.contains(m.userID)){
+                    if (m.userID != MyUserInfoManager.uid.toInt()) {
+                        if (mRoomData.preUserIDsSnapShots.contains(m.userID)) {
                             l1.add(m.userID)
                         }
                     }
@@ -1539,7 +1539,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                     if (result.errno == 0) {
 
                     }
-                }else{
+                } else {
                     break
                 }
             }

@@ -37,9 +37,9 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
     init {
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                if (mCommentAudioModel?.isFake == false) {
+                if (mCommentAudioModel?.fakeUserInfo == null) {
                     mCommentAudioModel?.let {
-                        listener?.clickAvatar(it.userInfo.userId)
+                        listener?.clickAvatar(it.userInfo?.userId ?: 0)
                     }
                 }
             }
@@ -81,23 +81,25 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
         // 为了保证书写从左到右
         val spanUtils = SpanUtils().append("\u202D")
         if (model.userInfo != null
-                && model.userInfo.ranking != null
-                && LevelConfigUtils.getSmallImageResoucesLevel(model.userInfo.ranking.mainRanking) > 0) {
-            val drawable = U.getDrawable(LevelConfigUtils.getSmallImageResoucesLevel(model.userInfo.ranking.mainRanking))
+                && model.userInfo?.ranking != null
+                && LevelConfigUtils.getSmallImageResoucesLevel(model.userInfo?.ranking?.mainRanking
+                        ?: 0) > 0) {
+            val drawable = U.getDrawable(LevelConfigUtils.getSmallImageResoucesLevel(model.userInfo?.ranking?.mainRanking
+                    ?: 0))
             drawable.setBounds(0, 0, U.getDisplayUtils().dip2px(22f), U.getDisplayUtils().dip2px(19f))
             spanUtils.appendImage(drawable, SpanUtils.ALIGN_CENTER)
         }
 
         if (!TextUtils.isEmpty(model.nameBuilder)) {
-            spanUtils.append(model.nameBuilder)
+            spanUtils.append(model.nameBuilder ?: "")
         }
-        if (model.userInfo.honorInfo != null && model.userInfo.honorInfo.isHonor()) {
+        if (model.userInfo?.honorInfo != null && model.userInfo?.honorInfo?.isHonor() == true) {
             mHonorIv.visibility = View.VISIBLE
         } else {
             mHonorIv.visibility = View.GONE
         }
         if (!TextUtils.isEmpty(model.stringBuilder)) {
-            spanUtils.append(model.stringBuilder)
+            spanUtils.append(model.stringBuilder ?: "")
         }
         spanUtils.append("\u202C")
         mNameTv.text = spanUtils.create()

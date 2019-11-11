@@ -116,12 +116,12 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
     /**
      * 该用户是否蒙面 对我来说
      */
-    fun isFakeForMe(uid: Int): Boolean {
+    fun isFakeForMe(uid: Int?): Boolean {
         val m = getPlayerOrWaiterInfoModel(uid)
-        if (m != null) {
-            return realRoundInfo?.unfakeSetForMe?.contains(uid) != true
+        return if (m != null) {
+            realRoundInfo?.unfakeSetForMe?.contains(uid) != true
         } else {
-            return false
+            false
         }
     }
 
