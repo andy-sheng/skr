@@ -29,6 +29,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_2_dp"
+        android:ellipsize="end"
+        android:maxWidth="@dimen/view_100_dp"
+        android:maxLines="1"
         android:paddingRight="@dimen/view_11_dp"
         android:text="58号选手"
         android:textColor="@color/white_trans_80"
@@ -42,6 +45,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_2_dp"
+        android:ellipsize="end"
+        android:maxWidth="@dimen/view_100_dp"
+        android:maxLines="1"
         android:paddingRight="@dimen/view_11_dp"
         android:text="KTV酒彪子"
         android:textColor="@color/white_trans_50"
@@ -95,12 +101,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_2_dp"
+        android:layout_marginTop="@dimen/view_0_dp"
         android:paddingRight="@dimen/view_3_dp"
         android:text="观众234人"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_8_dp"
-        app:layout_constraintLeft_toRightOf="@+id/audience_iv"
-        app:layout_constraintTop_toBottomOf="@+id/user_play_nickName_tv" />
+        app:layout_constraintBottom_toBottomOf="@+id/audience_iv"
+        app:layout_constraintLeft_toRightOf="@+id/audience_iv" />
 
     <android.support.constraint.Barrier
         android:id="@+id/count_barrier"
