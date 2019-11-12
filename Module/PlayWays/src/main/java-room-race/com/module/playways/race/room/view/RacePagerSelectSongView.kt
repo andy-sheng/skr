@@ -131,16 +131,16 @@ class RacePagerSelectSongView : ExConstraintLayout {
         mHasSignUpItemId = event.itemID
         if (mPagerAdapter?.mRaceGamePlayInfoList?.get(mCurrentPosition)?.commonMusic?.itemID == mHasSignUpItemId) {
             mPagerAdapter?.mRaceGamePlayInfoList?.get(mCurrentPosition)?.let {
-                    addSelectedSong(it)
-                }
-            } else {
+                addSelectedSong(it)
+            }
+        } else {
             mPagerAdapter?.mRaceGamePlayInfoList?.forEach {
-                    if (it.commonMusic?.itemID == mHasSignUpItemId) {
-                        addSelectedSong(it)
-                        return@forEach
-                    }
+                if (it.commonMusic?.itemID == mHasSignUpItemId) {
+                    addSelectedSong(it)
+                    return@forEach
                 }
             }
+        }
     }
 
     private fun addSelectedSong(info: RaceGamePlayInfo) {
@@ -201,6 +201,15 @@ class RacePagerSelectSongView : ExConstraintLayout {
                 MyLog.w(TAG, "getPlaybookItemList errer is " + result.errno)
             }
         }
+    }
+
+    fun onBackPressed(): Boolean {
+        if (mUiHandler.hasMessages(HIDE_PANEL) || View.GONE == visibility) {
+            return false
+        }
+
+        hideView()
+        return true
     }
 
     fun hideView() {

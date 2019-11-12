@@ -752,6 +752,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         if (mGiftPanelView.onBackPressed()) {
             return true
         }
+        mRacePagerSelectSongView?.let {
+            if (it.onBackPressed()) {
+                return true
+            }
+        }
+
         dismissDialog()
         mTipsDialogView = TipsDialogView.Builder(context)
                 .setMessageTip("确定要退出排位赛吗")
