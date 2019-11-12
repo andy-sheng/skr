@@ -7,12 +7,14 @@ import android.view.View
 import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.RacePlaySeatUpdateEvent
@@ -34,6 +36,7 @@ class RaceTopContentView : ConstraintLayout {
     var playerCountTv: ExTextView
     var audienceCountTv: ExTextView
     var playerBg: ExImageView
+    var userBgStrokeIv: ExImageView
 
     internal var mIsOpen = true
     private var mRoomData: RaceRoomData? = null
@@ -57,9 +60,14 @@ class RaceTopContentView : ConstraintLayout {
         playerCountTv = rootView.findViewById(R.id.player_count_tv)
         audienceCountTv = rootView.findViewById(R.id.audience_count_tv)
         playerBg = rootView.findViewById(R.id.player_bg)
+        userBgStrokeIv = rootView.findViewById(R.id.user_bg_stroke_iv)
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
+        }
+
+        userBgStrokeIv.setDebounceViewClickListener {
+            EventBus.getDefault().post(ShowPersonCardEvent(MyUserInfoManager.uid.toInt()))
         }
 
         arrowIv.setOnClickListener(object : DebounceViewClickListener() {

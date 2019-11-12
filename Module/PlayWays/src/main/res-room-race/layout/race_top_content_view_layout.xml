@@ -63,6 +63,7 @@
         app:constraint_referenced_ids="user_play_nickName_tv, real_nickName_tv" />
 
     <com.common.view.ex.ExImageView
+        android:id="@+id/user_bg_stroke_iv"
         android:layout_width="0dp"
         android:layout_height="@dimen/view_32_dp"
         android:layout_marginLeft="@dimen/view_11_dp"
