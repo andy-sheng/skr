@@ -46,7 +46,7 @@ class CommentView : EdgeTransparentView {
 
     internal var mCommentRv: RecyclerView? = null
 
-    internal var mGameType = 0
+    internal var mGameType = 0  // 从attr的xml配置中来的
 
     internal var mLinearLayoutManager: LinearLayoutManager? = null
 
