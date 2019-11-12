@@ -172,7 +172,9 @@ public class GiftContinuousView extends RelativeLayout {
         mSendAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                EventBus.getDefault().post(new ShowPersonCardEvent(model.getSender().getUserId()));
+                if (!((RaceRoomData) mRoomData).isFakeForMe(model.getSender().getUserId())) {
+                    EventBus.getDefault().post(new ShowPersonCardEvent(model.getSender().getUserId()));
+                }
             }
         });
 
