@@ -1,11 +1,13 @@
 package com.module.playways.race.room
 
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.event.RaceRoundChangeEvent
+import com.module.playways.race.room.model.FakeUserInfoModel
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.zq.live.proto.RaceRoom.ERUserRole
@@ -123,6 +125,13 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         } else {
             false
         }
+    }
+
+    fun getFakeInfo(uid: Int?): FakeUserInfoModel? {
+        if (isFakeForMe(uid) || uid == MyUserInfoManager.uid.toInt()) {
+            return getPlayerOrWaiterInfoModel(uid)?.fakeUserInfo
+        }
+        return null
     }
 
     override fun getInSeatPlayerInfoList(): List<RacePlayerInfoModel> {

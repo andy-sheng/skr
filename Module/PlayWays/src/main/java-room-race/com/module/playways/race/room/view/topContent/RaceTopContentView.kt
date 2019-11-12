@@ -18,6 +18,9 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.RacePlaySeatUpdateEvent
 import com.module.playways.race.room.event.RaceRoundChangeEvent
 import com.module.playways.race.room.event.RaceWaitSeatUpdateEvent
+import com.module.playways.race.room.event.UpdateAudienceCountEvent
+import com.module.playways.race.room.model.RaceRoundInfoModel
+import com.zq.live.proto.RaceRoom.RaceRoundOverMsg
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -96,7 +99,14 @@ class RaceTopContentView : ConstraintLayout {
     private fun updateCount() {
         mRoomData?.let {
             playerCountTv.text = "选手${mRoomData?.getPlayerCount()}人"
-            audienceCountTv.text = "观众234人"
+
+            var info = mRoomData?.realRoundInfo
+            if (info == null) {
+                info = mRoomData?.expectRoundInfo
+            }
+            info?.let {
+                audienceCountTv.text = "观众${(it as RaceRoundInfoModel).audienceUserCnt}人"
+            }
         }
     }
 
@@ -110,6 +120,11 @@ class RaceTopContentView : ConstraintLayout {
             mIsOpen = false
             arrowIv.setImageResource(R.drawable.race_shrink_icon)
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: UpdateAudienceCountEvent) {
+        audienceCountTv.text = "观众${(event)}人"
     }
 
     //只有轮次切换的时候调用

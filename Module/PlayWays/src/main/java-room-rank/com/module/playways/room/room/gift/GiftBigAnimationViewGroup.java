@@ -60,7 +60,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
             giftBigAnimationView.play(GiftBigAnimationViewGroup.this, model);
             mGiftBigContinueView.setVisibility(VISIBLE);
             mGiftBigContinueView.play(model);
-            EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(model)));
+            EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(model, mRoomData)));
         }
 
         @Override

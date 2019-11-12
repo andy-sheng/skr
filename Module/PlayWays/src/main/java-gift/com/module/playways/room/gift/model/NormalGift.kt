@@ -1,14 +1,16 @@
 package com.module.playways.room.gift.model
 
+import com.common.log.MyLog
+
 class NormalGift : BaseGift() {
 
-    override fun parseFromJson(extra: String) {
+    override fun parseFromJson(extra: String?) {
 
     }
 
     companion object {
         fun getFlower(): NormalGift {
-            val baseGift: NormalGift = NormalGift()
+            val baseGift = NormalGift()
             baseGift.balance = 0
             baseGift.isCanContinue = true
             baseGift.description = "鲜花"

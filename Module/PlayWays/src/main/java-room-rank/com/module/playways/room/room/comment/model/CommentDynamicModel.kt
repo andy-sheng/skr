@@ -1,5 +1,6 @@
 package com.module.playways.room.room.comment.model
 
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.SpanUtils
 import com.module.playways.BaseRoomData
@@ -30,8 +31,8 @@ class CommentDynamicModel : CommentModel() {
                 }
             }
 
-            if (roomData != null && roomData is RaceRoomData && roomData.isFakeForMe(commentModel.userInfo?.userId)) {
-                commentModel.fakeUserInfo = roomData.getPlayerOrWaiterInfoModel(commentModel.userInfo?.userId)?.fakeUserInfo
+            if (roomData != null && roomData is RaceRoomData) {
+                commentModel.fakeUserInfo = roomData.getFakeInfo(commentModel.userInfo?.userId)
             }
 
             commentModel.dynamicModel = event.mDynamicModel
