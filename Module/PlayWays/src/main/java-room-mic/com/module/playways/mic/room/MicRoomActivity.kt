@@ -592,7 +592,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
     override fun startEnterAnimation(playerInfoModel: UserInfoModel, finishCall: () -> Unit) {
-        mVIPEnterView?.enter(playerInfoModel, null, finishCall)
+        mVIPEnterView?.enter(playerInfoModel, finishCall)
     }
 
     private fun showPersonInfoView(userID: Int) {

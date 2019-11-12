@@ -35,7 +35,6 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.event.RaceScoreChangeEvent
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
-import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.*
@@ -48,11 +47,9 @@ import com.module.playways.room.gift.model.NormalGift
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
-import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.module.playways.room.room.comment.CommentView
 import com.module.playways.room.room.comment.listener.CommentViewItemListener
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup
-import com.module.playways.room.room.gift.GiftBigContinuousView
 import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
@@ -469,7 +466,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
     override fun startEnterAnimation(playerInfoModel: UserInfoModel, finishCall: () -> Unit) {
-        mVIPEnterView?.enter(playerInfoModel, mRoomData.getFakeInfo(playerInfoModel.userId), finishCall)
+        val model: UserInfoModel = playerInfoModel.clone() as UserInfoModel
+        model.nickname = RoomDataUtils.getRaceDisplayNickName(mRoomData, playerInfoModel)
+        model.avatar = RoomDataUtils.getRaceDisplayAvatar(mRoomData, playerInfoModel)
+        mVIPEnterView?.enter(model, finishCall)
     }
 
     private fun showPersonInfoView(userID: Int) {
