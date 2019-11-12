@@ -7,7 +7,7 @@ import android.widget.RelativeLayout;
 import com.common.anim.ObjectPlayControlTemplate;
 import com.module.playways.BaseRoomData;
 import com.module.playways.R;
-import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
+import com.module.playways.grab.room.event.SwitchRoomEvent;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.room.comment.model.CommentGiftModel;
 import com.module.playways.room.room.event.PretendCommentMsgEvent;
@@ -119,7 +119,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(GrabSwitchRoomEvent grabSwitchRoomEvent) {
+    public void onEvent(SwitchRoomEvent grabSwitchRoomEvent) {
         mGiftPlayControlTemplate.reset();
         for (GiftBigAnimationView giftBigAnimationView : mFeedGiftAnimationViews) {
             giftBigAnimationView.reset();

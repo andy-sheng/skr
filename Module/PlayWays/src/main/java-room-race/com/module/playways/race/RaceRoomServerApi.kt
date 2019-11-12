@@ -369,4 +369,7 @@ interface RaceRoomServerApi {
 
     @GET("http://dev.game.inframe.mobi/v1/raceroom/audience-list")
     fun getAudienceList(@Query("roomID") roomID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/raceroom/audience-change-room")
+    fun audienceChangeRoom(@Body body: RequestBody): Call<ApiResult>
 }

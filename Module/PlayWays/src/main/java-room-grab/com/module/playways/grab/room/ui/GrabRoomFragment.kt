@@ -214,7 +214,6 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     internal var mVoiceRecordUiController: VoiceRecordUiController? = null
 
     internal var mAnimatorList: MutableList<Animator> = ArrayList()  //存放所有需要尝试取消的动画
-
     internal var mIsGameEndAniamtionShow = false // 标记对战结束动画是否播放
 
     internal var mBeginChangeRoomTs: Long = 0

@@ -1,7 +1,6 @@
 package com.module.playways.room.room.comment
 
 import android.content.Context
-import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Message
 import android.support.constraint.ConstraintLayout
@@ -15,14 +14,13 @@ import android.widget.RelativeLayout
 import com.common.core.account.UserAccountManager
 import com.common.log.MyLog
 import com.common.player.IPlayer
-import com.common.player.IPlayerCallback
 import com.common.player.MyMediaPlayer
 import com.common.player.PlayerCallbackAdapter
 import com.common.utils.U
 import com.zq.mediaengine.kit.ZqEngineKit
 import com.module.playways.BaseRoomData
 import com.module.playways.R
-import com.module.playways.grab.room.event.GrabSwitchRoomEvent
+import com.module.playways.grab.room.event.SwitchRoomEvent
 import com.module.playways.room.msg.event.AudioMsgEvent
 import com.module.playways.room.msg.event.CommentMsgEvent
 import com.module.playways.room.msg.event.DynamicEmojiMsgEvent
@@ -33,7 +31,6 @@ import com.module.playways.room.room.comment.model.CommentDynamicModel
 import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentTextModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
-import com.module.playways.room.room.event.RankToVoiceTransformDataEvent
 import com.module.playways.songmanager.event.MuteAllVoiceEvent
 import com.module.playways.view.EdgeTransparentView
 //import com.module.playways.voice.activity.VoiceRoomActivity
@@ -306,7 +303,7 @@ class CommentView : EdgeTransparentView {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onEvent(event: GrabSwitchRoomEvent) {
+    fun onEvent(event: SwitchRoomEvent) {
         tryStopPlay()
         mCommentAdapter?.dataList?.clear()
         mCommentAdapter?.notifyDataSetChanged()

@@ -85,8 +85,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.greenrobot.greendao.annotation.NotNull
-import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @param:NotNull internal var mRoomData: GrabRoomData, internal var mBaseActivity: BaseActivity) : RxLifeCyclePresenter() {
@@ -1330,7 +1328,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     fun onChangeRoomSuccess(joinGrabRoomRspModel: JoinGrabRoomRspModel?) {
         MyLog.d(TAG, "onChangeRoomSuccess joinGrabRoomRspModel=$joinGrabRoomRspModel")
         if (joinGrabRoomRspModel != null) {
-            EventBus.getDefault().post(GrabSwitchRoomEvent())
+            EventBus.getDefault().post(SwitchRoomEvent())
             stopGuide()
             mRoomData.loadFromRsp(joinGrabRoomRspModel)
             joinRoomAndInit(false)

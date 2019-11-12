@@ -13,8 +13,7 @@ import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.subscribe
+import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
@@ -27,7 +26,9 @@ import com.engine.Params
 import com.engine.arccloud.RecognizeConfig
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
+import com.module.playways.grab.room.event.SwitchRoomEvent
 import com.module.playways.race.RaceRoomServerApi
+import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.*
 import com.module.playways.race.room.model.RaceGamePlayInfo
@@ -326,7 +327,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
     }
 
-    fun goResultPage(lastRound: RaceRoundInfoModel) {
+    private fun goResultPage(lastRound: RaceRoundInfoModel) {
         exitRoom("goResultPage")
         mIRaceRoomView.goResultPage(lastRound)
     }
@@ -423,6 +424,54 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             }
         }
     }
+
+    private var mSwitchRooming = false
+
+    fun changeRoomForAudience(){
+        if (mSwitchRooming) {
+            U.getToastUtil().showShort("切换中")
+            return
+        }
+        //        if(true){
+        //            stopGuide();
+        //            mRoomData.setRealRoundInfo(null);
+        //            mIGrabView.hideAllCardView();
+        //            joinRoomAndInit(false);
+        //            ZqEngineKit.getInstance().unbindAllRemoteVideo();
+        //            mRoomData.checkRoundInEachMode();
+        //            mIGrabView.onChangeRoomResult(true, null);
+        //            mIGrabView.dimissKickDialog();
+        //            return;
+        //        }
+        mSwitchRooming = true
+        launch {
+            val map = mutableMapOf("roomID" to mRoomData.gameId)
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe {
+                    raceRoomServerApi.audienceJoinRoom(body)
+            }
+
+            if (result.errno == 0) {
+                val rspModel =JSON.parseObject(result.data!!.toJSONString(), JoinRaceRoomRspModel::class.java)
+                onChangeRoomSuccess(rspModel)
+            } else {
+                mIRaceRoomView.onChangeRoomResult(false, result.errmsg)
+            }
+            mSwitchRooming = false
+        }
+    }
+
+    private fun onChangeRoomSuccess(rspModel: JoinRaceRoomRspModel?) {
+        MyLog.d(TAG, "onChangeRoomSuccess joinGrabRoomRspModel=$rspModel")
+        if (rspModel != null) {
+            EventBus.getDefault().post(SwitchRoomEvent())
+            mRoomData.loadFromRsp(rspModel)
+            joinRoomAndInit(false)
+            mIRaceRoomView.onChangeRoomResult(true, null)
+            mRoomData.checkRoundInEachMode()
+        }
+    }
+
 
     /**
      * 轮次切换事件

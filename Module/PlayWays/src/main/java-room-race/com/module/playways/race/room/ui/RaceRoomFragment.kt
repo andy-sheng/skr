@@ -27,6 +27,7 @@ import com.module.playways.R
 import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.presenter.VipEnterPresenter
+import com.module.playways.grab.room.view.GrabChangeRoomTransitionView
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
@@ -105,6 +106,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mRaceWidgetAnimationController = RaceWidgetAnimationController(this)
 
+    lateinit var mGrabChangeRoomTransitionView: GrabChangeRoomTransitionView
+    internal var mBeginChangeRoomTs: Long = 0
+
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
@@ -156,7 +160,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         initSelectPagerView()
         initRaceMatchView()
         initSignUpView()
-
+        initChangeRoomTransitionView()
         mCorePresenter.onOpeningAnimationOver()
 
         mUiHanlder.postDelayed(Runnable {
@@ -187,6 +191,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             }
         }
     }
+
+    private fun initChangeRoomTransitionView() {
+        mGrabChangeRoomTransitionView = rootView.findViewById(R.id.change_room_transition_view)
+        mGrabChangeRoomTransitionView.visibility = View.GONE
+    }
+
 
     private fun initSelectPagerView() {
         if (!mRoomData.audience) {
@@ -777,6 +787,32 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     override fun gameOver(lastRound: RaceRoundInfoModel?) {
         quitGame()
+    }
+
+    override fun onChangeRoomResult(success: Boolean, errMsg: String?) {
+        val t = System.currentTimeMillis() - mBeginChangeRoomTs
+        if (t > 1500) {
+            mGrabChangeRoomTransitionView.visibility = View.GONE
+            if (!success) {
+                U.getToastUtil().showShort(errMsg)
+            }
+        } else {
+            mUiHanlder.postDelayed({
+                if (!success) {
+                    U.getToastUtil().showShort(errMsg)
+                }
+                mGrabChangeRoomTransitionView.visibility = View.GONE
+            }, 1500 - t)
+        }
+        if (success) {
+//            initBgView()
+//            hideAllCardView()
+            hideAllSceneView()
+            mVipEnterPresenter?.switchRoom()
+            mVIPEnterView?.switchRoom()
+            // 重新决定显示mic按钮
+            mBottomContainerView?.setRoomData(mRoomData!!)
+        }
     }
 
     fun quitGame() {

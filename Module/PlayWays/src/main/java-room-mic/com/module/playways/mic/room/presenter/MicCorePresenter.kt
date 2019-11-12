@@ -457,7 +457,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     private fun onChangeRoomSuccess(joinGrabRoomRspModel: JoinMicRoomRspModel?) {
         MyLog.d(TAG, "onChangeRoomSuccess joinGrabRoomRspModel=$joinGrabRoomRspModel")
         if (joinGrabRoomRspModel != null) {
-//            EventBus.getDefault().post(GrabSwitchRoomEvent())
+//            EventBus.getDefault().post(SwitchRoomEvent())
             mRoomData.loadFromRsp(joinGrabRoomRspModel)
             joinRoomAndInit(false)
             mRoomData.checkRoundInEachMode()

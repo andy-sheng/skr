@@ -9,8 +9,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.callback.Callback;
-import com.common.log.MyLog;
-import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
+import com.module.playways.grab.room.event.SwitchRoomEvent;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayControlTemplate;
@@ -131,7 +130,7 @@ public class GiftContinueViewGroup extends RelativeLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(GrabSwitchRoomEvent grabSwitchRoomEvent) {
+    public void onEvent(SwitchRoomEvent grabSwitchRoomEvent) {
         mGiftPlayControlTemplate.clear();
     }
 
