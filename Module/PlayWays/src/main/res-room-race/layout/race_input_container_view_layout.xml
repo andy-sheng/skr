@@ -3,24 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <!--这里面是软键盘弹出时 需要上移的布局-->
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/background_iv"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:visibility="gone"
-        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
-        app:bl_corners_topRightRadius="@dimen/view_16_dp"
-        app:bl_solid_color="@color/black_trans_50" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal"
-        android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/et_container"
         android:layout_width="match_parent"

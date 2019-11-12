@@ -41,10 +41,10 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class RaceInputContainerView extends InputContainerView {
-    RecyclerView mRecyclerView;
-    PlayerAdapter mPlayerAdapter;
+//    RecyclerView mRecyclerView;
+//    PlayerAdapter mPlayerAdapter;
     RacePlayerInfoModel mRacePlayerInfoModel;
-    ExImageView mBackgroundIv;
+//    ExImageView mBackgroundIv;
 
     public RaceInputContainerView(Context context) {
         super(context);
@@ -63,13 +63,13 @@ public class RaceInputContainerView extends InputContainerView {
     @Override
     protected void initInputView() {
         super.initInputView();
-        mRecyclerView = findViewById(R.id.recycler_view);
-        mBackgroundIv = (ExImageView) findViewById(R.id.background_iv);
+//        mRecyclerView = findViewById(R.id.recycler_view);
+//        mBackgroundIv = (ExImageView) findViewById(R.id.background_iv);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mPlayerAdapter = new PlayerAdapter();
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.setAdapter(mPlayerAdapter);
+//        mPlayerAdapter = new PlayerAdapter();
+//        mRecyclerView.setLayoutManager(linearLayoutManager);
+//        mRecyclerView.setAdapter(mPlayerAdapter);
 
         mSendMsgBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -139,20 +139,20 @@ public class RaceInputContainerView extends InputContainerView {
             mRacePlayerInfoModel = racePlayerInfoModelList.get(0);
         }
 
-        if (racePlayerInfoModelList.size() > 0) {
-            mRecyclerView.setVisibility(VISIBLE);
-            mBackgroundIv.setVisibility(VISIBLE);
-        }
-
-        mPlayerAdapter.setDataList(racePlayerInfoModelList);
+//        if (racePlayerInfoModelList.size() > 0) {
+//            mRecyclerView.setVisibility(VISIBLE);
+//            mBackgroundIv.setVisibility(VISIBLE);
+//        }
+//
+//        mPlayerAdapter.setDataList(racePlayerInfoModelList);
         mEtContent.setHint("");
     }
 
     @Override
     public void onBoardHide() {
         super.onBoardHide();
-        mRecyclerView.setVisibility(GONE);
-        mBackgroundIv.setVisibility(GONE);
+//        mRecyclerView.setVisibility(GONE);
+//        mBackgroundIv.setVisibility(GONE);
     }
 
     private List<RacePlayerInfoModel> getPlayerInfoListExpectSelf() {
