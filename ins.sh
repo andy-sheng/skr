@@ -187,6 +187,25 @@ function findChannel()
   done  
 }
 
+#删除所有的 build 文件夹
+function deleteBuild(){
+if [[ $2 -gt 4 ]]; then
+       return
+fi
+   for file in `ls $1`;
+        do
+                if [ -d "$1/$file" ]; then
+                    if [[ $file == build ]]; then
+                        echo "删除 $1/$file"
+                        rm -rf $1/$file
+                    else
+                        deleteBuild "$1/$file" `expr $2 + 1`
+                    fi
+
+                fi
+        done
+}
+
 echo "运行示例 ./ins.sh app release all  或 ./ins.sh modulechannel 编译组件module "
 echo "运行示例 ./ins.sh app release matrix 开启matrix性能监控"
 echo "运行示例 ./ins.sh app release apkcanary 开启apk包体静态检查"
@@ -318,6 +337,7 @@ if [[ $1 = "app" ]]; then
 	else
 		echo "先clean再编译"
 		changeBuildModule false
+		#deleteBuild . 0
 		./gradlew clean
 	fi
 	if [[ $release = true ]]; then
@@ -360,6 +380,7 @@ if [[ $1 = "app" ]]; then
 		echo "编译app debug  加 --profile 会输出耗时报表 ./gradlew :app:assembleDebugChannels --stacktrace $rd"
 		if [[ $clean = true ]]; then
 		    echo "clean一下"
+		    #deleteBuild . 0
 		    ./gradlew :app:clean
 		fi
 		rm -rf app/build/outputs/apk

@@ -277,7 +277,7 @@ public class InframeProcessor implements ISchemeProcessor {
             final int gameId = SchemeUtils.getInt(uri, "gameId", 0);
             final int ask = SchemeUtils.getInt(uri, "ask", 0);
             EventBus.getDefault().post(new MicInviteFromSchemeEvent(ownerID, gameId, ask));
-        } else if ("race_audience_match".equals(path)) {
+        } else if ("/race_audience_match".equals(path)) {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
                     .withBoolean("audience", true)
                     .navigation();

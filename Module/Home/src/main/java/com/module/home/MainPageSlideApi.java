@@ -23,7 +23,7 @@ public interface MainPageSlideApi {
      *
      * @return
      */
-    @GET("v1/kconf/slide-show")
+    @GET("v2/kconf/slide-show")
     Observable<ApiResult> getSlideList();
 
     /**

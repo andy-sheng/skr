@@ -15,10 +15,6 @@ public class FeedsDraftDB implements Serializable {
     Long updateTs;
     Integer from;
     String feedsMakeModelJson;
-
-    @Generated(hash = 1536597371)
-    public FeedsDraftDB() {
-    }
     @Generated(hash = 2145716165)
     public FeedsDraftDB(Long draftID, Long updateTs, Integer from,
             String feedsMakeModelJson) {
@@ -27,11 +23,26 @@ public class FeedsDraftDB implements Serializable {
         this.from = from;
         this.feedsMakeModelJson = feedsMakeModelJson;
     }
+    @Generated(hash = 1536597371)
+    public FeedsDraftDB() {
+    }
     public Long getDraftID() {
         return this.draftID;
     }
     public void setDraftID(Long draftID) {
         this.draftID = draftID;
+    }
+    public Long getUpdateTs() {
+        return this.updateTs;
+    }
+    public void setUpdateTs(Long updateTs) {
+        this.updateTs = updateTs;
+    }
+    public Integer getFrom() {
+        return this.from;
+    }
+    public void setFrom(Integer from) {
+        this.from = from;
     }
     public String getFeedsMakeModelJson() {
         return this.feedsMakeModelJson;
@@ -40,20 +51,5 @@ public class FeedsDraftDB implements Serializable {
         this.feedsMakeModelJson = feedsMakeModelJson;
     }
 
-    public Integer getFrom() {
-        return from;
-    }
-
-    public void setFrom(Integer from) {
-        this.from = from;
-    }
-
-    public Long getUpdateTs() {
-        return updateTs;
-    }
-
-    public void setUpdateTs(Long updateTs) {
-        this.updateTs = updateTs;
-    }
 
 }
