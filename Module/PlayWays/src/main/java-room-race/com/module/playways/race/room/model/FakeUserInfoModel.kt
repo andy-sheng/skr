@@ -16,10 +16,9 @@ class FakeUserInfoModel : Serializable {
             }
             return userInfoModel
         }
-
-        // todo 待补全
-        const val maleAvatar = ""
-        const val femaleAvatarUrl = ""
+        
+        const val maleAvatar = "http://res-static.inframe.mobi/image/fake_male%403x.png"
+        const val femaleAvatarUrl = "http://res-static.inframe.mobi/image/fake_femal%403x.png"
     }
 
 }
