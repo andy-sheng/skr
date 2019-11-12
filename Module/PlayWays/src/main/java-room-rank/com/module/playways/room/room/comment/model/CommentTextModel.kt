@@ -1,5 +1,6 @@
 package com.module.playways.room.room.comment.model
 
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.SpanUtils
 import com.component.busilib.constans.GameModeType
@@ -28,9 +29,8 @@ class CommentTextModel : CommentModel() {
                     commentModel.userInfo = UserInfoModel.parseFromPB(event.info.sender)
                 }
 
-                if (roomData is RaceRoomData && roomData.isFakeForMe(commentModel.userInfo?.userId)) {
-                    val playInfoModel = roomData.getPlayerOrWaiterInfoModel(commentModel.userInfo?.userId)
-                    commentModel.fakeUserInfo = playInfoModel?.fakeUserInfo
+                if (roomData is RaceRoomData) {
+                    commentModel.fakeUserInfo = roomData.getFakeInfo(commentModel.userInfo?.userId)
                 }
 
                 if (event.mUserInfoModelList == null || event.mUserInfoModelList.size == 0) {

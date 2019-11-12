@@ -1,5 +1,6 @@
 package com.module.playways.race.room.model
 
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.google.android.exoplayer2.extractor.ts.TsPayloadReader
 import com.module.playways.room.prepare.model.PlayerInfoModel
@@ -11,10 +12,14 @@ class RacePlayerInfoModel : PlayerInfoModel() {
     var role = ERUserRole.ERUR_UNKNOWN.value
     var fakeUserInfo: FakeUserInfoModel? = null // 蒙面信息
         get() {
-            if (userInfo.sex == ESex.SX_MALE.value) {
-                field?.avatarUrl = FakeUserInfoModel.maleAvatar
+            if (userInfo.userId.toLong() == MyUserInfoManager.uid) {
+                field?.avatarUrl = MyUserInfoManager.avatar
             } else {
-                field?.avatarUrl = FakeUserInfoModel.femaleAvatarUrl
+                if (userInfo.sex == ESex.SX_MALE.value) {
+                    field?.avatarUrl = FakeUserInfoModel.maleAvatar
+                } else {
+                    field?.avatarUrl = FakeUserInfoModel.femaleAvatarUrl
+                }
             }
             return field
         }

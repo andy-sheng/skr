@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
+import com.common.core.myinfo.MyUserInfoManager
 
 import com.common.utils.SpanUtils
 import com.common.utils.U
@@ -37,7 +38,7 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
     init {
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                if (mCommentAudioModel?.fakeUserInfo == null) {
+                if (mCommentAudioModel?.fakeUserInfo == null || mCommentAudioModel?.userInfo?.userId?.toLong() == MyUserInfoManager.uid) {
                     mCommentAudioModel?.let {
                         listener?.clickAvatar(it.userInfo?.userId ?: 0)
                     }
