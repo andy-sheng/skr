@@ -387,6 +387,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
                 showGameRuleDialog()
             }
+
+            override fun onClickSwitch() {
+                U.getToastUtil().showShort("换房间")
+            }
         })
 
 

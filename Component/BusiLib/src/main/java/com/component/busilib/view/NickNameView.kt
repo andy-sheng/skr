@@ -92,6 +92,15 @@ class NickNameView : ConstraintLayout {
         setAllStateText(model?.nicknameRemark, model?.sex, model?.honorInfo)
     }
 
+    fun setAllStateText(model: UserInfoModel?, showSpecial: Boolean) {
+        if (showSpecial) {
+            specialTv.visibility = View.VISIBLE
+        } else {
+            specialTv.visibility = View.GONE
+        }
+        setAllStateText(model?.nicknameRemark, model?.sex, model?.honorInfo)
+    }
+
     /**
      * 昵称，性别和VIP信息
      */
