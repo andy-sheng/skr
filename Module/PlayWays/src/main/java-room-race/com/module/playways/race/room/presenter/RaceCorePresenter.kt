@@ -451,7 +451,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val map = mutableMapOf("roomID" to mRoomData.gameId)
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe {
-                raceRoomServerApi.audienceJoinRoom(body)
+                raceRoomServerApi.audienceChangeRoom(body)
             }
             if (result.errno == 0) {
                 val rspModel = JSON.parseObject(result.data!!.toJSONString(), JoinRaceRoomRspModel::class.java)
