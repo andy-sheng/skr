@@ -19,6 +19,7 @@ import com.common.view.ex.ExTextView
 import com.component.level.utils.LevelConfigUtils
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
+import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.view.SingCountDownView2
 import com.module.playways.race.room.RaceRoomData
 import com.opensource.svgaplayer.SVGADrawable
@@ -107,7 +108,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
         if (userInfoModel != null) {
             this.mUseId = userInfoModel.userId
             AvatarUtils.loadAvatarByUrl(singAvatarView,
-                    AvatarUtils.newParamsBuilder(userInfoModel.avatar)
+                    AvatarUtils.newParamsBuilder(RoomDataUtils.getRaceDisplayAvatar(roomData, userInfoModel))
                             .setBorderColor(U.getColor(R.color.white))
                             .setBorderWidth(U.getDisplayUtils().dip2px(3f).toFloat())
                             .setCircle(true)
