@@ -146,6 +146,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT
             singCountDownView.reset()
             singCountDownView.setBackColor(U.getColor(R.color.black_trans_30))
+            singCountDownView.setSongName(roomData.realRoundInfo?.getSongModelNow()?.itemName)
             if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq == it.subRoundSeq) {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
                 countDown("中途进来")
