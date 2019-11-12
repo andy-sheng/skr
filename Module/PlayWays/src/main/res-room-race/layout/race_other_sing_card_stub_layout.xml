@@ -38,10 +38,10 @@
         android:id="@+id/level_bg"
         android:layout_width="@dimen/view_166_dp"
         android:layout_height="@dimen/view_177_dp"
+        app:layout_constraintBottom_toBottomOf="@id/sing_avatar_view"
         app:layout_constraintLeft_toLeftOf="@id/sing_avatar_view"
         app:layout_constraintRight_toRightOf="@id/sing_avatar_view"
-        app:layout_constraintTop_toTopOf="@id/sing_avatar_view"
-        app:layout_constraintBottom_toBottomOf="@id/sing_avatar_view"/>
+        app:layout_constraintTop_toTopOf="@id/sing_avatar_view" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/desc_tv"
@@ -57,6 +57,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:bl_corners_radius="@dimen/view_43_dp"
         app:bl_solid_color="@color/black_trans_20"
         app:layout_constraintLeft_toLeftOf="@id/sing_avatar_view"

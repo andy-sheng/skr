@@ -51,6 +51,8 @@
         android:maxLines="1"
         android:singleLine="true"
         android:visibility="gone"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_14_dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/count_down_tv"
