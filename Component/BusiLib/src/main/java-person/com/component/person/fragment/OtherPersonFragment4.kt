@@ -644,7 +644,15 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         showCharms(meiLiCntTotal)
         showScoreDetail(scoreDetailModel)
 
-        mQinmiTv.text = qinMiCntTotal.toString()
+        if (qinMiCntTotal > 0) {
+            mQinmiIv.visibility = View.VISIBLE
+            mQinmiTv.visibility = View.VISIBLE
+            mQinmiTv.text = qinMiCntTotal.toString()
+        } else {
+            mQinmiIv.visibility = View.GONE
+            mQinmiTv.visibility = View.GONE
+        }
+
         mVoiceInfoModel = voiceInfoModel
         if (voiceInfoModel != null) {
             mAudioView.bindData(voiceInfoModel.duration)
