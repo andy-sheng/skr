@@ -38,6 +38,9 @@ public class GiftContinueViewGroup extends RelativeLayout {
     private List<GiftContinuousView> mFeedGiftContinueViews = new ArrayList<>(2);
     private BaseRoomData mRoomData;
 
+    private GiftContinuousView v1;
+    private GiftContinuousView v2;
+
     Handler mHandler = new Handler(Looper.myLooper());
 
     public GiftContinueViewGroup(Context context) {
@@ -98,10 +101,10 @@ public class GiftContinueViewGroup extends RelativeLayout {
     }
 
     protected void bindView() {
-        GiftContinuousView v1 = (GiftContinuousView) findViewById(R.id.gift_continue_v1);
+        v1 = findViewById(R.id.gift_continue_v1);
         mFeedGiftContinueViews.add(v1);
 
-        GiftContinuousView v2 = (GiftContinuousView) findViewById(R.id.gift_continue_v2);
+        v2 = findViewById(R.id.gift_continue_v2);
         mFeedGiftContinueViews.add(v2);
 
         for (int i = 0; i < mFeedGiftContinueViews.size(); i++) {
@@ -151,6 +154,8 @@ public class GiftContinueViewGroup extends RelativeLayout {
 
     public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
+        v1.bindData(roomData);
+        v2.bindData(roomData);
     }
 
     public interface GiftProvider {
