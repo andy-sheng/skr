@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.statistics.StatisticsAdapter;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.component.busilib.manager.WeakRedDotManager;
@@ -165,6 +166,7 @@ public class MyConversationListFragment extends ConversationListFragment {
         mSpecialFollowArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                StatisticsAdapter.recordCountEvent("IMtab", "special_follow", null);
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_SPECIAL_FOLLOW)
                         .navigation();
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_SP_FOLLOW, 0);
