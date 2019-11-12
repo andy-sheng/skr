@@ -12,11 +12,11 @@ class RacePlayerInfoModel : PlayerInfoModel() {
     var fakeUserInfo: FakeUserInfoModel? = null // 蒙面信息
         get() {
             if (userInfo.sex == ESex.SX_MALE.value) {
-                fakeUserInfo?.avatarUrl = FakeUserInfoModel.maleAvatar
+                field?.avatarUrl = FakeUserInfoModel.maleAvatar
             } else {
-                fakeUserInfo?.avatarUrl = FakeUserInfoModel.femaleAvatarUrl
+                field?.avatarUrl = FakeUserInfoModel.femaleAvatarUrl
             }
-            return fakeUserInfo
+            return field
         }
 
     override fun toString(): String {
