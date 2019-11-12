@@ -468,20 +468,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
     override fun startEnterAnimation(playerInfoModel: UserInfoModel, finishCall: () -> Unit) {
-        val model: UserInfoModel = playerInfoModel.clone() as UserInfoModel
-        if (playerInfoModel.userId == MyUserInfoManager.uid.toInt()) {
-            val raceRoundInfoModel: RacePlayerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, MyUserInfoManager.uid.toInt())
-            model.nickname = raceRoundInfoModel.fakeUserInfo?.nickName
-            mVIPEnterView?.enter(model, finishCall)
-        } else {
-            mRoomData?.realRoundInfo?.subRoundInfo?.let {
-                var avatarUrl = if (mRoomData?.isFakeForMe(model.userId) == true) mRoomData?.getPlayerOrWaiterInfoModel(model.userId)?.fakeUserInfo?.avatarUrl else mRoomData?.getPlayerOrWaiterInfo(model.userId)?.avatar
-                val raceRoundInfoModel: RacePlayerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, MyUserInfoManager.uid.toInt())
-                model.nickname = raceRoundInfoModel.fakeUserInfo?.nickName
-                model.avatar = avatarUrl
-            }
-            mVIPEnterView?.enter(model, finishCall)
-        }
+        mVIPEnterView?.enter(playerInfoModel, mRoomData.getFakeInfo(playerInfoModel.userId), finishCall)
     }
 
     private fun showPersonInfoView(userID: Int) {

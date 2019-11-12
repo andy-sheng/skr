@@ -790,7 +790,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     }
 
     override fun startEnterAnimation(playerInfoModel: UserInfoModel, finishCall: () -> Unit) {
-        mVIPEnterView?.enter(playerInfoModel, finishCall)
+        mVIPEnterView?.enter(playerInfoModel, null, finishCall)
     }
 
     private fun showPersonInfoView(userID: Int) {

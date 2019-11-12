@@ -3,6 +3,7 @@ package com.module.playways.grab.room.view
 
 import android.graphics.Color
 import android.support.constraint.ConstraintLayout
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
 import android.view.animation.Animation
@@ -20,6 +21,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.level.utils.LevelConfigUtils
 import com.module.playways.R
+import com.module.playways.race.room.model.FakeUserInfoModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -27,7 +29,7 @@ import kotlinx.coroutines.launch
 
 
 /**
- * 转场时的歌曲信息页
+ * 进场的动画
  */
 class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
     val TAG = "VIPEnterView"
@@ -66,7 +68,7 @@ class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
         mParentView?.clearAnimation()
     }
 
-    fun enter(playerInfoModel: UserInfoModel, finishCall: (() -> Unit)?) {
+    fun enter(playerInfoModel: UserInfoModel, fakeUserInfoModel: FakeUserInfoModel?, finishCall: (() -> Unit)?) {
         enterJob = launch(Dispatchers.Main) {
             tryInflate()
             normalArea?.visibility = View.GONE
@@ -74,14 +76,21 @@ class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
             if (playerInfoModel.honorInfo != null && playerInfoModel.honorInfo.isHonor()) {
                 //是VIP
-                AvatarUtils.loadAvatarByUrl(honorAvatar, AvatarUtils.newParamsBuilder(playerInfoModel.getAvatar())
+                AvatarUtils.loadAvatarByUrl(honorAvatar, AvatarUtils.newParamsBuilder(if (!TextUtils.isEmpty(fakeUserInfoModel?.avatarUrl))
+                    fakeUserInfoModel?.avatarUrl
+                else
+                    playerInfoModel.avatar)
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                         .setBorderColor(Color.WHITE)
                         .build())
 
                 val spanUtils = SpanUtils()
-                        .append(UserInfoManager.getInstance().getRemarkName(playerInfoModel.userId, playerInfoModel.nickname)).setForegroundColor(Color.parseColor("#FFCF80"))
+                        .append(if (!TextUtils.isEmpty(fakeUserInfoModel?.nickName))
+                            fakeUserInfoModel?.nickName ?: ""
+                        else
+                            UserInfoManager.getInstance().getRemarkName(playerInfoModel.userId, playerInfoModel.nickname)
+                        ).setForegroundColor(Color.parseColor("#FFCF80"))
                         .append(" 进入了房间").setForegroundColor(U.getColor(R.color.white))
                 val stringBuilder = spanUtils.create()
                 honorName?.text = stringBuilder
@@ -95,7 +104,11 @@ class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 honorArea?.visibility = View.VISIBLE
             } else {
                 //不是VIP
-                nameTv?.text = UserInfoManager.getInstance().getRemarkName(playerInfoModel.userId, playerInfoModel.nickname)
+                if (!TextUtils.isEmpty(fakeUserInfoModel?.nickName)) {
+                    nameTv?.text = fakeUserInfoModel?.nickName
+                } else {
+                    nameTv?.text = UserInfoManager.getInstance().getRemarkName(playerInfoModel.userId, playerInfoModel.nickname)
+                }
                 if (LevelConfigUtils.getImageResoucesLevel(playerInfoModel.ranking.mainRanking) != 0) {
                     vipLevelIv?.visibility = View.VISIBLE
                     vipLevelIv?.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(playerInfoModel.ranking.mainRanking))
