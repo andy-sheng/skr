@@ -34,8 +34,9 @@ class CommentAudioModel : CommentModel() {
                 commentModel.userInfo = UserInfoModel.parseFromPB(event.mInfo.sender)
             }
 
-            if (roomData != null && roomData is RaceRoomData ) {
+            if (roomData != null && roomData is RaceRoomData) {
                 commentModel.fakeUserInfo = roomData.getFakeInfo(commentModel.userInfo?.userId)
+                commentModel.isFake = roomData.isFakeForMe(commentModel.userInfo?.userId)
             }
 
             val nameBuilder = SpanUtils()

@@ -49,7 +49,7 @@ class RaceActorAdapter(val mRoomDate: RaceRoomData) : RecyclerView.Adapter<RaceA
         init {
             item.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
-                    if (mModel?.fakeUserInfo == null || mModel?.userID == MyUserInfoManager.uid.toInt()) {
+                    if (mModel?.isFake == false) {
                         mModel?.let {
                             EventBus.getDefault().post(ShowPersonCardEvent(it.userID))
                         }
@@ -62,7 +62,11 @@ class RaceActorAdapter(val mRoomDate: RaceRoomData) : RecyclerView.Adapter<RaceA
             this.mPosition = pos
             this.mModel = model
 
-            avatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.fakeUserInfo?.avatarUrl)
+            if (model.isFake) {
+                avatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.fakeUserInfo?.avatarUrl)
+            } else {
+                avatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.userInfo?.avatar)
+            }
 
             if (mRoomDate.realRoundInfo?.isSingerByUserId(model.userID) == true) {
                 // 是当前轮次的演唱者

@@ -26,7 +26,7 @@ class CommentHolder(itemView: View, mCommentItemListener: CommentAdapter.Comment
 
     init {
         mAvatarIv.setOnClickListener {
-            if (mCommentModel?.fakeUserInfo == null || mCommentModel?.userInfo?.userId?.toLong() == MyUserInfoManager.uid) {
+            if (mCommentModel?.isFake == false) {
                 mCommentModel?.userInfo?.userId?.let {
                     mCommentItemListener?.clickAvatar(it)
                 }
@@ -38,7 +38,11 @@ class CommentHolder(itemView: View, mCommentItemListener: CommentAdapter.Comment
         mPostion = position
         mCommentModel = model
 
-        mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.fakeUserInfo?.avatarUrl)
+        if (model.isFake) {
+            mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.fakeUserInfo?.avatarUrl)
+        } else {
+            mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.userInfo?.avatar)
+        }
 
         // 为了保证书写从左到右
         val spanUtils = SpanUtils().append("\u202D")

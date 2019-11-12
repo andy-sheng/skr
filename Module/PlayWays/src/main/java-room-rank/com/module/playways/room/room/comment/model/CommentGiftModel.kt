@@ -16,6 +16,7 @@ class CommentGiftModel(giftPlayModel: GiftPlayModel, roomData: BaseRoomData<*>) 
 
         if (roomData is RaceRoomData) {
             fakeUserInfo = roomData.getFakeInfo(giftPlayModel.sender.userId)
+            isFake = roomData.isFakeForMe(giftPlayModel.sender.userId)
             var nameBuilder = SpanUtils()
                     .append((if (!TextUtils.isEmpty(fakeUserInfo?.nickName))
                         fakeUserInfo?.nickName

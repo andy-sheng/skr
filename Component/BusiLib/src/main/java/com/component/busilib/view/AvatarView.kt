@@ -76,9 +76,9 @@ class AvatarView : ConstraintLayout {
         }
     }
 
-    fun bindData(model: UserInfoModel?, fakeName: String?, fakeAvatarUrl: String?) {
-        if (!TextUtils.isEmpty(fakeName) && !TextUtils.isEmpty(fakeAvatarUrl)) {
-            AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(fakeAvatarUrl)
+    fun bindData(model: UserInfoModel?, fakeName: String?, showAvatarUrl: String?) {
+        if (!TextUtils.isEmpty(fakeName) && !TextUtils.isEmpty(showAvatarUrl)) {
+            AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(showAvatarUrl)
                     .setBorderColor(borderColor)
                     .setBorderWidth(borderWidth.toFloat())
                     .setCircle(isCircle)

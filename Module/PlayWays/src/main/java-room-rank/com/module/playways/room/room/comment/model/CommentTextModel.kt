@@ -31,6 +31,7 @@ class CommentTextModel : CommentModel() {
 
                 if (roomData is RaceRoomData) {
                     commentModel.fakeUserInfo = roomData.getFakeInfo(commentModel.userInfo?.userId)
+                    commentModel.isFake = roomData.isFakeForMe(commentModel.userInfo?.userId)
                 }
 
                 if (event.mUserInfoModelList == null || event.mUserInfoModelList.size == 0) {
