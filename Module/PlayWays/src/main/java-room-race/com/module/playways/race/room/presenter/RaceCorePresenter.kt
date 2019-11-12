@@ -683,6 +683,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
             commentModel.userInfo = userInfoModel
             commentModel.fakeUserInfo = mRoomData.getFakeInfo(userInfoModel.userId)
+            commentModel.isFake = mRoomData.isFakeForMe(userInfoModel.userId)
 
             val nameBuilder = SpanUtils()
                     .append((if (!TextUtils.isEmpty(commentModel.fakeUserInfo?.nickName))
@@ -749,9 +750,10 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
             commentModel.userInfo = userInfoModel
             commentModel.fakeUserInfo = mRoomData.getFakeInfo(userInfoModel.userId)
+            commentModel.isFake = mRoomData.isFakeForMe(userInfoModel.userId)
 
             var name = userInfoModel.nicknameRemark
-            if (commentModel.fakeUserInfo != null) {
+            if (!TextUtils.isEmpty(commentModel.fakeUserInfo?.nickName)) {
                 name = commentModel.fakeUserInfo?.nickName
             }
             val nameBuilder = SpanUtils()

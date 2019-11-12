@@ -25,7 +25,7 @@ class CommentDynamicHolder(itemView: View, mCommentItemListener: CommentAdapter.
     init {
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                if (commentModel?.fakeUserInfo == null || commentModel?.userInfo?.userId?.toLong() == MyUserInfoManager.uid) {
+                if (commentModel?.isFake == false) {
                     mCommentItemListener?.clickAvatar(commentModel?.userInfo?.userId ?: 0)
                 }
             }
@@ -37,7 +37,11 @@ class CommentDynamicHolder(itemView: View, mCommentItemListener: CommentAdapter.
         this.position = position
         this.commentModel = commentModel
 
-        mAvatarIv.bindData(commentModel.userInfo, commentModel.fakeUserInfo?.nickName, commentModel.fakeUserInfo?.avatarUrl)
+        if (commentModel.isFake) {
+            mAvatarIv.bindData(commentModel.userInfo, commentModel.fakeUserInfo?.nickName, commentModel.fakeUserInfo?.avatarUrl)
+        } else {
+            mAvatarIv.bindData(commentModel.userInfo, commentModel.fakeUserInfo?.nickName, commentModel.userInfo?.avatar)
+        }
         FrescoWorker.loadImage(mCommentSdv, ImageFactory.newPathImage(commentModel.dynamicModel!!.bigEmojiURL)
                 .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
                 .setFitDrawable(true)

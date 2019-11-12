@@ -38,7 +38,7 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
     init {
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                if (mCommentAudioModel?.fakeUserInfo == null || mCommentAudioModel?.userInfo?.userId?.toLong() == MyUserInfoManager.uid) {
+                if (mCommentAudioModel?.isFake == false) {
                     mCommentAudioModel?.let {
                         listener?.clickAvatar(it.userInfo?.userId ?: 0)
                     }
@@ -106,7 +106,13 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
         mNameTv.text = spanUtils.create()
 
         mAudioTv.text = duration.toString() + "s"
-        mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.fakeUserInfo?.avatarUrl)
+        if (model.isFake) {
+            // 蒙面
+            mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.fakeUserInfo?.avatarUrl)
+        } else {
+            // 非蒙面 但是model.fakeUserInfo?.nickName, model.userInfo?.avatar都是为空
+            mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.userInfo?.avatar)
+        }
     }
 
 

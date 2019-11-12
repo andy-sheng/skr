@@ -127,11 +127,10 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         }
     }
 
+    // 拿到FakeUserInfoModel的信息
     fun getFakeInfo(uid: Int?): FakeUserInfoModel? {
         if (getPlayerOrWaiterInfoModel(uid)?.role != ERUserRole.ERUR_AUDIENCE.value) {
-            if (isFakeForMe(uid) || uid == MyUserInfoManager.uid.toInt()) {
-                return getPlayerOrWaiterInfoModel(uid)?.fakeUserInfo
-            }
+            return getPlayerOrWaiterInfoModel(uid)?.fakeUserInfo
         }
         return null
     }

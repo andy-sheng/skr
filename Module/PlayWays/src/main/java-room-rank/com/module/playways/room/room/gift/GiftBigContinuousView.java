@@ -20,13 +20,13 @@ public class GiftBigContinuousView extends RelativeLayout {
     public final String TAG = "GiftBigContinuousView";
 
     ExRelativeLayout mInfoContainer;
-    BaseImageView mSendAvatarIv;
-    ExTextView mDescTv;
-    BaseImageView mGiftImgIv;
-    ObjectAnimator mStep1Animator;
-    ExTextView mSenderNameTv;
+    protected BaseImageView mSendAvatarIv;
+    protected ExTextView mDescTv;
+    protected BaseImageView mGiftImgIv;
+    protected ObjectAnimator mStep1Animator;
+    protected ExTextView mSenderNameTv;
 
-    GiftPlayModel mCurGiftPlayModel;
+    protected GiftPlayModel mCurGiftPlayModel;
 
     public GiftBigContinuousView(Context context) {
         super(context);

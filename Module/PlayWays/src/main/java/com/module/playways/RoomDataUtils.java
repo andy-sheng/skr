@@ -1,5 +1,7 @@
 package com.module.playways;
 
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
@@ -200,6 +202,36 @@ public class RoomDataUtils {
 
     public static RacePlayerInfoModel getPlayerInfoById(RaceRoomData roomData, int uid) {
         return roomData.getPlayerOrWaiterInfoModel(uid);
+    }
+
+    //无论观众还是玩家都用这个函数，观众的话真实的名字，如果是玩家是系统给的昵称
+    public static String getRaceDisplayNickName(RaceRoomData roomData, UserInfoModel userInfoModel) {
+        RacePlayerInfoModel racePlayerInfoModel = RoomDataUtils.getPlayerInfoById(roomData, userInfoModel.getUserId());
+        if (racePlayerInfoModel == null) {
+            //观众
+            return userInfoModel.getNickname();
+        }
+
+        return racePlayerInfoModel.getFakeUserInfo().getNickName();
+    }
+
+    //无论观众还是玩家都用这个函数，观众的话真实的avatar，如果是玩家话，如果揭面了展示真实的avatar，如果蒙面状态系统给的昵称
+    public static String getRaceDisplayAvatar(RaceRoomData roomData, UserInfoModel userInfoModel) {
+        if (userInfoModel.getUserId() == MyUserInfoManager.INSTANCE.getUid()) {
+            return MyUserInfoManager.INSTANCE.getAvatar();
+        }
+
+        RacePlayerInfoModel racePlayerInfoModel = RoomDataUtils.getPlayerInfoById(roomData, userInfoModel.getUserId());
+        if (racePlayerInfoModel == null) {
+            //观众
+            return userInfoModel.getAvatar();
+        }
+
+        if (roomData.isFakeForMe(userInfoModel.getUserId())) {
+            return racePlayerInfoModel.getFakeUserInfo().getAvatarUrl();
+        }
+
+        return racePlayerInfoModel.getUserInfo().getAvatar();
     }
 
 //    public static RankPlayerInfoModel getPlayerInfoById(RankRoomData roomData, int uid) {

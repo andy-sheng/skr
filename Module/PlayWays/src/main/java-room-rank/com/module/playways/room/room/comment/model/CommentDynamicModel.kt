@@ -33,6 +33,7 @@ class CommentDynamicModel : CommentModel() {
 
             if (roomData != null && roomData is RaceRoomData) {
                 commentModel.fakeUserInfo = roomData.getFakeInfo(commentModel.userInfo?.userId)
+                commentModel.isFake = roomData.isFakeForMe(commentModel.userInfo?.userId)
             }
 
             commentModel.dynamicModel = event.mDynamicModel

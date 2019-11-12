@@ -16,8 +16,9 @@ abstract class CommentModel {
 
     var commentType = 0                   //消息类型
 
-    var userInfo: UserInfoModel? = null                //消息发送者信息(头像，昵称，vip和id)
-    var fakeUserInfo: FakeUserInfoModel? = null             //蒙面信息
+    var userInfo: UserInfoModel? = null            //消息发送者信息(头像，昵称，vip和id)
+    var fakeUserInfo: FakeUserInfoModel? = null    //蒙面信息
+    var isFake: Boolean = false                    //标记是否蒙面
     var avatarColor: Int = 0                       //消息发送者头像颜色
     var nameBuilder: SpannableStringBuilder? = null   //昵称的内容
     var stringBuilder: SpannableStringBuilder? = null //消息的内容
