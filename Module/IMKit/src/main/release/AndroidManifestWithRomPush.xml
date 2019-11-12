@@ -236,7 +236,7 @@
 
         <provider
             android:name="com.huawei.hms.update.provider.UpdateProvider"
-            android:authorities="xxx.xxx.xxx.hms.update.provider"
+            android:authorities="com.zq.live.hms.update.provider"
             android:exported="false"
             android:grantUriPermissions="true">
         </provider>
