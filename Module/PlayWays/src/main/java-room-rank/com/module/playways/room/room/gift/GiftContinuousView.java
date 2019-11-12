@@ -25,14 +25,13 @@ import com.common.view.ex.ExTextView;
 import com.component.person.event.ShowPersonCardEvent;
 import com.module.playways.BaseRoomData;
 import com.module.playways.R;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.race.room.RaceRoomData;
-import com.module.playways.race.room.model.FakeUserInfoModel;
 import com.module.playways.room.gift.event.OverlayGiftBrushMsgEvent;
 import com.module.playways.room.gift.view.ContinueTextView;
 import com.module.playways.room.room.comment.model.CommentGiftModel;
 import com.module.playways.room.room.event.PretendCommentMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
-import com.zq.live.proto.RaceRoom.FakeUserInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -153,24 +152,13 @@ public class GiftContinuousView extends RelativeLayout {
         }
         mCurGiftPlayModel = model;
         if (mRoomData instanceof RaceRoomData) {
-            FakeUserInfoModel fakeUserInfo = ((RaceRoomData) mRoomData).getFakeInfo(model.getSender().getUserId());
-            if (fakeUserInfo != null) {
-                AvatarUtils.loadAvatarByUrl(mSendAvatarIv, AvatarUtils.newParamsBuilder(fakeUserInfo.getAvatarUrl())
-                        .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColor(Color.WHITE)
-                        .build()
-                );
-                mSenderNameTv.setText(fakeUserInfo.getNickName());
-            } else {
-                AvatarUtils.loadAvatarByUrl(mSendAvatarIv, AvatarUtils.newParamsBuilder(model.getSender().getAvatar())
-                        .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColor(Color.WHITE)
-                        .build()
-                );
-                mSenderNameTv.setText(model.getSender().getNicknameRemark());
-            }
+            AvatarUtils.loadAvatarByUrl(mSendAvatarIv, AvatarUtils.newParamsBuilder(RoomDataUtils.getRaceDisplayAvatar((RaceRoomData) mRoomData, model.getSender()))
+                    .setCircle(true)
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                    .setBorderColor(Color.WHITE)
+                    .build()
+            );
+            mSenderNameTv.setText(RoomDataUtils.getRaceDisplayNickName((RaceRoomData) mRoomData, model.getSender()));
         } else {
             AvatarUtils.loadAvatarByUrl(mSendAvatarIv, AvatarUtils.newParamsBuilder(model.getSender().getAvatar())
                     .setCircle(true)
@@ -204,12 +192,7 @@ public class GiftContinuousView extends RelativeLayout {
                     .build());
 
             if (mRoomData instanceof RaceRoomData) {
-                FakeUserInfoModel fakeUserInfo = ((RaceRoomData) mRoomData).getFakeInfo(model.getSender().getUserId());
-                if (fakeUserInfo != null) {
-                    mSenderNameTv.setText(fakeUserInfo.getNickName() + model.getAction());
-                } else {
-                    mSenderNameTv.setText(model.getSender().getNicknameRemark() + model.getAction());
-                }
+                mSenderNameTv.setText(RoomDataUtils.getRaceDisplayNickName((RaceRoomData) mRoomData, model.getSender()));
             } else {
                 mSenderNameTv.setText(model.getSender().getNicknameRemark() + model.getAction());
             }
@@ -223,18 +206,8 @@ public class GiftContinuousView extends RelativeLayout {
                     .build());
 
             if (mRoomData instanceof RaceRoomData) {
-                FakeUserInfoModel fakeUserInfo = ((RaceRoomData) mRoomData).getFakeInfo(model.getSender().getUserId());
-                if (fakeUserInfo != null) {
-                    mSenderNameTv.setText(fakeUserInfo.getNickName() + model.getAction());
-                } else {
-                    mSenderNameTv.setText(model.getSender().getNicknameRemark() + model.getAction());
-                }
-                FakeUserInfoModel receiverFake = ((RaceRoomData) mRoomData).getFakeInfo(model.getReceiver().getUserId());
-                if (receiverFake != null) {
-                    mDescTv.setText("送给 " + receiverFake.getNickName());
-                } else {
-                    mDescTv.setText("送给 " + model.getReceiver().getNicknameRemark());
-                }
+                mSenderNameTv.setText(RoomDataUtils.getRaceDisplayNickName((RaceRoomData) mRoomData, model.getSender()));
+                mDescTv.setText("送给 " + RoomDataUtils.getRaceDisplayNickName((RaceRoomData) mRoomData, model.getReceiver()));
             } else {
                 mSenderNameTv.setText(model.getSender().getNicknameRemark() + model.getAction());
                 mDescTv.setText("送给 " + model.getReceiver().getNicknameRemark());
