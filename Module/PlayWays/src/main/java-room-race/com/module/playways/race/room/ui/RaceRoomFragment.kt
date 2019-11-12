@@ -88,8 +88,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     private lateinit var mRaceOtherSingCardView: RaceOtherSingCardView   // 别人唱
     private lateinit var mRaceNoSingCardView: RaceNoSingerCardView    // 无人响应
     private lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 比赛结果
-    private lateinit var mRacePagerSelectSongView: RacePagerSelectSongView
-    private lateinit var mSignUpView: RaceSignUpBtnView
+    private var mRacePagerSelectSongView: RacePagerSelectSongView? = null
+    private var mSignUpView: RaceSignUpBtnView? = null
 
     internal var mVIPEnterView: VIPEnterView? = null
 
@@ -179,23 +179,27 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
     private fun initSignUpView() {
-        mSignUpView = rootView.findViewById(R.id.sign_up_view)
-        mSignUpView.roomData = mRoomData
-        mSignUpView.clickSignUpBtn = {
-            mRacePagerSelectSongView.showView()
+        if (!mRoomData.audience) {
+            mSignUpView = rootView.findViewById(R.id.sign_up_view)
+            mSignUpView?.roomData = mRoomData
+            mSignUpView?.clickSignUpBtn = {
+                mRacePagerSelectSongView?.showView()
+            }
         }
     }
 
     private fun initSelectPagerView() {
-        mRacePagerSelectSongView = rootView.findViewById(R.id.select_pager_view)
-        mRacePagerSelectSongView.mRoomData = mRoomData
+        if (!mRoomData.audience) {
+            mRacePagerSelectSongView = rootView.findViewById(R.id.select_pager_view)
+            mRacePagerSelectSongView?.mRoomData = mRoomData
 
-        mRacePagerSelectSongView.mSignUpMethed = { itemID, model ->
-            mCorePresenter.wantSingChance(itemID, model?.commonMusic)
+            mRacePagerSelectSongView?.mSignUpMethed = { itemID, model ->
+                mCorePresenter.wantSingChance(itemID, model?.commonMusic)
+            }
+
+            mRaceWantingSignUpCardView = rootView.findViewById(R.id.race_wanting_signup_view)
+            mRacePagerSelectSongView?.showView()
         }
-
-        mRaceWantingSignUpCardView = rootView.findViewById(R.id.race_wanting_signup_view)
-        mRacePagerSelectSongView.showView()
     }
 
     private fun initRaceMatchView() {
@@ -487,8 +491,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceWantSingChanceEvent) {
-        mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_FINISH)
-        mRacePagerSelectSongView.hideView()
+        mSignUpView?.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_FINISH)
+        mRacePagerSelectSongView?.hideView()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -576,8 +580,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     private fun hideSignUpUI(hide: Boolean) {
         if (hide) {
-            mRacePagerSelectSongView.hideView()
-            mSignUpView.visibility = View.GONE
+            mRacePagerSelectSongView?.hideView()
+            mSignUpView?.visibility = View.GONE
         }
     }
 
