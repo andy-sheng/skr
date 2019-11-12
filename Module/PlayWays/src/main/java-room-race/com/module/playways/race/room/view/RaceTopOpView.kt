@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import com.common.core.view.setDebounceViewClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.module.playways.R
@@ -15,6 +16,7 @@ class RaceTopOpView : RelativeLayout {
     private val mGameRuleIv: ImageView
     private val mFeedBackIv: ImageView
     private val mExitTv: ExTextView
+    private val mSwitchTv: ExTextView
 
     private var mListener: Listener? = null
     private var mRoomData: RaceRoomData? = null
@@ -34,7 +36,12 @@ class RaceTopOpView : RelativeLayout {
         mGameRuleIv = findViewById(R.id.game_rule_iv)
         mFeedBackIv = findViewById(R.id.feed_back_iv)
         mExitTv = findViewById(R.id.exit_tv)
+        mSwitchTv = findViewById(R.id.switch_room_tv)
         mIvVoiceSetting = findViewById<View>(R.id.iv_voice_setting) as ImageView
+
+        mSwitchTv.setDebounceViewClickListener {
+            mListener?.onClickSwitch()
+        }
 
         mIvVoiceSetting.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -63,6 +70,13 @@ class RaceTopOpView : RelativeLayout {
 
     fun setRoomData(roomData: RaceRoomData) {
         mRoomData = roomData
+        if (roomData.audience) {
+            mSwitchTv.visibility = View.VISIBLE
+            mIvVoiceSetting.visibility = View.GONE
+        } else {
+            mSwitchTv.visibility = View.GONE
+            mIvVoiceSetting.visibility = View.VISIBLE
+        }
     }
 
     override fun onAttachedToWindow() {
@@ -81,5 +95,7 @@ class RaceTopOpView : RelativeLayout {
         fun onClickFeedBack()
 
         fun onClickVoiceAudition()
+
+        fun onClickSwitch()
     }
 }
