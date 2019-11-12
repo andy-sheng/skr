@@ -250,7 +250,7 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <!--礼物面板-->
-    <com.module.playways.room.gift.view.GiftPanelView
+    <com.module.playways.race.room.view.RaceGiftPanelView
         android:id="@+id/gift_panel_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -48,6 +48,7 @@ import com.module.playways.room.gift.model.NormalGift
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
+import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.module.playways.room.room.comment.CommentView
 import com.module.playways.room.room.comment.listener.CommentViewItemListener
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup
@@ -438,7 +439,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     private fun initGiftPanelView() {
         mGiftPanelView = rootView.findViewById<View>(R.id.gift_panel_view) as GiftPanelView
         mGiftPanelView.setRoomData(mRoomData)
-        mGiftPanelView.mSupportMasked = true
         mContinueSendView = rootView.findViewById<View>(R.id.continue_send_view) as ContinueSendView
         mContinueSendView.mScene = ContinueSendView.EGameScene.GS_Race
         mContinueSendView.setRoomData(mRoomData)

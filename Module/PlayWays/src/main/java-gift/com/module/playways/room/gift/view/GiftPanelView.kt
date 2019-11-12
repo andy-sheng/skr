@@ -43,7 +43,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
-class GiftPanelView : FrameLayout {
+open class GiftPanelView : FrameLayout {
     val TAG = "GiftPanelView"
     internal lateinit var mIvSelectedIcon: BaseImageView
     internal lateinit var mTvSelectedName: ExTextView
@@ -77,9 +77,6 @@ class GiftPanelView : FrameLayout {
     private var mHasInit = false
 
     internal var mGiftServerApi: GiftServerApi? = null
-
-    //支持蒙面
-    var mSupportMasked = false
 
     internal var mNeedFollowDrawable = DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
             .setStrokeWidth(U.getDisplayUtils().dip2px(2f).toFloat())
@@ -118,7 +115,7 @@ class GiftPanelView : FrameLayout {
             return null
         }
 
-    private val playerInfoListExpectSelf: List<PlayerInfoModel>
+    protected val playerInfoListExpectSelf: List<PlayerInfoModel>
         get() {
             val grabPlayerInfoModelList = ArrayList(getGrabRoomData()?.getInSeatPlayerInfoList()
                     ?: ArrayList())
@@ -449,21 +446,7 @@ class GiftPanelView : FrameLayout {
         visibility = View.VISIBLE
     }
 
-    private fun setSelectArea(playerInfoModel: PlayerInfoModel?) {
-        if (mSupportMasked) {
-            mAllPlayersTv.visibility = View.GONE
-            if (playerInfoModel != null && playerInfoModel.userID.toLong() != MyUserInfoManager.uid) {
-                mRlPlayerSelectArea.visibility = View.VISIBLE
-                selectSendGiftPlayer(playerInfoModel)
-            } else {
-                mRlPlayerSelectArea.visibility = View.GONE
-            }
-
-            mGiftAllPlayersAdapter.dataList = playerInfoListExpectSelf
-
-            return
-        }
-
+    protected open fun setSelectArea(playerInfoModel: PlayerInfoModel?) {
         if (mRoomData?.realRoundInfo == null
                 || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 0
                 || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 1 && getGrabRoomData()?.getInSeatPlayerInfoList()?.get(0)?.getUserID() === MyUserInfoManager.uid.toInt()) {
@@ -494,7 +477,7 @@ class GiftPanelView : FrameLayout {
      *
      * @param grabPlayerInfoModel
      */
-    private fun selectSendGiftPlayer(playerInfoModel: PlayerInfoModel?) {
+    protected fun selectSendGiftPlayer(playerInfoModel: PlayerInfoModel?) {
         var grabPlayerInfoModel = playerInfoModel
         //麦上没有人
         var isPlayerInMic = true
@@ -535,7 +518,7 @@ class GiftPanelView : FrameLayout {
         }
     }
 
-    private fun bindSelectedPlayerData() {
+    protected open fun bindSelectedPlayerData() {
         if (mCurMicroMan == null) {
             return
         }
