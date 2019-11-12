@@ -67,6 +67,8 @@ import kotlin.math.abs
 
 class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
+    val SP_KEY_HAS_SHOW_SPFOLLOW = "SP_KEY_HAS_SHOW_SPFOLLOW"  // 提醒特别关注的
+
     internal var mUserInfoModel: UserInfoModel = UserInfoModel()
     internal var mUserId: Int = 0
 
@@ -100,9 +102,6 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mPersonVp: NestViewPager
     lateinit var mPersonTabAdapter: PagerAdapter
 
-    private var mPersonMoreOpView: PersonMoreOpView? = null
-    private var mTipsDialogView: TipsDialogView? = null
-
     internal var mOtherPhotoWallView: OtherPhotoWallView? = null
     internal var mPostsWallView: IPersonPostsWall? = null
     internal var mFeedsWallView: IPersonFeedsWall? = null
@@ -111,7 +110,10 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mFollowIv: ExTextView
     lateinit var mMessageIv: ExTextView
 
-    internal var mEditRemarkDialog: DialogPlus? = null
+    private var mPersonMoreOpView: PersonMoreOpView? = null
+    private var mTipsDialogView: TipsDialogView? = null
+    private var mEditRemarkDialog: DialogPlus? = null
+    private var mDialogPlus: DialogPlus? = null
 
     var lastVerticalOffset = Int.MAX_VALUE
 
@@ -644,6 +646,11 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         showCharms(meiLiCntTotal)
         showScoreDetail(scoreDetailModel)
 
+        if (userInfoModel.isFollow) {
+            if (!U.getPreferenceUtils().getSettingBoolean(SP_KEY_HAS_SHOW_SPFOLLOW, false)) {
+                showSpFollowTips()
+            }
+        }
         if (qinMiCntTotal > 0) {
             mQinmiIv.visibility = View.VISIBLE
             mQinmiTv.visibility = View.VISIBLE
@@ -660,6 +667,21 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         } else {
             mAudioView.visibility = View.GONE
         }
+    }
+
+    private fun showSpFollowTips() {
+        U.getPreferenceUtils().setSettingBoolean(SP_KEY_HAS_SHOW_SPFOLLOW, true)
+        mDialogPlus?.dismiss(false)
+        mDialogPlus = DialogPlus.newDialog(context!!)
+                .setContentHolder(ViewHolder(R.layout.other_person_tips_view_layout))
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setMargin(U.getDisplayUtils().dip2px(32f), -1, U.getDisplayUtils().dip2px(32f), -1)
+                .setExpanded(false)
+                .setGravity(Gravity.CENTER)
+                .setOnClickListener { dialog, view -> dialog.dismiss() }
+                .create()
+        mDialogPlus?.show()
     }
 
     override fun refreshRelation(isFriend: Boolean, isFollow: Boolean, isSpFollow: Boolean) {
@@ -869,6 +891,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mPersonMoreOpView?.dismiss()
         mEditRemarkDialog?.dismiss(false)
         mFeedsWallView?.destroy()
+        mDialogPlus?.dismiss()
     }
 
     override fun onRequestSucess(hasMore: Boolean) {
