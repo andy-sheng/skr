@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="进入排位赛后，选定自己的参赛曲目"
+                android:text="选手将以匿名蒙面身份参与比赛"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="满2人报名后，每轮次由系统分配2位表演者"
+                android:text="选手选定歌曲，满2人报名，由系统分配表演者 "
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="竞演过程中，除竞演选手外，其余用户可以为自己喜欢的声音点赞"
+                android:text="观众可以给喜欢的声音点心投票"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="竞演完毕，根据赞数比较胜负，胜者加经验，负者减经验，平局不加不减"
+                android:text="票数多者判胜加经验；逃跑和落败均判失败并减经验"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
@@ -136,29 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="比赛中逃跑，将被扣除经验作为惩罚"
-                android:textColor="@color/white_trans_80"
-                android:textSize="@dimen/textsize_14_dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_13_dp"
-            android:layout_marginTop="@dimen/view_12_dp"
-            android:layout_marginRight="@dimen/view_13_dp"
-            android:orientation="horizontal">
-
-            <com.common.view.ex.ExImageView
-                android:layout_width="@dimen/view_21_dp"
-                android:layout_height="@dimen/view_21_dp"
-                android:background="@drawable/grab_guize_6" />
-
-            <com.common.view.ex.ExTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="每天给别人投票满6次，获得每日1次保段机会；VIP用户将获得每日额外1次保段机会"
+                android:text="普通用户每日投票6次获得1次保段；VIP额外获得1次保段"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
