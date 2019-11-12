@@ -6,6 +6,7 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
+import android.widget.TextView
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
@@ -25,7 +26,7 @@ class SingCountDownView2 : RelativeLayout {
     internal var mCounDownTask: HandlerTaskTimer? = null
 
     val container: ExConstraintLayout
-    val songNameTv: ExTextView
+    val songNameTv: TextView
 
     constructor(context: Context) : super(context)
 
