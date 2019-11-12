@@ -57,6 +57,7 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.song.model.SongModel
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.live.proto.GrabRoom.EQRoundStatus
 import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundOverReason
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
@@ -388,8 +389,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 showGameRuleDialog()
             }
 
-            override fun onClickSwitch() {
-                U.getToastUtil().showShort("换房间")
+            override fun onClickChangeRoom() {
+                mBeginChangeRoomTs = System.currentTimeMillis()
+                mGrabChangeRoomTransitionView.visibility = View.VISIBLE
+                mCorePresenter?.changeRoomForAudience()
             }
         })
 

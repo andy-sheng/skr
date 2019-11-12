@@ -40,7 +40,7 @@ class RaceTopOpView : RelativeLayout {
         mIvVoiceSetting = findViewById<View>(R.id.iv_voice_setting) as ImageView
 
         mSwitchTv.setDebounceViewClickListener {
-            mListener?.onClickSwitch()
+            mListener?.onClickChangeRoom()
         }
 
         mIvVoiceSetting.setOnClickListener(object : DebounceViewClickListener() {
@@ -96,6 +96,6 @@ class RaceTopOpView : RelativeLayout {
 
         fun onClickVoiceAudition()
 
-        fun onClickSwitch()
+        fun onClickChangeRoom()
     }
 }
