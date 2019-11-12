@@ -46,37 +46,40 @@ import java.util.*
 class GiftPanelView : FrameLayout {
     val TAG = "GiftPanelView"
     internal lateinit var mIvSelectedIcon: BaseImageView
-    internal lateinit  var mTvSelectedName: ExTextView
-    internal lateinit  var mAllPlayersTv: ExTextView
-    internal lateinit  var mIvRecharge: ExTextView
-    internal lateinit  var mIvDiamondIcon: ImageView
-    internal lateinit  var mIvSend: ExTextView
-    internal lateinit  var mGiftPanelArea: ExRelativeLayout
-    internal lateinit  var mAllPlayersRV: RecyclerView
-    internal lateinit  var mLlSelectedMan: RelativeLayout
-    internal lateinit  var mTvDiamond: BitmapTextView
-    internal lateinit  var mRlPlayerSelectArea: RelativeLayout
-    internal lateinit  var mFollowTv: ExTextView
-    internal lateinit  var mTvCoin: BitmapTextView
-    internal lateinit  var mTvCoinChange: ExTextView
+    internal lateinit var mTvSelectedName: ExTextView
+    internal lateinit var mAllPlayersTv: ExTextView
+    internal lateinit var mIvRecharge: ExTextView
+    internal lateinit var mIvDiamondIcon: ImageView
+    internal lateinit var mIvSend: ExTextView
+    internal lateinit var mGiftPanelArea: ExRelativeLayout
+    internal lateinit var mAllPlayersRV: RecyclerView
+    internal lateinit var mLlSelectedMan: RelativeLayout
+    internal lateinit var mTvDiamond: BitmapTextView
+    internal lateinit var mRlPlayerSelectArea: RelativeLayout
+    internal lateinit var mFollowTv: ExTextView
+    internal lateinit var mTvCoin: BitmapTextView
+    internal lateinit var mTvCoinChange: ExTextView
     internal var mCoin = 0
     internal var mHz = 0f
 
     internal var mGiftDisplayView: GiftDisplayView? = null
     internal var mRelationTask: Disposable? = null
 
-    internal lateinit  var mGiftAllPlayersAdapter: GiftAllPlayersAdapter
-    internal lateinit  var mUserInfoServerApi: UserInfoServerApi
-    internal lateinit  var mIGetGiftCountDownListener: GiftDisplayView.IGetGiftCountDownListener
+    internal lateinit var mGiftAllPlayersAdapter: GiftAllPlayersAdapter
+    internal lateinit var mUserInfoServerApi: UserInfoServerApi
+    internal lateinit var mIGetGiftCountDownListener: GiftDisplayView.IGetGiftCountDownListener
 
     //当前迈上的人
     internal var mCurMicroMan: PlayerInfoModel? = null
 
-    internal var mRoomData: BaseRoomData<*>?=null
+    internal var mRoomData: BaseRoomData<*>? = null
 
     private var mHasInit = false
 
-    internal var mGiftServerApi: GiftServerApi?=null
+    internal var mGiftServerApi: GiftServerApi? = null
+
+    //支持蒙面
+    var mSupportMasked = false
 
     internal var mNeedFollowDrawable = DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
             .setStrokeWidth(U.getDisplayUtils().dip2px(2f).toFloat())
@@ -177,7 +180,7 @@ class GiftPanelView : FrameLayout {
 
         mGiftPanelArea.setOnClickListener { v -> }
 
-        mGiftAllPlayersAdapter.setOnClickPlayerListener(object:GiftAllPlayersAdapter.OnClickPlayerListener {
+        mGiftAllPlayersAdapter.setOnClickPlayerListener(object : GiftAllPlayersAdapter.OnClickPlayerListener {
             override fun onClick(playerInfoModel: PlayerInfoModel?) {
                 if (mAllPlayersRV.visibility != View.VISIBLE) {
                     return
@@ -277,8 +280,8 @@ class GiftPanelView : FrameLayout {
 
         mTvCoin.setText(getGrabRoomData()?.getCoin()?.toString())
         //        mTvHz.setText(String.format("%.1f", mGrabRoomData.getHzCount()));
-        mCoin = getGrabRoomData()?.getCoin()?:0
-        mHz = getGrabRoomData()?.getHzCount()?:0f
+        mCoin = getGrabRoomData()?.getCoin() ?: 0
+        mHz = getGrabRoomData()?.getHzCount() ?: 0f
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -447,6 +450,20 @@ class GiftPanelView : FrameLayout {
     }
 
     private fun setSelectArea(playerInfoModel: PlayerInfoModel?) {
+        if (mSupportMasked) {
+            mAllPlayersTv.visibility = View.GONE
+            if (playerInfoModel != null && playerInfoModel.userID.toLong() != MyUserInfoManager.uid) {
+                mRlPlayerSelectArea.visibility = View.VISIBLE
+                selectSendGiftPlayer(playerInfoModel)
+            } else {
+                mRlPlayerSelectArea.visibility = View.GONE
+            }
+
+            mGiftAllPlayersAdapter.dataList = playerInfoListExpectSelf
+
+            return
+        }
+
         if (mRoomData?.realRoundInfo == null
                 || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 0
                 || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 1 && getGrabRoomData()?.getInSeatPlayerInfoList()?.get(0)?.getUserID() === MyUserInfoManager.uid.toInt()) {

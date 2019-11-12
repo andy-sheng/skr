@@ -245,10 +245,14 @@ class RaceTopVsView : ExConstraintLayout {
 
             if (roomData?.realRoundInfo?.subRoundSeq == 1) {
                 leftVoiceChartView.start()
+                leftVoiceChartView.visibility = View.VISIBLE
                 rightVoiceChartView.stop()
+                rightVoiceChartView.visibility = View.GONE
             } else {
                 rightVoiceChartView.start()
+                rightVoiceChartView.visibility = View.VISIBLE
                 leftVoiceChartView.stop()
+                leftVoiceChartView.visibility = View.GONE
             }
         }
     }

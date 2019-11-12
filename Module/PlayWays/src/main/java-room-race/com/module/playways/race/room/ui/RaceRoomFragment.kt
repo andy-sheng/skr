@@ -301,12 +301,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             }
 
             override fun showGiftPanel() {
-                mContinueSendView.setVisibility(View.GONE)
-                if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID))
-                } else {
-                    mGiftPanelView.show(null)
-                }
+                showGiftPanelView()
             }
 
             override fun onClickFlower() {
@@ -315,10 +310,29 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         })
     }
 
+    private fun showGiftPanelView() {
+        mContinueSendView.setVisibility(View.GONE)
+        if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+            RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID)?.let {
+                if (it.userInfo.userId != MyUserInfoManager.uid.toInt()) {
+                    mGiftPanelView.show(it)
+                } else {
+                    U.getToastUtil().showShort("没有可以送礼的人")
+                }
+            }
+        } else {
+            U.getToastUtil().showShort("没有可以送礼的人")
+        }
+    }
+
     private fun buyFlowerFromOuter() {
         if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
             RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID)?.let {
-                EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                if (it.userInfo.userId != MyUserInfoManager.uid.toInt()) {
+                    EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                } else {
+                    U.getToastUtil().showShort("没有可以送礼的人")
+                }
             }
         } else {
             U.getToastUtil().showShort("没有可以送礼的人")
@@ -424,6 +438,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     private fun initGiftPanelView() {
         mGiftPanelView = rootView.findViewById<View>(R.id.gift_panel_view) as GiftPanelView
         mGiftPanelView.setRoomData(mRoomData)
+        mGiftPanelView.mSupportMasked = true
         mContinueSendView = rootView.findViewById<View>(R.id.continue_send_view) as ContinueSendView
         mContinueSendView.mScene = ContinueSendView.EGameScene.GS_Race
         mContinueSendView.setRoomData(mRoomData)
@@ -535,11 +550,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                                 //充值成功
                                 if (requestCode == 100 && resultCode == 0) {
                                     mGiftPanelView.updateZS()
-                                    if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-                                        mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID))
-                                    } else {
-                                        mGiftPanelView.show(null)
-                                    }
+                                    showGiftPanelView()
                                 }
                             }
                         })
