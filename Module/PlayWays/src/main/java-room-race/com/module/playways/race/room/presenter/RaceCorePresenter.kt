@@ -335,21 +335,24 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     var heartbeatJob: Job? = null
 
     private fun startHeartbeat() {
-        heartbeatJob?.cancel()
-        heartbeatJob = launch {
-            while (true) {
-                val map = mutableMapOf(
-                        "roomID" to mRoomData.gameId,
-                        "userID" to MyUserInfoManager.uid
-                )
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                val result = subscribe { raceRoomServerApi.heartbeat(body) }
-                if (result.errno == 0) {
+        //观众不需要心跳
+        if (mRoomData.audience == false) {
+            heartbeatJob?.cancel()
+            heartbeatJob = launch {
+                while (true) {
+                    val map = mutableMapOf(
+                            "roomID" to mRoomData.gameId,
+                            "userID" to MyUserInfoManager.uid
+                    )
+                    val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                    val result = subscribe { raceRoomServerApi.heartbeat(body) }
+                    if (result.errno == 0) {
 
-                } else {
+                    } else {
 
+                    }
+                    delay(60 * 1000)
                 }
-                delay(60 * 1000)
             }
         }
     }
@@ -427,7 +430,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
     private var mSwitchRooming = false
 
-    fun changeRoomForAudience(){
+    fun changeRoomForAudience() {
         if (mSwitchRooming) {
             U.getToastUtil().showShort("切换中")
             return
@@ -448,11 +451,10 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val map = mutableMapOf("roomID" to mRoomData.gameId)
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe {
-                    raceRoomServerApi.audienceJoinRoom(body)
+                raceRoomServerApi.audienceJoinRoom(body)
             }
-
             if (result.errno == 0) {
-                val rspModel =JSON.parseObject(result.data!!.toJSONString(), JoinRaceRoomRspModel::class.java)
+                val rspModel = JSON.parseObject(result.data!!.toJSONString(), JoinRaceRoomRspModel::class.java)
                 onChangeRoomSuccess(rspModel)
             } else {
                 mIRaceRoomView.onChangeRoomResult(false, result.errmsg)
