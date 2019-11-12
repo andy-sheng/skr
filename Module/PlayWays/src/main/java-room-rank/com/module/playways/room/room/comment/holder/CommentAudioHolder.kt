@@ -106,7 +106,7 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
         mNameTv.text = spanUtils.create()
 
         mAudioTv.text = duration.toString() + "s"
-        mAvatarIv.bindData(model.userInfo)
+        mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.fakeUserInfo?.avatarUrl)
     }
 
 

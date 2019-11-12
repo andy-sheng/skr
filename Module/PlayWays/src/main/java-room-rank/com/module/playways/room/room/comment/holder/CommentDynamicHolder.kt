@@ -37,7 +37,7 @@ class CommentDynamicHolder(itemView: View, mCommentItemListener: CommentAdapter.
         this.position = position
         this.commentModel = commentModel
 
-        mAvatarIv.bindData(commentModel.userInfo)
+        mAvatarIv.bindData(commentModel.userInfo, commentModel.fakeUserInfo?.nickName, commentModel.fakeUserInfo?.avatarUrl)
         FrescoWorker.loadImage(mCommentSdv, ImageFactory.newPathImage(commentModel.dynamicModel!!.bigEmojiURL)
                 .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
                 .setFitDrawable(true)

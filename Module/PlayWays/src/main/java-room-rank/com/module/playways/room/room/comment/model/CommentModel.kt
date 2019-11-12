@@ -34,12 +34,12 @@ abstract class CommentModel {
         val AVATAR_COLOR = Color.WHITE     // 头像圈的颜色
 
         val RANK_NAME_COLOR = Color.parseColor("#FFC15B")    // 昵称颜色（排位）
-        val RANK_TEXT_COLOR = U.getColor(R.color.white_trans_50)          // 文本颜色 （排位）
+        val RANK_TEXT_COLOR = U.getColor(R.color.white_trans_60)          // 文本颜色 （排位）
         val RANK_SYSTEM_COLOR = Color.parseColor("#FF8AB6")    // 系统文案颜色（排位）
         val RANK_SYSTEM_HIGH_COLOR = Color.parseColor("#FF8AB6") // 系统文案的高亮颜色（排位)
 
         val GRAB_NAME_COLOR = Color.parseColor("#FFC15B")   // 昵称颜色（抢唱）
-        val GRAB_TEXT_COLOR = U.getColor(R.color.white_trans_50)       // 文本颜色 （抢唱）
+        val GRAB_TEXT_COLOR = U.getColor(R.color.white_trans_60)       // 文本颜色 （抢唱）
         val GRAB_SYSTEM_COLOR = Color.parseColor("#FF8AB6")  // 系统文案颜色（抢唱）
         val GRAB_SYSTEM_HIGH_COLOR = Color.parseColor("#FF8AB6")  // 系统文案的高亮颜色（抢唱)
     }

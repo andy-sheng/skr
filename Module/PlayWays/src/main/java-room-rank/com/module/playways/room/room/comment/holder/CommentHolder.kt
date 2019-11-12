@@ -38,7 +38,7 @@ class CommentHolder(itemView: View, mCommentItemListener: CommentAdapter.Comment
         mPostion = position
         mCommentModel = model
 
-        mAvatarIv.bindData(model.userInfo)
+        mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.fakeUserInfo?.avatarUrl)
 
         // 为了保证书写从左到右
         val spanUtils = SpanUtils().append("\u202D")
