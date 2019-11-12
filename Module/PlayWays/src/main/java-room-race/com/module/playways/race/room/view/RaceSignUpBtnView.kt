@@ -29,7 +29,6 @@ class RaceSignUpBtnView : ConstraintLayout {
         signUpBtn.setDebounceViewClickListener {
             clickSignUpBtn?.invoke()
         }
-        setType(SignUpType.SIGN_UP_START)
     }
 
     fun setType(type: SignUpType) {
