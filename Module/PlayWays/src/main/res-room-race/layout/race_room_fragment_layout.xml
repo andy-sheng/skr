@@ -223,7 +223,7 @@
         android:layout_height="match_parent" />
 
     <!--大礼物连送-->
-    <com.module.playways.room.room.gift.GiftBigContinuousView
+    <com.module.playways.race.room.view.RaceBigContinuousView
         android:id="@+id/gift_big_continue_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
