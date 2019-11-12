@@ -81,11 +81,6 @@ class CommentAndLikeActivity : BaseActivity() {
         }
     }
 
-    override fun onBackPressedForActivity(): Boolean {
-        finish()
-        return true
-    }
-
     override fun canSlide(): Boolean {
         return false
     }

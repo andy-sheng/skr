@@ -135,9 +135,4 @@ class RefuseFeedsFragment : BaseFragment() {
             feedID = data as Int
         }
     }
-
-    override fun onBackPressed(): Boolean {
-        finish()
-        return true
-    }
 }
