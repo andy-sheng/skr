@@ -88,7 +88,9 @@ class RaceTopVsView : ExConstraintLayout {
         leftAvatarIv.setDebounceViewClickListener {
             roomData?.realRoundInfo?.subRoundInfo?.let {
                 if (it.size == 2) {
-                    EventBus.getDefault().post(ShowPersonCardEvent(it[0].userID))
+                    if (roomData?.isFakeForMe(it[0].userID) == false) {
+                        EventBus.getDefault().post(ShowPersonCardEvent(it[0].userID))
+                    }
                 }
             }
         }
@@ -96,7 +98,9 @@ class RaceTopVsView : ExConstraintLayout {
         rightAvatarIv.setDebounceViewClickListener {
             roomData?.realRoundInfo?.subRoundInfo?.let {
                 if (it.size == 2) {
-                    EventBus.getDefault().post(ShowPersonCardEvent(it[1].userID))
+                    if (roomData?.isFakeForMe(it[1].userID) == false) {
+                        EventBus.getDefault().post(ShowPersonCardEvent(it[1].userID))
+                    }
                 }
             }
         }
