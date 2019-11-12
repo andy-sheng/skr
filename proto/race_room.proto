@@ -172,6 +172,7 @@ message RaceRoundInfo
     uint32 introEndMs                    = 10; //竞选结束相对时间（相对于createTimeMs时间）
     repeated RWantSingInfo wantSingInfos = 11; //[废弃]竞选选择列表(当状态为ERRS_CHOCING时有效)
     uint32 currentRoundChoiceUserCnt     = 12; //轮次报名人数
+    uint32 audienceUserCnt               = 13; //观众人数
 }
 
 message RWantSingInfo

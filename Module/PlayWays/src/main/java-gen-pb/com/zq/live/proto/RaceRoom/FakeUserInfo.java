@@ -73,7 +73,7 @@ public final class FakeUserInfo extends Message<FakeUserInfo, FakeUserInfo.Build
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (nickName != null) builder.append(", nickName=").append(nickName);
-    return builder.replace(0, 2, "FakeUserInfoModel{").append('}').toString();
+    return builder.replace(0, 2, "FakeUserInfo{").append('}').toString();
   }
 
   public byte[] toByteArray() {

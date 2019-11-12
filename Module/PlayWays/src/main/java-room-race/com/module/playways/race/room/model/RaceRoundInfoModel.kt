@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.EventBus
 
 class RaceRoundInfoModel : BaseRoundInfoModel() {
 
+    var audienceUserCnt = 0 // 观众人数
     //    protected int overReason; // 结束的原因
     //  protected int roundSeq;// 本局轮次
     var status = ERaceRoundStatus.ERRS_UNKNOWN.value // 轮次状态在擂台赛中使用
@@ -360,6 +361,7 @@ internal fun parseFromRoundInfoPB(pb: RaceRoundInfo): RaceRoundInfoModel {
     if (pb.currentRoundChoiceUserCnt > 0) {
         model.currentRoundChoiceUserCnt = pb.currentRoundChoiceUserCnt
     }
+    model.audienceUserCnt = pb.audienceUserCnt
     return model
 }
 
