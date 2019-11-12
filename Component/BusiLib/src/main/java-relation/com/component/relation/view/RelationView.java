@@ -49,7 +49,7 @@ import java.util.List;
 
 public class RelationView extends RelativeLayout {
 
-    public final String TAG = "RelationView";
+    public final String TAG = "RelationView" + hashCode();
 
     private int mMode = UserInfoManager.RELATION.FRIENDS.getValue();
     private int mOffset = 0; // 偏移量
@@ -207,6 +207,7 @@ public class RelationView extends RelativeLayout {
         if (!flag && hasInitData) {
             // 已经初始化过了 并且falg为false
         } else {
+            hasInitData = true;
             loadData(0);
         }
     }
@@ -220,7 +221,6 @@ public class RelationView extends RelativeLayout {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            hasInitData = true;
                             mRefreshLayout.setEnableLoadMore(false);
                             if (list != null && list.size() != 0) {
                                 mRefreshLayout.finishLoadMore();
@@ -250,7 +250,6 @@ public class RelationView extends RelativeLayout {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            hasInitData = true;
                             mRefreshLayout.setEnableLoadMore(false);
                             if (list != null && list.size() != 0) {
                                 mRefreshLayout.finishLoadMore();
@@ -277,7 +276,6 @@ public class RelationView extends RelativeLayout {
             UserInfoManager.getInstance().getFans(offset, DEFAULT_COUNT, new UserInfoManager.UserInfoListCallback() {
                 @Override
                 public void onSuccess(UserInfoManager.FROM from, final int offset, final List<UserInfoModel> list) {
-                    hasInitData = true;
                     if (list != null && list.size() != 0) {
                         mRefreshLayout.finishLoadMore();
                         mLoadService.showSuccess();
