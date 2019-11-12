@@ -35,6 +35,7 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.event.RaceScoreChangeEvent
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
+import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.*
@@ -452,7 +453,20 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
     override fun startEnterAnimation(playerInfoModel: UserInfoModel, finishCall: () -> Unit) {
-        mVIPEnterView?.enter(playerInfoModel, finishCall)
+        val model: UserInfoModel = playerInfoModel.clone() as UserInfoModel
+        if (playerInfoModel.userId == MyUserInfoManager.uid.toInt()) {
+            val raceRoundInfoModel: RacePlayerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, MyUserInfoManager.uid.toInt())
+            model.nickname = raceRoundInfoModel.fakeUserInfo?.nickName
+            mVIPEnterView?.enter(model, finishCall)
+        } else {
+            mRoomData?.realRoundInfo?.subRoundInfo?.let {
+                var avatarUrl = if (mRoomData?.isFakeForMe(model.userId) == true) mRoomData?.getPlayerOrWaiterInfoModel(model.userId)?.fakeUserInfo?.avatarUrl else mRoomData?.getPlayerOrWaiterInfo(model.userId)?.avatar
+                val raceRoundInfoModel: RacePlayerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, MyUserInfoManager.uid.toInt())
+                model.nickname = raceRoundInfoModel.fakeUserInfo?.nickName
+                model.avatar = avatarUrl
+            }
+            mVIPEnterView?.enter(model, finishCall)
+        }
     }
 
     private fun showPersonInfoView(userID: Int) {
