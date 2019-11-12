@@ -516,7 +516,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
-        showPersonInfoView(event.uid)
+        if (!mRoomData.isFakeForMe(event.uid)) {
+            showPersonInfoView(event.uid)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
