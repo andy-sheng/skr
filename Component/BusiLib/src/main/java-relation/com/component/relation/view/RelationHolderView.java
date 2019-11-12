@@ -63,8 +63,13 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         this.position = position;
         this.userInfoModel = userInfoModel;
 
+        if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
+            // 只在关注页面展示
+            mNickNameTv.setAllStateText(userInfoModel);
+        } else {
+            mNickNameTv.setAllStateText(userInfoModel, false);
+        }
         mAvatarIv.bindData(userInfoModel);
-        mNickNameTv.setAllStateText(userInfoModel);
 
         if (mMode == UserInfoManager.RELATION_BLACKLIST) {
             mFollowTv.setVisibility(View.VISIBLE);
