@@ -127,7 +127,7 @@ class RaceActorView(context: Context, val type: Int, val mRoomData: RaceRoomData
                     val userInfoList = JSON.parseArray(result.data.getString("audiences"), UserInfoModel::class.java)
                     offset = result.data.getIntValue("offset")
                     hasMore = result.data.getBooleanValue("hasMore")
-                    val totalCount = result.data.getIntValue("total")
+                    val totalCount = result.data.getIntValue("audienceCount")
                     EventBus.getDefault().post(UpdateAudienceCountEvent(totalCount))
                     var list = ArrayList<RacePlayerInfoModel>()
                     userInfoList?.forEach {
