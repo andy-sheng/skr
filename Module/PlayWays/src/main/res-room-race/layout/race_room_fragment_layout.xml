@@ -162,19 +162,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_90_dp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.module.playways.race.room.view.RaceSignUpBtnView
         android:id="@+id/sign_up_view"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="@dimen/view_80_dp"
         android:layout_height="@dimen/view_80_dp"
         android:layout_marginRight="@dimen/view_12_dp"
-        android:layout_marginBottom="@dimen/view_80_dp" />
+        android:layout_marginBottom="@dimen/view_80_dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 
     <!--礼物连送按钮-->
@@ -241,11 +242,11 @@
 
     <!--右边的操作区域-->
     <com.module.playways.race.room.view.RaceRightOpView
-        android:clipChildren="false"
         android:id="@+id/race_right_op_view"
         android:layout_width="@dimen/view_133_dp"
         android:layout_height="@dimen/view_133_dp"
         android:layout_marginBottom="@dimen/view_156_dp"
+        android:clipChildren="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
