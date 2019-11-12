@@ -8,13 +8,14 @@ import android.view.View
 import android.widget.LinearLayout
 import com.alibaba.fastjson.JSON
 import com.common.core.userinfo.UserInfoServerApi
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.subscribe
 import com.common.core.userinfo.model.ScoreStateModel
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.module.playways.R
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.event.UpdateAudienceCountEvent
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -24,6 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 
 class RaceActorView(context: Context, val type: Int, val mRoomData: RaceRoomData) : ConstraintLayout(context), CoroutineScope by MainScope() {
 
@@ -41,7 +43,7 @@ class RaceActorView(context: Context, val type: Int, val mRoomData: RaceRoomData
 
     private val roomRaceServerApi = ApiManager.getInstance().createService(RaceRoomServerApi::class.java)
     private var offset = 0
-    private val mCnt = 20
+    private val mCnt = 30
     private var hasMore = true
 
     init {
@@ -125,6 +127,8 @@ class RaceActorView(context: Context, val type: Int, val mRoomData: RaceRoomData
                     val userInfoList = JSON.parseArray(result.data.getString("audiences"), UserInfoModel::class.java)
                     offset = result.data.getIntValue("offset")
                     hasMore = result.data.getBooleanValue("hasMore")
+                    val totalCount = result.data.getIntValue("total")
+                    EventBus.getDefault().post(UpdateAudienceCountEvent(totalCount))
                     var list = ArrayList<RacePlayerInfoModel>()
                     userInfoList?.forEach {
                         val model = RacePlayerInfoModel()
