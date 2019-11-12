@@ -15,6 +15,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.DebugLogView
 import com.common.log.MyLog
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.component.dialog.PersonInfoDialog
@@ -57,7 +58,6 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.song.model.SongModel
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.zq.live.proto.GrabRoom.EQRoundStatus
 import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundOverReason
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
@@ -391,6 +391,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             }
 
             override fun onClickChangeRoom() {
+                StatisticsAdapter.recordCountEvent("rank", "changeroom", null)
                 mBeginChangeRoomTs = System.currentTimeMillis()
                 mGrabChangeRoomTransitionView.visibility = View.VISIBLE
                 mCorePresenter?.changeRoomForAudience()
