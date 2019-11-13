@@ -158,6 +158,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         initSingSenceView()
         initRightView()
         initVipEnterView()
+        initWantingSignUpCardView()
         initSelectPagerView()
         initRaceMatchView()
         initSignUpView()
@@ -201,6 +202,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mGrabChangeRoomTransitionView.visibility = View.GONE
     }
 
+    private fun initWantingSignUpCardView() {
+        mRaceWantingSignUpCardView = rootView.findViewById(R.id.race_wanting_signup_view)
+    }
+
 
     private fun initSelectPagerView() {
         if (!mRoomData.audience) {
@@ -211,7 +216,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 mCorePresenter.wantSingChance(itemID, model?.commonMusic)
             }
 
-            mRaceWantingSignUpCardView = rootView.findViewById(R.id.race_wanting_signup_view)
             mRacePagerSelectSongView?.showView()
         }
     }
