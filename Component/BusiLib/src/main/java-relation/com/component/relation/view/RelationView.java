@@ -244,7 +244,7 @@ public class RelationView extends RelativeLayout {
                 }
             });
         } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
-            UserInfoManager.getInstance().getMyFollow(UserInfoManager.ONLINE_PULL_NORMAL, new UserInfoManager.UserInfoListCallback() {
+            UserInfoManager.getInstance().getMyFollow(UserInfoManager.ONLINE_PULL_NORMAL, true, new UserInfoManager.UserInfoListCallback() {
                 @Override
                 public void onSuccess(UserInfoManager.FROM from, int offset, final List<UserInfoModel> list) {
                     mHandler.post(new Runnable() {

@@ -494,10 +494,11 @@ public class UserInfoManager {
      */
     /**
      * @param pullOnlineStatus     是否拉取在线状态
+     * @param isFromFollow         是否从关注页面来
      * @param userInfoListCallback
      * @param needIntimacy         需要亲密度
      */
-    public void getMyFollow(final int pullOnlineStatus, final UserInfoListCallback userInfoListCallback, final boolean needIntimacy) {
+    public void getMyFollow(final int pullOnlineStatus, final boolean isFromFollow, final UserInfoListCallback userInfoListCallback, final boolean needIntimacy) {
         Observable.create(new ObservableOnSubscribe<List<UserInfoModel>>() {
             @Override
             public void subscribe(ObservableEmitter<List<UserInfoModel>> emitter) {
@@ -604,7 +605,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, true, false);
+                    fillUserOnlineStatus(resultList, true, false, isFromFollow);
                 } else if (pullOnlineStatus == ONLINE_PULL_NORMAL) {
                     if (resultList.size() > 100) {
                         // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
@@ -612,7 +613,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, false, needIntimacy);
+                    fillUserOnlineStatus(resultList, false, needIntimacy, isFromFollow);
                 } else {
 
                 }
@@ -678,7 +679,7 @@ public class UserInfoManager {
      */
     public void getMyFriends(final int pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
         //先从数据库里取我的关注
-        getMyFollow(ONLINE_PULL_NONE, new UserInfoListCallback() {
+        getMyFollow(ONLINE_PULL_NONE, false, new UserInfoListCallback() {
             @Override
             public void onSuccess(FROM from, int offset, List<UserInfoModel> list) {
                 List<UserInfoModel> resultList = new ArrayList<>();
@@ -694,7 +695,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, true);
+                    fillUserOnlineStatus(resultList, true, false);
                 } else if (pullOnlineStatus == ONLINE_PULL_NORMAL) {
                     if (resultList.size() > 100) {
                         // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
@@ -702,7 +703,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, false, true);
+                    fillUserOnlineStatus(resultList, false, true, false);
                 } else {
 
                 }
@@ -874,11 +875,11 @@ public class UserInfoManager {
 
     }
 
-    public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus) {
-        fillUserOnlineStatus(list, pullGameStatus, false);
+    public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus, boolean isFromFollow) {
+        fillUserOnlineStatus(list, pullGameStatus, false, isFromFollow);
     }
 
-    public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus, boolean needIntimacy) {
+    public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus, boolean needIntimacy, boolean isFromFollow) {
         final HashSet<Integer> idSets = new HashSet();
         for (UserInfoModel userInfoModel : list) {
             OnlineModel onlineModel = mStatusMap.get(userInfoModel.getUserId());
@@ -975,8 +976,40 @@ public class UserInfoManager {
             @Override
             public int compare(UserInfoModel u1, UserInfoModel u2) {
                 MyLog.d(TAG, "compare" + " u1=" + u1 + " u2=" + u2);
-                if (u1.isSPFollow() == u2.isSPFollow()) {
-                    // 两者都是特别关注 或 非特别关注
+                // todo 产品的神奇需求 我也不知道为什么要两套排序
+                if (isFromFollow) {
+                    if (u1.isSPFollow() == u2.isSPFollow()) {
+                        // 两者都是特别关注 或 非特别关注
+                        if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
+                            // 两者都是离线
+                            // 按离线时间排序
+                            if (u1.getStatusTs() > u2.getStatusTs()) {
+                                return -1;
+                            } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                        if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
+                            // 两者都是在线
+                            // 按在线时间排序
+                            if (u1.getStatusTs() > u2.getStatusTs()) {
+                                return -1;
+                            } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                        int r = u2.getStatus() - u1.getStatus();
+                        return r;
+                    } else if (u1.isSPFollow()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                } else {
                     if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
                         // 两者都是离线
                         // 先按亲密度 再按离线时间排序
@@ -1013,10 +1046,6 @@ public class UserInfoManager {
                     }
                     int r = u2.getStatus() - u1.getStatus();
                     return r;
-                } else if (u1.isSPFollow()) {
-                    return -1;
-                } else {
-                    return 1;
                 }
             }
         });
