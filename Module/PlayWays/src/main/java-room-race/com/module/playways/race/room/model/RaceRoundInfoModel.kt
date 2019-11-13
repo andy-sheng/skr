@@ -244,8 +244,14 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
         }
 
         audienceUserCnt = roundInfo.audienceUserCnt
-        EventBus.getDefault().post(UpdateAudienceCountEvent(audienceUserCnt))
+        updateAudienceUserCnt(notify)
         return
+    }
+
+    fun updateAudienceUserCnt(notify: Boolean) {
+        if (notify) {
+            EventBus.getDefault().post(UpdateAudienceCountEvent(audienceUserCnt))
+        }
     }
 
     /**
