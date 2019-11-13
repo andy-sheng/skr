@@ -1,9 +1,7 @@
 package com.module.playways.room.room.comment.model
 
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.SpanUtils
-import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.room.msg.event.CommentMsgEvent

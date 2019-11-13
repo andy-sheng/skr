@@ -26,6 +26,7 @@ import com.engine.Params
 import com.engine.arccloud.RecognizeConfig
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
+import com.module.playways.BuildConfig
 import com.module.playways.grab.room.event.SwitchRoomEvent
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
@@ -129,7 +130,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 if (!playerInfoModel.isOnline) {
                     continue
                 }
-//                    pretendEnterRoom(playerInfoModel)
+                pretendEnterRoom(playerInfoModel)
             }
 //            pretendRoomNameSystemMsg(mRoomData.getRoomName(), CommentSysModel.TYPE_ENTER_ROOM)
         }
@@ -685,7 +686,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     fun onEvent(event: RJoinNoticeMsg) {
         DebugLogView.println(TAG, "RJoinNoticeEvent ${event.userInfo.userID} 加入房间 角色为${event.role}")
         ensureInRcRoom()
-        if(event.role != ERUserRole.ERUR_AUDIENCE) {
+        if (event.role != ERUserRole.ERUR_AUDIENCE) {
             val racePlayerInfoModel = RacePlayerInfoModel()
             racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.userInfo)
             racePlayerInfoModel.role = event.role.value
@@ -697,6 +698,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     mRoomData.realRoundInfo?.updateStatus(true, ERaceRoundStatus.ERRS_CHOCING.value)
                 }
             }
+            pretendEnterRoom(racePlayerInfoModel)
         }
         mIRaceRoomView.joinNotice(UserInfoModel.parseFromPB(event.userInfo))
     }
@@ -708,7 +710,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     fun onEvent(event: RExitGameMsg) {
         DebugLogView.println(TAG, "RExitGameEvent ${event.userID} 退出房间")
         ensureInRcRoom()
-        if(event.role != ERUserRole.ERUR_AUDIENCE){
+        if (event.role != ERUserRole.ERUR_AUDIENCE) {
             mRoomData.realRoundInfo?.exitUser(event.userID)
         }
     }
@@ -819,6 +821,30 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     .append("$name ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
                     .append("不唱了").setForegroundColor(CommentModel.GRAB_TEXT_COLOR).create()
             commentModel.stringBuilder = stringBuilder
+            EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
+        }
+    }
+
+    private fun pretendEnterRoom(playerInfoModel: RacePlayerInfoModel) {
+        if (playerInfoModel.role == ERUserRole.ERUR_PLAY_USER.value || playerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value) {
+            val commentModel = CommentTextModel()
+            commentModel.userInfo = playerInfoModel.userInfo
+            commentModel.fakeUserInfo = mRoomData.getFakeInfo(playerInfoModel.userID)
+            commentModel.isFake = mRoomData.isFakeForMe(playerInfoModel.userID)
+            commentModel.avatarColor = CommentModel.AVATAR_COLOR
+
+            val nameBuilder = SpanUtils()
+                    .append(playerInfoModel.fakeUserInfo?.nickName + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .create()
+            commentModel.nameBuilder = nameBuilder
+
+            val spanUtils = SpanUtils()
+                    .append("加入了房间").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+            if (BuildConfig.DEBUG) {
+                spanUtils.append(" 角色为" + playerInfoModel.role)
+                        .append(" 在线状态为" + playerInfoModel.isOnline)
+            }
+            commentModel.stringBuilder = spanUtils.create()
             EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
         }
     }
