@@ -11,9 +11,11 @@ import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.mic.room.MicRoomData;
 import com.module.playways.mic.room.model.MicPlayerInfoModel;
 import com.module.playways.race.room.RaceRoomData;
+import com.module.playways.race.room.model.FakeUserInfoModel;
 import com.module.playways.race.room.model.RacePlayerInfoModel;
 import com.module.playways.race.room.model.RaceRoundInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
+import com.zq.live.proto.RaceRoom.FakeUserInfo;
 
 import java.util.List;
 
@@ -212,7 +214,7 @@ public class RoomDataUtils {
             return userInfoModel.getNickname();
         }
 
-        return racePlayerInfoModel.getFakeUserInfo() != null ? racePlayerInfoModel.getFakeUserInfo().getNickName() : "";
+        return racePlayerInfoModel.getFakeUserInfo() != null ? racePlayerInfoModel.getFakeUserInfo().getNickName() : "匿名选手";
     }
 
     //无论观众还是玩家都用这个函数，观众的话真实的avatar，如果是玩家话，如果揭面了展示真实的avatar，如果蒙面状态系统给的昵称
@@ -228,7 +230,7 @@ public class RoomDataUtils {
         }
 
         if (roomData.isFakeForMe(userInfoModel.getUserId())) {
-            return racePlayerInfoModel.getFakeUserInfo() != null ? racePlayerInfoModel.getFakeUserInfo().getAvatarUrl() : "";
+            return racePlayerInfoModel.getFakeUserInfo() != null ? racePlayerInfoModel.getFakeUserInfo().getAvatarUrl() : FakeUserInfoModel.femaleAvatarUrl;
         }
 
         return racePlayerInfoModel.getUserInfo().getAvatar();
