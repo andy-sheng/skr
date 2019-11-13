@@ -164,7 +164,11 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                     i++
                 }
             } else {
-                needUpdate = !(round.overReason == ERaceRoundOverReason.ERROR_NORMAL_OVER.value && round.playUsers.isEmpty())
+                if(round.overReason == ERaceRoundOverReason.ERROR_NORMAL_OVER.value && round.playUsers.isEmpty()){
+                    needUpdate = false
+                }else{
+                    needUpdate = true
+                }
             }
             if (needUpdate) {
                 updatePlayUsers(roundInfo?.playUsers)
@@ -185,7 +189,11 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                     i++
                 }
             } else {
-                needUpdate = !(round.overReason == ERaceRoundOverReason.ERROR_NORMAL_OVER.value && round.waitUsers.isEmpty())
+                if(round.overReason == ERaceRoundOverReason.ERROR_NORMAL_OVER.value && round.playUsers.isEmpty()){
+                    needUpdate = false
+                }else{
+                    needUpdate = true
+                }
             }
             if (needUpdate) {
                 updateWaitUsers(roundInfo?.waitUsers)

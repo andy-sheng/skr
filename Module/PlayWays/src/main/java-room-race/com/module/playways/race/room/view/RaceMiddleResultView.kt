@@ -78,7 +78,7 @@ class RaceMiddleResultView : ExConstraintLayout {
         this.roomData = roomData
     }
 
-    fun showResult(lastRound:RaceRoundInfoModel,animationOverListener:()->Unit) {
+    fun showResult(lastRound: RaceRoundInfoModel, animationOverListener: () -> Unit) {
         lastRound?.let {
             if (it.scores.size == 2) {
                 if (it.status == ERaceRoundStatus.ERRS_END.value) {
@@ -107,11 +107,10 @@ class RaceMiddleResultView : ExConstraintLayout {
                     }
                     var leftModel: RacePlayerInfoModel? = null
                     var rightModel: RacePlayerInfoModel? = null
-                    for(player in lastRound?.playUsers){
-                        if(leftModel?.userID == it.subRoundInfo[0].userID){
+                    for (player in lastRound?.playUsers) {
+                        if (player?.userID == it.subRoundInfo[0].userID) {
                             leftModel = player
-                        }
-                        if(rightModel?.userID == it.subRoundInfo[1].userID){
+                        } else if (player?.userID == it.subRoundInfo[1].userID) {
                             rightModel = player
                         }
                     }

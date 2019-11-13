@@ -479,7 +479,8 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceRoundChangeEvent) {
-        MyLog.d(TAG, "onRaceRoundChangeEvent = $event")
+        MyLog.d(TAG, "onRaceRoundChangeEvent lastRound = ${event.lastRound}")
+        MyLog.d(TAG, "onRaceRoundChangeEvent thisRound = ${event.thisRound}")
         if (event.lastRound != null) {
             DebugLogView.println(TAG, "上一轮结果 overReason = ${event.lastRound?.overReason} " +
                     "subReason1 = ${event.lastRound?.subRoundInfo.getOrNull(0)?.overReason} " +
