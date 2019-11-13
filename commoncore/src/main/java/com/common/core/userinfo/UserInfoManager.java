@@ -975,30 +975,49 @@ public class UserInfoManager {
             @Override
             public int compare(UserInfoModel u1, UserInfoModel u2) {
                 MyLog.d(TAG, "compare" + " u1=" + u1 + " u2=" + u2);
-                if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
-                    // 两者都是离线
-                    // 按离线时间排序
-                    if (u1.getStatusTs() > u2.getStatusTs()) {
-                        return -1;
-                    } else if (u1.getStatusTs() < u2.getStatusTs()) {
-                        return 1;
-                    } else {
-                        return 0;
+                if (u1.isSPFollow() == u2.isSPFollow()) {
+                    // 两者都是特别关注 或 非特别关注
+                    if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
+                        // 两者都是离线
+                        // 先按亲密度 再按离线时间排序
+                        if (u1.getIntimacy() > u2.getIntimacy()) {
+                            return -1;
+                        } else if (u1.getIntimacy() < u2.getIntimacy()) {
+                            return 1;
+                        } else {
+                            if (u1.getStatusTs() > u2.getStatusTs()) {
+                                return -1;
+                            } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        }
                     }
-                }
-                if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
-                    // 两者都是在线
-                    // 按在线时间排序
-                    if (u1.getStatusTs() > u2.getStatusTs()) {
-                        return -1;
-                    } else if (u1.getStatusTs() < u2.getStatusTs()) {
-                        return 1;
-                    } else {
-                        return 0;
+                    if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
+                        // 两者都是在线
+                        // 先按亲密度 再按在线时间排序
+                        if (u1.getIntimacy() > u2.getIntimacy()) {
+                            return -1;
+                        } else if (u1.getIntimacy() < u2.getIntimacy()) {
+                            return 1;
+                        } else {
+                            if (u1.getStatusTs() > u2.getStatusTs()) {
+                                return -1;
+                            } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        }
                     }
+                    int r = u2.getStatus() - u1.getStatus();
+                    return r;
+                } else if (u1.isSPFollow()) {
+                    return -1;
+                } else {
+                    return 1;
                 }
-                int r = u2.getStatus() - u1.getStatus();
-                return r;
             }
         });
     }
