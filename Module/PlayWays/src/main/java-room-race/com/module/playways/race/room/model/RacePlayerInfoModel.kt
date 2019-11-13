@@ -23,8 +23,6 @@ class RacePlayerInfoModel : PlayerInfoModel() {
             return field
         }
 
-    var isFake = false  // 是否蒙面
-
     override fun toString(): String {
         return "${userInfo.toSimpleString()} ${fakeUserInfo}"
     }

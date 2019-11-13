@@ -39,9 +39,9 @@ class CommentHolder(itemView: View, mCommentItemListener: CommentAdapter.Comment
         mCommentModel = model
 
         if (model.isFake) {
-            mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.fakeUserInfo?.avatarUrl)
+            mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.avatarUrl)
         } else {
-            mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.userInfo?.avatar)
+            mAvatarIv.bindData(model.userInfo, model.userInfo?.avatar)
         }
 
         // 为了保证书写从左到右

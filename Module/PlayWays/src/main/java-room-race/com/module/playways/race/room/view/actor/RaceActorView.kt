@@ -111,7 +111,6 @@ class RaceActorView(context: Context, val type: Int, val mRoomData: RaceRoomData
                         for (model in list) {
                             model.userInfo?.ranking = map[model.userID]
                             model.fakeUserInfo = mRoomData.getFakeInfo(model.userID)
-                            model.isFake = mRoomData.isFakeForMe(model.userID)
                         }
                     }
                     addUserList(list, isClean)
