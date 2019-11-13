@@ -651,13 +651,17 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             MyLog.d(TAG, "showRightVote 是演唱者")
             mRaceRightOpView.visibility = View.GONE
         } else {
-            val role = mRoomData.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role
-            if (role == ERUserRole.ERUR_PLAY_USER.value) {
-                MyLog.d(TAG, "showRightVote 当前身份是play")
+            if(mRoomData.audience){
                 mRaceRightOpView.showVote(false)
-            } else {
-                MyLog.d(TAG, "showRightVote 当前身份role=$role")
-                mRaceRightOpView.visibility = View.GONE
+            }else{
+                val role = mRoomData.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role
+                if (role == ERUserRole.ERUR_PLAY_USER.value) {
+                    MyLog.d(TAG, "showRightVote 当前身份是play")
+                    mRaceRightOpView.showVote(false)
+                } else {
+                    MyLog.d(TAG, "showRightVote 当前身份role=$role")
+                    mRaceRightOpView.visibility = View.GONE
+                }
             }
         }
     }
