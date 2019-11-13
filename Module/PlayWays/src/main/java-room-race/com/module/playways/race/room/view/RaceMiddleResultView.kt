@@ -19,6 +19,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import com.zq.live.proto.RaceRoom.ERaceWinType
@@ -104,8 +105,18 @@ class RaceMiddleResultView : ExConstraintLayout {
                     } else {
                         leftTicketTv.visibility = View.VISIBLE
                     }
+                    var leftModel: RacePlayerInfoModel? = null
+                    var rightModel: RacePlayerInfoModel? = null
+                    for(player in lastRound?.playUsers){
+                        if(leftModel?.userID == it.subRoundInfo[0].userID){
+                            leftModel = player
+                        }
+                        if(rightModel?.userID == it.subRoundInfo[1].userID){
+                            rightModel = player
+                        }
+                    }
 
-                    AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerOrWaiterInfo(it.subRoundInfo[0].userID)?.avatar)
+                    AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(leftModel?.userInfo?.avatar)
                             .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
                             .build())
 
@@ -124,7 +135,7 @@ class RaceMiddleResultView : ExConstraintLayout {
                         rightTicketTv.visibility = View.VISIBLE
                     }
 
-                    AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerOrWaiterInfo(it.subRoundInfo[1].userID)?.avatar)
+                    AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(rightModel?.userInfo?.avatar)
                             .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
                             .build())
 
