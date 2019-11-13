@@ -24,6 +24,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/arrow_iv" />
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/audience_bg_stroke_iv"
+        android:layout_width="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_32_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_stroke_color="@color/white_trans_20"
+        app:bl_stroke_width="@dimen/view_1_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
+        app:layout_constraintLeft_toLeftOf="@+id/avatar_iv"
+        app:layout_constraintRight_toRightOf="@+id/avatar_iv"
+        app:layout_constraintTop_toTopOf="@+id/avatar_iv" />
+
     <com.common.view.ex.ExTextView
         android:id="@+id/user_play_nickName_tv"
         android:layout_width="wrap_content"
@@ -36,6 +48,7 @@
         android:text="58号选手"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/real_nickName_tv"
         app:layout_constraintLeft_toRightOf="@+id/avatar_iv"
         app:layout_goneMarginBottom="@dimen/view_5_dp" />
@@ -52,6 +65,7 @@
         android:text="KTV酒彪子"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_8_dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
         app:layout_constraintLeft_toRightOf="@+id/avatar_iv" />
 

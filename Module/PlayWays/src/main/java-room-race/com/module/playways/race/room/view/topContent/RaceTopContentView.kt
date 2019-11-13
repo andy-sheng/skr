@@ -37,6 +37,7 @@ class RaceTopContentView : ConstraintLayout {
     var audienceCountTv: ExTextView
     var playerBg: ExImageView
     var userBgStrokeIv: ExImageView
+    var audienceBgStrokeIv: ExImageView
 
     internal var mIsOpen = true
     private var mRoomData: RaceRoomData? = null
@@ -61,12 +62,17 @@ class RaceTopContentView : ConstraintLayout {
         audienceCountTv = rootView.findViewById(R.id.audience_count_tv)
         playerBg = rootView.findViewById(R.id.player_bg)
         userBgStrokeIv = rootView.findViewById(R.id.user_bg_stroke_iv)
+        audienceBgStrokeIv = rootView.findViewById(R.id.audience_bg_stroke_iv)
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
 
         userBgStrokeIv.setDebounceViewClickListener {
+            EventBus.getDefault().post(ShowPersonCardEvent(MyUserInfoManager.uid.toInt()))
+        }
+
+        audienceBgStrokeIv.setDebounceViewClickListener {
             EventBus.getDefault().post(ShowPersonCardEvent(MyUserInfoManager.uid.toInt()))
         }
 
@@ -93,9 +99,14 @@ class RaceTopContentView : ConstraintLayout {
         mRoomData?.let {
             if (it.audience) {
                 realNickNameTv.visibility = View.GONE
-                userPlayNickNameTv.text = MyUserInfoManager.nickName
+                userPlayNickNameTv.visibility = View.GONE
+                userBgStrokeIv.visibility = View.GONE
+                audienceBgStrokeIv.visibility = View.VISIBLE
             } else {
                 realNickNameTv.visibility = View.VISIBLE
+                userPlayNickNameTv.visibility = View.VISIBLE
+                userBgStrokeIv.visibility = View.VISIBLE
+                audienceBgStrokeIv.visibility = View.GONE
                 userPlayNickNameTv.text = it.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid!!.toInt())?.fakeUserInfo?.nickName
                 realNickNameTv.text = MyUserInfoManager.nickName
             }
