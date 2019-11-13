@@ -686,11 +686,11 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     fun onEvent(event: RJoinNoticeMsg) {
         DebugLogView.println(TAG, "RJoinNoticeEvent ${event.userInfo.userID} 加入房间 角色为${event.role}")
         ensureInRcRoom()
+        val racePlayerInfoModel = RacePlayerInfoModel()
+        racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.userInfo)
+        racePlayerInfoModel.role = event.role.value
+        racePlayerInfoModel.fakeUserInfo = FakeUserInfoModel.parseFromPB(event.fakeUserInfo)
         if (event.role != ERUserRole.ERUR_AUDIENCE) {
-            val racePlayerInfoModel = RacePlayerInfoModel()
-            racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.userInfo)
-            racePlayerInfoModel.role = event.role.value
-            racePlayerInfoModel.fakeUserInfo = FakeUserInfoModel.parseFromPB(event.fakeUserInfo)
             mRoomData.realRoundInfo?.joinUser(racePlayerInfoModel)
             if (event.newRoundBegin) {
                 // 游戏开始了
@@ -698,13 +698,13 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     mRoomData.realRoundInfo?.updateStatus(true, ERaceRoundStatus.ERRS_CHOCING.value)
                 }
             }
-            pretendEnterRoom(racePlayerInfoModel)
         }else{
             mRoomData.realRoundInfo?.let {
                 it.audienceUserCnt++
                 EventBus.getDefault().post(UpdateAudienceCountEvent(it.audienceUserCnt))
             }
         }
+        pretendEnterRoom(racePlayerInfoModel)
         mIRaceRoomView.joinNotice(UserInfoModel.parseFromPB(event.userInfo))
     }
 
@@ -831,15 +831,23 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     }
 
     private fun pretendEnterRoom(playerInfoModel: RacePlayerInfoModel) {
-        if (playerInfoModel.role == ERUserRole.ERUR_PLAY_USER.value || playerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value) {
+        if (playerInfoModel.role == ERUserRole.ERUR_PLAY_USER.value
+                || playerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value
+                || playerInfoModel.role == ERUserRole.ERUR_AUDIENCE.value) {
             val commentModel = CommentTextModel()
             commentModel.userInfo = playerInfoModel.userInfo
             commentModel.fakeUserInfo = mRoomData.getFakeInfo(playerInfoModel.userID)
             commentModel.isFake = mRoomData.isFakeForMe(playerInfoModel.userID)
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
 
+            var name: String?
+            if(playerInfoModel.role == ERUserRole.ERUR_AUDIENCE.value){
+                name = playerInfoModel.userInfo.nicknameRemark
+            }else{
+                name = playerInfoModel.fakeUserInfo?.nickName
+            }
             val nameBuilder = SpanUtils()
-                    .append(playerInfoModel.fakeUserInfo?.nickName + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .append("$name ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
                     .create()
             commentModel.nameBuilder = nameBuilder
 
