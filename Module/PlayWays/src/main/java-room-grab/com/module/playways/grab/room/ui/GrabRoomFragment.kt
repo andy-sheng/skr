@@ -716,6 +716,18 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                             EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
                         }
                     }
+                } else if (now.isChorusRound) {
+                    if (now.chorusRoundInfoModels.size == 2) {
+                        if (!now.chorusRoundInfoModels[0].isHasGiveUp) {
+                            RoomDataUtils.getPlayerInfoById(mRoomData!!, now.chorusRoundInfoModels[0].userID)?.let {
+                                EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                            }
+                        } else {
+                            RoomDataUtils.getPlayerInfoById(mRoomData!!, now.chorusRoundInfoModels[1].userID)?.let {
+                                EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                            }
+                        }
+                    }
                 } else {
                     val grabPlayerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)
                     if (grabPlayerInfoModel != null) {

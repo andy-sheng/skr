@@ -435,6 +435,18 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                             EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
                         }
                     }
+                } else if (now.isChorusRound) {
+                    if (now.getChorusRoundInfoModels().size == 2) {
+                        if (!now.getChorusRoundInfoModels()[0].isHasGiveUp) {
+                            RoomDataUtils.getPlayerInfoById(mRoomData!!, now.getChorusRoundInfoModels()[0].userID)?.let {
+                                EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                            }
+                        } else {
+                            RoomDataUtils.getPlayerInfoById(mRoomData!!, now.getChorusRoundInfoModels()[1].userID)?.let {
+                                EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                            }
+                        }
+                    }
                 } else {
                     val micPlayerInfoMode = RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)
                     if (micPlayerInfoMode != null) {
