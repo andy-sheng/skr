@@ -30,12 +30,7 @@ class VipEnterPresenter(val view: IGrabVipView, val roomData: BaseRoomData<*>) :
         override fun onStart(playerInfoModel: UserInfoModel, floatWindow: VipEnterPresenter) {
             MyLog.d(mTag, "onStart playerInfoModel = $playerInfoModel, floatWindow = $floatWindow")
             canAccept = false
-            if (roomData.inPlayerOrWaiterInfoList(playerInfoModel.userId)) {
-                view.startEnterAnimation(playerInfoModel) {
-                    canAccept = true
-                    endCurrent(playerInfoModel)
-                }
-            } else {
+            view.startEnterAnimation(playerInfoModel) {
                 canAccept = true
                 endCurrent(playerInfoModel)
             }
