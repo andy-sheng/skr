@@ -721,14 +721,14 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                     if (grabPlayerInfoModel != null) {
                         EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), grabPlayerInfoModel.userInfo))
                     } else {
-                        U.getToastUtil().showShort("没有可以送礼的人")
+                        U.getToastUtil().showShort("只能送给正在演唱的人哦～")
                     }
                 }
             } else {
-                U.getToastUtil().showShort("没有可以送礼的人")
+                U.getToastUtil().showShort("只能送给正在演唱的人哦～")
             }
         } else {
-            U.getToastUtil().showShort("没有可以送礼的人")
+            U.getToastUtil().showShort("只能送给正在演唱的人哦～")
         }
     }
 

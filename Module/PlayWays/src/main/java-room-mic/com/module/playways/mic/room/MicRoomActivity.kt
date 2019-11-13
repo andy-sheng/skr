@@ -440,14 +440,14 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                     if (micPlayerInfoMode != null) {
                         EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), micPlayerInfoMode.userInfo))
                     } else {
-                        U.getToastUtil().showShort("没有可以送礼的人")
+                        U.getToastUtil().showShort("只能送给正在演唱的人哦～")
                     }
                 }
             } else {
-                U.getToastUtil().showShort("没有可以送礼的人")
+                U.getToastUtil().showShort("只能送给正在演唱的人哦～")
             }
         } else {
-            U.getToastUtil().showShort("没有可以送礼的人")
+            U.getToastUtil().showShort("只能送给正在演唱的人哦～")
         }
     }
 
