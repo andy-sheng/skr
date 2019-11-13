@@ -528,7 +528,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BuyGiftEvent) {
-        mContinueSendView.startBuy(event.baseGift, event.receiver)
+        if (event.receiver.userId != MyUserInfoManager.uid.toInt()) {
+            mContinueSendView.startBuy(event.baseGift, event.receiver)
+        }
     }
 
     override fun singBySelfFirstRound(songModel: SongModel?) {

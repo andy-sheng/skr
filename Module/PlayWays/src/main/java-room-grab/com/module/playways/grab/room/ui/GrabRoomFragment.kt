@@ -762,7 +762,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BuyGiftEvent) {
-        mContinueSendView?.startBuy(event.baseGift, event.receiver)
+        if (event.receiver.userId != MyUserInfoManager.uid.toInt()) {
+            mContinueSendView?.startBuy(event.baseGift, event.receiver)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

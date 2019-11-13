@@ -689,10 +689,10 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     }
 
     private fun showScoreDetail(scoreDetailModel: ScoreDetailModel) {
-        if (scoreDetailModel.scoreStateModel != null && LevelConfigUtils.getAvatarLevelBg(scoreDetailModel.scoreStateModel!!.mainRanking) != 0) {
+        if (scoreDetailModel.scoreStateModel != null && LevelConfigUtils.getRaceCenterAvatarBg(scoreDetailModel.scoreStateModel!!.mainRanking) != 0) {
             mLevelBg.visibility = View.VISIBLE
             mLevelDesc.visibility = View.VISIBLE
-            mLevelBg.background = U.getDrawable(LevelConfigUtils.getAvatarLevelBg(scoreDetailModel.scoreStateModel!!.mainRanking))
+            mLevelBg.background = U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(scoreDetailModel.scoreStateModel!!.mainRanking))
             mLevelDesc.text = scoreDetailModel.scoreStateModel!!.rankingDesc
         } else {
             mLevelBg.visibility = View.GONE
