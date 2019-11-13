@@ -212,7 +212,7 @@ public class RoomDataUtils {
             return userInfoModel.getNickname();
         }
 
-        return racePlayerInfoModel.getFakeUserInfo().getNickName();
+        return racePlayerInfoModel.getFakeUserInfo() != null ? racePlayerInfoModel.getFakeUserInfo().getNickName() : "";
     }
 
     //无论观众还是玩家都用这个函数，观众的话真实的avatar，如果是玩家话，如果揭面了展示真实的avatar，如果蒙面状态系统给的昵称
