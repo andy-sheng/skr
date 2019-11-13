@@ -392,7 +392,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         enterRoomEvent()
 
         MyUserInfoManager.myUserInfo?.let {
-            mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
+            if (it.ranking != null) {
+                mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
+            }
         }
     }
 
@@ -1221,7 +1223,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     override fun joinNotice(playerInfoModel: UserInfoModel?) {
         playerInfoModel?.let {
-            mVipEnterPresenter?.addNotice(playerInfoModel)
+            if (it.userId != MyUserInfoManager.uid.toInt()) {
+                mVipEnterPresenter?.addNotice(playerInfoModel)
+            }
         }
     }
 

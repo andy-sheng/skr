@@ -179,7 +179,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         }
 
         MyUserInfoManager.myUserInfo?.let {
-            mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
+            if (it.ranking != null) {
+                mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
+            }
         }
     }
 
@@ -746,7 +748,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     override fun joinNotice(playerInfoModel: UserInfoModel?) {
         playerInfoModel?.let {
-            mVipEnterPresenter?.addNotice(it)
+            if (it.userId != MyUserInfoManager.uid.toInt()) {
+                mVipEnterPresenter?.addNotice(it)
+            }
         }
     }
 

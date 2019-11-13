@@ -233,7 +233,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         }
 
         MyUserInfoManager.myUserInfo?.let {
-            mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
+            if (it.ranking != null) {
+                mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
+            }
         }
 
 
