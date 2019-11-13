@@ -37,6 +37,7 @@ import com.common.utils.U
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
 import com.tendcloud.tenddata.TDAccount
+import com.zq.live.proto.Common.UserInfo
 
 import org.greenrobot.eventbus.EventBus
 
@@ -194,10 +195,10 @@ object UserAccountManager {
 
 
     fun hasAccount(): Boolean {
-        if(mAccount==null){
+        if (mAccount == null) {
             return false
         }
-        if(mAccount?.isLogOff == true){
+        if (mAccount?.isLogOff == true) {
             return false
         }
         return true
@@ -224,7 +225,7 @@ object UserAccountManager {
                     override fun process(obj: ApiResult) {
                         if (obj.errno == 0) {
                             val userAccount = parseRsp(obj.data!!, phoneNum)
-                            TDStatistics.onProfileSignIn(userAccount.uid,TDAccount.AccountType.REGISTERED,MyUserInfoManager.nickName,MyUserInfoManager.isFirstLogin)
+                            TDStatistics.onProfileSignIn(userAccount.uid, TDAccount.AccountType.REGISTERED, MyUserInfoManager.nickName, MyUserInfoManager.isFirstLogin)
                             UmengStatistics.onProfileSignIn("phone", userAccount.uid)
                         } else {
                             //U.getToastUtil().showShort(obj.getErrmsg());
@@ -234,7 +235,7 @@ object UserAccountManager {
                             EventBus.getDefault().post(LoginApiErrorEvent(obj.errno, obj.errmsg))
                         }
                         mUiHanlder.post {
-                            callback?.onCallback(1,  obj)
+                            callback?.onCallback(1, obj)
                         }
                     }
 
@@ -273,10 +274,10 @@ object UserAccountManager {
                         if (obj.errno == 0) {
                             val userAccount = parseRsp(obj.data!!, "")
                             if (mode == 3) {
-                                TDStatistics.onProfileSignIn(userAccount.uid,TDAccount.AccountType.WEIXIN,MyUserInfoManager.nickName,MyUserInfoManager.isFirstLogin)
+                                TDStatistics.onProfileSignIn(userAccount.uid, TDAccount.AccountType.WEIXIN, MyUserInfoManager.nickName, MyUserInfoManager.isFirstLogin)
                                 UmengStatistics.onProfileSignIn("wx", userAccount.uid)
                             } else if (mode == 2) {
-                                TDStatistics.onProfileSignIn(userAccount.uid,TDAccount.AccountType.QQ,MyUserInfoManager.nickName,MyUserInfoManager.isFirstLogin)
+                                TDStatistics.onProfileSignIn(userAccount.uid, TDAccount.AccountType.QQ, MyUserInfoManager.nickName, MyUserInfoManager.isFirstLogin)
                                 UmengStatistics.onProfileSignIn("icon_qq", userAccount.uid)
                             }
                         } else {
@@ -303,19 +304,7 @@ object UserAccountManager {
         val secretToken = jsonObject.getJSONObject("token").getString("T")
         val serviceToken = jsonObject.getJSONObject("token").getString("S")
         val rongToken = jsonObject.getJSONObject("token").getString("RC")
-        val profileJO = jsonObject.getJSONObject("profile")
-        val userID = profileJO.getLongValue("userID")
-        val nickName = profileJO.getString("nickname")
-        val sex = profileJO.getIntValue("sex")
-        val birthday = profileJO.getString("birthday")
-        val avatar = profileJO.getString("avatar")
-        val vipInfo = profileJO.getObject("vipInfo", VerifyInfo::class.java)
-        val honorInfo = profileJO.getObject("honorInfo", HonorInfo::class.java)
-        val sign = profileJO.getString("signature")
-        val location = JSON.parseObject(profileJO.getString("location"), Location::class.java)
-        val location2 = JSON.parseObject(profileJO.getString("location2"), Location::class.java)
-        val ageStage = profileJO.getIntValue("ageStage")
-
+        val userInfoModel = JSON.parseObject(jsonObject.getString("profile"), UserInfoModel::class.java)
         val isFirstLogin = jsonObject.getBooleanValue("isFirstLogin")
         if (isFirstLogin) {
             U.getPreferenceUtils().setSettingLong("first_login_time", System.currentTimeMillis())
@@ -326,18 +315,7 @@ object UserAccountManager {
         val needBeginnerGuide = jsonObject.getBooleanValue("needBeginnerGuide")
 
         // 设置个人信息
-        val myUserInfo = MyUserInfo()
-        myUserInfo.userId = userID
-        myUserInfo.userNickname = nickName
-        myUserInfo.sex = sex
-        myUserInfo.birthday = birthday
-        myUserInfo.avatar = avatar
-        myUserInfo.vipInfo = vipInfo
-        myUserInfo.honorInfo = honorInfo
-        myUserInfo.signature = sign
-        myUserInfo.location = location
-        myUserInfo.location2 = location2
-        myUserInfo.ageStage = ageStage
+        val myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel)
         MyUserInfoManager.isFirstLogin = isFirstLogin
         MyUserInfoManager.isNeedBeginnerGuide = needBeginnerGuide
         MyUserInfoLocalApi.insertOrUpdate(myUserInfo)
@@ -348,7 +326,7 @@ object UserAccountManager {
         userAccount.serviceToken = serviceToken
         userAccount.secretToken = secretToken
         userAccount.rongToken = rongToken
-        userAccount.uid = userID.toString()
+        userAccount.uid = userInfoModel.userId.toString()
         userAccount.needEditUserInfo = isFirstLogin
         userAccount.channelId = HostChannelManager.getInstance().channelId
         onLoginResult(userAccount)
