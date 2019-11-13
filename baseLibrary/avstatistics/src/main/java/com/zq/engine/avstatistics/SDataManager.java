@@ -8,11 +8,14 @@ import com.common.log.MyLog;
 import com.zq.engine.avstatistics.datastruct.ILogItem;
 import com.zq.engine.avstatistics.logservice.SLogServiceAgent;
 import com.zq.engine.avstatistics.logservice.SLogServiceBase;
+import com.zq.engine.avstatistics.sts.SSTSCredentialHolder;
 
 import java.util.List;
 
 
 public class SDataManager {
+    public static boolean dbgMode = false;
+
 
     private String TAG = "SDATA_MANAGER";
 
@@ -39,12 +42,15 @@ public class SDataManager {
     }
 
 
+    public void setDebugMode(boolean isDbg){
+        dbgMode = isDbg;
+    }
 
     public SDataManager setUserID(long userID) {
         try {
             mLS.setProp(SLogServiceBase.PROP_USER_ID, Long.valueOf(userID));
         } catch (Exception e) {
-            e.printStackTrace();
+            MyLog.e(TAG, e);
         }
         return this;
     }
@@ -55,10 +61,19 @@ public class SDataManager {
             try {
                 mLS.init(ctx);
             } catch (Exception e) {
-                e.printStackTrace();
+                MyLog.e(TAG, e);
             }
         }
 
+        return this;
+    }
+
+    public SDataManager setSTSCredentialHolder(SSTSCredentialHolder scHolder) {
+        try {
+            mLS.setProp(SLogServiceBase.PROP_STS_CREDENTIAL_HOLDER, scHolder);
+        } catch (Exception e) {
+            MyLog.e(TAG, e);
+        }
         return this;
     }
 

@@ -43,9 +43,10 @@ dependencies {
 //    implementation 'org.greenrobot:greendao:3.2.2'  //与全局config.gradle里的一样
 
     implementation project(':baseLibrary:commonsdk')
-    api rootProject.ext.dependencies["aliyun-sls"]
+//    api rootProject.ext.dependencies["aliyun-sls"]
 
     //avstatistics也会用到Agora的数据结构，这种模块划分还不够清晰，后期要做的更清晰
+    implementation files('./libs/aliyun-log-sdk-android-2.1.0.jar')
     implementation files('../enginesdk/libs/agora-rtc-sdk.jar')
 }
 

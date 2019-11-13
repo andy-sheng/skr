@@ -220,8 +220,8 @@ ext {
 
             "lzyzsd-jsbridge"                  : "com.github.lzyzsd:jsbridge:1.0.4",
 
-            "aliyun-oss"                        : 'com.aliyun.dpa:oss-android-sdk:2.9.1',
-            "aliyun-sls"                        : 'com.aliyun.openservices:aliyun-log-android-sdk:2.0.0'
+            "aliyun-oss"                        : 'com.aliyun.dpa:oss-android-sdk:2.9.1'
+//            "aliyun-sls"                        : 'com.aliyun.openservices:aliyun-log-android-sdk:2.0.0' //sls 2.0有个严重的bug，onFailure不会回调
 
     ]
 

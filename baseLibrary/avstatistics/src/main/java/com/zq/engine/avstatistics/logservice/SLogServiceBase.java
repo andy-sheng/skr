@@ -20,8 +20,15 @@ public abstract class SLogServiceBase {
     public final static int PROP_USER_ID     = 2;
 
 
+    /**
+     * it's only for getProp
+     */
     public final static int PROP_IS_INITIALIZED = 3; //only for getProp
 
+    /**
+     * for now, only aliyun-sls will need this
+     */
+    public final static int PROP_STS_CREDENTIAL_HOLDER= 4;
 
     /**
      * @param param usually there are some parameter related to app, so this API is usually called by app-context

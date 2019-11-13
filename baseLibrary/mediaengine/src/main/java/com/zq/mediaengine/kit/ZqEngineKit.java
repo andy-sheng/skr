@@ -200,6 +200,9 @@ public class ZqEngineKit implements AgoraOutCallback {
     protected boolean mIsCaptureStarted = false;
     protected boolean mDelayedStartCameraPreview = false;
 
+
+    protected ZqLSCredentialHolder mSCHolder = null;
+
     @Override
     public void onUserJoined(int uid, int elapsed) {
         // 用户加入了
@@ -413,6 +416,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         mAcrRecognizer = new AcrRecognizer();
 
         mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
+        mSCHolder = new ZqLSCredentialHolder();
         initWorkThread();
     }
 
@@ -881,7 +885,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                 }
             });
         } else {
-            retCode = mAgoraRTCAdapter.joinChannel(token, roomid, "Extra Optional Data", userId);
+
+            //
+            retCode = mAgoraRTCAdapter.joinChannel(token, roomid, "Extra Optional Data", userId, mSCHolder);
             MyLog.d(TAG, "joinRoomInner2" + " retCode=" + retCode);
         }
 
