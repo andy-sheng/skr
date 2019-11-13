@@ -49,5 +49,19 @@ class ScoreStateModel : Serializable {
             scoreStateModel.rankingDesc = model.rankingDesc
             return scoreStateModel
         }
+
+        fun toUserRankingPB(model: ScoreStateModel?): UserRanking? {
+            return if (model != null) {
+                UserRanking.Builder()
+                        .setMainRanking(model.mainRanking)
+                        .setSubRanking(model.subRanking)
+                        .setCurrExp(model.currExp.toLong())
+                        .setMaxExp(model.maxExp.toLong())
+                        .setRankingDesc(model.rankingDesc)
+                        .build()
+            } else {
+                null
+            }
+        }
     }
 }
