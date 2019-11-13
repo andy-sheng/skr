@@ -26,7 +26,7 @@ class JoinRaceRoomRspModel : Serializable {
     var agoraToken: String? = null
     @JSONField(name = "config")
     var config: LocalRGameConfigMsg? = null
-    var audience = false
+    var isAudience = false
 //    @JSONField(name = "couldChoiceGames")
 //    var couldChoiceGames: ArrayList<RaceGamePlayInfo>? = null
 }

@@ -86,7 +86,7 @@ class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView,val audience:
                 }
                 if (result.errno == 0) {
                     val rsp = JSON.parseObject(result.data.toJSONString(), JoinRaceRoomRspModel::class.java)
-                    rsp.audience = audience
+                    rsp.isAudience = audience
                     rsp.roomID = it.gameID
                     rsp.gameCreateTimeMs = it.createTimeMs
                     rsp.agoraToken = it.agoraToken

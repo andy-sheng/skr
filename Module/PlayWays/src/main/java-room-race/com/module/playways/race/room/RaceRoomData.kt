@@ -174,7 +174,7 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         } else {
             //this.expectRoundInfo?.isParticipant = true
         }
-        audience = rsp.audience
+        audience = rsp.isAudience
     }
 
 }
