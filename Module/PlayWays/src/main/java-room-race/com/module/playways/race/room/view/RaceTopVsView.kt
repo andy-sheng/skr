@@ -23,6 +23,7 @@ import com.common.view.ex.ExTextView
 import com.component.busilib.view.CircleCountDownView
 import com.component.busilib.view.VoiceChartView
 import com.component.person.event.ShowPersonCardEvent
+import com.component.person.event.ShowReportEvent
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.RaceBlightByMeEvent
@@ -94,6 +95,8 @@ class RaceTopVsView : ExConstraintLayout {
                 if (it.size == 2) {
                     if (roomData?.isFakeForMe(it[0].userID) == false) {
                         EventBus.getDefault().post(ShowPersonCardEvent(it[0].userID))
+                    } else {
+                        EventBus.getDefault().post(ShowReportEvent(it[0].userID))
                     }
                 }
             }
@@ -104,6 +107,8 @@ class RaceTopVsView : ExConstraintLayout {
                 if (it.size == 2) {
                     if (roomData?.isFakeForMe(it[1].userID) == false) {
                         EventBus.getDefault().post(ShowPersonCardEvent(it[1].userID))
+                    } else {
+                        EventBus.getDefault().post(ShowReportEvent(it[1].userID))
                     }
                 }
             }
