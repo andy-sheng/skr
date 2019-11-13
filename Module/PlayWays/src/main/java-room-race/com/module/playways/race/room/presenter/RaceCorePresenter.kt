@@ -31,9 +31,7 @@ import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.*
-import com.module.playways.race.room.model.RaceGamePlayInfo
-import com.module.playways.race.room.model.RacePlayerInfoModel
-import com.module.playways.race.room.model.RaceRoundInfoModel
+import com.module.playways.race.room.model.*
 import com.module.playways.race.room.model.parseFromRoundInfoPB
 import com.module.playways.race.room.ui.IRaceRoomView
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
@@ -690,6 +688,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val racePlayerInfoModel = RacePlayerInfoModel()
             racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.userInfo)
             racePlayerInfoModel.role = event.role.value
+            racePlayerInfoModel.fakeUserInfo = FakeUserInfoModel.parseFromPB(event.fakeUserInfo)
             mRoomData.realRoundInfo?.joinUser(racePlayerInfoModel)
             if (event.newRoundBegin) {
                 // 游戏开始了
