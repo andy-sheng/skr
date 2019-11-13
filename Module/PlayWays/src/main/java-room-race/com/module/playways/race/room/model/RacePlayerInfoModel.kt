@@ -2,7 +2,6 @@ package com.module.playways.race.room.model
 
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
-import com.google.android.exoplayer2.extractor.ts.TsPayloadReader
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.Common.ESex
 import com.zq.live.proto.RaceRoom.ERUserRole
@@ -27,7 +26,7 @@ class RacePlayerInfoModel : PlayerInfoModel() {
     var isFake = false  // 是否蒙面
 
     override fun toString(): String {
-        return "${userInfo.toSimpleString()}"
+        return "${userInfo.toSimpleString()} ${fakeUserInfo}"
     }
 
     override fun equals(other: Any?): Boolean {

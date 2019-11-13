@@ -8,6 +8,7 @@ class FakeUserInfoModel : Serializable {
     var nickName: String? = null
     var avatarUrl: String? = null
 
+
     companion object {
         fun parseFromPB(model: FakeUserInfo): FakeUserInfoModel {
             val userInfoModel = FakeUserInfoModel()
@@ -19,6 +20,10 @@ class FakeUserInfoModel : Serializable {
         
         const val maleAvatar = "http://res-static.inframe.mobi/image/fake_male%403x.png"
         const val femaleAvatarUrl = "http://res-static.inframe.mobi/image/fake_femal%403x.png"
+    }
+
+    override fun toString(): String {
+        return "FakeUserInfoModel(nickName=$nickName)"
     }
 
 }

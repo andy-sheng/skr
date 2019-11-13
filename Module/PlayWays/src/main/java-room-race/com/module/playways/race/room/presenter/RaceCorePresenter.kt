@@ -686,15 +686,16 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     fun onEvent(event: RJoinNoticeMsg) {
         DebugLogView.println(TAG, "RJoinNoticeEvent ${event.userInfo.userID} 加入房间 角色为${event.role}")
         ensureInRcRoom()
-        val racePlayerInfoModel = RacePlayerInfoModel()
-        racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.userInfo)
-        racePlayerInfoModel.role = event.role.value
-        mRoomData.realRoundInfo?.joinUser(racePlayerInfoModel)
-
-        if (event.newRoundBegin) {
-            // 游戏开始了
-            if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_WAITING.value) {
-                mRoomData.realRoundInfo?.updateStatus(true, ERaceRoundStatus.ERRS_CHOCING.value)
+        if(event.role != ERUserRole.ERUR_AUDIENCE) {
+            val racePlayerInfoModel = RacePlayerInfoModel()
+            racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.userInfo)
+            racePlayerInfoModel.role = event.role.value
+            mRoomData.realRoundInfo?.joinUser(racePlayerInfoModel)
+            if (event.newRoundBegin) {
+                // 游戏开始了
+                if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_WAITING.value) {
+                    mRoomData.realRoundInfo?.updateStatus(true, ERaceRoundStatus.ERRS_CHOCING.value)
+                }
             }
         }
         mIRaceRoomView.joinNotice(UserInfoModel.parseFromPB(event.userInfo))
@@ -707,7 +708,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     fun onEvent(event: RExitGameMsg) {
         DebugLogView.println(TAG, "RExitGameEvent ${event.userID} 退出房间")
         ensureInRcRoom()
-        mRoomData.realRoundInfo?.exitUser(event.userID)
+        if(event.role != ERUserRole.ERUR_AUDIENCE){
+            mRoomData.realRoundInfo?.exitUser(event.userID)
+        }
     }
 
     /**
@@ -762,6 +765,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RaceRoundOverMsg) {
+        //MyLog.d(TAG, "onEvent RaceRoundOverMsg = $event")
         ensureInRcRoom()
         if (event.overType == ERoundOverType.EROT_MAIN_ROUND_OVER) {
             DebugLogView.println(TAG, "RRoundOverEvent 主轮次结束 reason=${event.currentRound.overReason}")
