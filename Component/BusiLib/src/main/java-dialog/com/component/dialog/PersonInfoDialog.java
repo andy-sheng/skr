@@ -285,43 +285,43 @@ public class PersonInfoDialog {
     }
 
     private void showConfirmSpFollowDialog(int userID, boolean isSpFollow) {
-        TipsDialogView tipsDialogView = new TipsDialogView.Builder(mActivity)
-                .setMessageTip(isSpFollow ? "是否对ta关闭特别关注\n关闭后，你将无法收到关于ta的特别提醒啦" : "是否对ta开启特别关注\n开启后，对方上线、发贴、聊天信息、上传照片等将有特别提醒")
-                .setConfirmTip(isSpFollow ? "关闭" : "开启")
-                .setCancelTip("取消")
-                .setConfirmBtnClickListener(new DebounceViewClickListener() {
-                    @Override
-                    public void clickValid(View v) {
-                        if (mDialogPlus != null) {
-                            mDialogPlus.dismiss();
-                        }
-                        if (isSpFollow) {
+        if (isSpFollow) {
+            TipsDialogView tipsDialogView = new TipsDialogView.Builder(mActivity)
+                    .setMessageTip("是否对ta关闭特别关注\n关闭后，你将无法收到关于ta的特别提醒啦")
+                    .setConfirmTip("关闭")
+                    .setCancelTip("取消")
+                    .setConfirmBtnClickListener(new DebounceViewClickListener() {
+                        @Override
+                        public void clickValid(View v) {
+                            if (mDialogPlus != null) {
+                                mDialogPlus.dismiss();
+                            }
                             delSpecialFollow(userID);
-                        } else {
-                            addSpecialFollow(userID);
                         }
-                    }
-                })
-                .setCancelBtnClickListener(new DebounceViewClickListener() {
-                    @Override
-                    public void clickValid(View v) {
-                        if (mDialogPlus != null) {
-                            mDialogPlus.dismiss();
+                    })
+                    .setCancelBtnClickListener(new DebounceViewClickListener() {
+                        @Override
+                        public void clickValid(View v) {
+                            if (mDialogPlus != null) {
+                                mDialogPlus.dismiss();
+                            }
                         }
-                    }
-                })
-                .build();
+                    })
+                    .build();
 
-        mDialogPlus = DialogPlus.newDialog(mActivity)
-                .setContentHolder(new ViewHolder(tipsDialogView))
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_50)
-                .setInAnimation(R.anim.fade_in)
-                .setOutAnimation(R.anim.fade_out)
-                .setExpanded(false)
-                .setGravity(Gravity.BOTTOM)
-                .create();
-        mDialogPlus.show();
+            mDialogPlus = DialogPlus.newDialog(mActivity)
+                    .setContentHolder(new ViewHolder(tipsDialogView))
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_50)
+                    .setInAnimation(R.anim.fade_in)
+                    .setOutAnimation(R.anim.fade_out)
+                    .setExpanded(false)
+                    .setGravity(Gravity.BOTTOM)
+                    .create();
+            mDialogPlus.show();
+        } else {
+            addSpecialFollow(userID);
+        }
     }
 
     private void delSpecialFollow(int userId) {
