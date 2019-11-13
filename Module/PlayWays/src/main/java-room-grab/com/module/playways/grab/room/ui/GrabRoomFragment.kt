@@ -735,14 +735,14 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                     if (grabPlayerInfoModel != null) {
                         EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), grabPlayerInfoModel.userInfo))
                     } else {
-                        U.getToastUtil().showShort("只能送给正在演唱的人哦～")
+                        U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
                     }
                 }
             } else {
-                U.getToastUtil().showShort("只能送给正在演唱的人哦～")
+                U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
             }
         } else {
-            U.getToastUtil().showShort("只能送给正在演唱的人哦～")
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
         }
     }
 
@@ -778,6 +778,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     fun onEvent(event: BuyGiftEvent) {
         if (event.receiver.userId != MyUserInfoManager.uid.toInt()) {
             mContinueSendView?.startBuy(event.baseGift, event.receiver)
+        } else {
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
         }
     }
 

@@ -338,11 +338,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 if (it.userInfo.userId != MyUserInfoManager.uid.toInt()) {
                     mGiftPanelView.show(it)
                 } else {
-                    U.getToastUtil().showShort("只能送给正在演唱的人哦～")
+                    U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
                 }
             }
         } else {
-            U.getToastUtil().showShort("只能送给正在演唱的人哦～")
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
         }
     }
 
@@ -352,11 +352,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 if (it.userInfo.userId != MyUserInfoManager.uid.toInt()) {
                     EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
                 } else {
-                    U.getToastUtil().showShort("只能送给正在演唱的人哦～")
+                    U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
                 }
             }
         } else {
-            U.getToastUtil().showShort("只能送给正在演唱的人哦～")
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
         }
     }
 
@@ -567,6 +567,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     fun onEvent(event: BuyGiftEvent) {
         if (event.receiver.userId != MyUserInfoManager.uid.toInt()) {
             mContinueSendView.startBuy(event.baseGift, event.receiver)
+        } else {
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
         }
     }
 

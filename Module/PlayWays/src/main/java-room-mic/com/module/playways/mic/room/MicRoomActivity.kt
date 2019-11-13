@@ -454,14 +454,14 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                     if (micPlayerInfoMode != null) {
                         EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), micPlayerInfoMode.userInfo))
                     } else {
-                        U.getToastUtil().showShort("只能送给正在演唱的人哦～")
+                        U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
                     }
                 }
             } else {
-                U.getToastUtil().showShort("只能送给正在演唱的人哦～")
+                U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
             }
         } else {
-            U.getToastUtil().showShort("只能送给正在演唱的人哦～")
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
         }
     }
 
@@ -727,6 +727,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     fun onEvent(event: BuyGiftEvent) {
         if (event.receiver.userId != MyUserInfoManager.uid.toInt()) {
             mContinueSendView.startBuy(event.baseGift, event.receiver)
+        } else{
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
         }
     }
 
