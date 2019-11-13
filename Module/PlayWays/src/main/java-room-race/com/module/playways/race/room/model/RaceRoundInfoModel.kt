@@ -323,7 +323,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     }
 
     override fun toString(): String {
-        return "RaceRoundInfoModel(roundSeq=${roundSeq} status=$status, scores=$scores, subRoundSeq=$subRoundSeq, subRoundInfo=$subRoundInfo, playUsers=$playUsers, waitUsers=$waitUsers, introBeginMs=$introBeginMs, introEndMs=$introEndMs, elapsedTimeMs=$elapsedTimeMs, enterStatus=$enterStatus, enterSubRoundSeq=$enterSubRoundSeq)"
+        return "RaceRoundInfoModel(audienceUserCnt=$audienceUserCnt, status=$status, scores=$scores, subRoundSeq=$subRoundSeq, subRoundInfo=$subRoundInfo, playUsers=$playUsers, waitUsers=$waitUsers, introBeginMs=$introBeginMs, introEndMs=$introEndMs, elapsedTimeMs=$elapsedTimeMs, enterStatus=$enterStatus, enterSubRoundSeq=$enterSubRoundSeq, currentRoundChoiceUserCnt=$currentRoundChoiceUserCnt, unfakeSetForMe=$unfakeSetForMe)"
     }
 
 
