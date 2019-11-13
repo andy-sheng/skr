@@ -82,7 +82,7 @@ class LikeWorksFragment : BaseFragment() {
         mContentRv?.adapter = mAdapter
 
         val mLoadSir = LoadSir.Builder()
-                .addCallback(EmptyCallback(R.drawable.feed_empty_icon, "暂无人赞哦", "#FF3B4E79"))
+                .addCallback(EmptyCallback(R.drawable.feed_empty_icon, "暂无人赞哦", "#8c3B4E79"))
                 .build()
         mLoadService = mLoadSir.register(mRefreshLayout, Callback.OnReloadListener {
             getList()

@@ -22,6 +22,7 @@ import com.common.rxretrofit.ApiResult
 import com.common.utils.U
 import com.common.view.recyclerview.RecyclerOnItemClickListener
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.callback.EmptyCallback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
@@ -94,7 +95,7 @@ class LastFollowActivity : BaseActivity() {
         mTitlebar.leftTextView.setDebounceViewClickListener { finish() }
 
         val mLoadSir = LoadSir.Builder()
-                .addCallback(LastFollowEmptyCallback())
+                .addCallback(EmptyCallback(R.drawable.last_follow_activity_empty_icon, "暂无最新关注", "#8c3B4E79"))
                 .build()
         mLoadService = mLoadSir.register(mRefreshLayout) { getLastRelations() }
 
@@ -119,7 +120,7 @@ class LastFollowActivity : BaseActivity() {
             mLoadService.showSuccess()
             mLastFollowAdapter.dataList = list
         } else {
-            mLoadService.showCallback(LastFollowEmptyCallback::class.java)
+            mLoadService.showCallback(EmptyCallback::class.java)
             MyLog.w(TAG, "showLastRelation list=$list")
         }
 
