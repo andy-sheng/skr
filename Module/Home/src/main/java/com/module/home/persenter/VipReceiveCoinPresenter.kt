@@ -65,6 +65,10 @@ class VipReceiveCoinPresenter(val baseActivity: BaseActivity) : RxLifeCyclePrese
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     showDialog()
+                } else if (result.errno == 8302602) {
+                    //已经领取过了
+                    U.getPreferenceUtils().setSettingLong(PREF_KEY_VIP_RECEIVE, System.currentTimeMillis())
+                    mHasShow = true
                 }
             }
 
