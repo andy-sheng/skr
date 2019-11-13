@@ -5,10 +5,7 @@ import com.common.log.MyLog
 import com.module.playways.race.room.event.*
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.song.model.SongModel
-import com.zq.live.proto.RaceRoom.ERUserRole
-import com.zq.live.proto.RaceRoom.ERWantSingType
-import com.zq.live.proto.RaceRoom.ERaceRoundStatus
-import com.zq.live.proto.RaceRoom.RaceRoundInfo
+import com.zq.live.proto.RaceRoom.*
 import org.greenrobot.eventbus.EventBus
 
 class RaceRoundInfoModel : BaseRoundInfoModel() {
@@ -167,7 +164,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                     i++
                 }
             } else {
-                needUpdate = true
+                needUpdate = !(round.overReason == ERaceRoundOverReason.ERROR_NORMAL_OVER.value && round.playUsers.isEmpty())
             }
             if (needUpdate) {
                 updatePlayUsers(roundInfo?.playUsers)
@@ -188,7 +185,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                     i++
                 }
             } else {
-                needUpdate = true
+                needUpdate = !(round.overReason == ERaceRoundOverReason.ERROR_NORMAL_OVER.value && round.waitUsers.isEmpty())
             }
             if (needUpdate) {
                 updateWaitUsers(roundInfo?.waitUsers)
