@@ -167,6 +167,8 @@ class RaceResultActivity : BaseActivity() {
             val middle = raceResultModel.states?.get(1)!!
             val end = raceResultModel.states?.get(2)!!
 
+            levelDescTv.text = begin.rankingDesc
+
             levelView.bindData(begin.mainRanking, begin.subRanking)
             circleView.cancelAnim()
             circleView.max = 360
@@ -211,9 +213,10 @@ class RaceResultActivity : BaseActivity() {
                                 } else if (endVip.status > beginVip.status && endVip.status == SaveRankModel.ESRS_USED) {
                                     U.getToastUtil().showShort("VIP保段成功")
                                 }
+                                levelDescTv.text = middle.rankingDesc
                                 levelChangeAnimation(middle, end, object : AnimationListener {
                                     override fun onFinish() {
-
+                                        levelDescTv.text = end.rankingDesc
                                     }
                                 })
                             }
