@@ -108,10 +108,10 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
         mAudioTv.text = duration.toString() + "s"
         if (model.isFake) {
             // 蒙面
-            mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.fakeUserInfo?.avatarUrl)
+            mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.avatarUrl)
         } else {
             // 非蒙面 但是model.fakeUserInfo?.nickName, model.userInfo?.avatar都是为空
-            mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.userInfo?.avatar)
+            mAvatarIv.bindData(model.userInfo, model.userInfo?.avatar)
         }
     }
 

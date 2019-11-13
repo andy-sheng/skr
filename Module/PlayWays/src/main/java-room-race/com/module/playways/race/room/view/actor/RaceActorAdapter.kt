@@ -49,10 +49,8 @@ class RaceActorAdapter(val mRoomDate: RaceRoomData) : RecyclerView.Adapter<RaceA
         init {
             item.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
-                    if (mModel?.isFake == false) {
-                        mModel?.let {
-                            EventBus.getDefault().post(ShowPersonCardEvent(it.userID))
-                        }
+                    mModel?.let {
+                        EventBus.getDefault().post(ShowPersonCardEvent(it.userID))
                     }
                 }
             })
@@ -62,10 +60,10 @@ class RaceActorAdapter(val mRoomDate: RaceRoomData) : RecyclerView.Adapter<RaceA
             this.mPosition = pos
             this.mModel = model
 
-            if (model.isFake) {
-                avatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.fakeUserInfo?.avatarUrl)
+            if (mRoomDate.isFakeForMe(model.userID)) {
+                avatarIv.bindData(model.userInfo, model.fakeUserInfo?.avatarUrl)
             } else {
-                avatarIv.bindData(model.userInfo, model.fakeUserInfo?.nickName, model.userInfo?.avatar)
+                avatarIv.bindData(model.userInfo, model.userInfo?.avatar)
             }
 
             if (mRoomDate.realRoundInfo?.isSingerByUserId(model.userID) == true) {

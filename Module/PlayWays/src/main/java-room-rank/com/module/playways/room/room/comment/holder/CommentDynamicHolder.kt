@@ -38,9 +38,9 @@ class CommentDynamicHolder(itemView: View, mCommentItemListener: CommentAdapter.
         this.commentModel = commentModel
 
         if (commentModel.isFake) {
-            mAvatarIv.bindData(commentModel.userInfo, commentModel.fakeUserInfo?.nickName, commentModel.fakeUserInfo?.avatarUrl)
+            mAvatarIv.bindData(commentModel.userInfo, commentModel.fakeUserInfo?.avatarUrl)
         } else {
-            mAvatarIv.bindData(commentModel.userInfo, commentModel.fakeUserInfo?.nickName, commentModel.userInfo?.avatar)
+            mAvatarIv.bindData(commentModel.userInfo, commentModel.userInfo?.avatar)
         }
         FrescoWorker.loadImage(mCommentSdv, ImageFactory.newPathImage(commentModel.dynamicModel!!.bigEmojiURL)
                 .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
