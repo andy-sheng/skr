@@ -103,7 +103,7 @@ class SpecialFollowActivity : BaseActivity() {
 
 
         mLoadService = LoadSir.Builder()
-                .addCallback(EmptyCallback(R.drawable.home_list_empty_icon, "没有特别关注", "#ffffff"))
+                .addCallback(EmptyCallback(R.drawable.feed_empty_icon, "暂无特别关注哦", "#8c3B4E79"))
                 .build().register(refreshLayout) { getSPFollowRecordList(0, true) }
 
     }

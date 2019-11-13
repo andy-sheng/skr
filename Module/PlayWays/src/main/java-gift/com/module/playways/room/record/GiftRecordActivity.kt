@@ -15,6 +15,9 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.callback.EmptyCallback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.room.gift.GiftServerApi
@@ -36,6 +39,8 @@ class GiftRecordActivity : BaseActivity() {
     var offset: Int = 0
     var hasMore = true
     val mCnt = 20
+
+    lateinit var mLoadService: LoadService<*>
 
     private val giftServerApi = ApiManager.getInstance().createService(GiftServerApi::class.java)
 
@@ -83,6 +88,11 @@ class GiftRecordActivity : BaseActivity() {
             }
         }
 
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.gift_record_empty_icon, "暂无送礼记录", "#8c3B4E79"))
+                .build()
+        mLoadService = mLoadSir.register(refreshLayout) { getGiftRecordList(0, true) }
+
         getGiftRecordList(0, true)
     }
 
@@ -121,6 +131,12 @@ class GiftRecordActivity : BaseActivity() {
                 adapter?.mDataList?.addAll(list)
                 adapter?.notifyDataSetChanged()
             }
+        }
+
+        if (adapter?.mDataList.isNullOrEmpty()) {
+            mLoadService.showCallback(EmptyCallback::class.java)
+        } else {
+            mLoadService.showSuccess()
         }
     }
 
