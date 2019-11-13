@@ -650,18 +650,19 @@ public class UserInfoManager {
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     List<UserInfoModel> list = JSON.parseArray(obj.getData().getString("fans"), UserInfoModel.class);
-                    List<UserInfoModel> friendList = new ArrayList<>();
-                    if (list != null) {
-                        for (UserInfoModel userInfoModel : list) {
-                            if (userInfoModel.isFriend()) {
-                                friendList.add(userInfoModel);
-                            }
-                        }
-                    }
-                    if (!friendList.isEmpty()) {
-                        // 好友列表存到数据库
-                        UserInfoLocalApi.insertOrUpdate(friendList);
-                    }
+                    // todo 粉丝关系链不完整
+//                    List<UserInfoModel> friendList = new ArrayList<>();
+//                    if (list != null) {
+//                        for (UserInfoModel userInfoModel : list) {
+//                            if (userInfoModel.isFriend()) {
+//                                friendList.add(userInfoModel);
+//                            }
+//                        }
+//                    }
+//                    if (!friendList.isEmpty()) {
+//                        // 好友列表存到数据库
+//                        UserInfoLocalApi.insertOrUpdate(friendList);
+//                    }
                     int newOffset = obj.getData().getIntValue("offset");
                     if (userInfoListCallback != null) {
                         userInfoListCallback.onSuccess(FROM.SERVER_PAGE, newOffset, list);
