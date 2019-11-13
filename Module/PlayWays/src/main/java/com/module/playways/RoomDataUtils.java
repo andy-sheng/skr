@@ -15,7 +15,6 @@ import com.module.playways.race.room.model.FakeUserInfoModel;
 import com.module.playways.race.room.model.RacePlayerInfoModel;
 import com.module.playways.race.room.model.RaceRoundInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
-import com.zq.live.proto.RaceRoom.FakeUserInfo;
 
 import java.util.List;
 
@@ -308,6 +307,16 @@ public class RoomDataUtils {
                 return true;
             }
         }
+        return false;
+    }
+
+    public static boolean isAudience(RaceRoomData roomData, int userID) {
+        RacePlayerInfoModel racePlayerInfoModel = RoomDataUtils.getPlayerInfoById(roomData, userID);
+        if (racePlayerInfoModel == null) {
+            //观众
+            return true;
+        }
+
         return false;
     }
 

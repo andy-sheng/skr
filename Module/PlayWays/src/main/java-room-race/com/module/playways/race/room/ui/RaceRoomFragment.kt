@@ -8,7 +8,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewStub
 import com.alibaba.android.arouter.launcher.ARouter
-import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfo
@@ -39,6 +38,7 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.event.RaceScoreChangeEvent
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
+import com.module.playways.race.room.event.UpdateAudienceCountEvent
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.*
@@ -786,6 +786,13 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         playerInfoModel?.let {
             if (it.userId != MyUserInfoManager.uid.toInt()) {
                 mVipEnterPresenter?.addNotice(it)
+
+                if (RoomDataUtils.isAudience(mRoomData, playerInfoModel.userId)) {
+                    mRoomData.realRoundInfo?.let {
+                        it.audienceUserCnt++
+                        EventBus.getDefault().post(UpdateAudienceCountEvent(it.audienceUserCnt))
+                    }
+                }
             }
         }
     }
