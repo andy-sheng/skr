@@ -228,7 +228,7 @@ public class RoomDataUtils {
         }
 
         if (roomData.isFakeForMe(userInfoModel.getUserId())) {
-            return racePlayerInfoModel.getFakeUserInfo().getAvatarUrl();
+            return racePlayerInfoModel.getFakeUserInfo() != null ? racePlayerInfoModel.getFakeUserInfo().getAvatarUrl() : "";
         }
 
         return racePlayerInfoModel.getUserInfo().getAvatar();
