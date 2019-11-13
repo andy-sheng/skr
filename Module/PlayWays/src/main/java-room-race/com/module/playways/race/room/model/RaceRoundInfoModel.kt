@@ -164,9 +164,9 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                     i++
                 }
             } else {
-                if(round.overReason == ERaceRoundOverReason.ERROR_NORMAL_OVER.value && round.playUsers.isEmpty()){
+                if (round.overReason == ERaceRoundOverReason.ERROR_NORMAL_OVER.value && round.playUsers.isEmpty()) {
                     needUpdate = false
-                }else{
+                } else {
                     needUpdate = true
                 }
             }
@@ -189,9 +189,9 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                     i++
                 }
             } else {
-                if(round.overReason == ERaceRoundOverReason.ERROR_NORMAL_OVER.value && round.playUsers.isEmpty()){
+                if (round.overReason == ERaceRoundOverReason.ERROR_NORMAL_OVER.value && round.playUsers.isEmpty()) {
                     needUpdate = false
-                }else{
+                } else {
                     needUpdate = true
                 }
             }
@@ -243,6 +243,8 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
             updateStatus(notify, roundInfo.status)
         }
 
+        audienceUserCnt = roundInfo.audienceUserCnt
+        EventBus.getDefault().post(UpdateAudienceCountEvent(audienceUserCnt))
         return
     }
 
