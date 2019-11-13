@@ -22,7 +22,7 @@ import com.module.playways.R
 import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.view.SingCountDownView2
 import com.module.playways.race.room.RaceRoomData
-import com.module.playways.race.room.event.RaceBlightEvent
+import com.module.playways.race.room.event.RaceBlightByMeEvent
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
 import com.opensource.svgaplayer.SVGAParser
@@ -110,7 +110,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RaceBlightEvent) {
+    fun onEvent(event: RaceBlightByMeEvent) {
         // 重新刷一下UI
         val infoModel = roomData.realRoundInfo
         val userInfoModel = roomData.getPlayerOrWaiterInfo(infoModel?.getSingerIdNow())

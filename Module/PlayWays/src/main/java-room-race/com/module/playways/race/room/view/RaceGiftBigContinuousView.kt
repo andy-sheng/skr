@@ -14,7 +14,7 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.room.room.gift.GiftBigContinuousView
 import com.module.playways.room.room.gift.model.GiftPlayModel
 
-class RaceBigContinuousView : GiftBigContinuousView {
+class RaceGiftBigContinuousView : GiftBigContinuousView {
     var mRoomData: RaceRoomData? = null
 
     constructor(context: Context?) : super(context)

@@ -25,7 +25,7 @@ import com.component.busilib.view.VoiceChartView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
-import com.module.playways.race.room.event.RaceBlightEvent
+import com.module.playways.race.room.event.RaceBlightByMeEvent
 import com.opensource.svgaplayer.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -107,7 +107,7 @@ class RaceTopVsView : ExConstraintLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RaceBlightEvent) {
+    fun onEvent(event: RaceBlightByMeEvent) {
         updateAvatar()
     }
 

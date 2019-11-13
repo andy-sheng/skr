@@ -482,7 +482,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         giftOverlayAnimationViewGroup.setRoomData(mRoomData)
         val giftBigAnimationViewGroup = rootView.findViewById<GiftBigAnimationViewGroup>(R.id.gift_big_animation_vg)
         giftBigAnimationViewGroup.setRoomData(mRoomData)
-        val giftBigContinueView = rootView.findViewById<RaceBigContinuousView>(R.id.gift_big_continue_view)
+        val giftBigContinueView = rootView.findViewById<RaceGiftBigContinuousView>(R.id.gift_big_continue_view)
         giftBigContinueView.mRoomData = mRoomData
         giftBigAnimationViewGroup.setGiftBigContinuousView(giftBigContinueView)
         //mDengBigAnimation = rootView.findViewById<View>(R.id.deng_big_animation) as GrabDengBigAnimationView
