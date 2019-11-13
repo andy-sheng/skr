@@ -153,7 +153,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         initTopView()
         initTurnSenceView()
 //        initSelectSongView()
-        initResuleView()
+        initResultView()
 
         initSingSenceView()
         initRightView()
@@ -187,8 +187,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
     private fun initSignUpView() {
+        mSignUpView = rootView.findViewById(R.id.sign_up_view)
         if (!mRoomData.audience) {
-            mSignUpView = rootView.findViewById(R.id.sign_up_view)
             mSignUpView?.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
             mSignUpView?.roomData = mRoomData
             mSignUpView?.clickSignUpBtn = {
@@ -208,8 +208,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
 
     private fun initSelectPagerView() {
+        mRacePagerSelectSongView = rootView.findViewById(R.id.select_pager_view)
         if (!mRoomData.audience) {
-            mRacePagerSelectSongView = rootView.findViewById(R.id.select_pager_view)
             mRacePagerSelectSongView?.mRoomData = mRoomData
 
             mRacePagerSelectSongView?.mSignUpMethed = { itemID, model ->
@@ -225,7 +225,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mRaceMatchView.roomData = mRoomData
     }
 
-    private fun initResuleView() {
+    private fun initResultView() {
         mRaceNoSingCardView = rootView.findViewById(R.id.race_nosinger_result_view)
         mRaceMiddleResultView = rootView.findViewById(R.id.race_middle_result_view)
         mRaceMiddleResultView.setRaceRoomData(mRoomData)
