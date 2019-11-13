@@ -106,6 +106,9 @@ public class PersonInfoDialog {
             public void onClickFollow(int userID, boolean isFriend, boolean isFollow) {
                 // 关注
                 if (isFollow || isFriend) {
+                    if (mDialogPlus != null) {
+                        mDialogPlus.dismiss(false);
+                    }
                     unFollow(userID, isFriend);
                 } else {
                     UserInfoManager.getInstance().mateRelation(userID, UserInfoManager.RA_BUILD, isFriend, mRoomID, null);
@@ -210,6 +213,9 @@ public class PersonInfoDialog {
     }
 
     private void unFollow(int userID, boolean isFriend) {
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(mActivity)
                 .setTitleTip("取消关注")
                 .setMessageTip("是否取消关注")
@@ -247,6 +253,9 @@ public class PersonInfoDialog {
     }
 
     private void showVipOpenDialog() {
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(mActivity)
                 .setMessageTip("非VIP最多特别关注3个用户，是否开通vip享受15人上限～")
                 .setConfirmTip("开通VIP")
@@ -286,6 +295,9 @@ public class PersonInfoDialog {
 
     private void showConfirmSpFollowDialog(int userID, boolean isSpFollow) {
         if (isSpFollow) {
+            if (mDialogPlus != null) {
+                mDialogPlus.dismiss(false);
+            }
             TipsDialogView tipsDialogView = new TipsDialogView.Builder(mActivity)
                     .setMessageTip("是否对ta关闭特别关注\n关闭后，你将无法收到关于ta的特别提醒啦")
                     .setConfirmTip("关闭")
@@ -391,6 +403,9 @@ public class PersonInfoDialog {
     }
 
     private void showRemarkDialog(final UserInfoModel userInfoModel) {
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
         EditRemarkView editRemarkView = new EditRemarkView((BaseActivity) mActivity, userInfoModel.getNickname(), userInfoModel.getNicknameRemark(null));
         editRemarkView.setListener(new EditRemarkView.Listener() {
             @Override
