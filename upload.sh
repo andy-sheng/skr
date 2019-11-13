@@ -69,6 +69,8 @@ echo $time
 
 downloadUrl=$(curl -F 'file=@'$uploadFile'' \
  -F '_api_key='$apiKey'' \
+ -F 'buildInstallType=2' \
+ -F 'buildPassword=123' \
  -F 'buildUpdateDescription=更新时间'$time'
  1. bug修复
  2. 功能更新'\
