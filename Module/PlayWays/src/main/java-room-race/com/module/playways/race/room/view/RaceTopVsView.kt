@@ -216,14 +216,12 @@ class RaceTopVsView : ExConstraintLayout {
         roomData?.realRoundInfo?.scores?.let {
             if (it.size == 2) {
                 if ((roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.uid.toInt()) == false)) {
-
                     resetLeftPlayCount(it[0].bLightCnt - getTextContentInt(leftTicketCountTv))
                     leftTicketCountTv.text = it[0].bLightCnt.toString()
                     resetRightPlayCount(it[1].bLightCnt - getTextContentInt(rightTicketCountTv))
                     rightTicketCountTv.text = it[1].bLightCnt.toString()
                 } else {
                     if (roomData?.realRoundInfo?.subRoundSeq == 1) {
-
                         if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.uid.toInt()) == true) {
                             resetLeftPlayCount(it[0].bLightCnt - getTextContentInt(leftTicketCountTv))
                             leftTicketCountTv.text = it[0].bLightCnt.toString()

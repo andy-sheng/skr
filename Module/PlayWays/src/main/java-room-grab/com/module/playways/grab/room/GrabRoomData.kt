@@ -127,18 +127,18 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
         if (userID == null || userID == 0) {
             return null
         }
-        val playerInfoModel = userInfoMap?.get(userID) as GrabPlayerInfoModel?
-        if (playerInfoModel == null || playerInfoModel.role == EQUserRole.EQUR_WAIT_USER.value) {
+//        val playerInfoModel = userInfoMap?.get(userID) as GrabPlayerInfoModel?
+//        if (playerInfoModel == null || playerInfoModel.role == EQUserRole.EQUR_WAIT_USER.value) {
             val l = getPlayerAndWaiterInfoList()
             for (playerInfo in l) {
                 if (playerInfo.userInfo.userId == userID) {
-                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
+//                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
                     return playerInfo
                 }
             }
-        } else {
-            return playerInfoModel
-        }
+//        } else {
+//            return playerInfoModel
+//        }
         return null
     }
 

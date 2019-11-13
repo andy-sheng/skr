@@ -100,18 +100,18 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         if (userID == null || userID == 0) {
             return null
         }
-        val playerInfoModel = userInfoMap[userID] as RacePlayerInfoModel?
-        if (playerInfoModel == null || playerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value) {
+//        val playerInfoModel = userInfoMap[userID] as RacePlayerInfoModel?
+//        if (playerInfoModel == null || playerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value) {
             val l = getPlayerAndWaiterInfoList()
             for (playerInfo in l) {
                 if (playerInfo.userInfo.userId == userID) {
-                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
+//                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
                     return playerInfo as RacePlayerInfoModel?
                 }
             }
-        } else {
-            return playerInfoModel
-        }
+//        } else {
+//            return playerInfoModel
+//        }
         return null
     }
 

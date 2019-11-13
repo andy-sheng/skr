@@ -111,18 +111,18 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
         if (userID == null || userID == 0) {
             return null
         }
-        val playerInfoModel = userInfoMap[userID] as MicPlayerInfoModel?
-        if (playerInfoModel == null || playerInfoModel.role == EMUserRole.MRUR_PLAY_USER.value) {
+//        val playerInfoModel = userInfoMap[userID] as MicPlayerInfoModel?
+//        if (playerInfoModel == null || playerInfoModel.role == EMUserRole.MRUR_PLAY_USER.value) {
             val l = getPlayerAndWaiterInfoList()
             for (playerInfo in l) {
                 if (playerInfo.userInfo.userId == userID) {
-                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
+//                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
                     return playerInfo
                 }
             }
-        } else {
-            return playerInfoModel
-        }
+//        } else {
+//            return playerInfoModel
+//        }
         return null
     }
 
