@@ -521,6 +521,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             MyLog.d(TAG, "this round is null")
             // 游戏结束了
             mIRaceRoomView.gameOver(lastRound)
+            if(mRoomData.audience){
+                U.getToastUtil().showShort("排位房间已解散")
+            }
             return
         }
 
