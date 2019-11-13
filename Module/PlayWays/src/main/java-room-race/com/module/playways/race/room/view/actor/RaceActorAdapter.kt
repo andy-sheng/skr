@@ -13,6 +13,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.view.AvatarView
 import com.component.person.event.ShowPersonCardEvent
+import com.component.person.event.ShowReportEvent
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.model.RacePlayerInfoModel
@@ -49,9 +50,16 @@ class RaceActorAdapter(val mRoomDate: RaceRoomData) : RecyclerView.Adapter<RaceA
         init {
             item.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
-                    mModel?.let {
-                        EventBus.getDefault().post(ShowPersonCardEvent(it.userID))
+                    if (mRoomDate.isFakeForMe(mModel?.userID)) {
+                        mModel?.userID?.let {
+                            EventBus.getDefault().post(ShowReportEvent(it))
+                        }
+                    } else {
+                        mModel?.userID?.let {
+                            EventBus.getDefault().post(ShowPersonCardEvent(it))
+                        }
                     }
+
                 }
             })
         }

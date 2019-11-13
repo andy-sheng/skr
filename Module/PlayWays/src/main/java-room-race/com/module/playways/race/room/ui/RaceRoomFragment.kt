@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewStub
 import com.alibaba.android.arouter.launcher.ARouter
+import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfo
@@ -20,6 +21,7 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
+import com.component.person.event.ShowReportEvent
 import com.component.report.fragment.QuickFeedbackFragment
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
@@ -525,6 +527,36 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         if (!mRoomData.isFakeForMe(event.uid)) {
             showPersonInfoView(event.uid)
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ShowReportEvent) {
+        // 展示是否举报的弹窗
+        dismissDialog()
+        mTipsDialogView = TipsDialogView.Builder(context)
+                .setMessageTip("是否举报ta？")
+                .setConfirmTip("举报")
+                .setCancelTip("取消")
+                .setConfirmBtnClickListener {
+                    mTipsDialogView?.dismiss(false)
+
+                    U.getFragmentUtils().addFragment(
+                            FragmentUtils.newAddParamsBuilder(activity, QuickFeedbackFragment::class.java)
+                                    .setAddToBackStack(true)
+                                    .setHasAnimation(true)
+                                    .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_RACE_ROOM)
+                                    .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
+                                    .addDataBeforeAdd(2, event.uid)
+                                    .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
+                                    .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
+                                    .build())
+
+                }
+                .setCancelBtnClickListener {
+                    mTipsDialogView?.dismiss()
+                }
+                .build()
+        mTipsDialogView?.showByDialog()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

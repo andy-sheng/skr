@@ -14,9 +14,11 @@ import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.component.busilib.view.SpeakingTipsAnimationView
 import com.component.level.utils.LevelConfigUtils
+import com.component.person.event.ShowReportEvent
 import com.module.playways.R
 import com.module.playways.room.room.comment.adapter.CommentAdapter
 import com.module.playways.room.room.comment.model.CommentAudioModel
+import org.greenrobot.eventbus.EventBus
 
 class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapterListener?) : RecyclerView.ViewHolder(itemView) {
 
@@ -41,6 +43,12 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
                 if (mCommentAudioModel?.isFake == false) {
                     mCommentAudioModel?.let {
                         listener?.clickAvatar(it.userInfo?.userId ?: 0)
+                    }
+                } else {
+                    mCommentAudioModel?.let {
+                        mCommentAudioModel?.userInfo?.userId?.let {
+                            EventBus.getDefault().post(ShowReportEvent(it))
+                        }
                     }
                 }
             }

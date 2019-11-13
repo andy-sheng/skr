@@ -11,9 +11,11 @@ import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.component.level.utils.LevelConfigUtils
+import com.component.person.event.ShowReportEvent
 import com.module.playways.room.room.comment.adapter.CommentAdapter
 import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.R
+import org.greenrobot.eventbus.EventBus
 
 class CommentHolder(itemView: View, mCommentItemListener: CommentAdapter.CommentAdapterListener?) : RecyclerView.ViewHolder(itemView) {
     val TAG = "CommentHolder"
@@ -29,6 +31,10 @@ class CommentHolder(itemView: View, mCommentItemListener: CommentAdapter.Comment
             if (mCommentModel?.isFake == false) {
                 mCommentModel?.userInfo?.userId?.let {
                     mCommentItemListener?.clickAvatar(it)
+                }
+            } else {
+                mCommentModel?.userInfo?.userId?.let {
+                    EventBus.getDefault().post(ShowReportEvent(it))
                 }
             }
         }

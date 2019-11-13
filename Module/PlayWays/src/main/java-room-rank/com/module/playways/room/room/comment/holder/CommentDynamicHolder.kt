@@ -8,11 +8,13 @@ import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.view.AvatarView
+import com.component.person.event.ShowReportEvent
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.room.room.comment.adapter.CommentAdapter
 import com.module.playways.room.room.comment.model.CommentDynamicModel
 import com.module.playways.R
+import org.greenrobot.eventbus.EventBus
 
 class CommentDynamicHolder(itemView: View, mCommentItemListener: CommentAdapter.CommentAdapterListener?) : RecyclerView.ViewHolder(itemView) {
 
@@ -27,6 +29,10 @@ class CommentDynamicHolder(itemView: View, mCommentItemListener: CommentAdapter.
             override fun clickValid(v: View) {
                 if (commentModel?.isFake == false) {
                     mCommentItemListener?.clickAvatar(commentModel?.userInfo?.userId ?: 0)
+                } else {
+                    commentModel?.userInfo?.userId?.let {
+                        EventBus.getDefault().post(ShowReportEvent(it))
+                    }
                 }
             }
         })
