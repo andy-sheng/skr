@@ -38,7 +38,6 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.event.RaceScoreChangeEvent
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
-import com.module.playways.race.room.event.UpdateAudienceCountEvent
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.*
@@ -651,9 +650,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             MyLog.d(TAG, "showRightVote 是演唱者")
             mRaceRightOpView.visibility = View.GONE
         } else {
-            if(mRoomData.audience){
+            if (mRoomData.audience) {
                 mRaceRightOpView.showVote(false)
-            }else{
+            } else {
                 val role = mRoomData.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role
                 if (role == ERUserRole.ERUR_PLAY_USER.value) {
                     MyLog.d(TAG, "showRightVote 当前身份是play")
