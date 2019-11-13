@@ -699,6 +699,11 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 }
             }
             pretendEnterRoom(racePlayerInfoModel)
+        }else{
+            mRoomData.realRoundInfo?.let {
+                it.audienceUserCnt++
+                EventBus.getDefault().post(UpdateAudienceCountEvent(it.audienceUserCnt))
+            }
         }
         mIRaceRoomView.joinNotice(UserInfoModel.parseFromPB(event.userInfo))
     }

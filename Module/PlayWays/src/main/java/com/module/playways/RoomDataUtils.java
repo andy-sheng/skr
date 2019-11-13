@@ -310,15 +310,14 @@ public class RoomDataUtils {
         return false;
     }
 
-    public static boolean isAudience(RaceRoomData roomData, int userID) {
-        RacePlayerInfoModel racePlayerInfoModel = RoomDataUtils.getPlayerInfoById(roomData, userID);
-        if (racePlayerInfoModel == null) {
-            //观众
-            return true;
-        }
-
-        return false;
-    }
+//    public static boolean isAudience(RaceRoomData roomData, int userID) {
+//        RacePlayerInfoModel racePlayerInfoModel = RoomDataUtils.getPlayerInfoById(roomData, userID);
+//        if (racePlayerInfoModel == null) {
+//            //观众
+//            return true;
+//        }
+//        return false;
+//    }
 
     /**
      * 这个轮次的演唱者

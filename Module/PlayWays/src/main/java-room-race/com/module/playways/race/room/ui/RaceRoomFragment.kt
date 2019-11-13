@@ -786,13 +786,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         playerInfoModel?.let {
             if (it.userId != MyUserInfoManager.uid.toInt()) {
                 mVipEnterPresenter?.addNotice(it)
-
-                if (RoomDataUtils.isAudience(mRoomData, playerInfoModel.userId)) {
-                    mRoomData.realRoundInfo?.let {
-                        it.audienceUserCnt++
-                        EventBus.getDefault().post(UpdateAudienceCountEvent(it.audienceUserCnt))
-                    }
-                }
             }
         }
     }
