@@ -51,6 +51,8 @@ class RaceTopVsView : ExConstraintLayout {
     val rightSvgaIv: SVGAImageView
     var leftVoiceChartView: VoiceChartView
     var rightVoiceChartView: VoiceChartView
+    var playerNameLeft: ExTextView
+    var playerNameRight: ExTextView
 
     val raceTopVsIv: ImageView
     var roomData: RaceRoomData? = null
@@ -84,6 +86,8 @@ class RaceTopVsView : ExConstraintLayout {
         rightSvgaIv = this.findViewById(R.id.right_svga_iv)
         leftVoiceChartView = this.findViewById(R.id.left_voice_chart_view)
         rightVoiceChartView = this.findViewById(R.id.right_voice_chart_view)
+        playerNameLeft = rootView.findViewById(R.id.player_name_left)
+        playerNameRight = rootView.findViewById(R.id.player_name_right)
 
         leftAvatarIv.setDebounceViewClickListener {
             roomData?.realRoundInfo?.subRoundInfo?.let {
@@ -341,6 +345,16 @@ class RaceTopVsView : ExConstraintLayout {
 
         updateAvatar()
         updateData()
+
+        roomData?.realRoundInfo?.subRoundInfo?.let {
+            roomData?.getPlayerOrWaiterInfoModel(it.getOrNull(0)?.userID)?.let {
+                playerNameLeft.text = it.fakeUserInfo?.nickName
+            }
+
+            roomData?.getPlayerOrWaiterInfoModel(it.getOrNull(1)?.userID)?.let {
+                playerNameRight.text = it.fakeUserInfo?.nickName
+            }
+        }
     }
 
     private fun updateAvatar() {
