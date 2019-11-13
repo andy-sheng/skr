@@ -13,7 +13,8 @@ import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.*
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
@@ -33,7 +34,6 @@ import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.*
 import com.module.playways.race.room.model.*
-import com.module.playways.race.room.model.parseFromRoundInfoPB
 import com.module.playways.race.room.ui.IRaceRoomView
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
@@ -698,7 +698,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     mRoomData.realRoundInfo?.updateStatus(true, ERaceRoundStatus.ERRS_CHOCING.value)
                 }
             }
-        }else{
+        } else {
             mRoomData.realRoundInfo?.let {
                 it.audienceUserCnt++
                 EventBus.getDefault().post(UpdateAudienceCountEvent(it.audienceUserCnt))
@@ -717,6 +717,13 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         ensureInRcRoom()
         if (event.role != ERUserRole.ERUR_AUDIENCE) {
             mRoomData.realRoundInfo?.exitUser(event.userID)
+        } else {
+            mRoomData.realRoundInfo?.let {
+                if (it.audienceUserCnt > 0) {
+                    it.audienceUserCnt--
+                    EventBus.getDefault().post(UpdateAudienceCountEvent(it.audienceUserCnt))
+                }
+            }
         }
     }
 
@@ -841,9 +848,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
 
             var name: String?
-            if(playerInfoModel.role == ERUserRole.ERUR_AUDIENCE.value){
+            if (playerInfoModel.role == ERUserRole.ERUR_AUDIENCE.value) {
                 name = playerInfoModel.userInfo.nicknameRemark
-            }else{
+            } else {
                 name = playerInfoModel.fakeUserInfo?.nickName
             }
             val nameBuilder = SpanUtils()
