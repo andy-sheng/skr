@@ -50,11 +50,11 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
 //    private final static int ERR_11 = ERR_NONE + 11;
 //    private final static int xxx = -1;
 
-
+    private final static String DEFAULT_STRING_FOR_CREDENTIAL = "STRING_TO_AVOID_ALI_CRASH"; //绕开阿里云的bug: 如果key是零长度的 "" 会crash，且无法catch........
     private void reset() {
-        mAK = "";
-        mSK = "";
-        mToken = "";
+        mAK = DEFAULT_STRING_FOR_CREDENTIAL;
+        mSK = DEFAULT_STRING_FOR_CREDENTIAL;
+        mToken = DEFAULT_STRING_FOR_CREDENTIAL;
         mDate = null;
     }
 
@@ -209,19 +209,20 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
     }
 
 
+
     @Override
     public String getAK() {
-        return mAK;
+        return mAK;//DEFAULT_STRING_FOR_CREDENTIAL;//
     }
 
     @Override
     public String getSK() {
-        return mSK;
+        return mSK;//DEFAULT_STRING_FOR_CREDENTIAL;//
     }
 
     @Override
     public String getToken() {
-        return mToken;
+        return mToken;//DEFAULT_STRING_FOR_CREDENTIAL;//
     }
 
 
@@ -240,7 +241,7 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
 
     private final static String EXIRATION_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private Date trans2ClientExpiredDate(String serverExpiration) {
-        if (SDataManager.dbgMode) {
+        if (SDataManager.dbgMode) {//debug mode缩短有效期(需服务器配合)，阿里STS最短900秒
             CREDENTIAL_PERSISTENT_MS = 900 * 1000;
             REDUNTANT_MS = 60 * 1000;
         }
