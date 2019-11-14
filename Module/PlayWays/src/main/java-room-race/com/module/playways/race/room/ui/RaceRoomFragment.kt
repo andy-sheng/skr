@@ -653,7 +653,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             mRaceRightOpView.visibility = View.GONE
         } else {
             if (mRoomData.audience) {
-                mRaceRightOpView.showVote(false)
+                if(mRoomData.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value){
+                    // 中途进来不展示
+                    mRaceRightOpView.visibility = View.GONE
+                }else{
+                    mRaceRightOpView.showVote(false)
+                }
             } else {
                 val role = mRoomData.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role
                 if (role == ERUserRole.ERUR_PLAY_USER.value) {
