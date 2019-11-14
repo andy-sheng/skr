@@ -89,6 +89,15 @@ public class SDataManager {
         return this;
     }
 
+    public SDataManager useMainLogProject(boolean useMain) {
+        try {
+            mLS.setProp(SLogServiceBase.PROP_USE_MAIN_LOG_PROJECT, new Boolean(useMain));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
 
     public SDataManager setBasicInfo(SDataMgrBasicInfo info) {
         mBasicInfo.userID = info.userID;

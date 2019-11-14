@@ -40,6 +40,12 @@ public abstract class SLogServiceBase {
 
 
     /**
+     *  True means use main-log-project(used in release version), false means use test-log-project(used by dev/test)</br>
+     *  Prop data-type is {@link Boolean}. Default is test-log-project
+     */
+    public final static int PROP_USE_MAIN_LOG_PROJECT = 6;
+
+    /**
      * @param param usually there are some parameter related to app, so this API is usually called by app-context
      */
     public abstract void init(Object param) throws Exception;

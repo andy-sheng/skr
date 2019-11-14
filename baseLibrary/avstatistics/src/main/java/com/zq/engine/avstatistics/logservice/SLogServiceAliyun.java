@@ -7,8 +7,6 @@ import com.aliyun.sls.android.sdk.ClientConfiguration;
 import com.aliyun.sls.android.sdk.LOGClient;
 import com.aliyun.sls.android.sdk.LogException;
 import com.aliyun.sls.android.sdk.SLSLog;
-import com.aliyun.sls.android.sdk.core.AsyncTask;
-import com.aliyun.sls.android.sdk.core.auth.PlainTextAKSKCredentialProvider;
 import com.aliyun.sls.android.sdk.core.auth.StsTokenCredentialProvider;
 import com.aliyun.sls.android.sdk.core.callback.CompletedCallback;
 import com.aliyun.sls.android.sdk.model.Log;
@@ -43,9 +41,14 @@ class SLogServiceAliyun extends SLogServiceBase{
      * 内网域名: cn-beijing-intranet.log.aliyuncs.com
      * 外网域名: cn-beijing.log.aliyuncs.com
      */
-    private String mEndPoint = "https://cn-beijing.log.aliyuncs.com";//"http://cn-hangzhou.sls.aliyuncs.com";
-    private String mProject = "test-by-gongjun";
-    private String mLogStore = "test-logstore";
+    private final static String mEndPoint = "https://cn-beijing.log.aliyuncs.com";//"http://cn-hangzhou.sls.aliyuncs.com";
+    private final static String MAIN_PROJECT = "skrapp-log";
+    private final static String MAIN_LOGSTORE= "skrapp-logstore";
+    private final static String TEST_PROJECT = "test-by-gongjun";
+    private final static String TEST_LOGSTORE= "test-logstore";
+
+    private String mProject  = TEST_PROJECT;
+    private String mLogStore = TEST_LOGSTORE;
     private String source_ip = "110.110.110.110";
     private boolean isAsyncGetIp = false;
     //client的生命周期和app保持一致
@@ -162,6 +165,22 @@ class SLogServiceAliyun extends SLogServiceBase{
                     mEnableLS = ((Boolean)prop).booleanValue();
                     MyLog.w(TAG, "Enable log service="+mEnableLS);
                 }
+            case PROP_USE_MAIN_LOG_PROJECT:
+                {
+                    if (!(prop instanceof Boolean)) {
+                        throw new Exception("when set propID("+propID+"), the prop object should be "+Boolean.class.getSimpleName());
+                    }
+                    boolean useMain = ((Boolean)prop).booleanValue();
+                    if (useMain) {
+                        mProject = MAIN_PROJECT;
+                        mLogStore= MAIN_LOGSTORE;
+                    }
+                    else {
+                        mProject = TEST_PROJECT;
+                        mLogStore= TEST_LOGSTORE;
+                    }
+                }
+                break;
             default:
                 {
                     throw new Exception("This ClassName("+
@@ -194,7 +213,13 @@ class SLogServiceAliyun extends SLogServiceBase{
             return false;
         }
 
-        if (mSTSHolder.isExpired()) { //for the first time
+        SSTSCredentialHolder.ServiceStatus ss = mSTSHolder.getStatus();
+        if (ss.toCutOff) {
+            mEnableLS = false;
+            return false;
+        }
+
+        if (ss.isExpired) { //for the first time
             String AK = mSTSHolder.getAK();
             String SK = mSTSHolder.getSK();
             String token = mSTSHolder.getToken();
