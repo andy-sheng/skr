@@ -17,9 +17,9 @@ public class SDataManager {
     public static boolean dbgMode = false;
 
 
-    private String TAG = "SDATA_MANAGER";
+    private String TAG = "[SLS]SDATA_MANAGER";
 
-    private String LOG_PREFIX = "["+TAG+"_FLUSHED]"; //"[SDATA_MANAGER FLUSHED]"
+    private String LOG_PREFIX = "[SDATA_MANAGER_FLUSHED]"; //"[SDATA_MANAGER FLUSHED]"
 
     private SDataMgrBasicInfo mBasicInfo = null;
 
@@ -133,7 +133,7 @@ public class SDataManager {
         logStr.append(LOG_PREFIX).append(" userID=").append(mBasicInfo.userID).append(", channelID=").append(mBasicInfo.channelID)
                 .append(", channelJoinElapsed=").append(mBasicInfo.channelJoinElapsed).append("\n");
         logStr.append(mADHolder.toString());
-        MyLog.w(TAG, logStr.toString());
+        MyLog.w(logStr.toString());
 
 
         logStr.delete(LOG_PREFIX.length()+1, logStr.length()); //+1是给空格留的
@@ -145,7 +145,7 @@ public class SDataManager {
                 ILogItem e = itemList.get(i);
 
                 logStr.append(e.toString());
-                MyLog.w(TAG, logStr.toString());//MyLog的flush行为由其自己控制
+                MyLog.w(logStr.toString());//MyLog的flush行为由其自己控制
                 logStr.delete(LOG_PREFIX.length()+1, logStr.length()); //+1是给空格留的
 
                 mLS.appendLog(e);

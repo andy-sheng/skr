@@ -27,7 +27,7 @@ import retrofit2.Response;
  **/
 public class ZqLSCredentialHolder implements SSTSCredentialHolder
 {
-    private final static String TAG = "ZqLSCredentialHolder";
+    private final static String TAG = "[SLS]ZqLSCredentialHolder";
 
     private String mAK = null;
     private String mSK = null;

@@ -133,6 +133,17 @@ public class AgoraRTCAdapter {
         Context ctx = U.app().getApplicationContext();
         SDataManager.getInstance().setAppContext(ctx).setUserID(skrUid);
         SDataManager.getInstance().setSTSCredentialHolder(scHolder).enableLogService(true);
+
+        String channel = U.getChannelUtils().getChannel();
+        MyLog.w("[SLS]"+TAG, "initLogService() channel="+channel);
+
+        if ("DEV".equals(channel) || "TEST".equals(channel) || "SANDBOX".equals(channel)) {
+            SDataManager.getInstance().useMainLogProject(false);
+        }
+        else {
+            SDataManager.getInstance().useMainLogProject(true);
+        }
+
     }
 
 

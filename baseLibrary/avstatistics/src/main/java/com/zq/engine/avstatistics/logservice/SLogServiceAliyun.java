@@ -29,7 +29,7 @@ import org.json.JSONObject;
 
 class SLogServiceAliyun extends SLogServiceBase{
 
-    public final static String TAG = "SLogServiceAliyun";
+    public final static String TAG = "[SLS]SLogServiceAliyun";
 
     private final static String LOG_TOPIC = "sls-test";
     private final static String LOG_SOURSE= "Skr-app";
@@ -180,6 +180,12 @@ class SLogServiceAliyun extends SLogServiceBase{
                         mProject = TEST_PROJECT;
                         mLogStore= TEST_LOGSTORE;
                     }
+
+//                    if (SDataManager.dbgMode) {
+                        MyLog.w(TAG, "useMain project="+useMain);
+                        MyLog.w(TAG, "    project = "+mProject);
+                        MyLog.w(TAG, "    logStore= "+mLogStore);
+//                    }
                 }
                 break;
             default:
@@ -249,10 +255,10 @@ class SLogServiceAliyun extends SLogServiceBase{
 
 
             if (SDataManager.dbgMode) {
-                android.util.Log.d(TAG, "new sts credentials: ");
-                android.util.Log.d(TAG, "        AK = "+AK);
-                android.util.Log.d(TAG, "        SK = "+SK);
-                android.util.Log.d(TAG, "        token = "+token);
+                MyLog.d(TAG, "new sts credentials: ");
+                MyLog.d(TAG, "        AK = "+AK);
+                MyLog.d(TAG, "        SK = "+SK);
+                MyLog.d(TAG, "        token = "+token);
 
                 SLSLog.enableLog(); // log打印在控制台
             }
