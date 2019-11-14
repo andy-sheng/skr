@@ -21,6 +21,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class LogUploadUtils {
+    public static final long MAX_AUDIO_FOR_FEEDBACK = 100 * 1024 * 1024;
     public final String TAG = "LogUploadUtils";
     Disposable mUploadLogTask;
 
@@ -61,7 +62,7 @@ public class LogUploadUtils {
                     List<String> list = new ArrayList<>();
                     list.addAll(getLogsLastXXXFile(U.getAppInfoUtils().getSubDirFile("logs"), 3));
                     list.addAll(getLogsLastXXXFile(U.getAppInfoUtils().getSubDirFile("Crash_Doraemon"), 3));
-                    list.addAll(getLogsLastXXXFileLimitBySize(U.getAppInfoUtils().getSubDirFile("audio_feedback"), 30 * 1024 * 1024));
+                    list.addAll(getLogsLastXXXFileLimitBySize(U.getAppInfoUtils().getSubDirFile("audio_feedback"), MAX_AUDIO_FOR_FEEDBACK));
                     success = U.getZipUtils().zip(list, filez.getAbsolutePath());
                 } catch (IOException e) {
                     emitter.onError(new Throwable("文件压缩失败:" + e.getMessage()));

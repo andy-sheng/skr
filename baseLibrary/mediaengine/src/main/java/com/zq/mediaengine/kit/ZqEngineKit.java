@@ -66,7 +66,6 @@ import com.zq.mediaengine.util.gles.GLRender;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -94,7 +93,6 @@ public class ZqEngineKit implements AgoraOutCallback {
     public final String TAG = "ZqEngineKit";
     public static final String PREF_KEY_TOKEN_ENABLE = "key_agora_token_enable";
     public static final String AUDIO_FEEDBACK_DIR = "audio_feedback";
-
     public static final int VIDEO_RESOLUTION_360P = 0;
     public static final int VIDEO_RESOLUTION_480P = 1;
     public static final int VIDEO_RESOLUTION_540P = 2;
@@ -117,7 +115,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private static final boolean SCORE_DEBUG = false;
     private static final String SCORE_DEBUG_PATH = "/sdcard/tongzhuodeni.pcm";
     public static final boolean RECORD_FOR_DEBUG = false;
-    public final boolean OPEN_RECORD_FOR_CALLBACK = true; // 是否开启用于用户反馈的录制
+    public final boolean OPEN_AUDIO_RECORD_FOR_CALLBACK = true; // 是否开启用于用户反馈的录制
 
     private Params mConfig = new Params(); // 为了防止崩溃
 
@@ -1535,7 +1533,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private long lastTrimFeedbackFileSizeTs = 0;
 
     private void tryStartRecordForFeedback(String from) {
-        if(!OPEN_RECORD_FOR_CALLBACK){
+        if (!OPEN_AUDIO_RECORD_FOR_CALLBACK) {
             return;
         }
         boolean hasAnchor = false;
@@ -1607,11 +1605,11 @@ public class ZqEngineKit implements AgoraOutCallback {
             });
             for (int i = fileList.length - 1; i >= 0; i--) {
                 if (fileList[i].isFile()) {
-                    if (fileSize > 30 * 1024 * 1024) {
-                        //删除掉
-                        fileList[i].delete();
-                    } else {
-                        if (fileList[i].getName().endsWith(".m4a")) {
+                    if (fileList[i].getName().endsWith(".m4a")) {
+                        if (fileSize > U.getLogUploadUtils().MAX_AUDIO_FOR_FEEDBACK) {
+                            //删除掉
+                            fileList[i].delete();
+                        } else {
                             fileSize += fileList[i].length();
                         }
                     }
@@ -1621,7 +1619,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void tryStopRecordForFeedback(String from) {
-        if(!OPEN_RECORD_FOR_CALLBACK){
+        if (!OPEN_AUDIO_RECORD_FOR_CALLBACK) {
             return;
         }
         boolean hasAnchor = false;
@@ -1631,8 +1629,8 @@ public class ZqEngineKit implements AgoraOutCallback {
                 hasAnchor = true;
             }
         }
-        if(hasAnchor){
-            MyLog.d(TAG, "仍有主播，不取消录制 from="+from);
+        if (hasAnchor) {
+            MyLog.d(TAG, "仍有主播，不取消录制 from=" + from);
             return;
         }
         if (!mConfig.isRecordingForFeedback()) {
@@ -1640,7 +1638,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             return;
         }
         mConfig.setRecordingForFeedback(false);
-        stopAudioRecordingInner("ForFeedback "+ from);
+        stopAudioRecordingInner("ForFeedback " + from);
     }
 
     public void startAudioRecording(final String path, final boolean recordHumanVoice) {
