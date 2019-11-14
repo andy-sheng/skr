@@ -232,7 +232,7 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
      *  处理必须考虑到：用户本地时间不准的问题
      *  近似处理: 服务器返回的expiration 减去1小时，就是服务器当前的时间
      *  这里与服务器有一个重要约定: 服务器的credential有效期必须保持1个小时
-     *  服务器返回的字段举例：
+     *  服务器返回的字段示例(TimeZone=GMT00:00)：
      *      "expiration": "2019-11-11T12:01:09Z"
      */
     private static long CREDENTIAL_PERSISTENT_MS = 60 * 60 * 1000;//1小时
