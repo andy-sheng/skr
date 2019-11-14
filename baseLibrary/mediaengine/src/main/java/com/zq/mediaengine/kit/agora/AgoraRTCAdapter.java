@@ -132,7 +132,7 @@ public class AgoraRTCAdapter {
         int skrUid = mConfig.getSelfUid();
         Context ctx = U.app().getApplicationContext();
         SDataManager.getInstance().setAppContext(ctx).setUserID(skrUid);
-        SDataManager.getInstance().setSTSCredentialHolder(scHolder);
+        SDataManager.getInstance().setSTSCredentialHolder(scHolder).enableLogService(true);
     }
 
 

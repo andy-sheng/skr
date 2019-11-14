@@ -165,6 +165,7 @@ class SLogServiceAliyun extends SLogServiceBase{
                     mEnableLS = ((Boolean)prop).booleanValue();
                     MyLog.w(TAG, "Enable log service="+mEnableLS);
                 }
+                break;
             case PROP_USE_MAIN_LOG_PROJECT:
                 {
                     if (!(prop instanceof Boolean)) {
