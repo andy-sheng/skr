@@ -64,6 +64,8 @@ class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
     fun switchRoom() {
         enterJob?.cancel()
         mParentView?.clearAnimation()
+        normalArea?.visibility = View.GONE
+        honorArea?.visibility = View.GONE
     }
 
     fun enter(playerInfoModel: UserInfoModel, finishCall: (() -> Unit)?) {
