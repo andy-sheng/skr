@@ -21,7 +21,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class LogUploadUtils {
-    public static final long MAX_AUDIO_FOR_FEEDBACK = 100 * 1024 * 1024;
+    public static final long MAX_AUDIO_FOR_FEEDBACK = 10 * 1024 * 1024;
     public final String TAG = "LogUploadUtils";
     Disposable mUploadLogTask;
 
