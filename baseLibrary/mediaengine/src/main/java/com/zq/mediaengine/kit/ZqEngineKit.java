@@ -213,7 +213,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         UserStatus userStatus = ensureJoin(uid);
         userStatus.setAnchor(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_JOIN, userStatus));
-        tryStartRecordForFeedback();
+        tryStartRecordForFeedback("onUserJoined");
     }
 
     @Override
@@ -222,7 +222,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         UserStatus userStatus = mUserStatusMap.remove(uid);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_LEAVE, userStatus));
         MyLog.d(TAG, "onUserOffline mUserStatusMap=" + mUserStatusMap);
-        tryStopRecordForFeedback();
+        tryStopRecordForFeedback("onUserOffline");
     }
 
     @Override
@@ -298,11 +298,11 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (mConfig.getSelfUid() > 0) {
             UserStatus userStatus = ensureJoin(mConfig.getSelfUid());
             if (newRole == Constants.CLIENT_ROLE_BROADCASTER) {
-                tryStartRecordForFeedback();
                 userStatus.setAnchor(true);
+                tryStartRecordForFeedback("onClientRoleChanged");
             } else {
-                tryStopRecordForFeedback();
                 userStatus.setAnchor(false);
+                tryStopRecordForFeedback("onClientRoleChanged");
             }
         }
 
@@ -740,7 +740,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
         // 销毁前清理掉其他的异步任务
         mCustomHandlerThread.removeCallbacksAndMessages(null);
-        tryStopRecordForFeedback();
+        tryStopRecordForFeedback("destroy");
         mCustomHandlerThread.post(new LogRunnable("destroy" + " from=" + from + " status=" + mStatus) {
             @Override
             public void realRun() {
@@ -1533,28 +1533,32 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private long lastTrimFeedbackFileSizeTs = 0;
 
-    private void tryStartRecordForFeedback() {
+    private void tryStartRecordForFeedback(String from) {
         boolean hasAnchor = false;
-        for(UserStatus us : mUserStatusMap.values()){
-            if(us.isAnchor()){
+        for (UserStatus us : mUserStatusMap.values()) {
+            MyLog.d(TAG, " us=" + us);
+            if (us.isAnchor()) {
                 hasAnchor = true;
             }
         }
-        if(!hasAnchor){
-            MyLog.d(TAG, "没有主播不录制");
+        if (!hasAnchor) {
+            MyLog.d(TAG, "没有主播不录制 from=" + from);
             return;
         }
         if (mConfig.isRecordingForBusi()) {
-            MyLog.d(TAG, "业务录制在进行中，取消");
+            MyLog.d(TAG, "业务录制在进行中，取消 from=" + from);
             return;
         }
         if (mConfig.isRecordingForFeedback()) {
-            MyLog.d(TAG, "反馈录制在进行中，取消");
+            MyLog.d(TAG, "反馈录制在进行中，取消 from=" + from);
             return;
         }
-        mConfig.setRecordingForFeedback(true);
-        startAudioRecordingInner(getFeedbackFilepath(), false);
+
+
         if (mCustomHandlerThread != null) {
+            // 延迟一秒才开始录制，是为了兼容，变成主播时，业务层马上调用的录制的情况，1s时间给业务层让步，让业务先录
+            mConfig.setRecordingForFeedback(true);
+            startAudioRecordingInner(getFeedbackFilepath(), false);
             mCustomHandlerThread.post(new LogRunnable("trimFeedbackFileSize") {
                 @Override
                 public void realRun() {
@@ -1612,20 +1616,31 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
-    private void tryStopRecordForFeedback() {
+    private void tryStopRecordForFeedback(String from) {
+        boolean hasAnchor = false;
+        for (UserStatus us : mUserStatusMap.values()) {
+            MyLog.d(TAG, " us=" + us);
+            if (us.isAnchor()) {
+                hasAnchor = true;
+            }
+        }
+        if(hasAnchor){
+            MyLog.d(TAG, "仍有主播，不取消录制 from="+from);
+            return;
+        }
         if (!mConfig.isRecordingForFeedback()) {
-            MyLog.d(TAG, "反馈录制不在进行中，取消");
+            MyLog.d(TAG, "反馈录制不在进行中，取消 from=" + from);
             return;
         }
         mConfig.setRecordingForFeedback(false);
-        stopAudioRecordingInner("ForFeedback");
+        stopAudioRecordingInner("ForFeedback "+ from);
     }
 
     public void startAudioRecording(final String path, final boolean recordHumanVoice) {
         if (mCustomHandlerThread != null) {
             if (mConfig.isRecordingForFeedback()) {
                 mConfig.setRecordingForFeedback(false);
-                stopAudioRecordingInner("ForFeedback");
+                stopAudioRecordingInner("业务录制开始要求停止");
             }
             mConfig.setRecordingForBusi(true);
             startAudioRecordingInner(path, recordHumanVoice);
