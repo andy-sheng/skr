@@ -157,7 +157,7 @@ public final class ToastUtils {
      * @param yOffset
      */
     private static void show(final CharSequence text, final int duration, int priority, int gravity, int xOffset, int yOffset) {
-        if (TextUtils.isEmpty(text)) {
+        if (TextUtils.isEmpty(text) && !MyLog.isDebugLogOpen()) {
             return;
         }
 
