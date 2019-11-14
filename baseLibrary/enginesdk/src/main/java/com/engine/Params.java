@@ -91,8 +91,8 @@ public class Params implements Serializable {
     private int bandGain = 0;// 子带增益
     private HashMap<Integer, Integer> localVoiceReverb = new HashMap<>(); // 存混响参数
 
-    private int audioMixingPlayoutVolume = 50; // 混音音量 0-100，默认是100
-    private int audioMixingPublishVolume = 20; // 推出去的音量大小
+    private int audioMixingPlayoutVolume = 60; // 混音音量 0-100，默认是100
+    private int audioMixingPublishVolume = 30; // 推出去的音量大小
     private boolean enableInEarMonitoring = false;// 耳返
     private int earMonitoringVolume = 80; // 耳返音量
     private int playbackSignalVolume = 100;// 0-400 默认100，最多放大4倍

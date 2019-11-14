@@ -1558,7 +1558,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
 
         if (mCustomHandlerThread != null) {
-            // 延迟一秒才开始录制，是为了兼容，变成主播时，业务层马上调用的录制的情况，1s时间给业务层让步，让业务先录
+            // 延迟一秒才开始录制，是为了兼容，变成主播时，业务层马上调用的录制的情况，1s时间给业务层让步，让业务先录 。发现解决不了，去掉。
             mConfig.setRecordingForFeedback(true);
             startAudioRecordingInner(getFeedbackFilepath(), false);
             mCustomHandlerThread.post(new LogRunnable("trimFeedbackFileSize") {
