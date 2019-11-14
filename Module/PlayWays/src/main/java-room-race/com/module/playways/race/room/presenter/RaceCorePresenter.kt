@@ -689,6 +689,10 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     fun onEvent(event: RJoinNoticeMsg) {
         DebugLogView.println(TAG, "RJoinNoticeEvent ${event.userInfo.userID} 加入房间 角色为${event.role}")
         ensureInRcRoom()
+        if(event.userInfo.userID == MyUserInfoManager.uid.toInt()){
+            // 进房的是自己 不处理
+            return
+        }
         val racePlayerInfoModel = RacePlayerInfoModel()
         racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.userInfo)
         racePlayerInfoModel.role = event.role.value
