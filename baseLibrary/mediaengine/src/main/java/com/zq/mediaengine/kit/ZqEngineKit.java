@@ -117,6 +117,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private static final boolean SCORE_DEBUG = false;
     private static final String SCORE_DEBUG_PATH = "/sdcard/tongzhuodeni.pcm";
     public static final boolean RECORD_FOR_DEBUG = false;
+    public final boolean OPEN_RECORD_FOR_CALLBACK = true; // 是否开启用于用户反馈的录制
 
     private Params mConfig = new Params(); // 为了防止崩溃
 
@@ -1534,6 +1535,9 @@ public class ZqEngineKit implements AgoraOutCallback {
     private long lastTrimFeedbackFileSizeTs = 0;
 
     private void tryStartRecordForFeedback(String from) {
+        if(!OPEN_RECORD_FOR_CALLBACK){
+            return;
+        }
         boolean hasAnchor = false;
         for (UserStatus us : mUserStatusMap.values()) {
             MyLog.d(TAG, " us=" + us);
@@ -1617,6 +1621,9 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void tryStopRecordForFeedback(String from) {
+        if(!OPEN_RECORD_FOR_CALLBACK){
+            return;
+        }
         boolean hasAnchor = false;
         for (UserStatus us : mUserStatusMap.values()) {
             MyLog.d(TAG, " us=" + us);
