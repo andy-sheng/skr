@@ -24,10 +24,10 @@ public class LogUploadUtils {
     public final String TAG = "LogUploadUtils";
     Disposable mUploadLogTask;
 
-    public void upload(final long uid, Callback callback,boolean fromSelf) {
+    public void upload(final long uid, Callback callback, boolean fromSelf) {
 
         if (mUploadLogTask != null && !mUploadLogTask.isDisposed()) {
-            if(fromSelf) {
+            if (fromSelf) {
                 U.getToastUtil().showShort("正在上传日志");
             }
             return;
@@ -37,13 +37,13 @@ public class LogUploadUtils {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
                 MyLog.flushLog();
-                File logDir = new File(U.getAppInfoUtils().getMainDir() + File.separator + "logs/");
+                File logDir = new File(U.getAppInfoUtils().getSubDirPath("logs"));
                 if (logDir == null) {
                     emitter.onError(new Throwable("没有log文件夹"));
                     return;
                 }
 
-                String zipFile = U.getAppInfoUtils().getMainDir() + File.separator + "logs/" + System.currentTimeMillis() + "log.zip";
+                String zipFile = U.getAppInfoUtils().getFilePathInSubDir("logs", "logs.zip");
                 File filez = new File(zipFile);
                 if (filez.exists()) {
                     filez.delete();
@@ -61,6 +61,7 @@ public class LogUploadUtils {
                     List<String> list = new ArrayList<>();
                     list.addAll(getLogsLastXXXFile(U.getAppInfoUtils().getSubDirFile("logs"), 3));
                     list.addAll(getLogsLastXXXFile(U.getAppInfoUtils().getSubDirFile("Crash_Doraemon"), 3));
+                    list.addAll(getLogsLastXXXFileLimitBySize(U.getAppInfoUtils().getSubDirFile("audio_feedback"), 30 * 1024 * 1024));
                     success = U.getZipUtils().zip(list, filez.getAbsolutePath());
                 } catch (IOException e) {
                     emitter.onError(new Throwable("文件压缩失败:" + e.getMessage()));
@@ -141,9 +142,50 @@ public class LogUploadUtils {
                 if (fileList[i].isFile()) {
                     if (fileList[i].getName().endsWith(".log")
                             || fileList[i].getName().endsWith(".txt")
-                            || fileList[i].getName().endsWith(".xlog")) {
+                            || fileList[i].getName().endsWith(".xlog")
+                            || fileList[i].getName().endsWith(".m4a")
+                            || fileList[i].getName().endsWith(".mp4")) {
                         lastThreeFiles.add(fileList[i].getAbsolutePath());
                         if (lastThreeFiles.size() >= lastNum) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return lastThreeFiles;
+    }
+
+    public List<String> getLogsLastXXXFileLimitBySize(File logDir, long maxSize) {
+        long nowSize = 0;
+        ArrayList<String> lastThreeFiles = new ArrayList<>();
+        if (logDir.exists() && logDir.isDirectory()) {
+            File[] fileList = logDir.listFiles();
+            if (fileList == null || fileList.length == 0) {
+                return lastThreeFiles;
+            }
+            // 文件修改时间排序
+            Arrays.sort(fileList, new Comparator<File>() {
+                public int compare(File f1, File f2) {
+                    long diff = f1.lastModified() - f2.lastModified();
+                    if (diff > 0)
+                        return 1;
+                    else if (diff == 0)
+                        return 0;
+                    else
+                        return -1;
+                }
+            });
+            for (int i = fileList.length - 1; i >= 0; i--) {
+                if (fileList[i].isFile()) {
+                    if (fileList[i].getName().endsWith(".log")
+                            || fileList[i].getName().endsWith(".txt")
+                            || fileList[i].getName().endsWith(".xlog")
+                            || fileList[i].getName().endsWith(".m4a")
+                            || fileList[i].getName().endsWith(".mp4")) {
+                        nowSize = fileList[i].length();
+                        lastThreeFiles.add(fileList[i].getAbsolutePath());
+                        if (nowSize > maxSize) {
                             break;
                         }
                     }
@@ -172,8 +214,9 @@ public class LogUploadUtils {
         public String extra;
     }
 
-    public interface Callback{
+    public interface Callback {
         void onSuccess(String url);
+
         void onFailed();
     }
 }

@@ -4,13 +4,14 @@ import com.common.utils.U
 import com.component.lyrics.LyricsReader
 import java.io.Serializable
 import com.component.busilib.model.FeedSongModel
+import com.zq.mediaengine.kit.ZqEngineKit
 
 class FeedsMakeModel : Serializable {
 
     @Transient
-    val composeSavePath: String = U.getAppInfoUtils().getFilePathInSubDir("feeds", "feeds_compose.m4a")
+    val composeSavePath: String = U.getAppInfoUtils().getFilePathInSubDir(ZqEngineKit.AUDIO_FEEDBACK_DIR, "feeds_compose.m4a")
     @Transient
-    val recordSavePath: String = U.getAppInfoUtils().getFilePathInSubDir("feeds", "feeds_make.m4a")
+    val recordSavePath: String = U.getAppInfoUtils().getFilePathInSubDir(ZqEngineKit.AUDIO_FEEDBACK_DIR, "feeds_make.m4a")
 
     @Transient
     var firstLyricShiftTs = 0

@@ -128,7 +128,7 @@ public class UserStatus {
 //                ", isSelf=" + isSelf +
 //                ", mView=" + mView +
 //                ", enableVideo=" + enableVideo +
-//                ", isAnchor=" + isAnchor +
+                ", isAnchor=" + isAnchor +
                 '}';
     }
 }

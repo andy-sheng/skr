@@ -1320,7 +1320,7 @@ public class EngineManager implements AgoraOutCallback {
      */
     public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh, final boolean fromRecodFrameCallback) {
         MyLog.d(TAG, "startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh);
-        mConfig.setRecording(true);
+        mConfig.setRecordingForBusi(true);
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.post(new Runnable() {
                 @Override
@@ -1389,8 +1389,8 @@ public class EngineManager implements AgoraOutCallback {
      */
     public void stopAudioRecording() {
         MyLog.d(TAG, "stopAudioRecording");
-        if (mCustomHandlerThread != null && mConfig.isRecording()) {
-            mConfig.setRecording(false);
+        if (mCustomHandlerThread != null && mConfig.isRecordingForBusi()) {
+            mConfig.setRecordingForBusi(false);
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {

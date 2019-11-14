@@ -424,7 +424,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         }
     }
 
-    fun preOpWhenOtherRound(uid: Int) {
+    private fun preOpWhenOtherRound(uid: Int) {
         val playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid)
         if (playerInfo == null) {
             MyLog.w(TAG, "切换别人的时候PlayerInfo为空")
@@ -478,7 +478,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
              * 个人标签声音
              */
             val fileName = String.format(PERSON_LABEL_SAVE_PATH_FROMAT, mRoomData.gameId, mRoomData.realRoundInfo?.roundSeq)
-            val savePath = U.getAppInfoUtils().getFilePathInSubDir("grab_save", fileName)
+            val savePath = U.getAppInfoUtils().getFilePathInSubDir(ZqEngineKit.AUDIO_FEEDBACK_DIR, fileName)
             ZqEngineKit.getInstance().startAudioRecording(savePath, false)
         }
     }
@@ -878,7 +878,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
      */
     private fun uploadResForLabel(roundInfoModel: GrabRoundInfoModel) {
         val fileName = String.format(PERSON_LABEL_SAVE_PATH_FROMAT, mRoomData.gameId, roundInfoModel.roundSeq)
-        val savePath = U.getAppInfoUtils().getFilePathInSubDir("grab_save", fileName)
+        val savePath = U.getAppInfoUtils().getFilePathInSubDir(ZqEngineKit.AUDIO_FEEDBACK_DIR, fileName)
 
         UploadParams.newBuilder(savePath)
                 .setFileType(UploadParams.FileType.audioAi)

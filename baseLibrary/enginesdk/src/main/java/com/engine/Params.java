@@ -134,8 +134,9 @@ public class Params implements Serializable {
     @JSONField(serialize = false)
     private boolean mGrabSingNoAcc; // 一唱到底清唱模式
     @JSONField(serialize = false)
-    private boolean mRecording; // 是否在录制
-
+    private boolean mRecordingForBusi; // 是否在录制
+    @JSONField(serialize = false)
+    private boolean mRecordingForFeedback; // 是否在录制 用与用户反馈
     @JSONField(serialize = false)
     private int mAudioSampleRate = 44100; // 输出的音频采样率
     @JSONField(serialize = false)
@@ -541,12 +542,20 @@ public class Params implements Serializable {
         return mGrabSingNoAcc;
     }
 
-    public boolean isRecording() {
-        return mRecording;
+    public boolean isRecordingForBusi() {
+        return mRecordingForBusi;
     }
 
-    public void setRecording(boolean recording) {
-        mRecording = recording;
+    public void setRecordingForBusi(boolean recording) {
+        mRecordingForBusi = recording;
+    }
+
+    public boolean isRecordingForFeedback() {
+        return mRecordingForFeedback;
+    }
+
+    public void setRecordingForFeedback(boolean mRecordingForFeedback) {
+        this.mRecordingForFeedback = mRecordingForFeedback;
     }
 
     public int getAudioSampleRate() {
