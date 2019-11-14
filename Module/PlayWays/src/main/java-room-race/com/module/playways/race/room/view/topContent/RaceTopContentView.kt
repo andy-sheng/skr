@@ -147,13 +147,9 @@ class RaceTopContentView : ConstraintLayout {
     //只有轮次切换的时候调用
     private fun initData(from: String) {
         val list = mRoomData?.getPlayerAndWaiterInfoList()
-        if (!list.isNullOrEmpty()) {
-            MyLog.d(TAG, "initData list.size=${list.size} from=$from")
-            setName()
-            updateCount()
-        } else {
-            MyLog.e(TAG, "initData 没人？？？？")
-        }
+        MyLog.d(TAG, "initData list.size=${list?.size} from=$from")
+        setName()
+        updateCount()
     }
 
     fun setRoomData(roomData: RaceRoomData) {
