@@ -162,19 +162,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_90_dp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.module.playways.race.room.view.RaceSignUpBtnView
         android:id="@+id/sign_up_view"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="@dimen/view_80_dp"
         android:layout_height="@dimen/view_80_dp"
         android:layout_marginRight="@dimen/view_12_dp"
-        android:layout_marginBottom="@dimen/view_80_dp" />
+        android:layout_marginBottom="@dimen/view_80_dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 
     <!--礼物连送按钮-->
@@ -223,7 +224,7 @@
         android:layout_height="match_parent" />
 
     <!--大礼物连送-->
-    <com.module.playways.room.room.gift.GiftBigContinuousView
+    <com.module.playways.race.room.view.RaceGiftBigContinuousView
         android:id="@+id/gift_big_continue_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -241,16 +242,16 @@
 
     <!--右边的操作区域-->
     <com.module.playways.race.room.view.RaceRightOpView
-        android:clipChildren="false"
         android:id="@+id/race_right_op_view"
         android:layout_width="@dimen/view_133_dp"
         android:layout_height="@dimen/view_133_dp"
         android:layout_marginBottom="@dimen/view_156_dp"
+        android:clipChildren="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <!--礼物面板-->
-    <com.module.playways.room.gift.view.GiftPanelView
+    <com.module.playways.race.room.view.RaceGiftPanelView
         android:id="@+id/gift_panel_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -270,6 +271,13 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/view_18_dp"
         android:layout="@layout/voice_record_tips_view_layout" />
+
+    <com.module.playways.grab.room.view.GrabChangeRoomTransitionView
+        android:id="@+id/change_room_transition_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_trans_80"
+        android:visibility="gone" />
 
     <ViewStub
         android:id="@+id/debug_log_view_stub"

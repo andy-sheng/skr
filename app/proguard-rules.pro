@@ -11,7 +11,7 @@
 -dontskipnonpubliclibraryclassmembers #指定不去忽略包可见的库类的成员
 -dontpreverify # 混淆时是否做预校验，Android平台上不需要这项功能，去掉之后还可以加快混淆速度。
 -verbose # 混淆时是否记录日志
--ignorewarning
+#-ignorewarning
 #-dontshrink #关闭shrink,默认开启，用以减小应用体积，移除未被使用的类和成员，并且会在优化动作执行之后再次执行
 #-dontoptimize #关闭优化,默认开启，在字节码级别执行优化，让应用运行的更快。
 #-dontobfuscate #关闭混淆,默认开启，增大反编译难度，类和类成员会被随机命名，除非用keep保护。
@@ -47,13 +47,6 @@
 
 #milink
 -keep public class com.mi.milink.sdk.connection.** { *; }
-
-#greenDao
--keep class de.greenrobot.dao.** {*;}
--keepclassmembers class * extends de.greenrobot.dao.AbstractDao {
-    public static java.lang.String TABLENAME;
-}
--keep class **$Properties
 
 #rx
 -dontwarn sun.misc.**
@@ -247,12 +240,16 @@
 -keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
 public static java.lang.String TABLENAME;
 }
--keep class **$Properties
+#-keep class **$Properties
+
+-keep class **$Properties{*;}
 
 # If you do not use SQLCipher:
 -dontwarn org.greenrobot.greendao.database.**
 # If you do not use Rx:
 -dontwarn rx.**
+
+
 
 -keep class **.BuildConfig {*;}
 
@@ -523,6 +520,6 @@ public void *(***);
 -keep class com.apptalkingdata.** {*;}
 -keep class dice.** {*; }
 -dontwarn dice.**
--ignorewarnings
+#-ignorewarnings
 
 

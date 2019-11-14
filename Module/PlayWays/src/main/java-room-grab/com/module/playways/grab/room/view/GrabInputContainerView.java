@@ -91,9 +91,8 @@ public class GrabInputContainerView extends InputContainerView {
                             .build();
                     map.put("receiver", new UserInfo[]{userInfo});
                 }
-
                 GrabPlayerInfoModel grabPlayerInfoModel = mGrabPlayerInfoModel;
-
+                map.put("mode",mRoomData.getGameType());
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                 ApiMethods.subscribe(roomServerApi.sendMsg(body), new ApiObserver<ApiResult>() {
                     @Override

@@ -1,6 +1,7 @@
 package com.module.playways.race.room
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -30,6 +31,8 @@ import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.room.model.LevelResultModel
 import com.module.playways.race.room.model.SaveRankModel
 import com.opensource.svgaplayer.*
+import com.orhanobut.dialogplus.DialogPlus
+import com.orhanobut.dialogplus.ViewHolder
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -49,7 +52,6 @@ class RaceResultActivity : BaseActivity() {
     lateinit var playAgainTv: ExTextView
     lateinit var ivBack: ExImageView
 
-
     lateinit var levelSave: CircleCountDownView
     lateinit var levelSolid: ExImageView
     lateinit var levelMedia: ImageView
@@ -59,6 +61,8 @@ class RaceResultActivity : BaseActivity() {
     lateinit var vipLevelSolid: ExImageView
     lateinit var vipLevelMedia: ImageView
     lateinit var vipLevelDesc: TextView
+
+    private var mGameRuleDialog: DialogPlus? = null
 
     val raceRoomServerApi = ApiManager.getInstance().createService(RaceRoomServerApi::class.java)
 
@@ -120,11 +124,7 @@ class RaceResultActivity : BaseActivity() {
 
         descTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                goMatchJob?.cancel()
-                countDownTv.visibility = View.GONE
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString(RouterConstants.KEY_WEB_URL, "https://fe.inframe.mobi/pages/banner/2p8p3gf3ujzxsw97z.html")
-                        .navigation()
+                showGameRuleDialog()
             }
         })
 
@@ -134,6 +134,19 @@ class RaceResultActivity : BaseActivity() {
             delay(200)
             U.getSoundUtils().play(mTag, R.raw.newrank_resultpage)
         }
+    }
+
+    private fun showGameRuleDialog() {
+        mGameRuleDialog?.dismiss(false)
+        mGameRuleDialog = DialogPlus.newDialog(this)
+                .setContentHolder(ViewHolder(R.layout.race_game_rule_view_layout))
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
+                .setExpanded(false)
+                .setGravity(Gravity.CENTER)
+                .create()
+        mGameRuleDialog?.show()
     }
 
     private fun getResult() {
@@ -166,6 +179,8 @@ class RaceResultActivity : BaseActivity() {
             val begin = raceResultModel.states?.get(0)!!
             val middle = raceResultModel.states?.get(1)!!
             val end = raceResultModel.states?.get(2)!!
+
+            levelDescTv.text = begin.rankingDesc
 
             levelView.bindData(begin.mainRanking, begin.subRanking)
             circleView.cancelAnim()
@@ -211,9 +226,10 @@ class RaceResultActivity : BaseActivity() {
                                 } else if (endVip.status > beginVip.status && endVip.status == SaveRankModel.ESRS_USED) {
                                     U.getToastUtil().showShort("VIP保段成功")
                                 }
+                                levelDescTv.text = middle.rankingDesc
                                 levelChangeAnimation(middle, end, object : AnimationListener {
                                     override fun onFinish() {
-
+                                        levelDescTv.text = end.rankingDesc
                                     }
                                 })
                             }
@@ -512,6 +528,7 @@ class RaceResultActivity : BaseActivity() {
 
     override fun destroy() {
         super.destroy()
+        mGameRuleDialog?.dismiss(false)
         U.getSoundUtils().release(mTag)
     }
 }

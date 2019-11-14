@@ -23,7 +23,10 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.person.event.ShowPersonCardEvent;
+import com.module.playways.BaseRoomData;
 import com.module.playways.R;
+import com.module.playways.RoomDataUtils;
+import com.module.playways.race.room.RaceRoomData;
 import com.module.playways.room.gift.event.OverlayGiftBrushMsgEvent;
 import com.module.playways.room.gift.view.ContinueTextView;
 import com.module.playways.room.room.comment.model.CommentGiftModel;
@@ -64,6 +67,7 @@ public class GiftContinuousView extends RelativeLayout {
     int mCurNum = 1;
 
     volatile GiftPlayModel mCurGiftPlayModel;
+    private BaseRoomData mRoomData;
 
     int mCurStatus = STATUS_IDLE;
 
@@ -104,12 +108,16 @@ public class GiftContinuousView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.gift_continue_view_layout, this);
-        mInfoContainer = (ExRelativeLayout) this.findViewById(R.id.info_container);
-        mSendAvatarIv = (BaseImageView) this.findViewById(R.id.send_avatar_iv);
-        mDescTv = (ExTextView) this.findViewById(R.id.desc_tv);
-        mGiftImgIv = (BaseImageView) this.findViewById(R.id.gift_img_iv);
-        mGiftNumTv = (ContinueTextView) this.findViewById(R.id.gift_num_tv);
-        mSenderNameTv = (ExTextView) this.findViewById(R.id.sender_name_tv);
+        mInfoContainer = this.findViewById(R.id.info_container);
+        mSendAvatarIv = this.findViewById(R.id.send_avatar_iv);
+        mDescTv = this.findViewById(R.id.desc_tv);
+        mGiftImgIv = this.findViewById(R.id.gift_img_iv);
+        mGiftNumTv = this.findViewById(R.id.gift_num_tv);
+        mSenderNameTv = this.findViewById(R.id.sender_name_tv);
+    }
+
+    public void bindData(BaseRoomData roomData) {
+        this.mRoomData = roomData;
     }
 
     //只有在IDLE情况下才去拉数据
@@ -143,21 +151,33 @@ public class GiftContinuousView extends RelativeLayout {
             return false;
         }
         mCurGiftPlayModel = model;
-        AvatarUtils.loadAvatarByUrl(mSendAvatarIv, AvatarUtils.newParamsBuilder(model.getSender().getAvatar())
-                .setCircle(true)
-                .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                .setBorderColor(Color.WHITE)
-                .build()
-        );
+        if (mRoomData instanceof RaceRoomData) {
+            AvatarUtils.loadAvatarByUrl(mSendAvatarIv, AvatarUtils.newParamsBuilder(RoomDataUtils.getRaceDisplayAvatar((RaceRoomData) mRoomData, model.getSender()))
+                    .setCircle(true)
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                    .setBorderColor(Color.WHITE)
+                    .build()
+            );
+            mSenderNameTv.setText(RoomDataUtils.getRaceDisplayNickName((RaceRoomData) mRoomData, model.getSender()));
+        } else {
+            AvatarUtils.loadAvatarByUrl(mSendAvatarIv, AvatarUtils.newParamsBuilder(model.getSender().getAvatar())
+                    .setCircle(true)
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                    .setBorderColor(Color.WHITE)
+                    .build()
+            );
+            mSenderNameTv.setText(model.getSender().getNicknameRemark());
+        }
 
         mSendAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                EventBus.getDefault().post(new ShowPersonCardEvent(model.getSender().getUserId()));
+                if (!((RaceRoomData) mRoomData).isFakeForMe(model.getSender().getUserId())) {
+                    EventBus.getDefault().post(new ShowPersonCardEvent(model.getSender().getUserId()));
+                }
             }
         });
 
-        mSenderNameTv.setText(model.getSender().getNicknameRemark());
         mDescTv.setText(model.getAction());
 
         if (model.getEGiftType() == GiftPlayModel.EGiftType.EMOJI) {
@@ -173,7 +193,11 @@ public class GiftContinuousView extends RelativeLayout {
             FrescoWorker.loadImage(mGiftImgIv, ImageFactory.newResImage(resId)
                     .build());
 
-            mSenderNameTv.setText(model.getSender().getNicknameRemark() + model.getAction());
+            if (mRoomData instanceof RaceRoomData) {
+                mSenderNameTv.setText(RoomDataUtils.getRaceDisplayNickName((RaceRoomData) mRoomData, model.getSender()));
+            } else {
+                mSenderNameTv.setText(model.getSender().getNicknameRemark() + model.getAction());
+            }
             mDescTv.setVisibility(GONE);
         } else if (model.getEGiftType() == GiftPlayModel.EGiftType.GIFT) {
             FrescoWorker.loadImage(mGiftImgIv, ImageFactory.newPathImage(model.getGiftIconUrl())
@@ -183,8 +207,14 @@ public class GiftContinuousView extends RelativeLayout {
                     .setHeight(U.getDisplayUtils().dip2px(45))
                     .build());
 
-            mSenderNameTv.setText(model.getSender().getNicknameRemark());
-            mDescTv.setText("送给 " + model.getReceiver().getNicknameRemark());
+            if (mRoomData instanceof RaceRoomData) {
+                mSenderNameTv.setText(RoomDataUtils.getRaceDisplayNickName((RaceRoomData) mRoomData, model.getSender()));
+                mDescTv.setText("送给 " + RoomDataUtils.getRaceDisplayNickName((RaceRoomData) mRoomData, model.getReceiver()));
+            } else {
+                mSenderNameTv.setText(model.getSender().getNicknameRemark() + model.getAction());
+                mDescTv.setText("送给 " + model.getReceiver().getNicknameRemark());
+            }
+
             mDescTv.setVisibility(VISIBLE);
         }
 
@@ -298,14 +328,14 @@ public class GiftContinuousView extends RelativeLayout {
             EventBus.getDefault().post(new OverlayGiftBrushMsgEvent(mCurGiftPlayModel));
             if (mCurGiftPlayModel.getGift().getTextContinueCount() == -1) {
                 //无限发
-                EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(mCurGiftPlayModel)));
+                EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(mCurGiftPlayModel, mRoomData)));
             } else if (mCurGiftPlayModel.getGift().getTextContinueCount() == 0) {
                 //不发
             } else {
                 //发送限制
                 if (mCurGiftPlayModel.getGift().getTextContinueCount() >= mCurNum) {
                     // 发
-                    EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(mCurGiftPlayModel)));
+                    EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(mCurGiftPlayModel, mRoomData)));
                 } else {
                     // 不发
                 }

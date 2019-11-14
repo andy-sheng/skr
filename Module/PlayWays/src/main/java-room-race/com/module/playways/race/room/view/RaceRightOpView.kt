@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -43,6 +44,7 @@ class RaceRightOpView : ConstraintLayout {
                     U.getToastUtil().showShort("已经投过票了")
                 } else {
                     // 投票
+                    StatisticsAdapter.recordCountEvent("rank", "vote", null)
                     U.getSoundUtils().play(mTag, R.raw.newrank_vote)
                     mListener?.onClickVote()
                 }

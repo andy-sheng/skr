@@ -1,11 +1,8 @@
 package com.module.playways.room.msg.manager
 
 import com.common.log.MyLog
-import com.module.playways.room.msg.event.raceroom.*
 import com.zq.live.proto.MicRoom.EMicRoomMsgType
 import com.zq.live.proto.MicRoom.MicRoomMsg
-import com.zq.live.proto.RaceRoom.ERaceRoomMsgType
-import com.zq.live.proto.RaceRoom.RaceRoomMsg
 import org.greenrobot.eventbus.EventBus
 
 /**

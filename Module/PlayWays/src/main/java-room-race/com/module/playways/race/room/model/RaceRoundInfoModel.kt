@@ -5,14 +5,12 @@ import com.common.log.MyLog
 import com.module.playways.race.room.event.*
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.song.model.SongModel
-import com.zq.live.proto.RaceRoom.ERUserRole
-import com.zq.live.proto.RaceRoom.ERWantSingType
-import com.zq.live.proto.RaceRoom.ERaceRoundStatus
-import com.zq.live.proto.RaceRoom.RaceRoundInfo
+import com.zq.live.proto.RaceRoom.*
 import org.greenrobot.eventbus.EventBus
 
 class RaceRoundInfoModel : BaseRoundInfoModel() {
 
+    var audienceUserCnt = 0 // 观众人数
     //    protected int overReason; // 结束的原因
     //  protected int roundSeq;// 本局轮次
     var status = ERaceRoundStatus.ERRS_UNKNOWN.value // 轮次状态在擂台赛中使用
@@ -31,6 +29,8 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     var enterStatus: Int = ERaceRoundStatus.ERRS_UNKNOWN.value//你进入房间时当前轮次处于的状态，是一个快照
     var enterSubRoundSeq: Int = 0 //中途加入时的子轮次 只在  enterStatus == ERaceRoundStatus.ERRS_ONGOINE 有意义
     var currentRoundChoiceUserCnt = 0 // 当前轮次报名人数
+
+    val unfakeSetForMe = HashSet<Int>() // 我已经投票的选手id，主要用于判断是否蒙面
 
     override fun getType(): Int {
         return TYPE_RACE
@@ -164,7 +164,11 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                     i++
                 }
             } else {
-                needUpdate = true
+                if (round.overReason == ERaceRoundOverReason.ERROR_NORMAL_OVER.value && round.playUsers.isEmpty()) {
+                    needUpdate = false
+                } else {
+                    needUpdate = true
+                }
             }
             if (needUpdate) {
                 updatePlayUsers(roundInfo?.playUsers)
@@ -185,7 +189,11 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                     i++
                 }
             } else {
-                needUpdate = true
+                if (round.overReason == ERaceRoundOverReason.ERROR_NORMAL_OVER.value && round.playUsers.isEmpty()) {
+                    needUpdate = false
+                } else {
+                    needUpdate = true
+                }
             }
             if (needUpdate) {
                 updateWaitUsers(roundInfo?.waitUsers)
@@ -235,7 +243,15 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
             updateStatus(notify, roundInfo.status)
         }
 
+        audienceUserCnt = roundInfo.audienceUserCnt
+        updateAudienceUserCnt(notify)
         return
+    }
+
+    fun updateAudienceUserCnt(notify: Boolean) {
+        if (notify) {
+            EventBus.getDefault().post(UpdateAudienceCountEvent(audienceUserCnt))
+        }
     }
 
     /**
@@ -315,7 +331,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     }
 
     override fun toString(): String {
-        return "RaceRoundInfoModel(roundSeq=${roundSeq} status=$status, scores=$scores, subRoundSeq=$subRoundSeq, subRoundInfo=$subRoundInfo, playUsers=$playUsers, waitUsers=$waitUsers, introBeginMs=$introBeginMs, introEndMs=$introEndMs, elapsedTimeMs=$elapsedTimeMs, enterStatus=$enterStatus, enterSubRoundSeq=$enterSubRoundSeq)"
+        return "RaceRoundInfoModel(audienceUserCnt=$audienceUserCnt, status=$status, scores=$scores, subRoundSeq=$subRoundSeq, subRoundInfo=$subRoundInfo, playUsers=$playUsers, waitUsers=$waitUsers, introBeginMs=$introBeginMs, introEndMs=$introEndMs, elapsedTimeMs=$elapsedTimeMs, enterStatus=$enterStatus, enterSubRoundSeq=$enterSubRoundSeq, currentRoundChoiceUserCnt=$currentRoundChoiceUserCnt, unfakeSetForMe=$unfakeSetForMe)"
     }
 
 
@@ -358,6 +374,7 @@ internal fun parseFromRoundInfoPB(pb: RaceRoundInfo): RaceRoundInfoModel {
     if (pb.currentRoundChoiceUserCnt > 0) {
         model.currentRoundChoiceUserCnt = pb.currentRoundChoiceUserCnt
     }
+    model.audienceUserCnt = pb.audienceUserCnt
     return model
 }
 

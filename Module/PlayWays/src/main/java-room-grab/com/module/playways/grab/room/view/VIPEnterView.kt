@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 
 /**
- * 转场时的歌曲信息页
+ * 进场的动画
  */
 class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
     val TAG = "VIPEnterView"
@@ -64,6 +64,8 @@ class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
     fun switchRoom() {
         enterJob?.cancel()
         mParentView?.clearAnimation()
+        normalArea?.visibility = View.GONE
+        honorArea?.visibility = View.GONE
     }
 
     fun enter(playerInfoModel: UserInfoModel, finishCall: (() -> Unit)?) {

@@ -24,6 +24,11 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.component.relation.adapter.RelationAdapter;
+import com.component.relation.callback.FansEmptyCallback;
+import com.component.relation.callback.FollowEmptyCallback;
+import com.component.relation.callback.FriendsEmptyCallback;
+import com.component.relation.fragment.SearchFriendFragment;
 import com.dialog.view.TipsDialogView;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
@@ -35,11 +40,6 @@ import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.component.relation.adapter.RelationAdapter;
-import com.component.relation.callback.FansEmptyCallback;
-import com.component.relation.callback.FollowEmptyCallback;
-import com.component.relation.callback.FriendsEmptyCallback;
-import com.component.relation.fragment.SearchFriendFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -49,7 +49,7 @@ import java.util.List;
 
 public class RelationView extends RelativeLayout {
 
-    public final String TAG = "RelationView";
+    public final String TAG = "RelationView" + hashCode();
 
     private int mMode = UserInfoManager.RELATION.FRIENDS.getValue();
     private int mOffset = 0; // 偏移量
@@ -66,6 +66,8 @@ public class RelationView extends RelativeLayout {
     DialogPlus mDialogPlus;
 
     Handler mHandler = new Handler();
+
+    boolean hasInitData = false;
 
     public RelationView(Context context, int mode) {
         super(context);
@@ -157,8 +159,6 @@ public class RelationView extends RelativeLayout {
                 loadData(0);
             }
         });
-
-        loadData(0);
     }
 
     private void unFollow(final UserInfoModel userInfoModel) {
@@ -203,8 +203,16 @@ public class RelationView extends RelativeLayout {
         mDialogPlus.show();
     }
 
+    public void initData(boolean flag) {
+        if (!flag && hasInitData) {
+            // 已经初始化过了 并且falg为false
+        } else {
+            hasInitData = true;
+            loadData(0);
+        }
+    }
 
-    public void loadData(final int offset) {
+    private void loadData(final int offset) {
         this.mOffset = offset;
         if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
             UserInfoManager.getInstance().getMyFriends(UserInfoManager.ONLINE_PULL_NORMAL, new UserInfoManager.UserInfoListCallback() {
@@ -236,7 +244,7 @@ public class RelationView extends RelativeLayout {
                 }
             });
         } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
-            UserInfoManager.getInstance().getMyFollow(UserInfoManager.ONLINE_PULL_NORMAL, new UserInfoManager.UserInfoListCallback() {
+            UserInfoManager.getInstance().getMyFollow(UserInfoManager.ONLINE_PULL_NORMAL, true, new UserInfoManager.UserInfoListCallback() {
                 @Override
                 public void onSuccess(UserInfoManager.FROM from, int offset, final List<UserInfoModel> list) {
                     mHandler.post(new Runnable() {
@@ -263,7 +271,7 @@ public class RelationView extends RelativeLayout {
                         }
                     });
                 }
-            });
+            }, false);
         } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
             UserInfoManager.getInstance().getFans(offset, DEFAULT_COUNT, new UserInfoManager.UserInfoListCallback() {
                 @Override
@@ -324,7 +332,8 @@ public class RelationView extends RelativeLayout {
     public void onEvent(FollowNotifyEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         this.mOffset = 0;
-        loadData(0);
+        hasInitData = false;
+//        loadData(0);
     }
 
     /**
@@ -336,13 +345,15 @@ public class RelationView extends RelativeLayout {
     public void onEvent(RelationChangeEvent event) {
         MyLog.d(TAG, "RelationChangeEvent" + " event type = " + event.type + " isFriend = " + event.isFriend);
         this.mOffset = 0;
-        loadData(0);
+        hasInitData = false;
+//        loadData(0);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RemarkChangeEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         this.mOffset = 0;
-        loadData(0);
+        hasInitData = false;
+//        loadData(0);
     }
 }

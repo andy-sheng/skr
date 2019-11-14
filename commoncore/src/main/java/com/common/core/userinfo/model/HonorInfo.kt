@@ -1,6 +1,7 @@
 package com.common.core.userinfo.model
 
 import com.alibaba.fastjson.annotation.JSONField
+import com.zq.live.proto.Common.EHonorType
 import java.io.Serializable
 
 /**
@@ -38,6 +39,17 @@ class HonorInfo : Serializable {
                 result.honorType = honorInfo.honorType.value
             }
             return result
+        }
+
+        fun toHonorInfoPB(honorInfo: HonorInfo?): com.zq.live.proto.Common.HonorInfo? {
+            return if (honorInfo != null) {
+                com.zq.live.proto.Common.HonorInfo.Builder()
+                        .setHonorType(EHonorType.fromValue(honorInfo.honorType))
+                        .build()
+            } else {
+                null
+            }
+
         }
     }
 

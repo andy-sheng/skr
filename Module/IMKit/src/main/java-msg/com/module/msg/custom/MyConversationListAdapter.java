@@ -31,6 +31,11 @@ public class MyConversationListAdapter extends ConversationListAdapter {
     }
 
     @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
     protected View newView(Context context, int position, ViewGroup group) {
         View result = LayoutInflater.from(mContext).inflate(R.layout.custom_rc_item_conversation, (ViewGroup) null);
         MyConversationListAdapter.ViewHolder holder = new MyConversationListAdapter.ViewHolder();

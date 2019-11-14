@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
@@ -24,6 +23,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
     NickNameView mNickNameTv;
     ExTextView mFollowTv;
     ExTextView mStatusTv;
+    ExTextView mIntimacyTv;
 
     int mMode;
     int position;
@@ -38,6 +38,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         mNickNameTv = itemView.findViewById(R.id.nickname_tv);
         mFollowTv = itemView.findViewById(R.id.follow_tv);
         mStatusTv = itemView.findViewById(R.id.status_tv);
+        mIntimacyTv = itemView.findViewById(R.id.intimacy_tv);
 
         mFollowTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -62,8 +63,8 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         this.position = position;
         this.userInfoModel = userInfoModel;
 
+        mNickNameTv.setAllStateText(userInfoModel);
         mAvatarIv.bindData(userInfoModel);
-        mNickNameTv.setAllStateText(userInfoModel.getNicknameRemark(), userInfoModel.getSex(), userInfoModel.getHonorInfo());
 
         if (mMode == UserInfoManager.RELATION_BLACKLIST) {
             mFollowTv.setVisibility(View.VISIBLE);
@@ -76,7 +77,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                 mFollowTv.setVisibility(View.GONE);
                 return;
             } else {
-                if (mMode != UserInfoManager.RELATION.FRIENDS.getValue()) {
+                if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
                     if (userInfoModel.isFriend()) {
                         mFollowTv.setVisibility(View.VISIBLE);
                         mFollowTv.setText("已互关");
@@ -121,5 +122,11 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
             mStatusTv.setVisibility(View.GONE);
         }
 
+        if (mMode == UserInfoManager.RELATION.FRIENDS.getValue() && userInfoModel.hasIntimacy()) {
+            mIntimacyTv.setVisibility(View.VISIBLE);
+            mIntimacyTv.setText("亲密度 " + userInfoModel.getIntimacy());
+        } else {
+            mIntimacyTv.setVisibility(View.GONE);
+        }
     }
 }

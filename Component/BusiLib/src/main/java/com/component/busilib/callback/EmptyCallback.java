@@ -25,6 +25,10 @@ public class EmptyCallback extends Callback {
         this.textColor = textColor;
     }
 
+    public EmptyCallback() {
+        this(R.drawable.loading_empty,"页面为空","#000000");
+    }
+
     @Override
     protected int onCreateView() {
         return R.layout.loadsir_callback_layout;

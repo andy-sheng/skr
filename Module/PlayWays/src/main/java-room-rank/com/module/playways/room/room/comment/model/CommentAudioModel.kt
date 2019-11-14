@@ -1,8 +1,10 @@
 package com.module.playways.room.room.comment.model
 
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.SpanUtils
 import com.module.playways.BaseRoomData
+import com.module.playways.race.room.RaceRoomData
 import com.module.playways.room.msg.event.AudioMsgEvent
 
 class CommentAudioModel : CommentModel() {
@@ -31,8 +33,15 @@ class CommentAudioModel : CommentModel() {
             } else {
                 commentModel.userInfo = UserInfoModel.parseFromPB(event.mInfo.sender)
             }
+
+            if (roomData != null && roomData is RaceRoomData) {
+                commentModel.fakeUserInfo = roomData.getFakeInfo(commentModel.userInfo?.userId)
+                commentModel.isFake = roomData.isFakeForMe(commentModel.userInfo?.userId)
+            }
+
             val nameBuilder = SpanUtils()
-                    .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(GRAB_NAME_COLOR)
+                    .append("${commentModel.fakeUserInfo?.nickName
+                            ?: commentModel.userInfo?.nicknameRemark} ").setForegroundColor(GRAB_NAME_COLOR)
                     .create()
             commentModel.nameBuilder = nameBuilder
             commentModel.localPath = event.localPath

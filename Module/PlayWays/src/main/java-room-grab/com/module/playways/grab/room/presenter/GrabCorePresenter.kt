@@ -29,6 +29,7 @@ import com.common.utils.HandlerTaskTimer
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.AnimateClickListener
+import com.component.busilib.constans.GameModeType
 import com.component.busilib.constans.GrabRoomType
 import com.component.busilib.recommend.RA
 import com.component.lyrics.LyricAndAccMatchManager
@@ -76,6 +77,7 @@ import com.zq.live.proto.Common.StandPlayType
 import com.zq.live.proto.Common.UserInfo
 import com.zq.live.proto.GrabRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -83,7 +85,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.greenrobot.greendao.annotation.NotNull
-import java.util.*
+import kotlin.collections.HashMap
 
 class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @param:NotNull internal var mRoomData: GrabRoomData, internal var mBaseActivity: BaseActivity) : RxLifeCyclePresenter() {
 
@@ -267,7 +269,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     }
 
     private fun pretendRoomNameSystemMsg(roomName: String?, type: Int) {
-        val commentSysModel = CommentSysModel(roomName, type)
+        val commentSysModel = CommentSysModel(roomName ?: "", type)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
 
@@ -287,6 +289,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         if (mRoomData.hasGameBegin()) {
             mRoomData.checkRoundInEachMode()
             ensureInRcRoom()
+            userStatisticForIntimacy()
         } else {
             MyLog.d(TAG, "onOpeningAnimationOver 游戏未开始")
         }
@@ -421,7 +424,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         }
     }
 
-    fun preOpWhenOtherRound(uid: Int) {
+    private fun preOpWhenOtherRound(uid: Int) {
         val playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid)
         if (playerInfo == null) {
             MyLog.w(TAG, "切换别人的时候PlayerInfo为空")
@@ -475,7 +478,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
              * 个人标签声音
              */
             val fileName = String.format(PERSON_LABEL_SAVE_PATH_FROMAT, mRoomData.gameId, mRoomData.realRoundInfo?.roundSeq)
-            val savePath = U.getAppInfoUtils().getFilePathInSubDir("grab_save", fileName)
+            val savePath = U.getAppInfoUtils().getFilePathInSubDir(ZqEngineKit.AUDIO_FEEDBACK_DIR, fileName)
             ZqEngineKit.getInstance().startAudioRecording(savePath, false)
         }
     }
@@ -875,7 +878,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
      */
     private fun uploadResForLabel(roundInfoModel: GrabRoundInfoModel) {
         val fileName = String.format(PERSON_LABEL_SAVE_PATH_FROMAT, mRoomData.gameId, roundInfoModel.roundSeq)
-        val savePath = U.getAppInfoUtils().getFilePathInSubDir("grab_save", fileName)
+        val savePath = U.getAppInfoUtils().getFilePathInSubDir(ZqEngineKit.AUDIO_FEEDBACK_DIR, fileName)
 
         UploadParams.newBuilder(savePath)
                 .setFileType(UploadParams.FileType.audioAi)
@@ -1325,7 +1328,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     fun onChangeRoomSuccess(joinGrabRoomRspModel: JoinGrabRoomRspModel?) {
         MyLog.d(TAG, "onChangeRoomSuccess joinGrabRoomRspModel=$joinGrabRoomRspModel")
         if (joinGrabRoomRspModel != null) {
-            EventBus.getDefault().post(GrabSwitchRoomEvent())
+            EventBus.getDefault().post(SwitchRoomEvent())
             stopGuide()
             mRoomData.loadFromRsp(joinGrabRoomRspModel)
             joinRoomAndInit(false)
@@ -1501,6 +1504,42 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 }
             } else {
                 MyLog.w(TAG, "服务器结束时间不合法 currentInfo=null")
+            }
+        }
+    }
+
+    /**
+     * 为了方便服务器亲密度结算
+     */
+    private fun userStatisticForIntimacy() {
+        launch {
+            while (true) {
+                delay(10 * 60 * 1000)
+                val l1 = java.util.ArrayList<Int>()
+                for (m in mRoomData.getPlayerAndWaiterInfoList()) {
+                    if (m.userID != MyUserInfoManager.uid.toInt()) {
+                        if (mRoomData.preUserIDsSnapShots.contains(m.userID)) {
+                            l1.add(m.userID)
+                        }
+                    }
+                }
+                if (l1.isNotEmpty()) {
+                    val map = java.util.HashMap<String, Any>()
+                    map["gameID"] = mRoomData.gameId
+                    map["mode"] = GameModeType.GAME_MODE_GRAB
+                    val ts = System.currentTimeMillis()
+                    map["timeMs"] = ts
+                    map["sign"] = U.getMD5Utils().MD5_32("skrer|" + MyUserInfoManager.uid + "|" + ts)
+                    map["userID"] = MyUserInfoManager.uid
+                    map["preUserIDs"] = l1
+                    val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                    val result = subscribe { mRoomServerApi.userStatistic(body) }
+                    if (result.errno == 0) {
+
+                    }
+                } else {
+                    break
+                }
             }
         }
     }

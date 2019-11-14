@@ -7,13 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
@@ -25,30 +24,23 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExImageView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.component.dialog.InviteFriendDialog;
 import com.component.relation.fragment.SearchUserFragment;
 import com.module.RouterConstants;
 import com.module.msg.IMessageFragment;
-import com.module.msg.follow.LastFollowModel;
+import com.module.msg.follow.LastNewsModel;
 
 import java.util.List;
 
 import io.rong.imkit.R;
-import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
 
 public class MessageFragment2 extends BaseFragment implements IMessageFragment, WeakRedDotManager.WeakRedDotListener {
 
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
-    RelativeLayout mLatestFollowArea;
-    ImageView mFollowAreaIcon;
-    ExImageView mFollowRedDot;
-    TextView mFollowTips;
-    TextView mFollowTimeTv;
     RelativeLayout mContent;
 
     PopupWindow mPopupWindow;  // 弹窗
@@ -57,10 +49,15 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
 
     InviteFriendDialog mInviteFriendDialog;
 
-    Fragment mConversationListFragment; //获取融云的会话列表对象
+    MyConversationListFragment mConversationListFragment; //获取融云的会话列表对象
 
     long mLastUpdateTime = 0;  //最新关注第一条刷新时间
-    int mMessageFollowRedDotValue = 0;
+
+    // 红点的值
+    int mMessageSPFollow = 0;
+    int mMessageLastFollow = 0;
+    int mMessageCommentLike = 0;
+    int mMessageGift = 0;
 
     @Override
     public int initView() {
@@ -69,24 +66,18 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
-        mLatestFollowArea = (RelativeLayout) getRootView().findViewById(R.id.latest_follow_area);
-        mFollowAreaIcon = (ImageView) getRootView().findViewById(R.id.follow_area_icon);
-        mFollowRedDot = (ExImageView) getRootView().findViewById(R.id.follow_red_dot);
-        mFollowTips = (TextView) getRootView().findViewById(R.id.follow_tips);
-        mFollowTimeTv = (TextView) getRootView().findViewById(R.id.follow_time_tv);
-        mContent = (RelativeLayout) getRootView().findViewById(R.id.content);
+        mMainActContainer = getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = getRootView().findViewById(R.id.titlebar);
+        mContent = getRootView().findViewById(R.id.content);
 
-        mConversationListFragment = initConversationList();
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.content, mConversationListFragment);
+        transaction.replace(R.id.content, initConversationList());
         transaction.commit();
 
         LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(com.component.busilib.R.layout.add_friend_pop_window_layout, null);
-        mSearchArea = (RelativeLayout) linearLayout.findViewById(com.component.busilib.R.id.search_area);
-        mInviteArea = (RelativeLayout) linearLayout.findViewById(com.component.busilib.R.id.invite_area);
+        mSearchArea = linearLayout.findViewById(com.component.busilib.R.id.search_area);
+        mInviteArea = linearLayout.findViewById(com.component.busilib.R.id.invite_area);
         mPopupWindow = new PopupWindow(linearLayout);
         mPopupWindow.setOutsideTouchable(true);
 
@@ -135,23 +126,11 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
             }
         });
 
-        mLatestFollowArea.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                StatisticsAdapter.recordCountEvent("IMtab", "newfollow", null);
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_INTERACTION)
-                        .navigation();
-
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 0);
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE, 0);
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE, 0);
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE, 0);
-            }
-        });
-
-
         WeakRedDotManager.getInstance().addListener(this);
-        mMessageFollowRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
+        mMessageSPFollow = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_SP_FOLLOW, 0);
+        mMessageLastFollow = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
+        mMessageCommentLike = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_POSTS_COMMENT_LIKE, 0);
+        mMessageGift = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_GIFT, 0);
         refreshMessageRedDot();
     }
 
@@ -182,38 +161,14 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    String str = result.getData().getString("latestNews");
-                    long timeMs = result.getData().getLongValue("timeMs");
-                    mFollowTips.setVisibility(View.VISIBLE);
-                    mFollowTips.setText(str);
-                    mFollowTimeTv.setVisibility(View.VISIBLE);
-                    mFollowTimeTv.setText(U.getDateTimeUtils().getDateTimeString(timeMs, false, getContext()));
+                    mLastUpdateTime = System.currentTimeMillis();
+                    List<LastNewsModel> list = JSON.parseArray(result.getData().getString("news"), LastNewsModel.class);
+                    if (mConversationListFragment != null) {
+                        mConversationListFragment.showLastNews(list);
+                    }
                 }
             }
         }, this);
-    }
-
-    private void showLastRelation(List<LastFollowModel> list) {
-        if (list != null && list.size() != 0) {
-            LastFollowModel lastFollowModel = list.get(0);
-            if (lastFollowModel != null) {
-                mFollowTimeTv.setText(U.getDateTimeUtils().getDateTimeString(lastFollowModel.getTimeMs(), false, getContext()));
-                if (lastFollowModel.getRelation() == LastFollowModel.RELATION_FOLLOW_ME) {
-                    mFollowTips.setVisibility(View.VISIBLE);
-                    mFollowTimeTv.setVisibility(View.VISIBLE);
-                    mFollowTips.setText(lastFollowModel.getNickname() + "关注了你");
-                } else if (lastFollowModel.getRelation() == LastFollowModel.RELATION_ME_FOLLOW) {
-                    mFollowTips.setVisibility(View.VISIBLE);
-                    mFollowTimeTv.setVisibility(View.VISIBLE);
-                    mFollowTips.setText("你关注了" + lastFollowModel.getNickname());
-                } else {
-                    mFollowTips.setVisibility(View.GONE);
-                    mFollowTimeTv.setVisibility(View.GONE);
-                }
-            }
-        } else {
-            // TODO: 2019/4/24  暂无记录
-        }
     }
 
     @Override
@@ -245,16 +200,14 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
     // 会话列表的Fragment
     private Fragment initConversationList() {
         if (mConversationListFragment == null) {
-            ConversationListFragment listFragment = new MyConversationListFragment();
+            mConversationListFragment = new MyConversationListFragment();
             Uri uri = Uri.parse("io.rong://" + U.getAppInfoUtils().getPackageName()).buildUpon()
                     .appendPath("conversation_list_activity")
                     .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
                     .build();
-            listFragment.setUri(uri);
-            return listFragment;
-        } else {
-            return mConversationListFragment;
+            mConversationListFragment.setUri(uri);
         }
+        return mConversationListFragment;
     }
 
     @Override
@@ -270,19 +223,29 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
     @Override
     public int[] acceptType() {
         return new int[]{
-                WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
-                , WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE
-                , WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE
-                , WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE};
+                WeakRedDotManager.MESSAGE_SP_FOLLOW                   // 特别关注
+                , WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE       // 最新关注
+                , WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE   // 评论或赞
+                , WeakRedDotManager.MESSAGE_GIFT_TYPE};               // 礼物
     }
 
     @Override
     public void onWeakRedDotChange(int type, int value) {
-        if (type == WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
-                || type == WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE
-                || type == WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE
-                || type == WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE) {
-            mMessageFollowRedDotValue = value;
+        switch (type) {
+            case WeakRedDotManager.MESSAGE_SP_FOLLOW:
+                mMessageSPFollow = value;
+                break;
+            case WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE:
+                mMessageLastFollow = value;
+                break;
+            case WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE:
+                mMessageCommentLike = value;
+                break;
+            case WeakRedDotManager.MESSAGE_GIFT_TYPE:
+                mMessageGift = value;
+                break;
+            default:
+                break;
         }
 
         refreshMessageRedDot();
@@ -290,10 +253,25 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
     }
 
     private void refreshMessageRedDot() {
-        if (mMessageFollowRedDotValue < 1) {
-            mFollowRedDot.setVisibility(View.GONE);
+        if (mMessageSPFollow >= 1) {
+            mConversationListFragment.showSPRedDot(true);
         } else {
-            mFollowRedDot.setVisibility(View.VISIBLE);
+            mConversationListFragment.showSPRedDot(false);
+        }
+        if (mMessageLastFollow >= 1) {
+            mConversationListFragment.showLastFollowRedDot(true);
+        } else {
+            mConversationListFragment.showLastFollowRedDot(false);
+        }
+        if (mMessageCommentLike >= 1) {
+            mConversationListFragment.showCommentLikeRedDot(true);
+        } else {
+            mConversationListFragment.showCommentLikeRedDot(false);
+        }
+        if (mMessageGift >= 1) {
+            mConversationListFragment.showGiftRedDot(true);
+        } else {
+            mConversationListFragment.showGiftRedDot(false);
         }
     }
 }

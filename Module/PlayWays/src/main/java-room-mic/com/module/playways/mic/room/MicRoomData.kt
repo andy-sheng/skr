@@ -18,8 +18,10 @@ import com.zq.live.proto.MicRoom.EMUserRole
 import com.zq.live.proto.MicRoom.ERoomMatchStatus
 import org.greenrobot.eventbus.EventBus
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
+    val preUserIDsSnapShots = ArrayList<Int>()
     var matchStatusOpen: Boolean = true // 是否允许匹配 默认开启
     var configModel = MicConfigModel()// 一唱到底配置
     var roomType: Int = GrabRoomType.ROOM_TYPE_COMMON// 一唱到底房间类型，公开，好友，私密，普通 5为歌单房间
@@ -109,18 +111,18 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
         if (userID == null || userID == 0) {
             return null
         }
-        val playerInfoModel = userInfoMap[userID] as MicPlayerInfoModel?
-        if (playerInfoModel == null || playerInfoModel.role == EMUserRole.MRUR_PLAY_USER.value) {
+//        val playerInfoModel = userInfoMap[userID] as MicPlayerInfoModel?
+//        if (playerInfoModel == null || playerInfoModel.role == EMUserRole.MRUR_PLAY_USER.value) {
             val l = getPlayerAndWaiterInfoList()
             for (playerInfo in l) {
                 if (playerInfo.userInfo.userId == userID) {
-                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
+//                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
                     return playerInfo
                 }
             }
-        } else {
-            return playerInfoModel
-        }
+//        } else {
+//            return playerInfoModel
+//        }
         return null
     }
 
@@ -229,6 +231,10 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
 
         this.maxGetBLightCnt = rsp.maxGetBLightCnt
         this.matchStatusOpen = (rsp.matchStatus == ERoomMatchStatus.EMMS_OPEN.value)
+        this.preUserIDsSnapShots.clear()
+        for(m in getPlayerAndWaiterInfoList()){
+            this.preUserIDsSnapShots.add(m.userID)
+        }
 
     }
 

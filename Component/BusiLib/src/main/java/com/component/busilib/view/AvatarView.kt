@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.support.constraint.ConstraintLayout
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
@@ -72,6 +73,31 @@ class AvatarView : ConstraintLayout {
             else -> {
                 vipIv.visibility = View.GONE
             }
+        }
+    }
+
+    fun bindData(model: UserInfoModel?, showAvatarUrl: String?) {
+        if (!TextUtils.isEmpty(showAvatarUrl)) {
+            AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(showAvatarUrl)
+                    .setBorderColor(borderColor)
+                    .setBorderWidth(borderWidth.toFloat())
+                    .setCircle(isCircle)
+                    .build())
+            when {
+                model?.vipInfo?.vipType == EVIPType.EVT_RED_V.value -> {
+                    vipIv.visibility = View.VISIBLE
+                    vipIv.setImageResource(R.drawable.vip_red_icon)
+                }
+                model?.vipInfo?.vipType == EVIPType.EVT_GOLDEN_V.value -> {
+                    vipIv.visibility = View.VISIBLE
+                    vipIv.setImageResource(R.drawable.vip_gold_icon)
+                }
+                else -> {
+                    vipIv.visibility = View.GONE
+                }
+            }
+        } else {
+            bindData(model)
         }
     }
 

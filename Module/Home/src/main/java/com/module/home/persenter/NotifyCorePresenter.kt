@@ -51,7 +51,10 @@ import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
+import com.zq.live.proto.Notification.GiftReceivesMsg
 import com.zq.live.proto.Notification.PostsCommentLikeMsg
+import com.zq.live.proto.Notification.SpFollowNewPostMsg
+import com.zq.live.proto.Notification.SpFollowUpdateAlbumMsg
 import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -331,6 +334,22 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: SpFollowNewPostMsg) {
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_SP_FOLLOW, 2, true)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: SpFollowUpdateAlbumMsg) {
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_SP_FOLLOW, 2, true)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: GiftReceivesMsg) {
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_GIFT_TYPE, 2, true)
+    }
+
+
 //    @Subscribe(threadMode = ThreadMode.MAIN)
 //    fun onEvent(event: FeedLikeNotifyEvent) {
 //        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE, 2, true)
@@ -348,7 +367,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PostsLikeEvent) {
-        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE, 2, true)
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE, 2, true)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -358,7 +377,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PostsCommentAddEvent) {
-        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE, 2, true)
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE, 2, true)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

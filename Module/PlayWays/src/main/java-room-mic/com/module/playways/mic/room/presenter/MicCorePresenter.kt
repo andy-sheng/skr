@@ -218,7 +218,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     }
 
     private fun pretendRoomNameSystemMsg(roomName: String?, type: Int) {
-        val commentSysModel = CommentSysModel(roomName, type)
+        val commentSysModel = CommentSysModel(roomName ?: "", type)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
 
@@ -230,6 +230,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         // 开始触发触发轮次变化
         mRoomData.checkRoundInEachMode()
         ensureInRcRoom()
+        userStatisticForIntimacy()
     }
 
     /**
@@ -456,7 +457,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     private fun onChangeRoomSuccess(joinGrabRoomRspModel: JoinMicRoomRspModel?) {
         MyLog.d(TAG, "onChangeRoomSuccess joinGrabRoomRspModel=$joinGrabRoomRspModel")
         if (joinGrabRoomRspModel != null) {
-//            EventBus.getDefault().post(GrabSwitchRoomEvent())
+//            EventBus.getDefault().post(SwitchRoomEvent())
             mRoomData.loadFromRsp(joinGrabRoomRspModel)
             joinRoomAndInit(false)
             mRoomData.checkRoundInEachMode()
@@ -487,13 +488,13 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         }
     }
 
-    fun cancelSyncGameStatus() {
+    private fun cancelSyncGameStatus() {
         syncJob?.cancel()
     }
 
     var syncJob: Job? = null
 
-    fun startSyncGameStatus() {
+    private fun startSyncGameStatus() {
         if (mRoomData.isIsGameFinish) {
             MyLog.w(TAG, "游戏结束了，还特么Sync")
             return
@@ -539,6 +540,43 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             }
         }
     }
+
+    /**
+     * 为了方便服务器亲密度结算
+     */
+    private fun userStatisticForIntimacy() {
+        launch {
+            while (true) {
+                delay(10 * 60 * 1000)
+                val l1 = java.util.ArrayList<Int>()
+                for (m in mRoomData.getPlayerAndWaiterInfoList()) {
+                    if (m.userID != MyUserInfoManager.uid.toInt()) {
+                        if (mRoomData.preUserIDsSnapShots.contains(m.userID)) {
+                            l1.add(m.userID)
+                        }
+                    }
+                }
+                if (l1.isNotEmpty()) {
+                    val map = java.util.HashMap<String, Any>()
+                    map["gameID"] = mRoomData.gameId
+                    map["mode"] = GameModeType.GAME_MODE_GRAB
+                    val ts = System.currentTimeMillis()
+                    map["timeMs"] = ts
+                    map["sign"] = U.getMD5Utils().MD5_32("skrer|" + MyUserInfoManager.uid + "|" + ts)
+                    map["userID"] = MyUserInfoManager.uid
+                    map["preUserIDs"] = l1
+                    val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                    val result = subscribe { mRoomServerApi.userStatistic(body) }
+                    if (result.errno == 0) {
+
+                    }
+                } else {
+                    break
+                }
+            }
+        }
+    }
+
 
     /**
      * 轮次切换事件
@@ -1107,7 +1145,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
      * @param score
      * @param line
      */
-    fun sendScoreToServer(score: Int, line: Int) {
+    private fun sendScoreToServer(score: Int, line: Int) {
         val map = HashMap<String, Any>()
         val infoModel = mRoomData.realRoundInfo ?: return
         map["userID"] = MyUserInfoManager.uid

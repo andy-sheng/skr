@@ -2,12 +2,9 @@ package com.module.home.game.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 
 import com.common.base.BaseFragment
-import com.component.busilib.friends.RecommendModel
-import com.component.busilib.friends.SpecialModel
 import com.module.home.R
 import com.module.home.game.model.*
 import com.module.home.game.viewholder.*
@@ -20,7 +17,6 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
 
     private val TYPE_BANNER_HOLDER = 0       // 广告
     private val TYPE_FUNCATION_HOLDER = 1    // 功能区域（做任务，排行榜，练歌房）
-    //    private val TYPE_RECOMMEND_HOLDER = 2    // 推荐房
     private val TYPE_GAMETYPE_HOLDER = 2     // 玩法区域
 
     private var mObjArr = arrayOfNulls<Any>(5)
@@ -39,11 +35,6 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
         mObjArr[TYPE_FUNCATION_HOLDER] = funcationModel
         setDataList()
     }
-
-//    fun updateRecommendRoomInfo(recommendRoomModel: RecommendRoomModel?) {
-//        mObjArr[TYPE_RECOMMEND_HOLDER] = recommendRoomModel
-//        setDataList()
-//    }
 
     fun updateGameTypeInfo(gameTypeModel: GameTypeModel?) {
         mObjArr[TYPE_GAMETYPE_HOLDER] = gameTypeModel
@@ -74,10 +65,6 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.game_funcation_item_view, parent, false)
                 return FuncationAreaViewHolder(view, listener)
             }
-//            TYPE_RECOMMEND_HOLDER -> {
-//                val view = LayoutInflater.from(parent.context).inflate(R.layout.game_recommend_room_item_view, parent, false)
-//                return RecommendRoomViewHolder(view, mBaseFragment, listener)
-//            }
             else -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.game_type_item_view, parent, false)
                 return GameTypeViewHolder(view, listener)
@@ -89,7 +76,6 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
         when (val obj = mDataList[position]) {
             is BannerModel -> (holder as BannerViewHolder).bindData(obj)
             is FuncationModel -> (holder as FuncationAreaViewHolder).bindData(obj)
-//            is RecommendRoomModel -> (holder as RecommendRoomViewHolder).bindData(obj)
             is GameTypeModel -> (holder as GameTypeViewHolder).bindData(obj)
         }
     }
@@ -102,7 +88,6 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
         return when (mDataList[position]) {
             is BannerModel -> TYPE_BANNER_HOLDER
             is FuncationModel -> TYPE_FUNCATION_HOLDER
-//            is RecommendRoomModel -> TYPE_RECOMMEND_HOLDER
             is GameTypeModel -> TYPE_GAMETYPE_HOLDER
             else -> 0
         }
@@ -113,9 +98,6 @@ interface ClickGameListener {
     fun onClickTaskListener()
     fun onClickRankListener()
     fun onClickPracticeListener()
-
-    fun onMoreRoomListener()
-    fun onEnterRoomListener(model: RecommendModel)
 
     fun onCreateRoomListener()
     fun onPkRoomListener()

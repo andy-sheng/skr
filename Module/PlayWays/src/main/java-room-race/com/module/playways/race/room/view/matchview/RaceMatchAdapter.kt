@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.common.core.avatar.AvatarUtils
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.dp
 import com.common.view.ex.ExTextView
 import com.facebook.drawee.view.SimpleDraweeView
@@ -39,12 +38,12 @@ class RaceMatchAdapter : RecyclerView.Adapter<RaceMatchAdapter.RankMatchViewHold
         private val nameTv: ExTextView = itemView.findViewById(R.id.name_tv)
 
         fun bindData(model: RacePlayerInfoModel, pos: Int) {
-            AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.userInfo.avatar)
+            AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.fakeUserInfo?.avatarUrl)
                     .setBorderColor(Color.WHITE)
                     .setBorderWidth(2.dp().toFloat())
                     .setCircle(true)
                     .build())
-            nameTv.text = model.userInfo.nicknameRemark
+            nameTv.text = model.fakeUserInfo?.nickName
         }
     }
 }

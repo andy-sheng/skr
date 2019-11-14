@@ -6,7 +6,7 @@ apply from: "config.gradle"
  * buildscript里是gradle脚本执行所需依赖，分别是对应的maven库和插件
  */
 buildscript {
-    ext.kotlin_version = '1.3.41'
+    ext.kotlin_version = '1.3.50'
     //加载本地全局变量 local.properties 存入 rootProject.ext 中 所有的特有的本地变量在这里加载
 //    Properties properties = new Properties()
 //    InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream();
@@ -48,8 +48,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
         // 因为svga 用的是kotlin
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.dicedmelon.gradle:jacoco-android:0.1.4"

@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
+import com.common.core.myinfo.MyUserInfoManager
 
 import com.common.utils.SpanUtils
 import com.common.utils.U
@@ -13,9 +14,11 @@ import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.component.busilib.view.SpeakingTipsAnimationView
 import com.component.level.utils.LevelConfigUtils
+import com.component.person.event.ShowReportEvent
 import com.module.playways.R
 import com.module.playways.room.room.comment.adapter.CommentAdapter
 import com.module.playways.room.room.comment.model.CommentAudioModel
+import org.greenrobot.eventbus.EventBus
 
 class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapterListener?) : RecyclerView.ViewHolder(itemView) {
 
@@ -37,8 +40,16 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
     init {
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                mCommentAudioModel?.let {
-                    listener?.clickAvatar(it.userInfo.userId)
+                if (mCommentAudioModel?.isFake == false) {
+                    mCommentAudioModel?.let {
+                        listener?.clickAvatar(it.userInfo?.userId ?: 0)
+                    }
+                } else {
+                    mCommentAudioModel?.let {
+                        mCommentAudioModel?.userInfo?.userId?.let {
+                            EventBus.getDefault().post(ShowReportEvent(it))
+                        }
+                    }
                 }
             }
         })
@@ -79,29 +90,37 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
         // 为了保证书写从左到右
         val spanUtils = SpanUtils().append("\u202D")
         if (model.userInfo != null
-                && model.userInfo.ranking != null
-                && LevelConfigUtils.getSmallImageResoucesLevel(model.userInfo.ranking.mainRanking) > 0) {
-            val drawable = U.getDrawable(LevelConfigUtils.getSmallImageResoucesLevel(model.userInfo.ranking.mainRanking))
+                && model.userInfo?.ranking != null
+                && LevelConfigUtils.getSmallImageResoucesLevel(model.userInfo?.ranking?.mainRanking
+                        ?: 0) > 0) {
+            val drawable = U.getDrawable(LevelConfigUtils.getSmallImageResoucesLevel(model.userInfo?.ranking?.mainRanking
+                    ?: 0))
             drawable.setBounds(0, 0, U.getDisplayUtils().dip2px(22f), U.getDisplayUtils().dip2px(19f))
             spanUtils.appendImage(drawable, SpanUtils.ALIGN_CENTER)
         }
 
         if (!TextUtils.isEmpty(model.nameBuilder)) {
-            spanUtils.append(model.nameBuilder)
+            spanUtils.append(model.nameBuilder ?: "")
         }
-        if (model.userInfo.honorInfo != null && model.userInfo.honorInfo.isHonor()) {
+        if (model.userInfo?.honorInfo != null && model.userInfo?.honorInfo?.isHonor() == true) {
             mHonorIv.visibility = View.VISIBLE
         } else {
             mHonorIv.visibility = View.GONE
         }
         if (!TextUtils.isEmpty(model.stringBuilder)) {
-            spanUtils.append(model.stringBuilder)
+            spanUtils.append(model.stringBuilder ?: "")
         }
         spanUtils.append("\u202C")
         mNameTv.text = spanUtils.create()
 
         mAudioTv.text = duration.toString() + "s"
-        mAvatarIv.bindData(model.userInfo)
+        if (model.isFake) {
+            // 蒙面
+            mAvatarIv.bindData(model.userInfo, model.fakeUserInfo?.avatarUrl)
+        } else {
+            // 非蒙面 但是model.fakeUserInfo?.nickName, model.userInfo?.avatar都是为空
+            mAvatarIv.bindData(model.userInfo, model.userInfo?.avatar)
+        }
     }
 
 

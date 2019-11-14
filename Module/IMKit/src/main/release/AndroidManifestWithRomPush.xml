@@ -70,6 +70,21 @@
 
         </activity>
 
+        <activity
+            android:name="com.module.msg.activity.LastFollowActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name="com.module.msg.activity.CommentAndLikeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name="com.module.msg.activity.SpecialFollowActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
         <!-- 开发者可以修改 RongBaseActivity 的 rc_base_activity_layout 布局文件调整 actionbar-->
         <activity
             android:name="io.rong.imkit.tools.RongWebviewActivity"
@@ -92,16 +107,6 @@
             android:name="io.rong.imkit.widget.provider.TakingPicturesActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.module.msg.activity.LastFollowActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-
-        <activity
-            android:name="com.module.msg.activity.InteractionActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name="io.rong.imkit.activity.PicturePagerActivity"
@@ -231,7 +236,7 @@
 
         <provider
             android:name="com.huawei.hms.update.provider.UpdateProvider"
-            android:authorities="xxx.xxx.xxx.hms.update.provider"
+            android:authorities="com.zq.live.hms.update.provider"
             android:exported="false"
             android:grantUriPermissions="true">
         </provider>

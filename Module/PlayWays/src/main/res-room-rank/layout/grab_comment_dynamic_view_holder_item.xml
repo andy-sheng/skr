@@ -11,7 +11,7 @@
         android:layout_width="@dimen/view_28_dp"
         android:layout_height="@dimen/view_28_dp"
         avatarView:borderColor="@color/white"
-        avatarView:borderWidth="@dimen/view_2_dp"/>
+        avatarView:borderWidth="@dimen/view_1_dp"/>
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/comment_sdv"

@@ -3,6 +3,7 @@ package com.common.core.userinfo;
 import com.common.rxretrofit.ApiResult;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -55,6 +56,21 @@ public interface UserInfoServerApi {
     @GET("/v3/skr/homepage")
     Observable<ApiResult> getHomePage(@Query("userID") long userID);
 
+    /**
+     * 加入特别关注
+     * @param body {toUserID}
+     * @return
+     */
+    @PUT("/v1/mate/set-special-follow")
+    Observable<ApiResult> addSpecialFollow(@Body RequestBody body);
+
+    /**
+     * 移除特别关注
+     * @param body {toUserID}
+     * @return
+     */
+    @PUT("/v1/mate/del-special-follow")
+    Observable<ApiResult> delSpecialFollow(@Body RequestBody body);
 
     /**
      * 处理关系
@@ -337,6 +353,9 @@ public interface UserInfoServerApi {
     @POST("/v2/mate/multi-check-online-status")
     Observable<ApiResult> checkUserOnlineStatus(@Body RequestBody body);
 
+    @GET("/v1/bonus/multi-get-user-status")
+    Observable<ApiResult> checkUserOnlineStatusWithIntimacy(@Query("userIDs") List<Integer> list);
+
     @POST("/v2/mate/multi-check-game-status")
     Observable<ApiResult> checkUserGameStatus(@Body RequestBody body);
 
@@ -373,15 +392,17 @@ public interface UserInfoServerApi {
     Observable<ApiResult> getBlackList();
 
     @GET("/v1/mate/is-blacked")
-    Observable<ApiResult> checkIsBlack(@Query("userID")int userID);
+    Observable<ApiResult> checkIsBlack(@Query("userID") int userID);
 
-    @GET("/v2/msgbox/latest-news")
+    @GET("/v3/msgbox/latest-news")
     Observable<ApiResult> getLatestNews(@Query("userID") long userID);
 
     @GET("/v2/score/detail")
     Observable<ApiResult> getLevelDetail(@Query("userID") long userID);
 
     @GET("v1/score/rankings")
-    Call<ApiResult> getRankings(@Query("userIDs")ArrayList<Integer> userIDs);
+    Call<ApiResult> getRankings(@Query("userIDs") ArrayList<Integer> userIDs);
 
+    @GET("/v1/msgbox/sp-follow-list")
+    Call<ApiResult> getSPFollowRecordList(@Query("userID") int userID, @Query("offset") int offset, @Query("cnt") int cnt);
 }

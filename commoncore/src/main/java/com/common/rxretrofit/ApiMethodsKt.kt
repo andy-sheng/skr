@@ -6,18 +6,19 @@ import android.util.Log
 import com.common.core.account.UserAccountManager
 import com.common.log.MyLog
 import com.common.utils.U
-import retrofit2.*
+import retrofit2.Call
 import retrofit2.adapter.rxjava2.HttpException
-import java.lang.Exception
+import retrofit2.await
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 val requestMap = ArrayMap<String, Call<ApiResult>>()
 
 const val ERROR_NETWORK_BROKEN = -2
+const val ERROR_JOB_CANCELED = -3
 
 suspend fun subscribe(rc: RequestControl? = null, api: () -> Call<ApiResult>): ApiResult {
-    if(!U.getNetworkUtils().hasNetwork()){
+    if (!U.getNetworkUtils().hasNetwork()) {
         return ApiResult().apply {
             errno = ERROR_NETWORK_BROKEN
             errmsg = "网络链接不可用"
@@ -87,7 +88,13 @@ private suspend fun subscribe(apiKey: String? = null, api: () -> Call<ApiResult>
                 errno = ERROR_NETWORK_BROKEN
                 errmsg = "SocketTimeoutException"
             }
+        } else if (e.message?.contains("cancelled") == true) {
+            return ApiResult().apply {
+                errno = ERROR_JOB_CANCELED
+                errmsg = ""
+            }
         }
+
         return ApiResult().apply {
             errno = ERROR_NETWORK_BROKEN
             errmsg = "网络较差，导致请求失败"
@@ -104,7 +111,7 @@ private suspend fun callReal(apiKey: String?, api: () -> Call<ApiResult>): ApiRe
         }
         // await 是关键
         return call.await()
-    }finally {
+    } finally {
         MyLog.d("ApiObserverKt", "$apiKey 请求结束")
         apiKey?.let {
             requestMap.remove(apiKey)

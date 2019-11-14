@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/view_24_dp"
+    android:paddingLeft="@dimen/view_2_dp"
+    android:paddingRight="@dimen/view_10_dp"
     app:bl_corners_radius="@dimen/view_12_dp"
     app:bl_shape="rectangle"
     app:bl_solid_color="#5C67C1">
-
 
     <com.component.busilib.view.CircleCountDownView
         android:id="@+id/circle_count_down_view"
         android:layout_width="@dimen/view_20_dp"
         android:layout_height="@dimen/view_20_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_2_dp"
         app:bg_color="@color/transparent"
         app:inner_color="#FFC15B"
         app:inner_stroke_raduis="@dimen/view_9_dp"
         app:inner_stroke_width="@dimen/view_2_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/count_down_tv"
+        app:layout_constraintTop_toTopOf="parent"
         app:stroke_bg_color="#353E89"
         app:stroke_bg_width="@dimen/view_3_dp" />
 
@@ -28,9 +33,30 @@
         android:layout_height="@dimen/view_20_dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_5_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:layout_toRightOf="@id/circle_count_down_view"
         android:textColor="@color/white"
-        android:textSize="@dimen/textsize_14_dp" />
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/circle_count_down_view"
+        app:layout_constraintRight_toLeftOf="@id/song_name_tv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginRight="@dimen/view_10_dp" />
 
-</com.common.view.ex.ExRelativeLayout>
+    <TextView
+        android:id="@+id/song_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_5_dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:visibility="gone"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/count_down_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</com.common.view.ex.ExConstraintLayout>

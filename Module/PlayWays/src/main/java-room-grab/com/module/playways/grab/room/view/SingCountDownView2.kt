@@ -6,9 +6,12 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
+import android.widget.TextView
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.dp
+import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExRelativeLayout
+import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.module.playways.R
 import com.module.playways.grab.room.view.control.SelfSingCardView
@@ -19,20 +22,22 @@ import kotlinx.android.synthetic.main.grab_sing_count_down2_view_layout.view.*
  */
 class SingCountDownView2 : RelativeLayout {
 
-    internal var mOverListener: (()->Unit)? = null
+    internal var mOverListener: (() -> Unit)? = null
     internal var mCounDownTask: HandlerTaskTimer? = null
 
-    val container: ExRelativeLayout
+    val container: ExConstraintLayout
+    val songNameTv: TextView
 
-    constructor(context: Context) : super(context) {}
+    constructor(context: Context) : super(context)
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
         inflate(context, R.layout.grab_sing_count_down2_view_layout, this)
         container = this.findViewById(R.id.container)
+        songNameTv = this.findViewById(R.id.song_name_tv)
     }
 
     fun reset() {
@@ -51,7 +56,12 @@ class SingCountDownView2 : RelativeLayout {
         container.background = drawable
     }
 
-    fun setListener(listener: (()->Unit)?) {
+    fun setSongName(songName: String?) {
+        songNameTv.text = songName
+        songNameTv.visibility = View.VISIBLE
+    }
+
+    fun setListener(listener: (() -> Unit)?) {
         this.mOverListener = listener
     }
 

@@ -353,4 +353,23 @@ interface RaceRoomServerApi {
      */
     @GET("http://dev.game.inframe.mobi/v1/racegame/list-playbook-items")
     fun getPlaybookItemList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Call<ApiResult>
+
+
+    @PUT("http://dev.game.inframe.mobi/v1/raceroom/audience-query-match")
+    fun audienceQueryMatch(@Body body: RequestBody): Call<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/raceroom/audience-cancel-match")
+    fun audienceCancelMatch(@Body body: RequestBody): Call<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/raceroom/audience-join-room")
+    fun audienceJoinRoom(@Body body: RequestBody): Call<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/raceroom/audience-exit-room")
+    fun audienceExitRoom(@Body body: RequestBody): Call<ApiResult>
+
+    @GET("http://dev.game.inframe.mobi/v1/raceroom/audience-list")
+    fun getAudienceList(@Query("roomID") roomID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/raceroom/audience-change-room")
+    fun audienceChangeRoom(@Body body: RequestBody): Call<ApiResult>
 }

@@ -133,25 +133,25 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
         return false
     }
 
-    @Transient
-    protected val userInfoMap = LruCache<Int, PlayerInfoModel>(20)
+//    @Transient
+//    protected val userInfoMap = LruCache<Int, PlayerInfoModel>(20)
 
     fun getPlayerOrWaiterInfo(userID: Int?): UserInfoModel? {
         if (userID == null || userID == 0) {
             return null
         }
-        val playerInfoModel = userInfoMap?.get(userID)
-        if (playerInfoModel == null) {
+//        val playerInfoModel = userInfoMap?.get(userID)
+//        if (playerInfoModel == null) {
             val l = getPlayerAndWaiterInfoList()
             for (playerInfo in l) {
                 if (playerInfo.userInfo.userId == userID) {
-                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
+//                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
                     return playerInfo.userInfo
                 }
             }
-        } else {
-            return playerInfoModel.userInfo
-        }
+//        } else {
+//            return playerInfoModel.userInfo
+//        }
         return null
     }
 

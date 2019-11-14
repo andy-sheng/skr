@@ -19,8 +19,10 @@ import com.zq.live.proto.GrabRoom.EQRoundStatus
 import com.zq.live.proto.GrabRoom.EQUserRole
 import org.greenrobot.eventbus.EventBus
 import java.util.*
+import kotlin.collections.ArrayList
 
 class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
+    val preUserIDsSnapShots = ArrayList<Int>() // 之前用户的快照
     //    public static final int ACC_OFFSET_BY_LYRIC = 5000;// 伴奏是比歌词提前 5 秒的
     var tagId: Int = 0//一场到底歌曲分类
     var grabConfigModel = GrabConfigModel()// 一唱到底配置
@@ -125,18 +127,18 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
         if (userID == null || userID == 0) {
             return null
         }
-        val playerInfoModel = userInfoMap?.get(userID) as GrabPlayerInfoModel?
-        if (playerInfoModel == null || playerInfoModel.role == EQUserRole.EQUR_WAIT_USER.value) {
+//        val playerInfoModel = userInfoMap?.get(userID) as GrabPlayerInfoModel?
+//        if (playerInfoModel == null || playerInfoModel.role == EQUserRole.EQUR_WAIT_USER.value) {
             val l = getPlayerAndWaiterInfoList()
             for (playerInfo in l) {
                 if (playerInfo.userInfo.userId == userID) {
-                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
+//                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
                     return playerInfo
                 }
             }
-        } else {
-            return playerInfoModel
-        }
+//        } else {
+//            return playerInfoModel
+//        }
         return null
     }
 
@@ -263,7 +265,10 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
         this.inChallenge = rsp.inChallenge
 
         this.maxGetBLightCnt = rsp.maxGetBLightCnt
-
+        this.preUserIDsSnapShots.clear()
+        for(m in getPlayerAndWaiterInfoList()){
+            this.preUserIDsSnapShots.add(m.userID)
+        }
     }
 
     override fun toString(): String {

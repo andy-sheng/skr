@@ -5,20 +5,17 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.AppBarLayout
-import android.support.design.widget.CoordinatorLayout
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
@@ -28,15 +25,9 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.userinfo.event.RemarkChangeEvent
 import com.common.core.userinfo.model.UserInfoModel
-import com.component.person.model.UserRankModel
-import com.common.flowlayout.FlowLayout
-import com.common.flowlayout.TagAdapter
-import com.common.flowlayout.TagFlowLayout
-import com.common.image.fresco.FrescoWorker
-import com.common.image.model.BaseImage
-import com.common.image.model.ImageFactory
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
+import com.common.rxretrofit.ApiManager
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.AnimateClickListener
@@ -48,45 +39,35 @@ import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.R
 import com.component.busilib.friends.VoiceInfoModel
-import com.component.busilib.view.AvatarView
 import com.component.level.utils.LevelConfigUtils
-
+import com.component.person.OtherPersonActivity.Companion.BUNDLE_USER_ID
+import com.component.person.event.ChildViewPlayAudioEvent
+import com.component.person.model.RelationNumModel
+import com.component.person.model.ScoreDetailModel
+import com.component.person.photo.view.OtherPhotoWallView
+import com.component.person.presenter.OtherPersonPresenter
+import com.component.person.view.*
 import com.dialog.view.TipsDialogView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.module.ModuleServiceManager
 import com.module.RouterConstants
+import com.module.feeds.IPersonFeedsWall
 import com.module.home.IHomeService
+import com.module.post.IPersonPostsWall
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
-import com.component.level.view.NormalLevelView2
-import com.zq.live.proto.Common.ESex
-import com.component.person.utils.StringFromatUtils
-import com.component.person.model.TagModel
-import com.component.person.presenter.OtherPersonPresenter
-import com.component.person.photo.view.OtherPhotoWallView
-
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-
-import java.util.ArrayList
-import java.util.HashMap
-
-import com.component.person.model.RelationNumModel
-
-import com.component.person.OtherPersonActivity.Companion.BUNDLE_USER_ID
-import com.component.person.event.ChildViewPlayAudioEvent
-import com.component.person.model.ScoreDetailModel
-import com.component.person.view.*
-import com.module.feeds.IPersonFeedsWall
-import com.module.post.IPersonPostsWall
 import kotlin.math.abs
 
 class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
+
+    val SP_KEY_HAS_SHOW_SPFOLLOW = "SP_KEY_HAS_SHOW_SPFOLLOW"  // 提醒特别关注的
 
     internal var mUserInfoModel: UserInfoModel = UserInfoModel()
     internal var mUserId: Int = 0
@@ -104,6 +85,8 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mAvatarIv: SimpleDraweeView
     lateinit var mLevelBg: ImageView
     lateinit var mLevelDesc: TextView
+    lateinit var mQinmiTv: TextView
+    lateinit var mQinmiIv: ImageView
     lateinit var mVerifyTv: TextView
     lateinit var mSignTv: ExTextView
     lateinit var mNameTv: ExTextView
@@ -119,9 +102,6 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mPersonVp: NestViewPager
     lateinit var mPersonTabAdapter: PagerAdapter
 
-    private var mPersonMoreOpView: PersonMoreOpView? = null
-    private var mDialogPlus: DialogPlus? = null
-
     internal var mOtherPhotoWallView: OtherPhotoWallView? = null
     internal var mPostsWallView: IPersonPostsWall? = null
     internal var mFeedsWallView: IPersonFeedsWall? = null
@@ -130,7 +110,10 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mFollowIv: ExTextView
     lateinit var mMessageIv: ExTextView
 
-    internal var mEditRemarkDialog: DialogPlus? = null
+    private var mPersonMoreOpView: PersonMoreOpView? = null
+    private var mTipsDialogView: TipsDialogView? = null
+    private var mEditRemarkDialog: DialogPlus? = null
+    private var mDialogPlus: DialogPlus? = null
 
     var lastVerticalOffset = Int.MAX_VALUE
 
@@ -147,8 +130,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     // 已关注 或 互关
     private val mFollowDrawable = DrawableCreator.Builder()
-            .setStrokeColor(Color.parseColor("#AD6C00"))
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+            .setSolidColor(Color.parseColor("#DB8800"))
             .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
             .build()
 
@@ -251,7 +233,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
         })
 
-        mAppbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+        mAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             // TODO: 2019-06-23 也可以加效果，看产品怎么说
             mImageBg.translationY = verticalOffset.toFloat()
             if (lastVerticalOffset != verticalOffset) {
@@ -296,27 +278,26 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                 if (mPersonMoreOpView != null) {
                     mPersonMoreOpView!!.dismiss()
                 }
-                mPersonMoreOpView = PersonMoreOpView(context, mUserInfoModel!!.userId, mUserInfoModel!!.isFollow, false)
+                mPersonMoreOpView = PersonMoreOpView(context, mUserInfoModel.userId, mUserInfoModel.isFollow, mUserInfoModel.isSPFollow, false)
                 mPersonMoreOpView!!.setListener(object : PersonMoreOpView.Listener {
                     override fun onClickRemark() {
-                        if (mPersonMoreOpView != null) {
-                            mPersonMoreOpView!!.dismiss()
-                        }
-                        // TODO: 2019/5/22 修改备注昵称
+                        mPersonMoreOpView?.dismiss()
                         showRemarkDialog()
                     }
 
-                    override fun onClickUnFollow() {
-                        if (mPersonMoreOpView != null) {
-                            mPersonMoreOpView!!.dismiss()
+                    override fun onClickSpFollow() {
+                        mPersonMoreOpView?.dismiss()
+                        if (mUserInfoModel.isSPFollow) {
+                            // 取消特别关注
+                            delSpFollow(mUserInfoModel)
+                        } else {
+                            // 特别关注去
+                            addSpFollow(mUserInfoModel)
                         }
-                        unFollow(mUserInfoModel)
                     }
 
                     override fun onClickReport() {
-                        if (mPersonMoreOpView != null) {
-                            mPersonMoreOpView!!.dismiss()
-                        }
+                        mPersonMoreOpView?.dismiss()
 
                         val channelService = ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation() as IHomeService
                         val baseFragmentClass = channelService.getData(3, null) as Class<BaseFragment>
@@ -336,10 +317,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                     }
 
                     override fun onClickBlack(isInBlack: Boolean) {
-                        if (mPersonMoreOpView != null) {
-                            mPersonMoreOpView!!.dismiss()
-                        }
-
+                        mPersonMoreOpView?.dismiss()
                         if (isInBlack) {
                             UserInfoManager.getInstance().removeBlackList(mUserId, object : ResponseCallBack<Any?>() {
                                 override fun onServerSucess(o: Any?) {
@@ -415,12 +393,22 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mAvatarIv = rootView.findViewById(R.id.avatar_iv)
         mLevelBg = rootView.findViewById(R.id.level_bg)
         mLevelDesc = rootView.findViewById(R.id.level_desc)
+        mQinmiTv = rootView.findViewById(R.id.qinmi_tv)
+        mQinmiIv = rootView.findViewById(R.id.qinmi_iv)
         mVerifyTv = rootView.findViewById(R.id.verify_tv)
         mSignTv = rootView.findViewById(R.id.sign_tv)
         mNameTv = rootView.findViewById(R.id.name_tv)
         mHonorIv = rootView.findViewById(R.id.honor_iv)
         mAudioView = rootView.findViewById(R.id.audio_view)
         mPersonTagView = rootView.findViewById(R.id.person_tag_view)
+
+        if (mUserId == MyUserInfoManager.uid.toInt()) {
+            mQinmiTv.visibility = View.GONE
+            mQinmiIv.visibility = View.GONE
+        } else {
+            mQinmiTv.visibility = View.VISIBLE
+            mQinmiIv.visibility = View.VISIBLE
+        }
 
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -617,16 +605,10 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                     return
                 }
                 if (mUserInfoModel != null) {
-                    var tag: Int? = null
-                    if (mFollowIv.tag != null) {
-                        tag = mFollowIv.tag as Int
-                    }
-                    if (tag != null) {
-                        if (tag == RELATION_FOLLOWED) {
-                            unFollow(mUserInfoModel)
-                        } else if (tag == RELATION_UN_FOLLOW) {
-                            UserInfoManager.getInstance().mateRelation(mUserInfoModel!!.userId, UserInfoManager.RA_BUILD, mUserInfoModel!!.isFriend)
-                        }
+                    if (mUserInfoModel.isFollow) {
+                        unFollow(mUserInfoModel)
+                    } else {
+                        UserInfoManager.getInstance().mateRelation(mUserInfoModel.userId, UserInfoManager.RA_BUILD, mUserInfoModel.isFriend)
                     }
                 }
             }
@@ -655,13 +637,29 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     override fun showHomePageInfo(userInfoModel: UserInfoModel,
                                   relationNumModels: List<RelationNumModel>?,
-                                  isFriend: Boolean, isFollow: Boolean, meiLiCntTotal: Int, scoreDetailModel: ScoreDetailModel, voiceInfoModel: VoiceInfoModel?) {
+                                  meiLiCntTotal: Int, qinMiCntTotal: Int,
+                                  scoreDetailModel: ScoreDetailModel, voiceInfoModel: VoiceInfoModel?) {
         mSmartRefresh.finishRefresh()
         showUserInfo(userInfoModel)
         showRelationNum(relationNumModels)
-        showUserRelation(isFriend, isFollow)
+        showUserRelation(userInfoModel.isFriend, userInfoModel.isFollow, userInfoModel.isSPFollow)
         showCharms(meiLiCntTotal)
         showScoreDetail(scoreDetailModel)
+
+        if (userInfoModel.isFollow) {
+            if (!U.getPreferenceUtils().getSettingBoolean(SP_KEY_HAS_SHOW_SPFOLLOW, false)) {
+                showSpFollowTips()
+            }
+        }
+        if (qinMiCntTotal > 0) {
+            mQinmiIv.visibility = View.VISIBLE
+            mQinmiTv.visibility = View.VISIBLE
+            mQinmiTv.text = qinMiCntTotal.toString()
+        } else {
+            mQinmiIv.visibility = View.GONE
+            mQinmiTv.visibility = View.GONE
+        }
+
         mVoiceInfoModel = voiceInfoModel
         if (voiceInfoModel != null) {
             mAudioView.bindData(voiceInfoModel.duration)
@@ -671,11 +669,30 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         }
     }
 
+    private fun showSpFollowTips() {
+        U.getPreferenceUtils().setSettingBoolean(SP_KEY_HAS_SHOW_SPFOLLOW, true)
+        mDialogPlus?.dismiss(false)
+        mDialogPlus = DialogPlus.newDialog(context!!)
+                .setContentHolder(ViewHolder(R.layout.other_person_tips_view_layout))
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setMargin(U.getDisplayUtils().dip2px(32f), -1, U.getDisplayUtils().dip2px(32f), -1)
+                .setExpanded(false)
+                .setGravity(Gravity.CENTER)
+                .setOnClickListener { dialog, view -> dialog.dismiss() }
+                .create()
+        mDialogPlus?.show()
+    }
+
+    override fun refreshRelation(isFriend: Boolean, isFollow: Boolean, isSpFollow: Boolean) {
+        showUserRelation(isFriend, isFollow, isSpFollow)
+    }
+
     private fun showScoreDetail(scoreDetailModel: ScoreDetailModel) {
-        if (scoreDetailModel.scoreStateModel != null && LevelConfigUtils.getAvatarLevelBg(scoreDetailModel.scoreStateModel!!.mainRanking) != 0) {
+        if (scoreDetailModel.scoreStateModel != null && LevelConfigUtils.getRaceCenterAvatarBg(scoreDetailModel.scoreStateModel!!.mainRanking) != 0) {
             mLevelBg.visibility = View.VISIBLE
             mLevelDesc.visibility = View.VISIBLE
-            mLevelBg.background = U.getDrawable(LevelConfigUtils.getAvatarLevelBg(scoreDetailModel.scoreStateModel!!.mainRanking))
+            mLevelBg.background = U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(scoreDetailModel.scoreStateModel!!.mainRanking))
             mLevelDesc.text = scoreDetailModel.scoreStateModel!!.rankingDesc
         } else {
             mLevelBg.visibility = View.GONE
@@ -733,26 +750,21 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         }
     }
 
-    private fun showUserRelation(isFriend: Boolean, isFollow: Boolean) {
+    private fun showUserRelation(isFriend: Boolean, isFollow: Boolean, isSpFollow: Boolean) {
         mUserInfoModel.isFriend = isFriend
         mUserInfoModel.isFollow = isFollow
+        mUserInfoModel.isSPFollow = isSpFollow
         when {
             isFriend -> {
-                mFollowIv.isClickable = false
                 mFollowIv.text = "互关"
                 mFollowIv.background = mFollowDrawable
-                mFollowIv.tag = RELATION_FOLLOWED
             }
             isFollow -> {
-                mFollowIv.isClickable = false
                 mFollowIv.text = "已关注"
-                mFollowIv.tag = RELATION_FOLLOWED
                 mFollowIv.background = mFollowDrawable
             }
             else -> {
-                mFollowIv.isClickable = true
                 mFollowIv.text = "关注Ta"
-                mFollowIv.tag = RELATION_UN_FOLLOW
                 mFollowIv.background = mUnFollowDrawable
             }
         }
@@ -760,8 +772,8 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelationChangeEvent) {
-        if (event.useId == mUserInfoModel!!.userId) {
-            showUserRelation(event.isFriend, event.isFollow)
+        if (event.useId == mUserInfoModel.userId) {
+            showUserRelation(event.isFriend, event.isFollow, event.isSpFollow)
         }
     }
 
@@ -779,38 +791,93 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mAudioView.setPlay(false)
     }
 
+    override fun showSpFollowVip() {
+        mTipsDialogView?.dismiss(false)
+        mTipsDialogView = TipsDialogView.Builder(context)
+                .setMessageTip("非VIP最多特别关注3个用户，是否开通vip享受15人上限～")
+                .setConfirmTip("开通VIP")
+                .setCancelTip("取消")
+                .setConfirmBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View) {
+                        mTipsDialogView?.dismiss()
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
+                                .greenChannel().navigation()
+                    }
+                })
+                .setCancelBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View) {
+                        mTipsDialogView?.dismiss()
+                    }
+                })
+                .build()
+        mTipsDialogView?.showByDialog()
+    }
+
+    private fun addSpFollow(userInfoModel: UserInfoModel?) {
+        mTipsDialogView?.dismiss(false)
+        mTipsDialogView = TipsDialogView.Builder(context)
+                .setMessageTip("是否对ta开启特别关注\n开启后，对方上线、发贴、聊天信息、上传照片等将有特别提醒")
+                .setConfirmTip("开启")
+                .setCancelTip("取消")
+                .setConfirmBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View) {
+                        mTipsDialogView?.dismiss()
+                        mPresenter.addSpFollow(mUserId)
+                    }
+                })
+                .setCancelBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View) {
+                        mTipsDialogView?.dismiss()
+                    }
+                })
+                .build()
+
+        mTipsDialogView?.showByDialog()
+    }
+
+    private fun delSpFollow(userInfoModel: UserInfoModel?) {
+        mTipsDialogView?.dismiss(false)
+        mTipsDialogView = TipsDialogView.Builder(context)
+                .setMessageTip("是否对ta关闭特别关注\n关闭后，你将无法收到关于ta的特别提醒啦")
+                .setConfirmTip("关闭")
+                .setCancelTip("取消")
+                .setConfirmBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View) {
+                        mTipsDialogView?.dismiss()
+                        mPresenter.delSpFollow(mUserId)
+                    }
+                })
+                .setCancelBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View) {
+                        mTipsDialogView?.dismiss()
+                    }
+                })
+                .build()
+
+        mTipsDialogView?.showByDialog()
+    }
+
     private fun unFollow(userInfoModel: UserInfoModel?) {
-        val tipsDialogView = TipsDialogView.Builder(context)
+        mTipsDialogView?.dismiss(false)
+        mTipsDialogView = TipsDialogView.Builder(context)
                 .setTitleTip("取消关注")
                 .setMessageTip("是否取消关注")
                 .setConfirmTip("取消关注")
                 .setCancelTip("不了")
                 .setConfirmBtnClickListener(object : AnimateClickListener() {
                     override fun click(view: View) {
-                        if (mDialogPlus != null) {
-                            mDialogPlus!!.dismiss()
-                        }
+                        mTipsDialogView?.dismiss()
                         UserInfoManager.getInstance().mateRelation(userInfoModel!!.userId, UserInfoManager.RA_UNBUILD, userInfoModel.isFriend)
                     }
                 })
                 .setCancelBtnClickListener(object : AnimateClickListener() {
                     override fun click(view: View) {
-                        if (mDialogPlus != null) {
-                            mDialogPlus!!.dismiss()
-                        }
+                        mTipsDialogView?.dismiss()
                     }
                 })
                 .build()
-
-        mDialogPlus = DialogPlus.newDialog(context!!)
-                .setContentHolder(ViewHolder(tipsDialogView))
-                .setGravity(Gravity.BOTTOM)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .setOnDismissListener { }
-                .create()
-        mDialogPlus!!.show()
+        mTipsDialogView?.showByDialog()
     }
 
     override fun destroy() {
@@ -820,10 +887,11 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mOtherPhotoWallView?.destory()
         mPostsWallView?.destroy()
         mFeedsWallView?.destroy()
-        mDialogPlus?.dismiss()
+        mTipsDialogView?.dismiss(false)
         mPersonMoreOpView?.dismiss()
         mEditRemarkDialog?.dismiss(false)
         mFeedsWallView?.destroy()
+        mDialogPlus?.dismiss()
     }
 
     override fun onRequestSucess(hasMore: Boolean) {
@@ -834,8 +902,5 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     companion object {
         const val PERSON_CENTER_TOP_ICON = "http://res-static.inframe.mobi/app/person_center_top_bg.png"
-
-        const val RELATION_FOLLOWED = 1 // 已关注关系
-        const val RELATION_UN_FOLLOW = 2 // 未关注关系
     }
 }

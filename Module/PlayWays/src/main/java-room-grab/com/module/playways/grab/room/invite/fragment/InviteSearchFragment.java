@@ -225,7 +225,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
                     // TODO: 2019/5/23 区分好友和关注
                     isAutoSearch = model.isAutoSearch();
                     List<UserInfoModel> userInfoModels = UserInfoLocalApi.searchFollow(model.getSearchContent());
-                    UserInfoManager.getInstance().fillUserOnlineStatus(userInfoModels, true);
+                    UserInfoManager.getInstance().fillUserOnlineStatus(userInfoModels, true, false);
                     return Observable.just(userInfoModels);
                 }
             }), new ApiObserver<List<UserInfoModel>>() {

@@ -111,4 +111,6 @@ interface MicRoomServerApi {
     @GET("http://dev.game.inframe.mobi/v1/micgame/get-add-music-cnt")
     fun getAddMusicCnt(@Query("roomID") roomID: Int, @Query("userID") userID: Int): Call<ApiResult>
 
+    @PUT("http://dev.game.inframe.mobi/v1/game/user-statistic")
+    fun userStatistic(@Body body: RequestBody): Call<ApiResult>
 }

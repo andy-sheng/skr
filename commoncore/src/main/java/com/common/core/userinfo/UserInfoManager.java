@@ -316,7 +316,7 @@ public class UserInfoManager {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userID, false, false));
+                    EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userID, false, false, false));
                     // TODO: 2019-07-03 可能服务器加成功，加融云失败，有问题找服务器
                     msgService.addToBlacklist(String.valueOf(userID), new ICallback() {
                         @Override
@@ -439,14 +439,15 @@ public class UserInfoManager {
                 if (obj.getErrno() == 0) {
                     final boolean isFriend = obj.getData().getBooleanValue("isFriend");
                     final boolean isFollow = obj.getData().getBooleanValue("isFollow");
+                    final boolean isSPFollow = obj.getData().getBooleanValue("isSPFollow");
                     if (responseCallBack != null) {
                         responseCallBack.onServerSucess(isFriend);
                     }
                     if (action == RA_BUILD) {
                         StatisticsAdapter.recordCountEvent("social", "follow", null);
-                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, isFriend, isFollow));
+                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, isFriend, isFollow, isSPFollow));
                     } else if (action == RA_UNBUILD) {
-                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userId, isFriend, isFollow));
+                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userId, isFriend, isFollow, isSPFollow));
                     }
                 } else {
                     MyLog.w(TAG, "process" + " obj=" + obj);
@@ -493,9 +494,11 @@ public class UserInfoManager {
      */
     /**
      * @param pullOnlineStatus     是否拉取在线状态
+     * @param isFromFollow         是否从关注页面来
      * @param userInfoListCallback
+     * @param needIntimacy         需要亲密度
      */
-    public void getMyFollow(final int pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
+    public void getMyFollow(final int pullOnlineStatus, final boolean isFromFollow, final UserInfoListCallback userInfoListCallback, final boolean needIntimacy) {
         Observable.create(new ObservableOnSubscribe<List<UserInfoModel>>() {
             @Override
             public void subscribe(ObservableEmitter<List<UserInfoModel>> emitter) {
@@ -550,22 +553,27 @@ public class UserInfoManager {
                         Response<ApiResult> response = call.execute();
                         ApiResult obj = response.body();
                         if (obj != null && obj.getData() != null && obj.getErrno() == 0) {
-                            List<UserInfoModel> l3 = new ArrayList<>();
-                            List<UserInfoModel> userInfoModels2 = JSON.parseArray(obj.getData().getString("adds"), UserInfoModel.class);
-                            List<UserInfoModel> userInfoModels3 = JSON.parseArray(obj.getData().getString("updates"), UserInfoModel.class);
-                            if (userInfoModels2 != null) {
-                                l3.addAll(userInfoModels2);
-                            }
-                            if (userInfoModels3 != null) {
-                                l3.addAll(userInfoModels3);
-                            }
                             boolean hasUpdate = false;
-                            if (!l3.isEmpty()) {
-                                UserInfoLocalApi.insertOrUpdate(l3);
-                                // 更新最终表
-                                resutlSet.addAll(l3);
+                            // 新增逻辑
+                            List<UserInfoModel> userInfoModels2 = JSON.parseArray(obj.getData().getString("adds"), UserInfoModel.class);
+                            if (userInfoModels2 != null && !userInfoModels2.isEmpty()) {
+                                UserInfoLocalApi.insertOrUpdate(userInfoModels2);
+                                // 更新表
+                                resutlSet.addAll(userInfoModels2);
                                 hasUpdate = true;
                             }
+                            // 更新逻辑
+                            List<UserInfoModel> userInfoModels3 = JSON.parseArray(obj.getData().getString("updates"), UserInfoModel.class);
+                            if (userInfoModels3 != null && !userInfoModels3.isEmpty()) {
+                                UserInfoLocalApi.insertOrUpdate(userInfoModels3);
+                                // 更新表
+                                for (UserInfoModel model : userInfoModels3) {
+                                    resutlSet.remove(new UserInfoModel(model.getUserId()));
+                                }
+                                resutlSet.addAll(userInfoModels3);
+                                hasUpdate = true;
+                            }
+                            // 删除逻辑
                             List<Integer> delIds = JSON.parseArray(obj.getData().getString("dels"), Integer.class);
                             if (delIds != null && !delIds.isEmpty()) {
                                 //批量删除
@@ -597,7 +605,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, true);
+                    fillUserOnlineStatus(resultList, true, false, isFromFollow);
                 } else if (pullOnlineStatus == ONLINE_PULL_NORMAL) {
                     if (resultList.size() > 100) {
                         // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
@@ -605,7 +613,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, false);
+                    fillUserOnlineStatus(resultList, false, needIntimacy, isFromFollow);
                 } else {
 
                 }
@@ -643,18 +651,19 @@ public class UserInfoManager {
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     List<UserInfoModel> list = JSON.parseArray(obj.getData().getString("fans"), UserInfoModel.class);
-                    List<UserInfoModel> friendList = new ArrayList<>();
-                    if (list != null) {
-                        for (UserInfoModel userInfoModel : list) {
-                            if (userInfoModel.isFriend()) {
-                                friendList.add(userInfoModel);
-                            }
-                        }
-                    }
-                    if (!friendList.isEmpty()) {
-                        // 好友列表存到数据库
-                        UserInfoLocalApi.insertOrUpdate(friendList);
-                    }
+                    // todo 粉丝关系链不完整
+//                    List<UserInfoModel> friendList = new ArrayList<>();
+//                    if (list != null) {
+//                        for (UserInfoModel userInfoModel : list) {
+//                            if (userInfoModel.isFriend()) {
+//                                friendList.add(userInfoModel);
+//                            }
+//                        }
+//                    }
+//                    if (!friendList.isEmpty()) {
+//                        // 好友列表存到数据库
+//                        UserInfoLocalApi.insertOrUpdate(friendList);
+//                    }
                     int newOffset = obj.getData().getIntValue("offset");
                     if (userInfoListCallback != null) {
                         userInfoListCallback.onSuccess(FROM.SERVER_PAGE, newOffset, list);
@@ -670,7 +679,7 @@ public class UserInfoManager {
      */
     public void getMyFriends(final int pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
         //先从数据库里取我的关注
-        getMyFollow(ONLINE_PULL_NONE, new UserInfoListCallback() {
+        getMyFollow(ONLINE_PULL_NONE, false, new UserInfoListCallback() {
             @Override
             public void onSuccess(FROM from, int offset, List<UserInfoModel> list) {
                 List<UserInfoModel> resultList = new ArrayList<>();
@@ -686,7 +695,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, true);
+                    fillUserOnlineStatus(resultList, true, false);
                 } else if (pullOnlineStatus == ONLINE_PULL_NORMAL) {
                     if (resultList.size() > 100) {
                         // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
@@ -694,7 +703,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, false);
+                    fillUserOnlineStatus(resultList, false, true, false);
                 } else {
 
                 }
@@ -702,7 +711,7 @@ public class UserInfoManager {
                     userInfoListCallback.onSuccess(from, resultList.size(), resultList);
                 }
             }
-        });
+        }, true);
     }
 
     /**
@@ -866,18 +875,22 @@ public class UserInfoManager {
 
     }
 
-    public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus) {
+    public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus, boolean isFromFollow) {
+        fillUserOnlineStatus(list, pullGameStatus, false, isFromFollow);
+    }
+
+    public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus, boolean needIntimacy, boolean isFromFollow) {
         final HashSet<Integer> idSets = new HashSet();
         for (UserInfoModel userInfoModel : list) {
             OnlineModel onlineModel = mStatusMap.get(userInfoModel.getUserId());
-            if (onlineModel == null) {
+            if (onlineModel == null || (needIntimacy && !onlineModel.hasQinMiCnt())) {
                 idSets.add(userInfoModel.getUserId());
             } else {
                 long t = System.currentTimeMillis() - onlineModel.getRecordTs();
                 if (onlineModel.isOnline()) {
                     if (Math.abs(t) < 30 * 1000) {
                         // 认为状态缓存有效，不去这个id的状态了
-                        fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                        setUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
                     } else {
                         idSets.add(userInfoModel.getUserId());
                     }
@@ -887,14 +900,14 @@ public class UserInfoManager {
                         // 已经离线超出15天了，没道理这会就上线了，缓存久一点
                         if (Math.abs(t) < 5 * 60 * 1000) {
                             // 认为状态缓存有效，不去这个id的状态了
-                            fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                            setUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
                         } else {
                             idSets.add(userInfoModel.getUserId());
                         }
                     } else {
                         if (Math.abs(t) < 60 * 1000) {
                             // 认为状态缓存有效，不去这个id的状态了
-                            fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                            setUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
                         } else {
                             idSets.add(userInfoModel.getUserId());
                         }
@@ -926,7 +939,11 @@ public class UserInfoManager {
                 if (pullGameStatus) {
                     observable = checkUserGameStatusByIds(qqq);
                 } else {
-                    observable = checkUserOnlineStatusByIds(qqq);
+                    if (needIntimacy) {
+                        observable = checkUserOnlineStatusByIdsWithIntimacy(qqq);
+                    } else {
+                        observable = checkUserOnlineStatusByIds(qqq);
+                    }
                 }
 
                 observable.map(new Function<HashMap<Integer, OnlineModel>, List<UserInfoModel>>() {
@@ -951,7 +968,7 @@ public class UserInfoManager {
             for (UserInfoModel userInfoModel : list) {
                 if (idSets.contains(userInfoModel.getUserId())) {
                     OnlineModel onlineModel = onlineMap.get(userInfoModel.getUserId());
-                    fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                    setUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
                 }
             }
         }
@@ -959,35 +976,82 @@ public class UserInfoManager {
             @Override
             public int compare(UserInfoModel u1, UserInfoModel u2) {
                 MyLog.d(TAG, "compare" + " u1=" + u1 + " u2=" + u2);
-                if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
-                    // 两者都是离线
-                    // 按离线时间排序
-                    if (u1.getStatusTs() > u2.getStatusTs()) {
+                // todo 产品的神奇需求 我也不知道为什么要两套排序
+                if (isFromFollow) {
+                    if (u1.isSPFollow() == u2.isSPFollow()) {
+                        // 两者都是特别关注 或 非特别关注
+                        if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
+                            // 两者都是离线
+                            // 按离线时间排序
+                            if (u1.getStatusTs() > u2.getStatusTs()) {
+                                return -1;
+                            } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                        if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
+                            // 两者都是在线
+                            // 按在线时间排序
+                            if (u1.getStatusTs() > u2.getStatusTs()) {
+                                return -1;
+                            } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                        int r = u2.getStatus() - u1.getStatus();
+                        return r;
+                    } else if (u1.isSPFollow()) {
                         return -1;
-                    } else if (u1.getStatusTs() < u2.getStatusTs()) {
-                        return 1;
                     } else {
-                        return 0;
-                    }
-                }
-                if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
-                    // 两者都是在线
-                    // 按在线时间排序
-                    if (u1.getStatusTs() > u2.getStatusTs()) {
-                        return -1;
-                    } else if (u1.getStatusTs() < u2.getStatusTs()) {
                         return 1;
-                    } else {
-                        return 0;
                     }
+                } else {
+                    if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
+                        // 两者都是离线
+                        // 先按亲密度 再按离线时间排序
+                        if (u1.getIntimacy() > u2.getIntimacy()) {
+                            return -1;
+                        } else if (u1.getIntimacy() < u2.getIntimacy()) {
+                            return 1;
+                        } else {
+                            if (u1.getStatusTs() > u2.getStatusTs()) {
+                                return -1;
+                            } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    }
+                    if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
+                        // 两者都是在线
+                        // 先按亲密度 再按在线时间排序
+                        if (u1.getIntimacy() > u2.getIntimacy()) {
+                            return -1;
+                        } else if (u1.getIntimacy() < u2.getIntimacy()) {
+                            return 1;
+                        } else {
+                            if (u1.getStatusTs() > u2.getStatusTs()) {
+                                return -1;
+                            } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    }
+                    int r = u2.getStatus() - u1.getStatus();
+                    return r;
                 }
-                int r = u2.getStatus() - u1.getStatus();
-                return r;
             }
         });
     }
 
-    private void fillUserOnlineStatus(UserInfoModel userInfoModel, OnlineModel onlineModel, boolean pullGameStatus) {
+    private void setUserOnlineStatus(UserInfoModel userInfoModel, OnlineModel onlineModel, boolean pullGameStatus) {
         // 认为状态缓存有效，不去这个id的状态了
         if (onlineModel != null && onlineModel.isOnline()) {
             userInfoModel.setStatus(UserInfoModel.EF_ONLINE);
@@ -1018,6 +1082,10 @@ public class UserInfoManager {
             } else {
                 userInfoModel.setStatusDesc(timeDesc + "在线");
             }
+        }
+
+        if (onlineModel.hasQinMiCnt()) {
+            userInfoModel.setIntimacy(onlineModel.getQinMiCntTotal());
         }
     }
 
@@ -1057,6 +1125,45 @@ public class UserInfoManager {
                                     mStatusMap.put(offlineModel.getUserID(), offlineModel);
                                 }
                             }
+                            return hashSet;
+                        }
+                        return null;
+                    }
+                });
+    }
+
+    /**
+     * 查询用户简单在线状态,携带亲密度
+     *
+     * @param list
+     * @return
+     */
+    public Observable<HashMap<Integer, OnlineModel>> checkUserOnlineStatusByIdsWithIntimacy(List<Integer> list) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userIDs", list);
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        return userInfoServerApi.checkUserOnlineStatusWithIntimacy(list)
+                .map(new Function<ApiResult, HashMap<Integer, OnlineModel>>() {
+                    @Override
+                    public HashMap<Integer, OnlineModel> apply(ApiResult obj) {
+                        if (obj != null && obj.getData() != null && obj.getErrno() == 0) {
+                            HashMap<Integer, OnlineModel> hashSet = new HashMap<>();
+                            List<OnlineModel> onlineModelList = JSON.parseArray(obj.getData().getString("userStatus"), OnlineModel.class);
+
+                            if (onlineModelList != null) {
+                                for (OnlineModel onlineModel : onlineModelList) {
+                                    if (onlineModel.getOnlineTime() > 0) {
+                                        onlineModel.setOnline(true);
+                                    } else {
+                                        onlineModel.setOnline(false);
+                                    }
+                                    onlineModel.setRecordTs(System.currentTimeMillis());
+                                    hashSet.put(onlineModel.getUserID(), onlineModel);
+                                    mStatusMap.put(onlineModel.getUserID(), onlineModel);
+                                }
+                            }
+
                             return hashSet;
                         }
                         return null;

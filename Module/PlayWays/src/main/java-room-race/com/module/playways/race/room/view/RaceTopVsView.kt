@@ -5,11 +5,12 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.support.constraint.ConstraintLayout
-import android.support.constraint.Group
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
+import android.widget.TextView
 import com.common.anim.svga.SvgaParserAdapter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
@@ -17,16 +18,21 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.utils.U
-import com.component.busilib.view.CircleCountDownView
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
+import com.component.busilib.view.CircleCountDownView
+import com.component.busilib.view.VoiceChartView
 import com.component.person.event.ShowPersonCardEvent
+import com.component.person.event.ShowReportEvent
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.event.RaceBlightByMeEvent
 import com.opensource.svgaplayer.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class RaceTopVsView : ExConstraintLayout {
@@ -42,12 +48,12 @@ class RaceTopVsView : ExConstraintLayout {
     val rightTicketCountTv: ExTextView
     val rightAvatarIv: BaseImageView
     val rightCircleCountDownView: CircleCountDownView
-    val leftState: ExTextView
-    val leftTicketGroup: Group
-    val rightState: ExTextView
-    val rightTicketGroup: Group
     val leftSvgaIv: SVGAImageView
     val rightSvgaIv: SVGAImageView
+    var leftVoiceChartView: VoiceChartView
+    var rightVoiceChartView: VoiceChartView
+    var playerNameLeft: ExTextView
+    var playerNameRight: ExTextView
 
     val raceTopVsIv: ImageView
     var roomData: RaceRoomData? = null
@@ -77,17 +83,21 @@ class RaceTopVsView : ExConstraintLayout {
         rightAvatarIv = this.findViewById(com.module.playways.R.id.right_avatar_iv)
         rightCircleCountDownView = this.findViewById(com.module.playways.R.id.right_circle_count_down_view)
         raceTopVsIv = this.findViewById(com.module.playways.R.id.race_top_vs_iv)
-        leftState = this.findViewById(R.id.left_state)
-        leftTicketGroup = this.findViewById(R.id.left_ticket_group)
-        rightState = this.findViewById(R.id.right_state)
-        rightTicketGroup = this.findViewById(R.id.right_ticket_group)
         leftSvgaIv = this.findViewById(R.id.left_svga_iv)
         rightSvgaIv = this.findViewById(R.id.right_svga_iv)
+        leftVoiceChartView = this.findViewById(R.id.left_voice_chart_view)
+        rightVoiceChartView = this.findViewById(R.id.right_voice_chart_view)
+        playerNameLeft = rootView.findViewById(R.id.player_name_left)
+        playerNameRight = rootView.findViewById(R.id.player_name_right)
 
         leftAvatarIv.setDebounceViewClickListener {
             roomData?.realRoundInfo?.subRoundInfo?.let {
                 if (it.size == 2) {
-                    EventBus.getDefault().post(ShowPersonCardEvent(it[0].userID))
+                    if (roomData?.isFakeForMe(it[0].userID) == false) {
+                        EventBus.getDefault().post(ShowPersonCardEvent(it[0].userID))
+                    } else {
+                        EventBus.getDefault().post(ShowReportEvent(it[0].userID))
+                    }
                 }
             }
         }
@@ -95,9 +105,25 @@ class RaceTopVsView : ExConstraintLayout {
         rightAvatarIv.setDebounceViewClickListener {
             roomData?.realRoundInfo?.subRoundInfo?.let {
                 if (it.size == 2) {
-                    EventBus.getDefault().post(ShowPersonCardEvent(it[1].userID))
+                    if (roomData?.isFakeForMe(it[1].userID) == false) {
+                        EventBus.getDefault().post(ShowPersonCardEvent(it[1].userID))
+                    } else {
+                        EventBus.getDefault().post(ShowReportEvent(it[1].userID))
+                    }
                 }
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RaceBlightByMeEvent) {
+        updateAvatar()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
         }
     }
 
@@ -198,64 +224,62 @@ class RaceTopVsView : ExConstraintLayout {
     fun updateData() {
         roomData?.realRoundInfo?.scores?.let {
             if (it.size == 2) {
-                if (!(roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.uid.toInt())
-                                ?: false)) {
-
-                    leftTicketGroup.visibility = View.VISIBLE
-                    rightTicketGroup.visibility = View.VISIBLE
-                    leftState.visibility = View.GONE
-                    rightState.visibility = View.GONE
-
-                    resetLeftPlayCount(it[0].bLightCnt - leftTicketCountTv.text.toString().toInt())
+                if ((roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.uid.toInt()) == false)) {
+                    resetLeftPlayCount(it[0].bLightCnt - getTextContentInt(leftTicketCountTv))
                     leftTicketCountTv.text = it[0].bLightCnt.toString()
-                    resetRightPlayCount(it[1].bLightCnt - rightTicketCountTv.text.toString().toInt())
+                    resetRightPlayCount(it[1].bLightCnt - getTextContentInt(rightTicketCountTv))
                     rightTicketCountTv.text = it[1].bLightCnt.toString()
                 } else {
-                    leftTicketGroup.visibility = View.GONE
-                    rightTicketGroup.visibility = View.GONE
-                    leftState.visibility = View.GONE
-                    rightState.visibility = View.GONE
-                    leftState.text = ""
-                    rightState.text = ""
-
                     if (roomData?.realRoundInfo?.subRoundSeq == 1) {
-
-                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.uid.toInt())
-                                        ?: true) {
-
-                            resetLeftPlayCount(it[0].bLightCnt - leftTicketCountTv.text.toString().toInt())
+                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.uid.toInt()) == true) {
+                            resetLeftPlayCount(it[0].bLightCnt - getTextContentInt(leftTicketCountTv))
                             leftTicketCountTv.text = it[0].bLightCnt.toString()
-                            leftTicketGroup.visibility = View.VISIBLE
-                            rightState.visibility = View.VISIBLE
-                            rightState.text = "**"
+                            rightTicketCountTv.text = "**"
                         } else {
-                            rightState.text = "**"
-                            rightState.visibility = View.VISIBLE
-                            leftState.text = "**"
-                            leftState.visibility = View.VISIBLE
+                            leftTicketCountTv.text = "**"
+                            rightTicketCountTv.text = "**"
                         }
                     } else if (roomData?.realRoundInfo?.subRoundSeq == 2) {
 
-                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.uid.toInt())
-                                        ?: true) {
-
-                            leftState.text = "**"
-                            leftState.visibility = View.VISIBLE
-                            rightTicketGroup.visibility = View.VISIBLE
-                            resetRightPlayCount(it[1].bLightCnt - rightTicketCountTv.text.toString().toInt())
+                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.uid.toInt()) == true) {
+                            leftTicketCountTv.text = "**"
+                            resetRightPlayCount(it[1].bLightCnt - getTextContentInt(rightTicketCountTv))
                             rightTicketCountTv.text = it[1].bLightCnt.toString()
                         } else {
-
-                            leftTicketGroup.visibility = View.VISIBLE
-                            resetLeftPlayCount(it[0].bLightCnt - leftTicketCountTv.text.toString().toInt())
+                            resetLeftPlayCount(it[0].bLightCnt - getTextContentInt(leftTicketCountTv))
                             leftTicketCountTv.text = it[0].bLightCnt.toString()
-                            rightState.text = "**"
-                            rightState.visibility = View.VISIBLE
+                            rightTicketCountTv.text = "**"
                         }
                     }
                 }
             }
+
+            if (roomData?.realRoundInfo?.subRoundSeq == 1) {
+                leftVoiceChartView.start()
+                leftVoiceChartView.visibility = View.VISIBLE
+                rightVoiceChartView.stop()
+                rightVoiceChartView.visibility = View.GONE
+            } else {
+                rightVoiceChartView.start()
+                rightVoiceChartView.visibility = View.VISIBLE
+                leftVoiceChartView.stop()
+                leftVoiceChartView.visibility = View.GONE
+            }
         }
+    }
+
+    fun switchRoom() {
+        visibility = View.GONE
+        leftVoiceChartView.stop()
+        leftVoiceChartView.stop()
+    }
+
+    private fun getTextContentInt(view: TextView): Int {
+        if (!TextUtils.isEmpty(view.text.toString()) && !view.text.toString().equals("**")) {
+            return view.text.toString().toInt()
+        }
+
+        return 0
     }
 
     private fun resetLeftPlayCount(addCount: Int) {
@@ -320,24 +344,51 @@ class RaceTopVsView : ExConstraintLayout {
         rightSvgaIv.stopAnimation()
         leftPlayCount = 0
         rightPlayCount = 0
+        leftVoiceChartView.stop()
+        rightVoiceChartView.stop()
+
+        EventBus.getDefault().unregister(this)
     }
 
     fun bindData() {
         leftCircleCountDownView.visibility = View.GONE
         rightCircleCountDownView.visibility = View.GONE
-        roomData?.realRoundInfo?.subRoundInfo?.let {
-            AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerOrWaiterInfo(it.getOrNull(0)?.userID)?.avatar)
-                    .setCornerRadius(U.getDisplayUtils().dip2px(18f).toFloat())
-                    .build())
-        }
 
-        roomData?.realRoundInfo?.subRoundInfo?.let {
-            AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerOrWaiterInfo(it.getOrNull(1)?.userID)?.avatar)
-                    .setCornerRadius(U.getDisplayUtils().dip2px(18f).toFloat())
-                    .build())
-        }
-
+        updateAvatar()
         updateData()
+
+        roomData?.realRoundInfo?.subRoundInfo?.let {
+            roomData?.getPlayerOrWaiterInfoModel(it.getOrNull(0)?.userID)?.let {
+                playerNameLeft.text = it.fakeUserInfo?.nickName
+            }
+
+            roomData?.getPlayerOrWaiterInfoModel(it.getOrNull(1)?.userID)?.let {
+                playerNameRight.text = it.fakeUserInfo?.nickName
+            }
+        }
+    }
+
+    private fun updateAvatar() {
+        roomData?.realRoundInfo?.subRoundInfo?.let {
+            var avatarUrl = if (roomData?.isFakeForMe(roomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.userID
+                            ?: 0) == true) roomData?.getPlayerOrWaiterInfoModel(it.getOrNull(0)?.userID)?.fakeUserInfo?.avatarUrl else roomData?.getPlayerOrWaiterInfo(it.getOrNull(0)?.userID)?.avatar
+            AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(avatarUrl)
+                    .setCornerRadius(U.getDisplayUtils().dip2px(21f).toFloat())
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                    .setBorderColor(U.getColor(R.color.white))
+                    .build())
+        }
+
+        roomData?.realRoundInfo?.subRoundInfo?.let {
+            var avatarUrl = if (roomData?.isFakeForMe(roomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.userID
+                            ?: 0) == true) roomData?.getPlayerOrWaiterInfoModel(it.getOrNull(1)?.userID)?.fakeUserInfo?.avatarUrl else roomData?.getPlayerOrWaiterInfo(it.getOrNull(1)?.userID)?.avatar
+
+            AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(avatarUrl)
+                    .setCornerRadius(U.getDisplayUtils().dip2px(21f).toFloat())
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                    .setBorderColor(U.getColor(R.color.white))
+                    .build())
+        }
     }
 
     fun startVs() {

@@ -21,7 +21,12 @@ public enum ERUserRole implements WireEnum {
   /**
    * 等待的用户角色
    */
-  ERUR_WAIT_USER(2);
+  ERUR_WAIT_USER(2),
+
+  /**
+   * 观众
+   */
+  ERUR_AUDIENCE(3);
 
   public static final ProtoAdapter<ERUserRole> ADAPTER = new ProtoAdapter_ERUserRole();
 
@@ -39,6 +44,7 @@ public enum ERUserRole implements WireEnum {
       case 0: return ERUR_UNKNOWN;
       case 1: return ERUR_PLAY_USER;
       case 2: return ERUR_WAIT_USER;
+      case 3: return ERUR_AUDIENCE;
       default: return null;
     }
   }

@@ -27,8 +27,8 @@ class CommonAudioView : ConstraintLayout {
     var isPlaying = false
     var audioDuration = 0L
 
-    private val minSize = 80.dp()    // 最小尺寸(小于10秒)
-    private val maxSize = 144.dp()   // 最大尺寸(大于40秒）
+    var minSize = 80.dp()    // 最小尺寸(小于10秒)
+    var maxSize = 144.dp()   // 最大尺寸(大于40秒）
 
     init {
         View.inflate(context, R.layout.common_audio_view_layout, this)

@@ -30,12 +30,7 @@ class VipEnterPresenter(val view: IGrabVipView, val roomData: BaseRoomData<*>) :
         override fun onStart(playerInfoModel: UserInfoModel, floatWindow: VipEnterPresenter) {
             MyLog.d(mTag, "onStart playerInfoModel = $playerInfoModel, floatWindow = $floatWindow")
             canAccept = false
-            if (roomData.inPlayerOrWaiterInfoList(playerInfoModel.userId)) {
-                view.startEnterAnimation(playerInfoModel) {
-                    canAccept = true
-                    endCurrent(playerInfoModel)
-                }
-            } else {
+            view.startEnterAnimation(playerInfoModel) {
                 canAccept = true
                 endCurrent(playerInfoModel)
             }
@@ -51,13 +46,9 @@ class VipEnterPresenter(val view: IGrabVipView, val roomData: BaseRoomData<*>) :
     }
 
     fun addNotice(playerInfoModel: UserInfoModel) {
-        roomData.getPlayerAndWaiterInfoList()?.forEach {
-            if (it.userID == playerInfoModel.userId) {
-                if (((it.userInfo?.ranking?.mainRanking
-                                ?: 0) >= UserLevelType.SKRER_LEVEL_PLATINUM) || it.userInfo.honorInfo?.isHonor() == true) {
-                    mVipEnterObjectPlayControlTemplate.add(it.userInfo, true)
-                }
-            }
+        if (((playerInfoModel.ranking?.mainRanking
+                        ?: 0) >= UserLevelType.SKRER_LEVEL_PLATINUM) || playerInfoModel.honorInfo?.isHonor() == true) {
+            mVipEnterObjectPlayControlTemplate.add(playerInfoModel, true)
         }
     }
 

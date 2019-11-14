@@ -15,10 +15,12 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.DebugLogView
 import com.common.log.MyLog
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
+import com.component.person.event.ShowReportEvent
 import com.component.report.fragment.QuickFeedbackFragment
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
@@ -27,6 +29,7 @@ import com.module.playways.R
 import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.presenter.VipEnterPresenter
+import com.module.playways.grab.room.view.GrabChangeRoomTransitionView
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
@@ -43,13 +46,13 @@ import com.module.playways.race.room.view.matchview.RaceMatchView
 import com.module.playways.race.room.view.topContent.RaceTopContentView
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
+import com.module.playways.room.gift.model.NormalGift
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
 import com.module.playways.room.room.comment.CommentView
 import com.module.playways.room.room.comment.listener.CommentViewItemListener
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup
-import com.module.playways.room.room.gift.GiftBigContinuousView
 import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
@@ -59,6 +62,7 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundOverReason
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -87,8 +91,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     private lateinit var mRaceOtherSingCardView: RaceOtherSingCardView   // 别人唱
     private lateinit var mRaceNoSingCardView: RaceNoSingerCardView    // 无人响应
     private lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 比赛结果
-    private lateinit var mRacePagerSelectSongView: RacePagerSelectSongView
-    private lateinit var mSignUpView: RaceSignUpBtnView
+    private var mRacePagerSelectSongView: RacePagerSelectSongView? = null
+    private var mSignUpView: RaceSignUpBtnView? = null
 
     internal var mVIPEnterView: VIPEnterView? = null
 
@@ -103,6 +107,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mRaceWidgetAnimationController = RaceWidgetAnimationController(this)
+
+    lateinit var mGrabChangeRoomTransitionView: GrabChangeRoomTransitionView
+    internal var mBeginChangeRoomTs: Long = 0
 
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
@@ -147,15 +154,16 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         initTopView()
         initTurnSenceView()
 //        initSelectSongView()
-        initResuleView()
+        initResultView()
 
         initSingSenceView()
         initRightView()
         initVipEnterView()
+        initWantingSignUpCardView()
         initSelectPagerView()
         initRaceMatchView()
         initSignUpView()
-
+        initChangeRoomTransitionView()
         mCorePresenter.onOpeningAnimationOver()
 
         mUiHanlder.postDelayed(Runnable {
@@ -173,28 +181,44 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         }
 
         MyUserInfoManager.myUserInfo?.let {
-            mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
+            if (it.ranking != null) {
+                mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
+            }
         }
     }
 
     private fun initSignUpView() {
         mSignUpView = rootView.findViewById(R.id.sign_up_view)
-        mSignUpView.roomData = mRoomData
-        mSignUpView.clickSignUpBtn = {
-            mRacePagerSelectSongView.showView()
+        if (!mRoomData.audience) {
+            mSignUpView?.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
+            mSignUpView?.roomData = mRoomData
+            mSignUpView?.clickSignUpBtn = {
+                mRacePagerSelectSongView?.showView()
+            }
         }
     }
 
+    private fun initChangeRoomTransitionView() {
+        mGrabChangeRoomTransitionView = rootView.findViewById(R.id.change_room_transition_view)
+        mGrabChangeRoomTransitionView.visibility = View.GONE
+    }
+
+    private fun initWantingSignUpCardView() {
+        mRaceWantingSignUpCardView = rootView.findViewById(R.id.race_wanting_signup_view)
+    }
+
+
     private fun initSelectPagerView() {
         mRacePagerSelectSongView = rootView.findViewById(R.id.select_pager_view)
-        mRacePagerSelectSongView.mRoomData = mRoomData
+        if (!mRoomData.audience) {
+            mRacePagerSelectSongView?.mRoomData = mRoomData
 
-        mRacePagerSelectSongView.mSignUpMethed = { itemID, model ->
-            mCorePresenter.wantSingChance(itemID, model?.commonMusic)
+            mRacePagerSelectSongView?.mSignUpMethed = { itemID, model ->
+                mCorePresenter.wantSingChance(itemID, model?.commonMusic)
+            }
+
+            mRacePagerSelectSongView?.showView()
         }
-
-        mRaceWantingSignUpCardView = rootView.findViewById(R.id.race_wanting_signup_view)
-        mRacePagerSelectSongView.showView()
     }
 
     private fun initRaceMatchView() {
@@ -202,7 +226,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mRaceMatchView.roomData = mRoomData
     }
 
-    private fun initResuleView() {
+    private fun initResultView() {
         mRaceNoSingCardView = rootView.findViewById(R.id.race_nosinger_result_view)
         mRaceMiddleResultView = rootView.findViewById(R.id.race_middle_result_view)
         mRaceMiddleResultView.setRaceRoomData(mRoomData)
@@ -298,14 +322,42 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             }
 
             override fun showGiftPanel() {
-                mContinueSendView.setVisibility(View.GONE)
-                if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID))
-                } else {
-                    mGiftPanelView.show(null)
-                }
+                showGiftPanelView()
+            }
+
+            override fun onClickFlower() {
+                buyFlowerFromOuter()
             }
         })
+    }
+
+    private fun showGiftPanelView() {
+        mContinueSendView.setVisibility(View.GONE)
+        if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+            RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID)?.let {
+                if (it.userInfo.userId != MyUserInfoManager.uid.toInt()) {
+                    mGiftPanelView.show(it)
+                } else {
+                    U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
+                }
+            }
+        } else {
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
+        }
+    }
+
+    private fun buyFlowerFromOuter() {
+        if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+            RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID)?.let {
+                if (it.userInfo.userId != MyUserInfoManager.uid.toInt()) {
+                    EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                } else {
+                    U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
+                }
+            }
+        } else {
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
+        }
     }
 
     private fun initTopView() {
@@ -343,6 +395,13 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             override fun onClickGameRule() {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
                 showGameRuleDialog()
+            }
+
+            override fun onClickChangeRoom() {
+                StatisticsAdapter.recordCountEvent("rank", "changeroom", null)
+                mBeginChangeRoomTs = System.currentTimeMillis()
+                mGrabChangeRoomTransitionView.visibility = View.VISIBLE
+                mCorePresenter?.changeRoomForAudience()
             }
         })
 
@@ -430,13 +489,17 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         giftOverlayAnimationViewGroup.setRoomData(mRoomData)
         val giftBigAnimationViewGroup = rootView.findViewById<GiftBigAnimationViewGroup>(R.id.gift_big_animation_vg)
         giftBigAnimationViewGroup.setRoomData(mRoomData)
-        val giftBigContinueView = rootView.findViewById<GiftBigContinuousView>(R.id.gift_big_continue_view)
+        val giftBigContinueView = rootView.findViewById<RaceGiftBigContinuousView>(R.id.gift_big_continue_view)
+        giftBigContinueView.mRoomData = mRoomData
         giftBigAnimationViewGroup.setGiftBigContinuousView(giftBigContinueView)
         //mDengBigAnimation = rootView.findViewById<View>(R.id.deng_big_animation) as GrabDengBigAnimationView
     }
 
     override fun startEnterAnimation(playerInfoModel: UserInfoModel, finishCall: () -> Unit) {
-        mVIPEnterView?.enter(playerInfoModel, finishCall)
+        val model: UserInfoModel = playerInfoModel.clone() as UserInfoModel
+        model.nickname = RoomDataUtils.getRaceDisplayNickName(mRoomData, playerInfoModel)
+        model.avatar = RoomDataUtils.getRaceDisplayAvatar(mRoomData, playerInfoModel)
+        mVIPEnterView?.enter(model, finishCall)
     }
 
     private fun showPersonInfoView(userID: Int) {
@@ -454,13 +517,45 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceWantSingChanceEvent) {
-        mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_FINISH)
-        mRacePagerSelectSongView.hideView()
+        mSignUpView?.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_FINISH)
+        mRacePagerSelectSongView?.hideView()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
-        showPersonInfoView(event.uid)
+        if (!mRoomData.isFakeForMe(event.uid)) {
+            showPersonInfoView(event.uid)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ShowReportEvent) {
+        // 展示是否举报的弹窗
+        dismissDialog()
+        mTipsDialogView = TipsDialogView.Builder(context)
+                .setMessageTip("是否举报ta？")
+                .setConfirmTip("举报")
+                .setCancelTip("取消")
+                .setConfirmBtnClickListener {
+                    mTipsDialogView?.dismiss(false)
+
+                    U.getFragmentUtils().addFragment(
+                            FragmentUtils.newAddParamsBuilder(activity, QuickFeedbackFragment::class.java)
+                                    .setAddToBackStack(true)
+                                    .setHasAnimation(true)
+                                    .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_RACE_ROOM)
+                                    .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
+                                    .addDataBeforeAdd(2, event.uid)
+                                    .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
+                                    .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
+                                    .build())
+
+                }
+                .setCancelBtnClickListener {
+                    mTipsDialogView?.dismiss()
+                }
+                .build()
+        mTipsDialogView?.showByDialog()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -470,7 +565,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BuyGiftEvent) {
-        mContinueSendView.startBuy(event.baseGift, event.receiver)
+        if (event.receiver.userId != MyUserInfoManager.uid.toInt()) {
+            mContinueSendView.startBuy(event.baseGift, event.receiver)
+        } else {
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
+        }
     }
 
     override fun singBySelfFirstRound(songModel: SongModel?) {
@@ -505,11 +604,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                                 //充值成功
                                 if (requestCode == 100 && resultCode == 0) {
                                     mGiftPanelView.updateZS()
-                                    if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-                                        mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID))
-                                    } else {
-                                        mGiftPanelView.show(null)
-                                    }
+                                    showGiftPanelView()
                                 }
                             }
                         })
@@ -547,8 +642,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     private fun hideSignUpUI(hide: Boolean) {
         if (hide) {
-            mRacePagerSelectSongView.hideView()
-            mSignUpView.visibility = View.GONE
+            mRacePagerSelectSongView?.hideView()
+            mSignUpView?.visibility = View.GONE
         }
     }
 
@@ -557,13 +652,22 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             MyLog.d(TAG, "showRightVote 是演唱者")
             mRaceRightOpView.visibility = View.GONE
         } else {
-            val role = mRoomData.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role
-            if (role == ERUserRole.ERUR_PLAY_USER.value) {
-                MyLog.d(TAG, "showRightVote 当前身份是play")
-                mRaceRightOpView.showVote(false)
+            if (mRoomData.audience) {
+                if (mRoomData.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value) {
+                    // 中途进来不展示
+                    mRaceRightOpView.visibility = View.GONE
+                } else {
+                    mRaceRightOpView.showVote(false)
+                }
             } else {
-                MyLog.d(TAG, "showRightVote 当前身份role=$role")
-                mRaceRightOpView.visibility = View.GONE
+                val role = mRoomData.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role
+                if (role == ERUserRole.ERUR_PLAY_USER.value) {
+                    MyLog.d(TAG, "showRightVote 当前身份是play")
+                    mRaceRightOpView.showVote(false)
+                } else {
+                    MyLog.d(TAG, "showRightVote 当前身份role=$role")
+                    mRaceRightOpView.visibility = View.GONE
+                }
             }
         }
     }
@@ -690,7 +794,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     override fun joinNotice(playerInfoModel: UserInfoModel?) {
         playerInfoModel?.let {
-            mVipEnterPresenter?.addNotice(it)
+            if (it.userId != MyUserInfoManager.uid.toInt()) {
+                mVipEnterPresenter?.addNotice(it)
+            }
         }
     }
 
@@ -719,6 +825,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         if (mGiftPanelView.onBackPressed()) {
             return true
         }
+        mRacePagerSelectSongView?.let {
+            if (it.onBackPressed()) {
+                return true
+            }
+        }
+
         dismissDialog()
         mTipsDialogView = TipsDialogView.Builder(context)
                 .setMessageTip("确定要退出排位赛吗")
@@ -740,6 +852,33 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         quitGame()
     }
 
+    override fun onChangeRoomResult(success: Boolean, errMsg: String?) {
+        val t = System.currentTimeMillis() - mBeginChangeRoomTs
+        if (t > 1500) {
+            mGrabChangeRoomTransitionView.visibility = View.GONE
+            if (!success) {
+                U.getToastUtil().showShort(errMsg)
+            }
+        } else {
+            mUiHanlder.postDelayed({
+                if (!success) {
+                    U.getToastUtil().showShort(errMsg)
+                }
+                mGrabChangeRoomTransitionView.visibility = View.GONE
+            }, 1500 - t)
+        }
+        if (success) {
+//            initBgView()
+//            hideAllCardView()
+            hideAllSceneView()
+            mRaceTopVsView.switchRoom()
+            mVipEnterPresenter?.switchRoom()
+            mVIPEnterView?.switchRoom()
+            // 重新决定显示mic按钮
+            mBottomContainerView?.setRoomData(mRoomData!!)
+        }
+    }
+
     fun quitGame() {
         mCorePresenter.exitRoom("quitGame")
         activity?.finish()
@@ -753,7 +892,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     override fun destroy() {
         super.destroy()
         dismissDialog()
-        mGiftPanelView?.destroy()
+        mRaceActorPanelView?.destory()
+        mGiftPanelView.destroy()
     }
 
     private fun dismissDialog() {

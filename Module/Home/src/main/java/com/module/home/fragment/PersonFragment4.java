@@ -130,7 +130,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     DialogPlus mDialogPlus;
 
-    int srollDivider = U.getDisplayUtils().dip2px(84);  // 滑到分界线的时候
+    int srollDivider = U.getDisplayUtils().dip2px(122);  // 滑到分界线的时候
 
     int mFriendNum = 0;
     int mFansNum = 0;
@@ -467,35 +467,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mFollowsNumTv = (ExTextView) getRootView().findViewById(R.id.follows_num_tv);
         mFansNumTv = (ExTextView) getRootView().findViewById(R.id.fans_num_tv);
 
-//        mWalletIv.setOnClickListener(new AnimateClickListener() {
-//            @Override
-//            public void click(View view) {
-//                ARouter.getInstance()
-//                        .build(RouterConstants.ACTIVITY_DIAMOND_BALANCE)
-//                        .navigation();
-//            }
-//        });
-//
-//        mIncomeIv.setOnClickListener(new AnimateClickListener() {
-//            @Override
-//            public void click(View view) {
-//                ARouter.getInstance()
-//                        .build(RouterConstants.ACTIVITY_INCOME)
-//                        .navigation();
-//            }
-//        });
-//
-//        mRechargeIv.setOnClickListener(new AnimateClickListener() {
-//            @Override
-//            public void click(View view) {
-//                U.getFragmentUtils().addFragment(
-//                        FragmentUtils.newAddParamsBuilder(getActivity(), BallanceFragment.class)
-//                                .setAddToBackStack(true)
-//                                .setHasAnimation(true)
-//                                .build());
-//            }
-//        });
-
         mFriendsNumTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -560,7 +531,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     // 照片墙
                     if (mPhotoWallView == null) {
                         mPhotoWallView = new PhotoWallView(PersonFragment4.this, PersonFragment4.this);
-                        mPhotoWallView.getPhotos(false);
+                        if (PersonFragment4.this.getFragmentVisible()) {
+                            mPhotoWallView.getPhotos(false);
+                        }
                     }
                     if (container.indexOfChild(mPhotoWallView) == -1) {
                         if (mPhotoWallView.getParent() != null) {
@@ -760,18 +733,18 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 mAudioView.bindData(voiceInfoModel.getDuration());
             }
             mAudioView.setVisibility(View.VISIBLE);
-            mEditAudio.setText("编辑语音");
+            mEditAudio.setText("+编辑语音");
         } else {
-            mEditAudio.setText("添加语音");
+            mEditAudio.setText("+添加声音签名");
             mAudioView.setVisibility(View.GONE);
         }
     }
 
     private void showScoreDetail(ScoreDetailModel scoreDetailModel) {
-        if (scoreDetailModel.getScoreStateModel() != null && LevelConfigUtils.getAvatarLevelBg(scoreDetailModel.getScoreStateModel().getMainRanking()) != 0) {
+        if (scoreDetailModel.getScoreStateModel() != null && LevelConfigUtils.getRaceCenterAvatarBg(scoreDetailModel.getScoreStateModel().getMainRanking()) != 0) {
             mLevelBg.setVisibility(View.VISIBLE);
             mLevelDesc.setVisibility(View.VISIBLE);
-            mLevelBg.setBackground(U.getDrawable(LevelConfigUtils.getAvatarLevelBg(scoreDetailModel.getScoreStateModel().getMainRanking())));
+            mLevelBg.setBackground(U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(scoreDetailModel.getScoreStateModel().getMainRanking())));
             mLevelDesc.setText(scoreDetailModel.getScoreStateModel().getRankingDesc());
         } else {
             mLevelBg.setVisibility(View.GONE);

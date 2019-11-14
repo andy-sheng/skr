@@ -69,27 +69,6 @@ public class LevelConfigUtils {
         }
     }
 
-
-    public static int getAvatarLevelBg(int mainLevel) {
-        switch (mainLevel) {
-            case UserLevelType.SKRER_LEVEL_POTENTIAL:
-                return R.drawable.touxiang_qianli;
-            case UserLevelType.SKRER_LEVEL_SILVER:
-                return R.drawable.touxiang_baiyin;
-            case UserLevelType.SKRER_LEVEL_GOLD:
-                return R.drawable.touxiang_jinpai;
-            case UserLevelType.SKRER_LEVEL_PLATINUM:
-                return R.drawable.touxiang_bojin;
-            case UserLevelType.SKRER_LEVEL_DIAMOND:
-                return R.drawable.touxiang_zuanshi;
-            case UserLevelType.SKRER_LEVEL_KING:
-                return R.drawable.touxiang_gewang;
-            default:
-                MyLog.w(TAG, "getAvatarLevelBg null" + " mainLevel = " + mainLevel);
-                return 0;
-        }
-    }
-
     public static int getRaceCenterAvatarBg(int mainLevel){
         switch (mainLevel) {
             case UserLevelType.SKRER_LEVEL_POTENTIAL:

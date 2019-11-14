@@ -11,6 +11,8 @@ import com.common.core.userinfo.model.ScoreStateModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.VerifyInfo;
 import com.common.log.MyLog;
+import com.zq.live.proto.Common.ESex;
+import com.zq.live.proto.Common.UserInfo;
 
 import java.io.Serializable;
 
@@ -60,7 +62,7 @@ public class MyUserInfo implements Serializable {
     }
 
     public String getUserNickname() {
-        if(userNickname==null){
+        if (userNickname == null) {
             return "";
         }
         return userNickname;
@@ -173,6 +175,20 @@ public class MyUserInfo implements Serializable {
 
     public void setRanking(ScoreStateModel ranking) {
         this.ranking = ranking;
+    }
+
+    public static UserInfo toUserInfoPB(MyUserInfo myUserInfo) {
+        UserInfo userInfo = new UserInfo.Builder()
+                .setUserID((int) myUserInfo.userId)
+                .setAvatar(myUserInfo.avatar)
+                .setNickName(myUserInfo.userNickname)
+                .setSex(ESex.fromValue(myUserInfo.sex))
+                .setIsSystem(false)
+                .setVipInfo(VerifyInfo.Companion.toVipInfoPB(myUserInfo.vipInfo))
+                .setHonorInfo(HonorInfo.Companion.toHonorInfoPB(myUserInfo.getHonorInfo()))
+                .setRanking(ScoreStateModel.Companion.toUserRankingPB(myUserInfo.getRanking()))
+                .build();
+        return userInfo;
     }
 
     public static MyUserInfo parseFromUserInfoModel(UserInfoModel userInfoModel) {

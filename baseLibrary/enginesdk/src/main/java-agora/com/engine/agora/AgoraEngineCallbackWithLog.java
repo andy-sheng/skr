@@ -10,7 +10,6 @@ import io.agora.rtc.IRtcEngineEventHandlerEx;
 
 public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
     private String TAG;
-
     // 比较不重要的log
     boolean vLogShow = false;
 
@@ -46,7 +45,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onError(int err) {
-        MyLog.d(TAG, "onError" + " err=" + err);
+        MyLog.w(TAG, "onError" + " err=" + err);
         super.onError(err);
     }
 
@@ -194,7 +193,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onFirstRemoteVideoFrame(int uid, int width, int height, int elapsed) {
-        MyLog.d(TAG, "onFirstRemoteVideoFrame" + " uid=" + uid + " width=" + width + " height=" + height + " elapsed=" + elapsed);
+        MyLog.w(TAG, "onFirstRemoteVideoFrame" + " uid=" + uid + " width=" + width + " height=" + height + " elapsed=" + elapsed);
         super.onFirstRemoteVideoFrame(uid, width, height, elapsed);
     }
 
@@ -227,7 +226,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onUserEnableLocalVideo(int uid, boolean enabled) {
-        MyLog.d(TAG, "onUserEnableLocalVideo" + " uid=" + uid + " enabled=" + enabled);
+        MyLog.w(TAG, "onUserEnableLocalVideo" + " uid=" + uid + " enabled=" + enabled);
         super.onUserEnableLocalVideo(uid, enabled);
     }
 
@@ -246,7 +245,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onLocalPublishFallbackToAudioOnly(boolean isFallbackOrRecover) {
-        MyLog.d(TAG, "onLocalPublishFallbackToAudioOnly" + " isFallbackOrRecover=" + isFallbackOrRecover);
+        MyLog.v(TAG, "onLocalPublishFallbackToAudioOnly" + " isFallbackOrRecover=" + isFallbackOrRecover);
         super.onLocalPublishFallbackToAudioOnly(isFallbackOrRecover);
     }
 
@@ -345,7 +344,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onAudioMixingFinished() {
-        MyLog.d(TAG, "onAudioMixingFinished");
+        MyLog.w(TAG, "onAudioMixingFinished");
         super.onAudioMixingFinished();
     }
 

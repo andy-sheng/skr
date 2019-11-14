@@ -68,7 +68,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -88,7 +92,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public final String TAG = "ZqEngineKit";
     public static final String PREF_KEY_TOKEN_ENABLE = "key_agora_token_enable";
-
+    public static final String AUDIO_FEEDBACK_DIR = "audio_feedback";
     public static final int VIDEO_RESOLUTION_360P = 0;
     public static final int VIDEO_RESOLUTION_480P = 1;
     public static final int VIDEO_RESOLUTION_540P = 2;
@@ -111,6 +115,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private static final boolean SCORE_DEBUG = false;
     private static final String SCORE_DEBUG_PATH = "/sdcard/tongzhuodeni.pcm";
     public static final boolean RECORD_FOR_DEBUG = false;
+    public final boolean OPEN_AUDIO_RECORD_FOR_CALLBACK = true; // 是否开启用于用户反馈的录制
 
     private Params mConfig = new Params(); // 为了防止崩溃
 
@@ -205,9 +210,12 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onUserJoined(int uid, int elapsed) {
-        // 用户加入了
+        MyLog.d(TAG, "onUserJoined" + " uid=" + uid + " elapsed=" + elapsed);
+        // 主播加入了，自己不会回调，自己回到角色变化接口
         UserStatus userStatus = ensureJoin(uid);
+        userStatus.setAnchor(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_JOIN, userStatus));
+        tryStartRecordForFeedback("onUserJoined");
     }
 
     @Override
@@ -215,12 +223,15 @@ public class ZqEngineKit implements AgoraOutCallback {
         // 用户离开
         UserStatus userStatus = mUserStatusMap.remove(uid);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_LEAVE, userStatus));
+        MyLog.d(TAG, "onUserOffline mUserStatusMap=" + mUserStatusMap);
+        tryStopRecordForFeedback("onUserOffline");
     }
 
     @Override
     public void onUserMuteVideo(int uid, boolean muted) {
         UserStatus status = ensureJoin(uid);
         status.setVideoMute(muted);
+        status.setAnchor(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_MUTE_VIDEO, status));
     }
 
@@ -228,6 +239,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     public void onUserMuteAudio(int uid, boolean muted) {
         UserStatus status = ensureJoin(uid);
         status.setAudioMute(muted);
+        status.setAnchor(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_MUTE_AUDIO, status));
     }
 
@@ -235,6 +247,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     public void onUserEnableVideo(int uid, boolean enabled) {
         UserStatus status = ensureJoin(uid);
         status.setEnableVideo(enabled);
+        status.setAnchor(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_VIDEO_ENABLE, status));
     }
 
@@ -284,6 +297,18 @@ public class ZqEngineKit implements AgoraOutCallback {
         EngineEvent.RoleChangeInfo roleChangeInfo = new EngineEvent.RoleChangeInfo(oldRole, newRole);
         engineEvent.obj = roleChangeInfo;
         EventBus.getDefault().post(engineEvent);
+        if (mConfig.getSelfUid() > 0) {
+            UserStatus userStatus = ensureJoin(mConfig.getSelfUid());
+            if (newRole == Constants.CLIENT_ROLE_BROADCASTER) {
+                userStatus.setAnchor(true);
+                tryStartRecordForFeedback("onClientRoleChanged");
+            } else {
+                userStatus.setAnchor(false);
+                tryStopRecordForFeedback("onClientRoleChanged");
+            }
+        }
+
+
     }
 
     @Override
@@ -344,7 +369,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onWarning(int warn) {
-        if (warn == Constants.WARN_AUDIO_MIXING_OPEN_ERROR)  {
+        if (warn == Constants.WARN_AUDIO_MIXING_OPEN_ERROR) {
             // 上传伴奏播放失败
             HashMap<String, String> map = new HashMap<>();
             map.put("url", mConfig.getMixMusicFilePath());
@@ -634,7 +659,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         @Override
         public void onFirstPacketReceived(long time) {
             MyLog.d(TAG, "AudioCapture onFirstPacketReceived: " + time);
-            if (mConfig.isRecording()) {
+            if (mConfig.isRecordingForBusi()) {
                 EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_RECORD_AUDIO_FIRST_PKT);
                 engineEvent.setObj(time);
                 EventBus.getDefault().post(engineEvent);
@@ -718,6 +743,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
         // 销毁前清理掉其他的异步任务
         mCustomHandlerThread.removeCallbacksAndMessages(null);
+        tryStopRecordForFeedback("destroy");
         mCustomHandlerThread.post(new LogRunnable("destroy" + " from=" + from + " status=" + mStatus) {
             @Override
             public void realRun() {
@@ -1510,79 +1536,197 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     }
 
+    private long lastTrimFeedbackFileSizeTs = 0;
+
+    private void tryStartRecordForFeedback(String from) {
+        if (!OPEN_AUDIO_RECORD_FOR_CALLBACK) {
+            return;
+        }
+        boolean hasAnchor = false;
+        for (UserStatus us : mUserStatusMap.values()) {
+            MyLog.d(TAG, " us=" + us);
+            if (us.isAnchor()) {
+                hasAnchor = true;
+            }
+        }
+        if (!hasAnchor) {
+            MyLog.d(TAG, "没有主播不录制 from=" + from);
+            return;
+        }
+        if (mConfig.isRecordingForBusi()) {
+            MyLog.d(TAG, "业务录制在进行中，取消 from=" + from);
+            return;
+        }
+        if (mConfig.isRecordingForFeedback()) {
+            MyLog.d(TAG, "反馈录制在进行中，取消 from=" + from);
+            return;
+        }
+
+
+        if (mCustomHandlerThread != null) {
+            // 延迟一秒才开始录制，是为了兼容，变成主播时，业务层马上调用的录制的情况，1s时间给业务层让步，让业务先录
+            mConfig.setRecordingForFeedback(true);
+            startAudioRecordingInner(getFeedbackFilepath(), false);
+            mCustomHandlerThread.post(new LogRunnable("trimFeedbackFileSize") {
+                @Override
+                public void realRun() {
+                    if (System.currentTimeMillis() - lastTrimFeedbackFileSizeTs > 10 * 60 * 1000) {
+                        trimFeedbackFileSize();
+                    }
+                }
+            });
+        }
+    }
+
+    public String getFeedbackFilepath() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss");
+        String fileName = String.format("%s_%s.m4a", mInitFrom, simpleDateFormat.format(new Date(System.currentTimeMillis())));
+        String filePath = U.getAppInfoUtils().getFilePathInSubDir(AUDIO_FEEDBACK_DIR, fileName);
+        return filePath;
+    }
+
+    /**
+     * 保证用于存储用户反馈的文件夹size不会太大
+     */
+    private void trimFeedbackFileSize() {
+        lastTrimFeedbackFileSizeTs = System.currentTimeMillis();
+        long fileSize = 0;
+        File feedbackDir = U.getAppInfoUtils().getSubDirFile(AUDIO_FEEDBACK_DIR);
+        if (feedbackDir.exists() && feedbackDir.isDirectory()) {
+            File[] fileList = feedbackDir.listFiles();
+            if (fileList == null || fileList.length == 0) {
+                return;
+            }
+            // 文件修改时间排序
+            Arrays.sort(fileList, new Comparator<File>() {
+                public int compare(File f1, File f2) {
+                    long diff = f1.lastModified() - f2.lastModified();
+                    if (diff > 0)
+                        return 1;
+                    else if (diff == 0)
+                        return 0;
+                    else
+                        return -1;
+                }
+            });
+            for (int i = fileList.length - 1; i >= 0; i--) {
+                if (fileList[i].isFile()) {
+                    if (fileList[i].getName().endsWith(".m4a")) {
+                        if (fileSize > U.getLogUploadUtils().MAX_AUDIO_FOR_FEEDBACK) {
+                            //删除掉
+                            fileList[i].delete();
+                        } else {
+                            fileSize += fileList[i].length();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void tryStopRecordForFeedback(String from) {
+        if (!OPEN_AUDIO_RECORD_FOR_CALLBACK) {
+            return;
+        }
+        boolean hasAnchor = false;
+        for (UserStatus us : mUserStatusMap.values()) {
+            MyLog.d(TAG, " us=" + us);
+            if (us.isAnchor()) {
+                hasAnchor = true;
+            }
+        }
+        if (hasAnchor) {
+            MyLog.d(TAG, "仍有主播，不取消录制 from=" + from);
+            return;
+        }
+        if (!mConfig.isRecordingForFeedback()) {
+            MyLog.d(TAG, "反馈录制不在进行中，取消 from=" + from);
+            return;
+        }
+        mConfig.setRecordingForFeedback(false);
+        stopAudioRecordingInner("ForFeedback " + from);
+    }
+
+    public void startAudioRecording(final String path, final boolean recordHumanVoice) {
+        if (mCustomHandlerThread != null) {
+            if (mConfig.isRecordingForFeedback()) {
+                mConfig.setRecordingForFeedback(false);
+                stopAudioRecordingInner("业务录制开始要求停止");
+            }
+            mConfig.setRecordingForBusi(true);
+            startAudioRecordingInner(path, recordHumanVoice);
+        }
+    }
 
     /**
      * 开始客户端录音。
      * 仅支持m4a格式。
      * 声网采集模式下，该接口需在加入频道之后调用，如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
-    public void startAudioRecording(final String path, final boolean recordHumanVoice) {
-        if (mCustomHandlerThread != null) {
-            mConfig.setRecording(true);
-            mCustomHandlerThread.post(new LogRunnable("startAudioRecording" + " path=" + path +
-                    " recordHumanVoice=" + recordHumanVoice + " mInChannel=" + mInChannel+" mConfig.isUseExternalAudioRecord()="+mConfig.isUseExternalAudioRecord()) {
-                @Override
-                public void realRun() {
-                    File file = new File(path);
-                    if (!file.getParentFile().exists()) {
-                        file.getParentFile().mkdirs();
-                    }
-                    if (file.exists()) {
-                        file.delete();
-                    }
+    private void startAudioRecordingInner(final String path, final boolean recordHumanVoice) {
+        mCustomHandlerThread.post(new LogRunnable("startAudioRecording" + " path=" + path +
+                " recordHumanVoice=" + recordHumanVoice + " mInChannel=" + mInChannel + " mConfig.isUseExternalAudioRecord()=" + mConfig.isUseExternalAudioRecord()) {
+            @Override
+            public void realRun() {
+                File file = new File(path);
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+                if (file.exists()) {
+                    file.delete();
+                }
 
-                    if (!mConfig.isUseExternalAudio() && !recordHumanVoice) {
-                        // 用声网采集，需要录制的时候再连接
-                        connectRecord();
+                if (!mConfig.isUseExternalAudio() && !recordHumanVoice) {
+                    // 用声网采集，需要录制的时候再连接
+                    connectRecord();
+                }
+                if (RECORD_FOR_DEBUG) {
+                    mRawFrameWriter.start(path);
+                    if (mConfig.isUseExternalAudio()) {
+                        String subfix = path.substring(path.lastIndexOf('.'));
+                        String name = path.substring(0, path.lastIndexOf('.'));
+                        mCapRawFrameWriter.start(name + "_cap" + subfix);
+                        mBgmRawFrameWriter.start(name + "_bgm" + subfix);
                     }
-                    if (RECORD_FOR_DEBUG) {
-                        mRawFrameWriter.start(path);
-                        if (mConfig.isUseExternalAudio()) {
-                            String subfix = path.substring(path.lastIndexOf('.'));
-                            String name = path.substring(0, path.lastIndexOf('.'));
-                            mCapRawFrameWriter.start(name + "_cap" + subfix);
-                            mBgmRawFrameWriter.start(name + "_bgm" + subfix);
+                } else {
+                    EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_RECORD_START);
+                    EventBus.getDefault().post(engineEvent);
+                    if (mConfig.isUseExternalAudioRecord() || recordHumanVoice) {
+                        // 未加入房间时需要先开启音频采集
+                        if (mConfig.isUseExternalAudioRecord()) {
+                            if (!mInChannel && mAudioCapture != null) {
+                                mAudioCapture.start();
+                            }
+                        }
+
+                        AudioCodecFormat audioCodecFormat =
+                                new AudioCodecFormat(AVConst.CODEC_ID_AAC,
+                                        AVConst.AV_SAMPLE_FMT_S16,
+                                        mConfig.getAudioSampleRate(),
+                                        mConfig.getAudioChannels(),
+                                        mConfig.getAudioBitrate());
+                        if (recordHumanVoice) {
+                            if (mConfig.isUseExternalAudio() && mAudioCapture != null) {
+                                audioCodecFormat.sampleRate = mAudioCapture.getSampleRate();
+                                audioCodecFormat.channels = mAudioCapture.getChannels();
+                                audioCodecFormat.bitrate = 64000 * audioCodecFormat.channels;
+                            }
+                            mHumanVoiceAudioEncoder.configure(audioCodecFormat);
+                            mHumanVoiceFilePublisher.setAudioOnly(true);
+                            mHumanVoiceFilePublisher.start(path);
+                            mHumanVoiceAudioEncoder.start();
+                        } else {
+                            mAudioEncoder.configure(audioCodecFormat);
+                            mFilePublisher.setAudioOnly(true);
+                            mFilePublisher.start(path);
+                            mAudioEncoder.start();
                         }
                     } else {
-                        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_RECORD_START);
-                        EventBus.getDefault().post(engineEvent);
-                        if (mConfig.isUseExternalAudioRecord() || recordHumanVoice) {
-                            // 未加入房间时需要先开启音频采集
-                            if (mConfig.isUseExternalAudioRecord()) {
-                                if (!mInChannel && mAudioCapture != null) {
-                                    mAudioCapture.start();
-                                }
-                            }
-
-                            AudioCodecFormat audioCodecFormat =
-                                    new AudioCodecFormat(AVConst.CODEC_ID_AAC,
-                                            AVConst.AV_SAMPLE_FMT_S16,
-                                            mConfig.getAudioSampleRate(),
-                                            mConfig.getAudioChannels(),
-                                            mConfig.getAudioBitrate());
-                            if (recordHumanVoice) {
-                                if (mConfig.isUseExternalAudio() && mAudioCapture!=null) {
-                                    audioCodecFormat.sampleRate = mAudioCapture.getSampleRate();
-                                    audioCodecFormat.channels = mAudioCapture.getChannels();
-                                    audioCodecFormat.bitrate = 64000 * audioCodecFormat.channels;
-                                }
-                                mHumanVoiceAudioEncoder.configure(audioCodecFormat);
-                                mHumanVoiceFilePublisher.setAudioOnly(true);
-                                mHumanVoiceFilePublisher.start(path);
-                                mHumanVoiceAudioEncoder.start();
-                            } else {
-                                mAudioEncoder.configure(audioCodecFormat);
-                                mFilePublisher.setAudioOnly(true);
-                                mFilePublisher.start(path);
-                                mAudioEncoder.start();
-                            }
-                        } else {
-                            mAgoraRTCAdapter.startAudioRecording(path, Constants.AUDIO_RECORDING_QUALITY_HIGH);
-                        }
+                        mAgoraRTCAdapter.startAudioRecording(path, Constants.AUDIO_RECORDING_QUALITY_HIGH);
                     }
                 }
-            });
-        }
+            }
+        });
     }
 
     /**
@@ -1592,37 +1736,49 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 声网采集模式下，该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
      */
     public void stopAudioRecording() {
-        if (mCustomHandlerThread != null && mConfig.isRecording()) {
-            mConfig.setRecording(false);
-            mCustomHandlerThread.post(new LogRunnable("stopAudioRecording") {
-                @Override
-                public void realRun() {
-                    if (!RECORD_FOR_DEBUG) {
-                        if (mConfig.isUseExternalAudioRecord()) {
-                            mHumanVoiceAudioEncoder.stop();
-                            mAudioEncoder.stop();
-                            // 未加入房间时需要停止音频采集
-                            if (!mInChannel && mAudioCapture != null) {
-                                mAudioCapture.stop();
-                            }
-                        } else {
-                            mAgoraRTCAdapter.stopAudioRecording();
+        if (mCustomHandlerThread != null) {
+            if (mConfig.isRecordingForBusi()) {
+                mConfig.setRecordingForBusi(false);
+                stopAudioRecordingInner("ForBusi");
+            }
+        }
+    }
+
+    /**
+     * 停止客户端录音。
+     * <p>
+     * 该方法停止录音。
+     * 声网采集模式下，该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
+     */
+    private void stopAudioRecordingInner(String from) {
+        mCustomHandlerThread.post(new LogRunnable("stopAudioRecordingInner from=" + from) {
+            @Override
+            public void realRun() {
+                if (!RECORD_FOR_DEBUG) {
+                    if (mConfig.isUseExternalAudioRecord()) {
+                        mHumanVoiceAudioEncoder.stop();
+                        mAudioEncoder.stop();
+                        // 未加入房间时需要停止音频采集
+                        if (!mInChannel && mAudioCapture != null) {
+                            mAudioCapture.stop();
                         }
                     } else {
-                        mRawFrameWriter.stop();
-                        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_RECORD_FINISHED));
-                        if (mConfig.isUseExternalAudio()) {
-                            mCapRawFrameWriter.stop();
-                            mBgmRawFrameWriter.stop();
-                        }
+                        mAgoraRTCAdapter.stopAudioRecording();
                     }
-                    if (!mConfig.isUseExternalAudio()) {
-                        // 用声网采集，录制完成断开连接
-                        disconnectRecord();
+                } else {
+                    mRawFrameWriter.stop();
+                    EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_RECORD_FINISHED));
+                    if (mConfig.isUseExternalAudio()) {
+                        mCapRawFrameWriter.stop();
+                        mBgmRawFrameWriter.stop();
                     }
                 }
-            });
-        }
+                if (!mConfig.isUseExternalAudio()) {
+                    // 用声网采集，录制完成断开连接
+                    disconnectRecord();
+                }
+            }
+        });
     }
 
     /**

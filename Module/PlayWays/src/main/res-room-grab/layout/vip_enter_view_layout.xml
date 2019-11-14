@@ -92,14 +92,6 @@
             app:layout_constraintLeft_toLeftOf="@+id/honor_avatar"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.common.view.ex.ExImageView
-            android:id="@+id/honor_vip_iv"
-            android:layout_width="@dimen/view_55_dp"
-            android:layout_height="@dimen/view_36_dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:layout_width="@dimen/view_19_dp"
             android:layout_height="@dimen/view_17_dp"
@@ -117,6 +109,14 @@
             app:layout_constraintLeft_toLeftOf="@+id/honor_vip_iv"
             app:layout_constraintRight_toRightOf="@+id/honor_vip_iv"
             app:layout_constraintTop_toTopOf="@+id/honor_vip_iv" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/honor_vip_iv"
+            android:layout_width="@dimen/view_54_dp"
+            android:layout_height="@dimen/view_60_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:layout_width="wrap_content"

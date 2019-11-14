@@ -121,7 +121,7 @@ public class DynamicMsgView extends RelativeLayout {
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
         map.put("id", model.getId());
-
+        map.put("mode",mRoomData.getGameType());
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(grabRoomServerApi.sendDynamicEmoji(body), new ApiObserver<ApiResult>() {
             @Override

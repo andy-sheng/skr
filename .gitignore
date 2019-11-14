@@ -26,10 +26,11 @@ publish/apk-checker-result.json
 ./publish
 # Windows thumbnail db
 Thumbs.db
-
+.cxx
 # OSX files
 .DS_Store
-
+reports/
+app/proguardMapping.txt
 # built application files
 *.apk
 *.ap_

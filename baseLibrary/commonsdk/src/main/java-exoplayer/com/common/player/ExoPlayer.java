@@ -327,7 +327,7 @@ public class ExoPlayer extends BasePlayer {
 
             @Override
             public void onVolumeChanged(EventTime eventTime, float volume) {
-                MyLog.d(TAG, "onVolumeChanged" + " eventTime=" + eventTime + " volume=" + volume);
+                //MyLog.d(TAG, "onVolumeChanged" + " eventTime=" + eventTime + " volume=" + volume);
             }
 
             @Override

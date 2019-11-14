@@ -9,8 +9,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.callback.Callback;
-import com.common.log.MyLog;
-import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
+import com.module.playways.grab.room.event.SwitchRoomEvent;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayControlTemplate;
@@ -37,6 +36,9 @@ public class GiftContinueViewGroup extends RelativeLayout {
 
     private List<GiftContinuousView> mFeedGiftContinueViews = new ArrayList<>(2);
     private BaseRoomData mRoomData;
+
+    private GiftContinuousView v1;
+    private GiftContinuousView v2;
 
     Handler mHandler = new Handler(Looper.myLooper());
 
@@ -98,10 +100,10 @@ public class GiftContinueViewGroup extends RelativeLayout {
     }
 
     protected void bindView() {
-        GiftContinuousView v1 = (GiftContinuousView) findViewById(R.id.gift_continue_v1);
+        v1 = findViewById(R.id.gift_continue_v1);
         mFeedGiftContinueViews.add(v1);
 
-        GiftContinuousView v2 = (GiftContinuousView) findViewById(R.id.gift_continue_v2);
+        v2 = findViewById(R.id.gift_continue_v2);
         mFeedGiftContinueViews.add(v2);
 
         for (int i = 0; i < mFeedGiftContinueViews.size(); i++) {
@@ -128,7 +130,7 @@ public class GiftContinueViewGroup extends RelativeLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(GrabSwitchRoomEvent grabSwitchRoomEvent) {
+    public void onEvent(SwitchRoomEvent grabSwitchRoomEvent) {
         mGiftPlayControlTemplate.clear();
     }
 
@@ -151,6 +153,8 @@ public class GiftContinueViewGroup extends RelativeLayout {
 
     public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
+        v1.bindData(roomData);
+        v2.bindData(roomData);
     }
 
     public interface GiftProvider {

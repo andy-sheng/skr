@@ -24,6 +24,8 @@ public final class RExitGameMsg extends Message<RExitGameMsg, RExitGameMsg.Build
 
   public static final Integer DEFAULT_USERID = 0;
 
+  public static final ERUserRole DEFAULT_ROLE = ERUserRole.ERUR_UNKNOWN;
+
   /**
    * 用户id
    */
@@ -33,19 +35,30 @@ public final class RExitGameMsg extends Message<RExitGameMsg, RExitGameMsg.Build
   )
   private final Integer userID;
 
-  public RExitGameMsg(Integer userID) {
-    this(userID, ByteString.EMPTY);
+  /**
+   * 角色
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.zq.live.proto.RaceRoom.ERUserRole#ADAPTER"
+  )
+  private final ERUserRole role;
+
+  public RExitGameMsg(Integer userID, ERUserRole role) {
+    this(userID, role, ByteString.EMPTY);
   }
 
-  public RExitGameMsg(Integer userID, ByteString unknownFields) {
+  public RExitGameMsg(Integer userID, ERUserRole role, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
+    this.role = role;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.userID = userID;
+    builder.role = role;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -56,7 +69,8 @@ public final class RExitGameMsg extends Message<RExitGameMsg, RExitGameMsg.Build
     if (!(other instanceof RExitGameMsg)) return false;
     RExitGameMsg o = (RExitGameMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(userID, o.userID);
+        && Internal.equals(userID, o.userID)
+        && Internal.equals(role, o.role);
   }
 
   @Override
@@ -65,6 +79,7 @@ public final class RExitGameMsg extends Message<RExitGameMsg, RExitGameMsg.Build
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
+      result = result * 37 + (role != null ? role.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -74,6 +89,7 @@ public final class RExitGameMsg extends Message<RExitGameMsg, RExitGameMsg.Build
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (userID != null) builder.append(", userID=").append(userID);
+    if (role != null) builder.append(", role=").append(role);
     return builder.replace(0, 2, "RExitGameMsg{").append('}').toString();
   }
 
@@ -98,14 +114,33 @@ public final class RExitGameMsg extends Message<RExitGameMsg, RExitGameMsg.Build
   }
 
   /**
+   * 角色
+   */
+  public ERUserRole getRole() {
+    if(role==null){
+        return new ERUserRole.Builder().build();
+    }
+    return role;
+  }
+
+  /**
    * 用户id
    */
   public boolean hasUserID() {
     return userID!=null;
   }
 
+  /**
+   * 角色
+   */
+  public boolean hasRole() {
+    return role!=null;
+  }
+
   public static final class Builder extends Message.Builder<RExitGameMsg, Builder> {
     private Integer userID;
+
+    private ERUserRole role;
 
     public Builder() {
     }
@@ -118,9 +153,17 @@ public final class RExitGameMsg extends Message<RExitGameMsg, RExitGameMsg.Build
       return this;
     }
 
+    /**
+     * 角色
+     */
+    public Builder setRole(ERUserRole role) {
+      this.role = role;
+      return this;
+    }
+
     @Override
     public RExitGameMsg build() {
-      return new RExitGameMsg(userID, super.buildUnknownFields());
+      return new RExitGameMsg(userID, role, super.buildUnknownFields());
     }
   }
 
@@ -132,12 +175,14 @@ public final class RExitGameMsg extends Message<RExitGameMsg, RExitGameMsg.Build
     @Override
     public int encodedSize(RExitGameMsg value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
+          + ERUserRole.ADAPTER.encodedSizeWithTag(2, value.role)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, RExitGameMsg value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
+      ERUserRole.ADAPTER.encodeWithTag(writer, 2, value.role);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -148,6 +193,14 @@ public final class RExitGameMsg extends Message<RExitGameMsg, RExitGameMsg.Build
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 2: {
+            try {
+              builder.setRole(ERUserRole.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

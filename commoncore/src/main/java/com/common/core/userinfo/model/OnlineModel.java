@@ -11,6 +11,19 @@ public class OnlineModel implements Serializable {
     long recordTs;
     private boolean mBusy;
     private boolean mInRoom;
+    private int qinMiCntTotal = -1;
+
+    public int getQinMiCntTotal() {
+        return qinMiCntTotal;
+    }
+
+    public void setQinMiCntTotal(int qinMiCntTotal) {
+        this.qinMiCntTotal = qinMiCntTotal;
+    }
+
+    public boolean hasQinMiCnt() {
+        return qinMiCntTotal > 0;
+    }
 
     public long getOnlineTime() {
         return onlineTime;

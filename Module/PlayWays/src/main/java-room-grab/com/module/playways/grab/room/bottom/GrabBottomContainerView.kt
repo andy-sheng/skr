@@ -1,14 +1,13 @@
 package com.module.playways.grab.room.bottom
 
 import android.content.Context
-import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
-
+import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -22,7 +21,6 @@ import com.module.playways.grab.room.event.GrabRoundChangeEvent
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent
 import com.module.playways.grab.room.voicemsg.VoiceRecordTextView
 import com.module.playways.room.room.view.BottomContainerView
-
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -34,6 +32,7 @@ class GrabBottomContainerView : BottomContainerView {
     lateinit var mSpeakingDotAnimationView: View
     lateinit var mShowInputContainerBtn: ExTextView
     lateinit var mVoiceRecordBtn: VoiceRecordTextView
+    lateinit var meiguiIv: ExImageView
 
     var mDynamicMsgPopWindow: PopupWindow? = null    //动态表情弹出面板
     var mDynamicMsgView: DynamicMsgView? = null
@@ -58,6 +57,8 @@ class GrabBottomContainerView : BottomContainerView {
         mSpeakingDotAnimationView = this.findViewById(R.id.speaking_dot_animation_view)
         mShowInputContainerBtn = this.findViewById(R.id.show_input_container_btn)
         mVoiceRecordBtn = this.findViewById(R.id.voice_record_btn)
+        meiguiIv = rootView.findViewById(R.id.meigui_iv)
+
 
         mIvRoomManage.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -74,6 +75,10 @@ class GrabBottomContainerView : BottomContainerView {
                 }
             }
         })
+
+        meiguiIv?.setDebounceViewClickListener {
+            mBottomContainerListener.onClickFlower()
+        }
 
 
         mInputBtn.setOnClickListener(object : DebounceViewClickListener() {

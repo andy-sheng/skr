@@ -63,13 +63,13 @@ public class UserInfoTitleView extends RelativeLayout {
 
     public void showRankView(UserRankModel userRankModel) {
 
-        mLevelBg.setBackground(getResources().getDrawable(LevelConfigUtils.getAvatarLevelBg(userRankModel.getMainRanking())));
+        mLevelBg.setBackground(getResources().getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(userRankModel.getMainRanking())));
         mUserLevelTv.setTextColor(Color.parseColor(LevelConfigUtils.getHomePageLevelTextColor(userRankModel.getMainRanking())));
         mUserLevelTv.setText(userRankModel.getLevelDesc());
     }
 
     public void showScoreView(ScoreStateModel scoreStateModel){
-        mLevelBg.setBackground(getResources().getDrawable(LevelConfigUtils.getAvatarLevelBg(scoreStateModel.getMainRanking())));
+        mLevelBg.setBackground(getResources().getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(scoreStateModel.getMainRanking())));
         mUserLevelTv.setTextColor(Color.parseColor(LevelConfigUtils.getHomePageLevelTextColor(scoreStateModel.getMainRanking())));
         mUserLevelTv.setText(scoreStateModel.getRankingDesc());
     }

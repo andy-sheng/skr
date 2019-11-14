@@ -77,6 +77,7 @@ import com.module.playways.listener.SVGAListener
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.event.UpdateMeiGuiFreeCountEvent
+import com.module.playways.room.gift.model.NormalGift
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
@@ -97,6 +98,7 @@ import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.GrabRoom.EQRoundStatus
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
@@ -212,7 +214,6 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     internal var mVoiceRecordUiController: VoiceRecordUiController? = null
 
     internal var mAnimatorList: MutableList<Animator> = ArrayList()  //存放所有需要尝试取消的动画
-
     internal var mIsGameEndAniamtionShow = false // 标记对战结束动画是否播放
 
     internal var mBeginChangeRoomTs: Long = 0
@@ -391,7 +392,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         enterRoomEvent()
 
         MyUserInfoManager.myUserInfo?.let {
-            mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
+            if (it.ranking != null) {
+                mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
+            }
         }
     }
 
@@ -692,8 +695,55 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
                 mContinueSendView?.visibility = GONE
             }
+
+            override fun onClickFlower() {
+                buyFlowerFromOuter()
+            }
         })
         mBottomContainerView?.setRoomData(mRoomData!!)
+    }
+
+    private fun buyFlowerFromOuter() {
+        if (mRoomData!!.realRoundInfo != null) {
+            val now = mRoomData!!.realRoundInfo
+            if (now != null) {
+                if (now.isPKRound && now.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
+                    if (now.getsPkRoundInfoModels().size == 2) {
+                        val userId = now.getsPkRoundInfoModels()[1].userID
+                        RoomDataUtils.getPlayerInfoById(mRoomData!!, userId)?.let {
+                            EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                        }
+                    } else {
+                        RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)?.let {
+                            EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                        }
+                    }
+                } else if (now.isChorusRound) {
+                    if (now.chorusRoundInfoModels.size == 2) {
+                        if (!now.chorusRoundInfoModels[0].isHasGiveUp) {
+                            RoomDataUtils.getPlayerInfoById(mRoomData!!, now.chorusRoundInfoModels[0].userID)?.let {
+                                EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                            }
+                        } else {
+                            RoomDataUtils.getPlayerInfoById(mRoomData!!, now.chorusRoundInfoModels[1].userID)?.let {
+                                EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                            }
+                        }
+                    }
+                } else {
+                    val grabPlayerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)
+                    if (grabPlayerInfoModel != null) {
+                        EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), grabPlayerInfoModel.userInfo))
+                    } else {
+                        U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
+                    }
+                }
+            } else {
+                U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
+            }
+        } else {
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
+        }
     }
 
     private fun initCommentView() {
@@ -726,7 +776,11 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BuyGiftEvent) {
-        mContinueSendView?.startBuy(event.baseGift, event.receiver)
+        if (event.receiver.userId != MyUserInfoManager.uid.toInt()) {
+            mContinueSendView?.startBuy(event.baseGift, event.receiver)
+        } else {
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1171,7 +1225,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     override fun joinNotice(playerInfoModel: UserInfoModel?) {
         playerInfoModel?.let {
-            mVipEnterPresenter?.addNotice(playerInfoModel)
+            if (it.userId != MyUserInfoManager.uid.toInt()) {
+                mVipEnterPresenter?.addNotice(playerInfoModel)
+            }
         }
     }
 

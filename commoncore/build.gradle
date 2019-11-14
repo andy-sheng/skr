@@ -47,22 +47,22 @@ dependencies {
         debugApi "com.common.sdk:commonsdk:1.0-debug"
         releaseApi "com.common.sdk:commonsdk:1.0-release"
 
-        debugApi "com.common.sdk:mediaengine:1.0-debug"
-        releaseApi "com.common.sdk:mediaengine:1.0-release"
+//        debugApi "com.common.sdk:mediaengine:1.0-debug"
+//        releaseApi "com.common.sdk:mediaengine:1.0-release"
 
         // doraemonkit 滴滴开源一款app内调试工具
         debugApi "com.common.sdk:doraemonkit:1.0-debug"
         releaseApi "com.common.sdk:doraemonkit:1.0-release"
 
-        debugApi "com.zq.live:commonservice:1.0-debug"
-        releaseApi "com.zq.live:commonservice:1.0-release"
+//        debugApi "com.zq.live:commonservice:1.0-debug"
+//        releaseApi "com.zq.live:commonservice:1.0-release"
     }else{
         api project(":baseLibrary:commonsdk")
-        api project(":baseLibrary:mediaengine")
         // doraemonkit 滴滴开源一款app内调试工具
         api project(":baseLibrary:doraemonkit")
-        api project(":commonservice")
     }
+    api project(":baseLibrary:mediaengine")
+    api project(":commonservice")
     //api files('libs/protobuf-java-2.6.0.jar')
     // 小米oauth登录用
     //api files('libs/oauth.jar')

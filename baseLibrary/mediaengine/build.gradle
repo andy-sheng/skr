@@ -27,15 +27,15 @@ dependencies {
         releaseCompileOnly "com.common.sdk:commonsdk:1.0-release"
         debugApi "com.common.sdk:effectsdk:1.0-debug"
         releaseApi "com.common.sdk:effectsdk:1.0-release"
-        debugApi "com.common.sdk:enginesdk:1.0-debug"
-        releaseApi "com.common.sdk:enginesdk:1.0-release"
+//        debugApi "com.common.sdk:enginesdk:1.0-debug"
+//        releaseApi "com.common.sdk:enginesdk:1.0-release"
     }else{
         compileOnly project(":baseLibrary:commonsdk")
         api project(":baseLibrary:effectsdk")
-        api project(":baseLibrary:enginesdk")
     }
 
     implementation project(':baseLibrary:avstatistics')
+    api project(":baseLibrary:enginesdk")
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

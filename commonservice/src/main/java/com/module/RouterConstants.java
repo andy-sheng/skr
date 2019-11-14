@@ -37,9 +37,10 @@ public interface RouterConstants {
     String ACTIVITY_RANKED = "/home/RankedActivity";
 
     String ACTIVITY_LAST_FOLLOW = "/msg/LastFollowActivity";
-    String ACTIVITY_INTERACTION = "/msg/InteractionActivity";
+    String ACTIVITY_COMMENT_LIKE = "/msg/CommentAndLikeActivity";
+    String ACTIVITY_SPECIAL_FOLLOW = "/msg/SpecialFollowActivity";
+    String ACTIVITY_GIFT_RECORD = "/rankingmode/GiftRecordActivity";
 
-    String ACTIVITY_FRIEND_ROOM = "/busilib/FriendMoreRoomActivity";
     String ACTIVITY_RELATION = "/busilib/RelationActivity";
     String ACTIVITY_OTHER_PERSON = "/busilib/OtherPersonActivity";
 
@@ -127,4 +128,6 @@ public interface RouterConstants {
     String ACTIVITY_MIC_MATCH = "/mic/MicMatchActivity";
 
     String ACTIVITY_INVITE_FRIEND = "/room/InviteFriendActivity";
+
+    String ACTIVITY_MALL_MALL = "/mall/MallActivity";
 }

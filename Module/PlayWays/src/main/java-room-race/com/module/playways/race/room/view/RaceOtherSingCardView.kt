@@ -19,14 +19,18 @@ import com.common.view.ex.ExTextView
 import com.component.level.utils.LevelConfigUtils
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
+import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.view.SingCountDownView2
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.event.RaceBlightByMeEvent
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
 import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : ExViewStub(viewStub) {
 
@@ -93,6 +97,29 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
         if (mUiHandler != null) {
             mUiHandler!!.removeCallbacksAndMessages(null)
         }
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
+    }
+
+    override fun onViewAttachedToWindow(v: View) {
+        super.onViewAttachedToWindow(v)
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RaceBlightByMeEvent) {
+        // 重新刷一下UI
+        val infoModel = roomData.realRoundInfo
+        val userInfoModel = roomData.getPlayerOrWaiterInfo(infoModel?.getSingerIdNow())
+        AvatarUtils.loadAvatarByUrl(singAvatarView,
+                AvatarUtils.newParamsBuilder(RoomDataUtils.getRaceDisplayAvatar(roomData, userInfoModel))
+                        .setBorderColor(U.getColor(R.color.white))
+                        .setBorderWidth(U.getDisplayUtils().dip2px(3f).toFloat())
+                        .setCircle(true)
+                        .build())
     }
 
     fun bindData() {
@@ -107,7 +134,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
         if (userInfoModel != null) {
             this.mUseId = userInfoModel.userId
             AvatarUtils.loadAvatarByUrl(singAvatarView,
-                    AvatarUtils.newParamsBuilder(userInfoModel.avatar)
+                    AvatarUtils.newParamsBuilder(RoomDataUtils.getRaceDisplayAvatar(roomData, userInfoModel))
                             .setBorderColor(U.getColor(R.color.white))
                             .setBorderWidth(U.getDisplayUtils().dip2px(3f).toFloat())
                             .setCircle(true)
@@ -146,6 +173,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT
             singCountDownView.reset()
             singCountDownView.setBackColor(U.getColor(R.color.black_trans_30))
+            singCountDownView.setSongName(roomData.realRoundInfo?.getSongModelNow()?.itemName)
             if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq == it.subRoundSeq) {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
                 countDown("中途进来")

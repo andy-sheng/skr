@@ -27,6 +27,7 @@ class RaceActorPanelView(fragment: BaseFragment, val mRoomData: RaceRoomData) : 
     private val pagerAdapter: PagerAdapter
 
     var actorView: RaceActorView? = null   // 竞演者
+    var audienceView: RaceActorView? = null  // 观众
     private var mDialogPlus: DialogPlus? = null
 
     init {
@@ -46,19 +47,29 @@ class RaceActorPanelView(fragment: BaseFragment, val mRoomData: RaceRoomData) : 
 
         pagerAdapter = object : PagerAdapter() {
             override fun getCount(): Int {
-                return 1
+                return 2
             }
 
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 if (position == 0) {
                     // 竞演者
                     if (actorView == null) {
-                        actorView = RaceActorView(raceVp.context, mRoomData)
+                        actorView = RaceActorView(raceVp.context, RaceActorView.TYPE_ACTOR, mRoomData)
                     }
                     if (container.indexOfChild(actorView) == -1) {
                         container.addView(actorView)
                     }
+                    actorView?.initData()
                     return actorView!!
+                } else if (position == 1) {
+                    // 观众
+                    if (audienceView == null) {
+                        audienceView = RaceActorView(raceVp.context, RaceActorView.TYPE_AUDIENCE, mRoomData)
+                    }
+                    if (container.indexOfChild(audienceView) == -1) {
+                        container.addView(audienceView)
+                    }
+                    return audienceView!!
                 }
                 return super.instantiateItem(container, position)
             }
@@ -70,6 +81,8 @@ class RaceActorPanelView(fragment: BaseFragment, val mRoomData: RaceRoomData) : 
             override fun getPageTitle(position: Int): CharSequence? {
                 if (position == 0) {
                     return "竞演者"
+                } else if (position == 1) {
+                    return "观众"
                 }
                 return ""
             }
@@ -95,6 +108,10 @@ class RaceActorPanelView(fragment: BaseFragment, val mRoomData: RaceRoomData) : 
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
                     // 竞演者
+                    actorView?.initData()
+                } else if (position == 1) {
+                    // 观众
+                    audienceView?.initData()
                 }
             }
 
@@ -131,5 +148,10 @@ class RaceActorPanelView(fragment: BaseFragment, val mRoomData: RaceRoomData) : 
 
     fun dismiss(isAnimation: Boolean) {
         mDialogPlus?.dismiss(isAnimation)
+    }
+
+    fun destory() {
+        audienceView?.destory()
+        actorView?.destory()
     }
 }

@@ -1,15 +1,15 @@
 package com.module.playways.race.room
 
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.event.RaceRoundChangeEvent
-import com.module.playways.race.room.model.RaceGamePlayInfo
+import com.module.playways.race.room.model.FakeUserInfoModel
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
-import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import org.greenrobot.eventbus.EventBus
@@ -18,7 +18,6 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
     override val gameType: Int
         get() = GameModeType.GAME_MODE_RACE
-
     var hasExitGame = false
     var isAccEnable = false
         // 是否开启伴奏,只代表设置里伴奏开关
@@ -28,8 +27,8 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         }
 
     var runningRoundCount = 0 // 本人在这个房间里已经待了多少轮了
-
     var hasSignUpSelf: Boolean = false //自己是否报名
+    var audience = false // 本人是否是观众
 
     init {
         isAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false)
@@ -57,7 +56,7 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 //            (this.realRoundInfo as RaceRoundInfoModel).updateStatus(false,轮次结束事件)
             this.realRoundInfo = this.expectRoundInfo
 //            (this.realRoundInfo as RaceRoundInfoModel).updateStatus(false,轮次开始事件)
-            if(larger) {
+            if (larger) {
                 this.runningRoundCount++
             }
             // TODO 发送轮次切换事件
@@ -82,22 +81,60 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         return l
     }
 
+    fun getPlayerCount(): Int {
+        var count = 0
+        if (realRoundInfo != null) {
+            realRoundInfo?.let {
+                count = it.playUsers.size
+            }
+        } else {
+            expectRoundInfo?.let {
+                count = it.playUsers.size
+            }
+        }
+
+        return count
+    }
 
     fun getPlayerOrWaiterInfoModel(userID: Int?): RacePlayerInfoModel? {
         if (userID == null || userID == 0) {
             return null
         }
-        val playerInfoModel = userInfoMap[userID] as RacePlayerInfoModel?
-        if (playerInfoModel == null || playerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value) {
+//        val playerInfoModel = userInfoMap[userID] as RacePlayerInfoModel?
+//        if (playerInfoModel == null || playerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value) {
             val l = getPlayerAndWaiterInfoList()
             for (playerInfo in l) {
                 if (playerInfo.userInfo.userId == userID) {
-                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
+//                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
                     return playerInfo as RacePlayerInfoModel?
                 }
             }
+//        } else {
+//            return playerInfoModel
+//        }
+        return null
+    }
+
+    /**
+     * 该用户是否蒙面 对我来说
+     */
+    fun isFakeForMe(uid: Int?): Boolean {
+        if (uid == MyUserInfoManager.uid.toInt()) {
+            return false
+        }
+
+        val m = getPlayerOrWaiterInfoModel(uid)
+        return if (m != null) {
+            realRoundInfo?.unfakeSetForMe?.contains(uid) != true
         } else {
-            return playerInfoModel
+            false
+        }
+    }
+
+    // 拿到FakeUserInfoModel的信息
+    fun getFakeInfo(uid: Int?): FakeUserInfoModel? {
+        if (getPlayerOrWaiterInfoModel(uid)?.role != ERUserRole.ERUR_AUDIENCE.value) {
+            return getPlayerOrWaiterInfoModel(uid)?.fakeUserInfo
         }
         return null
     }
@@ -137,6 +174,7 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         } else {
             //this.expectRoundInfo?.isParticipant = true
         }
+        audience = rsp.isAudience
     }
 
 }

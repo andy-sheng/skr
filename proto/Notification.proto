@@ -12,21 +12,20 @@ java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-de
 */
 
 // 房间消息：此结构会通过pb编码后，通过系统消息通道到达客户端
-message NotificationMsg
-{
-    sint64 timeMs                = 1; //消息产生时间，单位毫秒
+message NotificationMsg {
+    sint64 timeMs = 1; //消息产生时间，单位毫秒
     ENotificationMsgType msgType = 2; //消息类型
-    uint32 roomID                = 3; //房间ID,若不需要为0
-    sint64 no                    = 4; //消息序号
-    EMsgPosType posType          = 5; //消息显示位置类型
-    Common.UserInfo sender              = 6; //发送者简要信息
+    uint32 roomID = 3; //房间ID,若不需要为0
+    sint64 no = 4; //消息序号
+    EMsgPosType posType = 5; //消息显示位置类型
+    Common.UserInfo sender = 6; //发送者简要信息
 
-    FollowMsg followMsg           = 10;
+    FollowMsg followMsg = 10;
     InviteStandMsg inviteStandMsg = 11;
-    SysWarningMsg sysWarningMsg   = 12;
+    SysWarningMsg sysWarningMsg = 12;
 
     CombineRoomInviteMsg inviteMsg = 13; //双人房邀请信令
-    CombineRoomEnterMsg enterMsg   = 14; //双人房进房信令
+    CombineRoomEnterMsg enterMsg = 14; //双人房进房信令
     CombineRoomRefuseMsg refuseMsg = 15; //双人房拒绝邀请信令
     CombineRoomInviteV2Msg inviteV2Msg = 16; //双人房邀请信令
 
@@ -39,135 +38,144 @@ message NotificationMsg
     PostsCommentAddMsg postsCommentAddMsg = 22; //增加帖子评论 信令
 
     InviteMicMsg inviteMicMsg = 23; //排麦房邀请用户
+
+    SpFollowNewPostMsg spFollowNewPostMsg = 24; //特别关注发帖子
+    SpFollowUpdateAlbumMsg spFollowUpdateAlbumMsg = 25; //特别关注更新相册
+
+    GiftReceivesMsg giftReceivesMsg = 26; //收到礼物的信息
 }
 
-message InviteMicMsg
-{
-    Common.UserInfo user               = 1; //发起邀请的用户详情
-    uint32 roomID               = 2; //房间id
+message SpFollowNewPostMsg {
+    uint32 userID = 1;
+    uint32 postsID = 2;
+}
+
+message SpFollowUpdateAlbumMsg {
+    uint32 userID = 1;
+    uint32 picCnt = 2;
+}
+
+message GiftReceivesMsg {
+    uint32 sender = 1;
+    uint32 receiver = 2;
+    uint32 platform = 3; //收礼者平台
+    uint32 giftID = 4;
+    uint32 amount = 5;
+}
+
+message InviteMicMsg {
+    Common.UserInfo user = 1; //发起邀请的用户详情
+    uint32 roomID = 2; //房间id
 }
 
 //帖子点赞
-message PostsLikeMsg
-{
-    uint32 userID    = 1; //点赞人的userID
-    uint32 postsID    = 2; //点赞的posts
-    bool isLike      = 3; //点赞 or 取消点赞
-    uint32 likeCnt   = 4; //点赞数
+message PostsLikeMsg {
+    uint32 userID = 1; //点赞人的userID
+    uint32 postsID = 2; //点赞的posts
+    bool isLike = 3; //点赞 or 取消点赞
+    uint32 likeCnt = 4; //点赞数
 }
 
 //帖子评论点赞
-message PostsCommentLikeMsg
-{
-    uint32 userID    = 1; //点赞人的userID
-    uint32 postsID    = 2; //posts
+message PostsCommentLikeMsg {
+    uint32 userID = 1; //点赞人的userID
+    uint32 postsID = 2; //posts
     uint32 commentID = 3; //评论id
-    bool isLike      = 4; //点赞 or 取消点赞
-    uint32 likeCnt   = 5; //点赞数
+    bool isLike = 4; //点赞 or 取消点赞
+    uint32 likeCnt = 5; //点赞数
 }
 
 //帖子评论
-message PostsCommentAddMsg
-{
-    uint32 userID                = 1; //评论人userID
-    uint32 postsID                = 2; //posts
-    uint32 commentID             = 3; //新生成评论ID
-    uint32 firstLevelCommentID   = 4; //若为二级评论，则需要传入所属的一级评论id
-    uint32 replyedCommentID      = 5; //被回复的commentID
+message PostsCommentAddMsg {
+    uint32 userID = 1; //评论人userID
+    uint32 postsID = 2; //posts
+    uint32 commentID = 3; //新生成评论ID
+    uint32 firstLevelCommentID = 4; //若为二级评论，则需要传入所属的一级评论id
+    uint32 replyedCommentID = 5; //被回复的commentID
 }
 
-
 //神曲点赞
-message FeedLikeMsg
-{
-    uint32 userID    = 1; //点赞人的userID
-    uint32 feedID    = 2; //点赞的feed
-    bool isLike      = 3; //点赞 or 取消点赞
-    uint32 likeCnt   = 4; //点赞数
+message FeedLikeMsg {
+    uint32 userID = 1; //点赞人的userID
+    uint32 feedID = 2; //点赞的feed
+    bool isLike = 3; //点赞 or 取消点赞
+    uint32 likeCnt = 4; //点赞数
 }
 
 //神曲评论点赞
-message FeedCommentLikeMsg
-{
-    uint32 userID    = 1; //点赞人的userID
-    uint32 feedID    = 2; //feed
+message FeedCommentLikeMsg {
+    uint32 userID = 1; //点赞人的userID
+    uint32 feedID = 2; //feed
     uint32 commentID = 3; //评论id
-    bool isLike      = 4; //点赞 or 取消点赞
-    uint32 likeCnt   = 5; //点赞数
+    bool isLike = 4; //点赞 or 取消点赞
+    uint32 likeCnt = 5; //点赞数
 }
 
 //神曲评论
-message FeedCommentAddMsg
-{
-    uint32 userID                = 1; //评论人userID
-    uint32 feedID                = 2; //feed
-    uint32 commentID             = 3; //新生成评论ID
-    uint32 firstLevelCommentID   = 4; //若为二级评论，则需要传入所属的一级评论id
-    uint32 replyedCommentID      = 5; //被回复的commentID
+message FeedCommentAddMsg {
+    uint32 userID = 1; //评论人userID
+    uint32 feedID = 2; //feed
+    uint32 commentID = 3; //新生成评论ID
+    uint32 firstLevelCommentID = 4; //若为二级评论，则需要传入所属的一级评论id
+    uint32 replyedCommentID = 5; //被回复的commentID
 }
 
 
 enum ECombineRoomEnterType {
     CRET_UNKNOWN = 0; //未知
-    CRET_INVITE  = 1; //通过普通邀请方式，获取房间数据后进房
-    CRET_MATCH   = 2; //通过匹配方式，获取房间数据后进房
-    CRET_CREATE  = 3; //通过创建房间邀请方式，获取房间数据后进房
+    CRET_INVITE = 1; //通过普通邀请方式，获取房间数据后进房
+    CRET_MATCH = 2; //通过匹配方式，获取房间数据后进房
+    CRET_CREATE = 3; //通过创建房间邀请方式，获取房间数据后进房
 }
 
-message CombineRoomEnterMsg
-{
+message CombineRoomEnterMsg {
     ECombineRoomEnterType enterType = 1; //进房方式
-    uint32 roomID                   = 2; //房间ID
-    sint64 createdTimeMs            = 3; //房间创建的时间戳
-    sint64 passedTimeMs             = 4; //房间已经经历的毫秒数
-    repeated Common.UserInfo users         = 5; //玩家信息
-    Common.CombineRoomConfig config        = 6; //配置信息
-    repeated Common.AgoraTokenInfo tokens  = 7; //声网token
-    bool needMaskUserInfo           = 8; //是否需要隐藏用户信息
-    Common.ESceneType currentSceneType     = 9; //当前场景类型
-    Common.GamePanelInfo gamePanelInfo     = 10; //游戏面板信息
+    uint32 roomID = 2; //房间ID
+    sint64 createdTimeMs = 3; //房间创建的时间戳
+    sint64 passedTimeMs = 4; //房间已经经历的毫秒数
+    repeated Common.UserInfo users = 5; //玩家信息
+    Common.CombineRoomConfig config = 6; //配置信息
+    repeated Common.AgoraTokenInfo tokens = 7; //声网token
+    bool needMaskUserInfo = 8; //是否需要隐藏用户信息
+    Common.ESceneType currentSceneType = 9; //当前场景类型
+    Common.GamePanelInfo gamePanelInfo = 10; //游戏面板信息
 }
 
-message CombineRoomRefuseMsg
-{
-    Common.UserInfo user    = 1; //拒绝行为发出的用户信息
+message CombineRoomRefuseMsg {
+    Common.UserInfo user = 1; //拒绝行为发出的用户信息
     string refuseMsg = 2; //拒绝反馈文案
 }
 
 enum EInviteType {
-    IT_UNKNOWN          = 0; //未知
+    IT_UNKNOWN = 0; //未知
     IT_OUT_COMBINE_ROOM = 1; //在双人房间外邀请
-    IT_IN_COMBINE_ROOM  = 2; //在双人房间内邀请
+    IT_IN_COMBINE_ROOM = 2; //在双人房间内邀请
 }
 
-message CombineRoomInviteMsg
-{
+message CombineRoomInviteMsg {
     EInviteType inviteType = 1; //邀请类型
-    Common.UserInfo user          = 2; //发起邀请的用户详情
-    string inviteMsg       = 3; //邀请信息
-    uint32 roomID          = 4; //房间id
+    Common.UserInfo user = 2; //发起邀请的用户详情
+    string inviteMsg = 3; //邀请信息
+    uint32 roomID = 4; //房间id
 }
 
-message CombineRoomInviteV2Msg
-{
+message CombineRoomInviteV2Msg {
     EInviteType inviteType = 1; //邀请类型
-    Common.UserInfo user   = 2; //发起邀请的用户详情
-    string inviteMsg       = 3; //邀请信息
-    uint32 roomID          = 4; //房间id
+    Common.UserInfo user = 2; //发起邀请的用户详情
+    string inviteMsg = 3; //邀请信息
+    uint32 roomID = 4; //房间id
 }
-
-
 
 // ENotificationMsgType 房间消息类型
 enum ENotificationMsgType {
     NM_UNKNOWN = 0; //未知消息
 
-    NM_FOLLOW       = 1; //关注类型
+    NM_FOLLOW = 1; //关注类型
     NM_INVITE_STAND = 2; //一唱到底邀请
     NM_SYS_WARNING_MSG = 3; //系统警告
 
     NM_CR_INVITE = 4; //双人房邀请信令
-    NM_CR_ENTER  = 5; //双人房进房信令
+    NM_CR_ENTER = 5; //双人房进房信令
     NM_CR_REFUSE = 6; //双人房拒绝邀请信令
     NM_CR_INVITEV2 = 7; //双人房邀请信令
 
@@ -176,34 +184,35 @@ enum ENotificationMsgType {
     NM_FD_COMMENT_ADD = 10; //添加评论信令
 
     NM_PS_LIKE = 11; //点赞帖子
-        NM_PS_COMMENT_LIKE = 12; //点赞帖子评论信令
-        NM_PS_COMMENT_ADD = 13; //添加帖子评论信令
+    NM_PS_COMMENT_LIKE = 12; //点赞帖子评论信令
+    NM_PS_COMMENT_ADD = 13; //添加帖子评论信令
 
     NM_INVITE_MIC = 14; // 排麦房邀请用户
 
+    NM_SPFOLLOW_NEWPOST = 15; //特别关注发帖子的信令
+    NM_SPFOLLOW_UPDATEALBUM = 16; //特别关注更新相册的信令
+    NM_GIFT_RECEIVES = 17; //收到礼物的小红点消息
+
+
 }
 
-message FollowMsg
-{
+message FollowMsg {
     Common.UserInfo user = 1; //发起关注的用户详情
     bool isFriend = 2; //是否好友
     bool isFollow = 3; //是否关注
 }
 
-message InviteStandMsg
-{
+message InviteStandMsg {
     Common.UserInfo user = 1; //发起邀请的用户详情
     uint32 roomID = 2; //房间id
     Common.EMsgRoomMediaType mediaType = 3; //房间类型(1:音频房 2:视频房)
-    uint32 tagID                = 4; // 房间专场id
+    uint32 tagID = 4; // 房间专场id
 }
 
-message SysWarningMsg
-{
-    string title   = 1; //系统警告标题
+message SysWarningMsg {
+    string title = 1; //系统警告标题
     string content = 2; //系统警告内容
 }
-
 
 // 消息位置类型
 enum EMsgPosType {

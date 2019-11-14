@@ -1,6 +1,8 @@
 package com.common.core.userinfo.model
 
 import com.alibaba.fastjson.annotation.JSONField
+import com.zq.live.proto.Common.EVIPType
+import com.zq.live.proto.Common.VipInfo
 import java.io.Serializable
 
 class VerifyInfo : Serializable {
@@ -12,6 +14,7 @@ class VerifyInfo : Serializable {
     override fun toString(): String {
         return "VerifyInfo(vipType=$vipType, vipDesc='$vipDesc')"
     }
+
     companion object {
         fun parseFromPB(vipInfo: com.zq.live.proto.Common.VipInfo?): VerifyInfo {
             val result = VerifyInfo()
@@ -20,6 +23,18 @@ class VerifyInfo : Serializable {
                 result.vipDesc = vipInfo.desc
             }
             return result
+        }
+
+        fun toVipInfoPB(verifyInfo: VerifyInfo?): VipInfo? {
+            return if (verifyInfo != null) {
+                VipInfo.Builder()
+                        .setVipType(EVIPType.fromValue(verifyInfo.vipType))
+                        .setDesc(verifyInfo.vipDesc)
+                        .build()
+            } else {
+                null
+            }
+
         }
     }
 }

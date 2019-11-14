@@ -30,6 +30,7 @@ class PersonTagView : ConstraintLayout {
     private val CHARM_TAG = 3              //魅力值标签
     private val USERID_TAG = 4             //撕歌ID标签
     private val FANS_NUM_TAG = 5           //粉丝数（他人中心才有）
+    private val QINMI_TAG = 6              //亲密度 (信息卡片才有)
 
     private var sex: Int = ESex.SX_UNKNOWN.value
 
@@ -56,6 +57,10 @@ class PersonTagView : ConstraintLayout {
                     tagModel.type == CHARM_TAG -> {
                         descIv.visibility = View.VISIBLE
                         descIv.background = U.getDrawable(R.drawable.grab_charm_icon)
+                    }
+                    tagModel.type == QINMI_TAG -> {
+                        descIv.visibility = View.VISIBLE
+                        descIv.background = U.getDrawable(R.drawable.game_qinmi_icon)
                     }
                     tagModel.type == SEX_TAG -> {
                         descIv.visibility = View.VISIBLE
@@ -101,6 +106,13 @@ class PersonTagView : ConstraintLayout {
         refreshTag()
     }
 
+    fun setQinMiTotal(qinMiCntTotal: Int) {
+        if (qinMiCntTotal > 0) {
+            mHashMap[QINMI_TAG] = "亲密度${StringFromatUtils.formatMillion(qinMiCntTotal)}"
+            refreshTag()
+        }
+    }
+
     fun setUserID(userID: Int) {
         mHashMap[USERID_TAG] = "撕歌号$userID"
         refreshTag()
@@ -132,6 +144,10 @@ class PersonTagView : ConstraintLayout {
 
             if (!TextUtils.isEmpty(mHashMap[FANS_NUM_TAG])) {
                 mTags.add(TagModel(FANS_NUM_TAG, mHashMap[FANS_NUM_TAG]!!))
+            }
+
+            if (!TextUtils.isEmpty(mHashMap[QINMI_TAG])) {
+                mTags.add(TagModel(QINMI_TAG, mHashMap[QINMI_TAG]))
             }
         }
         mTagAdapter!!.setTagDatas(mTags)

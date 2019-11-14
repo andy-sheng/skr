@@ -19,6 +19,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.NotificationManagerCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -103,7 +104,7 @@ public final class ToastUtils {
      * @param text The text.
      */
     public void showShort(final CharSequence text) {
-        show(text == null ? NULL : text, Toast.LENGTH_SHORT, 0, -1,-1,-1);
+        show(text == null ? NULL : text, Toast.LENGTH_SHORT, 0, -1, -1, -1);
     }
 
     /**
@@ -111,8 +112,8 @@ public final class ToastUtils {
      *
      * @param text The text.
      */
-    public void showShort(final CharSequence text, int priority,int gravity) {
-        show(text == null ? NULL : text, Toast.LENGTH_SHORT, priority, gravity,-1,-1);
+    public void showShort(final CharSequence text, int priority, int gravity) {
+        show(text == null ? NULL : text, Toast.LENGTH_SHORT, priority, gravity, -1, -1);
     }
 
     /**
@@ -121,7 +122,7 @@ public final class ToastUtils {
      * @param text The text.
      */
     public void showLong(final CharSequence text) {
-        show(text == null ? NULL : text, Toast.LENGTH_LONG, 0, -1,-1,-1);
+        show(text == null ? NULL : text, Toast.LENGTH_LONG, 0, -1, -1, -1);
     }
 
     public void showSkrCustomShort(View view) {
@@ -148,15 +149,18 @@ public final class ToastUtils {
     }
 
     /**
-     *
      * @param text
      * @param duration
      * @param priority 优先级高的能顶掉优先级低的
-     * @param gravity 显示的位置
+     * @param gravity  显示的位置
      * @param xOffset
      * @param yOffset
      */
-    private static void show(final CharSequence text, final int duration, int priority, int gravity,int xOffset,int yOffset) {
+    private static void show(final CharSequence text, final int duration, int priority, int gravity, int xOffset, int yOffset) {
+        if (TextUtils.isEmpty(text) && !MyLog.isDebugLogOpen()) {
+            return;
+        }
+
         HANDLER.post(new Runnable() {
             @SuppressLint("ShowToast")
             @Override

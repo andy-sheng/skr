@@ -73,6 +73,7 @@ import com.module.playways.mic.room.view.control.MicSingBeginTipsCardView
 import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
+import com.module.playways.room.gift.model.NormalGift
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
@@ -232,7 +233,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         }
 
         MyUserInfoManager.myUserInfo?.let {
-            mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
+            if (it.ranking != null) {
+                mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
+            }
         }
 
 
@@ -390,6 +393,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 mContinueSendView.setVisibility(View.GONE)
                 showPanelView()
             }
+
+            override fun onClickFlower() {
+                buyFlowerFromOuter()
+            }
         })
     }
 
@@ -412,6 +419,49 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             }
         } else {
             mGiftPanelView?.show(null)
+        }
+    }
+
+    private fun buyFlowerFromOuter() {
+        if (mRoomData!!.realRoundInfo != null) {
+            val now = mRoomData!!.realRoundInfo
+            if (now != null) {
+                if (now.isPKRound && now.status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
+                    if (now.getsPkRoundInfoModels().size == 2) {
+                        val userId = now.getsPkRoundInfoModels()[1].userID
+                        RoomDataUtils.getPlayerInfoById(mRoomData!!, userId)?.let {
+                            EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                        }
+                    } else {
+                        RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)?.let {
+                            EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                        }
+                    }
+                } else if (now.isChorusRound) {
+                    if (now.getChorusRoundInfoModels().size == 2) {
+                        if (!now.getChorusRoundInfoModels()[0].isHasGiveUp) {
+                            RoomDataUtils.getPlayerInfoById(mRoomData!!, now.getChorusRoundInfoModels()[0].userID)?.let {
+                                EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                            }
+                        } else {
+                            RoomDataUtils.getPlayerInfoById(mRoomData!!, now.getChorusRoundInfoModels()[1].userID)?.let {
+                                EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                            }
+                        }
+                    }
+                } else {
+                    val micPlayerInfoMode = RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)
+                    if (micPlayerInfoMode != null) {
+                        EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), micPlayerInfoMode.userInfo))
+                    } else {
+                        U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
+                    }
+                }
+            } else {
+                U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
+            }
+        } else {
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
         }
     }
 
@@ -675,7 +725,11 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BuyGiftEvent) {
-        mContinueSendView.startBuy(event.baseGift, event.receiver)
+        if (event.receiver.userId != MyUserInfoManager.uid.toInt()) {
+            mContinueSendView.startBuy(event.baseGift, event.receiver)
+        } else{
+            U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -821,7 +875,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     override fun joinNotice(model: MicPlayerInfoModel?) {
         model?.let {
-            mVipEnterPresenter?.addNotice(it.userInfo)
+            if (it.userID != MyUserInfoManager.myUserInfo?.userId?.toInt()) {
+                mVipEnterPresenter?.addNotice(it.userInfo)
+            }
         }
     }
 

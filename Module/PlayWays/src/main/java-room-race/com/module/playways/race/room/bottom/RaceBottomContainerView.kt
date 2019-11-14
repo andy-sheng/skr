@@ -7,6 +7,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
+import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -26,6 +27,7 @@ class RaceBottomContainerView : BottomContainerView {
     lateinit var mSpeakingDotAnimationView: View
     lateinit var mShowInputContainerBtn: ExTextView
     lateinit var mVoiceRecordBtn: VoiceRecordTextView
+    lateinit var meiguiIv: ExImageView
 
     var mDynamicMsgPopWindow: PopupWindow? = null    //动态表情弹出面板
     var mDynamicMsgView: DynamicMsgView? = null
@@ -50,6 +52,8 @@ class RaceBottomContainerView : BottomContainerView {
         mSpeakingDotAnimationView = this.findViewById(R.id.speaking_dot_animation_view)
         mShowInputContainerBtn = this.findViewById(R.id.show_input_container_btn)
         mVoiceRecordBtn = this.findViewById(R.id.voice_record_btn)
+        meiguiIv = rootView.findViewById(R.id.meigui_iv)
+
 
         mIvRoomManage.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -67,6 +71,9 @@ class RaceBottomContainerView : BottomContainerView {
             }
         })
 
+        meiguiIv.setDebounceViewClickListener {
+            mBottomContainerListener?.onClickFlower()
+        }
 
         mInputBtn.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {

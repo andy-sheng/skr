@@ -48,6 +48,7 @@ public class UserInfoModel implements Serializable, Cloneable {
     private boolean mIsSystem;
     private boolean isFriend;
     private boolean isFollow;
+    private boolean isSPFollow;  // 是否特别关注
     @Deprecated
     private int mainLevel; // 主段位 (被废弃了)
     private int status;    // 状态 在线  离线
@@ -58,6 +59,20 @@ public class UserInfoModel implements Serializable, Cloneable {
     private VerifyInfo vipInfo;  // 加V的信息
     private ScoreStateModel ranking;  // 段位描述
     private HonorInfo honorInfo;  // 会员信息
+
+    private int intimacy = -1;   // 亲密度
+
+    public int getIntimacy() {
+        return intimacy;
+    }
+
+    public void setIntimacy(int intimacy) {
+        this.intimacy = intimacy;
+    }
+
+    public boolean hasIntimacy() {
+        return intimacy > 0;
+    }
 
     public UserInfoModel() {
     }
@@ -174,6 +189,14 @@ public class UserInfoModel implements Serializable, Cloneable {
 
     public void setFollow(boolean follow) {
         isFollow = follow;
+    }
+
+    public boolean isSPFollow() {
+        return isSPFollow;
+    }
+
+    public void setSPFollow(boolean SPFollow) {
+        isSPFollow = SPFollow;
     }
 
     public int getStatus() {
@@ -336,7 +359,7 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoModel.setIsSystem(model.getIsSystem());
             userInfoModel.setMainLevel(model.getMainLevel());
             userInfoModel.setVipInfo(VerifyInfo.Companion.parseFromPB(model.getVipInfo()));
-            userInfoModel.setRanking(ScoreStateModel.Companion.parseFromPB(model.getUserID(),model.getRanking()));
+            userInfoModel.setRanking(ScoreStateModel.Companion.parseFromPB(model.getUserID(), model.getRanking()));
             userInfoModel.setHonorInfo(HonorInfo.Companion.parseFromPB(model.getUserID(), model.getHonorInfo()));
         }
         return userInfoModel;
@@ -364,11 +387,12 @@ public class UserInfoModel implements Serializable, Cloneable {
             }
 
             JSONObject jsonObject = new JSONObject();
+            jsonObject.put("isSPFollow", userInfModel.isSPFollow());
             jsonObject.put("location", userInfModel.getLocation());
             jsonObject.put("location2", userInfModel.getLocation2());
             jsonObject.put("mainLevel", userInfModel.getMainLevel());
-            jsonObject.put("vipInfo",userInfModel.getVipInfo());
-            jsonObject.put("ranking",userInfModel.getRanking());
+            jsonObject.put("vipInfo", userInfModel.getVipInfo());
+            jsonObject.put("ranking", userInfModel.getRanking());
             jsonObject.put("honorInfo", userInfModel.getHonorInfo());
             userInfoDB.setExt(jsonObject.toJSONString());
         }
@@ -398,6 +422,7 @@ public class UserInfoModel implements Serializable, Cloneable {
             String extJSon = userInDB.getExt();
             if (!TextUtils.isEmpty(extJSon)) {
                 JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
+                userInfoModel.setSPFollow(jsonObject.getBooleanValue("isSPFollow"));
                 userInfoModel.setLocation(jsonObject.getObject("location", Location.class));
                 userInfoModel.setLoaction2(jsonObject.getObject("location2", Location.class));
                 userInfoModel.setMainLevel(jsonObject.getIntValue("mainLevel"));
@@ -424,6 +449,7 @@ public class UserInfoModel implements Serializable, Cloneable {
                 ", mIsSystem=" + mIsSystem +
                 ", isFriend=" + isFriend +
                 ", isFollow=" + isFollow +
+                ", isSPFollow=" + isSPFollow +
                 ", mainLevel=" + mainLevel +
                 ", status=" + status +
                 ", statusTs=" + statusTs +
