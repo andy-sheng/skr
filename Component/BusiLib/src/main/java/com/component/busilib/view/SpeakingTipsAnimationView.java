@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
+import com.common.log.MyLog;
 import com.component.busilib.R;
 
 /**
@@ -97,6 +98,14 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
     public void reset() {
         isPlaying = false;
         mDuration = 0;
+        mUiHandler.removeCallbacksAndMessages(null);
+        if (mType == 1) {
+            setVisibility(VISIBLE);
+            setImageResource(R.drawable.msg_yuyin_3);
+        } else if (mType == 2) {
+            setVisibility(VISIBLE);
+            setImageResource(R.drawable.posts_yuyin_3);
+        }
     }
 
     public void show(int duration) {
@@ -117,7 +126,8 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
 
     public void hide() {
         mUiHandler.removeCallbacksAndMessages(null);
-        reset();
+        isPlaying = false;
+        mDuration = 0;
         if (mType == 1) {
             setImageResource(R.drawable.msg_yuyin_3);
         } else if (mType == 2) {
