@@ -653,10 +653,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             mRaceRightOpView.visibility = View.GONE
         } else {
             if (mRoomData.audience) {
-                if(mRoomData.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value){
+                if (mRoomData.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value) {
                     // 中途进来不展示
                     mRaceRightOpView.visibility = View.GONE
-                }else{
+                } else {
                     mRaceRightOpView.showVote(false)
                 }
             } else {
@@ -871,6 +871,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 //            initBgView()
 //            hideAllCardView()
             hideAllSceneView()
+            mRaceTopVsView.switchRoom()
             mVipEnterPresenter?.switchRoom()
             mVIPEnterView?.switchRoom()
             // 重新决定显示mic按钮

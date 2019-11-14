@@ -185,4 +185,8 @@ class GrabSpecialActivity : BaseActivity() {
         return false
     }
 
+    override fun canSlide(): Boolean {
+        return false
+    }
+
 }

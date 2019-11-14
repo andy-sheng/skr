@@ -268,6 +268,12 @@ class RaceTopVsView : ExConstraintLayout {
         }
     }
 
+    fun switchRoom() {
+        visibility = View.GONE
+        leftVoiceChartView.stop()
+        leftVoiceChartView.stop()
+    }
+
     private fun getTextContentInt(view: TextView): Int {
         if (!TextUtils.isEmpty(view.text.toString()) && !view.text.toString().equals("**")) {
             return view.text.toString().toInt()

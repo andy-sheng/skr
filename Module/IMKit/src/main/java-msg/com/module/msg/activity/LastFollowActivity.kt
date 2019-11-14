@@ -151,6 +151,10 @@ class LastFollowActivity : BaseActivity() {
         return true
     }
 
+    override fun canSlide(): Boolean {
+        return false
+    }
+
     /**
      * 别人关注的事件,所有的关系都是从我出发
      *

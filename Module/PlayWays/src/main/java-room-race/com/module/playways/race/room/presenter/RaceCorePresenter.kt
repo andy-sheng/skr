@@ -845,8 +845,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
     private fun pretendEnterRoom(playerInfoModel: RacePlayerInfoModel) {
         if (playerInfoModel.role == ERUserRole.ERUR_PLAY_USER.value
-                || playerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value
-                || playerInfoModel.role == ERUserRole.ERUR_AUDIENCE.value) {
+                || playerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value) {
             val commentModel = CommentTextModel()
             commentModel.userInfo = playerInfoModel.userInfo
             commentModel.fakeUserInfo = mRoomData.getFakeInfo(playerInfoModel.userID)
