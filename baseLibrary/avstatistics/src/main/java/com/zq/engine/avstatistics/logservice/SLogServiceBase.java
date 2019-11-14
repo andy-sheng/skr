@@ -15,20 +15,29 @@ public abstract class SLogServiceBase {
     //public final static int OP_LOCK_LOGGROUP = 1;//not in used yet
 
     /**
-     * when set this prop via {@link this#setProp(int, Object)}, the prop-object should be Long.
+     * When set this prop via {@link this#setProp(int, Object)}, the prop data-type should be {@link Long}.
      */
     public final static int PROP_USER_ID     = 2;
 
 
     /**
-     * it's only for getProp
+     * It's only for getProp. Prop data-type is {@link Boolean};
+     *
      */
     public final static int PROP_IS_INITIALIZED = 3; //only for getProp
 
     /**
-     * for now, only aliyun-sls will need this
+     * For now, only aliyun-sls will need this.
+     * The prop data-type is {@link com.zq.engine.avstatistics.sts.SSTSCredentialHolder}
      */
     public final static int PROP_STS_CREDENTIAL_HOLDER= 4;
+
+
+    /**
+     *  Enable or disable log-services. It is only for setProp, and the prop data-type is {@link Boolean}
+     */
+    public final static int PROP_ENABLE_SERVICES = 5;
+
 
     /**
      * @param param usually there are some parameter related to app, so this API is usually called by app-context

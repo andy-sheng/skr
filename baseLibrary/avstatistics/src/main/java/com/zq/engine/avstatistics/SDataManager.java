@@ -77,6 +77,18 @@ public class SDataManager {
         return this;
     }
 
+    /**
+     * @param enable true or false
+     */
+    public SDataManager enableLogService(boolean enable) {
+        try {
+            mLS.setProp(SLogServiceBase.PROP_ENABLE_SERVICES, new Boolean(enable));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
 
     public SDataManager setBasicInfo(SDataMgrBasicInfo info) {
         mBasicInfo.userID = info.userID;

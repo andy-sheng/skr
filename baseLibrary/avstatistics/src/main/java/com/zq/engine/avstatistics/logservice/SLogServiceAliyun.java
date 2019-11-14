@@ -16,6 +16,7 @@ import com.aliyun.sls.android.sdk.model.LogGroup;
 import com.aliyun.sls.android.sdk.request.PostLogRequest;
 import com.aliyun.sls.android.sdk.result.PostLogResult;
 import com.common.log.MyLog;
+import com.zq.engine.avstatistics.SDataManager;
 import com.zq.engine.avstatistics.datastruct.ILogItem;
 import com.zq.engine.avstatistics.sts.SSTSCredentialHolder;
 
@@ -56,6 +57,8 @@ class SLogServiceAliyun extends SLogServiceBase{
     private SSTSCredentialHolder mSTSHolder = null;
 
 
+    private boolean mEnableLS = true; //false can cut the aliyun-log-service, if something un-predictable rush into our system
+
     public SLogServiceAliyun() {
         mParam = new SLogServiceAgent.SAliYunSLParam();
 
@@ -66,9 +69,7 @@ class SLogServiceAliyun extends SLogServiceBase{
         if (!(param instanceof Context)) {
             throw new Exception("When init Aliyun LogSerivce, you should use: " + Context.class.getName());
         }
-//
-//        SLogServiceAgent.SAliYunSLParam initParam = (SLogServiceAgent.SAliYunSLParam)param;
-//
+
         mParam.appCtx = (Context)param;
         mLogGroup = new LogGroup(LOG_TOPIC, LOG_SOURSE);
         mHasInitialized = true;
@@ -83,17 +84,23 @@ class SLogServiceAliyun extends SLogServiceBase{
 
     @Override
     public void appendLog(String key, String value) {
+        if (!mEnableLS) return;
+
         //TODO: to implement if needed
         return;
     }
 
     @Override
     public void appendLog(String key, JSONObject jsonObject) {
+        if (!mEnableLS) return;
         //TODO: to implement if needed
     }
 
     @Override
     public void appendLog(ILogItem itemOp) {
+
+        if (!mEnableLS) return;
+
         JSONObject jsObj = itemOp.toJSONObject();
         try {
 //            jsObj.put("comeFrom", "liveSDK");
@@ -112,6 +119,8 @@ class SLogServiceAliyun extends SLogServiceBase{
 
     @Override
     public void flushLog(boolean isSync) {
+
+        if (!mEnableLS) return;
 
         if (!prepareSLSClientBySTS()) {
             return;
@@ -135,8 +144,8 @@ class SLogServiceAliyun extends SLogServiceBase{
                 break;
             case PROP_STS_CREDENTIAL_HOLDER:
                 {
-                    //本不应有这句代码，可以允许修改mSTSHolder。 但因上层要求做"非Synchronized"函数实现，又要保证另外一个线程正在使用mSTSHolder正确，只能这样处理
-                    //即: 只能设置一次，正常情况下，app也不应该更换stsHolder
+                    //本应允许随意替换mSTSHolder。 但为了尽可能做"非Synchronized"实现，又要保证另外一个线程正在使用mSTSHolder正确，只能这样处理
+                    //即: 只能设置一次。（正常情况下，上层也不应该更换stsHolder)
                     if (null != mSTSHolder) return;
 
                     if (!(prop instanceof SSTSCredentialHolder)) {
@@ -145,6 +154,14 @@ class SLogServiceAliyun extends SLogServiceBase{
                     mSTSHolder = (SSTSCredentialHolder)prop;
                 }
                 break;
+            case PROP_ENABLE_SERVICES:
+                {
+                    if (!(prop instanceof Boolean)) {
+                        throw new Exception("when set propID("+propID+"), the prop object should be "+Boolean.class.getSimpleName());
+                    }
+                    mEnableLS = ((Boolean)prop).booleanValue();
+                    MyLog.w(TAG, "Enable log service="+mEnableLS);
+                }
             default:
                 {
                     throw new Exception("This ClassName("+
@@ -190,13 +207,6 @@ class SLogServiceAliyun extends SLogServiceBase{
                 return false;
             }
 
-            boolean dbgMode = false;
-            if (dbgMode) {
-                android.util.Log.d(TAG, "new sts credentials: ");
-                android.util.Log.d(TAG, "        AK = "+AK);
-                android.util.Log.d(TAG, "        SK = "+SK);
-                android.util.Log.d(TAG, "        token = "+token);
-            }
 
 
             //STS使用方式
@@ -210,7 +220,16 @@ class SLogServiceAliyun extends SLogServiceBase{
             conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
             conf.setCachable(false);
             conf.setConnectType(ClientConfiguration.NetworkPolicy.WWAN_OR_WIFI);
-            SLSLog.enableLog(); // log打印在控制台
+
+
+            if (SDataManager.dbgMode) {
+                android.util.Log.d(TAG, "new sts credentials: ");
+                android.util.Log.d(TAG, "        AK = "+AK);
+                android.util.Log.d(TAG, "        SK = "+SK);
+                android.util.Log.d(TAG, "        token = "+token);
+
+                SLSLog.enableLog(); // log打印在控制台
+            }
 
             mLogClient = new LOGClient(mParam.appCtx, mEndPoint, credentialProvider, conf);
         }
@@ -219,35 +238,7 @@ class SLogServiceAliyun extends SLogServiceBase{
         return true;
     }
 
-    private boolean prepareSLSCredential_byMainKey(Context ctx) {
-        if (null != mLogClient)
-            return true;
 
-
-        //        移动端是不安全环境，不建议直接使用阿里云主账号ak，sk的方式。建议使用STS方式。具体参见
-//        https://help.aliyun.com/document_detail/62681.html
-//        注意：SDK 提供的 PlainTextAKSKCredentialProvider 只建议在测试环境或者用户可以保证阿里云主账号AK，SK安全的前提下使用。
-//		  具体使用如下
-
-        //主账户使用方式
-        String AK = "LTAI4FjvHH8Bp5rpXjnEKmqs";//"********";
-        String SK = "7LuZLkpfvYc0fKp6BCHWNibRQNY0L7";//"********";
-        PlainTextAKSKCredentialProvider credentialProvider =
-                new PlainTextAKSKCredentialProvider(AK, SK);
-
-
-        ClientConfiguration conf = new ClientConfiguration();
-        conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
-        conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
-        conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
-        conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
-        conf.setCachable(false);
-        conf.setConnectType(ClientConfiguration.NetworkPolicy.WWAN_OR_WIFI);
-        SLSLog.enableLog(); // log打印在控制台
-
-        mLogClient = new LOGClient(ctx, mEndPoint, credentialProvider, conf);
-        return true; //表示成功
-    }
 
     /*
      *  推荐使用的方式，直接调用异步接口，通过callback 获取回调信息
