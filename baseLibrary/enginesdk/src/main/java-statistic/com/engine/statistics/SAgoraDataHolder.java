@@ -228,8 +228,11 @@ public class SAgoraDataHolder {
     private String getListString(List list) {
         StringBuilder retStr = new StringBuilder();
         int size = list.size();
-        for(int i=0;i<size;i++){
-            retStr.append(mLinePrefix).append(list.get(i).toString());
+        for (int i = 0; i < size; i++) {
+            retStr.append(mLinePrefix);
+            if (list.get(i) != null) {
+                retStr.append(list.get(i).toString());
+            }
         }
         return retStr.toString();
     }
