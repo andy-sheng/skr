@@ -14,6 +14,7 @@ import android.view.View;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -24,13 +25,13 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
+import com.component.toast.CommonToastView;
 import com.dialog.view.TipsDialogView;
 import com.module.home.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.component.toast.CommonToastView;
 
 // 昵称编辑
 public class EditInfoNameFragment extends BaseFragment {
@@ -67,31 +68,31 @@ public class EditInfoNameFragment extends BaseFragment {
         });
 
         mNicknameEt.addTextChangedListener(new TextWatcher() {
+            String preString = "";
+
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                preString = charSequence.toString();
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                String str = charSequence.toString();
+                int length = U.getStringUtils().getStringLength(str);
+                if (length > 14) {
+                    int selectIndex = preString.length();
+                    mNicknameEt.setText(preString);
+                    mNicknameEt.setSelection(selectIndex);
+                    U.getToastUtil().showShort("昵称不能超过7个汉字或14个英文");
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                int length = U.getStringUtils().getStringLength(editable.toString());
-                int selectionStart = mNicknameEt.getSelectionStart();
-                int selectionEnd = mNicknameEt.getSelectionEnd();
-                if (length > 14 && selectionStart >= 1 && selectionEnd >= selectionStart) {
-                    editable.delete(selectionStart - 1, selectionEnd);
-                    mNicknameEt.setText(editable.toString());
-                    int selection = editable.length();
-                    mNicknameEt.setSelection(selection);
-                    U.getToastUtil().showShort("昵称不能超过7个汉字或14个英文");
-                }
+
             }
         });
-        
+
     }
 
     private void clickComplete() {
