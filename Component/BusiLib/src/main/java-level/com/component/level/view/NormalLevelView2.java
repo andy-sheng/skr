@@ -3,6 +3,7 @@ package com.component.level.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -73,8 +74,11 @@ public class NormalLevelView2 extends RelativeLayout {
             params.addRule(RelativeLayout.CENTER_HORIZONTAL);
             params.addRule(RelativeLayout.ALIGN_BOTTOM, mLevelIv.getId());
             params.setMargins(0, 0, 0, sudBottom);
+            mSubLeveIv.setVisibility(View.VISIBLE);
             mSubLeveIv.setLayoutParams(params);
             mSubLeveIv.setBackground(getResources().getDrawable(LevelConfigUtils.getImageResoucesSubLevel(level, subLevel)));
+        } else {
+            mSubLeveIv.setVisibility(View.GONE);
         }
     }
 }
