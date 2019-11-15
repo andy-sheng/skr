@@ -1670,6 +1670,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                 " " + sampleRate + "Hz channels: " + channels + " " + bitrate / 1000 + "kbps") {
             @Override
             public void realRun() {
+                if (mStatus != STATUS_INITED) {
+                    MyLog.e(TAG, "startAudioRecordingInner in invalid state: " + mStatus);
+                    return;
+                }
+
                 File file = new File(path);
                 if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
@@ -1754,6 +1759,10 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new LogRunnable("stopAudioRecordingInner from=" + from) {
             @Override
             public void realRun() {
+                if (mStatus != STATUS_INITED) {
+                    MyLog.e(TAG, "stopAudioRecordingInner in invalid state: " + mStatus);
+                    return;
+                }
                 if (!RECORD_FOR_DEBUG) {
                     if (mConfig.isUseExternalAudioRecord()) {
                         mHumanVoiceAudioEncoder.stop();
