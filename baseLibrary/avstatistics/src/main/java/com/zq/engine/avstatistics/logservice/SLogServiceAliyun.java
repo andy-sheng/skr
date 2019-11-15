@@ -43,9 +43,12 @@ class SLogServiceAliyun extends SLogServiceBase{
      */
     private final static String mEndPoint = "https://cn-beijing.log.aliyuncs.com";//"http://cn-hangzhou.sls.aliyuncs.com";
     private final static String MAIN_PROJECT = "skrapp-log";
-    private final static String MAIN_LOGSTORE= "skrapp-logstore";
-    private final static String TEST_PROJECT = "test-by-gongjun";
-    private final static String TEST_LOGSTORE= "test-logstore";
+    private final static String MAIN_LOGSTORE= "avs-ls-release-android";
+
+    private final static String TEST_PROJECT = "avstatistics-test";
+    private final static String TEST_LOGSTORE= "avs-ls-test-android";
+
+    private final static String EXP_LOGSTORE =  "avs-ls-exp";
 
     private String mProject  = TEST_PROJECT;
     private String mLogStore = TEST_LOGSTORE;
@@ -283,7 +286,7 @@ class SLogServiceAliyun extends SLogServiceBase{
                 @Override
                 public void onSuccess(PostLogRequest request, PostLogResult result) {
 //                    android.util.Log.d(TAG, "asyncPostLog onSuccess");
-                    MyLog.d(TAG, "asyncPostLog onSuccess");
+//                    MyLog.d(TAG, "asyncPostLog onSuccess");
                 }
 
                 @Override

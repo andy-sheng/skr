@@ -137,7 +137,10 @@ public class AgoraRTCAdapter {
         String channel = U.getChannelUtils().getChannel();
         MyLog.w("[SLS]"+TAG, "initLogService() channel="+channel);
 
-        if ("DEV".equals(channel) || "TEST".equals(channel) || "SANDBOX".equals(channel)) {
+
+
+
+        if (null == channel || "DEV".equals(channel) || "TEST".equals(channel) || "SANDBOX".equals(channel)) {
             SDataManager.getInstance().useMainLogProject(false);
         }
         else {

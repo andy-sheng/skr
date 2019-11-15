@@ -267,7 +267,7 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
 
     private final static String EXIRATION_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private Date trans2ClientExpiredDate(String serverExpiration) {
-        if (SDataManager.dbgMode) {//debug mode缩短有效期(需服务器配合)，阿里STS最短900秒
+        if (SDataManager.dbgMode) {//debug mode缩短有效期(需服务器配合)，阿里STS最短900秒; 测试用的log-store
             CREDENTIAL_PERSISTENT_MS = 900 * 1000;
             REDUNTANT_MS = 60 * 1000;
         }
