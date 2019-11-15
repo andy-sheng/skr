@@ -59,16 +59,7 @@ class MicTopContentView : ConstraintLayout {
             EventBus.getDefault().register(this)
         }
 
-        recyclerView.layoutManager = object : LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false) {
-            override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
-                try {
-                    //RecyclerView内部崩溃，保护一下
-                    super.onLayoutChildren(recycler, state);
-                } catch (e: IndexOutOfBoundsException) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        recyclerView.layoutManager =  LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
 
         arrowIv.setOnClickListener(object : DebounceViewClickListener() {
