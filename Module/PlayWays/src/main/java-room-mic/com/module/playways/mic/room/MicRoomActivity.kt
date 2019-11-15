@@ -183,7 +183,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             mRoomData.loadFromRsp(it)
         }
         H.micRoomData = mRoomData
-        H.curType = GameModeType.GAME_MODE_MIC
+        H.setType(GameModeType.GAME_MODE_MIC, "MicRoomActivity")
 
         mCorePresenter = MicCorePresenter(mRoomData, this)
         addPresent(mCorePresenter)
@@ -256,7 +256,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         dismissDialog()
         mGiftPanelView?.destroy()
         mSelfSingCardView?.destroy()
-        H.reset()
+        H.reset("MicRoomActivity")
     }
 
     override fun finish() {
@@ -727,7 +727,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     fun onEvent(event: BuyGiftEvent) {
         if (event.receiver.userId != MyUserInfoManager.uid.toInt()) {
             mContinueSendView.startBuy(event.baseGift, event.receiver)
-        } else{
+        } else {
             U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
         }
     }

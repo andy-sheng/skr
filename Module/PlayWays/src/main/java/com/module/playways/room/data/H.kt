@@ -9,16 +9,20 @@ import com.zq.live.proto.GrabRoom.EQRoundStatus
 import com.zq.live.proto.MicRoom.EMRoundStatus
 
 object H {
-    fun reset() {
+    //两个不同房间切换的时候导致数据被刷新问题
+    fun reset(from: String) {
         /**
          * 当前数据类型
          */
-        curType = GameModeType.GAME_MODE_UNKNOW
-        micRoomData = null
-        grabRoomData = null
-        raceRoomData = null
-
+        if (from.equals(mFrom)) {
+            curType = GameModeType.GAME_MODE_UNKNOW
+            micRoomData = null
+            grabRoomData = null
+            raceRoomData = null
+        }
     }
+
+    var mFrom: String = ""
 
     fun isGrabRoom(): Boolean {
         return curType == GameModeType.GAME_MODE_GRAB
@@ -42,6 +46,11 @@ object H {
             }
         }
         return cur
+    }
+
+    fun setType(type: Int, from: String) {
+        curType = type
+        mFrom = from
     }
 
     /**
