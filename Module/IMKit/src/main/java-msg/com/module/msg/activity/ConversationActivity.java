@@ -58,7 +58,7 @@ public class ConversationActivity extends BaseActivity {
     int mCanSendTimes = -1;
 
     public ConversationActivity() {
-        RongIM.registerMessageTemplate(new MyGIFMessageItemProvider());
+
     }
 
     @Override

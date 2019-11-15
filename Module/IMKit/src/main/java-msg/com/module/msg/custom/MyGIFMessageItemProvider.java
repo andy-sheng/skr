@@ -1,8 +1,10 @@
 package com.module.msg.custom;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.imagebrowse.EnhancedImageView;
+import com.imagebrowse.big.BigImageBrowseFragment;
 
 import io.rong.imkit.R.id;
 import io.rong.imkit.R.integer;
@@ -83,10 +86,11 @@ public class MyGIFMessageItemProvider extends MessageProvider<GIFMessage> {
                 Toast.makeText(view.getContext(), string.rc_ac_file_download_request_permission, Toast.LENGTH_SHORT).show();
             }
         } else if (holder.preProgress.getVisibility() != View.VISIBLE && holder.loadingProgress.getVisibility() != View.VISIBLE && content != null) {
-            Intent intent = new Intent("io.rong.imkit.intent.action.gifrview");
-            intent.setPackage(view.getContext().getPackageName());
-            intent.putExtra("message", message.getMessage());
-            view.getContext().startActivity(intent);
+//            Intent intent = new Intent("io.rong.imkit.intent.action.gifrview");
+//            intent.setPackage(view.getContext().getPackageName());
+//            intent.putExtra("message", message.getMessage());
+//            view.getContext().startActivity(intent);
+            BigImageBrowseFragment.open(true,(FragmentActivity) view.getContext(),content.getLocalUri().toString());
         }
 
     }

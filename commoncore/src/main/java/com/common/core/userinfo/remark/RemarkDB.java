@@ -17,7 +17,7 @@ public class RemarkDB implements Serializable {
         this.userID = userID;
         this.remarkContent = remarkContent;
     }
-    @Generated(hash = 704598881)
+    @Generated(hash = 954605007)
     public RemarkDB() {
     }
     public Long getUserID() {
