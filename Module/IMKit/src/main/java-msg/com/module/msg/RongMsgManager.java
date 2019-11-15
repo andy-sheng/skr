@@ -414,7 +414,8 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
             RongIM.getInstance().registerConversationTemplate(new MyPrivateConversationProvider());
 
-            RongIM.registerMessageTemplate(new MyGIFMessageItemProvider());
+            // todo 先注释掉吧，发送方gif不显示
+//            RongIM.registerMessageTemplate(new MyGIFMessageItemProvider());
 
             RongIM.getInstance().setConversationClickListener(new MyConversationClickListener());
             RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
