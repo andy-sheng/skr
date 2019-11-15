@@ -19,6 +19,7 @@ import com.common.core.scheme.event.MicInviteFromSchemeEvent;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.RouterConstants;
+import com.module.home.IHomeService;
 import com.module.playways.IPlaywaysModeService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -278,9 +279,10 @@ public class InframeProcessor implements ISchemeProcessor {
             final int ask = SchemeUtils.getInt(uri, "ask", 0);
             EventBus.getDefault().post(new MicInviteFromSchemeEvent(ownerID, gameId, ask));
         } else if ("/race_audience_match".equals(path)) {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
-                    .withBoolean("audience", true)
-                    .navigation();
+            IHomeService service = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+            if (service != null) {
+                service.goRaceMatchByAudience();
+            }
         }
     }
 

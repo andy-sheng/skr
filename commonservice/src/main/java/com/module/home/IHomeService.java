@@ -17,4 +17,6 @@ public interface IHomeService extends IProvider {
     void goHomeActivity(Activity loginActivity);
 
     void goEditAgeActivity(Runnable runnable);
+
+    void goRaceMatchByAudience();
 }
