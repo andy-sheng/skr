@@ -90,7 +90,7 @@ dependencies {
     api project(":Component:IMLib")
     api project(":Component:BusiLib")
 
-    api 'com.github.bumptech.glide:glide:4.9.0'
+    //api 'com.github.bumptech.glide:glide:4.9.0'
     if (useIMKitJar.toBoolean()) {
         api files('libs/Rong_IMKit.jar')
     }

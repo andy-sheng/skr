@@ -26,6 +26,7 @@ import com.dialog.list.ListDialog;
 import com.module.RouterConstants;
 import com.module.home.IHomeService;
 import com.module.msg.api.IMsgServerApi;
+import com.module.msg.custom.MyGIFMessageItemProvider;
 import com.zq.live.proto.Common.EVIPType;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -55,6 +56,10 @@ public class ConversationActivity extends BaseActivity {
 
     String mDescWhenExceed;
     int mCanSendTimes = -1;
+
+    public ConversationActivity() {
+        RongIM.registerMessageTemplate(new MyGIFMessageItemProvider());
+    }
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
