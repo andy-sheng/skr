@@ -13,7 +13,7 @@
         android:layout_height="64dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="6dp">
+        android:layout_marginLeft="2dp">
 
         <io.rong.imkit.widget.AsyncImageView
             android:id="@+id/rc_left"
