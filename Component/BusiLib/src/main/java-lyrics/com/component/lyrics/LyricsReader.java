@@ -171,7 +171,7 @@ public class LyricsReader implements Cloneable {
                 }
             } else {
                 int centerTime = (entry.getValue().getEndTime() + entry.getValue().getStartTime()) / 2;
-                if (centerTime >= startTs && entry.getValue().getStartTime() < endTs) {
+                if (centerTime >= startTs && centerTime < endTs) {
 
                     continue;
                 }
