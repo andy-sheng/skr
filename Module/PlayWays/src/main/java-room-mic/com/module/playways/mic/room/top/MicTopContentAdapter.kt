@@ -1,5 +1,6 @@
 package com.module.playways.mic.room.top
 
+import android.os.Handler
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.component.busilib.view.VoiceChartView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
+import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
 import com.module.playways.mic.room.event.MicWantInviteEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.zq.live.proto.MicRoom.EMUserRole
@@ -32,6 +34,7 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 field = value
             }
         }
+    val handler = Handler()
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MicAvatarTopViewHolder) {
@@ -139,7 +142,12 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             if (model?.role == EMUserRole.MQUR_ROOM_OWNER.value || model?.userID == mRoomData?.ownerId) {
-                mRoomData?.ownerId = model.userID
+                if(mRoomData?.ownerId != model.userID){
+                    handler.post {
+                        // 如果不post  这里会同步导致列表刷新，会有崩溃
+                        mRoomData?.ownerId = model.userID
+                    }
+                }
                 homeownerIv.visibility = View.VISIBLE
             } else {
                 homeownerIv.visibility = View.GONE
@@ -149,6 +157,10 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 avatarIv.bindData(it)
             }
         }
+    }
+
+    fun destroy(){
+        handler.removeCallbacksAndMessages(null)
     }
 
     inner class MicInviteViewHolder(item: View) : RecyclerView.ViewHolder(item) {

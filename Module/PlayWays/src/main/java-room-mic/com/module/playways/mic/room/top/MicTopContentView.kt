@@ -35,13 +35,13 @@ class MicTopContentView : ConstraintLayout {
 
     internal var mListener: Listener? = null
 
-    internal var mUiHandler: Handler = object : Handler() {
-        override fun handleMessage(msg: Message?) {
-            if (REFRESH_DATA == msg?.what) {
-                initData(msg.obj as String)
-            }
-        }
-    }
+//    internal var mUiHandler: Handler = object : Handler() {
+//        override fun handleMessage(msg: Message?) {
+//            if (REFRESH_DATA == msg?.what) {
+//                initData(msg.obj as String)
+//            }
+//        }
+//    }
 
     constructor(context: Context) : super(context) {}
 
@@ -141,38 +141,41 @@ class MicTopContentView : ConstraintLayout {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
-
-        mUiHandler.removeCallbacksAndMessages(null)
+        adapter?.destroy()
+//        mUiHandler.removeCallbacksAndMessages(null)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicRoundChangeEvent) {
         MyLog.d(TAG, "onEvent event = $event")
-        mUiHandler.removeMessages(REFRESH_DATA)
-        val msg = mUiHandler.obtainMessage()
-        msg.what = REFRESH_DATA
-        msg.obj = "MicRoundChangeEvent"
-        mUiHandler.sendMessageDelayed(msg, 500)
+        initData("MicRoundChangeEvent")
+//        mUiHandler.removeMessages(REFRESH_DATA)
+//        val msg = mUiHandler.obtainMessage()
+//        msg.what = REFRESH_DATA
+//        msg.obj = "MicRoundChangeEvent"
+//        mUiHandler.sendMessageDelayed(msg, 500)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicPlaySeatUpdateEvent) {
         MyLog.d(TAG, "onEvent event = $event")
-        mUiHandler.removeMessages(REFRESH_DATA)
-        val msg = mUiHandler.obtainMessage()
-        msg.what = REFRESH_DATA
-        msg.obj = "MicPlaySeatUpdateEvent"
-        mUiHandler.sendMessageDelayed(msg, 500)
+        initData("MicPlaySeatUpdateEvent")
+//        mUiHandler.removeMessages(REFRESH_DATA)
+//        val msg = mUiHandler.obtainMessage()
+//        msg.what = REFRESH_DATA
+//        msg.obj = "MicPlaySeatUpdateEvent"
+//        mUiHandler.sendMessageDelayed(msg, 500)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicHomeOwnerChangeEvent) {
         MyLog.d(TAG, "onEvent event = $event")
-        mUiHandler.removeMessages(REFRESH_DATA)
-        val msg = mUiHandler.obtainMessage()
-        msg.what = REFRESH_DATA
-        msg.obj = "MicHomeOwnerChangeEvent"
-        mUiHandler.sendMessageDelayed(msg, 500)
+        initData("MicHomeOwnerChangeEvent")
+//        mUiHandler.removeMessages(REFRESH_DATA)
+//        val msg = mUiHandler.obtainMessage()
+//        msg.what = REFRESH_DATA
+//        msg.obj = "MicHomeOwnerChangeEvent"
+//        mUiHandler.sendMessageDelayed(msg, 500)
     }
 
     fun setListener(listener: Listener) {
