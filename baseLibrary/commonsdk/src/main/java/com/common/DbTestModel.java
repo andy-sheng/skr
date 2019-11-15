@@ -38,7 +38,7 @@ public DbTestModel(Long id, @NotNull String text, Date date, String bbb) {
     this.bbb = bbb;
 }
 
-@Generated(hash = 639522211)
+@Generated(hash = 269271565)
 public DbTestModel() {
 }
 
