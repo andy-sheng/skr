@@ -351,6 +351,7 @@ if [[ $1 = "app" ]]; then
             rm -rf ./publish
             mkdir ./publish
 			walk app/build/outputs/channels
+			cp app/build/outputs/mapping/release/mapping.txt ./publish/
 			if [ $matrix = true ]; then
                 cp app/build/outputs/mapping/debug/methodMapping.txt ./publish/matrix_method.txt
             fi
