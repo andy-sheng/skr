@@ -3,6 +3,7 @@ package com.common.core.userinfo.remark;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Keep;
 
 import java.io.Serializable;
 
@@ -17,7 +18,7 @@ public class RemarkDB implements Serializable {
         this.userID = userID;
         this.remarkContent = remarkContent;
     }
-    @Generated(hash = 954605007)
+    @Generated(hash = 704598881)
     public RemarkDB() {
     }
     public Long getUserID() {

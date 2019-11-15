@@ -5,6 +5,7 @@ import org.greenrobot.greendao.annotation.Id;
 
 import java.io.Serializable;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Keep;
 
 @Entity
 public class FeedCollectDB implements Serializable {
@@ -17,7 +18,7 @@ public class FeedCollectDB implements Serializable {
     Long timeMs;   // 收藏时间戳
     String feedSong;  // 歌曲信息
     String user;      // 所属
-    @Generated(hash = 1589526565)
+    @Keep
     public FeedCollectDB(Long feedID, Long feedType, Long timeMs, String feedSong,
             String user) {
         this.feedID = feedID;
@@ -26,7 +27,7 @@ public class FeedCollectDB implements Serializable {
         this.feedSong = feedSong;
         this.user = user;
     }
-    @Generated(hash = 1252095473)
+    @Keep
     public FeedCollectDB() {
     }
     public Long getFeedID() {
