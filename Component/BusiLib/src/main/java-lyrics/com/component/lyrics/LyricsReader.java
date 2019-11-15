@@ -170,20 +170,14 @@ public class LyricsReader implements Cloneable {
                     continue;
                 }
             } else {
-                if (entry.getValue().getEndTime() >= endTs && entry.getValue().getStartTime() < endTs) {
+                int centerTime = (entry.getValue().getEndTime() + entry.getValue().getStartTime()) / 2;
+                if (centerTime >= startTs && entry.getValue().getStartTime() < endTs) {
 
                     continue;
                 }
 
-                if (entry.getValue().getEndTime() > endTs) {
-                    it.remove();
-                    continue;
-                }
-
-                if (entry.getValue().getEndTime() <= startTs) {
-                    it.remove();
-                    continue;
-                }
+                it.remove();
+                continue;
             }
         }
 
