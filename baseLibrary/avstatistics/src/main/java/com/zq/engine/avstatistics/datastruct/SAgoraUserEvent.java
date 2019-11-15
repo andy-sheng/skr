@@ -459,7 +459,7 @@ public class SAgoraUserEvent implements ILogItem
                     {
                         AudioRouting ar = (AudioRouting)event;
                         jsObj.put("routineType", ar.routine);
-                        jsObj.put("routineString", AudioRouting.transRoutine2String(ar.routine));
+                        jsObj.put("routineStr", AudioRouting.transRoutine2String(ar.routine));
                     }
                     break;
                 case EVENT_TYPE_onError:
@@ -478,9 +478,37 @@ public class SAgoraUserEvent implements ILogItem
         return jsObj;
     }
 
+
+
+
     @Override
     public String getKey() {
-        return getClass().getSimpleName();
+        switch (type) {
+            case EVENT_TYPE_REMOTE_JOINED:
+                return "SAUEvent.RemoteJoined";
+            case EVENT_TYPE_REMOTE_Mute_Audio:
+                return "SAUEvent.RemoteMuteAudio";
+            case EVENT_TYPE_REMOTE_MuteVideo:
+                return "SAUEvent.RemoteMuteVideo";
+            case EVENT_TYPE_REMOTE_Offline:
+                return "SAUEvent.RemoteOffline";
+            case EVENT_TYPE_REMOTE_EnableVideo:
+                return "SAUEvent.RemoteEnableVideo";
+            case EVENT_TYPE_VideoSizeChanged:
+                return "SAUEvent.VideoSizeChange";
+            case EVENT_TYPE_ClientRoleChanged:
+                return "SAUEvent.ClientRoleChanged";
+            case EVENT_TYPE_FIRST_REMOTE_VIDEO_DECODED:
+                return "SAUEvent.FirstRemoteVideoDecoded";
+            case EVENT_TYPE_onAudioMixingStateChanged:
+                return "SAUEvent.onAudioMixingStateChanged";
+            case EVENT_TYPE_onAudioRouteChanged:
+                return "SAUEvent.onAudioRouteChanged";
+            case EVENT_TYPE_onError:
+                return "SAUEvent.onError";
+            default:
+                return "SAUEvent.default";
+        }
     }
 
 
