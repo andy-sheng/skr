@@ -155,7 +155,7 @@ public class UserInfoModel implements Serializable, Cloneable {
         return location2;
     }
 
-    public void setLoaction2(Location location2) {
+    public void setLocation2(Location location2) {
         this.location2 = location2;
     }
 
@@ -424,7 +424,7 @@ public class UserInfoModel implements Serializable, Cloneable {
                 JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
                 userInfoModel.setSPFollow(jsonObject.getBooleanValue("isSPFollow"));
                 userInfoModel.setLocation(jsonObject.getObject("location", Location.class));
-                userInfoModel.setLoaction2(jsonObject.getObject("location2", Location.class));
+                userInfoModel.setLocation2(jsonObject.getObject("location2", Location.class));
                 userInfoModel.setMainLevel(jsonObject.getIntValue("mainLevel"));
                 userInfoModel.setVipInfo(jsonObject.getObject("vipInfo", VerifyInfo.class));
                 userInfoModel.setRanking(jsonObject.getObject("ranking", ScoreStateModel.class));

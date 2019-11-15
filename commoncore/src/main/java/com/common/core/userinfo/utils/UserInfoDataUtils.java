@@ -52,7 +52,7 @@ public class UserInfoDataUtils {
             newUserInfo.setLocation(userInfoDB.getLocation());
         }
         if (newUserInfo.getLocation2() == null) {
-            newUserInfo.setLoaction2(userInfoDB.getLocation2());
+            newUserInfo.setLocation2(userInfoDB.getLocation2());
         }
         if (newUserInfo.getLetter() == null) {
             newUserInfo.setLetter(userInfoDB.getLetter());

@@ -220,7 +220,7 @@ public class MyUserInfo implements Serializable {
             userInfoModel.setHonorInfo(myUserInfo.getHonorInfo());
             userInfoModel.setBirthday(myUserInfo.getBirthday());
             userInfoModel.setLocation(myUserInfo.getLocation());
-            userInfoModel.setLoaction2(myUserInfo.getLocation2());
+            userInfoModel.setLocation2(myUserInfo.getLocation2());
             userInfoModel.setSex(myUserInfo.getSex());
             userInfoModel.setSignature(myUserInfo.getSignature());
             userInfoModel.setRanking(myUserInfo.getRanking());
