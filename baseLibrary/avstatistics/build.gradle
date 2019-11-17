@@ -47,7 +47,8 @@ dependencies {
 
     //avstatistics也会用到Agora的数据结构，这种模块划分还不够清晰，后期要做的更清晰
     implementation files('./libs/aliyun-log-sdk-android-2.1.0.jar')
-    implementation files('../enginesdk/libs/agora-rtc-sdk.jar')
+    implementation 'io.agora.rtc:full-sdk:2.9.2'
+
 }
 
 
