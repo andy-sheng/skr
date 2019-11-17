@@ -209,7 +209,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onUserJoined(int uid, int elapsed) {
-        MyLog.d(TAG, "onUserJoined" + " uid=" + uid + " elapsed=" + elapsed);
+        MyLog.i(TAG, "onUserJoined" + " uid=" + uid + " elapsed=" + elapsed);
         // 主播加入了，自己不会回调，自己回到角色变化接口
         UserStatus userStatus = ensureJoin(uid);
         userStatus.setAnchor(true);
@@ -222,7 +222,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         // 用户离开
         UserStatus userStatus = mUserStatusMap.remove(uid);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_LEAVE, userStatus));
-        MyLog.d(TAG, "onUserOffline mUserStatusMap=" + mUserStatusMap);
+        MyLog.i(TAG, "onUserOffline mUserStatusMap=" + mUserStatusMap);
         tryStopRecordForFeedback("onUserOffline");
     }
 
@@ -326,7 +326,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     public void onAudioVolumeIndication(IRtcEngineEventHandler.AudioVolumeInfo[] speakers, int totalVolume) {
         List<EngineEvent.UserVolumeInfo> l = new ArrayList<>();
         for (IRtcEngineEventHandler.AudioVolumeInfo info : speakers) {
-//            MyLog.d(TAG,"onAudioVolumeIndication" + " info=" + info.uid+" volume="+info.volume);
+//            MyLog.i(TAG,"onAudioVolumeIndication" + " info=" + info.uid+" volume="+info.volume);
             /**
              * 如果是自己的声音 id 是0 。
              */
@@ -373,7 +373,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             HashMap<String, String> map = new HashMap<>();
             map.put("url", mConfig.getMixMusicFilePath());
             StatisticsAdapter.recordCountEvent("engine", "acc_play_failed", map);
-            MyLog.d(TAG, "upload bgm play failed event");
+            MyLog.i(TAG, "upload bgm play failed event");
         }
     }
 
@@ -448,11 +448,11 @@ public class ZqEngineKit implements AgoraOutCallback {
             @Override
             protected void processMessage(Message msg) {
                 if (msg.what == MSG_JOIN_ROOM_AGAIN) {
-                    MyLog.d(TAG, "processMessage MSG_JOIN_ROOM_AGAIN 再次加入房间");
+                    MyLog.i(TAG, "processMessage MSG_JOIN_ROOM_AGAIN 再次加入房间");
                     JoinParams joinParams = (JoinParams) msg.obj;
                     joinRoomInner(joinParams.roomID, joinParams.userId, joinParams.token);
                 } else if (msg.what == MSG_JOIN_ROOM_TIMEOUT) {
-                    MyLog.d(TAG, "handleMessage 加入房间超时");
+                    MyLog.i(TAG, "handleMessage 加入房间超时");
                     StatisticsAdapter.recordCountEvent("agora", "join_timeout", null);
                     JoinParams joinParams = (JoinParams) msg.obj;
                     joinRoomInner2(joinParams.roomID, joinParams.userId, joinParams.token);
@@ -517,7 +517,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @SuppressWarnings("unchecked")
     private void initAudioModules() {
-        MyLog.d(TAG, "initAudioModules");
+        MyLog.i(TAG, "initAudioModules");
         mAudioFilterMgt = new AudioFilterMgt();
         mScoreResampleFilter = new AudioResampleFilter();
         mCbAudioScorer = new CbAudioScorer();
@@ -568,7 +568,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioPlayerCapture.setOnFirstAudioFrameDecodedListener(new AudioPlayerCapture.OnFirstAudioFrameDecodedListener() {
                 @Override
                 public void onFirstAudioFrameDecoded(AudioPlayerCapture audioFileCapture, long time) {
-                    MyLog.d(TAG, "AudioPlayerCapture onFirstAudioFrameDecoded: " + time);
+                    MyLog.i(TAG, "AudioPlayerCapture onFirstAudioFrameDecoded: " + time);
                     EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_FIRST_PKT);
                     engineEvent.setObj(time);
                     EventBus.getDefault().post(engineEvent);
@@ -654,12 +654,12 @@ public class ZqEngineKit implements AgoraOutCallback {
     private AudioCapture.OnAudioCaptureListener mOnAudioCaptureListener = new AudioCapture.OnAudioCaptureListener() {
         @Override
         public void onStatusChanged(int status) {
-            MyLog.d(TAG, "AudioCapture onStatusChanged: " + status);
+            MyLog.i(TAG, "AudioCapture onStatusChanged: " + status);
         }
 
         @Override
         public void onFirstPacketReceived(long time) {
-            MyLog.d(TAG, "AudioCapture onFirstPacketReceived: " + time);
+            MyLog.i(TAG, "AudioCapture onFirstPacketReceived: " + time);
             if (mConfig.isRecordingForBusi()) {
                 EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_RECORD_AUDIO_FIRST_PKT);
                 engineEvent.setObj(time);
@@ -676,7 +676,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private Publisher.PubListener mPubListener = new Publisher.PubListener() {
         @Override
         public void onInfo(int type, long msg) {
-            MyLog.d(TAG, "FilePubListener onInfo type: " + type + " msg: " + msg);
+            MyLog.i(TAG, "FilePubListener onInfo type: " + type + " msg: " + msg);
             if (type == Publisher.INFO_STOPPED) {
                 EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_RECORD_FINISHED));
             }
@@ -737,7 +737,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 销毁所有
      */
     public void destroy(final String from) {
-        MyLog.d(TAG, "destroy" + " from=" + from);
+        MyLog.i(TAG, "destroy" + " from=" + from);
         if (!"force".equals(from)) {
             if (mInitFrom != null && !mInitFrom.equals(from)) {
                 return;
@@ -750,7 +750,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             @Override
             public void realRun() {
                 if (from.equals(mInitFrom)) {
-                    MyLog.d(TAG, "destroy inner");
+                    MyLog.i(TAG, "destroy inner");
                     mConfig.setAnchor(false);
                     destroyInner();
                 }
@@ -759,7 +759,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void destroyInner() {
-        MyLog.d(TAG, "destroyInner1");
+        MyLog.i(TAG, "destroyInner1");
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
         }
@@ -775,17 +775,17 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioPlayerCapture.release();
                 mAudioCapture.release();
             }
-            MyLog.d(TAG, "destroyInner2");
+            MyLog.i(TAG, "destroyInner2");
             if (mConfig.isEnableVideo() && mConfig.isUseExternalVideo()) {
                 mCameraCapture.release();
                 mGLRender.release();
             }
-            MyLog.d(TAG, "destroyInner3");
+            MyLog.i(TAG, "destroyInner3");
             mAgoraRTCAdapter.destroy(true);
             mUserStatusMap.clear();
             mRemoteViewCache.clear();
             mRemoteUserPinMap.clear();
-            MyLog.d(TAG, "destroyInner4");
+            MyLog.i(TAG, "destroyInner4");
             mUiHandler.removeCallbacksAndMessages(null);
             mConfig = new Params();
             mPendingStartMixAudioParams = null;
@@ -796,7 +796,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             if (EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().unregister(this);
             }
-            MyLog.d(TAG, "destroyInner5");
+            MyLog.i(TAG, "destroyInner5");
         }
     }
 
@@ -809,7 +809,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private String getToken(String roomId) {
-        MyLog.d(TAG, "getToken" + " roomId=" + roomId);
+        MyLog.i(TAG, "getToken" + " roomId=" + roomId);
         AgoraTokenApi agoraTokenApi = ApiManager.getInstance().createService(AgoraTokenApi.class);
         if (agoraTokenApi != null) {
             Call<ApiResult> apiResultCall = agoraTokenApi.getToken(roomId);
@@ -821,7 +821,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         if (obj != null) {
                             if (obj.getErrno() == 0) {
                                 String token = obj.getData().getString("token");
-                                MyLog.d(TAG, "getToken 成功 token=" + token);
+                                MyLog.i(TAG, "getToken 成功 token=" + token);
                                 return token;
                             }
                         } else {
@@ -829,7 +829,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         }
                     }
                 } catch (Exception e) {
-                    MyLog.d(e);
+                    MyLog.i(e);
                 }
             }
         }
@@ -879,7 +879,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         mRoomId = roomid;
         String token2 = token;
         if (mTokenEnable) {
-            MyLog.d(TAG, "joinRoomInner 明确告知已经启用token了 token=" + token2);
+            MyLog.i(TAG, "joinRoomInner 明确告知已经启用token了 token=" + token2);
             if (TextUtils.isEmpty(token2)) {
                 // 但是token2还为空，短链接要个token
                 token2 = getToken(roomid);
@@ -887,7 +887,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 // token不为空，继续使用
             }
         } else {
-            MyLog.d(TAG, "joinRoomInner 未启用token，一是真的未启用，二是启用了不知道");
+            MyLog.i(TAG, "joinRoomInner 未启用token，一是真的未启用，二是启用了不知道");
             if (TextUtils.isEmpty(token)) {
                 // 没有token
             } else {
@@ -898,7 +898,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void joinRoomInner2(final String roomid, final int userId, final String token) {
-        MyLog.d(TAG, "joinRoomInner2" + " roomid=" + roomid + " userId=" + userId + " token=" + token);
+        MyLog.i(TAG, "joinRoomInner2" + " roomid=" + roomid + " userId=" + userId + " token=" + token);
         mLastJoinChannelToken = token;
         mAgoraRTCAdapter.leaveChannel();
 
@@ -914,7 +914,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             });
         } else {
             retCode = mAgoraRTCAdapter.joinChannel(token, roomid, "Extra Optional Data", userId);
-            MyLog.d(TAG, "joinRoomInner2" + " retCode=" + retCode);
+            MyLog.i(TAG, "joinRoomInner2" + " retCode=" + retCode);
         }
 
         if (retCode < 0) {
@@ -1181,7 +1181,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param pitch
      */
     public void setLocalVoicePitch(double pitch) {
-        MyLog.d(TAG, "setLocalVoicePitch" + " pitch=" + pitch);
+        MyLog.i(TAG, "setLocalVoicePitch" + " pitch=" + pitch);
         mConfig.setLocalVoicePitch(pitch);
         mAgoraRTCAdapter.setLocalVoicePitch(pitch);
     }
@@ -1242,7 +1242,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                     SDataManager.getInstance().getAgoraDataHolder().addPlayerInfo(uid, filePath, midiPath, mixMusicBeginOffset, loopback, replace, cycle);
 
                     if (TextUtils.isEmpty(filePath)) {
-                        MyLog.d(TAG, "伴奏路径非法");
+                        MyLog.i(TAG, "伴奏路径非法");
                         return;
                     }
                     boolean canGo = false;
@@ -1275,7 +1275,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
                             // 伴奏播放打点上传
                             StatisticsAdapter.recordCountEvent("engine", "acc_play", null);
-                            MyLog.d(TAG, "upload bgm play event");
+                            MyLog.i(TAG, "upload bgm play event");
                         }
                     } else {
                         mPendingStartMixAudioParams = new PendingStartMixAudioParams();
@@ -1413,7 +1413,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
                     @Override
                     public void accept(Long aLong) throws Exception {
-                        MyLog.d(TAG, "PlayTimeListener accept ts=" + aLong);
+                        MyLog.i(TAG, "PlayTimeListener accept ts=" + aLong);
                         int currentPosition = getAudioMixingCurrentPosition();
                         mConfig.setCurrentMusicTs(currentPosition);
                         mConfig.setRecordCurrentMusicTsTs(System.currentTimeMillis());
@@ -1425,7 +1425,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                             engineEvent.obj = new EngineEvent.MixMusicTimeInfo(currentPosition, duration);
                             EventBus.getDefault().post(engineEvent);
                         } else {
-                            MyLog.d(TAG, "playtime不合法,currentPostion=" + currentPosition + " duration=" + duration);
+                            MyLog.i(TAG, "playtime不合法,currentPostion=" + currentPosition + " duration=" + duration);
                         }
                     }
                 }, new Consumer<Throwable>() {
@@ -1544,21 +1544,21 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
         boolean hasAnchor = false;
         for (UserStatus us : mUserStatusMap.values()) {
-            MyLog.d(TAG, " us=" + us);
+            MyLog.i(TAG, " us=" + us);
             if (us.isAnchor()) {
                 hasAnchor = true;
             }
         }
         if (!hasAnchor) {
-            MyLog.d(TAG, "没有主播不录制 from=" + from);
+            MyLog.i(TAG, "没有主播不录制 from=" + from);
             return;
         }
         if (mConfig.isRecordingForBusi()) {
-            MyLog.d(TAG, "业务录制在进行中，取消 from=" + from);
+            MyLog.i(TAG, "业务录制在进行中，取消 from=" + from);
             return;
         }
         if (mConfig.isRecordingForFeedback()) {
-            MyLog.d(TAG, "反馈录制在进行中，取消 from=" + from);
+            MyLog.i(TAG, "反馈录制在进行中，取消 from=" + from);
             return;
         }
 
@@ -1630,17 +1630,17 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
         boolean hasAnchor = false;
         for (UserStatus us : mUserStatusMap.values()) {
-            MyLog.d(TAG, " us=" + us);
+            MyLog.i(TAG, " us=" + us);
             if (us.isAnchor()) {
                 hasAnchor = true;
             }
         }
         if (hasAnchor) {
-            MyLog.d(TAG, "仍有主播，不取消录制 from=" + from);
+            MyLog.i(TAG, "仍有主播，不取消录制 from=" + from);
             return;
         }
         if (!mConfig.isRecordingForFeedback()) {
-            MyLog.d(TAG, "反馈录制不在进行中，取消 from=" + from);
+            MyLog.i(TAG, "反馈录制不在进行中，取消 from=" + from);
             return;
         }
         mConfig.setRecordingForFeedback(false);
@@ -1879,7 +1879,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void initVideoModules() {
-        MyLog.d(TAG, "initVideoModules");
+        MyLog.i(TAG, "initVideoModules");
         // Camera preview
         mCameraCapture = new CameraCapture(U.app().getApplicationContext(), mGLRender);
         mImgTexScaleFilter = new ImgTexScaleFilter(mGLRender);
@@ -1907,19 +1907,19 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCameraCapture.setOnCameraCaptureListener(new CameraCapture.OnCameraCaptureListener() {
             @Override
             public void onStarted() {
-                MyLog.d(TAG, "CameraCapture ready");
+                MyLog.i(TAG, "CameraCapture ready");
                 EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_OPENED));
             }
 
             @Override
             public void onFirstFrameRendered() {
-                MyLog.d(TAG, "CameraCapture onFirstFrameRendered");
+                MyLog.i(TAG, "CameraCapture onFirstFrameRendered");
                 EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_FIRST_FRAME_RENDERED));
             }
 
             @Override
             public void onFacingChanged(int facing) {
-                MyLog.d(TAG, "CameraCapture onFacingChanged");
+                MyLog.i(TAG, "CameraCapture onFacingChanged");
                 mCameraFacing = facing;
                 updateFrontMirror();
                 EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_FACING_CHANGED));
@@ -1947,7 +1947,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 if (mStatus != STATUS_INITED) {
                     return;
                 }
-                MyLog.d(TAG, "onResume");
+                MyLog.i(TAG, "onResume");
                 mImgTexPreview.onResume();
             }
         });
@@ -1963,7 +1963,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 if (mStatus != STATUS_INITED) {
                     return;
                 }
-                MyLog.d(TAG, "onPause");
+                MyLog.i(TAG, "onPause");
                 mImgTexPreview.onPause();
             }
         });
@@ -1982,7 +1982,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 if (mStatus != STATUS_INITED) {
                     return;
                 }
-                MyLog.d(TAG, "setDisplayPreview " + surfaceView);
+                MyLog.i(TAG, "setDisplayPreview " + surfaceView);
                 mImgTexPreview.setDisplayPreview(surfaceView);
             }
         });
@@ -2002,7 +2002,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 if (mStatus != STATUS_INITED) {
                     return;
                 }
-                MyLog.d(TAG, "setDisplayPreview " + textureView);
+                MyLog.i(TAG, "setDisplayPreview " + textureView);
                 mImgTexPreview.setDisplayPreview(textureView);
             }
         });
@@ -2718,7 +2718,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (userStatus != null) {
             r = userStatus.isEnableVideo() && userStatus.isFirstVideoDecoded();
         }
-        MyLog.d(TAG, "isFirstVideoDecoded" + " userId=" + userId + " r=" + r);
+        MyLog.i(TAG, "isFirstVideoDecoded" + " userId=" + userId + " r=" + r);
         return r;
     }
 
@@ -2726,7 +2726,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         int idx = -1;
         for (int i = 1; i < mImgTexPreviewMixer.getSinkPinNum(); i++) {
             if (!mRemoteUserPinMap.containsValue(i)) {
-                MyLog.d(TAG, "get available sink " + i);
+                MyLog.i(TAG, "get available sink " + i);
                 idx = i;
                 break;
             }
