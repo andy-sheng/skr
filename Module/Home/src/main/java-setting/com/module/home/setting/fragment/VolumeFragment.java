@@ -26,7 +26,6 @@ public class VolumeFragment extends BaseFragment {
 
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
-    RelativeLayout mPipeiArea;
     SwitchButton mPipeiSb;
     SeekBar mPipeiVoiceSeekbar;
     SwitchButton mGameSb;
@@ -38,12 +37,11 @@ public class VolumeFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
-        mPipeiArea = (RelativeLayout) getRootView().findViewById(R.id.pipei_area);
-        mPipeiSb = (SwitchButton) getRootView().findViewById(R.id.pipei_sb);
-        mPipeiVoiceSeekbar = (SeekBar) getRootView().findViewById(R.id.pipei_voice_seekbar);
-        mGameSb = (SwitchButton) getRootView().findViewById(R.id.game_sb);
+        mMainActContainer = getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = getRootView().findViewById(R.id.titlebar);
+        mPipeiSb = getRootView().findViewById(R.id.pipei_sb);
+        mPipeiVoiceSeekbar = getRootView().findViewById(R.id.pipei_voice_seekbar);
+        mGameSb = getRootView().findViewById(R.id.game_sb);
 
         mPipeiSb.setChecked(U.getPreferenceUtils().getSettingBoolean(PREF_KEY_PIPEI_VOLUME_SWITCH, true));
         mGameSb.setChecked(U.getPreferenceUtils().getSettingBoolean(PREF_KEY_GAME_VOLUME_SWITCH, true));

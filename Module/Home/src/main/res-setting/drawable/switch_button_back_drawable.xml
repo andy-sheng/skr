@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_checked="false">
-        <bitmap android:src="@drawable/switch_bar_blue"/>
+        <shape>
+            <solid android:color="#B6DAEC" />
+            <corners android:radius="@dimen/view_13_dp" />
+        </shape>
     </item>
     <item>
-        <bitmap android:src="@drawable/switch_bar_green" />
+        <shape>
+            <solid android:color="#FFC15B" />
+            <corners android:radius="@dimen/view_13_dp" />
+        </shape>
     </item>
 </selector>
