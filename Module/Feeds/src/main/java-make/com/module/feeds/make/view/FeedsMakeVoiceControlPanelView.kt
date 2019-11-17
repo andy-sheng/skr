@@ -23,7 +23,7 @@ class FeedsMakeVoiceControlPanelView(context: Context?, attrs: AttributeSet?) : 
 
     override fun setListener() {
         super.setListener()
-        mPeopleVoiceSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        mPeopleVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 ZqEngineKit.getInstance().params.recordingSignalVolume = progress
             }
@@ -40,11 +40,11 @@ class FeedsMakeVoiceControlPanelView(context: Context?, attrs: AttributeSet?) : 
 
     fun hideAcc(hide: Boolean) {
         if (hide) {
-            mAccVoice.visibility = View.GONE
-            mMusicVoiceSeekbar.visibility = View.GONE
+            mAccVoice?.visibility = View.GONE
+            mMusicVoiceSeekbar?.visibility = View.GONE
         } else {
-            mAccVoice.visibility = View.VISIBLE
-            mMusicVoiceSeekbar.visibility = View.VISIBLE
+            mAccVoice?.visibility = View.VISIBLE
+            mMusicVoiceSeekbar?.visibility = View.VISIBLE
         }
     }
 

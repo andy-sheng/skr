@@ -38,6 +38,7 @@ import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.R;
 import com.component.lyrics.LyricAndAccMatchManager;
+import com.module.playways.audition.view.AudienceVoiceControlPanelView;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.view.RankTopContainerView2;
 import com.module.playways.room.song.model.SongModel;
@@ -74,7 +75,7 @@ public class AuditionFragment extends BaseFragment {
     RelativeLayout mCompleArea;
     ExTextView mTvSongName;
     ManyLyricsView mManyLyricsView;
-    VoiceControlPanelView mVoiceControlView;
+    AudienceVoiceControlPanelView mVoiceControlView;
     VoiceScaleView mVoiceScaleView;
     TextView mLogView;
     LyricsReader mLyricsReader;
@@ -142,7 +143,7 @@ public class AuditionFragment extends BaseFragment {
         mCompleArea = (RelativeLayout) getRootView().findViewById(R.id.comple_area);
         mTvSongName = (ExTextView) getRootView().findViewById(R.id.tv_song_name);
         mManyLyricsView = (ManyLyricsView) getRootView().findViewById(R.id.many_lyrics_view);
-        mVoiceControlView = (VoiceControlPanelView) getRootView().findViewById(R.id.voice_control_view);
+        mVoiceControlView = getRootView().findViewById(R.id.voice_control_view);
         mVoiceScaleView = (VoiceScaleView) getRootView().findViewById(R.id.voice_scale_view);
         mLogView = getRootView().findViewById(R.id.log_view);
         View mLogViewScrollContainer = getRootView().findViewById(R.id.log_view_scroll_container);

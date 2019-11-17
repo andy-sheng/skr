@@ -14,12 +14,12 @@ import com.orhanobut.dialogplus.ViewHolder
 
 class MicVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) {
 
-    val TAG = "RaceVoiceControlPanelView"
+    val TAG = "MicVoiceControlPanelView"
 
     private var mLlSwitchContainer: LinearLayout? = null
 
     // 清唱与伴奏
-    private var mSbAcc: SwitchButton? = null
+    private var mAccSb: SwitchButton? = null
 
     internal var roomData: MicRoomData? = null
 
@@ -33,16 +33,16 @@ class MicVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) {
         return U.getDisplayUtils().screenWidth - U.getDisplayUtils().dip2px((30 + 24).toFloat()) - U.getDisplayUtils().dip2px((44 * 5).toFloat())
     }
 
-    override fun init(context: Context) {
+    override fun init(context: Context?) {
         super.init(context)
         mLlSwitchContainer = findViewById(R.id.ll_switch_container)
-        mSbAcc = findViewById(R.id.sb_acc)
+        mAccSb = findViewById(R.id.acc_sb)
 
-        mSbAcc?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+        mAccSb?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             roomData?.realRoundInfo?.let {
                 if (it.singBySelf()) {
                     U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式")
-                    mSbAcc?.isChecked = !roomData!!.isAccEnable
+                    mAccSb?.isChecked = !roomData!!.isAccEnable
                     return@OnCheckedChangeListener
                 }
                 roomData?.isAccEnable = !isChecked
@@ -52,7 +52,7 @@ class MicVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) {
 
     override fun bindData() {
         super.bindData()
-        mSbAcc?.isChecked = roomData?.isAccEnable != true
+        mAccSb?.isChecked = roomData?.isAccEnable != true
     }
 
     fun setRoomData(raceRoomData: MicRoomData) {

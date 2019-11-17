@@ -23,8 +23,8 @@ class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) 
     }
 
     override fun setListener() {
-        mPeopleVoiceSeekbar.max = 200
-        mPeopleVoiceSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        mPeopleVoiceSeekbar?.max = 200
+        mPeopleVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 mZqAudioEditorKit?.setInputVolume(mPeopleVoiceIndex, progress / 100.0f)
             }
@@ -37,8 +37,8 @@ class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) 
 
             }
         })
-        mMusicVoiceSeekbar.max = 100
-        mMusicVoiceSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        mMusicVoiceSeekbar?.max = 100
+        mMusicVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 mZqAudioEditorKit?.setInputVolume(0, progress / 100.0f)
             }
@@ -52,8 +52,8 @@ class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) 
             }
         })
 
-        mScenesBtnGroup.setOnCheckedChangeListener { group, checkedId ->
-            MyLog.d(TAG, "onCheckedChanged group=$group checkedId=$checkedId")
+        mScenesBtnGroup?.setOnCheckedChangeListener { group, checkedId ->
+            MyLog.d("FeedsEditorVoiceControlPanelView", "onCheckedChanged group=$group checkedId=$checkedId")
             if (checkedId == R.id.default_sbtn) {
                 mZqAudioEditorKit?.setAudioEffect(mPeopleVoiceIndex, Params.AudioEffect.none.ordinal)
             } else if (checkedId == R.id.ktv_sbtn) {
@@ -71,25 +71,25 @@ class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) 
     override fun bindData() {
         val styleEnum = mZqAudioEditorKit?.getAudioEffect(mPeopleVoiceIndex)
         if (styleEnum == Params.AudioEffect.liuxing.ordinal) {
-            mScenesBtnGroup.check(R.id.liuxing_sbtn)
+            mScenesBtnGroup?.check(R.id.liuxing_sbtn)
         } else if (styleEnum == Params.AudioEffect.kongling.ordinal) {
-            mScenesBtnGroup.check(R.id.kongling_sbtn)
+            mScenesBtnGroup?.check(R.id.kongling_sbtn)
         } else if (styleEnum == Params.AudioEffect.ktv.ordinal) {
-            mScenesBtnGroup.check(R.id.ktv_sbtn)
+            mScenesBtnGroup?.check(R.id.ktv_sbtn)
         } else if (styleEnum == Params.AudioEffect.rock.ordinal) {
-            mScenesBtnGroup.check(R.id.rock_sbtn)
+            mScenesBtnGroup?.check(R.id.rock_sbtn)
         } else {
-            mScenesBtnGroup.check(R.id.default_sbtn)
+            mScenesBtnGroup?.check(R.id.default_sbtn)
         }
-        mPeopleVoiceSeekbar.progress = ((mZqAudioEditorKit?.getInputVolume(mPeopleVoiceIndex)
+        mPeopleVoiceSeekbar?.progress = ((mZqAudioEditorKit?.getInputVolume(mPeopleVoiceIndex)
                 ?: 1f) * 100).toInt()
         if (mPeopleVoiceIndex == 1) {
             // 有伴奏
-            mMusicVoiceSeekbar.progress = ((mZqAudioEditorKit?.getInputVolume(0)
+            mMusicVoiceSeekbar?.progress = ((mZqAudioEditorKit?.getInputVolume(0)
                     ?: 1f) * 100).toInt()
         } else {
-            mAccVoice.visibility = GONE
-            mMusicVoiceSeekbar.visibility = GONE
+            mAccVoice?.visibility = GONE
+            mMusicVoiceSeekbar?.visibility = GONE
         }
 
     }

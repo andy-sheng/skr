@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.Gravity
 import android.widget.CompoundButton
 import android.widget.LinearLayout
-import com.common.base.BaseFragment
 import com.common.utils.U
 import com.component.voice.control.VoiceControlPanelView
 import com.kyleduo.switchbutton.SwitchButton
@@ -20,7 +19,7 @@ class RaceVoiceControlPanelView ( cxt: Context) : VoiceControlPanelView(cxt) {
     private var mLlSwitchContainer: LinearLayout? = null
 
     // 清唱与伴奏
-    private var mSbAcc: SwitchButton? = null
+    private var mAccSb: SwitchButton? = null
 
     internal var roomData: RaceRoomData? = null
 
@@ -34,16 +33,16 @@ class RaceVoiceControlPanelView ( cxt: Context) : VoiceControlPanelView(cxt) {
         return U.getDisplayUtils().screenWidth - U.getDisplayUtils().dip2px((30 + 24).toFloat()) - U.getDisplayUtils().dip2px((44 * 5).toFloat())
     }
 
-    override fun init(context: Context) {
+    override fun init(context: Context?) {
         super.init(context)
         mLlSwitchContainer = findViewById(R.id.ll_switch_container)
-        mSbAcc = findViewById(R.id.sb_acc)
+        mAccSb = findViewById(R.id.acc_sb)
 
-        mSbAcc?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+        mAccSb?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             roomData?.realRoundInfo?.let {
                 if (it.isSingerNowBySelf()) {
                     U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式")
-                    mSbAcc?.isChecked = !roomData!!.isAccEnable
+                    mAccSb?.isChecked = !roomData!!.isAccEnable
                     return@OnCheckedChangeListener
                 }
                 roomData?.isAccEnable = !isChecked
@@ -53,7 +52,7 @@ class RaceVoiceControlPanelView ( cxt: Context) : VoiceControlPanelView(cxt) {
 
     override fun bindData() {
         super.bindData()
-        mSbAcc?.isChecked = roomData?.isAccEnable != true
+        mAccSb?.isChecked = roomData?.isAccEnable != true
     }
 
     fun setRoomData(raceRoomData: RaceRoomData) {

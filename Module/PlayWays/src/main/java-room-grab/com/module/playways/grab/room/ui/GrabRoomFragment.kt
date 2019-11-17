@@ -938,7 +938,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             override fun onClickVoiceAudition() {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
                 if (mGrabVoiceControlPanelView == null) {
-                    mGrabVoiceControlPanelView = GrabVoiceControlPanelView(context)
+                    mGrabVoiceControlPanelView = GrabVoiceControlPanelView(context!!)
                     mGrabVoiceControlPanelView!!.setRoomData(mRoomData!!)
                 }
                 mGrabVoiceControlPanelView!!.bindData()
