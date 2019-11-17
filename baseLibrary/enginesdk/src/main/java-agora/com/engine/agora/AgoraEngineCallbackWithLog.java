@@ -238,9 +238,9 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
     }
 
     @Override
-    public void onRemoteVideoStateChanged(int uid, int state) {
+    public void onRemoteVideoStateChanged(int uid, int state, int reason, int elapsed) {
         MyLog.d(TAG, "onRemoteVideoStateChanged" + " uid=" + uid + " state=" + state);
-        super.onRemoteVideoStateChanged(uid, state);
+        super.onRemoteVideoStateChanged(uid, state, reason, elapsed);
     }
 
     @Override

@@ -799,7 +799,7 @@ public class AgoraEngineAdapter {
      */
     public void enableAudioVolumeIndication(int interval, int smooth) {
         if (mRtcEngine != null) {
-            mRtcEngine.enableAudioVolumeIndication(interval, smooth);
+            mRtcEngine.enableAudioVolumeIndication(interval, smooth, true);
         }
     }
 

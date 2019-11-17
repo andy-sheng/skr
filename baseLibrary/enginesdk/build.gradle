@@ -51,8 +51,8 @@ dependencies {
     }else{
         compileOnly project(":baseLibrary:commonsdk")
     }
-    api files('libs/agora-rtc-sdk.jar')
-//    api 'io.agora.rtc:full-sdk:2.4.0'
+//    api files('libs/agora-rtc-sdk.jar')
+    api 'io.agora.rtc:full-sdk:2.9.2'
     if (arcCloud.toBoolean()) {
         if(dependLibraryFromServer.toBoolean()){
             debugApi "com.common.sdk:arcCloud:1.0-debug"
