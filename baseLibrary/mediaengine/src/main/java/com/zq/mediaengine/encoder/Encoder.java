@@ -266,10 +266,6 @@ abstract public class Encoder<I extends AVFrameBase, O extends AVPacketBase> {
      * and this call should always followed by {@link #stop()}.
      */
     public void flush() {
-        if (mState.get() != ENCODER_STATE_ENCODING) {
-            Log.e(TAG, "Call flush on invalid state");
-            return;
-        }
         if (mEncodeThread != null) {
             mEncodeHandler.sendEmptyMessage(CMD_FLUSH);
         }
@@ -280,10 +276,6 @@ abstract public class Encoder<I extends AVFrameBase, O extends AVPacketBase> {
      * Should be called on {@link #ENCODER_STATE_IDLE}.
      */
     public void start() {
-        if (mState.get() != ENCODER_STATE_IDLE && mState.get() != ENCODER_STATE_STOPPING) {
-            Log.i(TAG, "Call start on invalid state");
-            return;
-        }
         if (mEncodeThread != null) {
             Message msg = mEncodeHandler.obtainMessage(CMD_START, mEncodeFormat);
             mEncodeHandler.sendMessage(msg);
@@ -299,9 +291,6 @@ abstract public class Encoder<I extends AVFrameBase, O extends AVPacketBase> {
      * Should be called on {@link #ENCODER_STATE_ENCODING}.
      */
     public void stop() {
-        if (mState.get() == ENCODER_STATE_IDLE || mState.get() == ENCODER_STATE_STOPPING) {
-            return;
-        }
         stopRepeatLastFrame();
         if (getUseSyncMode()) {
             mSig.open();
@@ -519,6 +508,8 @@ abstract public class Encoder<I extends AVFrameBase, O extends AVPacketBase> {
                                 mState.set(ENCODER_STATE_IDLE);
                                 sendError(err);
                             }
+                        } else {
+                            Log.d(TAG, "start on invalid state " + mState.get());
                         }
                         if (getAutoWork() && getUseSyncMode()) {
                             mSig.open();
@@ -532,6 +523,8 @@ abstract public class Encoder<I extends AVFrameBase, O extends AVPacketBase> {
                             doStop();
                             mState.set(ENCODER_STATE_IDLE);
                             sendInfo(INFO_STOPPED, 0);
+                        } else {
+                            Log.d(TAG, "stop on invalid state " + mState.get());
                         }
                         mExtra = null;
                         mExtraPacket = null;
@@ -544,6 +537,8 @@ abstract public class Encoder<I extends AVFrameBase, O extends AVPacketBase> {
                     case CMD_ADJUST_BITRATE: {
                         if (mState.get() == ENCODER_STATE_ENCODING) {
                             doAdjustBitrate(msg.arg1);
+                        } else {
+                            Log.d(TAG, "adjust bitrate on invalid state " + mState.get());
                         }
                         break;
                     }
@@ -552,6 +547,8 @@ abstract public class Encoder<I extends AVFrameBase, O extends AVPacketBase> {
                             mState.set(ENCODER_STATE_FLUSHING);
                             doFlush();
                             mState.set(ENCODER_STATE_FLUSHED);
+                        } else {
+                            Log.d(TAG, "flush on invalid state " + mState.get());
                         }
                         break;
                     }

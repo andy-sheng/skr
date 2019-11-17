@@ -115,7 +115,7 @@ class RaceTopContentView : ConstraintLayout {
 
     private fun updateCount() {
         mRoomData?.let {
-            playerCountTv.text = "选手${mRoomData?.getPlayerCount()}人"
+            playerCountTv.text = "选手${mRoomData?.getPlayerAndWaiterInfoList()?.size}人"
 
             var info = mRoomData?.realRoundInfo
             if (info == null) {

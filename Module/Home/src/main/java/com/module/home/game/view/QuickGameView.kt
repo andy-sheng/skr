@@ -116,7 +116,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
             override fun onPkRoomListener() {
                 StatisticsAdapter.recordCountEvent("game", "express_rank", null)
-                openRaceActivity(context)
+                openRaceActivity(context,false)
             }
 
             override fun onDoubleRoomListener() {
@@ -369,7 +369,7 @@ fun openBattleActivity(ctx: Context) {
     }
 }
 
-fun openRaceActivity(ctx: Context) {
+fun openRaceActivity(ctx: Context,audience:Boolean) {
     GlobalScope.launch(Dispatchers.Main) {
         var tipsDialogView: TipsDialogView? = null
         val api = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
@@ -379,6 +379,7 @@ fun openRaceActivity(ctx: Context) {
             val skrAudioPermission = SkrAudioPermission()
             skrAudioPermission.ensurePermission({
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
+                        .withBoolean("audience",audience)
                         .navigation()
             }, true)
         } else {

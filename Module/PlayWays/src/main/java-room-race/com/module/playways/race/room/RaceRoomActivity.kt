@@ -27,7 +27,7 @@ class RaceRoomActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        H.curType = GameModeType.GAME_MODE_RACE
+        H.setType(GameModeType.GAME_MODE_RACE, "RaceRoomActivity")
         H.raceRoomData = mRoomData
         val joinRaceRoomRspModel = intent.getSerializableExtra("JoinRaceRoomRspModel") as JoinRaceRoomRspModel?
         joinRaceRoomRspModel?.let {
@@ -70,7 +70,7 @@ class RaceRoomActivity : BaseActivity() {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
         super.destroy()
-        H.reset()
+        H.reset("RaceRoomActivity")
     }
 
     override fun finish() {

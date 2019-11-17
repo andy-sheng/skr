@@ -323,10 +323,6 @@ public abstract class Publisher {
     }
 
     public boolean start(String uri) {
-        if (mState.get() != STATE_IDLE && mState.get() != STATE_STOPPING) {
-            Log.e(TAG, "startRecording on invalid state");
-            return false;
-        }
         if (TextUtils.isEmpty(uri)) {
             Log.e(TAG, "uri is empty");
             return false;
@@ -404,9 +400,6 @@ public abstract class Publisher {
     }
 
     public void stop() {
-        if (mState.get() == STATE_IDLE || mState.get() == STATE_STOPPING) {
-            return;
-        }
         mIsPublishing = false;
         if (mState.get() == STATE_STARTING) {
             Log.d(TAG, "abort connecting...");
@@ -500,6 +493,8 @@ public abstract class Publisher {
                             } else {
                                 postError(err);
                             }
+                        } else {
+                            Log.d(TAG, "start on invalid state " + mState.get());
                         }
                         break;
                     }
@@ -528,6 +523,8 @@ public abstract class Publisher {
 
                             // post stopped info
                             postInfo(INFO_STOPPED);
+                        } else {
+                            Log.d(TAG, "stop on invalid state " + mState.get());
                         }
                         break;
                     }

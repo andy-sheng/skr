@@ -58,6 +58,7 @@ public interface UserInfoServerApi {
 
     /**
      * 加入特别关注
+     *
      * @param body {toUserID}
      * @return
      */
@@ -66,6 +67,7 @@ public interface UserInfoServerApi {
 
     /**
      * 移除特别关注
+     *
      * @param body {toUserID}
      * @return
      */
@@ -353,8 +355,8 @@ public interface UserInfoServerApi {
     @POST("/v2/mate/multi-check-online-status")
     Observable<ApiResult> checkUserOnlineStatus(@Body RequestBody body);
 
-    @GET("/v1/bonus/multi-get-user-status")
-    Observable<ApiResult> checkUserOnlineStatusWithIntimacy(@Query("userIDs") List<Integer> list);
+    @POST("/v2/bonus/multi-get-user-status")
+    Observable<ApiResult> checkUserOnlineStatusWithIntimacy(@Body RequestBody body);
 
     @POST("/v2/mate/multi-check-game-status")
     Observable<ApiResult> checkUserGameStatus(@Body RequestBody body);

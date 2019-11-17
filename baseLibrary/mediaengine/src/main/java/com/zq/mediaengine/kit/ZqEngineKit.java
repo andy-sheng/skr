@@ -165,6 +165,8 @@ public class ZqEngineKit implements AgoraOutCallback {
     private APMFilter mAPMFilter;
     // 输出前的重采样模块
     private AudioResampleFilter mAudioResampleFilter;
+    // 录制前的重采样模块
+    private AudioResampleFilter mAudioRecordResampleFilter;
     // 对bgm, remote进行混音，用于回声消除
     private AudioMixer mRemoteAudioMixer;
     // 对mic, bgm进行混音，用于远端发送
@@ -623,6 +625,12 @@ public class ZqEngineKit implements AgoraOutCallback {
                     mConfig.getAudioSampleRate(), mConfig.getAudioChannels()), !mConfig.isUseExternalAudio());
             mRecordAudioMixer = new AudioMixer();
 
+            // 录制时的重采样模块, 需要录制时再连接
+            mAudioRecordResampleFilter = new AudioResampleFilter();
+            mRecordAudioMixer = new AudioMixer();
+
+            // 连接输出resample
+            mAudioFilterMgt.getSrcPin().connect(mAudioResampleFilter.getSinkPin());
             // PCM dump, 需要在最前面连接
             mAudioResampleFilter.getSrcPin().connect((SinkPin<AudioBufFrame>) mRawFrameWriter.getSinkPin());
 
@@ -634,9 +642,6 @@ public class ZqEngineKit implements AgoraOutCallback {
                 audioCopyFilter.getSrcPin().connect(mLocalAudioMixer.getSinkPin(0));
                 mAudioPlayerCapture.getSrcPin().connect(mLocalAudioMixer.getSinkPin(1));
                 mLocalAudioMixer.getSrcPin().connect(mAgoraRTCAdapter.getAudioSinkPin());
-
-                // 用声网采集，需要录制的时候再连接
-                connectRecord();
             }
 
             // 录制功能
@@ -688,15 +693,16 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     };
 
-    private void connectRecord() {
-        mAudioFilterMgt.getSrcPin().connect(mAudioResampleFilter.getSinkPin());
-        mAudioResampleFilter.getSrcPin().connect(mRecordAudioMixer.getSinkPin(0));
+    private void connectRecord(AudioBufFormat format) {
+        mAudioRecordResampleFilter.setOutFormat(format);
+        mAudioResampleFilter.getSrcPin().connect(mAudioRecordResampleFilter.getSinkPin());
+        mAudioRecordResampleFilter.getSrcPin().connect(mRecordAudioMixer.getSinkPin(0));
         mAudioRemoteSrcPin.connect(mRecordAudioMixer.getSinkPin(1));
     }
 
     private void disconnectRecord() {
-        mAudioFilterMgt.getSrcPin().disconnect(mAudioResampleFilter.getSinkPin(), false);
-        mAudioResampleFilter.getSrcPin().disconnect(mRecordAudioMixer.getSinkPin(0), false);
+        mAudioResampleFilter.getSrcPin().disconnect(mAudioRecordResampleFilter.getSinkPin(), false);
+        mAudioRecordResampleFilter.getSrcPin().disconnect(mRecordAudioMixer.getSinkPin(0), false);
         mAudioRemoteSrcPin.disconnect(mRecordAudioMixer.getSinkPin(1), false);
     }
 
@@ -1564,9 +1570,9 @@ public class ZqEngineKit implements AgoraOutCallback {
 
 
         if (mCustomHandlerThread != null) {
-            // 延迟一秒才开始录制，是为了兼容，变成主播时，业务层马上调用的录制的情况，1s时间给业务层让步，让业务先录
+            // 延迟一秒才开始录制，是为了兼容，变成主播时，业务层马上调用的录制的情况，1s时间给业务层让步，让业务先录 。发现解决不了，去掉。
             mConfig.setRecordingForFeedback(true);
-            startAudioRecordingInner(getFeedbackFilepath(), false);
+            startAudioRecordingInner(getFeedbackFilepath(), false, mConfig.getAudioSampleRate(), 1, 48 * 1000);
             mCustomHandlerThread.post(new LogRunnable("trimFeedbackFileSize") {
                 @Override
                 public void realRun() {
@@ -1654,7 +1660,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 stopAudioRecordingInner("业务录制开始要求停止");
             }
             mConfig.setRecordingForBusi(true);
-            startAudioRecordingInner(path, recordHumanVoice);
+            startAudioRecordingInner(path, recordHumanVoice, mConfig.getAudioSampleRate(), mConfig.getAudioChannels(), mConfig.getAudioBitrate());
         }
     }
 
@@ -1663,11 +1669,18 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 仅支持m4a格式。
      * 声网采集模式下，该接口需在加入频道之后调用，如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
-    private void startAudioRecordingInner(final String path, final boolean recordHumanVoice) {
+    private void startAudioRecordingInner(final String path, final boolean recordHumanVoice, final int sampleRate, final int channels, final int bitrate) {
         mCustomHandlerThread.post(new LogRunnable("startAudioRecording" + " path=" + path +
-                " recordHumanVoice=" + recordHumanVoice + " mInChannel=" + mInChannel + " mConfig.isUseExternalAudioRecord()=" + mConfig.isUseExternalAudioRecord()) {
+                " recordHumanVoice=" + recordHumanVoice + " mInChannel=" + mInChannel +
+                " mConfig.isUseExternalAudioRecord()=" + mConfig.isUseExternalAudioRecord() +
+                " " + sampleRate + "Hz channels: " + channels + " " + bitrate / 1000 + "kbps") {
             @Override
             public void realRun() {
+                if (mStatus != STATUS_INITED) {
+                    MyLog.e(TAG, "startAudioRecordingInner in invalid state: " + mStatus);
+                    return;
+                }
+
                 File file = new File(path);
                 if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
@@ -1676,9 +1689,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                     file.delete();
                 }
 
-                if (!mConfig.isUseExternalAudio() && !recordHumanVoice) {
-                    // 用声网采集，需要录制的时候再连接
-                    connectRecord();
+                if (!recordHumanVoice) {
+                    // 非debug人声录制，需要录制的时候再连接
+                    connectRecord(new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16, sampleRate, channels));
                 }
                 if (RECORD_FOR_DEBUG) {
                     mRawFrameWriter.start(path);
@@ -1702,9 +1715,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         AudioCodecFormat audioCodecFormat =
                                 new AudioCodecFormat(AVConst.CODEC_ID_AAC,
                                         AVConst.AV_SAMPLE_FMT_S16,
-                                        mConfig.getAudioSampleRate(),
-                                        mConfig.getAudioChannels(),
-                                        mConfig.getAudioBitrate());
+                                        sampleRate, channels, bitrate);
                         if (recordHumanVoice) {
                             if (mConfig.isUseExternalAudio() && mAudioCapture != null) {
                                 audioCodecFormat.sampleRate = mAudioCapture.getSampleRate();
@@ -1713,12 +1724,12 @@ public class ZqEngineKit implements AgoraOutCallback {
                             }
                             mHumanVoiceAudioEncoder.configure(audioCodecFormat);
                             mHumanVoiceFilePublisher.setAudioOnly(true);
-                            mHumanVoiceFilePublisher.start(path);
+                            mHumanVoiceFilePublisher.setUrl(path);
                             mHumanVoiceAudioEncoder.start();
                         } else {
                             mAudioEncoder.configure(audioCodecFormat);
                             mFilePublisher.setAudioOnly(true);
-                            mFilePublisher.start(path);
+                            mFilePublisher.setUrl(path);
                             mAudioEncoder.start();
                         }
                     } else {
@@ -1754,6 +1765,10 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new LogRunnable("stopAudioRecordingInner from=" + from) {
             @Override
             public void realRun() {
+                if (mStatus != STATUS_INITED) {
+                    MyLog.e(TAG, "stopAudioRecordingInner in invalid state: " + mStatus);
+                    return;
+                }
                 if (!RECORD_FOR_DEBUG) {
                     if (mConfig.isUseExternalAudioRecord()) {
                         mHumanVoiceAudioEncoder.stop();
@@ -1773,10 +1788,8 @@ public class ZqEngineKit implements AgoraOutCallback {
                         mBgmRawFrameWriter.stop();
                     }
                 }
-                if (!mConfig.isUseExternalAudio()) {
-                    // 用声网采集，录制完成断开连接
-                    disconnectRecord();
-                }
+                // 录制完成断开连接
+                disconnectRecord();
             }
         });
     }

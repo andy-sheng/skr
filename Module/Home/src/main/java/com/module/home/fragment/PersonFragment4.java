@@ -114,6 +114,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     Toolbar mToolbar;
     ConstraintLayout mToolbarLayout;
 
+    AppBarLayout.OnOffsetChangedListener mAppbarListener;
+
     TextView mSrlNameTv;
 
     PersonCorePresenter mPresenter;
@@ -303,43 +305,48 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             }
         });
 
-        mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                // TODO: 2019-06-23  可以加效果，看产品需求
-                mImageBg.setTranslationY(verticalOffset);
-                if (lastVerticalOffset != verticalOffset) {
-                    lastVerticalOffset = verticalOffset;
+        if (mAppbarListener == null) {
+            mAppbarListener = new AppBarLayout.OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                    // TODO: 2019-06-23  可以加效果，看产品需求
+                    mImageBg.setTranslationY(verticalOffset);
+                    if (lastVerticalOffset != verticalOffset) {
+                        lastVerticalOffset = verticalOffset;
 
-                    int srollLimit = appBarLayout.getTotalScrollRange();  // 总的滑动长度
-                    if (verticalOffset == 0) {
-                        // 展开状态
-                        if (mToolbar.getVisibility() != View.GONE) {
-                            mToolbar.setVisibility(View.GONE);
-                            mToolbarLayout.setVisibility(View.GONE);
-                        }
-                    } else if (Math.abs(verticalOffset) >= srollDivider) {
-                        // 完全收缩状态
-                        if (mToolbar.getVisibility() != View.VISIBLE) {
-                            mToolbar.setVisibility(View.VISIBLE);
-                            mToolbarLayout.setVisibility(View.VISIBLE);
-                        }
+                        int srollLimit = appBarLayout.getTotalScrollRange();  // 总的滑动长度
+                        if (verticalOffset == 0) {
+                            // 展开状态
+                            if (mToolbar.getVisibility() != View.GONE) {
+                                mToolbar.setVisibility(View.GONE);
+                                mToolbarLayout.setVisibility(View.GONE);
+                            }
+                        } else if (Math.abs(verticalOffset) >= srollDivider) {
+                            // 完全收缩状态
+                            if (mToolbar.getVisibility() != View.VISIBLE) {
+                                mToolbar.setVisibility(View.VISIBLE);
+                                mToolbarLayout.setVisibility(View.VISIBLE);
+                            }
 
-                        if (Math.abs(verticalOffset) >= srollLimit) {
-                            mSrlNameTv.setAlpha(1);
+                            if (Math.abs(verticalOffset) >= srollLimit) {
+                                mSrlNameTv.setAlpha(1);
+                            } else {
+                                mSrlNameTv.setAlpha((float) (Math.abs(verticalOffset) - srollDivider) / (float) (srollLimit - srollDivider));
+                            }
                         } else {
-                            mSrlNameTv.setAlpha((float) (Math.abs(verticalOffset) - srollDivider) / (float) (srollLimit - srollDivider));
-                        }
-                    } else {
-                        // TODO: 2019/4/8 过程中，可以加动画，先直接显示
-                        if (mToolbar.getVisibility() != View.GONE) {
-                            mToolbar.setVisibility(View.GONE);
-                            mToolbarLayout.setVisibility(View.GONE);
+                            // TODO: 2019/4/8 过程中，可以加动画，先直接显示
+                            if (mToolbar.getVisibility() != View.GONE) {
+                                mToolbar.setVisibility(View.GONE);
+                                mToolbarLayout.setVisibility(View.GONE);
+                            }
                         }
                     }
                 }
-            }
-        });
+            };
+        }
+        mAppbar.removeOnOffsetChangedListener(mAppbarListener);
+        lastVerticalOffset = Integer.MAX_VALUE;
+        mAppbar.addOnOffsetChangedListener(mAppbarListener);
     }
 
     private void initUserInfoArea() {
@@ -876,6 +883,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Override
     public void destroy() {
         super.destroy();
+        mAppbar.removeOnOffsetChangedListener(mAppbarListener);
         SinglePlayer.INSTANCE.release(playTag);
         SinglePlayer.INSTANCE.removeCallback(playTag);
         if (mPhotoWallView != null) {

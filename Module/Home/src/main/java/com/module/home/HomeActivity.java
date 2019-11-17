@@ -166,7 +166,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         mMainVp.setViewPagerCanScroll(false);
-        mMainVp.setOffscreenPageLimit(2);
+        mMainVp.setOffscreenPageLimit(3);
         checkIfFromSchema();
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override

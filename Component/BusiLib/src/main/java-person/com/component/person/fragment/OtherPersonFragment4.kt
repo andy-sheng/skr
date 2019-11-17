@@ -25,6 +25,7 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.userinfo.event.RemarkChangeEvent
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.core.view.setDebounceViewClickListener
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
@@ -435,6 +436,9 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                 }
             }
         })
+
+        mQinmiIv.setDebounceViewClickListener { showQinmiTips() }
+        mQinmiTv.setDebounceViewClickListener { showQinmiTips() }
     }
 
 //    private fun setAppBarCanScroll(canScroll: Boolean) {
@@ -674,6 +678,20 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mDialogPlus?.dismiss(false)
         mDialogPlus = DialogPlus.newDialog(context!!)
                 .setContentHolder(ViewHolder(R.layout.other_person_tips_view_layout))
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setMargin(U.getDisplayUtils().dip2px(32f), -1, U.getDisplayUtils().dip2px(32f), -1)
+                .setExpanded(false)
+                .setGravity(Gravity.CENTER)
+                .setOnClickListener { dialog, view -> dialog.dismiss() }
+                .create()
+        mDialogPlus?.show()
+    }
+
+    private fun showQinmiTips() {
+        mDialogPlus?.dismiss(false)
+        mDialogPlus = DialogPlus.newDialog(context!!)
+                .setContentHolder(ViewHolder(R.layout.person_qinmi_rule_layout))
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
                 .setMargin(U.getDisplayUtils().dip2px(32f), -1, U.getDisplayUtils().dip2px(32f), -1)

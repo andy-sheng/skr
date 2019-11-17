@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_solid_color="#7187FF">
+
+    <TextView
+        android:id="@+id/iv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:text="亲密度计算规则"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_20_dp"
+        android:textStyle="bold" />
+
+    <com.common.view.ex.ExLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_8_dp"
+        android:layout_marginBottom="@dimen/view_16_dp"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/view_30_dp"
+        android:paddingBottom="@dimen/view_30_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="#576FE3">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_title"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginRight="@dimen/view_12_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_21_dp"
+                android:layout_height="@dimen/view_21_dp"
+                android:background="@drawable/grab_guize_1" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:lineSpacingExtra="@dimen/view_4_dp"
+                android:text="亲密度分值表现你和好友的互动热度，分数越高，代表你和好友越亲密"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginTop="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_21_dp"
+                android:layout_height="@dimen/view_21_dp"
+                android:background="@drawable/grab_guize_2" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:lineSpacingExtra="@dimen/view_4_dp"
+                android:text="亲密度由互动分构成，互动分计算方式为\n一起游戏：每10分钟+50分，单日上限150分\n送鲜花：每1朵+1分，单日上限50分\n金币礼物、爆灯：每1金币+3分，单日上限100分\n钻石礼物：每1钻石+5分，单日上限300分\n帖子点赞：每1个赞+25分，单日上限50分\n帖子评论：每1句评论+50分，单日上限50分"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginTop="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_21_dp"
+                android:layout_height="@dimen/view_21_dp"
+                android:background="@drawable/grab_guize_3" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:lineSpacingExtra="@dimen/view_4_dp"
+                android:text="互动分兑换亲密度\n亲密度为0-60时，每10分加1亲密度\n亲密度为60-70时，每30分加1亲密度\n亲密度为70-80时，每60分加1亲密度\n亲密度为80-85时，每120分加1亲密度\n亲密度为85-90时，每150分加1亲密度\n亲密度为90-95时，每300分加1亲密度\n亲密度为95-100时，每450分加1亲密度"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+    </com.common.view.ex.ExLinearLayout>
+
+</com.common.view.ex.ExLinearLayout>
+

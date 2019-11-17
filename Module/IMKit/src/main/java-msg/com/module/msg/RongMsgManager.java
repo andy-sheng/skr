@@ -25,6 +25,7 @@ import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.module.common.ICallback;
 import com.module.msg.activity.ConversationActivity;
+import com.module.msg.custom.MyGIFMessageItemProvider;
 import com.module.msg.custom.MyPrivateConversationProvider;
 import com.module.msg.listener.MyConversationClickListener;
 import com.module.msg.model.BroadcastRoomMsg;
@@ -412,6 +413,9 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.registerMessageType(MicRoomLowMsg.class);
 
             RongIM.getInstance().registerConversationTemplate(new MyPrivateConversationProvider());
+
+            // todo 先注释掉吧，发送方gif不显示
+//            RongIM.registerMessageTemplate(new MyGIFMessageItemProvider());
 
             RongIM.getInstance().setConversationClickListener(new MyConversationClickListener());
             RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {

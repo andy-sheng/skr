@@ -1142,8 +1142,7 @@ public class UserInfoManager {
         HashMap<String, Object> map = new HashMap<>();
         map.put("userIDs", list);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-
-        return userInfoServerApi.checkUserOnlineStatusWithIntimacy(list)
+        return userInfoServerApi.checkUserOnlineStatusWithIntimacy(body)
                 .map(new Function<ApiResult, HashMap<Integer, OnlineModel>>() {
                     @Override
                     public HashMap<Integer, OnlineModel> apply(ApiResult obj) {

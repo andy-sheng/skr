@@ -21,20 +21,19 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.constans.GrabRoomType;
-import com.module.RouterConstants;
 import com.component.busilib.friends.SpecialModel;
+import com.module.RouterConstants;
+import com.module.playways.R;
 import com.module.playways.battle.songlist.BattleListActivity;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.ui.GrabRoomFragment;
 import com.module.playways.room.data.H;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
-
 import com.module.playways.room.song.model.SongModel;
-import com.module.playways.R;
-import com.module.playways.grab.room.ui.GrabRoomFragment;
 import com.zq.live.proto.GrabRoom.EQRoundStatus;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public class GrabRoomActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        H.INSTANCE.setCurType(GameModeType.GAME_MODE_GRAB);
+        H.INSTANCE.setType(GameModeType.GAME_MODE_GRAB, "GrabRoomActivity");
         H.INSTANCE.setGrabRoomData(mRoomData);
         JoinGrabRoomRspModel rsp = (JoinGrabRoomRspModel) getIntent().getSerializableExtra("prepare_data");
         Boolean isNewUser = getIntent().getBooleanExtra("is_new_user", false);
@@ -165,8 +164,8 @@ public class GrabRoomActivity extends BaseActivity {
             if (U.getActivityUtils().isHomeActivity(activity)) {
                 continue;
             }
-            if(mRoomData.getRoomType()== GrabRoomType.ROOM_TYPE_PLAYBOOK){
-                if(activity instanceof BattleListActivity){
+            if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
+                if (activity instanceof BattleListActivity) {
                     continue;
                 }
             }
@@ -192,7 +191,7 @@ public class GrabRoomActivity extends BaseActivity {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         super.destroy();
-        H.INSTANCE.reset();
+        H.INSTANCE.reset("GrabRoomActivity");
     }
 
     @Override
