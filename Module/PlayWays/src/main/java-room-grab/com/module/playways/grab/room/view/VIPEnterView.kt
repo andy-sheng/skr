@@ -117,7 +117,7 @@ class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
             animationEnter.interpolator = OvershootInterpolator()
             mParentView?.startAnimation(animationEnter)
 
-            delay(1000)
+            delay(1500)
 
             val animationExit = TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, -1.0f,
                     Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f)
