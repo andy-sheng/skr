@@ -17,7 +17,9 @@ else
 	do
 	    if test -f $file
 	    then
-	        python decode_mars_nocrypt_log_file.py $file
+	    	if [[ $file == *".xlog" ]]; then
+	    		python decode_mars_nocrypt_log_file.py $file
+	    	fi
 	    fi
 	done
 	echo sublime $1
