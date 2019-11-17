@@ -1543,12 +1543,19 @@ public class ZqEngineKit implements AgoraOutCallback {
             return;
         }
         boolean hasAnchor = false;
+        /**
+         * 当前的主播id 即时是合唱也只有一个id，因为对于引擎来说，不确定后面还有人成为主播
+         * 但录制要马上进行
+         */
+        String anchor = "";
         for (UserStatus us : mUserStatusMap.values()) {
             MyLog.i(TAG, " us=" + us);
             if (us.isAnchor()) {
+                anchor = String.valueOf(us.getUserId());
                 hasAnchor = true;
             }
         }
+
         if (!hasAnchor) {
             MyLog.i(TAG, "没有主播不录制 from=" + from);
             return;
@@ -1566,7 +1573,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (mCustomHandlerThread != null) {
             // 延迟一秒才开始录制，是为了兼容，变成主播时，业务层马上调用的录制的情况，1s时间给业务层让步，让业务先录 。发现解决不了，去掉。
             mConfig.setRecordingForFeedback(true);
-            startAudioRecordingInner(getFeedbackFilepath(), false, mConfig.getAudioSampleRate(), 1, 48 * 1000);
+            startAudioRecordingInner(getFeedbackFilepath(anchor), false, mConfig.getAudioSampleRate(), 1, 48 * 1000);
             mCustomHandlerThread.post(new LogRunnable("trimFeedbackFileSize") {
                 @Override
                 public void realRun() {
@@ -1578,9 +1585,9 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
-    public String getFeedbackFilepath() {
+    public String getFeedbackFilepath(String anchors) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss");
-        String fileName = String.format("%s_%s.m4a", mInitFrom, simpleDateFormat.format(new Date(System.currentTimeMillis())));
+        String fileName = String.format("%s_%s@%s.m4a", mInitFrom, simpleDateFormat.format(new Date(System.currentTimeMillis())),anchors);
         String filePath = U.getAppInfoUtils().getFilePathInSubDir(AUDIO_FEEDBACK_DIR, fileName);
         return filePath;
     }

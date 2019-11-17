@@ -85,6 +85,8 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.greenrobot.greendao.annotation.NotNull
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.collections.HashMap
 
 class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @param:NotNull internal var mRoomData: GrabRoomData, internal var mBaseActivity: BaseActivity) : RxLifeCyclePresenter() {
@@ -467,6 +469,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         //        }
     }
 
+    var savePath = ""
     /**
      * 真正打开引擎开始演唱
      */
@@ -477,8 +480,9 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             /**
              * 个人标签声音
              */
-            val fileName = String.format(PERSON_LABEL_SAVE_PATH_FROMAT, mRoomData.gameId, mRoomData.realRoundInfo?.roundSeq)
-            val savePath = U.getAppInfoUtils().getFilePathInSubDir(ZqEngineKit.AUDIO_FEEDBACK_DIR, fileName)
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd_HH_mm_ss")
+            val fileName = String.format(PERSON_LABEL_SAVE_PATH_FROMAT,simpleDateFormat.format(Date(System.currentTimeMillis())), mRoomData.gameId, mRoomData.realRoundInfo?.roundSeq)
+            savePath = U.getAppInfoUtils().getFilePathInSubDir(ZqEngineKit.AUDIO_FEEDBACK_DIR, fileName)
             ZqEngineKit.getInstance().startAudioRecording(savePath, false)
         }
     }
@@ -877,9 +881,6 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
      * @param roundInfoModel
      */
     private fun uploadResForLabel(roundInfoModel: GrabRoundInfoModel) {
-        val fileName = String.format(PERSON_LABEL_SAVE_PATH_FROMAT, mRoomData.gameId, roundInfoModel.roundSeq)
-        val savePath = U.getAppInfoUtils().getFilePathInSubDir(ZqEngineKit.AUDIO_FEEDBACK_DIR, fileName)
-
         UploadParams.newBuilder(savePath)
                 .setFileType(UploadParams.FileType.audioAi)
                 .startUploadAsync(object : UploadCallback {
@@ -910,6 +911,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 mRoomData.maxGetBLightCnt = roundInfoModel.getbLightInfos().size
                 MyLog.d(TAG, "个人标签资源上传成功")
             }
+            savePath = ""
         }
     }
 
@@ -2711,6 +2713,6 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
 
         internal val MSG_ENSURE_EXIT = 8 // 房主说话后 恢复音量
 
-        internal val PERSON_LABEL_SAVE_PATH_FROMAT = "person_label_%s_%s.m4a"
+        internal val PERSON_LABEL_SAVE_PATH_FROMAT = "person_label_%s_%s_%s.m4a"
     }
 }
