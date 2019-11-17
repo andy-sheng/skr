@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
@@ -146,7 +147,9 @@ public class FeedbackView extends RelativeLayout {
 
                     if (tags.size() == 0 && mActionType != 2) {
                         U.getToastUtil().showShort("请选择顶部的选项哦");
-                    } else {
+                    } else if(mActionType==0 && TextUtils.isEmpty(mFeedbackContent.getText().toString())){
+                        U.getToastUtil().showShort("请填写要反馈的内容,能配上截图更好");
+                    }else {
                         mListener.onClickSubmit(tags, mFeedbackContent.getText().toString().trim(), mImageItemArrayList);
                     }
                 }
