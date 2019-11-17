@@ -245,7 +245,7 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
                     }
 
                     mIsReleaseVersion = ((Boolean)propData).booleanValue();
-                    MyLog.i(TAG, "Set test mode: "+mIsReleaseVersion);
+                    MyLog.i(TAG, "Set release mode: "+mIsReleaseVersion);
 
                 }
                 break;
