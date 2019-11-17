@@ -60,6 +60,14 @@ public class MyLog {
         Log.d(TAG, msg);
     }
 
+    public static final void i(String msg) {
+        if (!sHasInit) {
+            android.util.Log.i(TAG, msg);
+            return;
+        }
+        Log.i(TAG, msg);
+    }
+
     public static final void w(String msg) {
         if (!sHasInit) {
             android.util.Log.w(TAG, msg);

@@ -829,7 +829,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         }
                     }
                 } catch (Exception e) {
-                    MyLog.i(e);
+                    MyLog.e(e);
                 }
             }
         }
