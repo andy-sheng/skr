@@ -262,15 +262,9 @@ class SLogServiceAliyun extends SLogServiceBase{
             conf.setCachable(false);
             conf.setConnectType(ClientConfiguration.NetworkPolicy.WWAN_OR_WIFI);
 
-
-//            if (SDataManager.dbgMode) {
-                MyLog.i(TAG, "new sts credentials: ");
-                MyLog.i(TAG, "        AK = "+AK);
-                MyLog.i(TAG, "        SK = "+SK);
-                MyLog.i(TAG, "        token = "+token);
-
+            if (!mUseMainPrj) { //说明是测试版
                 SLSLog.enableLog(); // log打印在控制台
-//            }
+            }
 
             mLogClient = new LOGClient(mParam.appCtx, mEndPoint, credentialProvider, conf);
         }
