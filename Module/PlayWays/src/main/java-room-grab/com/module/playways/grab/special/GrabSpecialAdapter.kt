@@ -73,8 +73,10 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialVi
                     .build<BaseImage>())
 
             if (!TextUtils.isEmpty(model.rankInfoDesc)) {
+                rankDesc.visibility = View.VISIBLE
                 rankDesc.text = model.rankInfoDesc
             } else {
+                rankDesc.visibility = View.GONE
                 rankDesc.text = "暂无排名"
             }
             if (!model.showPermissionLock && model.status == GrabTagDetailModel.SST_UNLOCK) {
