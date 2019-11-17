@@ -63,6 +63,15 @@
             app:layout_constraintLeft_toRightOf="@id/special_follow_iv"
             app:layout_constraintRight_toRightOf="parent" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/view_15_dp"
+            android:background="@drawable/msg_arrow_right_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_1_dp"
@@ -128,6 +137,15 @@
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintLeft_toRightOf="@id/last_follow_iv"
             app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/view_15_dp"
+            android:background="@drawable/msg_arrow_right_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:layout_width="match_parent"
@@ -195,6 +213,15 @@
             app:layout_constraintLeft_toRightOf="@id/comment_like_iv"
             app:layout_constraintRight_toRightOf="parent" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/view_15_dp"
+            android:background="@drawable/msg_arrow_right_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_1_dp"
@@ -260,6 +287,15 @@
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintLeft_toRightOf="@id/gift_iv"
             app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/view_15_dp"
+            android:background="@drawable/msg_arrow_right_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:layout_width="match_parent"

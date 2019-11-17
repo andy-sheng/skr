@@ -64,14 +64,10 @@ object MyUserInfoManager {
         get() = isFirstLogin
 
     val uid: Long
-        get() = if (myUserInfo != null && myUserInfo!!.userId != 0L) {
-            myUserInfo!!.userId
-        } else {
-            UserAccountManager.uuidAsLong
-        }
+        get() = myUserInfo?.userId ?: UserAccountManager.uuidAsLong
 
     val nickName: String
-        get() = if (myUserInfo?.userNickname != null) myUserInfo!!.userNickname else ""
+        get() = myUserInfo?.userNickname ?: ""
 
     val age: Int
         get() {
@@ -86,7 +82,7 @@ object MyUserInfoManager {
         }
 
     val ageStage: Int
-        get() = if (myUserInfo != null) myUserInfo!!.ageStage else 0
+        get() = myUserInfo?.ageStage ?: 0
 
     val ageStageString: String
         get() {
@@ -120,41 +116,41 @@ object MyUserInfoManager {
         }
 
     val avatar: String
-        get() = if (myUserInfo != null) myUserInfo!!.avatar else ""
+        get() = myUserInfo?.avatar ?: ""
 
     val vipType: Int
-        get() = if (myUserInfo != null && myUserInfo!!.vipInfo != null) myUserInfo!!.vipInfo.vipType else 0
+        get() = myUserInfo?.vipInfo?.vipType ?: 0
 
     val vipInfo: VerifyInfo?
-        get() = if (myUserInfo != null) myUserInfo!!.vipInfo else null
+        get() = myUserInfo?.vipInfo
 
     val honorInfo: HonorInfo?
-        get() = if (myUserInfo != null) myUserInfo!!.honorInfo else null
+        get() = myUserInfo?.honorInfo
 
     val signature: String
-        get() = if (myUserInfo != null) myUserInfo!!.signature else ""
+        get() = myUserInfo?.signature ?: ""
 
     val sex: Int
-        get() = if (myUserInfo != null) myUserInfo!!.sex else 0
+        get() = myUserInfo?.sex ?: 0
 
     val birthday: String
-        get() = if (myUserInfo != null) myUserInfo!!.birthday else ""
+        get() = myUserInfo?.birthday ?: ""
 
-    val location: Location
-        get() = myUserInfo!!.location
+    val location: Location?
+        get() = myUserInfo?.location
 
-    val realLocation: Location
-        get() = myUserInfo!!.location2
+    val realLocation: Location?
+        get() = myUserInfo?.location2
 
     val locationDesc: String
         get() = if (!hasLocation()) {
             "火星"
-        } else myUserInfo!!.location.desc
+        } else myUserInfo?.location?.desc ?: ""
 
     val locationProvince: String
         get() = if (!hasLocation()) {
             "火星"
-        } else myUserInfo!!.location.province
+        } else myUserInfo?.location?.province ?: ""
 
     /**
      * 是否实名认证
@@ -269,31 +265,31 @@ object MyUserInfoManager {
         if (updateParams.nickName != null) {
             map["nickname"] = updateParams.nickName
             if (updateLocalIfServerFailed) {
-                myUserInfo!!.userNickname = updateParams.nickName
+                myUserInfo?.userNickname = updateParams.nickName
             }
         }
         if (updateParams.sex != -1) {
             map["sex"] = updateParams.sex
             if (updateLocalIfServerFailed) {
-                myUserInfo!!.sex = updateParams.sex
+                myUserInfo?.sex = updateParams.sex
             }
         }
         if (updateParams.birthday != null) {
             map["birthday"] = updateParams.birthday
             if (updateLocalIfServerFailed) {
-                myUserInfo!!.birthday = updateParams.birthday
+                myUserInfo?.birthday = updateParams.birthday
             }
         }
         if (updateParams.avatar != null) {
             map["avatar"] = updateParams.avatar
             if (updateLocalIfServerFailed) {
-                myUserInfo!!.avatar = updateParams.avatar
+                myUserInfo?.avatar = updateParams.avatar
             }
         }
         if (updateParams.sign != null) {
             map["signature"] = updateParams.sign
             if (updateLocalIfServerFailed) {
-                myUserInfo!!.signature = updateParams.sign
+                myUserInfo?.signature = updateParams.sign
             }
         }
         if (updateParams.location != null) {
@@ -306,14 +302,14 @@ object MyUserInfoManager {
         if (updateParams.realLocation != null) {
             map["location2"] = updateParams.realLocation
             if (updateLocalIfServerFailed) {
-                myUserInfo!!.location2 = updateParams.realLocation
+                myUserInfo?.location2 = updateParams.realLocation
             }
         }
 
         if (updateParams.ageStage != 0) {
             map["ageStage"] = updateParams.ageStage
             if (updateLocalIfServerFailed) {
-                myUserInfo!!.ageStage = updateParams.ageStage
+                myUserInfo?.ageStage = updateParams.ageStage
             }
         }
 
@@ -325,44 +321,34 @@ object MyUserInfoManager {
                 if (obj.errno == 0) {
                     if (!updateLocalIfServerFailed) {
                         if (updateParams.nickName != null) {
-                            myUserInfo!!.userNickname = updateParams.nickName
+                            myUserInfo?.userNickname = updateParams.nickName
                         }
                         if (updateParams.sex != -1) {
-                            myUserInfo!!.sex = updateParams.sex
+                            myUserInfo?.sex = updateParams.sex
                         }
                         if (updateParams.birthday != null) {
-                            myUserInfo!!.birthday = updateParams.birthday
+                            myUserInfo?.birthday = updateParams.birthday
                         }
                         if (updateParams.avatar != null) {
-                            myUserInfo!!.avatar = updateParams.avatar
+                            myUserInfo?.avatar = updateParams.avatar
                         }
                         if (updateParams.sign != null) {
-                            myUserInfo!!.signature = updateParams.sign
+                            myUserInfo?.signature = updateParams.sign
                         }
                         if (updateParams.location != null) {
-                            myUserInfo!!.location = updateParams.location
+                            myUserInfo?.location = updateParams.location
                         }
                         if (updateParams.realLocation != null) {
-                            myUserInfo!!.location2 = updateParams.realLocation
+                            myUserInfo?.location2 = updateParams.realLocation
                         }
                         if (updateParams.ageStage != 0) {
-                            myUserInfo!!.ageStage = updateParams.ageStage
+                            myUserInfo?.ageStage = updateParams.ageStage
                         }
                     }
 
                     if (!updateLocalIfServerFailed) {
                         val userInfoModel = JSON.parseObject(obj.data!!.toString(), UserInfoModel::class.java)
-                        myUserInfo!!.userId = userInfoModel.userId.toLong()
-                        myUserInfo!!.userNickname = userInfoModel.nickname
-                        myUserInfo!!.avatar = userInfoModel.avatar
-                        myUserInfo!!.vipInfo = userInfoModel.vipInfo
-                        myUserInfo!!.birthday = userInfoModel.birthday
-                        myUserInfo!!.location = userInfoModel.location
-                        myUserInfo!!.location2 = userInfoModel.location2
-                        myUserInfo!!.sex = userInfoModel.sex
-                        myUserInfo!!.signature = userInfoModel.signature
-                        myUserInfo!!.userDisplayname = userInfoModel.nickname
-                        myUserInfo!!.ageStage = userInfoModel.ageStage
+                        myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel)
                     }
 
                     callback?.onSucess()
@@ -399,11 +385,11 @@ object MyUserInfoManager {
     }
 
     fun hasLocation(): Boolean {
-        return myUserInfo!!.location != null && myUserInfo!!.location.desc.length > 0
+        return myUserInfo?.location != null && myUserInfo?.location?.desc?.length ?: 0 > 0
     }
 
     fun hasRealLocation(): Boolean {
-        return myUserInfo!!.location2 != null && myUserInfo!!.location2.desc.length > 0
+        return myUserInfo?.location2 != null && myUserInfo?.location2?.desc?.length ?: 0 > 0
     }
 
     fun trySyncRealLocation() {

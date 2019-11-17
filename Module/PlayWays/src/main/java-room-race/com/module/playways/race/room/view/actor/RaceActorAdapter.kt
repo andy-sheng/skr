@@ -80,16 +80,17 @@ class RaceActorAdapter(val mRoomDate: RaceRoomData) : RecyclerView.Adapter<RaceA
                 statusTv.setTextColor(Color.parseColor("#FFC15B"))
                 statusTv.text = "演唱中"
             } else {
-                when {
-                    model.role == ERUserRole.ERUR_WAIT_USER.value -> {
-                        statusTv.visibility = View.VISIBLE
-                        statusTv.setTextColor(U.getColor(R.color.white_trans_50))
-                        statusTv.text = "等待中"
-                    }
-                    else -> {
-                        statusTv.visibility = View.GONE
-                    }
-                }
+                statusTv.visibility = View.GONE
+//                when {
+//                    model.role == ERUserRole.ERUR_WAIT_USER.value -> {
+//                        statusTv.visibility = View.VISIBLE
+//                        statusTv.setTextColor(U.getColor(R.color.white_trans_50))
+//                        statusTv.text = "等待中"
+//                    }
+//                    else -> {
+//                        statusTv.visibility = View.GONE
+//                    }
+//                }
             }
             descTv.text = model.userInfo.ranking?.rankingDesc
             if (!TextUtils.isEmpty(model.fakeUserInfo?.nickName)) {
