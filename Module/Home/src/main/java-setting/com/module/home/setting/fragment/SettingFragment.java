@@ -102,17 +102,17 @@ public class SettingFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mMainActContainer = getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = getRootView().findViewById(R.id.titlebar);
 
-        mEditPerson = (RelativeLayout) getRootView().findViewById(R.id.edit_person);
-        mShiming = (RelativeLayout) getRootView().findViewById(R.id.shiming);
-        mTuiguang = (RelativeLayout) getRootView().findViewById(R.id.tuiguang);
-        mVolumeSet = (RelativeLayout) getRootView().findViewById(R.id.volume_set);
+        mEditPerson = getRootView().findViewById(R.id.edit_person);
+        mShiming = getRootView().findViewById(R.id.shiming);
+        mTuiguang = getRootView().findViewById(R.id.tuiguang);
+        mVolumeSet = getRootView().findViewById(R.id.volume_set);
 
-        mClearCache = (RelativeLayout) getRootView().findViewById(R.id.clear_cache);
-        mCacheArraw = (ExImageView) getRootView().findViewById(R.id.cache_arraw);
-        mCacheSizeTv = (ExTextView) getRootView().findViewById(R.id.cache_size_tv);
+        mClearCache = getRootView().findViewById(R.id.clear_cache);
+        mCacheArraw = getRootView().findViewById(R.id.cache_arraw);
+        mCacheSizeTv = getRootView().findViewById(R.id.cache_size_tv);
 
         mVersionArea = getRootView().findViewById(R.id.version_area);
         mVersionTips = getRootView().findViewById(R.id.version_tips);
