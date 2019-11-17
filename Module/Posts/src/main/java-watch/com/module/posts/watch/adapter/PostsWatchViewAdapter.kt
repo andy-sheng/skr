@@ -58,7 +58,7 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
             }
             else -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.posts_watch_view_item_layout, parent, false)
-                PostsWatchViewHolder(view, listener)
+                PostsWatchViewHolder(view, listener, type)
             }
         }
     }
