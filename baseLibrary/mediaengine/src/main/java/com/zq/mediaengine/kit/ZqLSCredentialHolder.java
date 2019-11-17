@@ -35,6 +35,7 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
 
     private Date mDate = null;
     private ServiceStatus mSS = null;
+    private boolean mIsReleaseVersion = false;
 
     private final static int ERR_NONE = 0;
     private final static int ERR_1 = ERR_NONE + 1;
@@ -50,6 +51,9 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
 //    private final static int ERR_11 = ERR_NONE + 11;
 //    private final static int xxx = -1;
     private final static int ERR_CUT_OFF = ERR_NONE + 106; //106 是以个与服务器约定的错误代码，表示熔断
+
+
+
 
     ZqLSCredentialHolder() {
         reset();
@@ -79,9 +83,7 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
 
         if (null != mDate && System.currentTimeMillis() >= mDate.getTime()) {
             isExpired = true;
-            if (SDataManager.dbgMode) {
-                Log.d(TAG, "isExpired(): Credential is expired!");
-            }
+            MyLog.w(TAG, "isExpired(): Credential is expired!");
         }
 
         if (isExpired) {
@@ -151,14 +153,11 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
             return ERR_10;
         }
 
-
-//        if (SDataManager.dbgMode) {
-            MyLog.w(TAG, "performAuthentication_byString() after get credential info:");
-            MyLog.w(TAG, "        mAK = "+mAK);
-            MyLog.w(TAG, "        mSK = "+mSK);
-            MyLog.w(TAG, "        mToken = "+mToken);
-            MyLog.w(TAG, "        expirationStr(from STS server. GMT00:00 Time): "+expirationStr);
-//        }
+        MyLog.w(TAG, "performAuthentication_byString() after get credential info:");
+        MyLog.w(TAG, "        mAK = "+mAK);
+        MyLog.w(TAG, "        mSK = "+mSK);
+        MyLog.w(TAG, "        mToken = "+mToken);
+        MyLog.w(TAG, "        expirationStr(from STS server. GMT00:00 Time): "+expirationStr);
 
         mDate = trans2ClientExpiredDate(expirationStr);
         if (null == mDate) return ERR_9;
@@ -235,6 +234,30 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
 //    }
 
 
+    @Override
+    public void setProp(int prop, Object propData) {
+        switch (prop) {
+            case PROP_RELEASE_VERSION:
+                {
+                    if (!(propData instanceof Boolean)) {
+                        MyLog.e(TAG, "for prop("+prop+"): the object data should be Boolean, Check it!");
+                        return;
+                    }
+
+                    mIsReleaseVersion = ((Boolean)propData).booleanValue();
+                    MyLog.i(TAG, "Set test mode: "+mIsReleaseVersion);
+
+                }
+                break;
+            default:
+                {
+                    Exception e = new Exception("not suppor prop: "+prop);
+                    MyLog.e(TAG, e);
+                }
+
+        }
+    }
+
 
     @Override
     public String getAK() {
@@ -267,7 +290,7 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
 
     private final static String EXIRATION_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private Date trans2ClientExpiredDate(String serverExpiration) {
-        if (SDataManager.dbgMode) {//debug mode缩短有效期(需服务器配合)，阿里STS最短900秒; 测试用的log-store
+        if (!mIsReleaseVersion) {//test mode缩短有效期(需服务器配合)，阿里STS最短900秒; 测试用的log-store
             CREDENTIAL_PERSISTENT_MS = 900 * 1000;
             REDUNTANT_MS = 60 * 1000;
         }
@@ -285,9 +308,7 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
 
         try {
             serverExpiredDate = sdf.parse(serverExpiration);
-//            if (SDataManager.dbgMode) {
-                MyLog.w(TAG, "trans2ClientExpiredDate(): serverExpiredDate is:"+serverExpiredDate.toString());
-//            }
+            MyLog.w(TAG, "trans2ClientExpiredDate(): serverExpiredDate is:"+serverExpiredDate.toString());
         } catch (ParseException e) {
             e.printStackTrace();
 //            return ERR_9;
@@ -297,10 +318,9 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
         offset = clientCurMS - serverCurMS;
 
         clientExpiredDate = new Date(serverExpiredDate.getTime() + offset - REDUNTANT_MS);
-//        if (SDataManager.dbgMode) {
-            MyLog.w(TAG, "clientCurMS - serverCurMS = "+offset);
-            MyLog.w(TAG, "trans2ClientExpiredDate(): new client expiration is:"+clientExpiredDate.toString());
-//        }
+        MyLog.w(TAG, "clientCurMS - serverCurMS = "+offset);
+        MyLog.w(TAG, "trans2ClientExpiredDate(): new client expiration is:"+clientExpiredDate.toString());
+
         return clientExpiredDate;
     }
 

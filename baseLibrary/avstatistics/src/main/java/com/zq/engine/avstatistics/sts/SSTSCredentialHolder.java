@@ -8,6 +8,9 @@ package com.zq.engine.avstatistics.sts;
  */
 public interface SSTSCredentialHolder
 {
+
+    int PROP_RELEASE_VERSION = 1;
+
     /**
      * @brief implementation rules for {@link this#getStatus()}: if the credential is expired, then get the new credential automatically.
      */
@@ -17,6 +20,7 @@ public interface SSTSCredentialHolder
     String getSK();
     String getToken();
 
+    void setProp(int prop, Object propData);
 
     class ServiceStatus{
         public boolean isExpired;

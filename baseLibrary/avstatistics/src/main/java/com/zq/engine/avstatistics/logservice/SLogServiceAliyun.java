@@ -61,7 +61,7 @@ class SLogServiceAliyun extends SLogServiceBase{
     private boolean mHasInitialized = false;
     private LogGroup mLogGroup = null;
     private SSTSCredentialHolder mSTSHolder = null;
-
+    private boolean mUseMainPrj = false;
 
     private boolean mEnableLS = true; //false can cut the aliyun-log-service, if something un-predictable rush into our system
 
@@ -158,6 +158,7 @@ class SLogServiceAliyun extends SLogServiceBase{
                         throw new Exception("when set propID("+propID+"), the prop object should be "+SSTSCredentialHolder.class.getSimpleName());
                     }
                     mSTSHolder = (SSTSCredentialHolder)prop;
+                    mSTSHolder.setProp(SSTSCredentialHolder.PROP_RELEASE_VERSION, mUseMainPrj);
                 }
                 break;
             case PROP_ENABLE_SERVICES:
@@ -174,8 +175,9 @@ class SLogServiceAliyun extends SLogServiceBase{
                     if (!(prop instanceof Boolean)) {
                         throw new Exception("when set propID("+propID+"), the prop object should be "+Boolean.class.getSimpleName());
                     }
-                    boolean useMain = ((Boolean)prop).booleanValue();
-                    if (useMain) {
+
+                    mUseMainPrj = ((Boolean)prop).booleanValue();
+                    if (mUseMainPrj) {
                         mProject = MAIN_PROJECT;
                         mLogStore= MAIN_LOGSTORE;
                     }
@@ -184,11 +186,15 @@ class SLogServiceAliyun extends SLogServiceBase{
                         mLogStore= TEST_LOGSTORE;
                     }
 
-//                    if (SDataManager.dbgMode) {
-                        MyLog.w(TAG, "useMain project="+useMain);
-                        MyLog.w(TAG, "    project = "+mProject);
-                        MyLog.w(TAG, "    logStore= "+mLogStore);
-//                    }
+                    if (null != mSTSHolder) { //main project 对应 release version
+                        mSTSHolder.setProp(SSTSCredentialHolder.PROP_RELEASE_VERSION, mUseMainPrj);
+                    }
+
+
+                    MyLog.w(TAG, "useMain project="+mUseMainPrj);
+                    MyLog.w(TAG, "    project = "+mProject);
+                    MyLog.w(TAG, "    logStore= "+mLogStore);
+
                 }
                 break;
             default:
@@ -257,14 +263,14 @@ class SLogServiceAliyun extends SLogServiceBase{
             conf.setConnectType(ClientConfiguration.NetworkPolicy.WWAN_OR_WIFI);
 
 
-            if (SDataManager.dbgMode) {
-                MyLog.d(TAG, "new sts credentials: ");
-                MyLog.d(TAG, "        AK = "+AK);
-                MyLog.d(TAG, "        SK = "+SK);
-                MyLog.d(TAG, "        token = "+token);
+//            if (SDataManager.dbgMode) {
+                MyLog.i(TAG, "new sts credentials: ");
+                MyLog.i(TAG, "        AK = "+AK);
+                MyLog.i(TAG, "        SK = "+SK);
+                MyLog.i(TAG, "        token = "+token);
 
                 SLSLog.enableLog(); // log打印在控制台
-            }
+//            }
 
             mLogClient = new LOGClient(mParam.appCtx, mEndPoint, credentialProvider, conf);
         }
