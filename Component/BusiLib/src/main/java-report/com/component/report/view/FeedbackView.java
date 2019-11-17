@@ -138,9 +138,13 @@ public class FeedbackView extends RelativeLayout {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {
+                    boolean hasLyricNoShowIv = false;
                     ArrayList<Integer> tags = new ArrayList<>();
                     for (ExImageView imageView : mSelectIvList) {
                         if (imageView.isSelected()) {
+                            if( imageView == mLyricNoShowIv){
+                                hasLyricNoShowIv = true;
+                            }
                             tags.add(Integer.parseInt((String) imageView.getTag()));
                         }
                     }
@@ -149,6 +153,8 @@ public class FeedbackView extends RelativeLayout {
                         U.getToastUtil().showShort("请选择顶部的选项哦");
                     } else if(mActionType==0 && TextUtils.isEmpty(mFeedbackContent.getText().toString())){
                         U.getToastUtil().showShort("请填写要反馈的内容,能配上截图更好");
+                    }else if (mActionType ==0 && hasLyricNoShowIv && mImageItemArrayList.isEmpty()){
+                        U.getToastUtil().showShort("请上传歌词未显示的截图");
                     }else {
                         mListener.onClickSubmit(tags, mFeedbackContent.getText().toString().trim(), mImageItemArrayList);
                     }
