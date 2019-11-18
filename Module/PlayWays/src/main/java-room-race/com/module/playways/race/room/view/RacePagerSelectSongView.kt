@@ -25,7 +25,6 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.adapter.RaceSelectSongRecyclerAdapter
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.race.room.model.RaceGamePlayInfo
-import com.module.playways.songmanager.SongManagerActivity
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -134,19 +133,11 @@ class RacePagerSelectSongView : ExConstraintLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceWantSingChanceEvent) {
-        mHasSignUpItemId = event.itemID
-        if (mPagerAdapter?.mRaceGamePlayInfoList?.get(mCurrentPosition)?.commonMusic?.itemID == mHasSignUpItemId) {
-            mPagerAdapter?.mRaceGamePlayInfoList?.get(mCurrentPosition)?.let {
-                addSelectedSong(it)
-            }
-        } else {
-            mPagerAdapter?.mRaceGamePlayInfoList?.forEach {
-                if (it.commonMusic?.itemID == mHasSignUpItemId) {
-                    addSelectedSong(it)
-                    return@forEach
-                }
-            }
-        }
+        mHasSignUpItemId = event.songModel.itemID
+        addSelectedSong(RaceGamePlayInfo().apply {
+            commonMusic = event.songModel
+            roundGameType = mPagerAdapter?.mRaceGamePlayInfoList?.get(0)?.roundGameType ?: 0
+        })
     }
 
     private fun addSelectedSong(info: RaceGamePlayInfo) {
