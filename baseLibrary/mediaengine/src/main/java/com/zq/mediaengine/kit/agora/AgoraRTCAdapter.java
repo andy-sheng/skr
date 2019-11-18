@@ -125,9 +125,7 @@ public class AgoraRTCAdapter {
 
     public static synchronized void destroy() {
         if (sInstance != null) {
-
 //            sInstance.stopStatisticThread();
-
             sInstance.destroy(true);
             sInstance = null;
         }
@@ -241,47 +239,6 @@ public class AgoraRTCAdapter {
             mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO, "网络丢失"), 0);
         }
     }
-
-//    public void startMonitorNetwork(Context ctx) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
-//            connectivityManager.requestNetwork(new NetworkRequest.Builder().
-//                    build(), new ConnectivityManager.NetworkCallback() {
-//
-//                @Override
-//                public void onAvailable(Network network) {
-//                    super.onAvailable(network);
-////                    Log.d(TAG, "onAvailable: 网络已连接");
-//                    mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO, "网络已连接"),0);
-//                }
-//
-//                @Override
-//                public void onLost(Network network) {
-//                    super.onLost(network);
-////                    Log.e(TAG, "onLost: 网络已断开");
-//                    mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO, "网络丢失"),0);
-//                }
-//
-////                @Override
-////                public void onCapabilitiesChanged(Network network, NetworkCapabilities networkCapabilities) {
-////                    super.onCapabilitiesChanged(network, networkCapabilities);
-////                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
-////                        if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-////                            Log.d(TAG, "onCapabilitiesChanged: 网络类型为wifi");
-////                        } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-////                            Log.d(TAG, "onCapabilitiesChanged: 蜂窝网络");
-////                        } else {
-////                            Log.d(TAG, "onCapabilitiesChanged: 其他网络");
-////                        }
-////                        mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO, "网络切换"),0);
-////                    }
-////                }
-//
-//
-//            });
-//        }
-//    }
-
 
     private AgoraRTCAdapter(GLRender glRender) {
         mGLRender = glRender;
@@ -784,6 +741,7 @@ public class AgoraRTCAdapter {
         adjustPlaybackSignalVolume(mConfig.getPlaybackSignalVolume());
         adjustAudioMixingPlayoutVolume(mConfig.getAudioMixingPlayoutVolume());
         adjustAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume());
+        enableInEarMonitoring(mConfig.isEnableInEarMonitoring());
     }
 
     /**
