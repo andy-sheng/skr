@@ -3,9 +3,7 @@ package com.module.home.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -17,10 +15,9 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
-import com.common.view.titlebar.CommonTitleBar;
-import com.dialog.view.StrokeTextView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.event.ExchangeDiamondSuccessEvent;
 import com.module.home.event.PhoneAuthSuccessEvent;
 import com.module.home.event.WithDrawSuccessEvent;
 import com.module.home.inter.IInComeView;
@@ -28,8 +25,8 @@ import com.module.home.model.ExChangeInfoModel;
 import com.module.home.model.WithDrawInfoModel;
 import com.module.home.presenter.InComePresenter;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -62,6 +59,7 @@ public class InComeFragment extends BaseFragment implements IInComeView {
             if (requestCode == DQ_EXCHANGE_REQ) {
                 mInComePresenter.getBalance();
                 mInComePresenter.getDqBalance();
+                EventBus.getDefault().post(new ExchangeDiamondSuccessEvent());
             }
         }
     };
