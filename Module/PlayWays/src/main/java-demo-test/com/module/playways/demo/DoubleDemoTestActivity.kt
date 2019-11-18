@@ -9,9 +9,13 @@ import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.ex.ExTextView
+import com.component.lyrics.LyricAndAccMatchManager
+import com.component.lyrics.LyricsReader
+import com.component.lyrics.widget.ManyLyricsView
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.playways.R
+import com.module.playways.room.data.H
 import com.zq.mediaengine.kit.ZqEngineKit
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -27,7 +31,8 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
     }
     lateinit var readyBtn: ExTextView
     lateinit var changeBtn: ExTextView
-
+    lateinit var mManyLyricsView: ManyLyricsView
+    val lyricAndAccMatchManager = LyricAndAccMatchManager()
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.double_demo_activity_layout
     }
@@ -35,6 +40,9 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
     override fun initData(savedInstanceState: Bundle?) {
         readyBtn = this.findViewById(R.id.ready_btn)
         changeBtn = this.findViewById(R.id.change_btn)
+        mManyLyricsView = this.findViewById(R.id.many_lyrics_view)
+        mManyLyricsView?.initLrcData()
+
         ZqEngineKit.getInstance().init("demotest", Params.getFromPref())
         ZqEngineKit.getInstance().joinRoom("chengsimin", MyUserInfoManager.uid.toInt(), false, "")
         readyBtn.setOnClickListener {
@@ -50,6 +58,33 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
             debugLogView.tryInflate()
         }
 
+        val configParams = LyricAndAccMatchManager.ConfigParams()
+        configParams.manyLyricsView = mManyLyricsView
+//        configParams.voiceScaleView = mVoiceScaleView
+        configParams.lyricUrl = "http://song-static.inframe.mobi/lrc/2c1b863d281e9343e713d9506eb7243a.zrce"
+        configParams.lyricBeginTs = 0
+        configParams.lyricEndTs = 4*60*1000
+        configParams.accBeginTs = 0
+        configParams.accEndTs = 4*60*1000
+//        configParams.authorName = songModel.uploaderName
+        lyricAndAccMatchManager!!.setArgs(configParams)
+        lyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener {
+
+            override fun onLyricParseSuccess(reader: LyricsReader) {
+//                mSvlyric?.visibility = View.GONE
+            }
+
+            override fun onLyricParseFailed() {
+//                playWithNoAcc(songModel)
+            }
+
+            override fun onLyricEventPost(lineNum: Int) {
+                if (H.isGrabRoom()) {
+                    H.grabRoomData?.songLineNum = lineNum
+                }
+            }
+        })
+//        ZqEngineKit.getInstance().setRecognizeListener { result, list, targetSongInfo, lineNo -> mLyricAndAccMatchManager!!.onAcrResult(result, list, targetSongInfo, lineNo) }
     }
 
     /**
@@ -57,8 +92,9 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
      *
      * @param event
      */
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: EngineEvent) {
+        MyLog.d(TAG, "onEvent event = $event")
         if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
             val roleChangeInfo = event.getObj<EngineEvent.RoleChangeInfo>()
             if (roleChangeInfo.newRole == 1) {
@@ -76,7 +112,7 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
             DebugLogView.println(getTag(),"伴奏播放结束")
         } else if(event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER){
             val timeInfo = event.getObj<Any>() as EngineEvent.MixMusicTimeInfo
-            DebugLogView.println(getTag(),"伴奏前进 cur=${timeInfo.current}")
+            //DebugLogView.println(getTag(),"伴奏前进 cur=${timeInfo.current}")
         }else {
         }
     }
@@ -128,6 +164,8 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
 
     override fun destroy() {
         super.destroy()
+        mManyLyricsView?.release()
+        lyricAndAccMatchManager.stop()
         ZqEngineKit.getInstance().destroy("demotest")
     }
 
