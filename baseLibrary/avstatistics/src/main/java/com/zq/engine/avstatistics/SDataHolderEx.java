@@ -16,6 +16,8 @@ import io.agora.rtc.IRtcEngineEventHandler;
 
 public class SDataHolderEx
 {
+    private final static String TAG = "[SLS]SDataHolderEx";
+
     private String mLinePrefix = "";
 
 

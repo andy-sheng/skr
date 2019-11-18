@@ -66,6 +66,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AgoraRTCAdapter {
     public final String TAG = "AgoraRTCAdapter";
+    public final String TAG_SLS = "[SLS]"+TAG;
     private final static boolean VERBOSE = false && MyLog.isDebugLogOpen();
 
     private static AgoraRTCAdapter sInstance;
@@ -135,7 +136,7 @@ public class AgoraRTCAdapter {
         SDataManager.getInstance().setSTSCredentialHolder(scHolder).enableLogService(true);
 
         String channel = U.getChannelUtils().getChannel();
-        MyLog.w("[SLS]"+TAG, "initLogService() channel="+channel);
+        MyLog.w(TAG_SLS, "initLogService() app channel="+channel);
 
 
 
@@ -215,10 +216,11 @@ public class AgoraRTCAdapter {
 
                 }
             };
-            mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_PING_INFO), 0);
-            mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO), 0);
-            mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 4000);//触发进入循环
         }
+
+        mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_PING_INFO), 0);
+        mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO), 0);
+        mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 4000);//触发进入循环
 
 //        Context ctx = U.app().getApplicationContext();
 //        startMonitorNetwork(ctx);
@@ -414,7 +416,7 @@ public class AgoraRTCAdapter {
         public void onLeaveChannel(RtcStats stats) {
             super.onLeaveChannel(stats);
             stopStatistics();
-            SDataManager.getInstance().setChannelID("no-channel").setChannelJoinElipse(-1).setUserID(-1);
+//            SDataManager.getInstance().setChannelID("no-channel").setChannelJoinElipse(-1).setUserID(-1);
             mInAudioStatistic = false; //下次启动采集的时候看到true，会记录时时间戳
             if (mOutCallback != null) {
                 mOutCallback.onLeaveChannel(stats);

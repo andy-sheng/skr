@@ -12,6 +12,12 @@
 #   public *;
 #}
 
+
+#-keep class com.zq.engine.avstatistics.datastruct.** { *; }
+#-keep class com.zq.engine.avstatistics.datastruct.SAgora$* { *; }
+#-keep class com.zq.engine.avstatistics.datastruct.SAgoraUserEvent$* { *; }
+#-keep class com.zq.engine.avstatistics.datastruct.Skr$* { *; }
+
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 #-keepattributes SourceFile,LineNumberTable

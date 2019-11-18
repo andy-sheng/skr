@@ -155,7 +155,7 @@ class SLogServiceAliyun extends SLogServiceBase{
                     if (null != mSTSHolder) return;
 
                     if (!(prop instanceof SSTSCredentialHolder)) {
-                        throw new Exception("when set propID("+propID+"), the prop object should be "+SSTSCredentialHolder.class.getSimpleName());
+                        throw new Exception("when set propID("+propID+"), the prop object should be SSTSCredentialHolder");
                     }
                     mSTSHolder = (SSTSCredentialHolder)prop;
                     mSTSHolder.setProp(SSTSCredentialHolder.PROP_RELEASE_VERSION, mUseMainPrj);
@@ -199,8 +199,7 @@ class SLogServiceAliyun extends SLogServiceBase{
                 break;
             default:
                 {
-                    throw new Exception("This ClassName("+
-                            this.getClass().getSimpleName()+") doesn't support the propID("+propID+")");
+                    throw new Exception("This ClassName(SLogServicesAliyun) doesn't support the propID("+propID+")");
                 }
 
         }
@@ -296,7 +295,10 @@ class SLogServiceAliyun extends SLogServiceBase{
                 }
             });
         } catch (LogException e) {
-            e.printStackTrace();
+
+            MyLog.w(TAG, "uploadLogGroupAsync() exception = "+ e.toString());
+
+            //e.printStackTrace();
         }
         return;
     }

@@ -46,7 +46,7 @@ public class Skr
 
         @Override
         public String getKey() {
-            return getClass().getSimpleName();
+            return "PingInfo";
         }
 
 
@@ -102,7 +102,7 @@ public class Skr
 
         @Override
         public String getKey() {
-            return getClass().getSimpleName();
+            return "NetworkInfo";
         }
 
     }

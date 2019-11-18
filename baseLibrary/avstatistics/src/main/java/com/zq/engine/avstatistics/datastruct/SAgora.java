@@ -84,7 +84,7 @@ public class SAgora //all struct related to Agora is defined here!
 
         @Override
         public String getKey() {
-            return getClass().getSimpleName();
+            return  "SPlayerInfo";
         }
     }
 
@@ -152,7 +152,7 @@ public class SAgora //all struct related to Agora is defined here!
 
         @Override
         public String getKey() {
-            return getClass().getSimpleName();
+            return "SAudioSamplingInfo";
         }
 
         public void reset() {
@@ -222,7 +222,7 @@ public class SAgora //all struct related to Agora is defined here!
 
         @Override
         public String getKey() {
-            return getClass().getSimpleName();
+            return "SRTCStats";
         }
     }
 
@@ -283,7 +283,7 @@ public class SAgora //all struct related to Agora is defined here!
 
         @Override
         public String getKey() {
-            return getClass().getSimpleName();
+            return "SLocalVideoStats'";
         }
     }
 
@@ -322,7 +322,7 @@ public class SAgora //all struct related to Agora is defined here!
 
         @Override
         public String getKey() {
-            return getClass().getSimpleName();
+            return "SRemoteAudioStats";
         }
     }
 
@@ -362,7 +362,7 @@ public class SAgora //all struct related to Agora is defined here!
 
         @Override
         public String getKey() {
-            return getClass().getSimpleName();
+            return "SRemoteVideoStats";
         }
     }
 
@@ -399,7 +399,7 @@ public class SAgora //all struct related to Agora is defined here!
 
         @Override
         public String getKey() {
-            return getClass().getSimpleName();
+            return "SRemoteVideoTransportStat";
         }
     }
 
@@ -436,7 +436,7 @@ public class SAgora //all struct related to Agora is defined here!
 
         @Override
         public String getKey() {
-            return getClass().getSimpleName();
+            return "SRemoteAudioTransportStats";
         }
     }
 
@@ -473,7 +473,7 @@ public class SAgora //all struct related to Agora is defined here!
 
         @Override
         public String getKey() {
-            return getClass().getSimpleName();
+            return "SNetworkQuality";
         }
     } //end of class SAgora.SNetworkQuality
 

@@ -2,7 +2,6 @@ package com.zq.engine.avstatistics;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import com.common.log.MyLog;
 import com.zq.engine.avstatistics.datastruct.ILogItem;
@@ -52,6 +51,7 @@ public class SDataManager {
         } catch (Exception e) {
             MyLog.e(TAG, e);
         }
+        mBasicInfo.userID = userID;
         return this;
     }
 
@@ -102,12 +102,12 @@ public class SDataManager {
     }
 
 
-    public SDataManager setBasicInfo(SDataMgrBasicInfo info) {
-        mBasicInfo.userID = info.userID;
-//        mBasicInfo.userName = info.userName;
-
-        return this;
-    }
+//    public SDataManager setBasicInfo(SDataMgrBasicInfo info) {
+//        mBasicInfo.userID = info.userID;
+////        mBasicInfo.userName = info.userName;
+//
+//        return this;
+//    }
 
     public SDataManager setChannelID(String channelID) {
         mBasicInfo.channelID = channelID;
