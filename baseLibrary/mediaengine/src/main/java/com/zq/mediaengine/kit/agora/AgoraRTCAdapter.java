@@ -559,32 +559,30 @@ public class AgoraRTCAdapter {
             }
             mRtcEngine.enableAudio();
 
-            int a = 3, b = 4;
+            int profile = Constants.AUDIO_PROFILE_MUSIC_STANDARD_STEREO;
+            int scenario = Constants.AUDIO_SCENARIO_GAME_STREAMING;
             /**
-             * 如果b==3 ，onRecordFrame 里是人声
-             * 如果b==4 ，onRecordFrame 是伴奏+人声
+             * 在音乐场景下，我们需要使用 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO 档次
              */
             switch (mConfig.getScene()) {
                 case rank:
-                    b = 3;
+                    profile = Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO;
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
                 case grab:
-                    b = 3;
+                    profile = Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO;
                     break;
                 case doubleChat:
-                    b = 3;
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
                 case voice:
-                    b = 3;
                     break;
                 case audiotest:
-                    b = 3;
+                    profile = Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO;
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
             }
-            mRtcEngine.setAudioProfile(a, b);
+            mRtcEngine.setAudioProfile(profile, scenario);
 
 //            mRtcEngine.setParameters("{\"che.audio.opensl\": true}");
             mRtcEngine.setParameters("{\"che.audio.specify.codec\": \"OPUS\"}");
@@ -833,7 +831,9 @@ public class AgoraRTCAdapter {
      */
     public int joinChannel(String token, String channelId, String extra, int uid, SSTSCredentialHolder cHolder) {
         tryInitRtcEngine();
-        MyLog.d(TAG, "joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
+        channelId = "bul";
+        token = null;
+        MyLog.i(TAG, "joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
         // 一定要设置一个角色
         String t = null;
         if (!TextUtils.isEmpty(token)) {
