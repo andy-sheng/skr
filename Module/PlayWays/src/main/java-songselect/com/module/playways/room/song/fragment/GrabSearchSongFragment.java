@@ -3,6 +3,8 @@ package com.module.playways.room.song.fragment;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -68,6 +70,8 @@ public class GrabSearchSongFragment extends BaseFragment {
     int mFrom;
     boolean isOwner;
 
+    Handler mUihandler = new Handler(Looper.getMainLooper());
+
     @Override
     public int initView() {
         return R.layout.grab_search_song_fragment_layout;
@@ -99,18 +103,25 @@ public class GrabSearchSongFragment extends BaseFragment {
         mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                if (mFrom != SongManagerActivity.TYPE_FROM_RACE) {
+                if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
+                    if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                        mUihandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                clickItem(model);
+                            }
+                        }, 200);
+                    } else {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                        clickItem(model);
+                    }
+                } else {
                     U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                    clickItem(model);
                 }
-                if (model == null) {
-                    // 搜歌反馈
-                    showSearchFeedback();
-                    return;
-                }
-                SongModel songModel = (SongModel) model;
-                if (getFragmentDataListener() != null) {
-                    getFragmentDataListener().onFragmentResult(0, 0, null, songModel);
-                }
+
+
             }
         }, true, selectMode, isOwner);
         mSearchResult.setAdapter(mSongSelectAdapter);
@@ -133,14 +144,11 @@ public class GrabSearchSongFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
-                    if (getActivity() != null) {
-                        getActivity().finish();
-                    }
+                    finishSongManageActivity();
                 } else {
                     U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                     U.getFragmentUtils().popFragment(GrabSearchSongFragment.this);
                 }
-
             }
         });
 
@@ -163,12 +171,25 @@ public class GrabSearchSongFragment extends BaseFragment {
             }
         });
 
-        mTitlebar.postDelayed(new Runnable() {
+        mUihandler.removeCallbacksAndMessages(null);
+        mUihandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
             }
         }, 200);
+    }
+
+    private void clickItem(Object model) {
+        if (model == null) {
+            // 搜歌反馈
+            showSearchFeedback();
+            return;
+        }
+        SongModel songModel = (SongModel) model;
+        if (getFragmentDataListener() != null) {
+            getFragmentDataListener().onFragmentResult(0, 0, null, songModel);
+        }
     }
 
     private void searchGrabMusicItems(String keyword) {
@@ -343,6 +364,34 @@ public class GrabSearchSongFragment extends BaseFragment {
         }
         if (mSearchFeedbackDialog != null) {
             mSearchFeedbackDialog.dismiss();
+        }
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
+            finishSongManageActivity();
+            return true;
+        } else {
+            return super.onBackPressed();
+        }
+    }
+
+    private void finishSongManageActivity() {
+        if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+            mUihandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
+                }
+            }, 200);
+        } else {
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
         }
     }
 }
