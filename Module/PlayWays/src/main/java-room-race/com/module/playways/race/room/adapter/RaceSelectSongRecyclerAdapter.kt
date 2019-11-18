@@ -119,10 +119,12 @@ class RaceSelectSongRecyclerAdapter : RecyclerView.Adapter<RaceSelectSongRecycle
                 } else {
                     signUpTv.visibility = View.GONE
                 }
+                searchIv.visibility = View.GONE
             } else {
                 signUpTv.isEnabled = true
                 signUpTv.text = "报名"
                 signUpTv.visibility = View.VISIBLE
+                searchIv.visibility = View.VISIBLE
             }
 
             loadLyricTask?.dispose()
