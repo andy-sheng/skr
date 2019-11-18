@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 
 import com.common.base.BaseActivity
+import com.common.base.FragmentDataListener
+import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.PinyinUtils
 import com.common.utils.U
@@ -12,9 +14,14 @@ import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.mic.room.MicRoomData
+import com.module.playways.race.room.RaceRoomData
+import com.module.playways.room.song.fragment.GrabSearchSongFragment
+import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.fragment.DoubleSongManageFragment
 import com.module.playways.songmanager.fragment.GrabSongManageFragment
 import com.module.playways.songmanager.fragment.MicSongManageFragment
+import org.greenrobot.eventbus.EventBus
 
 class SongManagerActivity : BaseActivity() {
 
@@ -51,6 +58,23 @@ class SongManagerActivity : BaseActivity() {
                     .setExitAnim(R.anim.slide_right_out)
                     .addDataBeforeAdd(0, mRoomData)
                     .build())
+        } else if (from == TYPE_FROM_RACE) {
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabSearchSongFragment::class.java)
+                    .setAddToBackStack(true)
+                    .setHasAnimation(false)
+                    .addDataBeforeAdd(0, TYPE_FROM_RACE)
+                    .addDataBeforeAdd(1, false)
+                    .setFragmentDataListener(object : FragmentDataListener {
+                        override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
+                            if (requestCode == 0 && resultCode == 0 && obj != null) {
+                                val model = obj as SongModel
+                                MyLog.d(TAG, "onFragmentResult model=$model")
+                                EventBus.getDefault().post(AddSongEvent(model))
+                            }
+                            finish()
+                        }
+                    })
+                    .build())
         }
     }
 
@@ -71,6 +95,7 @@ class SongManagerActivity : BaseActivity() {
         const val TYPE_FROM_GRAB = 1
         const val TYPE_FROM_DOUBLE = 2
         const val TYPE_FROM_MIC = 3
+        const val TYPE_FROM_RACE = 4
 
         fun open(activity: FragmentActivity?, roomData: GrabRoomData) {
             val intent = Intent(activity, SongManagerActivity::class.java)
@@ -86,9 +111,16 @@ class SongManagerActivity : BaseActivity() {
             activity?.startActivity(intent)
         }
 
-        fun open(activity: FragmentActivity?,roomData: MicRoomData){
+        fun open(activity: FragmentActivity?, roomData: MicRoomData) {
             val intent = Intent(activity, SongManagerActivity::class.java)
             intent.putExtra("from", TYPE_FROM_MIC)
+            intent.putExtra("room_data", roomData)
+            activity?.startActivity(intent)
+        }
+
+        fun open(activity: FragmentActivity?, roomData: RaceRoomData) {
+            val intent = Intent(activity, SongManagerActivity::class.java)
+            intent.putExtra("from", TYPE_FROM_RACE)
             intent.putExtra("room_data", roomData)
             activity?.startActivity(intent)
         }

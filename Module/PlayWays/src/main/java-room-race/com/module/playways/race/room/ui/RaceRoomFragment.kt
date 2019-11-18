@@ -57,6 +57,8 @@ import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.SongManagerActivity
+import com.module.playways.songmanager.event.AddSongEvent
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.RaceRoom.ERUserRole
@@ -213,8 +215,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         if (!mRoomData.audience) {
             mRacePagerSelectSongView?.mRoomData = mRoomData
 
-            mRacePagerSelectSongView?.mSignUpMethed = { itemID, model ->
+            mRacePagerSelectSongView?.mSignUpMethod = { itemID, model ->
                 mCorePresenter.wantSingChance(itemID, model?.commonMusic)
+            }
+
+            mRacePagerSelectSongView?.mSongManageMethod = {
+                SongManagerActivity.open(activity, mRoomData)
             }
 
             mRacePagerSelectSongView?.showView()
@@ -570,6 +576,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         } else {
             U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: AddSongEvent) {
+        mCorePresenter.wantSingChance(event.songModel.itemID, event.songModel)
     }
 
     override fun singBySelfFirstRound(songModel: SongModel?) {

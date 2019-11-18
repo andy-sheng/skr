@@ -62,6 +62,7 @@ public interface SongSelectServerApi {
 
     /**
      * 普通搜索
+     *
      * @param keyword
      * @return
      */
@@ -70,6 +71,7 @@ public interface SongSelectServerApi {
 
     /**
      * 一唱到底搜索
+     *
      * @param keyword
      * @return
      */
@@ -78,19 +80,21 @@ public interface SongSelectServerApi {
 
     /**
      * 双人房搜歌
+     *
      * @param keyword
      * @return
      */
     @GET("/v1/playbook/search-magpie-item")
-    Observable<ApiResult> searchDoubleMusicItems(@Query("keyword")String keyword);
+    Observable<ApiResult> searchDoubleMusicItems(@Query("keyword") String keyword);
 
     /**
      * 排麦房搜歌
+     *
      * @param keyword
      * @return
      */
     @GET("http://dev.game.inframe.mobi/v1/micgame/search-stand-intro")
-    Observable<ApiResult> searchMicMusicItems(@Query("keyword")String keyword);
+    Observable<ApiResult> searchMicMusicItems(@Query("keyword") String keyword);
 
     @GET("/v1/playbook/report-not-exist-song")
     Observable<ApiResult> reportNotExistSong(@Query("name") String name,
@@ -99,6 +103,7 @@ public interface SongSelectServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/game/practice-room/enter")
     Observable<ApiResult> reportAuditionSong(@Body RequestBody body);
 
-
+    @GET("http://dev.game.inframe.mobi/v1/racegame/search")
+    Observable<ApiResult> searchRaceMusicItems(@Query("keyword") String keyword);
 }
 

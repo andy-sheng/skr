@@ -93,11 +93,15 @@ public class GrabSearchSongFragment extends BaseFragment {
             selectMode = SongSelectAdapter.DOUBLE_MODE;
         } else if (mFrom == SongManagerActivity.TYPE_FROM_MIC) {
             selectMode = SongSelectAdapter.MIC_MODE;
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
+            selectMode = SongSelectAdapter.RACE_MODE;
         }
         mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                if (mFrom != SongManagerActivity.TYPE_FROM_RACE) {
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                }
                 if (model == null) {
                     // 搜歌反馈
                     showSearchFeedback();
@@ -128,8 +132,15 @@ public class GrabSearchSongFragment extends BaseFragment {
         mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                U.getFragmentUtils().popFragment(GrabSearchSongFragment.this);
+                if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
+                } else {
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                    U.getFragmentUtils().popFragment(GrabSearchSongFragment.this);
+                }
+
             }
         });
 
@@ -302,6 +313,8 @@ public class GrabSearchSongFragment extends BaseFragment {
             return songSelectServerApi.searchGrabMusicItems(content).subscribeOn(Schedulers.io());
         } else if (mFrom == SongManagerActivity.TYPE_FROM_MIC) {
             return songSelectServerApi.searchMicMusicItems(content).subscribeOn(Schedulers.io());
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
+            return songSelectServerApi.searchRaceMusicItems(content).subscribeOn(Schedulers.io());
         } else {
             return songSelectServerApi.searchDoubleMusicItems(content).subscribeOn(Schedulers.io());
         }

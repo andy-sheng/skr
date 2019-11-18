@@ -25,6 +25,7 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.adapter.RaceSelectSongRecyclerAdapter
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.race.room.model.RaceGamePlayInfo
+import com.module.playways.songmanager.SongManagerActivity
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -39,7 +40,8 @@ class RacePagerSelectSongView : ExConstraintLayout {
     var mRoomData: RaceRoomData? = null
     var mPagerAdapter: RaceSelectSongRecyclerAdapter? = null
     var mHasSignUpItemId = -1
-    var mSignUpMethed: ((Int, RaceGamePlayInfo?) -> Unit)? = null
+    var mSignUpMethod: ((Int, RaceGamePlayInfo?) -> Unit)? = null
+    var mSongManageMethod: (() -> Unit)? = null
     private var mCardScaleHelper: CardScaleHelper? = null
 
     //在滑动到最后的时候自动加载更多
@@ -76,12 +78,16 @@ class RacePagerSelectSongView : ExConstraintLayout {
         mPagerAdapter = RaceSelectSongRecyclerAdapter()
         mRecyclerView.adapter = mPagerAdapter
         mPagerAdapter?.mIRaceSelectListener = object : RaceSelectSongRecyclerAdapter.IRaceSelectListener {
+            override fun onSearchClick() {
+                mSongManageMethod?.invoke()
+            }
+
             override fun onCloseClick() {
                 hideView()
             }
 
             override fun onSignUp(itemID: Int, model: RaceGamePlayInfo?) {
-                mSignUpMethed?.invoke(itemID, model)
+                mSignUpMethod?.invoke(itemID, model)
             }
 
             override fun getSignUpItemID(): Int {

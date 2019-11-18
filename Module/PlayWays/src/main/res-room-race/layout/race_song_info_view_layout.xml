@@ -99,9 +99,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
         android:padding="@dimen/view_10_dp"
         android:src="@drawable/baoming_guanbi"
+        app:layout_constraintLeft_toLeftOf="@id/bg"
+        app:layout_constraintTop_toTopOf="@+id/bg" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/search_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:padding="@dimen/view_10_dp"
+        android:src="@drawable/race_search_icon"
         app:layout_constraintRight_toRightOf="@id/bg"
         app:layout_constraintTop_toTopOf="@+id/bg" />
 
