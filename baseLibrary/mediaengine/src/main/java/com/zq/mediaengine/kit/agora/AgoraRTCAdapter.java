@@ -14,6 +14,7 @@ import com.engine.Params;
 import com.engine.agora.AgoraEngineCallbackWithLog;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
+import com.zq.engine.avstatistics.SDataHolderEx;
 import com.zq.engine.avstatistics.SDataManager;
 import com.zq.engine.avstatistics.SUtils;
 import com.zq.engine.avstatistics.datastruct.SAgora;
@@ -138,14 +139,21 @@ public class AgoraRTCAdapter {
         String channel = U.getChannelUtils().getChannel();
         MyLog.w(TAG_SLS, "initLogService() app channel="+channel);
 
-
-
-
         if (null == channel || "DEV".equals(channel) || "TEST".equals(channel) || "SANDBOX".equals(channel)) {
             SDataManager.getInstance().useMainLogProject(false);
         }
         else {
             SDataManager.getInstance().useMainLogProject(true);
+        }
+
+        if (U.getDeviceUtils().getHeadsetPlugOn()) {
+            SDataManager.getInstance().getDataHolder().addAudioRoutine(SDataHolderEx.AR_HEADSET);
+        }
+        else if (U.getDeviceUtils().getBlueToothHeadsetOn()) {
+            SDataManager.getInstance().getDataHolder().addAudioRoutine(SDataHolderEx.AR_BLUETOOTH);
+        }
+        else {
+            SDataManager.getInstance().getDataHolder().addAudioRoutine(SDataHolderEx.AR_PHONE_SPEAKER);
         }
 
     }

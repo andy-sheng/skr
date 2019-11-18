@@ -14,6 +14,11 @@ import java.util.List;
 
 import io.agora.rtc.IRtcEngineEventHandler;
 
+import static com.zq.engine.avstatistics.datastruct.SAgoraUserEvent.EVENT_TYPE_onAudioRouteChanged;
+import static io.agora.rtc.Constants.AUDIO_ROUTE_HEADSET;
+import static io.agora.rtc.Constants.AUDIO_ROUTE_HEADSETBLUETOOTH;
+import static io.agora.rtc.Constants.AUDIO_ROUTE_SPEAKERPHONE;
+
 public class SDataHolderEx
 {
     private final static String TAG = "[SLS]SDataHolderEx";
@@ -210,6 +215,35 @@ public class SDataHolderEx
         mItemList.add(e);
         return;
     }
+
+    public final static int AR_PHONE_SPEAKER = 1;
+    public final static int AR_BLUETOOTH = 2;
+    public final static int AR_HEADSET = 3;
+
+    public void addAudioRoutine(int type) {
+        SAgoraUserEvent n = new SAgoraUserEvent();
+        n.ts = System.currentTimeMillis();
+        n.type = EVENT_TYPE_onAudioRouteChanged;
+        n.uid = -1;
+
+        switch (type) {
+            case AR_HEADSET:
+                n.event = new SAgoraUserEvent.AudioRouting(AUDIO_ROUTE_HEADSET);
+                break;
+            case AR_BLUETOOTH:
+                n.event = new SAgoraUserEvent.AudioRouting(AUDIO_ROUTE_HEADSETBLUETOOTH);
+                break;
+            case AR_PHONE_SPEAKER:
+                n.event = new SAgoraUserEvent.AudioRouting(AUDIO_ROUTE_SPEAKERPHONE);
+                break;
+            default:
+                return;
+        }
+
+        mItemList.add(n);
+
+    }
+
 
     public List<ILogItem> getItemList() {
         return mItemList;
