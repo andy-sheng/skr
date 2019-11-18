@@ -1,10 +1,6 @@
 package com.zq.mediaengine.kit.agora;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkRequest;
-import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
@@ -18,10 +14,13 @@ import com.engine.Params;
 import com.engine.agora.AgoraEngineCallbackWithLog;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
-import com.engine.statistics.SDataManager;
-import com.engine.statistics.SUtils;
-import com.engine.statistics.datastruct.SAgora;
-import com.engine.statistics.datastruct.Skr;
+import com.zq.engine.avstatistics.SDataHolderEx;
+import com.zq.engine.avstatistics.SDataManager;
+import com.zq.engine.avstatistics.SUtils;
+import com.zq.engine.avstatistics.datastruct.SAgora;
+import com.zq.engine.avstatistics.datastruct.Skr;
+import com.zq.engine.avstatistics.logservice.SLogServiceBase;
+import com.zq.engine.avstatistics.sts.SSTSCredentialHolder;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
@@ -68,6 +67,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AgoraRTCAdapter {
     public final String TAG = "AgoraRTCAdapter";
+    public final String TAG_SLS = "[SLS]"+TAG;
     private final static boolean VERBOSE = false && MyLog.isDebugLogOpen();
 
     private static AgoraRTCAdapter sInstance;
@@ -113,22 +113,49 @@ public class AgoraRTCAdapter {
     private HandlerThread mLogMonThread = null;
     private Handler mLogMonHandler = null;
     private boolean mRunStatistic = false;
+    private SLogServiceBase mLs = null;
 
     public static synchronized AgoraRTCAdapter create(GLRender glRender) {
         if (sInstance == null) {
             sInstance = new AgoraRTCAdapter(glRender);
-
-//            sInstance.startStatisticThread();
         }
         return sInstance;
     }
 
     public static synchronized void destroy() {
         if (sInstance != null) {
-//            sInstance.stopStatisticThread();
             sInstance.destroy(true);
             sInstance = null;
         }
+    }
+
+    public void initLogService(SSTSCredentialHolder scHolder)
+    {
+        int skrUid = mConfig.getSelfUid();
+        Context ctx = U.app().getApplicationContext();
+        SDataManager.getInstance().setAppContext(ctx).setUserID(skrUid);
+        SDataManager.getInstance().setSTSCredentialHolder(scHolder).enableLogService(true);
+
+        String channel = U.getChannelUtils().getChannel();
+        MyLog.w(TAG_SLS, "initLogService() app channel="+channel);
+
+        if (null == channel || "DEV".equals(channel) || "TEST".equals(channel) || "SANDBOX".equals(channel)) {
+            SDataManager.getInstance().useMainLogProject(false);
+        }
+        else {
+            SDataManager.getInstance().useMainLogProject(true);
+        }
+
+        if (U.getDeviceUtils().getHeadsetPlugOn()) {
+            SDataManager.getInstance().getDataHolder().addAudioRoutine(SDataHolderEx.AR_HEADSET);
+        }
+        else if (U.getDeviceUtils().getBlueToothHeadsetOn()) {
+            SDataManager.getInstance().getDataHolder().addAudioRoutine(SDataHolderEx.AR_BLUETOOTH);
+        }
+        else {
+            SDataManager.getInstance().getDataHolder().addAudioRoutine(SDataHolderEx.AR_PHONE_SPEAKER);
+        }
+
     }
 
 
@@ -159,7 +186,7 @@ public class AgoraRTCAdapter {
                         case LM_MSG_UPDATE_PING_INFO: {
                             String baiduURL = "www.baidu.com";
                             Skr.PingInfo pingInfo = SUtils.ping(baiduURL);
-                            SDataManager.getInstance().getAgoraDataHolder().addPingInfo(pingInfo);
+                            SDataManager.getInstance().getDataHolder().addPingInfo(pingInfo);
 
                             if (mRunStatistic) {
                                 Message msgLoop = mLogMonHandler.obtainMessage(LM_MSG_UPDATE_PING_INFO);
@@ -174,7 +201,7 @@ public class AgoraRTCAdapter {
                             if (null != msg.obj && msg.obj instanceof String) {
                                 nwInfo.extraInfo = (String) msg.obj;
                             }
-                            SDataManager.getInstance().getAgoraDataHolder().addNetworkInfo(nwInfo);
+                            SDataManager.getInstance().getDataHolder().addNetworkInfo(nwInfo);
                             /////////////////////////////////////////////////////////
 //                                SDataManager.instance().flush(mDataFlushMode);
 //                                Log.d("MyDemo", nwInfo.toString());
@@ -197,10 +224,11 @@ public class AgoraRTCAdapter {
 
                 }
             };
-            mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_PING_INFO), 0);
-            mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO), 0);
-            mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 4000);//触发进入循环
         }
+
+        mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_PING_INFO), 0);
+        mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO), 0);
+        mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 4000);//触发进入循环
 
 //        Context ctx = U.app().getApplicationContext();
 //        startMonitorNetwork(ctx);
@@ -355,7 +383,7 @@ public class AgoraRTCAdapter {
         public void onLeaveChannel(RtcStats stats) {
             super.onLeaveChannel(stats);
             stopStatistics();
-            SDataManager.getInstance().setChannelID("no-channel").setChannelJoinElipse(-1).setUserID(-1);
+//            SDataManager.getInstance().setChannelID("no-channel").setChannelJoinElipse(-1).setUserID(-1);
             mInAudioStatistic = false; //下次启动采集的时候看到true，会记录时时间戳
             if (mOutCallback != null) {
                 mOutCallback.onLeaveChannel(stats);
@@ -440,7 +468,7 @@ public class AgoraRTCAdapter {
             synchronized (this) {
                 try {
                     if (mRtcEngine == null) {
-                        MyLog.d(TAG, "InitRtcEngine");
+                        MyLog.d(TAG, "InitRtcEngine version: " + RtcEngine.getSdkVersion());
                         mRtcEngine = RtcEngine.create(U.app(), APP_ID, mCallback);
                         //mRtcEngine.setParameters("{\"rtc.log_filter\": 65535}");
 
@@ -670,7 +698,7 @@ public class AgoraRTCAdapter {
 
                     SAgora.SAudioSamplingInfo smpInfo = makeAudioSamplingInfo(samples, numOfSamples, bytesPerSample, channels, samplesPerSec, System.currentTimeMillis());
                     if (null != smpInfo) { //说明达到一次统计间隔
-                        SDataManager.getInstance().getAgoraDataHolder().addAudioSamplingInfo(smpInfo, curTime);
+                        SDataManager.getInstance().getDataHolder().addAudioSamplingInfo(smpInfo, curTime);
                         smpInfo.reset();
                     }
 
@@ -803,7 +831,7 @@ public class AgoraRTCAdapter {
      * 频道内每个用户的 UID 必须是唯一的。如果将 UID 设为 0，系统将自动分配一个 UID。
      * 如果已在频道中，用户必须调用 leaveChannel 方法退出当前频道，才能进入下一个频道。
      */
-    public int joinChannel(String token, String channelId, String extra, int uid) {
+    public int joinChannel(String token, String channelId, String extra, int uid, SSTSCredentialHolder cHolder) {
         tryInitRtcEngine();
         MyLog.d(TAG, "joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
         // 一定要设置一个角色
@@ -811,6 +839,7 @@ public class AgoraRTCAdapter {
         if (!TextUtils.isEmpty(token)) {
             t = token;
         }
+        initLogService(cHolder);
         startStatisticThread();
 
         int retCode = mRtcEngine.joinChannel(t, channelId, extra, uid);
@@ -1123,7 +1152,7 @@ public class AgoraRTCAdapter {
      */
     public void enableAudioVolumeIndication(int interval, int smooth) {
         if (mRtcEngine != null) {
-            mRtcEngine.enableAudioVolumeIndication(interval, smooth);
+            mRtcEngine.enableAudioVolumeIndication(interval, smooth, true);
         }
     }
 

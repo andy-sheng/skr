@@ -68,7 +68,7 @@ ext {
             "logging-interceptor"              : "com.squareup.okhttp3:logging-interceptor:${version["okhttp3"]}",
 
             // fastjson-android
-            "fastjson-android"                 : "com.alibaba:fastjson:1.1.71.android",
+            "fastjson-android"                 : 'com.alibaba:fastjson:1.2.35', //"com.alibaba:fastjson:1.1.71.android",
             // fastjson在retrofit中的使用
             "retrofit-fastjson-android-convert": 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0',
 
@@ -218,7 +218,11 @@ ext {
             "canary-release"                   : "com.squareup.leakcanary:leakcanary-android-no-op:${version["canarySdkVersion"]}",
             "canary-debug-fragment"           : "com.squareup.leakcanary:leakcanary-support-fragment:${version["canarySdkVersion"]}",
 
-            "lzyzsd-jsbridge"                  : "com.github.lzyzsd:jsbridge:1.0.4"
+            "lzyzsd-jsbridge"                  : "com.github.lzyzsd:jsbridge:1.0.4",
+
+            "aliyun-oss"                        : 'com.aliyun.dpa:oss-android-sdk:2.9.1'
+//            "aliyun-sls"                        : 'com.aliyun.openservices:aliyun-log-android-sdk:2.0.0' //sls 2.0有个严重的bug，onFailure不会回调
+
     ]
 
 }

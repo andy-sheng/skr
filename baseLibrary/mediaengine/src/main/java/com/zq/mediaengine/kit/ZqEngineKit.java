@@ -25,8 +25,8 @@ import com.engine.agora.effect.EffectModel;
 import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.score.Score2Callback;
-import com.engine.statistics.SDataManager;
 import com.engine.token.AgoraTokenApi;
+import com.zq.engine.avstatistics.SDataManager;
 import com.zq.mediaengine.capture.AudioCapture;
 import com.zq.mediaengine.capture.AudioPlayerCapture;
 import com.zq.mediaengine.capture.CameraCapture;
@@ -206,6 +206,9 @@ public class ZqEngineKit implements AgoraOutCallback {
     protected int mCameraFacing = CameraCapture.FACING_FRONT;
     protected boolean mIsCaptureStarted = false;
     protected boolean mDelayedStartCameraPreview = false;
+
+
+    protected ZqLSCredentialHolder mSCHolder = null;
 
     @Override
     public void onUserJoined(int uid, int elapsed) {
@@ -438,6 +441,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         mAcrRecognizer = new AcrRecognizer();
 
         mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
+        mSCHolder = new ZqLSCredentialHolder();
         initWorkThread();
     }
 
@@ -911,7 +915,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 }
             });
         } else {
-            retCode = mAgoraRTCAdapter.joinChannel(token, roomid, "Extra Optional Data", userId);
+            retCode = mAgoraRTCAdapter.joinChannel(token, roomid, "Extra Optional Data", userId, mSCHolder);
             MyLog.i(TAG, "joinRoomInner2" + " retCode=" + retCode);
         }
 
@@ -1237,7 +1241,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle) {
                 @Override
                 public void realRun() {
-                    SDataManager.getInstance().getAgoraDataHolder().addPlayerInfo(uid, filePath, midiPath, mixMusicBeginOffset, loopback, replace, cycle);
+                    SDataManager.getInstance().getDataHolder().addPlayerInfo(uid, filePath,midiPath,mixMusicBeginOffset,loopback,replace,cycle);
 
                     if (TextUtils.isEmpty(filePath)) {
                         MyLog.i(TAG, "伴奏路径非法");

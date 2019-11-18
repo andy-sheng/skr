@@ -7,7 +7,7 @@ if (true) {
     }
     include ':commoncore'
     include ':commonservice'
-    include ':baseLibrary:commonsdk', 'baseLibrary:enginesdk', 'baseLibrary:mediaengine',':baseLibrary:effectsdk', ':baseLibrary:android-gif-drawable'
+    include ':baseLibrary:commonsdk', ':baseLibrary:avstatistics', 'baseLibrary:enginesdk', 'baseLibrary:mediaengine',':baseLibrary:effectsdk', ':baseLibrary:android-gif-drawable'
     if (arcCloud.toBoolean()) {
         include ':baseLibrary:arcCloud'
     }

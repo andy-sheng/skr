@@ -27,7 +27,7 @@ class MicVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) {
     private var mDialogPlus: DialogPlus? = null
 
     protected override fun getLayout(): Int {
-        return R.layout.race_voice_control_panel_layout
+        return R.layout.mic_voice_control_panel_layout
     }
 
     protected override fun getMarginLeft(): Int {
