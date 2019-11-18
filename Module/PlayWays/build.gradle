@@ -116,6 +116,10 @@ android {
             // 排麦房
             java.srcDirs += 'src/main/java-room-mic'
             res.srcDirs += 'src/main/res-room-mic'
+
+            // demo Test
+            java.srcDirs += 'src/main/java-demo-test'
+            res.srcDirs += 'src/main/res-demo-test'
         }
     }
 }

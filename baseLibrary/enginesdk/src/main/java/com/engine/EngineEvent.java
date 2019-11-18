@@ -132,7 +132,7 @@ public class EngineEvent {
 
     public static class RoleChangeInfo {
         int oldRole;
-        int newRole;
+        int newRole;//1 主播 2观众
 
         public RoleChangeInfo(int oldRole, int newRole) {
             this.oldRole = oldRole;

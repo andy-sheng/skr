@@ -196,9 +196,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         mMainVp.setAdapter(fragmentPagerAdapter);
 
-        mHomePresenter = new
-
-                HomeCorePresenter(this, this);
+        mHomePresenter = new HomeCorePresenter(this, this);
         if (!UserAccountManager.INSTANCE.hasAccount()) {
             mMainActContainer.setVisibility(View.GONE);
             mUiHandler.postDelayed(new Runnable() {
@@ -301,6 +299,16 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mPostBtn.callOnClick();
         }
 
+        if (MyLog.isDebugLogOpen()) {
+            mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    ARouter.getInstance().build("/demo/DoubleDemoTestActivity").navigation();
+                    return false;
+                }
+            });
+            ARouter.getInstance().build("/demo/DoubleDemoTestActivity").navigation();
+        }
     }
 
     @Override

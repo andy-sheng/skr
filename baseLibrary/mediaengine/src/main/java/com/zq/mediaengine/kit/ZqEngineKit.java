@@ -124,7 +124,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 存储该房间所有用户在引擎中的状态的，
      * key为在引擎中的用户 id
      */
-    private HashMap<Integer, UserStatus> mUserStatusMap = new HashMap<>();
+    public HashMap<Integer, UserStatus> mUserStatusMap = new HashMap<>();
     private HashSet<View> mRemoteViewCache = new HashSet<>();
     private Handler mUiHandler = new Handler();
     private Disposable mMusicTimePlayTimeListener;
@@ -291,11 +291,6 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onClientRoleChanged(int oldRole, int newRole) {
-        // 只有切换时才会触发
-        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_USER_ROLE_CHANGE);
-        EngineEvent.RoleChangeInfo roleChangeInfo = new EngineEvent.RoleChangeInfo(oldRole, newRole);
-        engineEvent.obj = roleChangeInfo;
-        EventBus.getDefault().post(engineEvent);
         if (mConfig.getSelfUid() > 0) {
             UserStatus userStatus = ensureJoin(mConfig.getSelfUid());
             if (newRole == Constants.CLIENT_ROLE_BROADCASTER) {
@@ -306,8 +301,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                 tryStopRecordForFeedback("onClientRoleChanged");
             }
         }
-
-
+        // 只有切换时才会触发
+        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_USER_ROLE_CHANGE);
+        EngineEvent.RoleChangeInfo roleChangeInfo = new EngineEvent.RoleChangeInfo(oldRole, newRole);
+        engineEvent.obj = roleChangeInfo;
+        EventBus.getDefault().post(engineEvent);
     }
 
     @Override
@@ -1587,7 +1585,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public String getFeedbackFilepath(String anchors) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss");
-        String fileName = String.format("%s_%s@%s.m4a", mInitFrom, simpleDateFormat.format(new Date(System.currentTimeMillis())),anchors);
+        String fileName = String.format("%s_%s@%s.m4a", mInitFrom, simpleDateFormat.format(new Date(System.currentTimeMillis())), anchors);
         String filePath = U.getAppInfoUtils().getFilePathInSubDir(AUDIO_FEEDBACK_DIR, fileName);
         return filePath;
     }
