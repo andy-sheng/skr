@@ -831,8 +831,8 @@ public class AgoraRTCAdapter {
      */
     public int joinChannel(String token, String channelId, String extra, int uid, SSTSCredentialHolder cHolder) {
         tryInitRtcEngine();
-        channelId = "bul";
-        token = null;
+//        channelId = "bul";
+//        token = null;
         MyLog.i(TAG, "joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
         // 一定要设置一个角色
         String t = null;

@@ -42,8 +42,9 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
         changeBtn = this.findViewById(R.id.change_btn)
         mManyLyricsView = this.findViewById(R.id.many_lyrics_view)
         mManyLyricsView?.initLrcData()
-
-        ZqEngineKit.getInstance().init("demotest", Params.getFromPref())
+        val p = Params.getFromPref()
+        p.scene = Params.Scene.rank
+        ZqEngineKit.getInstance().init("demotest", p)
         ZqEngineKit.getInstance().joinRoom("chengsimin", MyUserInfoManager.uid.toInt(), false, "")
         readyBtn.setOnClickListener {
             ZqEngineKit.getInstance().setClientRole(true)
@@ -149,15 +150,16 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
             if (singId == MyUserInfoManager.uid.toInt()) {
                 U.getToastUtil().showShort("你唱了")
                 DebugLogView.println(getTag(),"你唱了")
+                ZqEngineKit.getInstance().muteLocalAudioStream(false)
                 ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(100, false)
                 ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(100, false)
             }
             if (singId == otherId) {
                 U.getToastUtil().showShort("对手唱了")
                 DebugLogView.println(getTag(),"对手唱了")
+                ZqEngineKit.getInstance().muteLocalAudioStream(true)
                 ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
                 ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
-                ZqEngineKit.getInstance().muteLocalAudioStream(true)
             }
         }
     }
