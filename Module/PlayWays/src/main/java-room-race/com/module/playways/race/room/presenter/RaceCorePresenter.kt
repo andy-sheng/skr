@@ -229,7 +229,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val result = subscribe { raceRoomServerApi.singMakeChoice(body) }
             if (result.errno == 0) {
                 mRoomData.hasSignUpSelf = true
-                EventBus.getDefault().post(RaceWantSingChanceEvent(itemID))
+                EventBus.getDefault().post(RaceWantSingChanceEvent(songModel!!))
                 //mRoomData?.realRoundInfo?.addWantSingChange(itemID, MyUserInfoManager.getInstance().uid.toInt())
             } else {
                 MyLog.w(TAG, "wantSingChance errno is " + result.errno)

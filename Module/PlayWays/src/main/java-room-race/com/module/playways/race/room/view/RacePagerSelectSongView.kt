@@ -39,7 +39,8 @@ class RacePagerSelectSongView : ExConstraintLayout {
     var mRoomData: RaceRoomData? = null
     var mPagerAdapter: RaceSelectSongRecyclerAdapter? = null
     var mHasSignUpItemId = -1
-    var mSignUpMethed: ((Int, RaceGamePlayInfo?) -> Unit)? = null
+    var mSignUpMethod: ((Int, RaceGamePlayInfo?) -> Unit)? = null
+    var mSongManageMethod: (() -> Unit)? = null
     private var mCardScaleHelper: CardScaleHelper? = null
 
     //在滑动到最后的时候自动加载更多
@@ -76,12 +77,16 @@ class RacePagerSelectSongView : ExConstraintLayout {
         mPagerAdapter = RaceSelectSongRecyclerAdapter()
         mRecyclerView.adapter = mPagerAdapter
         mPagerAdapter?.mIRaceSelectListener = object : RaceSelectSongRecyclerAdapter.IRaceSelectListener {
+            override fun onSearchClick() {
+                mSongManageMethod?.invoke()
+            }
+
             override fun onCloseClick() {
                 hideView()
             }
 
             override fun onSignUp(itemID: Int, model: RaceGamePlayInfo?) {
-                mSignUpMethed?.invoke(itemID, model)
+                mSignUpMethod?.invoke(itemID, model)
             }
 
             override fun getSignUpItemID(): Int {
@@ -128,19 +133,11 @@ class RacePagerSelectSongView : ExConstraintLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceWantSingChanceEvent) {
-        mHasSignUpItemId = event.itemID
-        if (mPagerAdapter?.mRaceGamePlayInfoList?.get(mCurrentPosition)?.commonMusic?.itemID == mHasSignUpItemId) {
-            mPagerAdapter?.mRaceGamePlayInfoList?.get(mCurrentPosition)?.let {
-                addSelectedSong(it)
-            }
-        } else {
-            mPagerAdapter?.mRaceGamePlayInfoList?.forEach {
-                if (it.commonMusic?.itemID == mHasSignUpItemId) {
-                    addSelectedSong(it)
-                    return@forEach
-                }
-            }
-        }
+        mHasSignUpItemId = event.songModel.itemID
+        addSelectedSong(RaceGamePlayInfo().apply {
+            commonMusic = event.songModel
+            roundGameType = mPagerAdapter?.mRaceGamePlayInfoList?.get(0)?.roundGameType ?: 0
+        })
     }
 
     private fun addSelectedSong(info: RaceGamePlayInfo) {

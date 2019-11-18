@@ -1,6 +1,7 @@
 package com.module.playways.mic.room.view
 
 import android.content.Context
+import android.support.constraint.ConstraintLayout
 import android.view.Gravity
 import android.widget.CompoundButton
 import android.widget.LinearLayout
@@ -16,7 +17,7 @@ class MicVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) {
 
     val TAG = "MicVoiceControlPanelView"
 
-    private var mLlSwitchContainer: LinearLayout? = null
+    private var mLlSwitchContainer: ConstraintLayout? = null
 
     // 清唱与伴奏
     private var mAccSb: SwitchButton? = null

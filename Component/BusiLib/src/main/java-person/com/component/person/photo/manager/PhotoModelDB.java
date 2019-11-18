@@ -4,9 +4,10 @@ import com.component.person.photo.model.PhotoModel;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Keep;
 
 import java.io.Serializable;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * 个人信息(基础类)
@@ -26,13 +27,13 @@ public class PhotoModelDB implements Serializable {
 
     private Integer status = PhotoModel.Companion.getSTATUS_SUCCESS();
 
-    @Generated(hash = 1213024381)
+    @Keep
     public PhotoModelDB(String localPath, Integer status) {
         this.localPath = localPath;
         this.status = status;
     }
 
-    @Generated(hash = 507245802)
+    @Keep
     public PhotoModelDB() {
     }
 

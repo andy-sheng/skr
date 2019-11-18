@@ -58,6 +58,7 @@ class RaceSelectSongRecyclerAdapter : RecyclerView.Adapter<RaceSelectSongRecycle
         var divider: ExImageView
         var signUpTv: ExTextView
         var closeIv: ExImageView
+        var searchIv: ExImageView
 
         var model: RaceGamePlayInfo? = null
         var loadLyricTask: Disposable? = null
@@ -71,6 +72,8 @@ class RaceSelectSongRecyclerAdapter : RecyclerView.Adapter<RaceSelectSongRecycle
             divider = itemView.findViewById(R.id.divider)
             signUpTv = itemView.findViewById(R.id.sign_up_tv)
             closeIv = itemView.findViewById(R.id.close_iv)
+            searchIv = itemView.findViewById(R.id.search_iv)
+
 
             signUpTv.setDebounceViewClickListener {
                 mIRaceSelectListener?.onSignUp(model?.commonMusic?.itemID ?: 0, model)
@@ -78,6 +81,10 @@ class RaceSelectSongRecyclerAdapter : RecyclerView.Adapter<RaceSelectSongRecycle
 
             closeIv.setDebounceViewClickListener {
                 mIRaceSelectListener?.onCloseClick()
+            }
+
+            searchIv.setDebounceViewClickListener {
+                mIRaceSelectListener?.onSearchClick()
             }
         }
 
@@ -112,10 +119,12 @@ class RaceSelectSongRecyclerAdapter : RecyclerView.Adapter<RaceSelectSongRecycle
                 } else {
                     signUpTv.visibility = View.GONE
                 }
+                searchIv.visibility = View.GONE
             } else {
                 signUpTv.isEnabled = true
                 signUpTv.text = "报名"
                 signUpTv.visibility = View.VISIBLE
+                searchIv.visibility = View.VISIBLE
             }
 
             loadLyricTask?.dispose()
@@ -145,5 +154,6 @@ class RaceSelectSongRecyclerAdapter : RecyclerView.Adapter<RaceSelectSongRecycle
         fun getSignUpItemID(): Int
         fun getRecyclerViewPosition(): Int
         fun onCloseClick()
+        fun onSearchClick()
     }
 }
