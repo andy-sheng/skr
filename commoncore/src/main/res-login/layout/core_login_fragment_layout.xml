@@ -25,19 +25,47 @@
         android:layout_marginBottom="@dimen/view_30_dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="《用户服务协议》"
-            android:textColor="@color/white_trans_30"
-            android:textSize="@dimen/textsize_12_dp" />
-
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="@drawable/denglu_agree_img" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="  同意"
+            android:textColor="@color/white_trans_30"
+            android:textSize="@dimen/textsize_12_dp" />
+
+        <TextView
+            android:id="@+id/user_agree_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="《用户服务协议》"
+            android:textColor="#50D5E3"
+            android:textSize="@dimen/textsize_12_dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="及"
+            android:textColor="@color/white_trans_30"
+            android:textSize="@dimen/textsize_12_dp" />
+
+        <TextView
+            android:id="@+id/secret_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="《隐私协议》"
+            android:textColor="#50D5E3"
+            android:textSize="@dimen/textsize_12_dp" />
+
+
     </LinearLayout>
 
     <TextView
