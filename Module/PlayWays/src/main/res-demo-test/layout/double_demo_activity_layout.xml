@@ -6,18 +6,27 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
+    <ViewStub
+        android:id="@+id/debug_log_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inflatedId="@+id/debug_log_view"
+        android:layout="@layout/debug_log_view_stub_layout" />
+
+
     <com.common.view.ex.ExTextView
         android:id="@+id/ready_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_50_dp"
         android:layout_marginTop="@dimen/view_50_dp"
+        android:padding="@dimen/view_10_dp"
         android:text="准备好了"
+        android:textColor="@color/red"
         app:bl_corners_radius="@dimen/view_20_dp"
         app:bl_pressed_color="#80FFC15B"
         app:bl_shape="rectangle"
-        android:textColor="@color/white"
-        app:bl_solid_color="#FFC15B"
+        app:bl_unpressed_color="#FFC15B"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,22 +36,14 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_50_dp"
         android:layout_marginTop="@dimen/view_50_dp"
+        android:padding="@dimen/view_10_dp"
         android:text="换人唱"
+        android:textColor="@color/red"
         app:bl_corners_radius="@dimen/view_20_dp"
         app:bl_pressed_color="#80FFC15B"
-        android:textColor="@color/white"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#FFC15B"
+        app:bl_unpressed_color="#FFC15B"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ready_btn" />
-
-
-
-    <ViewStub
-        android:id="@+id/debug_log_view_stub"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:inflatedId="@+id/debug_log_view"
-        android:layout="@layout/debug_log_view_stub_layout" />
 
 </android.support.constraint.ConstraintLayout>
