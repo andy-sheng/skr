@@ -50,6 +50,7 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
             ZqEngineKit.getInstance().setClientRole(true)
             readyBtn.visibility = View.GONE
         }
+        changeBtn.visibility = View.GONE
         changeBtn.setOnClickListener {
             sing(otherId)
         }
@@ -153,6 +154,7 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
                 ZqEngineKit.getInstance().muteLocalAudioStream(false)
                 ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(100, false)
                 ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(100, false)
+                changeBtn.visibility = View.VISIBLE
             }
             if (singId == otherId) {
                 U.getToastUtil().showShort("对手唱了")
@@ -160,6 +162,7 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
                 ZqEngineKit.getInstance().muteLocalAudioStream(true)
                 ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
                 ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
+                changeBtn.visibility = View.GONE
             }
         }
     }
