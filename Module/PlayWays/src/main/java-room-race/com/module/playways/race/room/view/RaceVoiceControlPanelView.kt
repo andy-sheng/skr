@@ -1,9 +1,9 @@
 package com.module.playways.race.room.view
 
 import android.content.Context
+import android.support.constraint.ConstraintLayout
 import android.view.Gravity
 import android.widget.CompoundButton
-import android.widget.LinearLayout
 import com.common.utils.U
 import com.component.voice.control.VoiceControlPanelView
 import com.kyleduo.switchbutton.SwitchButton
@@ -12,11 +12,11 @@ import com.module.playways.race.room.RaceRoomData
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 
-class RaceVoiceControlPanelView ( cxt: Context) : VoiceControlPanelView(cxt) {
+class RaceVoiceControlPanelView(cxt: Context) : VoiceControlPanelView(cxt) {
 
     val TAG = "RaceVoiceControlPanelView"
 
-    private var mLlSwitchContainer: LinearLayout? = null
+    private var mLlSwitchContainer: ConstraintLayout? = null
 
     // 清唱与伴奏
     private var mAccSb: SwitchButton? = null
