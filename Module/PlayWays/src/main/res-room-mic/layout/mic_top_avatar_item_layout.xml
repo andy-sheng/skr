@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:avatarView="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/view_52_dp"
-    android:layout_height="47dp">
+    android:layout_height="47dp"
+    android:background="@color/black">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/circle_bg_iv"
@@ -43,13 +44,18 @@
     <com.common.view.ex.ExTextView
         android:id="@+id/waiting_tv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/textsize_14_dp"
+        android:layout_marginTop="@dimen/view_26_dp"
         android:gravity="center"
-        android:text="候场"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_10_dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
+        android:paddingLeft="@dimen/view_4_dp"
+        android:paddingRight="@dimen/view_4_dp"
+        android:text="下一首"
+        android:textColor="@color/white_trans_90"
+        android:textSize="@dimen/textsize_8_dp"
+        app:bl_corners_radius="@dimen/view_7_dp"
+        app:bl_solid_color="#6F57EC"
+        app:bl_stroke_color="@color/white"
+        app:bl_stroke_width="@dimen/view_1_dp"
         app:layout_constraintLeft_toLeftOf="@+id/avatar_iv"
         app:layout_constraintRight_toRightOf="@+id/avatar_iv"
         app:layout_constraintTop_toTopOf="@+id/avatar_iv" />
