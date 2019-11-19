@@ -51,6 +51,9 @@ public class LoginFragment extends BaseFragment implements Callback {
     ImageView mPicture;
 
     LinearLayout mTvUserAgree;
+    TextView mUserAgreeTv;
+    TextView mSecretTv;
+
     ExImageView mWeixinLoginTv;
     ExImageView mPhoneLoginTv;
     ExImageView mQqLoginTv;
@@ -96,16 +99,18 @@ public class LoginFragment extends BaseFragment implements Callback {
     public void initData(@Nullable Bundle savedInstanceState) {
         ShareManager.init();
 
-        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
-        mPicture = (ImageView) getRootView().findViewById(R.id.picture);
+        mMainActContainer = getRootView().findViewById(R.id.main_act_container);
+        mPicture = getRootView().findViewById(R.id.picture);
 
-        mDengluArea = (LinearLayout) getRootView().findViewById(R.id.denglu_area);
-        mWeixinLoginTv = (ExImageView) getRootView().findViewById(R.id.weixin_login_tv);
-        mPhoneLoginTv = (ExImageView) getRootView().findViewById(R.id.phone_login_tv);
-        mQqLoginTv = (ExImageView) getRootView().findViewById(R.id.qq_login_tv);
-        mLogoText = (TextView) getRootView().findViewById(R.id.logo_text);
-        mTvUserAgree = (LinearLayout) getRootView().findViewById(R.id.tv_user_agree);
-        mProgressBar = (ProgressBar) getRootView().findViewById(R.id.progress_bar);
+        mDengluArea = getRootView().findViewById(R.id.denglu_area);
+        mWeixinLoginTv = getRootView().findViewById(R.id.weixin_login_tv);
+        mPhoneLoginTv = getRootView().findViewById(R.id.phone_login_tv);
+        mQqLoginTv = getRootView().findViewById(R.id.qq_login_tv);
+        mLogoText = getRootView().findViewById(R.id.logo_text);
+        mTvUserAgree = getRootView().findViewById(R.id.tv_user_agree);
+        mUserAgreeTv = getRootView().findViewById(R.id.user_agree_tv);
+        mSecretTv = getRootView().findViewById(R.id.secret_tv);
+        mProgressBar = getRootView().findViewById(R.id.progress_bar);
 
         mPhoneLoginTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -211,7 +216,7 @@ public class LoginFragment extends BaseFragment implements Callback {
             }
         });
 
-        mTvUserAgree.setOnClickListener(new DebounceViewClickListener() {
+        mUserAgreeTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mIsWaitOss) {
@@ -219,6 +224,18 @@ public class LoginFragment extends BaseFragment implements Callback {
                 }
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString("url", "https://api.inframe.mobi/user-agreement.html")
+                        .greenChannel().navigation();
+            }
+        });
+
+        mSecretTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mIsWaitOss) {
+                    return;
+                }
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", "https://app.inframe.mobi/agreement/privacy")
                         .greenChannel().navigation();
             }
         });
@@ -316,8 +333,8 @@ public class LoginFragment extends BaseFragment implements Callback {
         if (r == 1) {
             final ApiResult apiResult = (ApiResult) obj;
             Activity activity = getActivity();
-            if(activity instanceof LoginActivity){
-                ((LoginActivity)activity).onLoginResult(1,apiResult);
+            if (activity instanceof LoginActivity) {
+                ((LoginActivity) activity).onLoginResult(1, apiResult);
             }
         }
     }
