@@ -390,6 +390,9 @@ public interface UserInfoServerApi {
     @PUT("/v1/mate/my-blacklist")
     Observable<ApiResult> addToBlackList(@Body RequestBody body);
 
+    @PUT("/v1/mate/del-blacklist")
+    Observable<ApiResult> delBlackList(@Body RequestBody body);
+
     @GET("/v1/mate/my-blacklist")
     Observable<ApiResult> getBlackList();
 
