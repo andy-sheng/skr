@@ -49,7 +49,7 @@ public class EdgeTransparentView extends RelativeLayout {
 
 
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.EdgeTransparentView);
-        position = typedArray.getInt(R.styleable.EdgeTransparentView_edge_position, 0);
+        position = typedArray.getInt(R.styleable.EdgeTransparentView_edge_position, topMask);  // 默认在commview中使用，即顶部渐变
         drawSize = typedArray.getDimension(R.styleable.EdgeTransparentView_edge_width, U.getDisplayUtils().dip2px(getContext(), 20));
         typedArray.recycle();
     }
@@ -92,24 +92,24 @@ public class EdgeTransparentView extends RelativeLayout {
             canvas.restoreToCount(save);
         }
 
-//        float offset = (mHeight - mWidth) / 2f;
-//        if (position == 0 || (position & leftMask) != 0) {
-//            int saveCount = canvas.save();
-//            canvas.rotate(270, mWidth / 2f, mHeight / 2f);
-//            canvas.translate(0, offset);
-//            canvas.drawRect(0 - offset, 0, mWidth + offset, drawSize, mPaint);
-//            canvas.restoreToCount(saveCount);
-//        }
-//
-//        if (position == 0 || (position & rightMask) != 0) {
-//            int saveCount = canvas.save();
-//            canvas.rotate(90, mWidth / 2f, mHeight / 2f);
-//            canvas.translate(0, offset);
-//            canvas.drawRect(0 - offset, 0, mWidth + offset, drawSize, mPaint);
-//            canvas.restoreToCount(saveCount);
-//        }
-//
-//        canvas.restoreToCount(layerSave);
+        float offset = (mHeight - mWidth) / 2f;
+        if (position == 0 || (position & leftMask) != 0) {
+            int saveCount = canvas.save();
+            canvas.rotate(270, mWidth / 2f, mHeight / 2f);
+            canvas.translate(0, offset);
+            canvas.drawRect(0 - offset, 0, mWidth + offset, drawSize, mPaint);
+            canvas.restoreToCount(saveCount);
+        }
+
+        if (position == 0 || (position & rightMask) != 0) {
+            int saveCount = canvas.save();
+            canvas.rotate(90, mWidth / 2f, mHeight / 2f);
+            canvas.translate(0, offset);
+            canvas.drawRect(0 - offset, 0, mWidth + offset, drawSize, mPaint);
+            canvas.restoreToCount(saveCount);
+        }
+
+        canvas.restoreToCount(layerSave);
         return drawChild;
     }
 
