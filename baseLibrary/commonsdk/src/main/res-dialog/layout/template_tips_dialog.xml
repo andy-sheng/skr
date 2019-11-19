@@ -84,11 +84,10 @@
             android:text="取消请求"
             android:textColor="#e6A74068"
             android:textSize="@dimen/textsize_14_dp"
-            android:textStyle="bold"
             android:visibility="gone"
             app:bl_corners_radius="@dimen/view_21_dp"
-            app:bl_gradient_endColor="#FFBDD6"
-            app:bl_gradient_startColor="#FF8AB6" />
+            app:bl_gradient_endColor="#FF8AB6"
+            app:bl_gradient_startColor="#FFBDD6" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/confirm_tv"
@@ -101,7 +100,6 @@
             android:text="确认请求"
             android:textColor="#e68B572A"
             android:textSize="@dimen/textsize_14_dp"
-            android:textStyle="bold"
             android:visibility="gone"
             app:bl_corners_radius="@dimen/view_21_dp"
             app:bl_gradient_endColor="#E9A83B"
