@@ -39,6 +39,7 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
     val lyricAndAccMatchManager = LyricAndAccMatchManager()
 
     var volumeAnimation = false
+    val testSingle = true
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.double_demo_activity_layout
@@ -52,7 +53,7 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
         mManyLyricsView = this.findViewById(R.id.many_lyrics_view)
         mManyLyricsView?.initLrcData()
         val p = Params.getFromPref()
-        p.scene = Params.Scene.rank
+        p.scene = Params.Scene.grab
         ZqEngineKit.getInstance().init("demotest", p)
         ZqEngineKit.getInstance().joinRoom("chengsimin", MyUserInfoManager.uid.toInt(), false, "")
         readyBtn.setOnClickListener {
@@ -158,10 +159,10 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
             val roleChangeInfo = event.getObj<EngineEvent.RoleChangeInfo>()
             if (roleChangeInfo.newRole == 1) {
                 DebugLogView.println(getTag(), "演唱环节切换主播成功")
-                tryBegin()
+                tryBegin(1)
             }
         } else if (event.getType() == EngineEvent.TYPE_USER_JOIN) {
-            tryBegin()
+            tryBegin(2)
         } else if (event.getType() == EngineEvent.TYPE_USER_MUTE_AUDIO) {
             if (event.userStatus.isAudioMute && event.userStatus.userId == otherId) {
                 DebugLogView.println(getTag(), "对手静音 不唱了")
@@ -208,7 +209,18 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
 
     var singId = 0
 
-    private fun tryBegin() {
+    private fun tryBegin(from:Int) {
+        if(testSingle){
+            if(from ==1){
+                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
+                DebugLogView.println(getTag(), "轮到你唱了")
+                ZqEngineKit.getInstance().muteLocalAudioStream(false)
+                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(100, false)
+                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(100, false)
+            }
+            return
+        }
+
         var size = 0
         for (us in ZqEngineKit.getInstance().mUserStatusMap.values) {
             MyLog.d(TAG, "tryBegin us=${us}")
@@ -221,7 +233,7 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
         }
         if (size >= 2) {
             DebugLogView.println(getTag(), "tryBegin 两位主播 开始播放伴奏")
-            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
+                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
             if (MyUserInfoManager.uid < otherId) {
                 sing(MyUserInfoManager.uid.toInt())
             } else {
