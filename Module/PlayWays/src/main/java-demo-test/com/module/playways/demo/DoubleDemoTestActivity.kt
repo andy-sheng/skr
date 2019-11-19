@@ -81,6 +81,7 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
 
         changeBtn.visibility = View.GONE
         changeBtn.setOnClickListener {
+            U.getToastUtil().showShort("对手唱了")
             if (volumeAnimation) {
                 changeBtn.visibility = View.GONE
                 val animation = ValueAnimator.ofInt(100, 0)
@@ -164,6 +165,7 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
         } else if (event.getType() == EngineEvent.TYPE_USER_MUTE_AUDIO) {
             if (event.userStatus.isAudioMute && event.userStatus.userId == otherId) {
                 DebugLogView.println(getTag(), "对手静音 不唱了")
+                U.getToastUtil().showShort("轮到你唱了")
                 if (volumeAnimation) {
                     ZqEngineKit.getInstance().muteLocalAudioStream(false)
                     val animation = ValueAnimator.ofInt(0, 100)
@@ -232,7 +234,6 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
         if (sid != singId) {
             singId = sid
             if (singId == MyUserInfoManager.uid.toInt()) {
-                U.getToastUtil().showShort("你唱了")
                 DebugLogView.println(getTag(), "轮到你唱了")
                 ZqEngineKit.getInstance().muteLocalAudioStream(false)
                 ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(100, false)
@@ -240,7 +241,6 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
                 changeBtn.visibility = View.VISIBLE
             }
             if (singId == otherId) {
-                U.getToastUtil().showShort("对手唱了")
                 DebugLogView.println(getTag(), "对手唱了")
                 ZqEngineKit.getInstance().muteLocalAudioStream(true)
                 ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
