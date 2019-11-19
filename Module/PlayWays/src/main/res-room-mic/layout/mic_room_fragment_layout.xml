@@ -66,12 +66,17 @@
         android:id="@+id/select_song_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_24_dp"
-        android:layout_marginTop="@dimen/view_59_dp"
+        android:layout_marginTop="@dimen/view_69_dp"
         android:layout_marginRight="@dimen/view_14_dp"
-        android:background="@drawable/new_select_song"
         android:gravity="center_vertical"
+        android:paddingLeft="@dimen/view_9_dp"
+        android:paddingRight="@dimen/view_9_dp"
+        android:text="点歌"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="12dp"
+        app:bl_gradient_endColor="#835DFD"
+        app:bl_gradient_startColor="#835DFD"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
@@ -79,7 +84,7 @@
         android:id="@+id/has_select_song_num_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_24_dp"
-        android:layout_marginTop="@dimen/view_100_dp"
+        android:layout_marginTop="@dimen/view_110_dp"
         android:layout_marginRight="@dimen/view_14_dp"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/view_9_dp"
@@ -131,6 +136,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_bar" />
+
+    <!--点歌-->
+    <!--    <ImageView-->
+    <!--        android:id="@+id/add_song_iv"-->
+    <!--        android:layout_width="@dimen/view_61_dp"-->
+    <!--        android:layout_height="@dimen/view_61_dp"-->
+    <!--        android:layout_marginRight="@dimen/view_18_dp"-->
+    <!--        android:layout_marginBottom="@dimen/view_82_dp"-->
+    <!--        android:background="@drawable/mic_add_song_icon"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintRight_toRightOf="parent" />-->
 
     <!--礼物连送按钮-->
     <com.module.playways.room.gift.view.ContinueSendView
@@ -193,10 +209,9 @@
         android:id="@+id/give_up_view"
         android:layout_width="@dimen/view_97_dp"
         android:layout_height="@dimen/view_60_dp"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:layout_marginBottom="@dimen/view_20_dp"
+        android:layout_marginBottom="@dimen/view_163_dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/add_song_iv"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <!--礼物面板-->
