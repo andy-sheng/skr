@@ -145,7 +145,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     lateinit var mRoundOverCardView: RoundOverCardView// 结果页
     lateinit var mGrabScoreTipsView: GrabScoreTipsView // 打分提示
 
-    lateinit var mAddSongIv: ImageView
+    lateinit var mAddSongIv: ExTextView
     private lateinit var mGiveUpView: GrabGiveupView
 
     private var mVIPEnterView: VIPEnterView? = null
@@ -351,7 +351,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 mGiveUpView.hideWithAnimation(true)
             }
         }
-        mAddSongIv = findViewById(R.id.add_song_iv)
+        mAddSongIv = findViewById(R.id.select_song_tv)
         mAddSongIv.setAnimateDebounceViewClickListener {
             mSkrAudioPermission.ensurePermission({
                 SongManagerActivity.open(this, mRoomData)

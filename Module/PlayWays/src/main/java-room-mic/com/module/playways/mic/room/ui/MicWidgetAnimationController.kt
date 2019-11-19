@@ -120,6 +120,8 @@ class MicWidgetAnimationController(internal var mF: MicRoomActivity) {
 //        }
         viewList.addAll(mF.mSelfSingCardView.realViews)
         viewList.addAll(mF.mOthersSingCardView.realViews)
+        viewList.add(mF.mAddSongIv)
+        viewList.add(mF.mHasSelectSongNumTv)
     }
 
     /**
