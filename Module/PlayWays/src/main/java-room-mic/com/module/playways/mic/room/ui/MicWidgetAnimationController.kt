@@ -5,11 +5,9 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.View
-
 import com.common.utils.U
 import com.module.playways.mic.room.MicRoomActivity
-
-import java.util.ArrayList
+import java.util.*
 
 
 /**
