@@ -8,23 +8,46 @@
     <!--android:layout_height="@dimen/view_148_dp"-->
     <!--android:background="#404A9A" />-->
 
-    <LinearLayout
-        android:id="@+id/content_ll"
-        android:layout_width="match_parent"
+    <HorizontalScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/view_7_dp"
-        android:layout_marginRight="@dimen/view_48_dp"
-        android:clipChildren="false"
-        android:orientation="horizontal" />
+        android:layout_marginLeft="@dimen/view_6_dp"
+        android:layout_marginRight="@dimen/view_11_dp"
+        android:scrollbars="none"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/invite_iv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginRight="@dimen/view_14_dp">
 
-    <com.module.playways.grab.room.top.GrabAudienceView
-        android:id="@+id/grab_audience_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_60_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:orientation="horizontal"
+            android:paddingLeft="-2dp" />
+    </HorizontalScrollView>
+
+
+    <!--    <com.module.playways.grab.room.top.GrabAudienceView-->
+    <!--        android:id="@+id/grab_audience_view"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="@dimen/view_60_dp"-->
+    <!--        android:layout_marginRight="@dimen/view_10_dp"-->
+    <!--        app:layout_constraintRight_toRightOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/invite_iv"
+        android:layout_width="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginRight="@dimen/view_7_dp"
+        android:background="@drawable/yichangdaodi_yaoqing"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/arrow_iv"
+        app:layout_constraintRight_toLeftOf="@+id/arrow_iv"
+        app:layout_constraintTop_toTopOf="@+id/arrow_iv" />
 
     <ImageView
         android:id="@+id/arrow_iv"
