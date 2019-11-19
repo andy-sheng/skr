@@ -48,7 +48,7 @@ public class EdgeTransparentView extends RelativeLayout {
 
 
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.EdgeTransparentView);
-        position = typedArray.getInt(R.styleable.EdgeTransparentView_edge_position, topMask);
+        position = typedArray.getInt(R.styleable.EdgeTransparentView_edge_position, topMask);  // 默认在commview中使用，即顶部渐变
         drawSize = typedArray.getDimension(R.styleable.EdgeTransparentView_edge_width, U.getDisplayUtils().dip2px(getContext(), 20));
         typedArray.recycle();
     }
