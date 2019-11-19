@@ -44,7 +44,7 @@
         android:layout_marginLeft="@dimen/view_50_dp"
         android:layout_marginTop="@dimen/view_50_dp"
         android:padding="@dimen/view_10_dp"
-        android:text="准备好了"
+        android:text="成为主播"
         android:textColor="@color/red"
         app:bl_corners_radius="@dimen/view_20_dp"
         app:bl_pressed_color="#80FFC15B"
@@ -69,4 +69,19 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ready_btn" />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/volume_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_50_dp"
+        android:layout_marginTop="@dimen/view_50_dp"
+        android:padding="@dimen/view_10_dp"
+        android:text="开启渐弱渐强"
+        android:textColor="@color/red"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_pressed_color="#80FFC15B"
+        app:bl_shape="rectangle"
+        app:bl_unpressed_color="#FFC15B"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/change_btn" />
 </android.support.constraint.ConstraintLayout>
