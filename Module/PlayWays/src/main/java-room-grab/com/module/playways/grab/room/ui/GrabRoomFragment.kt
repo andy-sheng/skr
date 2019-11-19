@@ -24,6 +24,7 @@ import com.common.core.permission.SkrCameraPermission
 import com.common.core.userinfo.ResponseCallBack
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
@@ -34,6 +35,7 @@ import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
+import com.common.view.ex.ExTextView
 import com.component.busilib.beauty.FROM_IN_GRAB_ROOM
 import com.component.busilib.constans.GrabRoomType
 import com.component.busilib.manager.BgMusicManager
@@ -174,6 +176,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     lateinit var mGrabGiveupView: GrabGiveupView
 
     lateinit var mMiniOwnerMicIv: ExImageView
+
+    lateinit var mAddSongIv: ExTextView
 
     lateinit var mGrabGameOverView: GrabGameOverView
 
@@ -668,8 +672,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 //                        .setExitAnim(R.anim.slide_right_out)
                 //                        .addDataBeforeAdd(0, mRoomData!!)
                 //                        .build());
-                SongManagerActivity.open(activity, mRoomData!!)
-                removeManageSongTipView()
+//                SongManagerActivity.open(activity, mRoomData!!)
+//                removeManageSongTipView()
             }
 
             override fun showGiftPanel() {
@@ -1056,6 +1060,14 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         run {
             val topLayoutParams = mGrabTopContentView.layoutParams as RelativeLayout.LayoutParams
             topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin
+        }
+
+        mAddSongIv = rootView.findViewById(R.id.select_song_tv)
+        mAddSongIv.setAnimateDebounceViewClickListener {
+            mSkrAudioPermission.ensurePermission({
+                SongManagerActivity.open(activity, mRoomData!!)
+                removeManageSongTipView()
+            }, true)
         }
     }
 
