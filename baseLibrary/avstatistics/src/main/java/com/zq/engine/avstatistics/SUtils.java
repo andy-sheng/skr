@@ -298,7 +298,7 @@ public class SUtils
                 pingInfo.timeCost = (long)Float.parseFloat(time);
             } else {
                 pingInfo.isPingOk = false;
-                pingInfo.timeCost = -1;
+                pingInfo.timeCost = 10000; //为便于统计分析，设置一个大值
             }
         } catch (Exception e) {
             MyLog.e(e);
