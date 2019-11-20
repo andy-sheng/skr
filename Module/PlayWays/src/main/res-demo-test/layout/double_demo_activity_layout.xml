@@ -13,9 +13,9 @@
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_10_dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="true"
         app:ly_high_light_paint_color_from="#DB4D84"
@@ -84,4 +84,119 @@
         app:bl_unpressed_color="#FFC15B"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/change_btn" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_20_dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_voice"
+            android:layout_marginLeft="@dimen/view_40_dp"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:layout_marginRight="@dimen/view_20_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="伴奏本地音量"
+                android:textColor="@color/white_trans_50"
+                android:textSize="@dimen/textsize_14_dp"
+                android:textStyle="bold" />
+
+            <SeekBar
+                android:id="@+id/acc_local_voice_sb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recycler_view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/view_4_dp"
+                android:layout_marginRight="@dimen/view_6_dp"
+                android:max="100"
+                android:maxHeight="@dimen/view_3_dp"
+                android:min="0"
+                android:minHeight="@dimen/view_3_dp"
+                android:paddingLeft="@dimen/view_10_dp"
+                android:paddingRight="@dimen/view_10_dp"
+                android:progressDrawable="@drawable/voice_control_seek_bar_bg"
+                android:thumb="@drawable/yellow_seekbar_thumb" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_voice"
+            android:layout_marginLeft="@dimen/view_40_dp"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:layout_marginRight="@dimen/view_20_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="伴奏发布音量"
+                android:textColor="@color/white_trans_50"
+                android:textSize="@dimen/textsize_14_dp"
+                android:textStyle="bold" />
+
+            <SeekBar
+                android:id="@+id/acc_publish_voice_sb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recycler_view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/view_4_dp"
+                android:layout_marginRight="@dimen/view_6_dp"
+                android:max="100"
+                android:maxHeight="@dimen/view_3_dp"
+                android:min="0"
+                android:minHeight="@dimen/view_3_dp"
+                android:paddingLeft="@dimen/view_10_dp"
+                android:paddingRight="@dimen/view_10_dp"
+                android:progressDrawable="@drawable/voice_control_seek_bar_bg"
+                android:thumb="@drawable/yellow_seekbar_thumb" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_voice"
+            android:layout_marginLeft="@dimen/view_40_dp"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:layout_marginRight="@dimen/view_20_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="人声发布音量"
+                android:textColor="@color/white_trans_50"
+                android:textSize="@dimen/textsize_14_dp"
+                android:textStyle="bold" />
+
+            <SeekBar
+                android:id="@+id/rensheng_voice_sb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recycler_view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/view_4_dp"
+                android:layout_marginRight="@dimen/view_6_dp"
+                android:max="100"
+                android:maxHeight="@dimen/view_3_dp"
+                android:min="0"
+                android:minHeight="@dimen/view_3_dp"
+                android:paddingLeft="@dimen/view_10_dp"
+                android:paddingRight="@dimen/view_10_dp"
+                android:progressDrawable="@drawable/voice_control_seek_bar_bg"
+                android:thumb="@drawable/yellow_seekbar_thumb" />
+        </LinearLayout>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

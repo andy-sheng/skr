@@ -1,10 +1,12 @@
 package com.module.playways.demo
 
 import android.animation.Animator
+import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
 import android.view.ViewStub
+import android.widget.SeekBar
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.DebugLogView
@@ -17,7 +19,6 @@ import com.component.lyrics.widget.ManyLyricsView
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.playways.R
-import com.module.playways.room.data.H
 import com.zq.mediaengine.kit.ZqEngineKit
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -26,6 +27,10 @@ import java.util.*
 
 @Route(path = "/demo/DoubleDemoTestActivity")
 class DoubleDemoTestActivity : com.common.base.BaseActivity() {
+
+    override fun canSlide(): Boolean {
+        return false
+    }
 
     fun getTag(): String {
         val simpleDateFormat = SimpleDateFormat("HH:mm:ss")
@@ -36,10 +41,16 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
     lateinit var changeBtn: ExTextView
     lateinit var volumeBtn: ExTextView
     lateinit var mManyLyricsView: ManyLyricsView
+
+    lateinit var accLocalVoiceSb: SeekBar
+    lateinit var accPublishVoiceSb: SeekBar
+    lateinit var renshengVoiceSb: SeekBar
+
+
     val lyricAndAccMatchManager = LyricAndAccMatchManager()
 
-    var volumeAnimation = false
-    val testSingle = true
+    var volumeAnimation = true
+    val testSingle = false
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.double_demo_activity_layout
@@ -49,6 +60,9 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
         readyBtn = this.findViewById(R.id.ready_btn)
         changeBtn = this.findViewById(R.id.change_btn)
         volumeBtn = this.findViewById(R.id.volume_btn)
+        accLocalVoiceSb = this.findViewById(R.id.acc_local_voice_sb)
+        accPublishVoiceSb = this.findViewById(R.id.acc_publish_voice_sb)
+        renshengVoiceSb = this.findViewById(R.id.rensheng_voice_sb)
 
         mManyLyricsView = this.findViewById(R.id.many_lyrics_view)
         mManyLyricsView?.initLrcData()
@@ -71,28 +85,29 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
         }
         volumeBtn.setOnClickListener {
             volumeAnimation = !volumeAnimation
-            if (volumeAnimation) {
-                volumeBtn.text = "关闭渐弱渐强"
-                U.getToastUtil().showShort("已开启")
-            } else {
-                volumeBtn.text = "开启渐弱渐强"
-                U.getToastUtil().showShort("已关闭")
-            }
+            setVolumeAnimation()
         }
-
+        setVolumeAnimation()
         changeBtn.visibility = View.GONE
         changeBtn.setOnClickListener {
             U.getToastUtil().showShort("对手唱了")
             if (volumeAnimation) {
                 changeBtn.visibility = View.GONE
-                val animation = ValueAnimator.ofInt(100, 0)
-                animation.duration = 1000
-                animation.addUpdateListener {
+                val animation1 = ValueAnimator.ofInt(ZqEngineKit.getInstance().params.audioMixingPlayoutVolume, 0)
+                animation1.addUpdateListener {
                     var v = it.animatedValue as Int
                     ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(v, false)
+                }
+
+                val animation2 = ValueAnimator.ofInt(ZqEngineKit.getInstance().params.audioMixingPublishVolume, 0)
+                animation2.addUpdateListener {
+                    var v = it.animatedValue as Int
                     ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(v, false)
                 }
-                animation.addListener(object : Animator.AnimatorListener {
+                val a = AnimatorSet()
+                a.duration = 1000
+                a.playTogether(animation1, animation2)
+                a.addListener(object : Animator.AnimatorListener {
                     override fun onAnimationRepeat(animation: Animator?) {
                     }
 
@@ -107,16 +122,16 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
                         sing(otherId)
                     }
                 })
-                animation.start()
+                a.start()
             } else {
                 sing(otherId)
             }
         }
-        if (MyLog.isDebugLogOpen()) {
-            val viewStub = this.findViewById<ViewStub>(R.id.debug_log_view_stub)
-            val debugLogView = DebugLogView(viewStub)
-            debugLogView.tryInflate()
-        }
+//        if (MyLog.isDebugLogOpen()) {
+//            val viewStub = this.findViewById<ViewStub>(R.id.debug_log_view_stub)
+//            val debugLogView = DebugLogView(viewStub)
+//            debugLogView.tryInflate()
+//        }
 
         val configParams = LyricAndAccMatchManager.ConfigParams()
         configParams.manyLyricsView = mManyLyricsView
@@ -139,14 +154,61 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
             }
 
             override fun onLyricEventPost(lineNum: Int) {
-                if (H.isGrabRoom()) {
-                    H.grabRoomData?.songLineNum = lineNum
-                }
+                mManyLyricsView.pause()
             }
         })
-//        ZqEngineKit.getInstance().setRecognizeListener { result, list, targetSongInfo, lineNo -> mLyricAndAccMatchManager!!.onAcrResult(result, list, targetSongInfo, lineNo) }
+        accLocalVoiceSb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(progress, true)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        accPublishVoiceSb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(progress, true)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        renshengVoiceSb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                ZqEngineKit.getInstance().adjustRecordingSignalVolume(progress, true)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+
+        accLocalVoiceSb.progress = ZqEngineKit.getInstance().params.audioMixingPlayoutVolume
+        accPublishVoiceSb.progress = ZqEngineKit.getInstance().params.audioMixingPublishVolume
+        renshengVoiceSb.progress = ZqEngineKit.getInstance().params.recordingSignalVolume
+
     }
 
+    fun setVolumeAnimation(){
+        if (volumeAnimation) {
+            volumeBtn.text = "关闭渐弱渐强"
+            U.getToastUtil().showShort("已开启")
+        } else {
+            volumeBtn.text = "开启渐弱渐强"
+            U.getToastUtil().showShort("已关闭")
+        }
+    }
     /**
      * 引擎相关事件
      *
@@ -169,14 +231,21 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
                 U.getToastUtil().showShort("轮到你唱了")
                 if (volumeAnimation) {
                     ZqEngineKit.getInstance().muteLocalAudioStream(false)
-                    val animation = ValueAnimator.ofInt(0, 100)
-                    animation.duration = 1000
-                    animation.addUpdateListener {
+                    val animation1 = ValueAnimator.ofInt(0, ZqEngineKit.getInstance().params.audioMixingPlayoutVolume)
+                    animation1.addUpdateListener {
                         var v = it.animatedValue as Int
                         ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(v, false)
+                    }
+
+                    val animation2 = ValueAnimator.ofInt(0, ZqEngineKit.getInstance().params.audioMixingPublishVolume)
+                    animation2.addUpdateListener {
+                        var v = it.animatedValue as Int
                         ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(v, false)
                     }
-                    animation.addListener(object : Animator.AnimatorListener {
+                    val a = AnimatorSet()
+                    a.duration = 1000
+                    a.playTogether(animation1, animation2)
+                    a.addListener(object : Animator.AnimatorListener {
                         override fun onAnimationRepeat(animation: Animator?) {
                         }
 
@@ -191,7 +260,7 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
                             sing(MyUserInfoManager.uid.toInt())
                         }
                     })
-                    animation.start()
+                    a.start()
                 } else {
                     sing(MyUserInfoManager.uid.toInt())
                 }
@@ -209,14 +278,15 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
 
     var singId = 0
 
-    private fun tryBegin(from:Int) {
-        if(testSingle){
-            if(from ==1){
+    private fun tryBegin(from: Int) {
+        if (testSingle) {
+            if (from == 1) {
                 ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
                 DebugLogView.println(getTag(), "轮到你唱了")
                 ZqEngineKit.getInstance().muteLocalAudioStream(false)
-                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(100, false)
-                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(100, false)
+                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(ZqEngineKit.getInstance().params.audioMixingPlayoutVolume, false)
+                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(ZqEngineKit.getInstance().params.audioMixingPublishVolume, false)
+                mManyLyricsView.resume()
             }
             return
         }
@@ -233,7 +303,8 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
         }
         if (size >= 2) {
             DebugLogView.println(getTag(), "tryBegin 两位主播 开始播放伴奏")
-                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
+            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
+            mManyLyricsView.resume()
             if (MyUserInfoManager.uid < otherId) {
                 sing(MyUserInfoManager.uid.toInt())
             } else {
@@ -248,8 +319,8 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
             if (singId == MyUserInfoManager.uid.toInt()) {
                 DebugLogView.println(getTag(), "轮到你唱了")
                 ZqEngineKit.getInstance().muteLocalAudioStream(false)
-                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(100, false)
-                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(100, false)
+                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(ZqEngineKit.getInstance().params.audioMixingPlayoutVolume, false)
+                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(ZqEngineKit.getInstance().params.audioMixingPublishVolume, false)
                 changeBtn.visibility = View.VISIBLE
             }
             if (singId == otherId) {
