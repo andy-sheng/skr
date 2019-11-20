@@ -559,35 +559,28 @@ public class AgoraRTCAdapter {
             }
             mRtcEngine.enableAudio();
 
-            int a = 3, b = 4;
+            int profile = Constants.AUDIO_PROFILE_MUSIC_STANDARD_STEREO;
+            int scenario = Constants.AUDIO_SCENARIO_GAME_STREAMING;
             /**
-             * 如果b==3 ，onRecordFrame 里是人声
-             * 如果b==4 ，onRecordFrame 是伴奏+人声
+             * 在音乐场景下，我们需要使用 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO 档次
              */
             switch (mConfig.getScene()) {
                 case rank:
-                    b = 3;
-                    mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
-                    break;
                 case grab:
-                    b = 3;
+                case audiotest:
+                    profile = Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO;
                     break;
                 case doubleChat:
-                    b = 3;
-                    mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
-                    break;
                 case voice:
-                    b = 3;
-                    break;
-                case audiotest:
-                    b = 3;
-                    mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
-                    break;
+                default:
+                     break;
             }
-            mRtcEngine.setAudioProfile(a, b);
+            MyLog.i(TAG, "setAudioProfile " + profile + " scenario " + scenario);
+            mRtcEngine.setAudioProfile(profile, scenario);
 
 //            mRtcEngine.setParameters("{\"che.audio.opensl\": true}");
-            mRtcEngine.setParameters("{\"che.audio.specify.codec\": \"OPUS\"}");
+            mRtcEngine.setParameters("{\"che.audio.gamestreaming.volume\": 100}");
+            mRtcEngine.setParameters("{\"che.audio.specify.codec\": \"OPUSFB\"}");
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
 
