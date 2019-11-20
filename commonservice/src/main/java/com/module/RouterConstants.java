@@ -130,4 +130,5 @@ public interface RouterConstants {
     String ACTIVITY_INVITE_FRIEND = "/room/InviteFriendActivity";
 
     String ACTIVITY_MALL_MALL = "/mall/MallActivity";
+    String ACTIVITY_MALL_PACKAGE = "/mall/PackageActivity";
 }

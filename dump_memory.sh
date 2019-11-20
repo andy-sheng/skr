@@ -41,7 +41,7 @@ adb shell kill -10 $pid
 sleep 2s
 
 dump_heap
-sleep 5s
+sleep 10s
 #while (($size1==0||$size2==0||$size1!=$size2))
 #do
 #  sleep 4s
@@ -66,7 +66,7 @@ open memory
 #java -jar hprof_bitmap_dump.jar $outputfile
 echo java -jar hprof_bitmap_dump.jar $outputfile2
 java -jar hprof_bitmap_dump.jar $outputfile2
-echo 可以使用MAT 查看 内存泄漏 与 大Bitmap占用等。如果要查看bitmap,必须使用 8.0 以下的手机,8.0系统bitmap内存在native中 \
+echo 可以使用MAT 查看 内存泄漏 与 大Bitmap占用等。如果要查看bitmap,必须使用 8.0 以下的手机,8.0系统（api 26 以下）bitmap内存在native中 \
 bitmap命名格式为 bitmap-宽x高-是否为res-地址.png,请分析bitmap是否必须
 
 #/Users/chengsimin/my_dev_utils/android-sdk-macosx-24.4/platform-tools/hprof-conv  /Users/chengsimin/Downloads/com.wali.live2018_05_11-16_05_27.hprof /Users/chengsimin/Downloads/com.wali.live2018_05_11-16_05_27_convert.hprof
