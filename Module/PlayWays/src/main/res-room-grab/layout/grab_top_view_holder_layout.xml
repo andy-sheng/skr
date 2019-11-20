@@ -31,8 +31,8 @@
 
     <com.component.busilib.view.AvatarView
         android:id="@+id/avatar_iv"
-        android:layout_width="@dimen/view_32_dp"
-        android:layout_height="@dimen/view_32_dp"
+        android:layout_width="@dimen/view_36_dp"
+        android:layout_height="@dimen/view_36_dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_5_dp"
         avatarView:borderColor="@color/white"
