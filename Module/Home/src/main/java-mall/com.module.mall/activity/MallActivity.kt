@@ -27,6 +27,7 @@ class MallActivity : BaseActivity() {
     lateinit var effectView: EffectView
     lateinit var tagTab: SlidingTabLayout
     lateinit var viewpager: ViewPager
+    lateinit var diamondTv: ExTextView
 
     var pagerAdapter: PagerAdapter? = null
     var viewList: ArrayList<ProductView>? = null
@@ -43,6 +44,7 @@ class MallActivity : BaseActivity() {
         effectView = findViewById(R.id.effect_view)
         tagTab = findViewById(R.id.tag_tab)
         viewpager = findViewById(R.id.viewpager)
+        diamondTv = findViewById(R.id.diamond_tv)
 
         tagTab.setCustomTabView(R.layout.mall_pager_tab, R.id.tab_tv)
         tagTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
@@ -56,6 +58,11 @@ class MallActivity : BaseActivity() {
         viewList?.add(ProductView(this))
         viewList?.add(ProductView(this))
         viewList?.add(ProductView(this))
+
+        diamondTv.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_BALANCE)
+                    .navigation()
+        }
 
         mallTv.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_MALL_PACKAGE)
