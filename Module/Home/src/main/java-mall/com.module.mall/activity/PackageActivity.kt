@@ -17,6 +17,7 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.module.RouterConstants
 import com.module.home.R
 import com.module.mall.view.EffectView
+import com.module.mall.view.PackageView
 import com.module.mall.view.ProductView
 
 @Route(path = RouterConstants.ACTIVITY_MALL_PACKAGE)
@@ -29,7 +30,7 @@ class PackageActivity : BaseActivity() {
     lateinit var viewpager: ViewPager
 
     var pagerAdapter: PagerAdapter? = null
-    var viewList: ArrayList<ProductView>? = null
+    var viewList: ArrayList<PackageView>? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.package_activity_layout
@@ -52,10 +53,10 @@ class PackageActivity : BaseActivity() {
         tagTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(12f).toFloat())
 
         viewList = ArrayList()
-        viewList?.add(ProductView(this))
-        viewList?.add(ProductView(this))
-        viewList?.add(ProductView(this))
-        viewList?.add(ProductView(this))
+        viewList?.add(PackageView(this))
+        viewList?.add(PackageView(this))
+        viewList?.add(PackageView(this))
+        viewList?.add(PackageView(this))
 
         mallTv.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_MALL_MALL)
