@@ -95,7 +95,7 @@
     <com.module.playways.grab.room.top.GrabTopContentView
         android:id="@+id/grab_top_content_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_120_dp" />
+        android:layout_height="@dimen/view_60_dp" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/select_song_tv"
