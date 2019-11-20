@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.*
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -100,6 +101,7 @@ import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.GrabRoom.EQRoundStatus
+import com.zq.live.proto.GrabRoom.EQUserRole
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -170,6 +172,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     var mSelfSingCardView: SelfSingCardView? = null// 自己演唱卡片
 
     lateinit var mSingBeginTipsCardView: SingBeginTipsCardView// 演唱提示卡片
+
+    lateinit var mWaitingTv: ExTextView  // 候场中等待的提示
 
     lateinit var mGrabOpBtn: GrabOpView // 抢 倒计时 灭 等按钮
 
@@ -399,6 +403,20 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             if (it.ranking != null) {
                 mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
             }
+        }
+
+        refreshWaitTips(true)
+    }
+
+    private fun refreshWaitTips(isFirst: Boolean) {
+        if (isFirst) {
+            if (mRoomData?.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role == EQUserRole.EQUR_WAIT_USER.value) {
+                mWaitingTv.visibility = VISIBLE
+            } else {
+                mWaitingTv.visibility = GONE
+            }
+        } else {
+            mWaitingTv.visibility = GONE
         }
     }
 
@@ -1087,6 +1105,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
         mRoundOverCardView = RoundOverCardView(rootView)
         mGrabGameOverView = rootView.findViewById(R.id.grab_game_over_view)
+        mWaitingTv = rootView.findViewById(R.id.waiting_tv)
     }
 
     private fun initGiftDisplayView() {
@@ -1468,6 +1487,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     }
 
     override fun roundOver(lastInfoModel: GrabRoundInfoModel?, playNextSongInfoCard: Boolean, now: GrabRoundInfoModel?) {
+        refreshWaitTips(false)
         removeAllEnsureMsg()
         val msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER)
         msg.arg1 = if (playNextSongInfoCard) 1 else 0
