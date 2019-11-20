@@ -1,5 +1,6 @@
 package com.module.mall.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
@@ -127,6 +128,11 @@ class MallActivity : BaseActivity() {
 
         viewpager.adapter = pagerAdapter
         tagTab.setViewPager(viewpager)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
     }
 
     override fun canSlide(): Boolean {
