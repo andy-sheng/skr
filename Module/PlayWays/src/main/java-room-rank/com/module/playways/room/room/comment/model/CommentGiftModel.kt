@@ -5,6 +5,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.utils.SpanUtils
 import com.module.playways.BaseRoomData
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.model.FakeUserInfoModel
 import com.module.playways.room.room.gift.model.GiftPlayModel
 
 class CommentGiftModel(giftPlayModel: GiftPlayModel, roomData: BaseRoomData<*>) : CommentModel() {
@@ -16,6 +17,13 @@ class CommentGiftModel(giftPlayModel: GiftPlayModel, roomData: BaseRoomData<*>) 
 
         if (roomData is RaceRoomData) {
             fakeUserInfo = roomData.getFakeInfo(giftPlayModel.sender.userId)
+            if (fakeUserInfo == null) {
+                // 观众，那我们构造一个fakeUserInfo
+                val fakeUserInfoModel = FakeUserInfoModel().apply {
+                    nickName = "【观众】${userInfo?.nicknameRemark}"
+                }
+                fakeUserInfo = fakeUserInfoModel
+            }
             isFake = roomData.isFakeForMe(giftPlayModel.sender.userId)
             var nameBuilder = SpanUtils()
                     .append((if (!TextUtils.isEmpty(fakeUserInfo?.nickName))

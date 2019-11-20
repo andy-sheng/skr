@@ -16,4 +16,6 @@ public class GameModeType {
     public static final int GAME_MODE_PLAYBOOK = 7; // 歌单战模式
 
     public static final int GAME_MODE_MIC = 8; // 小k房模式
+
+    public static final int GAME_MODE_DOUBLE = 9; //双人畅聊模式
 }

@@ -757,6 +757,13 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
             commentModel.userInfo = userInfoModel
             commentModel.fakeUserInfo = mRoomData.getFakeInfo(userInfoModel.userId)
+            if (commentModel.fakeUserInfo == null) {
+                // 观众，那我们构造一个fakeUserInfo
+                val fakeUserInfoModel = FakeUserInfoModel().apply {
+                    nickName = "【观众】${commentModel.userInfo?.nicknameRemark}"
+                }
+                commentModel.fakeUserInfo = fakeUserInfoModel
+            }
             commentModel.isFake = mRoomData.isFakeForMe(userInfoModel.userId)
 
             val nameBuilder = SpanUtils()
@@ -826,6 +833,13 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             commentModel.userInfo = userInfoModel
             commentModel.fakeUserInfo = mRoomData.getFakeInfo(userInfoModel.userId)
             commentModel.isFake = mRoomData.isFakeForMe(userInfoModel.userId)
+            if (commentModel.fakeUserInfo == null) {
+                // 观众，那我们构造一个fakeUserInfo
+                val fakeUserInfoModel = FakeUserInfoModel().apply {
+                    nickName = "【观众】${commentModel.userInfo?.nicknameRemark}"
+                }
+                commentModel.fakeUserInfo = fakeUserInfoModel
+            }
 
             var name = userInfoModel.nicknameRemark
             if (!TextUtils.isEmpty(commentModel.fakeUserInfo?.nickName)) {

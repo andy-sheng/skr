@@ -488,6 +488,10 @@ public class UserInfoManager {
         });
     }
 
+    public void getMyFollow(final int pullOnlineStatus, final boolean isFromFollow, final UserInfoListCallback userInfoListCallback, final boolean needIntimacy) {
+        getMyFollow(pullOnlineStatus, isFromFollow, 0, 0, userInfoListCallback, needIntimacy);
+    }
+
     /**
      * 获取我的关注
      * 注意返回的不在主线程
@@ -498,7 +502,7 @@ public class UserInfoManager {
      * @param userInfoListCallback
      * @param needIntimacy         需要亲密度
      */
-    public void getMyFollow(final int pullOnlineStatus, final boolean isFromFollow, final UserInfoListCallback userInfoListCallback, final boolean needIntimacy) {
+    public void getMyFollow(final int pullOnlineStatus, final boolean isFromFollow, int roomID, int gameModel, final UserInfoListCallback userInfoListCallback, final boolean needIntimacy) {
         Observable.create(new ObservableOnSubscribe<List<UserInfoModel>>() {
             @Override
             public void subscribe(ObservableEmitter<List<UserInfoModel>> emitter) {
@@ -605,7 +609,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, true, false, isFromFollow);
+                    fillUserOnlineStatus(resultList, true, false, isFromFollow, roomID, gameModel);
                 } else if (pullOnlineStatus == ONLINE_PULL_NORMAL) {
                     if (resultList.size() > 100) {
                         // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
@@ -613,7 +617,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, false, needIntimacy, isFromFollow);
+                    fillUserOnlineStatus(resultList, false, needIntimacy, isFromFollow, roomID, gameModel);
                 } else {
 
                 }
@@ -674,12 +678,16 @@ public class UserInfoManager {
 
     }
 
+    public void getMyFriends(final int pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
+        getMyFriends(pullOnlineStatus, 0, 0, userInfoListCallback);
+    }
+
     /**
      * 获取我的好友
      */
-    public void getMyFriends(final int pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
+    public void getMyFriends(final int pullOnlineStatus, int roomID, int gameModel, final UserInfoListCallback userInfoListCallback) {
         //先从数据库里取我的关注
-        getMyFollow(ONLINE_PULL_NONE, false, new UserInfoListCallback() {
+        getMyFollow(ONLINE_PULL_NONE, false, roomID, gameModel, new UserInfoListCallback() {
             @Override
             public void onSuccess(FROM from, int offset, List<UserInfoModel> list) {
                 List<UserInfoModel> resultList = new ArrayList<>();
@@ -695,7 +703,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, true, false);
+                    fillUserOnlineStatus(resultList, true, false, roomID, gameModel);
                 } else if (pullOnlineStatus == ONLINE_PULL_NORMAL) {
                     if (resultList.size() > 100) {
                         // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
@@ -703,7 +711,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, false, true, false);
+                    fillUserOnlineStatus(resultList, false, true, false, roomID, gameModel);
                 } else {
 
                 }
@@ -875,11 +883,11 @@ public class UserInfoManager {
 
     }
 
-    public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus, boolean isFromFollow) {
-        fillUserOnlineStatus(list, pullGameStatus, false, isFromFollow);
+    public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus, boolean isFromFollow, int roomID, int gameModel) {
+        fillUserOnlineStatus(list, pullGameStatus, false, isFromFollow, roomID, gameModel);
     }
 
-    public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus, boolean needIntimacy, boolean isFromFollow) {
+    public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus, boolean needIntimacy, boolean isFromFollow, int roomID, int gameModel) {
         final HashSet<Integer> idSets = new HashSet();
         for (UserInfoModel userInfoModel : list) {
             OnlineModel onlineModel = mStatusMap.get(userInfoModel.getUserId());
@@ -937,7 +945,7 @@ public class UserInfoManager {
             for (List<Integer> qqq : queryList) {
                 Observable<HashMap<Integer, OnlineModel>> observable = null;
                 if (pullGameStatus) {
-                    observable = checkUserGameStatusByIds(qqq);
+                    observable = checkUserGameStatusByIds(qqq, roomID, gameModel);
                 } else {
                     if (needIntimacy) {
                         observable = checkUserOnlineStatusByIdsWithIntimacy(qqq);
@@ -1171,10 +1179,18 @@ public class UserInfoManager {
     }
 
 
-    public Observable<HashMap<Integer, OnlineModel>> checkUserGameStatusByIds(Collection<Integer> list) {
+    /**
+     * @param list
+     * @param roomID
+     * @param gameModel 一场到底V2模式: 5   小K房MicMode: 8  双人畅聊: 9
+     * @return
+     */
+    public Observable<HashMap<Integer, OnlineModel>> checkUserGameStatusByIds(Collection<Integer> list, int roomID, int gameModel) {
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("userIDs", list);
+        map.put("roomID", roomID);
+        map.put("mode", gameModel);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         return userInfoServerApi.checkUserGameStatus(body)
