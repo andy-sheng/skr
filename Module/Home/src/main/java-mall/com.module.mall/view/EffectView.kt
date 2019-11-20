@@ -7,6 +7,7 @@ import android.view.View
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
+import com.common.utils.U
 import com.component.level.utils.LevelConfigUtils
 import com.module.home.R
 import com.opensource.svgaplayer.SVGAImageView
@@ -15,7 +16,7 @@ class EffectView : ConstraintLayout {
     var bgSvga: SVGAImageView
     var avatarIv: BaseImageView
     var avatarBox: BaseImageView
-    var lightSvga: BaseImageView
+    var lightSvga: SVGAImageView
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -31,11 +32,13 @@ class EffectView : ConstraintLayout {
 
         AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                 .setCircle(true)
+                .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+                .setBorderColor(U.getColor(R.color.white))
                 .build())
 
-        if (LevelConfigUtils.getImageResoucesLevel(MyUserInfoManager.myUserInfo?.ranking?.mainRanking
+        if (LevelConfigUtils.getRaceCenterAvatarBg(MyUserInfoManager.myUserInfo?.ranking?.mainRanking
                         ?: 0) != 0) {
-            avatarBox.setImageResource(LevelConfigUtils.getImageResoucesLevel(MyUserInfoManager.myUserInfo?.ranking?.mainRanking
+            avatarBox.setImageResource(LevelConfigUtils.getRaceCenterAvatarBg(MyUserInfoManager.myUserInfo?.ranking?.mainRanking
                     ?: 0))
         }
     }
