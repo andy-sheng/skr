@@ -846,6 +846,8 @@ public class AgoraRTCAdapter {
         if (0 != retCode)
             stopStatisticThread();
 
+        SDataManager.getInstance().getDataHolder().addJoinChannelAction(retCode);
+
         return retCode;
     }
 
