@@ -582,10 +582,12 @@ public class AgoraRTCAdapter {
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
             }
+            MyLog.i(TAG, "setAudioProfile " + profile + " scenario " + scenario);
             mRtcEngine.setAudioProfile(profile, scenario);
 
 //            mRtcEngine.setParameters("{\"che.audio.opensl\": true}");
-            mRtcEngine.setParameters("{\"che.audio.specify.codec\": \"OPUS\"}");
+            mRtcEngine.setParameters("{\"che.audio.gamestreaming.volume\": 100}");
+            mRtcEngine.setParameters("{\"che.audio.specify.codec\": \"OPUSFB\"}");
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
 
