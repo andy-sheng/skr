@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.module.playways.grab.room.view.GrabRootView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:gameType="http://schemas.android.com/apk/res-auto"
     android:id="@+id/grab_root_view"
     android:layout_width="match_parent"
@@ -96,6 +96,23 @@
         android:id="@+id/grab_top_content_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_120_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/select_song_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_81_dp"
+        android:layout_marginRight="@dimen/view_14_dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/view_9_dp"
+        android:paddingRight="@dimen/view_9_dp"
+        android:text="点歌"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="12dp"
+        app:bl_gradient_endColor="#835DFD"
+        app:bl_gradient_startColor="#835DFD" />
 
     <!--<ImageView-->
     <!--android:id="@+id/skip_guide_iv"-->

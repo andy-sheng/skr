@@ -7,7 +7,6 @@ public class RelationChangeEvent {
     public static final int UNFOLLOW_TYPE = 2;
     public static final int SP_FOLLOW_TYPE = 3;
     public static final int UN_SP_FOLLOW_TYPE = 4;
-    public static final int BLACK_LIST_TYPE = 5;
 
     public boolean isFriend;
     public boolean isFollow;

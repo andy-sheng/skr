@@ -12,7 +12,6 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.component.busilib.view.AvatarView;
-import com.component.busilib.view.NickNameView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zq.live.proto.Common.ESex;
 
@@ -22,9 +21,11 @@ import com.zq.live.proto.Common.ESex;
 public class GrabInviteNotifyView extends RelativeLayout {
 
     AvatarView mAvatarIv;
-    NickNameView mNameView;
+    ExTextView mNameTv;
+    ImageView mSexIv;
     ExTextView mHintTv;
-    ExTextView mAgreeButton;
+    View mAgreeTv;
+    //ExTextView mIgnoreTv;
 
     UserInfoModel mUserInfoModel;
 
@@ -45,12 +46,15 @@ public class GrabInviteNotifyView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_invite_notification_view_layout, this);
-        mAvatarIv = findViewById(R.id.avatar_iv);
-        mNameView = findViewById(R.id.name_view);
-        mHintTv = findViewById(R.id.hint_tv);
-        mAgreeButton = findViewById(R.id.agree_button);
+        mAvatarIv = this.findViewById(R.id.avatar_iv);
+        mNameTv = this.findViewById(R.id.name_tv);
+        mSexIv = this.findViewById(R.id.sex_iv);
+        mHintTv = this.findViewById(R.id.hint_tv);
+        mAgreeTv = this.findViewById(R.id.ok_btn);
 
-        mAgreeButton.setOnClickListener(new OnClickListener() {
+        //mIgnoreTv = (ExTextView) this.findViewById(R.id.ignore_tv);
+
+        mAgreeTv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
@@ -58,13 +62,31 @@ public class GrabInviteNotifyView extends RelativeLayout {
                 }
             }
         });
+
+//        mIgnoreTv.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mListener != null) {
+//                    mListener.onIgnore();
+//                }
+//            }
+//        });
     }
 
     public void bindData(UserInfoModel userInfoModel) {
         this.mUserInfoModel = userInfoModel;
 
         mAvatarIv.bindData(userInfoModel);
-        mNameView.setAllStateText(userInfoModel);
+        mNameTv.setText(mUserInfoModel.getNicknameRemark());
+        if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
+            mSexIv.setVisibility(VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
+        } else if (userInfoModel.getSex() == ESex.SX_FEMALE.getValue()) {
+            mSexIv.setVisibility(VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
+        } else {
+            mSexIv.setVisibility(GONE);
+        }
     }
 
     Listener mListener;

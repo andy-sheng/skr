@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_trans_80">
+
+    <RelativeLayout
+        android:id="@+id/result_info_area"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.common.view.ex.ExRelativeLayout
+            android:id="@+id/result_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_452_dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/view_27_dp"
+            android:layout_marginTop="@dimen/view_133_dp"
+            android:layout_marginRight="@dimen/view_27_dp"
+            android:background="@drawable/rank_win_bg"
+            android:paddingLeft="@dimen/view_12_dp"
+            android:paddingRight="@dimen/view_12_dp">
+
+            <com.module.playways.room.room.view.RankResultView2
+                android:id="@+id/first_result"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_112_dp"
+                android:layout_marginTop="@dimen/view_70_dp">
+
+            </com.module.playways.room.room.view.RankResultView2>
+
+            <com.module.playways.room.room.view.RankResultView2
+                android:id="@+id/second_result"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_112_dp"
+                android:layout_below="@id/first_result"
+                android:layout_marginTop="@dimen/view_8_dp">
+
+            </com.module.playways.room.room.view.RankResultView2>
+
+            <com.module.playways.room.room.view.RankResultView2
+                android:id="@+id/third_result"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_112_dp"
+                android:layout_below="@id/second_result"
+                android:layout_marginTop="@dimen/view_8_dp"></com.module.playways.room.room.view.RankResultView2>
+
+        </com.common.view.ex.ExRelativeLayout>
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/result_top"
+            android:layout_width="@dimen/view_375_dp"
+            android:layout_height="@dimen/view_190_dp"
+            android:layout_alignTop="@+id/result_area"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-135dp" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/result_exit"
+            android:layout_width="@dimen/view_48_dp"
+            android:layout_height="@dimen/view_48_dp"
+            android:layout_alignBottom="@+id/result_area"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="-24dp"
+            android:background="@drawable/zhanji_win_exit" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/share_iv"
+            android:layout_width="@dimen/view_26_dp"
+            android:layout_height="@dimen/view_16_dp"
+            android:layout_alignTop="@+id/result_area"
+            android:layout_alignRight="@+id/result_area"
+            android:layout_marginTop="@dimen/view_16_dp"
+            android:layout_marginRight="@dimen/view_16_dp"
+            android:background="@drawable/gerenzhuye_fenxiang"
+            android:visibility="gone" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/iv_game_role"
+            android:layout_width="@dimen/view_24_dp"
+            android:layout_height="@dimen/view_24_dp"
+            android:layout_alignTop="@id/result_area"
+            android:layout_alignRight="@+id/result_area"
+            android:layout_marginRight="@dimen/view_12_dp"
+            android:layout_marginTop="-36dp"
+            android:background="@drawable/yanchang_bisaiguize" />
+    </RelativeLayout>
+
+</RelativeLayout>

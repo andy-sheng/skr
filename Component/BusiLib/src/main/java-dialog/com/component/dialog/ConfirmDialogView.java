@@ -35,9 +35,6 @@ public class ConfirmDialogView extends RelativeLayout {
     HandlerTaskTimer mCounDownTimer;
     Listener mGrabKickViewListener;
 
-    int normalColor = Color.parseColor("#cc8B572A");
-    int lightColor = Color.parseColor("#F5A623");
-
     ConfirmDialogView(Context context, UserInfoModel userInfoModel, int type, int num) {
         super(context);
         this.mUserInfoModel = userInfoModel;
@@ -71,18 +68,18 @@ public class ConfirmDialogView extends RelativeLayout {
             // 金币确认
             if (num != 0) {
                 SpannableStringBuilder stringBuilder = new SpanUtils()
-                        .append("将").setForegroundColor(normalColor)
-                        .append(" " + mUserInfoModel.getNicknameRemark() + " \n").setForegroundColor(lightColor)
-                        .append("移除房间需要消耗").setForegroundColor(normalColor)
-                        .append("" + num).setForegroundColor(lightColor)
-                        .append("金币").setForegroundColor(normalColor)
+                        .append("将").setForegroundColor(Color.parseColor("#3B4E79"))
+                        .append(" " + mUserInfoModel.getNicknameRemark() + " \n").setForegroundColor(Color.parseColor("#F5A623"))
+                        .append("移除房间需要消耗").setForegroundColor(Color.parseColor("#3B4E79"))
+                        .append("" + num).setForegroundColor(Color.parseColor("#F5A623"))
+                        .append("金币").setForegroundColor(Color.parseColor("#3B4E79"))
                         .create();
                 mContentTv.setText(stringBuilder);
             } else {
                 SpannableStringBuilder stringBuilder = new SpanUtils()
-                        .append("是否发起投票将").setForegroundColor(normalColor)
-                        .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(lightColor)
-                        .append("踢出房间").setForegroundColor(normalColor)
+                        .append("是否发起投票将").setForegroundColor(Color.parseColor("#3B4E79"))
+                        .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#F5A623"))
+                        .append("踢出房间").setForegroundColor(Color.parseColor("#3B4E79"))
                         .create();
                 mContentTv.setText(stringBuilder);
             }
@@ -96,9 +93,9 @@ public class ConfirmDialogView extends RelativeLayout {
         } else if (type == ConfirmDialog.TYPE_INVITE_CONFIRM) {
             mKickMaskIv.setVisibility(GONE);
             SpannableStringBuilder stringBuilder = new SpanUtils()
-                    .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(lightColor)
+                    .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#F5A623"))
                     .append("\n")
-                    .append("邀请你加入一唱到底").setForegroundColor(normalColor)
+                    .append("邀请你加入一唱到底").setForegroundColor(U.getColor(R.color.black_trans_50))
                     .create();
             mContentTv.setText(stringBuilder);
 
@@ -107,9 +104,9 @@ public class ConfirmDialogView extends RelativeLayout {
         } else if (type == ConfirmDialog.TYPE_DOUBLE_INVITE_CONFIRM) {
             mKickMaskIv.setVisibility(GONE);
             SpannableStringBuilder stringBuilder = new SpanUtils()
-                    .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(lightColor)
+                    .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#F5A623"))
                     .append("\n")
-                    .append("邀请你加入ta的双人唱聊房").setForegroundColor(normalColor)
+                    .append("邀请你加入ta的双人唱聊房").setForegroundColor(U.getColor(R.color.black_trans_50))
                     .create();
             mContentTv.setText(stringBuilder);
 
@@ -117,9 +114,9 @@ public class ConfirmDialogView extends RelativeLayout {
             mConfirmTv.setText("同意");
         } else if (type == ConfirmDialog.TYPE_OWNER_KICK_CONFIRM) {
             SpannableStringBuilder stringBuilder = new SpanUtils()
-                    .append("是否将").setForegroundColor(normalColor)
-                    .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(lightColor)
-                    .append("踢出房间?").setForegroundColor(normalColor)
+                    .append("是否将").setForegroundColor(Color.parseColor("#3B4E79"))
+                    .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#F5A623"))
+                    .append("踢出房间?").setForegroundColor(Color.parseColor("#3B4E79"))
                     .create();
             mContentTv.setText(stringBuilder);
             mCancleTv.setText("取消");
@@ -127,9 +124,9 @@ public class ConfirmDialogView extends RelativeLayout {
         } else if (type == TYPE_MIC_INVITE_CONFIRM) {
             mKickMaskIv.setVisibility(GONE);
             SpannableStringBuilder stringBuilder = new SpanUtils()
-                    .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(lightColor)
+                    .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#F5A623"))
                     .append("\n")
-                    .append("邀请你加入ta的小k房").setForegroundColor(normalColor)
+                    .append("邀请你加入ta的小k房").setForegroundColor(U.getColor(R.color.black_trans_50))
                     .create();
             mContentTv.setText(stringBuilder);
 

@@ -1,11 +1,11 @@
 package com.dialog.view;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 
 import com.common.base.R;
-import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -26,7 +26,7 @@ public class TipsDialogView extends RelativeLayout {
     }
 
     private void init() {
-        inflate(getContext(), R.layout.template_tips_dialog, this);
+        inflate(getContext(), R.layout.template_tips1_dialog, this);
 
         mTitleTv = this.findViewById(R.id.title_tv);
         mMessageTv = this.findViewById(R.id.message_tv);
@@ -53,7 +53,6 @@ public class TipsDialogView extends RelativeLayout {
                 .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setMargin(U.getDisplayUtils().dip2px(16), -1, U.getDisplayUtils().dip2px(16), U.getDisplayUtils().dip2px(16))
                 .setExpanded(false)
                 .setCancelable(canCancel)
                 .create();
@@ -66,7 +65,7 @@ public class TipsDialogView extends RelativeLayout {
         }
     }
 
-    public void dismiss(boolean isAnimation) {
+    public void dismiss(boolean isAnimation){
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(isAnimation);
         }

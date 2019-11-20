@@ -17,9 +17,8 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.view.AvatarView;
 import com.component.busilib.view.SpeakingTipsAnimationView;
-import com.module.playways.R;
-import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.component.person.event.ShowPersonCardEvent;
+import com.module.playways.R;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
 import com.zq.live.proto.GrabRoom.EWantSingType;
 
@@ -41,7 +40,7 @@ public class GrabTopItemView extends RelativeLayout {
     public boolean mShowEmptySeat = false;
 
     int mMode = MODE_GRAB;
-    private boolean mCanShowInviteWhenEmpty = false; // 能否显示邀请按钮
+//    private boolean mCanShowInviteWhenEmpty = false; // 能否显示邀请按钮
 
     private boolean mLast = false; // 是否是最后一个
 
@@ -72,23 +71,23 @@ public class GrabTopItemView extends RelativeLayout {
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mShowEmptySeat && mCanShowInviteWhenEmpty) {
-                    EventBus.getDefault().post(new GrabWantInviteEvent());
-                } else {
-                    if (mPlayerInfoModel != null && mPlayerInfoModel.getUserInfo() != null) {
-                        if (!mShowEmptySeat) {
-                            EventBus.getDefault().post(new ShowPersonCardEvent(mPlayerInfoModel.getUserInfo().getUserId()));
-                        }
+//                if (mShowEmptySeat && mCanShowInviteWhenEmpty) {
+//                    EventBus.getDefault().post(new GrabWantInviteEvent());
+//                } else {
+                if (mPlayerInfoModel != null && mPlayerInfoModel.getUserInfo() != null) {
+                    if (!mShowEmptySeat) {
+                        EventBus.getDefault().post(new ShowPersonCardEvent(mPlayerInfoModel.getUserInfo().getUserId()));
                     }
                 }
+//                }
             }
         });
     }
 
     public void tryAddParent(LinearLayout grabTopRv) {
         if (this.getParent() == null) {
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
-            lp.weight = 1;
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.leftMargin = U.getDisplayUtils().dip2px(8f);
             grabTopRv.addView(this, lp);
         }
     }
@@ -145,17 +144,17 @@ public class GrabTopItemView extends RelativeLayout {
 
     //占位的View
     public void setToPlaceHolder() {
-        if (mCanShowInviteWhenEmpty) {
-            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.yichangdaodi_yaoqing));
-            if (mLast) {
-                EventBus.getDefault().post(new InviteBtnVisibleEvent(true));
-            }
-        } else {
-            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.yichangdaodi_guanzhong));
-            if (mLast) {
-                EventBus.getDefault().post(new InviteBtnVisibleEvent(false));
-            }
+//        if (mCanShowInviteWhenEmpty) {
+//            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.yichangdaodi_yaoqing));
+//            if (mLast) {
+//                EventBus.getDefault().post(new InviteBtnVisibleEvent(true));
+//            }
+//        } else {
+        mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.yichangdaodi_guanzhong));
+        if (mLast) {
+            EventBus.getDefault().post(new InviteBtnVisibleEvent(false));
         }
+//        }
         mOwnerIconIv.setVisibility(GONE);
         mShowEmptySeat = true;
 
@@ -201,8 +200,8 @@ public class GrabTopItemView extends RelativeLayout {
 
     public void reset() {
         hideGrabIcon();
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
-        lp.weight = 1;
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.leftMargin = U.getDisplayUtils().dip2px(8f);
         setLayoutParams(lp);
         this.setTranslationY(0);
         this.setAlpha(1);
@@ -274,9 +273,9 @@ public class GrabTopItemView extends RelativeLayout {
         return mPlayerInfoModel;
     }
 
-    public void setCanShowInviteWhenEmpty(boolean canShowInviteWhenEmpty) {
-        mCanShowInviteWhenEmpty = canShowInviteWhenEmpty;
-    }
+//    public void setCanShowInviteWhenEmpty(boolean canShowInviteWhenEmpty) {
+//        mCanShowInviteWhenEmpty = canShowInviteWhenEmpty;
+//    }
 
     public void setLast(boolean last) {
         mLast = last;

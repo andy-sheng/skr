@@ -12,15 +12,15 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.component.busilib.view.AvatarView;
-import com.component.busilib.view.NickNameView;
 import com.zq.live.proto.Common.ESex;
 
 public class MicInviteNotifyView extends ConstraintLayout {
-
+    ImageView mAvatarBg;
     AvatarView mAvatarIv;
-    NickNameView mNameView;
+    ExTextView mNameTv;
+    ImageView mSexIv;
     ExTextView mHintTv;
-    ExTextView mAgreeButton;
+    ExImageView mOkBtn;
 
     UserInfoModel mUserInfoModel;
 
@@ -44,12 +44,21 @@ public class MicInviteNotifyView extends ConstraintLayout {
     private void init() {
         inflate(getContext(), R.layout.mic_invite_notification_view_layout, this);
 
-        mAvatarIv = findViewById(R.id.avatar_iv);
-        mNameView = findViewById(R.id.name_view);
-        mHintTv = findViewById(R.id.hint_tv);
-        mAgreeButton = findViewById(R.id.agree_button);
+        mAvatarBg = (ImageView) findViewById(R.id.avatar_bg);
+        mAvatarIv = (AvatarView) findViewById(R.id.avatar_iv);
+        mNameTv = (ExTextView) findViewById(R.id.name_tv);
+        mSexIv = (ImageView) findViewById(R.id.sex_iv);
+        mHintTv = (ExTextView) findViewById(R.id.hint_tv);
+        mOkBtn = (ExImageView) findViewById(R.id.ok_btn);
+    }
 
-        mAgreeButton.setOnClickListener(new DebounceViewClickListener() {
+    public void bindData(UserInfoModel userInfoModel) {
+        this.mUserInfoModel = userInfoModel;
+
+        mAvatarIv.bindData(userInfoModel);
+        mNameTv.setText(userInfoModel.getNickname());
+
+        mOkBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {
@@ -57,13 +66,16 @@ public class MicInviteNotifyView extends ConstraintLayout {
                 }
             }
         });
-    }
 
-    public void bindData(UserInfoModel userInfoModel) {
-        this.mUserInfoModel = userInfoModel;
-
-        mAvatarIv.bindData(userInfoModel);
-        mNameView.setAllStateText(userInfoModel);
+        if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
+            mSexIv.setVisibility(VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
+        } else if (userInfoModel.getSex() == ESex.SX_FEMALE.getValue()) {
+            mSexIv.setVisibility(VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
+        } else {
+            mSexIv.setVisibility(GONE);
+        }
     }
 
     public void setListener(Listener l) {

@@ -316,10 +316,7 @@ public class UserInfoManager {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    boolean isFriend = result.getData().getBooleanValue("isFriend");
-                    boolean isFollow = result.getData().getBooleanValue("isFollow");
-                    boolean isSPFollow = result.getData().getBooleanValue("isSPFollow");
-                    EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.BLACK_LIST_TYPE, userID, isFriend, isFollow, isSPFollow));
+                    EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userID, false, false, false));
                     // TODO: 2019-07-03 可能服务器加成功，加融云失败，有问题找服务器
                     msgService.addToBlacklist(String.valueOf(userID), new ICallback() {
                         @Override
@@ -347,32 +344,18 @@ public class UserInfoManager {
             MyLog.w(TAG, "removeBlackList" + " userID=" + userID + " responseCallBack=" + responseCallBack);
             return;
         }
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("userID", userID);
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-        ApiMethods.subscribe(userInfoServerApi.delBlackList(body), new ApiObserver<ApiResult>() {
+        msgService.removeFromBlacklist(String.valueOf(userID), new ICallback() {
             @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    boolean isFriend = result.getData().getBooleanValue("isFriend");
-                    boolean isFollow = result.getData().getBooleanValue("isFollow");
-                    boolean isSPFollow = result.getData().getBooleanValue("isSPFollow");
-                    EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.BLACK_LIST_TYPE, userID, isFriend, isFollow, isSPFollow));
-                    msgService.removeFromBlacklist(String.valueOf(userID), new ICallback() {
-                        @Override
-                        public void onSucess(Object obj) {
-                            if (responseCallBack != null) {
-                                responseCallBack.onServerSucess(obj);
-                            }
-                        }
+            public void onSucess(Object obj) {
+                if (responseCallBack != null) {
+                    responseCallBack.onServerSucess(obj);
+                }
+            }
 
-                        @Override
-                        public void onFailed(Object obj, int errcode, String message) {
-                            if (responseCallBack != null) {
-                                responseCallBack.onServerFailed();
-                            }
-                        }
-                    });
+            @Override
+            public void onFailed(Object obj, int errcode, String message) {
+                if (responseCallBack != null) {
+                    responseCallBack.onServerFailed();
                 }
             }
         });

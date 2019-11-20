@@ -20,7 +20,6 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.event.RechargeSuccessEvent;
 import com.module.home.R;
 import com.module.home.WalletServerApi;
-import com.module.home.event.ExchangeDiamondSuccessEvent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -82,11 +81,6 @@ public class DiamondBallanceFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(RechargeSuccessEvent giftPresentEvent) {
         // 收到一条礼物消息,进入生产者队列
-        getZSBalance();
-    }
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(ExchangeDiamondSuccessEvent exchangeDiamondSuccessEvent) {
         getZSBalance();
     }
 

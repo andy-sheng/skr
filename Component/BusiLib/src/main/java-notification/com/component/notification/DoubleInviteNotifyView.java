@@ -15,12 +15,12 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.component.busilib.view.AvatarView;
-import com.component.busilib.view.NickNameView;
 import com.zq.live.proto.Common.ESex;
 
 public class DoubleInviteNotifyView extends ConstraintLayout {
     AvatarView mAvatarIv;
-    NickNameView mNameView;
+    ExTextView mInviterNameTv;
+    ExImageView mSexIv;
     ExTextView mSubTitleTv;
     ExTextView mAgreeButton;
 
@@ -47,7 +47,8 @@ public class DoubleInviteNotifyView extends ConstraintLayout {
         inflate(getContext(), R.layout.double_invite_notification_view_layout, this);
 
         mAvatarIv = findViewById(R.id.avatar_iv);
-        mNameView = findViewById(R.id.name_view);
+        mInviterNameTv = findViewById(R.id.inviter_name_tv);
+        mSexIv = findViewById(R.id.sex_iv);
         mSubTitleTv = findViewById(R.id.sub_title_tv);
         mAgreeButton = findViewById(R.id.agree_button);
     }
@@ -56,7 +57,7 @@ public class DoubleInviteNotifyView extends ConstraintLayout {
         this.mUserInfoModel = userInfoModel;
 
         mAvatarIv.bindData(userInfoModel);
-        mNameView.setAllStateText(userInfoModel);
+        mInviterNameTv.setText(userInfoModel.getNickname());
         mSubTitleTv.setText(extra);
 
         mAgreeButton.setOnClickListener(new DebounceViewClickListener() {
@@ -67,6 +68,16 @@ public class DoubleInviteNotifyView extends ConstraintLayout {
                 }
             }
         });
+
+        if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
+            mSexIv.setVisibility(VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
+        } else if (userInfoModel.getSex() == ESex.SX_FEMALE.getValue()) {
+            mSexIv.setVisibility(VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
+        } else {
+            mSexIv.setVisibility(GONE);
+        }
     }
 
     public void setListener(Listener l) {

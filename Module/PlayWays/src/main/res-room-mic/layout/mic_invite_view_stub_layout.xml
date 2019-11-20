@@ -6,7 +6,7 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/content_bg"
-        android:layout_width="@dimen/view_270_dp"
+        android:layout_width="@dimen/view_250_dp"
         android:layout_height="@dimen/view_60_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         app:bl_corners_radius="@dimen/view_8_dp"

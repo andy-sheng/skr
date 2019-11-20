@@ -1,0 +1,56 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout_icon_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_62_dp"
+        android:layout_marginLeft="@dimen/view_16_dp">
+
+        <com.module.playways.room.room.score.bar.ScoreProgressBarWithSvga
+            android:id="@+id/score_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true" />
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/avatar_iv"
+            android:layout_width="@dimen/view_47_dp"
+            android:layout_height="@dimen/view_47_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_8_dp" />
+
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_passed_time"
+            android:layout_width="@dimen/view_47_dp"
+            android:layout_height="@dimen/view_47_dp"
+            android:text="00s"
+            android:visibility="gone"
+            android:textColor="#FF9F64"
+            android:gravity="center"
+            app:bl_shape="oval"
+            app:bl_solid_color="#0e2573"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_8_dp"
+            android:textSize="@dimen/textsize_22_dp" />
+
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/more_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_12_dp"
+            android:paddingLeft="@dimen/view_12_dp"
+            android:paddingRight="@dimen/view_12_dp"
+            android:scaleType="centerInside"
+            app:src_unPressed_drawable="@drawable/more" />
+    </RelativeLayout>
+
+
+</merge>
