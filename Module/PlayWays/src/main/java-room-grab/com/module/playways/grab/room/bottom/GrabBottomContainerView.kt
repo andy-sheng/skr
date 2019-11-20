@@ -27,7 +27,7 @@ import org.greenrobot.eventbus.ThreadMode
 class GrabBottomContainerView : BottomContainerView {
 
     lateinit var mEmojiArea: RelativeLayout
-    lateinit var mIvRoomManage: ExImageView
+    //    lateinit var mIvRoomManage: ExImageView
     lateinit var mInputBtn: ExTextView
     lateinit var mSpeakingDotAnimationView: View
     lateinit var mShowInputContainerBtn: ExTextView
@@ -52,7 +52,7 @@ class GrabBottomContainerView : BottomContainerView {
     override fun init() {
         super.init()
         mEmojiArea = this.findViewById(R.id.emoji_area)
-        mIvRoomManage = this.findViewById(R.id.iv_room_manage)
+//        mIvRoomManage = this.findViewById(R.id.iv_room_manage)
         mInputBtn = this.findViewById(R.id.input_btn)
         mSpeakingDotAnimationView = this.findViewById(R.id.speaking_dot_animation_view)
         mShowInputContainerBtn = this.findViewById(R.id.show_input_container_btn)
@@ -60,13 +60,13 @@ class GrabBottomContainerView : BottomContainerView {
         meiguiIv = rootView.findViewById(R.id.meigui_iv)
 
 
-        mIvRoomManage.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                if (mBottomContainerListener != null) {
-                    mBottomContainerListener.clickRoomManagerBtn()
-                }
-            }
-        })
+//        mIvRoomManage.setOnClickListener(object : DebounceViewClickListener() {
+//            override fun clickValid(v: View) {
+//                if (mBottomContainerListener != null) {
+//                    mBottomContainerListener.clickRoomManagerBtn()
+//                }
+//            }
+//        })
 
         mShowInputContainerBtn.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -145,24 +145,24 @@ class GrabBottomContainerView : BottomContainerView {
         mEmojiArea.visibility = if (visible) View.VISIBLE else View.INVISIBLE
         mEmoji2Btn.isEnabled = visible
         mEmoji1Btn.isEnabled = visible
-        mIvRoomManage.isEnabled = visible
+//        mIvRoomManage.isEnabled = visible
     }
 
     override fun setRoomData(roomData: BaseRoomData<*>) {
         super.setRoomData(roomData)
         if (mRoomData is GrabRoomData) {
             mGrabRoomData = mRoomData as GrabRoomData
-            if (mGrabRoomData?.ownerId != 0) {
-                if (mGrabRoomData != null && mGrabRoomData!!.isOwner) {
-                    //是房主
-                    adjustUi(true, true)
-                } else {
-                    //不是一唱到底房主
-                    adjustUi(false, true)
-                }
-            } else {
-                adjustUi(false, false)
-            }
+//            if (mGrabRoomData?.ownerId != 0) {
+//                if (mGrabRoomData != null && mGrabRoomData!!.isOwner) {
+//                    //是房主
+//                    adjustUi(true, true)
+//                } else {
+//                    //不是一唱到底房主
+//                    adjustUi(false, true)
+//                }
+//            } else {
+//                adjustUi(false, false)
+//            }
 
             if (mGrabRoomData?.roomType == GrabRoomType.ROOM_TYPE_GUIDE) {
                 mEmoji2Btn.visibility = View.GONE
@@ -172,17 +172,17 @@ class GrabBottomContainerView : BottomContainerView {
     }
 
     internal fun adjustUi(grabOwner: Boolean, isOwnerRoom: Boolean) {
-        if (grabOwner) {
-            mIvRoomManage.visibility = View.VISIBLE
-            mIvRoomManage.setImageResource(R.drawable.ycdd_fangzhu)
-        } else {
-            if (isOwnerRoom) {
-                mIvRoomManage.visibility = View.VISIBLE
-                mIvRoomManage.setImageResource(R.drawable.ycdd_diange)
-            } else {
-                mIvRoomManage.visibility = View.GONE
-            }
-        }
+//        if (grabOwner) {
+//            mIvRoomManage.visibility = View.VISIBLE
+//            mIvRoomManage.setImageResource(R.drawable.ycdd_fangzhu)
+//        } else {
+//            if (isOwnerRoom) {
+//                mIvRoomManage.visibility = View.VISIBLE
+//                mIvRoomManage.setImageResource(R.drawable.ycdd_diange)
+//            } else {
+//                mIvRoomManage.visibility = View.GONE
+//            }
+//        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

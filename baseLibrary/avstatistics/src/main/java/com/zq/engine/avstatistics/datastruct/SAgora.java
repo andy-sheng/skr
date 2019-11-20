@@ -478,7 +478,35 @@ public class SAgora //all struct related to Agora is defined here!
     } //end of class SAgora.SNetworkQuality
 
 
+    public static class SJoinChannelAction implements ILogItem{
+        public long ts = 0;
+        public long ret= 0;
 
+        public String toString(){
+
+            return SUtils.transTime(ts)+" SAgora.SJoinChannelAction: ret="+ret+"\n";
+        }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsObj = new JSONObject();
+            try {
+                jsObj.put("timeStampStr", SUtils.transTime(ts));
+                jsObj.put("timeStampValue", ts);
+
+                jsObj.put("ret", ret);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsObj;
+        }
+
+        @Override
+        public String getKey() {
+            return "SJoinChannelAction";
+        }
+    }
 
 
 

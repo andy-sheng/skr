@@ -47,6 +47,8 @@ public class SAgoraUserEvent implements ILogItem
     public final static int EVENT_TYPE_onAudioMixingStateChanged = EVENT_TYPE_NONE + 9;
     public final static int EVENT_TYPE_onAudioRouteChanged = EVENT_TYPE_NONE + 10;
     public final static int EVENT_TYPE_onError          = EVENT_TYPE_NONE + 11;
+    public final static int EVENT_TYPE_CONNECTION_LOST  = EVENT_TYPE_NONE + 12;
+
 
     private String transEventType2String(int type) {
         switch (type) {
@@ -72,6 +74,8 @@ public class SAgoraUserEvent implements ILogItem
                 return "Audio.Route.Changed";
             case EVENT_TYPE_onError:
                 return "Error";
+            case EVENT_TYPE_CONNECTION_LOST:
+                return "Connection.Lost";
             default:
                 return "Unsupported event("+type+")!!!";
 
@@ -123,6 +127,15 @@ public class SAgoraUserEvent implements ILogItem
         n.uid = uid;
 
         n.event = Boolean.valueOf(enabled);
+        return n;
+    }
+
+    public static SAgoraUserEvent connectionLost() {
+        SAgoraUserEvent n = new SAgoraUserEvent();
+        n.ts = System.currentTimeMillis();
+        n.type = EVENT_TYPE_CONNECTION_LOST;
+
+        n.event = Boolean.valueOf(true);
         return n;
     }
 
@@ -375,6 +388,9 @@ public class SAgoraUserEvent implements ILogItem
             case EVENT_TYPE_REMOTE_Offline:
                 evenStr = "reasone="+transOfflineReasonString(((Integer)event).intValue());
                 break;
+            case EVENT_TYPE_CONNECTION_LOST:
+                evenStr = "connection lost";
+                break;
             default:
                 evenStr = event.toString();
         }
@@ -467,6 +483,11 @@ public class SAgoraUserEvent implements ILogItem
                         jsObj.put("errID", ((Integer)event).intValue());
                     }
                     break;
+                case EVENT_TYPE_CONNECTION_LOST:
+                    {
+                        jsObj.put("isLost", ((Boolean)event).booleanValue());//占位字段
+                    }
+                    break;
                 default:
                     break;
             }
@@ -506,6 +527,8 @@ public class SAgoraUserEvent implements ILogItem
                 return "SAUEvent.onAudioRouteChanged";
             case EVENT_TYPE_onError:
                 return "SAUEvent.onError";
+            case EVENT_TYPE_CONNECTION_LOST:
+                return "SAUEvent.onConnectLost";
             default:
                 return "SAUEvent.default";
         }

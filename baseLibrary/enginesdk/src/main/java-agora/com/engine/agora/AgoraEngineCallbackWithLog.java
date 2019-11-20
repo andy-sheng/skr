@@ -116,6 +116,10 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
     @Override
     public void onConnectionLost() {
         MyLog.d(TAG, "onConnectionLost");
+
+        SAgoraUserEvent e = SAgoraUserEvent.connectionLost();
+        SDataManager.getInstance().getDataHolder().addUserEvent(e);
+
         super.onConnectionLost();
     }
 

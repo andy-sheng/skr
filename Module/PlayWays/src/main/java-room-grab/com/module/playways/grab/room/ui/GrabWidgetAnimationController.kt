@@ -110,6 +110,7 @@ class GrabWidgetAnimationController(internal var mF: GrabRoomFragment) {
         viewList.addAll(mF.mRoundOverCardView.realViews)
         viewList.add(mF.mGiftContinueViewGroup)
         viewList.add(mF.mChallengeStarView)
+        viewList.add(mF.mAddSongIv)
         mF.playbookWaitStatusIv?.let {
             viewList.add(it)
         }

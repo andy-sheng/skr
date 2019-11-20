@@ -41,21 +41,6 @@
             android:layout_toRightOf="@id/emoji2_btn"
             android:background="@drawable/outer_flawer"
             android:scaleType="fitXY" />
-
-        <com.common.view.ex.ExImageView
-            android:id="@+id/iv_room_manage"
-            android:layout_width="@dimen/view_40_dp"
-            android:layout_height="@dimen/view_40_dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/view_10_dp"
-            android:layout_toRightOf="@id/meigui_iv"
-            android:scaleType="center"
-            android:src="@drawable/ycdd_fangzhu"
-            android:visibility="gone"
-            app:bl_corners_radius="@dimen/view_20_dp"
-            app:bl_shape="oval"
-            app:bl_solid_color="#FFC15B" />
-
     </RelativeLayout>
 
     <com.module.playways.grab.room.bottom.SpeakingDotAnimationView

@@ -11,12 +11,12 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.component.busilib.constans.GrabRoomType;
 import com.engine.EngineEvent;
@@ -27,6 +27,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
+import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
@@ -54,8 +55,9 @@ public class GrabTopContentView extends ConstraintLayout {
     private ArrayList<VP> mGrabTopItemViewArrayList = new ArrayList<>(PLAYER_COUNT);
     private GrabRoomData mRoomData;
     AnimatorSet mAnimatorAllSet;
-    GrabAudienceView mGrabAudienceView;
+    //    GrabAudienceView mGrabAudienceView;
     ImageView mArrowIv;
+    ImageView mInviteIv;
     boolean mIsOpen = true;
     LinearLayout mContentLl;
 
@@ -83,9 +85,10 @@ public class GrabTopContentView extends ConstraintLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_top_content_view_layout, this);
 //        setClickable(true);
-        mContentLl = (LinearLayout) this.findViewById(R.id.content_ll);
-        mGrabAudienceView = (GrabAudienceView) this.findViewById(R.id.grab_audience_view);
+        mContentLl = (LinearLayout) ((HorizontalScrollView) this.findViewById(R.id.scroll_view)).getChildAt(0);
+//        mGrabAudienceView = (GrabAudienceView) this.findViewById(R.id.grab_audience_view);
         mArrowIv = (ImageView) this.findViewById(R.id.arrow_iv);
+        mInviteIv = this.findViewById(R.id.invite_iv);
         addChildView();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -98,6 +101,13 @@ public class GrabTopContentView extends ConstraintLayout {
                     mListener.clickArrow(!mIsOpen);
                     // true 就要
                 }
+            }
+        });
+
+        mInviteIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                EventBus.getDefault().post(new GrabWantInviteEvent());
             }
         });
     }
@@ -118,11 +128,11 @@ public class GrabTopContentView extends ConstraintLayout {
         for (int i = 0; i < PLAYER_COUNT; i++) {
             VP vp = new VP();
             vp.grabTopItemView = new GrabTopItemView(getContext());
-            if (i == PLAYER_COUNT - 1) {
-                vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
-            } else {
-                vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
-            }
+//            if (i == PLAYER_COUNT - 1) {
+//                vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+//            } else {
+//                vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
+//            }
             vp.grabTopItemView.hideGrabIcon();
             vp.grabTopItemView.tryAddParent(mContentLl);
             vp.grabTopItemView.setToPlaceHolder();
@@ -213,10 +223,10 @@ public class GrabTopContentView extends ConstraintLayout {
                 syncLight();
             }
         }
-        ConstraintLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
-        lp.leftMargin = U.getDisplayUtils().dip2px(7);
-        lp.rightMargin = U.getDisplayUtils().dip2px(48);
-        mContentLl.setLayoutParams(lp);
+//        ConstraintLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
+//        lp.leftMargin = U.getDisplayUtils().dip2px(7);
+//        lp.rightMargin = U.getDisplayUtils().dip2px(48);
+//        mContentLl.setLayoutParams(lp);
     }
 
     //刚进来的时候初始化灯
@@ -256,10 +266,10 @@ public class GrabTopContentView extends ConstraintLayout {
             }
         }
 
-        ConstraintLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
-        lp.leftMargin = U.getDisplayUtils().dip2px(7);
-        lp.rightMargin = U.getDisplayUtils().dip2px(48);
-        mContentLl.setLayoutParams(lp);
+//        ConstraintLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
+//        lp.leftMargin = U.getDisplayUtils().dip2px(7);
+//        lp.rightMargin = U.getDisplayUtils().dip2px(48);
+//        mContentLl.setLayoutParams(lp);
     }
 
     public void setModeSing() {
@@ -636,26 +646,25 @@ public class GrabTopContentView extends ConstraintLayout {
 
     public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
-        mGrabAudienceView.setRoomData(mRoomData);
+//        mGrabAudienceView.setRoomData(mRoomData);
         if (mGrabTopItemViewArrayList.size() != 0) {
-            VP vp = mGrabTopItemViewArrayList.get(mGrabTopItemViewArrayList.size() - 1);
             if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
                 // 新手房
-                vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
+                mInviteIv.setVisibility(View.GONE);
             } else {
                 if (mRoomData.getOwnerId() != 0) {
                     // 房主房
                     if (mRoomData.isOwner()) {
-                        vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+                        mInviteIv.setVisibility(View.VISIBLE);
                     } else {
-                        vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
+                        mInviteIv.setVisibility(View.GONE);
                     }
                 } else {
                     // 普通房
-                    if(mRoomData.getRoomType()==GrabRoomType.ROOM_TYPE_PLAYBOOK){
-                        vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
-                    }else{
-                        vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+                    if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
+                        mInviteIv.setVisibility(View.GONE);
+                    } else {
+                        mInviteIv.setVisibility(View.VISIBLE);
                     }
                 }
             }

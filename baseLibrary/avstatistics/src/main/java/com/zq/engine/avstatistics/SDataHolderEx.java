@@ -219,8 +219,7 @@ public class SDataHolderEx
     public final static int AR_PHONE_SPEAKER = 1;
     public final static int AR_BLUETOOTH = 2;
     public final static int AR_HEADSET = 3;
-
-    public void addAudioRoutine(int type) {
+    public void addAudioRoutine(int type) {//服用SAgoraUserEvent，一起统计
         SAgoraUserEvent n = new SAgoraUserEvent();
         n.ts = System.currentTimeMillis();
         n.type = EVENT_TYPE_onAudioRouteChanged;
@@ -242,6 +241,14 @@ public class SDataHolderEx
 
         mItemList.add(n);
 
+    }
+
+    public void addJoinChannelAction(int joinRet) {
+        SAgora.SJoinChannelAction n = new SAgora.SJoinChannelAction();
+        n.ts = System.currentTimeMillis();
+        n.ret = joinRet;
+
+        mItemList.add(n);
     }
 
 
