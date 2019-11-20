@@ -262,7 +262,7 @@ public class SDataHolderEx
     }
 
 
-    private final static int LIST_COUNT_THRESHOLD = 30;
+    private final static int LIST_COUNT_THRESHOLD = 50;
     public boolean need2Flush() {
         if (mItemList.size() >= LIST_COUNT_THRESHOLD )
             return true;
