@@ -12,6 +12,13 @@
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_solid_color="#404A9A" />
 
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/bg_svga"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:antiAlias="true"
+        app:autoPlay="false" />
+
     <com.common.image.fresco.BaseImageView
         android:id="@+id/avatar_iv"
         android:layout_width="@dimen/view_72_dp"
@@ -29,4 +36,11 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/light_svga"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:antiAlias="true"
+        app:autoPlay="false" />
 </merge>
