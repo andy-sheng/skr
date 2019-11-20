@@ -27,7 +27,7 @@
     <com.common.view.ex.ExTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="商城"
+        android:text="背包"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_18_dp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_back"
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/view_15_dp"
-        android:background="@drawable/mall_package"
+        android:background="@drawable/mall_mall"
         app:layout_constraintBottom_toBottomOf="@+id/diamond_tv"
         app:layout_constraintRight_toRightOf="parent" />
 

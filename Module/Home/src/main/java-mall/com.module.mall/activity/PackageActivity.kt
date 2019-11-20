@@ -19,8 +19,8 @@ import com.module.home.R
 import com.module.mall.view.EffectView
 import com.module.mall.view.ProductView
 
-@Route(path = RouterConstants.ACTIVITY_MALL_MALL)
-class MallActivity : BaseActivity() {
+@Route(path = RouterConstants.ACTIVITY_MALL_PACKAGE)
+class PackageActivity : BaseActivity() {
     lateinit var title: CommonTitleBar
     lateinit var btnBack: ImageView
     lateinit var mallTv: ExTextView
@@ -32,7 +32,7 @@ class MallActivity : BaseActivity() {
     var viewList: ArrayList<ProductView>? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
-        return R.layout.mall_activity_layout
+        return R.layout.package_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -58,7 +58,7 @@ class MallActivity : BaseActivity() {
         viewList?.add(ProductView(this))
 
         mallTv.setDebounceViewClickListener {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_MALL_PACKAGE)
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_MALL_MALL)
                     .navigation()
         }
 
