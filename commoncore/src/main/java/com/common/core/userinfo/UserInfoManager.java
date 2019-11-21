@@ -1035,14 +1035,14 @@ public class UserInfoManager {
                         return 1;
                     }
                 } else {
-                    if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
-                        // 两者都是离线
-                        // 先按亲密度 再按离线时间排序
-                        if (u1.getIntimacy() > u2.getIntimacy()) {
-                            return -1;
-                        } else if (u1.getIntimacy() < u2.getIntimacy()) {
-                            return 1;
-                        } else {
+                    // 好友 之间 先按亲密度 再按离线时间排序
+                    if (u1.getIntimacy() > u2.getIntimacy()) {
+                        return -1;
+                    } else if (u1.getIntimacy() < u2.getIntimacy()) {
+                        return 1;
+                    } else {
+                        if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
+                            // 两者都是离线
                             if (u1.getStatusTs() > u2.getStatusTs()) {
                                 return -1;
                             } else if (u1.getStatusTs() < u2.getStatusTs()) {
@@ -1051,15 +1051,10 @@ public class UserInfoManager {
                                 return 0;
                             }
                         }
-                    }
-                    if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
-                        // 两者都是在线
-                        // 先按亲密度 再按在线时间排序
-                        if (u1.getIntimacy() > u2.getIntimacy()) {
-                            return -1;
-                        } else if (u1.getIntimacy() < u2.getIntimacy()) {
-                            return 1;
-                        } else {
+
+                        if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
+                            // 两者都是在线
+
                             if (u1.getStatusTs() > u2.getStatusTs()) {
                                 return -1;
                             } else if (u1.getStatusTs() < u2.getStatusTs()) {
@@ -1067,10 +1062,11 @@ public class UserInfoManager {
                             } else {
                                 return 0;
                             }
+
                         }
+                        int r = u2.getStatus() - u1.getStatus();
+                        return r;
                     }
-                    int r = u2.getStatus() - u1.getStatus();
-                    return r;
                 }
             }
         });

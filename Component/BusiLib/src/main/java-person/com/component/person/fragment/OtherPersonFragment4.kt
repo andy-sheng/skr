@@ -87,7 +87,6 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mLevelBg: ImageView
     lateinit var mLevelDesc: TextView
     lateinit var mQinmiTv: TextView
-    lateinit var mQinmiIv: ImageView
     lateinit var mVerifyTv: TextView
     lateinit var mSignTv: ExTextView
     lateinit var mNameTv: ExTextView
@@ -395,7 +394,6 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mLevelBg = rootView.findViewById(R.id.level_bg)
         mLevelDesc = rootView.findViewById(R.id.level_desc)
         mQinmiTv = rootView.findViewById(R.id.qinmi_tv)
-        mQinmiIv = rootView.findViewById(R.id.qinmi_iv)
         mVerifyTv = rootView.findViewById(R.id.verify_tv)
         mSignTv = rootView.findViewById(R.id.sign_tv)
         mNameTv = rootView.findViewById(R.id.name_tv)
@@ -405,10 +403,8 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
         if (mUserId == MyUserInfoManager.uid.toInt()) {
             mQinmiTv.visibility = View.GONE
-            mQinmiIv.visibility = View.GONE
         } else {
             mQinmiTv.visibility = View.VISIBLE
-            mQinmiIv.visibility = View.VISIBLE
         }
 
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
@@ -437,7 +433,6 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
         })
 
-        mQinmiIv.setDebounceViewClickListener { showQinmiTips() }
         mQinmiTv.setDebounceViewClickListener { showQinmiTips() }
     }
 
@@ -656,11 +651,9 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
         }
         if (qinMiCntTotal > 0) {
-            mQinmiIv.visibility = View.VISIBLE
             mQinmiTv.visibility = View.VISIBLE
             mQinmiTv.text = qinMiCntTotal.toString()
         } else {
-            mQinmiIv.visibility = View.GONE
             mQinmiTv.visibility = View.GONE
         }
 

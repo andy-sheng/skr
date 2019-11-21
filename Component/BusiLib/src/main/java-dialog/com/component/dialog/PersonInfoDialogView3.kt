@@ -65,7 +65,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
     private val signTv: MarqueeTextView
     private val verifyTv: TextView
     private val qinmiTv: TextView
-    private val qinmiIv: ImageView
+
     private val personTagView: PersonTagView
     private val guardView: GuardView
     private val photoViewBg: ExImageView
@@ -118,7 +118,6 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         verifyTv = this.findViewById(R.id.verify_tv)
 
         qinmiTv = this.findViewById(R.id.qinmi_tv)
-        qinmiIv = this.findViewById(R.id.qinmi_iv)
 
         personTagView = this.findViewById(R.id.person_tag_view)
         guardView = this.findViewById(R.id.guard_view)
@@ -430,11 +429,9 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
     private fun showCharmsAndQinMiTag(meiLiCntTotal: Int, qinMiCntTotal: Int) {
         personTagView.setCharmTotal(meiLiCntTotal)
         if (qinMiCntTotal > 0) {
-            qinmiIv.visibility = View.VISIBLE
             qinmiTv.visibility = View.VISIBLE
             qinmiTv.text = qinMiCntTotal.toString()
         } else {
-            qinmiIv.visibility = View.GONE
             qinmiTv.visibility = View.GONE
         }
     }
