@@ -104,15 +104,10 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/view_81_dp"
         android:layout_marginRight="@dimen/view_14_dp"
+        android:background="@drawable/new_select_song"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/view_9_dp"
-        android:paddingRight="@dimen/view_9_dp"
-        android:text="点歌"
         android:textColor="@color/white_trans_80"
-        android:textSize="@dimen/textsize_12_dp"
-        app:bl_corners_radius="12dp"
-        app:bl_gradient_endColor="#835DFD"
-        app:bl_gradient_startColor="#835DFD" />
+        android:textSize="@dimen/textsize_12_dp" />
 
     <!--<ImageView-->
     <!--android:id="@+id/skip_guide_iv"-->
@@ -192,6 +187,23 @@
 
     <!--轮次结束卡片-->
     <include layout="@layout/grab_round_over_card_layout" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/waiting_tv"
+        android:layout_width="@dimen/view_160_dp"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_390_dp"
+        android:gravity="center"
+        android:text="候场中，下个轮次参与抢唱"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_4_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#5865C5"
+        app:bl_stroke_color="@color/white"
+        app:bl_stroke_width="@dimen/view_1_dp" />
 
     <com.module.playways.grab.room.view.GrabScoreTipsView
         android:id="@+id/grab_score_tips_view"

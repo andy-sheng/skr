@@ -358,7 +358,7 @@ public interface UserInfoServerApi {
     @POST("/v2/bonus/multi-get-user-status")
     Observable<ApiResult> checkUserOnlineStatusWithIntimacy(@Body RequestBody body);
 
-    @POST("/v2/mate/multi-check-game-status")
+    @POST("/v3/mate/multi-check-game-status")
     Observable<ApiResult> checkUserGameStatus(@Body RequestBody body);
 
     @GET("v1/mate/search-fans")

@@ -236,10 +236,10 @@ public class SearchFriendFragment extends BaseFragment {
                     List<UserInfoModel> r = null;
                     if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
                         r = UserInfoLocalApi.searchFriends(string);
-                        UserInfoManager.getInstance().fillUserOnlineStatus(r, false, false);
+                        UserInfoManager.getInstance().fillUserOnlineStatus(r, false, false, 0, 0);
                     } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
                         r = UserInfoLocalApi.searchFollow(string);
-                        UserInfoManager.getInstance().fillUserOnlineStatus(r, false, true);
+                        UserInfoManager.getInstance().fillUserOnlineStatus(r, false, true, 0, 0);
                     }
                     return Observable.just(r);
                 }

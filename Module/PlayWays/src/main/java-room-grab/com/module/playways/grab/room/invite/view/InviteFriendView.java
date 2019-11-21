@@ -14,6 +14,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.constans.GameModeType;
 import com.component.relation.callback.FansEmptyCallback;
 import com.component.relation.callback.FriendsEmptyCallback;
 import com.kingja.loadsir.callback.Callback;
@@ -97,7 +98,13 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mInviteFirendAdapter);
 
-        mGrabInvitePresenter = new GrabInvitePresenter(mBaseFragment, this);
+        if (mFrom == InviteFriendFragment2.FROM_MIC_ROOM) {
+            mGrabInvitePresenter = new GrabInvitePresenter(mBaseFragment, this, mRoomID, GameModeType.GAME_MODE_MIC);
+        } else if (mFrom == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
+            mGrabInvitePresenter = new GrabInvitePresenter(mBaseFragment, this, mRoomID, GameModeType.GAME_MODE_DOUBLE);
+        } else {
+            mGrabInvitePresenter = new GrabInvitePresenter(mBaseFragment, this, mRoomID, GameModeType.GAME_MODE_GRAB);
+        }
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);

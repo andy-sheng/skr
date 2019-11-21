@@ -30,6 +30,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.component.busilib.callback.EmptyCallback;
+import com.component.busilib.constans.GameModeType;
 import com.component.busilib.model.SearchModel;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
@@ -62,6 +63,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
     private int mRoomID;
     private int mFrom;
     private int mTagID;
+    private int mGameMode;
 
     RelativeLayout mSearchArea;
     TextView mCancleTv;
@@ -96,6 +98,14 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
             mRoomID = bundle.getInt(INVITE_ROOM_ID);
             mFrom = bundle.getInt(INVITE_SEARCH_FROM);
             mTagID = bundle.getInt(INVITE_TAG_ID);
+        }
+
+        if (mFrom == InviteFriendFragment2.FROM_MIC_ROOM) {
+            mGameMode = GameModeType.GAME_MODE_MIC;
+        } else if (mFrom == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
+            mGameMode = GameModeType.GAME_MODE_DOUBLE;
+        } else {
+            mGameMode = GameModeType.GAME_MODE_GRAB;
         }
 
         mPresenter = new InviteSearchPresenter(this);
@@ -225,7 +235,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
                     // TODO: 2019/5/23 区分好友和关注
                     isAutoSearch = model.isAutoSearch();
                     List<UserInfoModel> userInfoModels = UserInfoLocalApi.searchFollow(model.getSearchContent());
-                    UserInfoManager.getInstance().fillUserOnlineStatus(userInfoModels, true, false);
+                    UserInfoManager.getInstance().fillUserOnlineStatus(userInfoModels, true, false, mRoomID, mGameMode);
                     return Observable.just(userInfoModels);
                 }
             }), new ApiObserver<List<UserInfoModel>>() {

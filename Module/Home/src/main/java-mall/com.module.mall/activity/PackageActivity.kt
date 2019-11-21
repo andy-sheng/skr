@@ -1,5 +1,6 @@
 package com.module.mall.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
@@ -28,6 +29,7 @@ class PackageActivity : BaseActivity() {
     lateinit var effectView: EffectView
     lateinit var tagTab: SlidingTabLayout
     lateinit var viewpager: ViewPager
+    lateinit var diamondTv: ExTextView
 
     var pagerAdapter: PagerAdapter? = null
     var viewList: ArrayList<PackageView>? = null
@@ -44,6 +46,7 @@ class PackageActivity : BaseActivity() {
         effectView = findViewById(R.id.effect_view)
         tagTab = findViewById(R.id.tag_tab)
         viewpager = findViewById(R.id.viewpager)
+        diamondTv = findViewById(R.id.diamond_tv)
 
         tagTab.setCustomTabView(R.layout.mall_pager_tab, R.id.tab_tv)
         tagTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
@@ -57,6 +60,11 @@ class PackageActivity : BaseActivity() {
         viewList?.add(PackageView(this))
         viewList?.add(PackageView(this))
         viewList?.add(PackageView(this))
+
+        diamondTv.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_BALANCE)
+                    .navigation()
+        }
 
         mallTv.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_MALL_MALL)
@@ -121,6 +129,12 @@ class PackageActivity : BaseActivity() {
 
         viewpager.adapter = pagerAdapter
         tagTab.setViewPager(viewpager)
+    }
+
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
     }
 
     override fun canSlide(): Boolean {

@@ -33,15 +33,20 @@ public class GrabInvitePresenter {
     IGrabInviteView mIGrabInviteView;
     BaseFragment mBaseFragment;
 
-    public GrabInvitePresenter(BaseFragment fragment, IGrabInviteView view) {
+    int roomID;
+    int gameType;
+
+    public GrabInvitePresenter(BaseFragment fragment, IGrabInviteView view, int roomID, int gameType) {
         this.mBaseFragment = fragment;
         this.mIGrabInviteView = view;
+        this.roomID = roomID;
+        this.gameType = gameType;
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi.class);
     }
 
     public void getFriendList(int mOffset, int mLimit) {
-        UserInfoManager.getInstance().getMyFriends(UserInfoManager.ONLINE_PULL_GAME, new UserInfoManager.UserInfoListCallback() {
+        UserInfoManager.getInstance().getMyFriends(UserInfoManager.ONLINE_PULL_GAME, roomID, gameType, new UserInfoManager.UserInfoListCallback() {
             @Override
             public void onSuccess(UserInfoManager.FROM from, int offset, List<UserInfoModel> list) {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {

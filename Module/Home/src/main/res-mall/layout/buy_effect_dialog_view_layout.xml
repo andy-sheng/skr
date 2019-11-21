@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.support.constraint.ConstraintLayout"
+    android:layout_width="@dimen/view_311_dp"
+    android:layout_height="@dimen/view_224_dp">
+
+    <ImageView
+        android:id="@+id/bg_iv"
+        android:layout_width="@dimen/view_311_dp"
+        android:layout_height="@dimen/view_224_dp"
+        android:background="@drawable/buy_effect_dialog_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/effect_iv"
+        android:layout_width="@dimen/view_120_dp"
+        android:layout_height="@dimen/view_120_dp"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/bg_iv"
+        app:layout_constraintTop_toTopOf="@+id/bg_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/effect_name_tv"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_30_dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_bottomLeftRadius="@dimen/view_8_dp"
+        app:bl_corners_bottomRightRadius="@dimen/view_8_dp"
+        app:bl_solid_color="@color/black_trans_20"
+        app:layout_constraintBottom_toBottomOf="@+id/effect_iv"
+        app:layout_constraintLeft_toLeftOf="@+id/effect_iv"
+        app:layout_constraintRight_toRightOf="@+id/effect_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/first_des"
+        android:layout_width="@dimen/view_138_dp"
+        android:layout_height="@dimen/view_34_dp"
+        android:layout_marginLeft="@dimen/view_22_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        app:bl_corners_radius="@dimen/view_17_dp"
+        app:bl_selected_stroke_color="#FFC15B"
+        app:bl_stroke_width="@dimen/view_1_dp"
+        app:bl_unSelected_stroke_color="@color/black_trans_20"
+        app:layout_constraintLeft_toRightOf="@+id/effect_iv"
+        app:layout_constraintTop_toTopOf="@+id/effect_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/second_des"
+        android:layout_width="@dimen/view_138_dp"
+        android:layout_height="@dimen/view_34_dp"
+        android:layout_marginLeft="@dimen/view_22_dp"
+        android:layout_marginTop="@dimen/view_72_dp"
+        app:bl_corners_radius="@dimen/view_17_dp"
+        app:bl_selected_stroke_color="#FFC15B"
+        app:bl_stroke_width="@dimen/view_1_dp"
+        app:bl_unSelected_stroke_color="@color/black_trans_20"
+        app:layout_constraintLeft_toRightOf="@+id/effect_iv"
+        app:layout_constraintTop_toTopOf="@+id/effect_iv" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintLeft_toLeftOf="@+id/bg_iv"
+        app:layout_constraintRight_toRightOf="@+id/bg_iv"
+        app:layout_constraintTop_toBottomOf="@+id/effect_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/buy_tv"
+        android:layout_width="@dimen/view_240_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginBottom="@dimen/view_16_dp"
+        android:gravity="center"
+        android:text="购买"
+        android:textColor="#8B572A"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/bg_iv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</merge>
