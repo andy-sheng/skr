@@ -41,7 +41,6 @@ import java.util.HashMap;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-
 // 个人信息卡片
 public class PersonInfoDialog {
 
@@ -71,10 +70,10 @@ public class PersonInfoDialog {
         init();
     }
 
-    PersonInfoDialogView2 personInfoDialogView;
+    PersonInfoDialogView3 personInfoDialogView;
 
     private void init() {
-        personInfoDialogView = new PersonInfoDialogView2(mActivity, mUserID, mShowKick, mShowInvite);
+        personInfoDialogView = new PersonInfoDialogView3(mActivity, mUserID, mShowKick, mShowInvite);
         personInfoDialogView.setListener(new PersonCardClickListener() {
             @Override
             public void onClickReport(int userID) {
@@ -168,6 +167,7 @@ public class PersonInfoDialog {
                 .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_60)
+                .setMargin(U.getDisplayUtils().dip2px(12), -1, U.getDisplayUtils().dip2px(12), U.getDisplayUtils().dip2px(10))
                 .setExpanded(false)
                 .setCancelable(true)
                 .create();

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/view_70_dp"
+    android:layout_height="@dimen/view_50_dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_36_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="@id/avatar_bg"
+        app:layout_constraintRight_toRightOf="@id/avatar_bg"
+        app:layout_constraintTop_toTopOf="@id/avatar_bg" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/empty_tv"
+        android:layout_width="@dimen/view_36_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:gravity="center"
+        android:text="守护"
+        android:textColor="#A86E0F"
+        android:textSize="@dimen/textsize_10_dp"
+        app:bl_shape="oval"
+        app:bl_solid_color="#F5F3E4"
+        app:layout_constraintLeft_toLeftOf="@id/avatar_bg"
+        app:layout_constraintRight_toRightOf="@id/avatar_bg"
+        app:layout_constraintTop_toTopOf="@id/avatar_bg" />
+
+    <ImageView
+        android:id="@+id/avatar_bg"
+        android:layout_width="@dimen/view_47_dp"
+        android:layout_height="@dimen/view_48_dp"
+        android:background="@drawable/guard_avatar_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
