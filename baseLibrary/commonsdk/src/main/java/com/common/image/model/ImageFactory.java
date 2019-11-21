@@ -15,6 +15,8 @@ import com.facebook.drawee.drawable.ScalingUtils.ScaleType;
 import com.facebook.imagepipeline.common.Priority;
 import com.facebook.imagepipeline.request.Postprocessor;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Created by lan on 15-12-14.
  */
@@ -222,9 +224,17 @@ public class ImageFactory {
             return this;
         }
 
+
+        @NotNull
+        public ImageFactory.Builder setTipsWhenLarge(boolean b) {
+            mBaseImage.setTipsWhenLarge(b);
+            return this;
+        }
+
         public <T extends BaseImage> T build() {
             mBaseImage.generateUri();
             return (T) mBaseImage;
         }
+
     }
 }

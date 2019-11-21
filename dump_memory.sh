@@ -1,5 +1,14 @@
 #! /bin/bash
 #输入进程名，会dump出 prof 到downloads目录
+echo 可以使用MAT 查看 内存泄漏 与 大Bitmap占用等。如果要查看bitmap,必须使用 8.0 以下的手机,8.0系统（api 26 以下）bitmap内存在native中 \
+bitmap命名格式为 bitmap-宽x高-是否为res-地址.png,请分析bitmap是否必须
+
+echo dvm最大可用内存
+adb shell getprop | grep dalvik.vm.heapsize
+
+echo 单个程序限制最大可用内存
+adb shell getprop|grep heapgrowthlimit
+
 heap_dump_location='/data/local/tmp/tmp.hprof'
 packageName=com.zq.live
 echo try dump $packageName
@@ -66,7 +75,6 @@ open memory
 #java -jar hprof_bitmap_dump.jar $outputfile
 echo java -jar hprof_bitmap_dump.jar $outputfile2
 java -jar hprof_bitmap_dump.jar $outputfile2
-echo 可以使用MAT 查看 内存泄漏 与 大Bitmap占用等。如果要查看bitmap,必须使用 8.0 以下的手机,8.0系统（api 26 以下）bitmap内存在native中 \
-bitmap命名格式为 bitmap-宽x高-是否为res-地址.png,请分析bitmap是否必须
+
 
 #/Users/chengsimin/my_dev_utils/android-sdk-macosx-24.4/platform-tools/hprof-conv  /Users/chengsimin/Downloads/com.wali.live2018_05_11-16_05_27.hprof /Users/chengsimin/Downloads/com.wali.live2018_05_11-16_05_27_convert.hprof

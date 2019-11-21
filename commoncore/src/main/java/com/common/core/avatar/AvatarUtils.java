@@ -40,6 +40,26 @@ public class AvatarUtils {
      */
     public static void loadAvatarByUrl(final SimpleDraweeView draweeView
             , LoadParams params) {
+        //TODO 自动适配头像加载大小 如果未设置的话
+        if (params.sizeType == null) {
+            if(params.isBlur == true){
+                params.sizeType = ImageUtils.SIZE.SIZE_80;
+            }else{
+                int vw = draweeView.getWidth();
+                if (vw == 0) {
+                    if (draweeView.getLayoutParams() != null) {
+                        vw = draweeView.getLayoutParams().width;
+                    }
+                }
+                if (vw > U.getDisplayUtils().dip2px(280 / 3)) {
+                    params.sizeType = ImageUtils.SIZE.SIZE_320;
+                } else if (vw > U.getDisplayUtils().dip2px(120 / 3)) {
+                    params.sizeType = ImageUtils.SIZE.SIZE_160;
+                } else {
+                    params.sizeType = ImageUtils.SIZE.SIZE_80;
+                }
+            }
+        }
         HttpImage httpImage = getAvatarUrl(params);
         if (httpImage == null) {
             BaseImage avatarImg = ImageFactory.newResImage(params.loadingAvatarResId).build();
@@ -147,7 +167,7 @@ public class AvatarUtils {
     public static class LoadParams {
 
         String url; // 头像url
-        ImageUtils.SIZE sizeType = ImageUtils.SIZE.SIZE_160;
+        ImageUtils.SIZE sizeType = null;
         boolean isJpgFormat = true;
         boolean isCircle = false;
         boolean isBlur = false;

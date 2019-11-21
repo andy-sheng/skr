@@ -37,6 +37,9 @@ public abstract class BaseImage {
     // 是否自适应图片的大小 注意只有图片可控才这么做，将view的宽高自适应图片宽高
     protected boolean adjustViewWHbyImage = false;
 
+    // 当图片大小超过view大小很多时，弹出activity给提示，在debug模式下默认开启
+    protected boolean tipsWhenLarge = true;
+
     // 加载失败的图
     protected Drawable mFailureDrawable;
     protected ScaleType mFailureScaleType = ScaleType.CENTER_INSIDE;
@@ -151,6 +154,9 @@ public abstract class BaseImage {
         return mProgressiveRenderingEnabled;
     }
 
+    public boolean isTipsWhenLarge() {
+        return tipsWhenLarge;
+    }
 
     public ProgressBarDrawable getProgressBarDrawable() {
         return mProgressBarDrawable;
@@ -263,5 +269,9 @@ public abstract class BaseImage {
 
     public void setLowImageSize(ImageUtils.SIZE lowSize) {
         mLowImageSize = lowSize;
+    }
+
+    public void setTipsWhenLarge(boolean b) {
+        tipsWhenLarge = b;
     }
 }

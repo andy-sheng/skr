@@ -157,6 +157,10 @@
             android:name="com.respicker.activity.ResPickerActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="com.common.image.debug.ImageDebugActivity"
+            android:screenOrientation="portrait" />
+
         <!--<activity-->
         <!--android:name="com.common.permission.FloatWindowPermissionActivity"-->
         <!--android:configChanges="keyboardHidden|orientation|screenSize"-->

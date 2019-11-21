@@ -150,7 +150,7 @@ public class ImageUtils {
     }
 
     public enum SIZE {
-        ORIGIN(1080), SIZE_160(160), SIZE_320(320), SIZE_480(480), SIZE_640(640);
+        ORIGIN(1080), SIZE_80(80),SIZE_160(160), SIZE_320(320), SIZE_480(480), SIZE_640(640);
 
         int w;
 

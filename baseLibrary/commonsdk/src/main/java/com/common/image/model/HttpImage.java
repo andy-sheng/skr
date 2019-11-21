@@ -64,9 +64,17 @@ public class HttpImage extends BaseImage {
                                 String lowUrl_160 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
                                         .setW(ImageUtils.SIZE.SIZE_160.getW())
                                         .build());
-                                if (!lowUrl_160.equals(mUrl)) {
-                                    // lowUrl 和 加载 url 一样 没必要设置 lowImageUri 了
+                                file = FrescoWorker.getCacheFileFromFrescoDiskCache(lowUrl_160);
+                                if(file!=null && file.exists()){
                                     mLowImageUri = Uri.parse(lowUrl_160);
+                                }else{
+                                    String lowUrl_80 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
+                                            .setW(ImageUtils.SIZE.SIZE_80.getW())
+                                            .build());
+                                    if (!lowUrl_80.equals(mUrl)) {
+                                        // lowUrl 和 加载 url 一样 没必要设置 lowImageUri 了
+                                        mLowImageUri = Uri.parse(lowUrl_80);
+                                    }
                                 }
                             }
                         }

@@ -1,6 +1,7 @@
 package com.common.image.fresco;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
@@ -8,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.common.image.debug.ImageDebugActivity;
+import com.common.image.debug.ImageDebugModel;
 import com.common.image.fresco.cache.MyCacheKeyFactory;
 import com.common.image.model.BaseImage;
 import com.common.image.model.HttpImage;
@@ -256,21 +259,42 @@ public class FrescoWorker {
 
                     @Override
                     public void onFinalImageSet(String s, ImageInfo imageInfo, Animatable animatable) {
+                        float bw = U.getDisplayUtils().dip2px(imageInfo.getWidth() / 3);
+                        float bh = U.getDisplayUtils().dip2px(imageInfo.getHeight() / 3);
+                        float vw = draweeView.getWidth();
+                        float vh = draweeView.getHeight();
+                        MyLog.d(TAG, "onFinalImageSet" + " url=" + s
+                                + " imageInfo.width=" + bw
+                                + " imageInfo.height=" + bh
+                                + " view.width=" + vw
+                                + " view.height=" + vh
+                        );
                         if (imageInfo != null && baseImage.adjustViewWHbyImage()) {
                             ViewGroup.LayoutParams layoutParams = draweeView.getLayoutParams();
-                            layoutParams.width = U.getDisplayUtils().dip2px(imageInfo.getWidth() / 3);
-                            layoutParams.height = U.getDisplayUtils().dip2px(imageInfo.getHeight() / 3);
+                            layoutParams.width = (int) bw;
+                            layoutParams.height = (int) bh;
                             draweeView.setLayoutParams(layoutParams);
                         }
                         if (baseImage.getCallBack() != null) {
                             baseImage.getCallBack().processWithInfo(imageInfo, animatable);
                         }
+                        if (MyLog.isDebugLogOpen() && baseImage.isTipsWhenLarge()) {
+                            if (vw != 0 && vh != 0) {
+                                if (bw > vw * 1.5 && bh > vh * 1.5) {
+                                    ImageDebugModel imageDebugModel = new ImageDebugModel((int) vw, (int) vh, (int) bw, (int) bh, baseImage.getUri().toString());
+                                    showImageLargeTips(imageDebugModel);
+                                }
+                            }
+                        }
                     }
                 });
-
         DraweeController draweeController = builder.build();
         draweeController.setHierarchy(draweeView.getHierarchy());
         draweeView.setController(draweeController);
+    }
+
+    private static void showImageLargeTips(ImageDebugModel debugModel) {
+        ImageDebugActivity.Companion.open(debugModel);
     }
 
     public static void deleteCache(String url) {

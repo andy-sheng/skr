@@ -1,0 +1,30 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/img_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_16_dp"
+        android:text="这个image加载方式可以优化，view太小，完全没必须加载这么大的bitmap,若不需要提示，可以设置BaseImage.setTipsWhenLarge"
+        />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/desc_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/view_100_dp"
+        android:padding="@dimen/view_10_dp"
+        android:textColor="@color/red"
+        android:textSize="@dimen/textsize_25_dp"
+        android:text="信息"
+        />
+</android.support.constraint.ConstraintLayout>
