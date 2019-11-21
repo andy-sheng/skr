@@ -5,13 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.common.core.avatar.AvatarUtils
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
+import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.common.view.recyclerview.DiffAdapter
 import com.module.home.R
+import com.module.mall.model.ProductModel
 
-class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductHolder>() {
+class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.mall_product_item_layout, parent, false)
@@ -19,35 +21,44 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return mDataList.size
     }
 
     override fun onBindViewHolder(holder: ProductHolder, position: Int) {
-        holder.bindData()
+        holder.bindData(mDataList[position])
     }
 
     inner class ProductHolder : RecyclerView.ViewHolder {
         var bg: ExImageView
         var productName: ExTextView
-        var dataTv: ExTextView
         var btnIv: ExTextView
         var strokeIv: ExImageView
-        var avaterIv: BaseImageView
+        var effectIv: BaseImageView
+
+        var model: ProductModel? = null
 
         constructor(itemView: View) : super(itemView) {
             bg = itemView.findViewById(R.id.bg)
             productName = itemView.findViewById(R.id.product_name)
-            dataTv = itemView.findViewById(R.id.data_tv)
             btnIv = itemView.findViewById(R.id.btn_iv)
             strokeIv = itemView.findViewById(R.id.stroke_iv)
-            avaterIv = itemView.findViewById(R.id.avatar_iv)
+            effectIv = itemView.findViewById(R.id.effect_iv)
         }
 
-        fun bindData() {
-            AvatarUtils.loadAvatarByUrl(avaterIv,
-                    AvatarUtils.newParamsBuilder(MyUserInfoManager.myUserInfo?.avatar)
-                            .setCircle(true)
+        fun bindData(model: ProductModel) {
+            this.model = model
+            AvatarUtils.loadAvatarByUrl(effectIv,
+                    AvatarUtils.newParamsBuilder(model.goodsURL)
+                            .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                             .build())
+
+            updateText(model)
+        }
+
+        fun updateText(model: ProductModel) {
+            this.model = model
+            productName.text = model.goodsName
+
         }
     }
 }

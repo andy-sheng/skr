@@ -9,16 +9,24 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.view.setDebounceViewClickListener
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.RouterConstants
 import com.module.home.R
+import com.module.mall.MallServerApi
+import com.module.mall.model.MallTag
 import com.module.mall.view.EffectView
 import com.module.mall.view.ProductView
+import kotlinx.coroutines.launch
 
 @Route(path = RouterConstants.ACTIVITY_MALL_MALL)
 class MallActivity : BaseActivity() {
@@ -32,6 +40,8 @@ class MallActivity : BaseActivity() {
 
     var pagerAdapter: PagerAdapter? = null
     var viewList: ArrayList<ProductView>? = null
+
+    val rankedServerApi = ApiManager.getInstance().createService(MallServerApi::class.java)
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.mall_activity_layout
@@ -47,6 +57,8 @@ class MallActivity : BaseActivity() {
         viewpager = findViewById(R.id.viewpager)
         diamondTv = findViewById(R.id.diamond_tv)
 
+        viewpager.offscreenPageLimit = 100
+
         tagTab.setCustomTabView(R.layout.mall_pager_tab, R.id.tab_tv)
         tagTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
         tagTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
@@ -55,10 +67,6 @@ class MallActivity : BaseActivity() {
         tagTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(12f).toFloat())
 
         viewList = ArrayList()
-        viewList?.add(ProductView(this))
-        viewList?.add(ProductView(this))
-        viewList?.add(ProductView(this))
-        viewList?.add(ProductView(this))
 
         diamondTv.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_BALANCE)
@@ -72,6 +80,16 @@ class MallActivity : BaseActivity() {
 
         btnBack.setDebounceViewClickListener {
             finish()
+        }
+
+        loadTags()
+    }
+
+    fun initAdapter(list: List<MallTag>) {
+        for (mallTag in list) {
+            viewList?.add(ProductView(this).apply {
+                displayType = mallTag.displayType
+            })
         }
 
         pagerAdapter = object : PagerAdapter() {
@@ -89,7 +107,7 @@ class MallActivity : BaseActivity() {
             }
 
             override fun getCount(): Int {
-                return 4
+                return list.size
             }
 
             override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -97,13 +115,7 @@ class MallActivity : BaseActivity() {
             }
 
             override fun getPageTitle(position: Int): CharSequence? {
-                return when (position) {
-                    0 -> "精选套装"
-                    1 -> "演唱声纹"
-                    2 -> "头像框"
-                    3 -> "舞台"
-                    else -> super.getPageTitle(position)
-                }
+                return list[position].displayTypeDesc
             }
         }
 
@@ -113,12 +125,7 @@ class MallActivity : BaseActivity() {
             }
 
             override fun onPageSelected(position: Int) {
-                val view = viewpager.findViewWithTag<View>(position)
-                if (view != null) {
-                    if (view is ProductView) {
-                        view.tryLoad()
-                    }
-                }
+                viewList?.get(position)?.selected()
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -128,6 +135,24 @@ class MallActivity : BaseActivity() {
 
         viewpager.adapter = pagerAdapter
         tagTab.setViewPager(viewpager)
+        viewList?.get(0)?.selected()
+    }
+
+    fun loadTags() {
+        launch {
+            val obj = subscribe(RequestControl(TAG + "tryLoad()", ControlType.CancelThis)) {
+                rankedServerApi.getMallDisplayTags()
+            }
+
+            if (obj.errno == 0) {
+                val list = JSON.parseArray(obj.data.getString("tags"), MallTag::class.java)
+                if (list != null && list.size > 0) {
+                    initAdapter(list)
+                }
+            } else {
+                U.getToastUtil().showShort(obj.errmsg)
+            }
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
