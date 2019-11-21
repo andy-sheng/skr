@@ -143,51 +143,6 @@ public class EditInfoNameFragment extends BaseFragment {
         }
     }
 
-    private void showConfirmDialog(String nickName) {
-        SpannableStringBuilder stringBuilder = new SpanUtils()
-                .append("确认将昵称修改为")
-                .append(nickName).setBold().setForegroundColor(Color.parseColor("#0288D0"))
-                .append("吗?\n三个月以后才能再次修改喔～")
-                .create();
-        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-                .setMessageTip(stringBuilder)
-                .setConfirmTip("确认修改")
-                .setCancelTip("取消")
-                .build();
-
-        DialogPlus.newDialog(getContext())
-                .setContentHolder(new ViewHolder(tipsDialogView))
-                .setGravity(Gravity.BOTTOM)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view instanceof ExTextView) {
-                            if (view.getId() == R.id.confirm_tv) {
-                                dialog.dismiss();
-                                MyUserInfoManager.INSTANCE.updateInfo(MyUserInfoManager.INSTANCE.newMyInfoUpdateParamsBuilder()
-                                        .setNickName(nickName)
-                                        .build(), false);
-                                U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
-                            }
-
-                            if (view.getId() == R.id.cancel_tv) {
-                                dialog.dismiss();
-                            }
-                        }
-                    }
-                })
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(@NonNull DialogPlus dialog) {
-
-                    }
-                })
-                .create().show();
-    }
-
     @Override
     public boolean useEventBus() {
         return false;
