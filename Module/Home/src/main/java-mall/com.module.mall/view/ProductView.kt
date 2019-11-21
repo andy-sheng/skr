@@ -21,6 +21,7 @@ import com.module.home.loadsir.DqEmptyCallBack
 import com.module.mall.MallServerApi
 import com.module.mall.adapter.ProductAdapter
 import com.module.mall.event.BuyMallSuccessEvent
+import com.module.mall.event.ShowEffectEvent
 import com.module.mall.model.ProductModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -56,13 +57,18 @@ class ProductView : ExConstraintLayout {
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context!!, attrs, defStyleAttr)
 
+    var selectedIndex = -1
+
     init {
         View.inflate(context, R.layout.product_view_layout, this)
 
         recyclerView = rootView.findViewById(R.id.recycler_view)
         refreshLayout = rootView.findViewById(R.id.refreshLayout)
         recyclerView.layoutManager = GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false)
-        productAdapter = ProductAdapter()
+        productAdapter = ProductAdapter {
+            selectedIndex
+        }
+
         recyclerView.adapter = productAdapter
         productAdapter?.notifyDataSetChanged()
         productAdapter?.clickItemMethod = {
@@ -70,6 +76,19 @@ class ProductView : ExConstraintLayout {
                 buyEffectDialogView = BuyEffectDialogView(context)
             }
             buyEffectDialogView?.showByDialog(true, it)
+        }
+
+        productAdapter?.selectItemMethod = { productModel, i ->
+            if (selectedIndex != i) {
+                val pre = selectedIndex
+                selectedIndex = i
+                if (pre > -1) {
+                    productAdapter?.notifyItemChanged(pre, 1)
+                }
+
+                productAdapter?.notifyItemChanged(selectedIndex, 1)
+                EventBus.getDefault().post(ShowEffectEvent(productModel))
+            }
         }
 
         refreshLayout.setEnableRefresh(false)
@@ -107,9 +126,12 @@ class ProductView : ExConstraintLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BuyMallSuccessEvent) {
         if (event.productModel.displayType == displayType) {
-            productAdapter?.dataList?.forEach {
-                it.isBuy = true
-                productAdapter?.notifyDataSetChanged()
+            for (i in 0 until ((productAdapter?.dataList?.size) ?: 0)) {
+                if (productAdapter?.dataList?.get(i)?.goodsID == event.productModel.goodsID) {
+                    productAdapter?.dataList?.get(i)?.isBuy = true
+                    productAdapter?.notifyItemChanged(i, 1)
+                    break
+                }
             }
         }
     }

@@ -4,13 +4,19 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
+import com.common.anim.svga.SvgaParserAdapter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
 import com.common.utils.U
 import com.component.level.utils.LevelConfigUtils
 import com.module.home.R
+import com.module.mall.model.ProductModel
+import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
+import com.opensource.svgaplayer.SVGAParser
+import com.opensource.svgaplayer.SVGAVideoEntity
+import org.greenrobot.greendao.annotation.NotNull
 
 class EffectView : ConstraintLayout {
     var bgSvga: SVGAImageView
@@ -40,6 +46,55 @@ class EffectView : ConstraintLayout {
                         ?: 0) != 0) {
             avatarBox.setImageResource(LevelConfigUtils.getRaceCenterAvatarBg(MyUserInfoManager.myUserInfo?.ranking?.mainRanking
                     ?: 0))
+        }
+    }
+
+    fun showBgEffect(productModel: ProductModel) {
+        bgSvga?.visibility = View.VISIBLE
+        bgSvga?.loops = 1
+
+        SvgaParserAdapter.parse(productModel.sourceURL, object : SVGAParser.ParseCompletion {
+            override fun onComplete(@NotNull videoItem: SVGAVideoEntity) {
+                val drawable = SVGADrawable(videoItem)
+                bgSvga!!.loops = -1
+                bgSvga!!.setImageDrawable(drawable)
+                bgSvga!!.startAnimation()
+            }
+
+            override fun onError() {
+
+            }
+        })
+    }
+
+    fun showLightEffect(productModel: ProductModel) {
+        lightSvga?.visibility = View.VISIBLE
+        lightSvga?.loops = 1
+
+        SvgaParserAdapter.parse(productModel.sourceURL, object : SVGAParser.ParseCompletion {
+            override fun onComplete(@NotNull videoItem: SVGAVideoEntity) {
+                val drawable = SVGADrawable(videoItem)
+                lightSvga!!.loops = -1
+                lightSvga!!.setImageDrawable(drawable)
+                lightSvga!!.startAnimation()
+            }
+
+            override fun onError() {
+
+            }
+        })
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        if (lightSvga != null) {
+            lightSvga!!.callback = null
+            lightSvga!!.stopAnimation(true)
+        }
+
+        if (bgSvga != null) {
+            bgSvga!!.callback = null
+            bgSvga!!.stopAnimation(true)
         }
     }
 }

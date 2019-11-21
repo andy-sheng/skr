@@ -21,10 +21,13 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.module.RouterConstants
 import com.module.home.R
 import com.module.mall.MallServerApi
+import com.module.mall.event.PackageShowEffectEvent
 import com.module.mall.model.MallTag
 import com.module.mall.view.EffectView
 import com.module.mall.view.PackageView
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_MALL_PACKAGE)
 class PackageActivity : BaseActivity() {
@@ -136,6 +139,14 @@ class PackageActivity : BaseActivity() {
         viewList?.get(0)?.selected()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PackageShowEffectEvent) {
+        when (event.productModel.displayType) {
+            4 -> effectView.showBgEffect(event.productModel)
+            5 -> effectView.showLightEffect(event.productModel)
+        }
+    }
+
     fun loadTags() {
         launch {
             val obj = subscribe {
@@ -163,8 +174,6 @@ class PackageActivity : BaseActivity() {
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
-
-
 }

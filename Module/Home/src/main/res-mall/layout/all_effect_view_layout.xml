@@ -16,6 +16,7 @@
         android:id="@+id/bg_svga"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="centerCrop"
         app:antiAlias="true"
         app:autoPlay="false" />
 
@@ -41,6 +42,7 @@
         android:id="@+id/light_svga"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="center"
         app:antiAlias="true"
         app:autoPlay="false" />
 </merge>
