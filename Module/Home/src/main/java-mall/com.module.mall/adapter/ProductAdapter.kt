@@ -14,9 +14,10 @@ import com.common.view.recyclerview.DiffAdapter
 import com.module.home.R
 import com.module.mall.model.ProductModel
 
-class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>() {
+class ProductAdapter(val getIndexMethod: (() -> Int)) : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>() {
 
     var clickItemMethod: ((ProductModel) -> Unit)? = null
+    var selectItemMethod: ((ProductModel, Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.mall_product_item_layout, parent, false)
@@ -28,12 +29,12 @@ class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>()
     }
 
     override fun onBindViewHolder(holder: ProductHolder, position: Int) {
-        holder.bindData(mDataList[position])
+        holder.bindData(mDataList[position], position)
     }
 
     override fun onBindViewHolder(holder: ProductHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isEmpty()) {
-            holder.bindData(mDataList[position])
+            holder.bindData(mDataList[position], position)
         } else {
             // 局部刷新
             payloads.forEach {
@@ -45,7 +46,7 @@ class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>()
     }
 
     fun refreshHolder(holder: ProductHolder, position: Int, refreshType: Int) {
-        holder.updateText(mDataList[position])
+        holder.updateText(mDataList[position], position)
     }
 
     inner class ProductHolder : RecyclerView.ViewHolder {
@@ -57,6 +58,7 @@ class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>()
         var effectIv: BaseImageView
 
         var model: ProductModel? = null
+        var index: Int = -1
 
         constructor(itemView: View) : super(itemView) {
             bg = itemView.findViewById(R.id.bg)
@@ -66,24 +68,34 @@ class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>()
             effectIv = itemView.findViewById(R.id.effect_iv)
             hasBuyIv = itemView.findViewById(R.id.has_buy_iv)
 
-            itemView.setDebounceViewClickListener {
+            btnIv.setDebounceViewClickListener {
                 clickItemMethod?.invoke(model!!)
+            }
+
+            hasBuyIv.setDebounceViewClickListener {
+                clickItemMethod?.invoke(model!!)
+            }
+
+            effectIv.setDebounceViewClickListener {
+                selectItemMethod?.invoke(model!!, index)
             }
         }
 
-        fun bindData(model: ProductModel) {
+        fun bindData(model: ProductModel, index: Int) {
             this.model = model
+            this.index = index
             AvatarUtils.loadAvatarByUrl(effectIv,
                     AvatarUtils.newParamsBuilder(model.goodsURL)
                             .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                             .build())
             productName.text = model.goodsName
 
-            updateText(model)
+            updateText(model, index)
         }
 
-        fun updateText(model: ProductModel) {
+        fun updateText(model: ProductModel, index: Int) {
             this.model = model
+            this.index = index
 
             if (model.isBuy) {
                 hasBuyIv.visibility = View.VISIBLE
@@ -95,6 +107,12 @@ class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>()
                 if (model.price?.size > 0) {
                     btnIv.text = "X${model.price[0].realPrice}"
                 }
+            }
+
+            if (getIndexMethod.invoke() == index) {
+                strokeIv.visibility = View.VISIBLE
+            } else {
+                strokeIv.visibility = View.GONE
             }
         }
     }

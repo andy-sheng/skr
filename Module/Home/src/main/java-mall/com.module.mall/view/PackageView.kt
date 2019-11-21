@@ -19,6 +19,7 @@ import com.module.home.R
 import com.module.home.loadsir.DqEmptyCallBack
 import com.module.mall.MallServerApi
 import com.module.mall.adapter.PackageAdapter
+import com.module.mall.event.PackageShowEffectEvent
 import com.module.mall.model.PackageModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -27,6 +28,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import java.util.*
 
 class PackageView : ExConstraintLayout {
@@ -48,6 +50,8 @@ class PackageView : ExConstraintLayout {
 
     internal var mLoadService: LoadService<*>
 
+    var selectedIndex = -1
+
     constructor(context: Context?) : super(context!!)
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context!!, attrs, defStyleAttr)
@@ -58,11 +62,27 @@ class PackageView : ExConstraintLayout {
         recyclerView = rootView.findViewById(R.id.recycler_view)
         refreshLayout = rootView.findViewById(R.id.refreshLayout)
         recyclerView.layoutManager = GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false)
-        productAdapter = PackageAdapter()
+        productAdapter = PackageAdapter {
+            selectedIndex
+        }
+
         recyclerView.adapter = productAdapter
         productAdapter?.notifyDataSetChanged()
         productAdapter?.useEffectMethod = {
             useEffect(it)
+        }
+
+        productAdapter?.selectItemMethod = { productModel, i ->
+            if (selectedIndex != i) {
+                val pre = selectedIndex
+                selectedIndex = i
+                if (pre > -1) {
+                    productAdapter?.notifyItemChanged(pre, 1)
+                }
+
+                productAdapter?.notifyItemChanged(selectedIndex, 1)
+                EventBus.getDefault().post(PackageShowEffectEvent(productModel))
+            }
         }
 
         refreshLayout.setEnableRefresh(false)

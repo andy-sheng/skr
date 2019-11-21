@@ -13,10 +13,12 @@ import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
 import com.module.home.R
 import com.module.mall.model.PackageModel
+import com.module.mall.model.ProductModel
 
-class PackageAdapter : DiffAdapter<PackageModel, PackageAdapter.PackageHolder>() {
+class PackageAdapter(val getIndexMethod: (() -> Int)) : DiffAdapter<PackageModel, PackageAdapter.PackageHolder>() {
 
     var useEffectMethod: ((PackageModel) -> Unit)? = null
+    var selectItemMethod: ((ProductModel, Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PackageHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.package_product_item_layout, parent, false)
@@ -28,12 +30,12 @@ class PackageAdapter : DiffAdapter<PackageModel, PackageAdapter.PackageHolder>()
     }
 
     override fun onBindViewHolder(holder: PackageHolder, position: Int) {
-        holder.bindData(mDataList[position])
+        holder.bindData(mDataList[position], position)
     }
 
     override fun onBindViewHolder(holder: PackageHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isEmpty()) {
-            holder.bindData(mDataList[position])
+            holder.bindData(mDataList[position], position)
         } else {
             // 局部刷新
             payloads.forEach {
@@ -45,7 +47,7 @@ class PackageAdapter : DiffAdapter<PackageModel, PackageAdapter.PackageHolder>()
     }
 
     fun refreshHolder(holder: PackageHolder, position: Int, refreshType: Int) {
-        holder.updateText(mDataList[position])
+        holder.updateText(mDataList[position], position)
     }
 
     inner class PackageHolder : RecyclerView.ViewHolder {
@@ -57,6 +59,7 @@ class PackageAdapter : DiffAdapter<PackageModel, PackageAdapter.PackageHolder>()
         var effectIv: BaseImageView
 
         var model: PackageModel? = null
+        var index: Int = -1
 
         constructor(itemView: View) : super(itemView) {
             bg = itemView.findViewById(R.id.bg)
@@ -69,20 +72,27 @@ class PackageAdapter : DiffAdapter<PackageModel, PackageAdapter.PackageHolder>()
             btnIv.setDebounceViewClickListener {
                 useEffectMethod?.invoke(model!!)
             }
+
+            bg.setDebounceViewClickListener {
+                selectItemMethod?.invoke(model?.goodsInfo!!, index)
+            }
         }
 
-        fun bindData(model: PackageModel) {
+        fun bindData(model: PackageModel, position: Int) {
             this.model = model
+            this.index = position
             AvatarUtils.loadAvatarByUrl(effectIv,
                     AvatarUtils.newParamsBuilder(model.goodsInfo?.goodsURL)
                             .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                             .build())
 
-            updateText(model)
+            updateText(model, index)
         }
 
-        fun updateText(model: PackageModel) {
+        fun updateText(model: PackageModel, position: Int) {
             this.model = model
+            this.index = position
+
             productName.text = model.goodsInfo?.goodsName
             if (model.useStatus > 0) {
                 btnIv.isSelected = true
@@ -90,6 +100,12 @@ class PackageAdapter : DiffAdapter<PackageModel, PackageAdapter.PackageHolder>()
             } else {
                 btnIv.isSelected = false
                 btnIv.text = "使用"
+            }
+
+            if (getIndexMethod.invoke() == index) {
+                strokeIv.visibility = View.VISIBLE
+            } else {
+                strokeIv.visibility = View.GONE
             }
         }
     }

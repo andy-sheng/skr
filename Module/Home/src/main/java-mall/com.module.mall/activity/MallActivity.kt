@@ -23,6 +23,7 @@ import com.module.home.R
 import com.module.mall.MallServerApi
 import com.module.mall.event.BuyMallEvent
 import com.module.mall.event.BuyMallSuccessEvent
+import com.module.mall.event.ShowEffectEvent
 import com.module.mall.model.MallTag
 import com.module.mall.view.EffectView
 import com.module.mall.view.ProductView
@@ -166,6 +167,14 @@ class MallActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         setIntent(intent)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ShowEffectEvent) {
+        when (event.productModel.displayType) {
+            4 -> effectView.showBgEffect(event.productModel)
+            5 -> effectView.showLightEffect(event.productModel)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
