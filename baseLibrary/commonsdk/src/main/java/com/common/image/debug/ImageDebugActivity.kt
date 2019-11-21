@@ -44,7 +44,7 @@ class ImageDebugActivity : BaseActivity() {
     companion object {
         var closeTs = 0L
         fun open(debugModel: ImageDebugModel) {
-            if (System.currentTimeMillis() - closeTs > 10 * 60 * 1000) {
+            if (System.currentTimeMillis() - closeTs > 1 * 60 * 1000) {
                 val intent = Intent(U.getActivityUtils().topActivity, ImageDebugActivity::class.java)
                 intent.putExtra("model", debugModel)
                 U.getActivityUtils().topActivity!!.startActivity(intent)

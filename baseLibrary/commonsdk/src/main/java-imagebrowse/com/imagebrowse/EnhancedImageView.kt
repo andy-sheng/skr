@@ -143,6 +143,7 @@ open class EnhancedImageView : RelativeLayout {
 
         val baseImage = ImageFactory.newPathImage(path)
                 .setScaleType(ScalingUtils.ScaleType.FIT_CENTER)
+                .setTipsWhenLarge(tipsWhenLarge())
                 .setFailureDrawable(U.app().resources.getDrawable(R.drawable.load_img_error))
                 .setLoadingDrawable(U.app().resources.getDrawable(R.drawable.loading_place_holder_img))
                 //                    .setProgressBarDrawable(new ImageBrowseProgressBar())
@@ -150,6 +151,10 @@ open class EnhancedImageView : RelativeLayout {
                 //                    .setOssProcessors(OssPsFactory.newResizeBuilder().setW(360).build(),OssPsFactory.newCropBuilder().setH(180).build())
                 .build<BaseImage>()
         load(baseImage)
+    }
+
+    open fun tipsWhenLarge():Boolean{
+        return true
     }
 
     fun load(baseImage: BaseImage?) {

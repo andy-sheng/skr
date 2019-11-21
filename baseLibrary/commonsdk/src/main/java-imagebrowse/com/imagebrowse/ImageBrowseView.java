@@ -62,6 +62,11 @@ public class ImageBrowseView extends EnhancedImageView {
     }
 
     @Override
+    public boolean tipsWhenLarge(){
+        return false;
+    }
+
+    @Override
     protected boolean useSubSampleView() {
         return true;
     }

@@ -280,7 +280,7 @@ public class FrescoWorker {
                         }
                         if (MyLog.isDebugLogOpen() && baseImage.isTipsWhenLarge()) {
                             if (vw != 0 && vh != 0) {
-                                if (bw > vw * 1.5 && bh > vh * 1.5) {
+                                if (bw > vw * 2 && bh > vh * 2) {
                                     ImageDebugModel imageDebugModel = new ImageDebugModel((int) vw, (int) vh, (int) bw, (int) bh, baseImage.getUri().toString());
                                     showImageLargeTips(imageDebugModel);
                                 }

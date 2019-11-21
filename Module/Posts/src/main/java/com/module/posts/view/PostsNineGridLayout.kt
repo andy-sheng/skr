@@ -18,6 +18,7 @@ import com.common.view.ninegrid.RatioImageView
 import com.component.busilib.R
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.imagepipeline.image.ImageInfo
+import kotlinx.android.synthetic.main.relation_fragment_layout.view.*
 
 /**
  * 描述：
@@ -35,6 +36,7 @@ class PostsNineGridLayout : NineGridLayout {
     override fun displayOneImage(imageView: RatioImageView, url: String, parentWidth: Int): Boolean {
         imageView.load(ImageFactory.newPathImage(url)
                 .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_640)
+                .setTipsWhenLarge(false)
                 .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                 .setFailureDrawable(U.app().resources.getDrawable(R.drawable.load_img_error))
                 .setLoadingDrawable(U.app().resources.getDrawable(R.drawable.loading_place_holder_img))
