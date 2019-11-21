@@ -169,6 +169,17 @@ int AudioMixer::config(int idx, int sampleFmt, int sampleRate, int channels, int
     return 0;
 }
 
+void AudioMixer::setMainIdx(int idx) {
+    if (idx < 0 || idx >= CHN_NUM) {
+        return;
+    }
+
+    LOGD("setMainIdx %d", idx);
+    pthread_mutex_lock(&mLock);
+    mMainIdx = idx;
+    pthread_mutex_unlock(&mLock);
+}
+
 void AudioMixer::setDelay(int idx, int64_t delay) {
     mDelay[idx] = delay;
 

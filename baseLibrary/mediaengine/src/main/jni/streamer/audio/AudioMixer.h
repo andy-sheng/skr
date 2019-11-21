@@ -17,7 +17,7 @@ public:
     AudioMixer();
     ~AudioMixer();
 
-    void setMainIdx(int idx) {mMainIdx = idx;}
+    void setMainIdx(int idx);
     void setInputVolume(int idx, float vol) {
         mInputVolume[idx][0] = vol;
         mInputVolume[idx][1] = vol;

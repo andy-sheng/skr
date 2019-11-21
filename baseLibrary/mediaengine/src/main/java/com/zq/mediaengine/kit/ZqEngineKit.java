@@ -167,6 +167,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private AudioResampleFilter mAudioResampleFilter;
     // 录制前的重采样模块
     private AudioResampleFilter mAudioRecordResampleFilter;
+    private AudioResampleFilter mAudioRecordRemoteResampleFilter;
     // 对bgm, remote进行混音，用于回声消除
     private AudioMixer mRemoteAudioMixer;
     // 对mic, bgm进行混音，用于远端发送
@@ -627,6 +628,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
             // 录制时的重采样模块, 需要录制时再连接
             mAudioRecordResampleFilter = new AudioResampleFilter();
+            mAudioRecordRemoteResampleFilter = new AudioResampleFilter();
             mRecordAudioMixer = new AudioMixer();
 
             // 连接输出resample
@@ -694,16 +696,25 @@ public class ZqEngineKit implements AgoraOutCallback {
     };
 
     private void connectRecord(AudioBufFormat format) {
-        mAudioRecordResampleFilter.setOutFormat(format);
-        mAudioResampleFilter.getSrcPin().connect(mAudioRecordResampleFilter.getSinkPin());
-        mAudioRecordResampleFilter.getSrcPin().connect(mRecordAudioMixer.getSinkPin(0));
-        mAudioRemoteSrcPin.connect(mRecordAudioMixer.getSinkPin(1));
+        if (mConfig.isUseExternalAudioRecord() || mConfig.isUseExternalAudio()) {
+            mAudioRecordResampleFilter.setOutFormat(format);
+            mAudioRecordRemoteResampleFilter.setOutFormat(format);
+            mAudioResampleFilter.getSrcPin().connect(mAudioRecordResampleFilter.getSinkPin());
+            mAudioRemoteSrcPin.connect(mAudioRecordRemoteResampleFilter.getSinkPin());
+            // TODO: 非主播模式下, 需要用远端音频驱动录制
+            mRecordAudioMixer.setMainSinkPinIndex(mConfig.isAnchor() ? 0 : 1);
+            mAudioRecordResampleFilter.getSrcPin().connect(mRecordAudioMixer.getSinkPin(0));
+            mAudioRecordRemoteResampleFilter.getSrcPin().connect(mRecordAudioMixer.getSinkPin(1));
+        }
     }
 
     private void disconnectRecord() {
-        mAudioResampleFilter.getSrcPin().disconnect(mAudioRecordResampleFilter.getSinkPin(), false);
-        mAudioRecordResampleFilter.getSrcPin().disconnect(mRecordAudioMixer.getSinkPin(0), false);
-        mAudioRemoteSrcPin.disconnect(mRecordAudioMixer.getSinkPin(1), false);
+        if (mConfig.isUseExternalAudioRecord() || mConfig.isUseExternalAudio()) {
+            mAudioResampleFilter.getSrcPin().disconnect(mAudioRecordResampleFilter.getSinkPin(), false);
+            mAudioRemoteSrcPin.disconnect(mAudioRecordRemoteResampleFilter.getSinkPin(), false);
+            mAudioRecordResampleFilter.getSrcPin().disconnect(mRecordAudioMixer.getSinkPin(0), false);
+            mAudioRecordRemoteResampleFilter.getSrcPin().disconnect(mRecordAudioMixer.getSinkPin(1), false);
+        }
     }
 
     public boolean isInit() {
@@ -854,6 +865,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             public void realRun() {
                 mConfig.setSelfUid(userId);
                 if (mConfig.getChannelProfile() == Params.CHANNEL_TYPE_LIVE_BROADCASTING) {
+                    mConfig.setAnchor(isAnchor);
                     mAgoraRTCAdapter.setClientRole(isAnchor);
                 }
                 joinRoomInner(roomid, userId, token);
