@@ -48,7 +48,7 @@ import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.event.SkipGuideHomepageEvent;
-import com.module.home.fragment.PersonFragment4;
+import com.module.home.fragment.PersonFragment5;
 import com.module.home.game.GameFragment3;
 import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.HomeCorePresenter;
@@ -179,7 +179,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 } else if (position == 2) {
                     return (Fragment) mMsgService.getMessageFragment();
                 } else if (position == 3) {
-                    return new PersonFragment4();
+                    return new PersonFragment5();
                 }
                 return null;
             }

@@ -2,6 +2,7 @@ package com.module.home.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -29,6 +31,7 @@ import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.ScoreStateModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.player.SinglePlayer;
@@ -37,6 +40,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -44,6 +48,7 @@ import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.event.PostsPublishSucessEvent;
 import com.component.busilib.friends.VoiceInfoModel;
+import com.component.dialog.BusinessCardDialogView;
 import com.component.level.utils.LevelConfigUtils;
 import com.component.person.event.ChildViewPlayAudioEvent;
 import com.component.person.event.UploadMyVoiceInfo;
@@ -82,7 +87,7 @@ import java.util.List;
  * 自己
  * 带作品的照片墙
  */
-public class PersonFragment4 extends BaseFragment implements IPersonView, RequestCallBack {
+public class PersonFragment5 extends BaseFragment implements IPersonView, RequestCallBack {
 
     SmartRefreshLayout mSmartRefresh;
     ConstraintLayout mUserInfoArea;
@@ -92,19 +97,19 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     ExImageView mSettingRedDot;
 
     ImageView mImageBg;
+    ImageView mBottomBg;
 
     SimpleDraweeView mAvatarIv;
     ImageView mLevelBg;
     TextView mLevelDesc;
-    TextView mVerifyTv;
-    ExTextView mSignTv;
     ExTextView mNameTv;
     ImageView mHonorIv;
     Group mOpenHonorArea;
 
+    ImageView mBusinessIv;
+
     CommonAudioView mAudioView;
     ExTextView mEditAudio;
-    PersonTagView mPersonTagView;
 
     ExTextView mFriendsNumTv;
     ExTextView mFansNumTv;
@@ -130,13 +135,15 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     IPersonFeedsWall mFeedsWallView;
     ProducationWallView mProducationWallView;
 
-    DialogPlus mDialogPlus;
-
     int srollDivider = U.getDisplayUtils().dip2px(122);  // 滑到分界线的时候
 
     int mFriendNum = 0;
     int mFansNum = 0;
     int mFocusNum = 0;
+
+    int meiLiCntTotal = 0;
+
+    private BusinessCardDialogView mBusinessCardDialogView = null;
 
     VoiceInfoModel mVoiceInfoModel; // 声音信息
 
@@ -198,6 +205,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             layoutParams.topMargin = layoutParams.topMargin + U.getStatusBarUtil().getStatusBarHeight(U.app());
             mUserInfoArea.setLayoutParams(layoutParams);
 
+            RelativeLayout.LayoutParams bottomParams = (RelativeLayout.LayoutParams) mBottomBg.getLayoutParams();
+            bottomParams.topMargin = bottomParams.topMargin + U.getStatusBarUtil().getStatusBarHeight(U.app());
+            mBottomBg.setLayoutParams(bottomParams);
+
             ViewGroup.LayoutParams containerParams = mContainer.getLayoutParams();
             containerParams.height = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(56 + 54);
             mContainer.setLayoutParams(containerParams);
@@ -232,9 +243,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         if (mFeedsWallView != null) {
             mFeedsWallView.unselected(1);
         }
-        if (mDialogPlus != null) {
-            mDialogPlus.dismiss(false);
-        }
     }
 
     private void initBaseContainArea() {
@@ -242,6 +250,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mUserInfoArea = getRootView().findViewById(R.id.user_info_area);
 
         mImageBg = getRootView().findViewById(R.id.image_bg);
+        mBottomBg = getRootView().findViewById(R.id.bottom_bg);
         mAppbar = getRootView().findViewById(R.id.appbar);
         mToolbar = getRootView().findViewById(R.id.toolbar);
         mToolbarLayout = getRootView().findViewById(R.id.toolbar_layout);
@@ -297,10 +306,12 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 super.onHeaderMoving(header, isDragging, percent, offset, headerHeight, maxDragHeight);
                 float scale = (float) offset / (float) U.getDisplayUtils().dip2px(300) + 1;
                 if (Math.abs(scale - lastScale) >= 0.01) {
-                    // TODO: 2019-06-23 不要加平移，会闪动，让设计把图给大一点可以避免
                     lastScale = scale;
                     mImageBg.setScaleX(scale);
                     mImageBg.setScaleY(scale);
+                }
+                if (offset > 0) {
+                    mBottomBg.setTranslationY(offset);
                 }
             }
         });
@@ -311,6 +322,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                     // TODO: 2019-06-23  可以加效果，看产品需求
                     mImageBg.setTranslationY(verticalOffset);
+                    if (verticalOffset < 0) {
+                        mBottomBg.setTranslationY(verticalOffset);
+                    }
                     if (lastVerticalOffset != verticalOffset) {
                         lastVerticalOffset = verticalOffset;
 
@@ -353,22 +367,32 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mAvatarIv = getRootView().findViewById(R.id.avatar_iv);
         mLevelBg = getRootView().findViewById(R.id.level_bg);
         mLevelDesc = getRootView().findViewById(R.id.level_desc);
-        mSignTv = getRootView().findViewById(R.id.sign_tv);
-        mVerifyTv = getRootView().findViewById(R.id.verify_tv);
 
         mNameTv = getRootView().findViewById(R.id.name_tv);
         mHonorIv = getRootView().findViewById(R.id.honor_iv);
         mOpenHonorArea = getRootView().findViewById(R.id.open_honor_area);
 
+        mBusinessIv = getRootView().findViewById(R.id.business_iv);
+
         mAudioView = getRootView().findViewById(R.id.audio_view);
         mEditAudio = getRootView().findViewById(R.id.edit_audio);
-        mPersonTagView = getRootView().findViewById(R.id.person_tag_view);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_INFO)
                         .navigation();
+            }
+        });
+
+        mBusinessIv.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                if (mBusinessCardDialogView != null) {
+                    mBusinessCardDialogView.dismiss(false);
+                }
+                mBusinessCardDialogView = new BusinessCardDialogView(getActivity(), MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo()), meiLiCntTotal, mFansNum);
+                mBusinessCardDialogView.showByDialog();
             }
         });
 
@@ -518,7 +542,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mPersonVp = getRootView().findViewById(R.id.person_vp);
 
         mPersonTab.setCustomTabView(R.layout.person_tab_view, R.id.tab_tv);
-        mPersonTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
+        mPersonTab.setSelectedIndicatorColors(Color.parseColor("#A6BCF2"));
         mPersonTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE);
         mPersonTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE);
         mPersonTab.setIndicatorWidth(U.getDisplayUtils().dip2px(67));
@@ -537,8 +561,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 if (position == 0) {
                     // 照片墙
                     if (mPhotoWallView == null) {
-                        mPhotoWallView = new PhotoWallView(PersonFragment4.this, PersonFragment4.this);
-                        if (PersonFragment4.this.getFragmentVisible()) {
+                        mPhotoWallView = new PhotoWallView(PersonFragment5.this, PersonFragment5.this);
+                        if (PersonFragment5.this.getFragmentVisible()) {
                             mPhotoWallView.getPhotos(false);
                         }
                     }
@@ -554,7 +578,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo());
                     if (mPostWallView == null) {
                         IPostModuleService postModuleService = ModuleServiceManager.getInstance().getPostsService();
-                        mPostWallView = postModuleService.getPostsWall(PersonFragment4.this.getActivity(), userInfoModel, PersonFragment4.this);
+                        mPostWallView = postModuleService.getPostsWall(PersonFragment5.this.getActivity(), userInfoModel, PersonFragment5.this);
                     }
                     View childView = (View) mPostWallView;
                     if (container.indexOfChild(childView) == -1) {
@@ -569,7 +593,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo());
                     if (mFeedsWallView == null) {
                         IFeedsModuleService feedsModuleService = ModuleServiceManager.getInstance().getFeedsService();
-                        mFeedsWallView = feedsModuleService.getPersonFeedsWall(PersonFragment4.this, userInfoModel, PersonFragment4.this);
+                        mFeedsWallView = feedsModuleService.getPersonFeedsWall(PersonFragment5.this, userInfoModel, PersonFragment5.this);
                     }
                     View childView = (View) mFeedsWallView;
                     if (container.indexOfChild(childView) == -1) {
@@ -583,7 +607,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     // 作品
                     UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo());
                     if (mProducationWallView == null) {
-                        mProducationWallView = new ProducationWallView(PersonFragment4.this, userInfoModel, PersonFragment4.this);
+                        mProducationWallView = new ProducationWallView(PersonFragment5.this, userInfoModel, PersonFragment5.this);
                     }
                     if (container.indexOfChild(mProducationWallView) == -1) {
                         if (mProducationWallView.getParent() != null) {
@@ -722,12 +746,12 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     @Override
-    public void showHomePageInfo(List<RelationNumModel> relationNumModels, int meiLiCntTotal, ScoreDetailModel scoreDetailModel, VoiceInfoModel voiceInfoModel) {
+    public void showHomePageInfo(List<RelationNumModel> relationNumModels, int meiLiCntTotal, VoiceInfoModel voiceInfoModel) {
         mSmartRefresh.finishRefresh();
-        showCharmsTotal(meiLiCntTotal);
         showRelationNum(relationNumModels);
-        showScoreDetail(scoreDetailModel);
         showVoiceInfo(voiceInfoModel);
+        refreshUserInfoView();
+        this.meiLiCntTotal = meiLiCntTotal;
     }
 
     private void showVoiceInfo(VoiceInfoModel voiceInfoModel) {
@@ -747,22 +771,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         }
     }
 
-    private void showScoreDetail(ScoreDetailModel scoreDetailModel) {
-        if (scoreDetailModel.getScoreStateModel() != null && LevelConfigUtils.getRaceCenterAvatarBg(scoreDetailModel.getScoreStateModel().getMainRanking()) != 0) {
-            mLevelBg.setVisibility(View.VISIBLE);
-            mLevelDesc.setVisibility(View.VISIBLE);
-            mLevelBg.setBackground(U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(scoreDetailModel.getScoreStateModel().getMainRanking())));
-            mLevelDesc.setText(scoreDetailModel.getScoreStateModel().getRankingDesc());
-        } else {
-            mLevelBg.setVisibility(View.GONE);
-            mLevelDesc.setVisibility(View.GONE);
-        }
-    }
-
-    private void showCharmsTotal(int meiLiCntTotal) {
-        mPersonTagView.setCharmTotal(meiLiCntTotal);
-    }
-
     public void showRelationNum(List<RelationNumModel> list) {
         for (RelationNumModel mode : list) {
             if (mode.getRelation() == UserInfoManager.RELATION.FRIENDS.getValue()) {
@@ -780,20 +788,20 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     private void refreshRelationNum() {
         SpannableStringBuilder friendBuilder = new SpanUtils()
-                .append(String.valueOf(mFriendNum)).setFontSize(24, true)
-                .append(" 好友").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
+                .append(String.valueOf(mFriendNum)).setForegroundColor(U.getColor(R.color.black_trans_80)).setFontSize(24, true).setBold()
+                .append(" 好友").setFontSize(14, true).setForegroundColor(U.getColor(R.color.black_trans_50))
                 .create();
         mFriendsNumTv.setText(friendBuilder);
 
         SpannableStringBuilder fansBuilder = new SpanUtils()
-                .append(String.valueOf(mFansNum)).setFontSize(24, true)
-                .append(" 粉丝").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
+                .append(String.valueOf(mFansNum)).setForegroundColor(U.getColor(R.color.black_trans_80)).setFontSize(24, true).setBold()
+                .append(" 粉丝").setFontSize(14, true).setForegroundColor(U.getColor(R.color.black_trans_50))
                 .create();
         mFansNumTv.setText(fansBuilder);
 
         SpannableStringBuilder focusBuilder = new SpanUtils()
-                .append(String.valueOf(mFocusNum)).setFontSize(24, true)
-                .append(" 关注").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
+                .append(String.valueOf(mFocusNum)).setForegroundColor(U.getColor(R.color.black_trans_80)).setFontSize(24, true).setBold()
+                .append(" 关注").setFontSize(14, true).setForegroundColor(U.getColor(R.color.black_trans_50))
                 .create();
         mFollowsNumTv.setText(focusBuilder);
     }
@@ -810,21 +818,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     .build());
             mNameTv.setText(MyUserInfoManager.INSTANCE.getNickName());
             mSrlNameTv.setText(MyUserInfoManager.INSTANCE.getNickName());
-            mPersonTagView.setUserID((int) MyUserInfoManager.INSTANCE.getUid());
-            mPersonTagView.setSex(MyUserInfoManager.INSTANCE.getSex());
-            mPersonTagView.setLocation(MyUserInfoManager.INSTANCE.getLocation());
-            mSignTv.setText(MyUserInfoManager.INSTANCE.getSignature());
-
-            if (MyUserInfoManager.INSTANCE.getVipInfo() != null && MyUserInfoManager.INSTANCE.getVipType() > 0) {
-                // 展示vip
-                mSignTv.setVisibility(View.GONE);
-                mVerifyTv.setVisibility(View.VISIBLE);
-                mVerifyTv.setText(MyUserInfoManager.INSTANCE.getVipInfo().getVipDesc());
-            } else {
-                // 展示签名
-                mSignTv.setVisibility(View.VISIBLE);
-                mVerifyTv.setVisibility(View.GONE);
-            }
 
             if (MyUserInfoManager.INSTANCE.getHonorInfo() != null &&
                     MyUserInfoManager.INSTANCE.getHonorInfo().isHonor()) {
@@ -833,6 +826,17 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             } else {
                 mHonorIv.setVisibility(View.GONE);
                 mOpenHonorArea.setVisibility(View.VISIBLE);
+            }
+
+            ScoreStateModel ranking = MyUserInfoManager.INSTANCE.getRanking();
+            if (ranking != null && LevelConfigUtils.getRaceCenterAvatarBg(ranking.getMainRanking()) != 0) {
+                mLevelBg.setVisibility(View.VISIBLE);
+                mLevelDesc.setVisibility(View.VISIBLE);
+                mLevelBg.setBackground(U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(ranking.getMainRanking())));
+                mLevelDesc.setText(ranking.getRankingDesc());
+            } else {
+                mLevelBg.setVisibility(View.GONE);
+                mLevelDesc.setVisibility(View.GONE);
             }
         }
     }
@@ -898,8 +902,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         if (mFeedsWallView != null) {
             mFeedsWallView.destroy();
         }
-        if (mDialogPlus != null) {
-            mDialogPlus.dismiss(false);
+        if (mBusinessCardDialogView != null) {
+            mBusinessCardDialogView.dismiss(false);
         }
     }
 

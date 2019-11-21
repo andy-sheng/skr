@@ -64,7 +64,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
                     int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
 
-                    mView.showHomePageInfo(relationNumModes, meiLiCntTotal, scoreDetailModel, voiceInfoModel);
+                    mView.showHomePageInfo(relationNumModes, meiLiCntTotal, voiceInfoModel);
                 } else {
                     mView.loadHomePageFailed();
                 }

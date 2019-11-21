@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.event.MyUserInfoEvent
 import com.common.core.userinfo.model.HonorInfo
+import com.common.core.userinfo.model.ScoreStateModel
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.userinfo.model.VerifyInfo
 import com.common.log.MyLog
@@ -151,6 +152,9 @@ object MyUserInfoManager {
         get() = if (!hasLocation()) {
             "火星"
         } else myUserInfo?.location?.province ?: ""
+
+    val ranking: ScoreStateModel?
+        get() = myUserInfo?.ranking
 
     /**
      * 是否实名认证

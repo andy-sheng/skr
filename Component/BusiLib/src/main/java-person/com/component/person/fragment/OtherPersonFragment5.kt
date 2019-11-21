@@ -66,7 +66,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.math.abs
 
-class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
+class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     val SP_KEY_HAS_SHOW_SPFOLLOW = "SP_KEY_HAS_SHOW_SPFOLLOW"  // 提醒特别关注的
 
@@ -476,7 +476,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                     0 -> {
                         // 照片墙
                         if (mOtherPhotoWallView == null) {
-                            mOtherPhotoWallView = OtherPhotoWallView(this@OtherPersonFragment4, mUserId, this@OtherPersonFragment4, null)
+                            mOtherPhotoWallView = OtherPhotoWallView(this@OtherPersonFragment5, mUserId, this@OtherPersonFragment5, null)
                         }
                         if (container.indexOfChild(mOtherPhotoWallView) == -1) {
                             container.addView(mOtherPhotoWallView)
@@ -488,7 +488,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                         // 帖子
                         if (mPostsWallView == null) {
                             val postModuleService = ModuleServiceManager.getInstance().postsService
-                            mPostsWallView = postModuleService.getPostsWall(this@OtherPersonFragment4.activity, mUserInfoModel, this@OtherPersonFragment4)
+                            mPostsWallView = postModuleService.getPostsWall(this@OtherPersonFragment5.activity, mUserInfoModel, this@OtherPersonFragment5)
                         }
                         if (container.indexOfChild(mPostsWallView as View) == -1) {
                             container.addView(mPostsWallView as View)
@@ -499,7 +499,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                         // 神曲
                         if (mFeedsWallView == null) {
                             val mIFeedsModuleService = ModuleServiceManager.getInstance().feedsService
-                            mFeedsWallView = mIFeedsModuleService.getPersonFeedsWall(this@OtherPersonFragment4, mUserInfoModel, this@OtherPersonFragment4)
+                            mFeedsWallView = mIFeedsModuleService.getPersonFeedsWall(this@OtherPersonFragment5, mUserInfoModel, this@OtherPersonFragment5)
                         }
                         if (container.indexOfChild(mFeedsWallView as View) == -1) {
                             container.addView(mFeedsWallView as View)

@@ -10,7 +10,7 @@ import com.module.RouterConstants
 import com.module.home.event.AuthSuccessEvent
 import com.module.home.feedback.FeedbackFragment
 import com.module.home.fragment.HalfRechargeFragment
-import com.module.home.fragment.PersonFragment4
+import com.module.home.fragment.PersonFragment5
 import com.module.home.game.view.openRaceActivity
 import com.module.home.updateinfo.UploadAccountInfoActivity
 import com.module.home.updateinfo.activity.EditAgeTagActivity
@@ -28,7 +28,7 @@ class HomeServiceImpl : IHomeService {
      */
     override fun getData(type: Int, `object`: Any?): Any? {
         if (0 == type) {
-            return PersonFragment4::class.java
+            return PersonFragment5::class.java
         } else if (1 == type) {
             return HomeActivity::class.java.simpleName
         } else if (2 == type) {

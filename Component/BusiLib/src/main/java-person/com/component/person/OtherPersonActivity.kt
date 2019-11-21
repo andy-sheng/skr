@@ -8,7 +8,7 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.component.busilib.R
 import com.module.RouterConstants
-import com.component.person.fragment.OtherPersonFragment4
+import com.component.person.fragment.OtherPersonFragment5
 
 @Route(path = RouterConstants.ACTIVITY_OTHER_PERSON)
 class OtherPersonActivity : BaseActivity() {
@@ -39,7 +39,7 @@ class OtherPersonActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         val bundle = intent.extras
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, OtherPersonFragment4::class.java)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, OtherPersonFragment5::class.java)
                 .setBundle(bundle)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
