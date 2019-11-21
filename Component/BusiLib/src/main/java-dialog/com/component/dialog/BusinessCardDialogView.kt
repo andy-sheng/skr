@@ -27,8 +27,6 @@ class BusinessCardDialogView(context: Context, userInfoModel: UserInfoModel, mei
     private val levelBg: ImageView
     private val nameTv: ExTextView
     private val honorIv: ImageView
-    private val openHonorTv: ExTextView
-    private val openHonorIv: ImageView
     private val verifyTv: TextView
     private val personTagView: PersonTagView
     private val divider: View
@@ -41,8 +39,6 @@ class BusinessCardDialogView(context: Context, userInfoModel: UserInfoModel, mei
         levelBg = this.findViewById(R.id.level_bg)
         nameTv = this.findViewById(R.id.name_tv)
         honorIv = this.findViewById(R.id.honor_iv)
-        openHonorTv = this.findViewById(R.id.open_honor_tv)
-        openHonorIv = this.findViewById(R.id.open_honor_iv)
         verifyTv = this.findViewById(R.id.verify_tv)
         personTagView = this.findViewById(R.id.person_tag_view)
         divider = this.findViewById(R.id.divider)
@@ -61,12 +57,8 @@ class BusinessCardDialogView(context: Context, userInfoModel: UserInfoModel, mei
         nameTv.text = userInfoModel.nicknameRemark
         if (userInfoModel.honorInfo != null && userInfoModel.honorInfo?.isHonor() == true) {
             honorIv.visibility = View.VISIBLE
-            openHonorTv.visibility = View.GONE
-            openHonorIv.visibility = View.GONE
         } else {
             honorIv.visibility = View.GONE
-            openHonorTv.visibility = View.VISIBLE
-            openHonorIv.visibility = View.VISIBLE
         }
         if (userInfoModel.vipInfo != null && userInfoModel.vipInfo.vipType > 0) {
             // 加V 撕歌认证

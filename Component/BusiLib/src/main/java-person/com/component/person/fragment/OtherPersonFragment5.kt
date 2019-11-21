@@ -25,6 +25,7 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.userinfo.event.RemarkChangeEvent
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
@@ -40,6 +41,7 @@ import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.R
 import com.component.busilib.friends.VoiceInfoModel
+import com.component.dialog.BusinessCardDialogView
 import com.component.level.utils.LevelConfigUtils
 import com.component.person.OtherPersonActivity.Companion.BUNDLE_USER_ID
 import com.component.person.event.ChildViewPlayAudioEvent
@@ -70,12 +72,15 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     val SP_KEY_HAS_SHOW_SPFOLLOW = "SP_KEY_HAS_SHOW_SPFOLLOW"  // 提醒特别关注的
 
-    internal var mUserInfoModel: UserInfoModel = UserInfoModel()
-    internal var mUserId: Int = 0
+    private var mUserInfoModel: UserInfoModel = UserInfoModel()
+    private var mUserId: Int = 0
+    private var mFansNum: Int = 0
+    private var mMeliTotal: Int = 0
 
     lateinit var mPresenter: OtherPersonPresenter
 
     lateinit var mImageBg: ImageView
+    lateinit var mBottomBg: ImageView
     lateinit var mSmartRefresh: SmartRefreshLayout
     lateinit var mAppbar: AppBarLayout
     lateinit var mUserInfoArea: ConstraintLayout
@@ -86,13 +91,12 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mAvatarIv: SimpleDraweeView
     lateinit var mLevelBg: ImageView
     lateinit var mLevelDesc: TextView
+    lateinit var mGuardView: GuardView
     lateinit var mQinmiTv: TextView
-    lateinit var mVerifyTv: TextView
-    lateinit var mSignTv: ExTextView
     lateinit var mNameTv: ExTextView
+    lateinit var mBusinessIv: ImageView
     lateinit var mHonorIv: ImageView
     lateinit var mAudioView: CommonAudioView
-    lateinit var mPersonTagView: PersonTagView
 
     lateinit var mToolbar: Toolbar
     lateinit var mToolbarLayout: RelativeLayout
@@ -122,6 +126,8 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     private var playCallback: SinglePlayerCallbackAdapter? = null
     private var mVoiceInfoModel: VoiceInfoModel? = null
 
+    private var mBusinessCardDialogView: BusinessCardDialogView? = null
+
     // 未关注
     private val mUnFollowDrawable = DrawableCreator.Builder()
             .setSolidColor(Color.parseColor("#FFC15B"))
@@ -133,6 +139,8 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
             .setSolidColor(Color.parseColor("#DB8800"))
             .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
             .build()
+
+    internal var srollDivider = U.getDisplayUtils().dip2px(150f)  // 滑到分界线的时候
 
     override fun initView(): Int {
         return R.layout.other_person_fragment_layout
@@ -190,6 +198,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     private fun initBaseContainArea() {
         mImageBg = rootView.findViewById(R.id.image_bg)
+        mBottomBg = rootView.findViewById(R.id.bottom_bg)
         mSmartRefresh = rootView.findViewById(R.id.smart_refresh)
         mAppbar = rootView.findViewById(R.id.appbar)
         mToolbarLayout = rootView.findViewById(R.id.toolbar_layout)
@@ -230,12 +239,18 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
                     mImageBg.scaleX = scale
                     mImageBg.scaleY = scale
                 }
+                if (offset >= 0) {
+                    mBottomBg.translationY = offset.toFloat()
+                }
             }
         })
 
         mAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             // TODO: 2019-06-23 也可以加效果，看产品怎么说
             mImageBg.translationY = verticalOffset.toFloat()
+            if (verticalOffset <= 0) {
+                mBottomBg.translationY = verticalOffset.toFloat()
+            }
             if (lastVerticalOffset != verticalOffset) {
                 lastVerticalOffset = verticalOffset
                 if (verticalOffset == 0) {
@@ -244,11 +259,17 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
                         mToolbar.visibility = View.GONE
                         mToolbarLayout.visibility = View.GONE
                     }
-                } else if (abs(verticalOffset) >= appBarLayout.totalScrollRange) {
+                } else if (abs(verticalOffset) >= srollDivider) {
                     // 完全收缩状态
                     if (mToolbar.visibility != View.VISIBLE) {
                         mToolbar.visibility = View.VISIBLE
                         mToolbarLayout.visibility = View.VISIBLE
+                    }
+
+                    if (abs(verticalOffset) >= appBarLayout.totalScrollRange) {
+                        mSrlNameTv.alpha = 1f
+                    } else {
+                        mSrlNameTv.alpha = (abs(verticalOffset) - srollDivider).toFloat() / (appBarLayout.totalScrollRange - srollDivider).toFloat()
                     }
                 } else {
                     // TODO: 2019/4/8 过程中，可以加动画，先直接显示
@@ -393,13 +414,13 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mAvatarIv = rootView.findViewById(R.id.avatar_iv)
         mLevelBg = rootView.findViewById(R.id.level_bg)
         mLevelDesc = rootView.findViewById(R.id.level_desc)
+        mGuardView = rootView.findViewById(R.id.guard_view)
+
         mQinmiTv = rootView.findViewById(R.id.qinmi_tv)
-        mVerifyTv = rootView.findViewById(R.id.verify_tv)
-        mSignTv = rootView.findViewById(R.id.sign_tv)
         mNameTv = rootView.findViewById(R.id.name_tv)
         mHonorIv = rootView.findViewById(R.id.honor_iv)
         mAudioView = rootView.findViewById(R.id.audio_view)
-        mPersonTagView = rootView.findViewById(R.id.person_tag_view)
+        mBusinessIv = rootView.findViewById(R.id.business_iv)
 
         if (mUserId == MyUserInfoManager.uid.toInt()) {
             mQinmiTv.visibility = View.GONE
@@ -412,6 +433,12 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
                 BigImageBrowseFragment.open(false, activity, mUserInfoModel!!.avatar)
             }
         })
+
+        mBusinessIv.setAnimateDebounceViewClickListener {
+            mBusinessCardDialogView?.dismiss(false)
+            mBusinessCardDialogView = BusinessCardDialogView(context!!, mUserInfoModel, mMeliTotal, mFansNum)
+            mBusinessCardDialogView?.showByDialog()
+        }
 
         mAudioView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -642,8 +669,9 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         showUserInfo(userInfoModel)
         showRelationNum(relationNumModels)
         showUserRelation(userInfoModel.isFriend, userInfoModel.isFollow, userInfoModel.isSPFollow)
-        showCharms(meiLiCntTotal)
         showScoreDetail(scoreDetailModel)
+
+        this.mMeliTotal = meiLiCntTotal
 
         if (userInfoModel.isFollow) {
             if (!U.getPreferenceUtils().getSettingBoolean(SP_KEY_HAS_SHOW_SPFOLLOW, false)) {
@@ -711,10 +739,6 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         }
     }
 
-    private fun showCharms(meiLiCntTotal: Int) {
-        mPersonTagView.setCharmTotal(meiLiCntTotal)
-    }
-
     override fun getHomePageFail() {
         mSmartRefresh.finishRefresh()
     }
@@ -728,26 +752,12 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
                 .build())
         mNameTv.text = model.nicknameRemark
         mSrlNameTv.text = model.nicknameRemark
-        mSignTv.text = model.signature
-
-        if (model.vipInfo != null && model.vipInfo.vipType > 0) {
-            mSignTv.visibility = View.GONE
-            mVerifyTv.visibility = View.VISIBLE
-            mVerifyTv.text = model.vipInfo.vipDesc
-        } else {
-            mVerifyTv.visibility = View.GONE
-            mSignTv.visibility = View.VISIBLE
-        }
 
         if (model.honorInfo != null && model.honorInfo.isHonor()) {
             mHonorIv.visibility = View.VISIBLE
         } else {
             mHonorIv.visibility = View.GONE
         }
-
-        mPersonTagView.setSex(model.sex)
-        mPersonTagView.setLocation(model.location)
-        mPersonTagView.setUserID(model.userId)
     }
 
 
@@ -755,7 +765,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         if (list != null && list.isNotEmpty()) {
             for (mode in list) {
                 if (mode.relation == UserInfoManager.RELATION.FANS.value) {
-                    mPersonTagView.setFansNum(mode.cnt)
+                    mFansNum = mode.cnt
                 }
             }
         }
@@ -903,6 +913,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mEditRemarkDialog?.dismiss(false)
         mFeedsWallView?.destroy()
         mDialogPlus?.dismiss()
+        mBusinessCardDialogView?.dismiss(false)
     }
 
     override fun onRequestSucess(hasMore: Boolean) {
