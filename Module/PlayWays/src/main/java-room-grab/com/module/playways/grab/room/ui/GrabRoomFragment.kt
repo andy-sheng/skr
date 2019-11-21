@@ -778,8 +778,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     }
 
     private fun initChangeRoomTransitionView() {
-        mGrabChangeRoomTransitionView = rootView.findViewById(R.id.change_room_transition_view)
-        mGrabChangeRoomTransitionView.visibility = GONE
+        mGrabChangeRoomTransitionView = GrabChangeRoomTransitionView(rootView.findViewById(R.id.change_room_transition_view))
+        mGrabChangeRoomTransitionView.setVisibility(View.GONE)
     }
 
     override fun onPause() {
@@ -952,7 +952,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                     }
                 }
                 mBeginChangeRoomTs = System.currentTimeMillis()
-                mGrabChangeRoomTransitionView.visibility = View.VISIBLE
+                mGrabChangeRoomTransitionView.setVisibility(View.VISIBLE)
                 mCorePresenter?.changeRoom()
                 mGrabGiveupView.hideWithAnimation(false)
             }
@@ -1665,7 +1665,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     override fun onChangeRoomResult(success: Boolean, errMsg: String?) {
         val t = System.currentTimeMillis() - mBeginChangeRoomTs
         if (t > 1500) {
-            mGrabChangeRoomTransitionView.visibility = GONE
+            mGrabChangeRoomTransitionView.setVisibility(View.GONE)
             if (!success) {
                 U.getToastUtil().showShort(errMsg)
             }
@@ -1674,7 +1674,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 if (!success) {
                     U.getToastUtil().showShort(errMsg)
                 }
-                mGrabChangeRoomTransitionView.visibility = GONE
+                mGrabChangeRoomTransitionView.setVisibility(View.GONE)
             }, 1500 - t)
         }
         if (success) {

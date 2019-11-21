@@ -201,8 +201,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
     private fun initChangeRoomTransitionView() {
-        mGrabChangeRoomTransitionView = rootView.findViewById(R.id.change_room_transition_view)
-        mGrabChangeRoomTransitionView.visibility = View.GONE
+        mGrabChangeRoomTransitionView = GrabChangeRoomTransitionView(rootView.findViewById(R.id.change_room_transition_view))
+        mGrabChangeRoomTransitionView.setVisibility(View.GONE)
     }
 
     private fun initWantingSignUpCardView() {
@@ -406,7 +406,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             override fun onClickChangeRoom() {
                 StatisticsAdapter.recordCountEvent("rank", "changeroom", null)
                 mBeginChangeRoomTs = System.currentTimeMillis()
-                mGrabChangeRoomTransitionView.visibility = View.VISIBLE
+                mGrabChangeRoomTransitionView.setVisibility(View.VISIBLE)
                 mCorePresenter?.changeRoomForAudience()
             }
         })
@@ -866,7 +866,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     override fun onChangeRoomResult(success: Boolean, errMsg: String?) {
         val t = System.currentTimeMillis() - mBeginChangeRoomTs
         if (t > 1500) {
-            mGrabChangeRoomTransitionView.visibility = View.GONE
+            mGrabChangeRoomTransitionView.setVisibility(View.GONE)
             if (!success) {
                 U.getToastUtil().showShort(errMsg)
             }
@@ -875,7 +875,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 if (!success) {
                     U.getToastUtil().showShort(errMsg)
                 }
-                mGrabChangeRoomTransitionView.visibility = View.GONE
+                mGrabChangeRoomTransitionView.setVisibility(View.GONE)
             }, 1500 - t)
         }
         if (success) {

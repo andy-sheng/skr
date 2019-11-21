@@ -314,11 +314,11 @@
         android:layout_alignParentBottom="true"
         android:visibility="gone" />
 
-    <com.module.playways.grab.room.view.GrabChangeRoomTransitionView
+    <ViewStub
         android:id="@+id/change_room_transition_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_trans_80"
+        android:layout="@layout/grab_change_room_transition_view"
         android:visibility="gone" />
 
     <ViewStub

@@ -402,9 +402,9 @@ if [[ $1 = "app" ]]; then
 		    installApkForAllDevices $installApkPath
 		    if [ $myphone = "90bf00ba" ]; then
 		        echo "过滤自己手机日志"
-	            myandroidlog.sh  -s 90bf00ba com.zq.live
+	            ./myandroidlog.sh  -s 90bf00ba com.zq.live
 	        else
-	            myandroidlog.sh  com.zq.live
+	            ./myandroidlog.sh  com.zq.live
 	        fi
 		else
 		   echo "app/build/outputs/apk/debug 为空"

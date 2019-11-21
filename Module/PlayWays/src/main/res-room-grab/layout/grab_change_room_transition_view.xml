@@ -1,7 +1,8 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="android.widget.RelativeLayout">
+    android:background="@color/black_trans_80"
+    tools:parentTag="android.widget.RelativeLayout" android:layout_height="match_parent" android:layout_width="match_parent">
 
     <com.common.view.ex.ExTextView
         android:id="@+id/change_room_tip_tv"
@@ -22,4 +23,4 @@
         android:layout_marginBottom="@dimen/view_10_dp"
         android:scaleType="centerInside"
         android:src="@drawable/huanfangjian_loading" />
-</merge>
+</RelativeLayout>
