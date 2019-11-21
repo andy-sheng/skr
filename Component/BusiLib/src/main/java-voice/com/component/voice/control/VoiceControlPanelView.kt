@@ -110,6 +110,7 @@ open abstract class VoiceControlPanelView : ScrollView {
                 //                ZqEngineKit.getInstance().adjustPlaybackSignalVolume(progress);
                 mAfterPeopleVoice = progress
                 ZqEngineKit.getInstance().adjustRecordingSignalVolume(progress)
+                ZqEngineKit.getInstance().adjustPlaybackSignalVolume(progress)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {

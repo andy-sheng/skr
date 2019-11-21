@@ -50,7 +50,7 @@ import java.util.Map;
 
 public class GrabTopContentView extends ConstraintLayout {
     public final String TAG = "GrabPlayerRv2";
-    public final static int PLAYER_COUNT = 7;
+    public final static int PLAYER_COUNT = 10;
     private LinkedHashMap<Integer, VP> mInfoMap = new LinkedHashMap<>();
     private ArrayList<VP> mGrabTopItemViewArrayList = new ArrayList<>(PLAYER_COUNT);
     private GrabRoomData mRoomData;
