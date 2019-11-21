@@ -89,7 +89,7 @@ public class SettingFragment extends BaseFragment {
 
     TuiGuangConfig mTuiGuangConfig;
 
-    DialogPlus mDialogPlus;
+    TipsDialogView mDialogPlus;
 
     static final String[] CACHE_CAN_DELETE = {
             "fresco", "gif", "upload", "acc", "acr", "logs", "grabLyric", "lyrics", "midi", "score", "ori", "save"
@@ -335,7 +335,10 @@ public class SettingFragment extends BaseFragment {
     }
 
     private void exitLogin() {
-        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
+        mDialogPlus = new TipsDialogView.Builder(getContext())
                 .setMessageTip("确定退出当前账号么？")
                 .setConfirmTip("确定")
                 .setCancelTip("取消")
@@ -358,15 +361,7 @@ public class SettingFragment extends BaseFragment {
                     }
                 })
                 .build();
-
-        mDialogPlus = DialogPlus.newDialog(getContext())
-                .setContentHolder(new ViewHolder(tipsDialogView))
-                .setGravity(Gravity.BOTTOM)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .create();
-        mDialogPlus.show();
+        mDialogPlus.showByDialog();
     }
 
     private void showMusicWeb() {
@@ -374,7 +369,10 @@ public class SettingFragment extends BaseFragment {
                 .append("www.skrer.net").setForegroundColor(Color.parseColor("#7088FF"))
                 .append("上传你的音乐").setForegroundColor(Color.parseColor("#3B4E79"))
                 .create();
-        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
+        mDialogPlus = new TipsDialogView.Builder(getContext())
                 .setMessageTip(messageTips)
                 .setOkBtnTip("确认")
                 .setOkBtnClickListener(new AnimateClickListener() {
@@ -386,15 +384,7 @@ public class SettingFragment extends BaseFragment {
                     }
                 })
                 .build();
-
-        mDialogPlus = DialogPlus.newDialog(getContext())
-                .setContentHolder(new ViewHolder(tipsDialogView))
-                .setGravity(Gravity.BOTTOM)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .create();
-        mDialogPlus.show();
+        mDialogPlus.showByDialog();
 
     }
 

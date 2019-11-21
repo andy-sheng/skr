@@ -50,59 +50,58 @@
     <com.common.view.ex.ExTextView
         android:id="@+id/ok_btn"
         android:layout_width="@dimen/view_240_dp"
-        android:layout_height="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_40_dp"
         android:layout_below="@id/divider"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_15_dp"
-        android:layout_marginBottom="@dimen/view_16_dp"
+        android:layout_marginBottom="@dimen/view_8_dp"
+        android:background="@drawable/common_yellow_button_icon"
         android:gravity="center"
+        android:paddingBottom="@dimen/view_4_dp"
         android:text="确定"
         android:textColor="#e68B572A"
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
-        android:visibility="gone"
-        app:bl_corners_radius="@dimen/view_21_dp"
-        app:bl_gradient_endColor="#E9A83B"
-        app:bl_gradient_startColor="#FFD99B" />
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_40_dp"
         android:layout_below="@id/divider"
         android:layout_marginTop="@dimen/view_15_dp"
-        android:layout_marginBottom="@dimen/view_16_dp"
+        android:layout_marginBottom="@dimen/view_8_dp"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
             android:id="@+id/cancel_tv"
             android:layout_width="@dimen/view_0_dp"
-            android:layout_height="@dimen/view_32_dp"
+            android:layout_height="@dimen/view_40_dp"
             android:layout_marginLeft="@dimen/view_28_dp"
             android:layout_marginRight="@dimen/view_8_dp"
             android:layout_weight="1"
+            android:background="@drawable/common_red_button_icon"
             android:gravity="center"
+            android:paddingBottom="@dimen/view_4_dp"
             android:text="取消请求"
             android:textColor="#e6A74068"
             android:textSize="@dimen/textsize_14_dp"
-            android:visibility="gone"
-            app:bl_corners_radius="@dimen/view_21_dp"
-            app:bl_gradient_endColor="#FF8AB6"
-            app:bl_gradient_startColor="#FFBDD6" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/confirm_tv"
             android:layout_width="@dimen/view_0_dp"
-            android:layout_height="@dimen/view_32_dp"
+            android:layout_height="@dimen/view_40_dp"
             android:layout_marginLeft="@dimen/view_8_dp"
             android:layout_marginRight="@dimen/view_28_dp"
             android:layout_weight="1"
+            android:background="@drawable/common_yellow_button_icon"
             android:gravity="center"
+            android:paddingBottom="@dimen/view_4_dp"
             android:text="确认请求"
             android:textColor="#e68B572A"
             android:textSize="@dimen/textsize_14_dp"
-            android:visibility="gone"
-            app:bl_corners_radius="@dimen/view_21_dp"
-            app:bl_gradient_endColor="#E9A83B"
-            app:bl_gradient_startColor="#FFD99B" />
+            android:textStyle="bold"
+            android:visibility="gone" />
     </LinearLayout>
 </com.common.view.ex.ExRelativeLayout>

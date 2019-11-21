@@ -129,15 +129,22 @@ class PhotoAdapter(internal var mType: Int) : RecyclerView.Adapter<RecyclerView.
     }
 
     override fun getItemCount(): Int {
-        if (mHasUpdate) {
-            return mDataList!!.size + 1
+        if (mType == TYPE_PERSON_CARD) {
+            return if (mDataList?.size ?: 0 > 3) {
+                3
+            } else {
+                mDataList?.size ?: 0
+            }
+        } else {
+            if (mHasUpdate) {
+                return mDataList!!.size + 1
+            }
+
+            return if (isContainEmpty) {
+                // 空页面
+                1
+            } else mDataList!!.size
         }
-
-        return if (isContainEmpty) {
-            // 空页面
-            1
-        } else mDataList!!.size
-
     }
 
     /**

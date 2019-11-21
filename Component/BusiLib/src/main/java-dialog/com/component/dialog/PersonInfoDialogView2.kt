@@ -178,7 +178,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         initUserInfo()
         initToolBarArea()
         initPhotoArea()
-        initFuncationArea()
+        initFunctionArea()
     }
 
     private fun initData(userID: Int, showKick: Boolean, showInvite: Boolean) {
@@ -365,9 +365,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
 
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                if (mClickListener != null) {
-                    mClickListener!!.onClickAvatar(mUserInfoModel.avatar)
-                }
+                mClickListener?.onClickAvatar(mUserInfoModel.avatar)
             }
         })
 
@@ -469,7 +467,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         })
     }
 
-    private fun initFuncationArea() {
+    private fun initFunctionArea() {
         mFunctionArea = findViewById(R.id.function_area)
         mInviteIv = findViewById(R.id.invite_iv)
         mFollowIv = findViewById(R.id.follow_iv)

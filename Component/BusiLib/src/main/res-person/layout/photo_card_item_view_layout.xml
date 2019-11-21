@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/view_5_dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/photo_iv"
-        android:layout_width="@dimen/view_96_dp"
-        android:layout_height="@dimen/view_120_dp" />
+        android:layout_width="@dimen/view_92_dp"
+        android:layout_height="@dimen/view_92_dp"
+        android:layout_centerInParent="true" />
 
     <com.common.view.ex.ExFrameLayout
         android:id="@+id/error_container"
-        android:layout_width="@dimen/view_96_dp"
-        android:layout_height="@dimen/view_120_dp"
+        android:layout_width="@dimen/view_92_dp"
+        android:layout_height="@dimen/view_92_dp"
+        android:layout_centerInParent="true"
         android:visibility="gone"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_solid_color="@color/black_trans_30">

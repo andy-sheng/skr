@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/view_3_dp"
     app:bl_corners_radius="@dimen/view_2_dp"
     app:bl_shape="rectangle"
-    app:bl_solid_color="#526AE3">
+    app:bl_solid_color="#A6BCF2">
 
     <ImageView
         android:id="@+id/desc_iv"
@@ -27,6 +27,6 @@
         android:layout_marginRight="@dimen/view_8_dp"
         android:layout_toRightOf="@id/desc_iv"
         android:gravity="center"
-        android:textColor="@color/white_trans_50"
+        android:textColor="@color/white"
         android:textSize="@dimen/textsize_12_dp" />
 </com.common.view.ex.ExRelativeLayout>

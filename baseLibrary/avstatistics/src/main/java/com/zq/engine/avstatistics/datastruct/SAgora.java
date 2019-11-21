@@ -308,7 +308,8 @@ public class SAgora //all struct related to Agora is defined here!
                 jsObj.put("timeStampValue", timeStamp);
 
                 jsObj.put("uid", uid);
-                jsObj.put("quality", transNetQuality(quality));
+                jsObj.put("qualityID", quality);
+                jsObj.put("qualityStr", transNetQuality(quality));
                 jsObj.put("networkTransportDelay", networkTransportDelay);
                 jsObj.put("jitterBufferDelay", jitterBufferDelay);
                 jsObj.put("audioLossRate", audioLossRate);
