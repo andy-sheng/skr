@@ -42,14 +42,14 @@ class GrabVoiceControlPanelView : VoiceControlPanelView {
                 return@OnCheckedChangeListener
             }
             if (mGrabRoomData != null) {
-                mGrabRoomData!!.isAccEnable = !isChecked
+                mGrabRoomData!!.isAccEnable = isChecked
             }
         })
     }
 
     override fun bindData() {
         super.bindData()
-        mAccSb?.isChecked = !mGrabRoomData!!.isAccEnable
+        mAccSb?.isChecked = mGrabRoomData!!.isAccEnable
     }
 
     fun setRoomData(modelBaseRoomData: GrabRoomData) {

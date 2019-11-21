@@ -520,7 +520,6 @@ public class AgoraRTCAdapter {
         if (2 == bytesPerSample) {
             for (int i = 0; i < bytes.length; i += 4) {
                 short v = (short)( ((bytes[i+1] & 0x00FF) << 8)  |  (bytes[i] & 0x00FF) );
-
                 long absV = (v >= 0) ? v : (-v);
                 if (absV > mAgoraAduioSmpInfo.maxAbsPCM) {
                     mAgoraAduioSmpInfo.maxAbsPCM = absV;

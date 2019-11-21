@@ -45,14 +45,14 @@ class RaceVoiceControlPanelView(cxt: Context) : VoiceControlPanelView(cxt) {
                     mAccSb?.isChecked = !roomData!!.isAccEnable
                     return@OnCheckedChangeListener
                 }
-                roomData?.isAccEnable = !isChecked
+                roomData?.isAccEnable = isChecked
             }
         })
     }
 
     override fun bindData() {
         super.bindData()
-        mAccSb?.isChecked = roomData?.isAccEnable != true
+        mAccSb?.isChecked = roomData!!.isAccEnable
     }
 
     fun setRoomData(raceRoomData: RaceRoomData) {

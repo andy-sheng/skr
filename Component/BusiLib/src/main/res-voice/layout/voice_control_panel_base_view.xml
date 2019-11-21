@@ -1,18 +1,15 @@
-<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/view_198_dp"
-    app:bl_corners_topLeftRadius="@dimen/view_16_dp"
-    app:bl_corners_topRightRadius="@dimen/view_16_dp"
-    app:bl_shape="rectangle"
-    app:bl_solid_color="#4C56AA">
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/ll_voice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_25_dp"
-        android:layout_marginRight="@dimen/view_6_dp"
+        android:layout_below="@+id/ll_switch_container"
+        android:layout_marginLeft="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_38_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
@@ -20,31 +17,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="人声"
-            android:textColor="#B2B6D6"
-            android:textSize="@dimen/view_16_dp"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/textsize_14_dp"
             android:textStyle="bold" />
 
         <SeekBar
             android:id="@+id/people_voice_seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/recycler_view"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/view_4_dp"
+            android:layout_marginRight="@dimen/view_6_dp"
             android:max="200"
             android:maxHeight="@dimen/view_3_dp"
             android:min="0"
             android:minHeight="@dimen/view_3_dp"
             android:paddingLeft="@dimen/view_10_dp"
             android:paddingRight="@dimen/view_10_dp"
-            android:progressDrawable="@drawable/voice_control_panel_seekbar_bg"
+            android:progressDrawable="@drawable/voice_control_seek_bar_bg"
             android:thumb="@drawable/yellow_seekbar_thumb" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_acc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_67_dp"
-        android:layout_marginRight="@dimen/view_6_dp"
+        android:layout_below="@+id/ll_voice"
+        android:layout_marginLeft="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
@@ -52,106 +54,111 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="伴奏"
-            android:textColor="#B2B6D6"
-            android:textSize="@dimen/view_16_dp"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/textsize_14_dp"
             android:textStyle="bold" />
 
         <SeekBar
             android:id="@+id/music_voice_seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/recycler_view"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/view_4_dp"
+            android:layout_marginRight="@dimen/view_6_dp"
             android:max="200"
             android:maxHeight="@dimen/view_3_dp"
             android:min="0"
             android:minHeight="@dimen/view_3_dp"
             android:paddingLeft="@dimen/view_10_dp"
             android:paddingRight="@dimen/view_10_dp"
-            android:progressDrawable="@drawable/voice_control_panel_seekbar_bg"
-            android:thumb="@drawable/shiyinmianban_huakuai" />
+            android:progressDrawable="@drawable/voice_control_seek_bar_bg"
+            android:thumb="@drawable/yellow_seekbar_thumb" />
     </LinearLayout>
 
     <RadioGroup
         android:id="@+id/scenes_btn_group"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_52_dp"
+        android:layout_height="@dimen/view_44_dp"
+        android:layout_below="@id/ll_acc"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_120_dp"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:layout_marginBottom="@dimen/view_24_dp"
         android:orientation="horizontal">
 
         <com.module.playways.view.ScenesSelectBtn
             android:id="@+id/default_sbtn"
-            android:layout_width="@dimen/view_52_dp"
-            android:layout_height="@dimen/view_52_dp"
-            android:layout_gravity="center"
-            android:button="@null"
-            android:checked="true"
-            android:gravity="center"
-            android:text="原声"
             app:fillColor="@color/transparent"
             app:fillColor_checked="#90DAFF"
             app:strokeColor="#90DAFF"
             app:textColor_checked="@color/white"
-            app:textColor_normal="#90DAFF" />
+            app:textColor_normal="#90DAFF"
+            android:layout_width="@dimen/view_44_dp"
+            android:layout_height="@dimen/view_44_dp"
+            android:layout_gravity="center"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="原声" />
 
         <com.module.playways.view.ScenesSelectBtn
             android:id="@+id/ktv_sbtn"
-            android:layout_width="@dimen/view_52_dp"
-            android:layout_height="@dimen/view_52_dp"
-            android:layout_gravity="center"
-            android:button="@null"
-            android:checked="false"
-            android:gravity="center"
-            android:text="KTV"
             app:fillColor="@color/transparent"
             app:fillColor_checked="#DF8BAB"
             app:strokeColor="#DF8BAB"
             app:textColor_checked="@color/white"
-            app:textColor_normal="#DF8BAB"/>
-
-        <com.module.playways.view.ScenesSelectBtn
-            android:id="@+id/liuxing_sbtn"
-            android:layout_width="@dimen/view_52_dp"
-            android:layout_height="@dimen/view_52_dp"
+            app:textColor_normal="#DF8BAB"
+            android:layout_width="@dimen/view_44_dp"
+            android:layout_height="@dimen/view_44_dp"
             android:layout_gravity="center"
             android:button="@null"
             android:checked="false"
             android:gravity="center"
-            android:text="流行"
-            app:fillColor="@color/transparent"
-            app:fillColor_checked="#D79F43"
-            app:strokeColor="#D79F43"
-            app:textColor_checked="@color/white"
-            app:textColor_normal="#D79F43" />
+            android:text="KTV" />
 
         <com.module.playways.view.ScenesSelectBtn
             android:id="@+id/rock_sbtn"
-            android:layout_width="@dimen/view_52_dp"
-            android:layout_height="@dimen/view_52_dp"
+            app:fillColor="@color/transparent"
+            app:fillColor_checked="#F9CC82"
+            app:strokeColor="#F9CC82"
+            app:textColor_checked="@color/white"
+            app:textColor_normal="#F9CC82"
+            android:layout_width="@dimen/view_44_dp"
+            android:layout_height="@dimen/view_44_dp"
             android:layout_gravity="center"
             android:button="@null"
             android:checked="false"
             android:gravity="center"
-            android:text="摇滚"
+            android:text="摇滚" />
+
+        <com.module.playways.view.ScenesSelectBtn
+            android:id="@+id/liuxing_sbtn"
             app:fillColor="@color/transparent"
-            app:fillColor_checked="#A1C580"
-            app:strokeColor="#A1C580"
+            app:fillColor_checked="#C7E4AC"
+            app:strokeColor="#C7E4AC"
             app:textColor_checked="@color/white"
-            app:textColor_normal="#A1C580" />
+            app:textColor_normal="#C7E4AC"
+            android:layout_width="@dimen/view_44_dp"
+            android:layout_height="@dimen/view_44_dp"
+            android:layout_gravity="center"
+            android:button="@null"
+            android:checked="false"
+            android:gravity="center"
+            android:text="流行" />
 
         <com.module.playways.view.ScenesSelectBtn
             android:id="@+id/kongling_sbtn"
-            android:layout_width="@dimen/view_52_dp"
-            android:layout_height="@dimen/view_52_dp"
+            app:fillColor="@color/transparent"
+            app:fillColor_checked="#D7ABEE"
+            app:strokeColor="#D7ABEE"
+            app:textColor_checked="@color/white"
+            app:textColor_normal="#D7ABEE"
+            android:layout_width="@dimen/view_44_dp"
+            android:layout_height="@dimen/view_44_dp"
             android:layout_gravity="center"
             android:button="@null"
             android:checked="false"
             android:gravity="center"
-            android:text="空灵"
-            app:fillColor="@color/transparent"
-            app:fillColor_checked="#BB81CF"
-            app:strokeColor="#BB81CF"
-            app:textColor_checked="@color/white"
-            app:textColor_normal="#BB81CF" />
+            android:text="空灵" />
     </RadioGroup>
-</com.common.view.ex.ExRelativeLayout>
+</merge>

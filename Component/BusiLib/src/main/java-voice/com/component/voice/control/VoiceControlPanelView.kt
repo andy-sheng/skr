@@ -125,6 +125,7 @@ open abstract class VoiceControlPanelView : ScrollView {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 mAfterMusicVoice = progress
                 ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(progress)
+                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(progress,true)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
