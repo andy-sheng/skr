@@ -12,6 +12,7 @@ import com.common.anim.svga.SvgaParserAdapter
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
+import com.common.utils.ImageUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ExViewStub
@@ -117,6 +118,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
         AvatarUtils.loadAvatarByUrl(singAvatarView,
                 AvatarUtils.newParamsBuilder(RoomDataUtils.getRaceDisplayAvatar(roomData, userInfoModel))
                         .setBorderColor(U.getColor(R.color.white))
+                        .setSizeType(ImageUtils.SIZE.SIZE_320)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3f).toFloat())
                         .setCircle(true)
                         .build())
