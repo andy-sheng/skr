@@ -14,15 +14,22 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.home.R
+import com.module.home.loadsir.DqEmptyCallBack
 import com.module.mall.MallServerApi
 import com.module.mall.adapter.ProductAdapter
+import com.module.mall.event.BuyMallSuccessEvent
 import com.module.mall.model.ProductModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class ProductView : ExConstraintLayout {
     val TAG = "ProductView" + hashCode()
@@ -41,7 +48,9 @@ class ProductView : ExConstraintLayout {
 
     var hasMore = true
 
-//    internal var mLoadService: LoadService<*>
+    internal var mLoadService: LoadService<*>
+
+    var buyEffectDialogView: BuyEffectDialogView? = null
 
     constructor(context: Context?) : super(context!!)
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs)
@@ -56,6 +65,12 @@ class ProductView : ExConstraintLayout {
         productAdapter = ProductAdapter()
         recyclerView.adapter = productAdapter
         productAdapter?.notifyDataSetChanged()
+        productAdapter?.clickItemMethod = {
+            if (buyEffectDialogView == null) {
+                buyEffectDialogView = BuyEffectDialogView(context)
+            }
+            buyEffectDialogView?.showByDialog(true, it)
+        }
 
         refreshLayout.setEnableRefresh(false)
         refreshLayout.setEnableLoadMore(true)
@@ -72,11 +87,31 @@ class ProductView : ExConstraintLayout {
             }
         })
 
-//        val mLoadSir = LoadSir.Builder()
-//                .addCallback(DqEmptyCallBack())
-//                .build()
-//
-//        mLoadService = mLoadSir.register(recyclerView) { tryLoad() }
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(DqEmptyCallBack())
+                .build()
+
+        mLoadService = mLoadSir.register(refreshLayout) { tryLoad() }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: BuyMallSuccessEvent) {
+        if (event.productModel.displayType == displayType) {
+            productAdapter?.dataList?.forEach {
+                it.isBuy = true
+                productAdapter?.notifyDataSetChanged()
+            }
+        }
     }
 
     fun selected() {
@@ -104,11 +139,11 @@ class ProductView : ExConstraintLayout {
 
                 offset = obj.data.getIntValue("offset")
                 hasMore = obj.data.getBooleanValue("hasMore")
-//                mLoadService.showSuccess()
+                mLoadService.showSuccess()
                 refreshLayout.setEnableLoadMore(hasMore)
             } else {
                 if (productAdapter?.dataList?.size == 0) {
-//                    mLoadService.showCallback(DqEmptyCallBack::class.java)
+                    mLoadService.showCallback(DqEmptyCallBack::class.java)
                 } else {
                     U.getToastUtil().showShort(obj.errmsg)
                 }

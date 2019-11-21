@@ -20,12 +20,14 @@ import com.module.home.loadsir.DqEmptyCallBack
 import com.module.mall.MallServerApi
 import com.module.mall.adapter.PackageAdapter
 import com.module.mall.model.PackageModel
-import com.module.mall.model.ProductModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import java.util.*
 
 class PackageView : ExConstraintLayout {
     val TAG = "PackageView" + hashCode()
@@ -59,6 +61,9 @@ class PackageView : ExConstraintLayout {
         productAdapter = PackageAdapter()
         recyclerView.adapter = productAdapter
         productAdapter?.notifyDataSetChanged()
+        productAdapter?.useEffectMethod = {
+            useEffect(it)
+        }
 
         refreshLayout.setEnableRefresh(false)
         refreshLayout.setEnableLoadMore(true)
@@ -79,7 +84,26 @@ class PackageView : ExConstraintLayout {
                 .addCallback(DqEmptyCallBack())
                 .build()
 
-        mLoadService = mLoadSir.register(recyclerView) { tryLoad() }
+        mLoadService = mLoadSir.register(refreshLayout) { tryLoad() }
+    }
+
+    fun useEffect(packageModel: PackageModel) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["packetItemID"] = packageModel.packetItemID
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val obj = subscribe {
+                rankedServerApi.useGoods(body)
+            }
+
+            if (obj.errno == 0) {
+                packageModel.useStatus = 2
+                productAdapter?.notifyDataSetChanged()
+            } else {
+                U.getToastUtil().showShort(obj.errmsg)
+            }
+        }
     }
 
     fun selected() {

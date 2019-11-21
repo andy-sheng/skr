@@ -6,11 +6,17 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
+import com.common.core.avatar.AvatarUtils
+import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
+import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.module.home.R
+import com.module.mall.event.BuyMallEvent
+import com.module.mall.model.ProductModel
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import org.greenrobot.eventbus.EventBus
 
 class BuyEffectDialogView : ConstraintLayout {
     internal var mDialogPlus: DialogPlus? = null
@@ -21,6 +27,7 @@ class BuyEffectDialogView : ConstraintLayout {
     var firstDes: ExTextView
     var secondDes: ExTextView
     var buyTv: ExTextView
+    var model: ProductModel? = null
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -35,13 +42,30 @@ class BuyEffectDialogView : ConstraintLayout {
         firstDes = rootView.findViewById(R.id.first_des)
         secondDes = rootView.findViewById(R.id.second_des)
         buyTv = rootView.findViewById(R.id.buy_tv)
+
+        firstDes.setDebounceViewClickListener {
+            firstDes.isSelected = true
+            secondDes.isSelected = false
+        }
+
+        secondDes.setDebounceViewClickListener {
+            firstDes.isSelected = false
+            secondDes.isSelected = true
+        }
+
+        buyTv.setDebounceViewClickListener {
+            EventBus.getDefault().post(BuyMallEvent(model!!, if (firstDes.isSelected) model!!.price[0] else model!!.price[1]))
+            dismiss(true)
+        }
     }
 
     @JvmOverloads
-    fun showByDialog(canCancel: Boolean = true) {
+    fun showByDialog(canCancel: Boolean, model: ProductModel) {
         if (mDialogPlus != null) {
             mDialogPlus!!.dismiss(false)
         }
+
+        this.model = model
         mDialogPlus = DialogPlus.newDialog(context)
                 .setContentHolder(ViewHolder(this))
                 .setGravity(Gravity.CENTER)
@@ -51,6 +75,22 @@ class BuyEffectDialogView : ConstraintLayout {
                 .setCancelable(canCancel)
                 .create()
         mDialogPlus!!.show()
+
+        firstDes.isSelected = true
+        secondDes.isSelected = false
+
+        AvatarUtils.loadAvatarByUrl(effectIv, AvatarUtils.newParamsBuilder(model.goodsURL)
+                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                .build())
+
+        effectNameTv.text = model.goodsName
+        repeat(if (model.price.size > 2) 2 else model.price.size) {
+            if (it == 0) {
+                firstDes.text = "X${model.price[it].realPrice} /${model.price[it].buyTypeDes}"
+            } else if (it == 1) {
+                secondDes.text = "X${model.price[it].realPrice} /${model.price[it].buyTypeDes}"
+            }
+        }
     }
 
     fun dismiss() {

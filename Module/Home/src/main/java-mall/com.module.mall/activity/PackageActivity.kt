@@ -13,8 +13,6 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ControlType
-import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.ex.ExTextView
@@ -140,7 +138,7 @@ class PackageActivity : BaseActivity() {
 
     fun loadTags() {
         launch {
-            val obj = subscribe(RequestControl(TAG + "tryLoad()", ControlType.CancelThis)) {
+            val obj = subscribe {
                 rankedServerApi.getMallDisplayTags()
             }
 

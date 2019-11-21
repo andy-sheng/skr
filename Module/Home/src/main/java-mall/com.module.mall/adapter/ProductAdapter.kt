@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.common.core.avatar.AvatarUtils
+import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
 import com.common.utils.U
 import com.common.view.ex.ExImageView
@@ -14,6 +15,8 @@ import com.module.home.R
 import com.module.mall.model.ProductModel
 
 class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>() {
+
+    var clickItemMethod: ((ProductModel) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.mall_product_item_layout, parent, false)
@@ -32,6 +35,7 @@ class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>()
         var bg: ExImageView
         var productName: ExTextView
         var btnIv: ExTextView
+        var hasBuyIv: ExTextView
         var strokeIv: ExImageView
         var effectIv: BaseImageView
 
@@ -43,6 +47,11 @@ class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>()
             btnIv = itemView.findViewById(R.id.btn_iv)
             strokeIv = itemView.findViewById(R.id.stroke_iv)
             effectIv = itemView.findViewById(R.id.effect_iv)
+            hasBuyIv = itemView.findViewById(R.id.has_buy_iv)
+
+            itemView.setDebounceViewClickListener {
+                clickItemMethod?.invoke(model!!)
+            }
         }
 
         fun bindData(model: ProductModel) {
@@ -59,6 +68,18 @@ class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>()
             this.model = model
             productName.text = model.goodsName
 
+            if (model.isBuy) {
+                hasBuyIv.visibility = View.VISIBLE
+                btnIv.visibility = View.GONE
+            } else {
+                hasBuyIv.visibility = View.GONE
+                btnIv.visibility = View.VISIBLE
+
+                if(model.price?.size > 0){
+                    btnIv.text = "X${model.price[0].realPrice}"
+                }
+            }
         }
     }
 }
+

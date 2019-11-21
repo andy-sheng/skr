@@ -39,5 +39,13 @@ interface MallServerApi {
     }
      */
     @PUT("http://sandbox.api.inframe.mobi/v1/mall/buy-goods")
-    fun addStandMusic(@Body body: RequestBody): Call<ApiResult>
+    fun buyMall(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+    {
+    "packetItemID": "string"
+    }
+     */
+    @PUT("http://sandbox.api.inframe.mobi/v1/mall/buy-goods")
+    fun useGoods(@Body body: RequestBody): Call<ApiResult>
 }

@@ -13,8 +13,6 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ControlType
-import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.ex.ExTextView
@@ -23,10 +21,20 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.module.RouterConstants
 import com.module.home.R
 import com.module.mall.MallServerApi
+import com.module.mall.event.BuyMallEvent
+import com.module.mall.event.BuyMallSuccessEvent
 import com.module.mall.model.MallTag
 import com.module.mall.view.EffectView
 import com.module.mall.view.ProductView
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.set
 
 @Route(path = RouterConstants.ACTIVITY_MALL_MALL)
 class MallActivity : BaseActivity() {
@@ -140,7 +148,7 @@ class MallActivity : BaseActivity() {
 
     fun loadTags() {
         launch {
-            val obj = subscribe(RequestControl(TAG + "tryLoad()", ControlType.CancelThis)) {
+            val obj = subscribe {
                 rankedServerApi.getMallDisplayTags()
             }
 
@@ -160,11 +168,34 @@ class MallActivity : BaseActivity() {
         setIntent(intent)
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: BuyMallEvent) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["buyType"] = event.price.buyType
+            map["count"] = 1
+            map["goodsID"] = event.productModel.goodsID
+            map["priceType"] = event.price.priceType
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val obj = subscribe {
+                rankedServerApi.buyMall(body)
+            }
+
+            if (obj.errno == 0) {
+                EventBus.getDefault().post(BuyMallSuccessEvent(event.productModel))
+                U.getToastUtil().showShort("购买成功")
+            } else {
+                U.getToastUtil().showShort(obj.errmsg)
+            }
+        }
+    }
+
     override fun canSlide(): Boolean {
         return false
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 }
