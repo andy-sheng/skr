@@ -221,8 +221,28 @@ public class FrescoWorker {
         }
         draweeView.getHierarchy().setRoundingParams(roundingParams);
 
-        ImageRequest imageRequest = getImageRequest(baseImage)
-                .build();
+        ImageRequestBuilder imageRequestBuilder = getImageRequest(baseImage);
+
+
+        float vw = draweeView.getWidth();
+        float vh = draweeView.getHeight();
+
+        if (vw <= 0) {
+            if (draweeView.getLayoutParams() != null) {
+                vw = draweeView.getLayoutParams().width;
+            }
+        }
+        if (vh <= 0) {
+            if (draweeView.getLayoutParams() != null) {
+                vh = draweeView.getLayoutParams().height;
+            }
+        }
+        /**
+         * 图片的大小一般不需要超过view的大小
+         */
+        if (baseImage.isTipsWhenLarge() && baseImage.getWidth() == 0 && baseImage.getHeight() == 0 && vw>0 && vh>0) {
+            imageRequestBuilder.setResizeOptions(new ResizeOptions((int)vw,(int)vh));
+        }
 
         ImageRequest lowResRequest = null;
         if (null != baseImage.getLowImageUri()) {
@@ -238,9 +258,11 @@ public class FrescoWorker {
                     .build();
         }
 
+        float finalVw = vw;
+        float finalVh = vh;
         PipelineDraweeControllerBuilder builder = Fresco.newDraweeControllerBuilder()
                 .setLowResImageRequest(lowResRequest)
-                .setImageRequest(imageRequest)
+                .setImageRequest(imageRequestBuilder.build())
                 .setOldController(draweeView.getController())
                 //只有设置tapToRetryEnabled为true，才会出现点击重试的图层，并且重试超过4次之后，就将显示失败的图层
                 .setTapToRetryEnabled(baseImage.isTapToRetryEnabled())
@@ -261,13 +283,12 @@ public class FrescoWorker {
                     public void onFinalImageSet(String s, ImageInfo imageInfo, Animatable animatable) {
                         float bw = U.getDisplayUtils().dip2px(imageInfo.getWidth() / 3);
                         float bh = U.getDisplayUtils().dip2px(imageInfo.getHeight() / 3);
-                        float vw = draweeView.getWidth();
-                        float vh = draweeView.getHeight();
+
                         MyLog.d(TAG, "onFinalImageSet" + " url=" + s
                                 + " imageInfo.width=" + bw
                                 + " imageInfo.height=" + bh
-                                + " view.width=" + vw
-                                + " view.height=" + vh
+                                + " view.width=" + finalVw
+                                + " view.height=" + finalVh
                         );
                         if (imageInfo != null && baseImage.adjustViewWHbyImage()) {
                             ViewGroup.LayoutParams layoutParams = draweeView.getLayoutParams();
@@ -279,9 +300,9 @@ public class FrescoWorker {
                             baseImage.getCallBack().processWithInfo(imageInfo, animatable);
                         }
                         if (MyLog.isDebugLogOpen() && baseImage.isTipsWhenLarge()) {
-                            if (vw != 0 && vh != 0) {
-                                if (bw > vw * 2 && bh > vh * 2) {
-                                    ImageDebugModel imageDebugModel = new ImageDebugModel((int) vw, (int) vh, (int) bw, (int) bh, baseImage.getUri().toString());
+                            if (finalVw != 0 && finalVh != 0) {
+                                if (bw > finalVw * 2 && bh > finalVh * 2) {
+                                    ImageDebugModel imageDebugModel = new ImageDebugModel((int) finalVw, (int) finalVh, (int) bw, (int) bh, baseImage.getUri().toString());
                                     showImageLargeTips(imageDebugModel);
                                 }
                             }

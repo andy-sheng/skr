@@ -1,12 +1,8 @@
 package com.module.posts.view
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.Animatable
-import android.os.Handler
 import android.util.AttributeSet
-
-import com.common.image.fresco.FrescoWorker
 import com.common.image.fresco.IFrescoCallBack
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
@@ -18,7 +14,6 @@ import com.common.view.ninegrid.RatioImageView
 import com.component.busilib.R
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.imagepipeline.image.ImageInfo
-import kotlinx.android.synthetic.main.relation_fragment_layout.view.*
 
 /**
  * 描述：
