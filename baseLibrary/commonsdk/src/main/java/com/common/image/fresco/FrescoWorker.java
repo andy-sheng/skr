@@ -258,8 +258,6 @@ public class FrescoWorker {
                     .build();
         }
 
-        float finalVw = vw;
-        float finalVh = vh;
         PipelineDraweeControllerBuilder builder = Fresco.newDraweeControllerBuilder()
                 .setLowResImageRequest(lowResRequest)
                 .setImageRequest(imageRequestBuilder.build())
@@ -283,12 +281,13 @@ public class FrescoWorker {
                     public void onFinalImageSet(String s, ImageInfo imageInfo, Animatable animatable) {
                         float bw = U.getDisplayUtils().dip2px(imageInfo.getWidth() / 3);
                         float bh = U.getDisplayUtils().dip2px(imageInfo.getHeight() / 3);
-
+                        float vw = draweeView.getWidth();
+                        float vh = draweeView.getHeight();
                         MyLog.d(TAG, "onFinalImageSet" + " url=" + s
                                 + " imageInfo.width=" + bw
                                 + " imageInfo.height=" + bh
-                                + " view.width=" + finalVw
-                                + " view.height=" + finalVh
+                                + " view.width=" + vw
+                                + " view.height=" + vh
                         );
                         if (imageInfo != null && baseImage.adjustViewWHbyImage()) {
                             ViewGroup.LayoutParams layoutParams = draweeView.getLayoutParams();
@@ -300,9 +299,9 @@ public class FrescoWorker {
                             baseImage.getCallBack().processWithInfo(imageInfo, animatable);
                         }
                         if (MyLog.isDebugLogOpen() && baseImage.isTipsWhenLarge()) {
-                            if (finalVw != 0 && finalVh != 0) {
-                                if (bw > finalVw * 2 && bh > finalVh * 2) {
-                                    ImageDebugModel imageDebugModel = new ImageDebugModel((int) finalVw, (int) finalVh, (int) bw, (int) bh, baseImage.getUri().toString());
+                            if (vw > 0 && vh > 0) {
+                                if (bw > vw * 2 && bh > vh * 2) {
+                                    ImageDebugModel imageDebugModel = new ImageDebugModel((int) vw, (int) vh, (int) bw, (int) bh, baseImage.getUri().toString());
                                     showImageLargeTips(imageDebugModel);
                                 }
                             }

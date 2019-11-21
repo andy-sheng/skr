@@ -23,7 +23,7 @@ projectFilesBackup/
 publish1/
 publish/apk-checker-result.html
 publish/apk-checker-result.json
-./publish
+mapping.txt
 # Windows thumbnail db
 Thumbs.db
 .cxx
