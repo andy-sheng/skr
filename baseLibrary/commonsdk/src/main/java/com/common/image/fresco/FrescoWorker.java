@@ -282,12 +282,12 @@ public class FrescoWorker {
                         float bh = U.getDisplayUtils().dip2px(imageInfo.getHeight() / 3);
                         float vw = draweeView.getWidth();
                         float vh = draweeView.getHeight();
-                        MyLog.d(TAG, "onFinalImageSet" + " url=" + baseImage.getUri().toString()
-                                + " imageInfo.width=" + bw
-                                + " imageInfo.height=" + bh
-                                + " view.width=" + vw
-                                + " view.height=" + vh
-                        );
+//                        MyLog.d(TAG, "onFinalImageSet" + " url=" + baseImage.getUri().toString()
+//                                + " imageInfo.width=" + bw
+//                                + " imageInfo.height=" + bh
+//                                + " view.width=" + vw
+//                                + " view.height=" + vh
+//                        );
                         if (imageInfo != null && baseImage.adjustViewWHbyImage()) {
                             ViewGroup.LayoutParams layoutParams = draweeView.getLayoutParams();
                             layoutParams.width = (int) bw;

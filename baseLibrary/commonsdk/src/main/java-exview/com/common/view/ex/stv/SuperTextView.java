@@ -161,7 +161,7 @@ public class SuperTextView extends android.support.v7.widget.AppCompatTextView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        MyLog.d("SuperTextView","onDraw" + " canvas=" + canvas);
+//        MyLog.d("SuperTextView","onDraw" + " canvas=" + canvas);
         if (getVisibility() != VISIBLE || !isAttachedToWindow() || getWidth() < 0 || getHeight() < 0)
             return;
         boolean needScroll = getScrollX() != 0 || getScrollY() != 0;

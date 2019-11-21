@@ -53,7 +53,7 @@ class ProxyCache {
             percentsAvailable = 100;
             onCachePercentsAvailableChanged(100);
         }
-        MyLog.d(TAG,"read="+read);
+        //MyLog.d(TAG,"read="+read);
         return read;
     }
 
@@ -121,7 +121,7 @@ class ProxyCache {
     }
 
     private void readSource() {
-        MyLog.d(TAG,"readSource begin" );
+        //MyLog.d(TAG,"readSource begin" );
         long beginTs = System.currentTimeMillis();
         long sourceAvailable = -1;
         long offset = 0;
@@ -149,7 +149,7 @@ class ProxyCache {
         } finally {
             closeSource();
             notifyNewCacheDataAvailable(offset, sourceAvailable);
-            MyLog.d(TAG,"readSource over duraion="+(System.currentTimeMillis() - beginTs) );
+            //MyLog.d(TAG,"readSource over duraion="+(System.currentTimeMillis() - beginTs) );
         }
     }
 
@@ -182,7 +182,7 @@ class ProxyCache {
     protected final void onError(final Throwable e) {
         boolean interruption = e instanceof InterruptedProxyCacheException;
         if (interruption) {
-            MyLog.d(TAG,"ProxyCache is interrupted");
+            //MyLog.d(TAG,"ProxyCache is interrupted");
         } else {
             MyLog.e(TAG,"ProxyCache error", e);
         }
