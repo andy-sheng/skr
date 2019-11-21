@@ -31,7 +31,7 @@ class SLogServiceAliyun extends SLogServiceBase{
 
     public final static String TAG = "[SLS]SLogServiceAliyun";
 
-    private final static String LOG_TOPIC = "sls-test";
+    private final static String LOG_TOPIC = "AVS";
     private final static String LOG_SOURSE= "Skr-app";
 
     /**
