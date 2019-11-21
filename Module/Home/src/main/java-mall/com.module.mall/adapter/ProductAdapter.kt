@@ -31,6 +31,23 @@ class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>()
         holder.bindData(mDataList[position])
     }
 
+    override fun onBindViewHolder(holder: ProductHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            holder.bindData(mDataList[position])
+        } else {
+            // 局部刷新
+            payloads.forEach {
+                if (it is Int) {
+                    refreshHolder(holder, position, it)
+                }
+            }
+        }
+    }
+
+    fun refreshHolder(holder: ProductHolder, position: Int, refreshType: Int) {
+        holder.updateText(mDataList[position])
+    }
+
     inner class ProductHolder : RecyclerView.ViewHolder {
         var bg: ExImageView
         var productName: ExTextView
@@ -60,13 +77,13 @@ class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>()
                     AvatarUtils.newParamsBuilder(model.goodsURL)
                             .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                             .build())
+            productName.text = model.goodsName
 
             updateText(model)
         }
 
         fun updateText(model: ProductModel) {
             this.model = model
-            productName.text = model.goodsName
 
             if (model.isBuy) {
                 hasBuyIv.visibility = View.VISIBLE
@@ -75,7 +92,7 @@ class ProductAdapter : DiffAdapter<ProductModel, ProductAdapter.ProductHolder>()
                 hasBuyIv.visibility = View.GONE
                 btnIv.visibility = View.VISIBLE
 
-                if(model.price?.size > 0){
+                if (model.price?.size > 0) {
                     btnIv.text = "X${model.price[0].realPrice}"
                 }
             }

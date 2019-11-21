@@ -31,6 +31,23 @@ class PackageAdapter : DiffAdapter<PackageModel, PackageAdapter.PackageHolder>()
         holder.bindData(mDataList[position])
     }
 
+    override fun onBindViewHolder(holder: PackageHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            holder.bindData(mDataList[position])
+        } else {
+            // 局部刷新
+            payloads.forEach {
+                if (it is Int) {
+                    refreshHolder(holder, position, it)
+                }
+            }
+        }
+    }
+
+    fun refreshHolder(holder: PackageHolder, position: Int, refreshType: Int) {
+        holder.updateText(mDataList[position])
+    }
+
     inner class PackageHolder : RecyclerView.ViewHolder {
         var bg: ExImageView
         var productName: ExTextView

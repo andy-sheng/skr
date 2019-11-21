@@ -98,7 +98,15 @@ class PackageView : ExConstraintLayout {
             }
 
             if (obj.errno == 0) {
-                packageModel.useStatus = 2
+                for (i in 0 until ((productAdapter?.dataList?.size) ?: 0)) {
+                    productAdapter?.dataList?.get(i)?.let {
+                        if (it.packetItemID == packageModel.packetItemID) {
+                            it.useStatus = 2
+                        } else {
+                            it.useStatus = 0
+                        }
+                    }
+                }
                 productAdapter?.notifyDataSetChanged()
             } else {
                 U.getToastUtil().showShort(obj.errmsg)

@@ -107,9 +107,12 @@ class ProductView : ExConstraintLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BuyMallSuccessEvent) {
         if (event.productModel.displayType == displayType) {
-            productAdapter?.dataList?.forEach {
-                it.isBuy = true
-                productAdapter?.notifyDataSetChanged()
+            for (i in 0 until ((productAdapter?.dataList?.size) ?: 0)) {
+                if (productAdapter?.dataList?.get(i)?.goodsID == event.productModel.goodsID) {
+                    productAdapter?.dataList?.get(i)?.isBuy = true
+                    productAdapter?.notifyItemChanged(i, 1)
+                    break
+                }
             }
         }
     }
