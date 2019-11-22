@@ -247,13 +247,21 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     "roundSeq" to mRoomData.realRoundSeq,
                     "subRoundSeq" to mRoomData.realRoundInfo?.subRoundSeq
             )
+
+            val roundSeq = mRoomData.realRoundSeq
+            val subRoundSeq = mRoomData.realRoundInfo?.subRoundSeq ?: 0
+            val userID = mRoomData?.realRoundInfo?.getSingerIdNow()
+
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { raceRoomServerApi.bLight(body) }
             if (result.errno == 0) {
-                callback?.invoke(true)
-                mRoomData?.realRoundInfo?.getSingerIdNow()?.let {
+                userID?.let {
                     mRoomData?.realRoundInfo?.unfakeSetForMe?.add(it)
-                    EventBus.getDefault().post(RaceBlightByMeEvent())
+                    EventBus.getDefault().post(RaceBlightByMeEvent(it))
+                }
+
+                if (roundSeq == mRoomData.realRoundSeq && subRoundSeq == mRoomData.realRoundInfo?.subRoundSeq ?: 0) {
+                    callback?.invoke(true)
                 }
             } else {
                 if (result.errno == 8412159) {
@@ -521,7 +529,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             MyLog.d(TAG, "this round is null")
             // 游戏结束了
             mIRaceRoomView.gameOver(lastRound)
-            if(mRoomData.audience){
+            if (mRoomData.audience) {
                 U.getToastUtil().showShort("排位房间已解散")
             }
             return
@@ -707,7 +715,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 EventBus.getDefault().post(UpdateAudienceCountEvent(it.audienceUserCnt))
             }
         }
-        if(event.userInfo.userID != MyUserInfoManager.uid.toInt()){
+        if (event.userInfo.userID != MyUserInfoManager.uid.toInt()) {
             // 进房的是自己 不处理
             pretendEnterRoom(racePlayerInfoModel)
         }
