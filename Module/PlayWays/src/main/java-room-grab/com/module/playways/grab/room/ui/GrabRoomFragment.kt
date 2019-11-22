@@ -1048,13 +1048,15 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 }
             }
         })
-        mGrabTopContentView.setListener { open ->
-            if (open) {
-                mGrabWidgetAnimationController.open()
-            } else {
-                mGrabWidgetAnimationController.close()
+        mGrabTopContentView.setListener(object : GrabTopContentView.Listener {
+            override fun clickArrow(open: Boolean) {
+                if (open) {
+                    mGrabWidgetAnimationController.open()
+                } else {
+                    mGrabWidgetAnimationController.close()
+                }
             }
-        }
+        })
         mPracticeFlagIv = rootView.findViewById(R.id.practice_flag_iv)
         mChallengeStarView = rootView.findViewById(R.id.grab_challenge_star_view)
         mChallengeStarView.clickListener = {

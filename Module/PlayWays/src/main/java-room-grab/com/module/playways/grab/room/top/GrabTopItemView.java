@@ -120,6 +120,7 @@ public class GrabTopItemView extends RelativeLayout {
         if (userInfoModel == null) {
             return;
         }
+        setVisibility(View.VISIBLE);
         mPlayerInfoModel = userInfoModel;
         mAvatarIv.bindData(mPlayerInfoModel.getUserInfo(), mPlayerInfoModel.isOnline() ? false : true);
         mShowEmptySeat = false;
@@ -214,7 +215,7 @@ public class GrabTopItemView extends RelativeLayout {
         mFlagIv.setScaleY(1);
 
         mAvatarIv.setTranslationY(0);
-        mAvatarIv.setAlpha(0xff);
+        mAvatarIv.setAlpha(1);
         mAvatarIv.setScaleX(1);
         mAvatarIv.setScaleY(1);
         mCircleAnimationView.setVisibility(GONE);

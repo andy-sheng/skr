@@ -17,6 +17,8 @@ public class GrabConfigModel implements Serializable {
     int kickUserConsumCoinCnt = 2;
     @JSONField(name = "ChallengeRoundCnt")
     int challengeRoundCnt = 18;
+    @JSONField(name = "maxUserCnt")
+    int maxUserCnt = 7;
 
     public static GrabConfigModel parse(QGameConfig config) {
         GrabConfigModel grabConfigModel = new GrabConfigModel();
@@ -87,6 +89,14 @@ public class GrabConfigModel implements Serializable {
 
     public void setChallengeRoundCnt(int challengeRoundCnt) {
         this.challengeRoundCnt = challengeRoundCnt;
+    }
+
+    public int getMaxUserCnt() {
+        return maxUserCnt;
+    }
+
+    public void setMaxUserCnt(int maxUserCnt) {
+        this.maxUserCnt = maxUserCnt;
     }
 
     @Override
