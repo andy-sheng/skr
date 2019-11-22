@@ -47,7 +47,7 @@ class BusinessCardDialogView(context: Context, userInfoModel: UserInfoModel, mei
         AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(userInfoModel.avatar)
                 .setCircle(true)
                 .build())
-        val ranking = MyUserInfoManager.ranking
+        val ranking = userInfoModel.ranking
         if (ranking != null && LevelConfigUtils.getRaceCenterAvatarBg(ranking.mainRanking) != 0) {
             levelBg.visibility = View.VISIBLE
             levelBg.background = U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(ranking.mainRanking))
