@@ -1686,6 +1686,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             mVIPEnterView?.switchRoom()
             // 重新决定显示mic按钮
             mBottomContainerView?.setRoomData(mRoomData!!)
+            mGrabTopContentView.onChangeRoom()
             adjustSelectSongView()
         }
     }

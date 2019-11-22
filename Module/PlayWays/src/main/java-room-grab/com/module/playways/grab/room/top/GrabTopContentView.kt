@@ -1,11 +1,6 @@
 package com.module.playways.grab.room.top
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
-import android.animation.ValueAnimator
+import android.animation.*
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
@@ -13,36 +8,22 @@ import android.view.View
 import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
-
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.constans.GrabRoomType
 import com.engine.EngineEvent
-import com.engine.UserStatus
 import com.module.playways.R
 import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.GrabRoomData
-import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent
-import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent
-import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent
-import com.module.playways.grab.room.event.GrabWantInviteEvent
-import com.module.playways.grab.room.event.LightOffAnimationOverEvent
-import com.module.playways.grab.room.event.SomeOneGrabEvent
-import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent
-import com.module.playways.grab.room.model.GrabPlayerInfoModel
-import com.module.playways.grab.room.model.GrabRoundInfoModel
-import com.module.playways.grab.room.model.MLightInfoModel
+import com.module.playways.grab.room.event.*
 import com.module.playways.grab.room.model.WantSingerInfo
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.GrabRoom.EQRoundStatus
-
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-
-import java.util.ArrayList
-import java.util.LinkedHashMap
+import java.util.*
 
 class GrabTopContentView : ConstraintLayout {
 
@@ -66,6 +47,8 @@ class GrabTopContentView : ConstraintLayout {
 
     internal var mListener: Listener? = null
 
+    lateinit var horizontalScrollView: HorizontalScrollView
+
     constructor(context: Context) : super(context) {
         init()
     }
@@ -81,7 +64,8 @@ class GrabTopContentView : ConstraintLayout {
     private fun init() {
         View.inflate(context, R.layout.grab_top_content_view_layout, this)
         //        setClickable(true);
-        mContentLl = (this.findViewById<View>(R.id.scroll_view) as HorizontalScrollView).getChildAt(0) as LinearLayout
+        horizontalScrollView = (this.findViewById<View>(R.id.scroll_view) as HorizontalScrollView)
+        mContentLl = horizontalScrollView.getChildAt(0) as LinearLayout
         //        mGrabAudienceView = (GrabAudienceView) this.findViewById(R.id.grab_audience_view);
         mArrowIv = this.findViewById<View>(R.id.arrow_iv) as ImageView
         mInviteIv = this.findViewById(R.id.invite_iv)
@@ -119,7 +103,7 @@ class GrabTopContentView : ConstraintLayout {
     }
 
     private fun addChildView() {
-        if(mGrabTopItemViewArrayList.size!=getMaxCount()){
+        if (mGrabTopItemViewArrayList.size != getMaxCount()) {
             mContentLl.removeAllViews()
             for (i in 0 until getMaxCount()) {
                 val vp = VP()
@@ -256,8 +240,8 @@ class GrabTopContentView : ConstraintLayout {
         }
     }
 
-    private fun getMaxCount():Int{
-        return (mRoomData?.grabConfigModel?.maxUserCnt?:7)
+    private fun getMaxCount(): Int {
+        return (mRoomData?.grabConfigModel?.maxUserCnt ?: 7)
     }
 
     //刚进来的时候初始化灯
@@ -659,6 +643,10 @@ class GrabTopContentView : ConstraintLayout {
                 }
             }
         }
+    }
+
+    fun onChangeRoom() {
+        horizontalScrollView?.scrollTo(0, 0)
     }
 
     fun setRoomData(roomData: GrabRoomData) {
