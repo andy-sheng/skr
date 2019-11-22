@@ -145,7 +145,7 @@ class GrabTopContentView : ConstraintLayout {
         for (vp in mGrabTopItemViewArrayList) {
             vp.grabTopItemView?.reset()
             vp.grabTopItemView?.setToPlaceHolder()
-            vp.grabTopItemView?.visibility = View.GONE
+//            vp.grabTopItemView?.visibility = View.GONE
         }
     }
 
