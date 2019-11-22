@@ -150,6 +150,7 @@ class PackageView : ExConstraintLayout {
                 rankedServerApi.getPacketList(displayType, offset, limit)
             }
 
+            refreshLayout.finishLoadMore()
             if (obj.errno == 0) {
                 val list = JSON.parseArray(obj.data.getString("list"), PackageModel::class.java)
                 if (list != null && list.size > 0) {

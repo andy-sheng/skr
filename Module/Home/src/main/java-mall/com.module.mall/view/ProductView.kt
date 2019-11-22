@@ -153,6 +153,7 @@ class ProductView : ExConstraintLayout {
                 rankedServerApi.getProductList(displayType, offset, limit)
             }
 
+            refreshLayout.finishLoadMore()
             if (obj.errno == 0) {
                 val list = JSON.parseArray(obj.data.getString("list"), ProductModel::class.java)
                 if (list != null && list.size > 0) {
