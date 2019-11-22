@@ -98,6 +98,7 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         mHandler.sendEmptyMessageDelayed(DRAW_XIN_MSG, 0);
+        mIsDestroy = false;
     }
 
     @Override
