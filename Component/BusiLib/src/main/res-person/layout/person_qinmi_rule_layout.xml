@@ -111,7 +111,7 @@
 
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
-        
+
     </com.common.view.ex.ExLinearLayout>
 
 </com.common.view.ex.ExLinearLayout>
