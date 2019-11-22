@@ -110,7 +110,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     internal var mPostsWallView: IPersonPostsWall? = null
     internal var mFeedsWallView: IPersonFeedsWall? = null
 
-    lateinit var mFunctionArea: LinearLayout
+    lateinit var mFunctionArea: ConstraintLayout
     lateinit var mFollowIv: ExTextView
     lateinit var mMessageIv: ExTextView
 
@@ -127,18 +127,6 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     private var mVoiceInfoModel: VoiceInfoModel? = null
 
     private var mBusinessCardDialogView: BusinessCardDialogView? = null
-
-    // 未关注
-    private val mUnFollowDrawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#FFC15B"))
-            .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
-            .build()
-
-    // 已关注 或 互关
-    private val mFollowDrawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#DB8800"))
-            .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
-            .build()
 
     internal var srollDivider = U.getDisplayUtils().dip2px(150f)  // 滑到分界线的时候
 
@@ -778,15 +766,15 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         when {
             isFriend -> {
                 mFollowIv.text = "互关"
-                mFollowIv.background = mFollowDrawable
+                mFollowIv.background = U.getDrawable(R.drawable.common_hollow_yellow_icon)
             }
             isFollow -> {
                 mFollowIv.text = "已关注"
-                mFollowIv.background = mFollowDrawable
+                mFollowIv.background = U.getDrawable(R.drawable.common_hollow_yellow_icon)
             }
             else -> {
                 mFollowIv.text = "关注Ta"
-                mFollowIv.background = mUnFollowDrawable
+                mFollowIv.background = U.getDrawable(R.drawable.common_yellow_button_icon)
             }
         }
     }

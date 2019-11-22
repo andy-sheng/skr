@@ -51,6 +51,8 @@ class MallActivity : BaseActivity() {
     var pagerAdapter: PagerAdapter? = null
     var viewList: ArrayList<ProductView>? = null
 
+    var callWhenResume: (() -> Unit)? = null
+
     val rankedServerApi = ApiManager.getInstance().createService(MallServerApi::class.java)
     val mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi::class.java)
 
@@ -82,6 +84,10 @@ class MallActivity : BaseActivity() {
         diamondTv.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_BALANCE)
                     .navigation()
+
+            callWhenResume = {
+                getZSBalance()
+            }
         }
 
         mallTv.setDebounceViewClickListener {
@@ -95,6 +101,12 @@ class MallActivity : BaseActivity() {
 
         loadTags()
         getZSBalance()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        callWhenResume?.invoke()
+        callWhenResume = null
     }
 
     fun initAdapter(list: List<MallTag>) {

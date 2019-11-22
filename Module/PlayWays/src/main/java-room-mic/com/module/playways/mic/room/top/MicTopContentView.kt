@@ -1,8 +1,6 @@
 package com.module.playways.mic.room.top
 
 import android.content.Context
-import android.os.Handler
-import android.os.Message
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -17,6 +15,7 @@ import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
 import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
+import com.module.playways.mic.room.event.MicWantInviteEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -26,6 +25,7 @@ class MicTopContentView : ConstraintLayout {
     val REFRESH_DATA = 1
 
     val arrowIv: ImageView
+    var emptyIv: ImageView
     val recyclerView: RecyclerView
 
     val adapter: MicTopContentAdapter = MicTopContentAdapter()
@@ -53,18 +53,25 @@ class MicTopContentView : ConstraintLayout {
         View.inflate(context, R.layout.mic_top_content_view_layout, this)
 
         arrowIv = rootView.findViewById(R.id.arrow_iv)
+        emptyIv = rootView.findViewById(R.id.empty_iv)
         recyclerView = rootView.findViewById(R.id.recycler_view)
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
 
-        recyclerView.layoutManager =  LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
 
         arrowIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 mListener?.clickArrow(!mIsOpen)
+            }
+        })
+
+        emptyIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                EventBus.getDefault().post(MicWantInviteEvent())
             }
         })
     }
@@ -99,6 +106,12 @@ class MicTopContentView : ConstraintLayout {
         adapter.maxUserCount = roomData.configModel.maxUserCnt
         adapter.mRoomData = mRoomData
         initData("setRoomData")
+
+        if (mRoomData?.isOwner == true) {
+            emptyIv.visibility = View.VISIBLE
+        } else {
+            emptyIv.visibility = View.GONE
+        }
     }
 
     fun getViewLeft(userID: Int): Int {
@@ -140,33 +153,24 @@ class MicTopContentView : ConstraintLayout {
     fun onEvent(event: MicRoundChangeEvent) {
         MyLog.d(TAG, "onEvent event = $event")
         initData("MicRoundChangeEvent")
-//        mUiHandler.removeMessages(REFRESH_DATA)
-//        val msg = mUiHandler.obtainMessage()
-//        msg.what = REFRESH_DATA
-//        msg.obj = "MicRoundChangeEvent"
-//        mUiHandler.sendMessageDelayed(msg, 500)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicPlaySeatUpdateEvent) {
         MyLog.d(TAG, "onEvent event = $event")
         initData("MicPlaySeatUpdateEvent")
-//        mUiHandler.removeMessages(REFRESH_DATA)
-//        val msg = mUiHandler.obtainMessage()
-//        msg.what = REFRESH_DATA
-//        msg.obj = "MicPlaySeatUpdateEvent"
-//        mUiHandler.sendMessageDelayed(msg, 500)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicHomeOwnerChangeEvent) {
         MyLog.d(TAG, "onEvent event = $event")
         initData("MicHomeOwnerChangeEvent")
-//        mUiHandler.removeMessages(REFRESH_DATA)
-//        val msg = mUiHandler.obtainMessage()
-//        msg.what = REFRESH_DATA
-//        msg.obj = "MicHomeOwnerChangeEvent"
-//        mUiHandler.sendMessageDelayed(msg, 500)
+
+        if (mRoomData?.isOwner == true) {
+            emptyIv.visibility = View.VISIBLE
+        } else {
+            emptyIv.visibility = View.GONE
+        }
     }
 
     fun setListener(listener: Listener) {
