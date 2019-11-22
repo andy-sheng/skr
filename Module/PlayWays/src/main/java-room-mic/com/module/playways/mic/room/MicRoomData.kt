@@ -27,7 +27,11 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
     var roomType: Int = GrabRoomType.ROOM_TYPE_COMMON// 一唱到底房间类型，公开，好友，私密，普通 5为歌单房间
     var isHasExitGame = false// 是否已经正常退出房间
 
-    private var mIsAccEnable = true // 是否开启伴奏,只代表设置里伴奏开关
+    var isAccEnable = true // 是否开启伴奏,只代表设置里伴奏开关
+        set(value) {
+            field = value
+            U.getPreferenceUtils().setSettingBoolean("grab_acc_enable1", value)
+        }
 
     var ownerId = 0
         set(value) {
@@ -63,13 +67,6 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
     override val gameType: Int
         get() = GameModeType.GAME_MODE_MIC
 
-    var isAccEnable: Boolean
-        get() = mIsAccEnable
-        set(accEnable) {
-            mIsAccEnable = accEnable
-            U.getPreferenceUtils().setSettingBoolean("grab_acc_enable1", mIsAccEnable)
-        }
-
     /**
      * 是不是房主
      *
@@ -90,7 +87,7 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
     var enterRoundSeq = 0 // 刚进入房间时，所处的轮次
 
     init {
-        mIsAccEnable = true
+        isAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", true)
     }
 
 
@@ -113,13 +110,13 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
         }
 //        val playerInfoModel = userInfoMap[userID] as MicPlayerInfoModel?
 //        if (playerInfoModel == null || playerInfoModel.role == EMUserRole.MRUR_PLAY_USER.value) {
-            val l = getPlayerAndWaiterInfoList()
-            for (playerInfo in l) {
-                if (playerInfo.userInfo.userId == userID) {
+        val l = getPlayerAndWaiterInfoList()
+        for (playerInfo in l) {
+            if (playerInfo.userInfo.userId == userID) {
 //                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
-                    return playerInfo
-                }
+                return playerInfo
             }
+        }
 //        } else {
 //            return playerInfoModel
 //        }
@@ -232,7 +229,7 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
         this.maxGetBLightCnt = rsp.maxGetBLightCnt
         this.matchStatusOpen = (rsp.matchStatus == ERoomMatchStatus.EMMS_OPEN.value)
         this.preUserIDsSnapShots.clear()
-        for(m in getPlayerAndWaiterInfoList()){
+        for (m in getPlayerAndWaiterInfoList()) {
             this.preUserIDsSnapShots.add(m.userID)
         }
 
