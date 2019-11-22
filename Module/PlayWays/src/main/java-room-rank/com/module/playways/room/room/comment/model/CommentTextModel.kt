@@ -44,9 +44,8 @@ class CommentTextModel : CommentModel() {
                 if (event.mUserInfoModelList == null || event.mUserInfoModelList.size == 0) {
                     // 普通消息
                     val nameSsb = SpanUtils()
-                            .append(commentModel.fakeUserInfo?.nickName
-                                    ?: commentModel.userInfo?.nicknameRemark
-                                    + " ").setForegroundColor(GRAB_NAME_COLOR)
+                            .append((commentModel.fakeUserInfo?.nickName
+                                    ?: commentModel.userInfo?.nicknameRemark) + " ").setForegroundColor(GRAB_NAME_COLOR)
                             .create()
                     commentModel.nameBuilder = nameSsb
 
