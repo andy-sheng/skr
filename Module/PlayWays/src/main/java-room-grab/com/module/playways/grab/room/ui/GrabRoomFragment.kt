@@ -410,12 +410,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     }
 
     private fun refreshWaitTips(isFirst: Boolean) {
-        if (isFirst) {
-            if (mRoomData?.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role == EQUserRole.EQUR_WAIT_USER.value) {
-                mWaitingTv.visibility = VISIBLE
-            } else {
-                mWaitingTv.visibility = GONE
-            }
+        if (mRoomData?.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role == EQUserRole.EQUR_WAIT_USER.value) {
+            mWaitingTv.visibility = VISIBLE
         } else {
             mWaitingTv.visibility = GONE
         }

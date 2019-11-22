@@ -113,8 +113,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceBlightByMeEvent) {
         // 重新刷一下UI
-        val infoModel = roomData.realRoundInfo
-        val userInfoModel = roomData.getPlayerOrWaiterInfo(infoModel?.getSingerIdNow())
+        val userInfoModel = roomData.getPlayerOrWaiterInfo(event.userID)
         AvatarUtils.loadAvatarByUrl(singAvatarView,
                 AvatarUtils.newParamsBuilder(RoomDataUtils.getRaceDisplayAvatar(roomData, userInfoModel))
                         .setBorderColor(U.getColor(R.color.white))

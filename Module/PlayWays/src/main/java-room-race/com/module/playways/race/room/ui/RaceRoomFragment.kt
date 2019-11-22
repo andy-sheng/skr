@@ -263,8 +263,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
             override fun onClickVote() {
                 // 投票
-                mCorePresenter.sendBLight {
-                    if (it) {
+                mCorePresenter.sendBLight { isSucess ->
+                    if (isSucess) {
                         mRaceRightOpView.showVote(true)
                     } else {
                         MyLog.e(TAG, "onClickVote 请求失败了")
