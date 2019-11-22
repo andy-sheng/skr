@@ -825,6 +825,14 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MChangeRoomOwnerMsg) {
         MyLog.d(TAG, "onEvent event = $event")
+        mRoomData.getPlayerAndWaiterInfoList().forEach {
+            if (it.userID == event.userID) {
+                it.role = EMUserRole.MQUR_ROOM_OWNER.value
+            } else {
+                it.role = EMUserRole.MRUR_PLAY_USER.value
+            }
+        }
+
         mRoomData.ownerId = event.userID
     }
 
