@@ -568,6 +568,7 @@ public class AgoraRTCAdapter {
                 case rank:
                 case grab:
                 case audiotest:
+                    mRtcEngine.setParameters("{\"che.audio.enable.aec\":false }");
                     profile = Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO;
                     break;
                 case doubleChat:
