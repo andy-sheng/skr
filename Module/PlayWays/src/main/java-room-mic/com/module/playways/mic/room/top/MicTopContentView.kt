@@ -25,7 +25,7 @@ class MicTopContentView : ConstraintLayout {
     val REFRESH_DATA = 1
 
     val arrowIv: ImageView
-    lateinit var emptyIv: ImageView
+    var emptyIv: ImageView
     val recyclerView: RecyclerView
 
     val adapter: MicTopContentAdapter = MicTopContentAdapter()
@@ -106,6 +106,12 @@ class MicTopContentView : ConstraintLayout {
         adapter.maxUserCount = roomData.configModel.maxUserCnt
         adapter.mRoomData = mRoomData
         initData("setRoomData")
+
+        if (mRoomData?.isOwner == true) {
+            emptyIv.visibility = View.VISIBLE
+        } else {
+            emptyIv.visibility = View.GONE
+        }
     }
 
     fun getViewLeft(userID: Int): Int {
@@ -147,33 +153,24 @@ class MicTopContentView : ConstraintLayout {
     fun onEvent(event: MicRoundChangeEvent) {
         MyLog.d(TAG, "onEvent event = $event")
         initData("MicRoundChangeEvent")
-//        mUiHandler.removeMessages(REFRESH_DATA)
-//        val msg = mUiHandler.obtainMessage()
-//        msg.what = REFRESH_DATA
-//        msg.obj = "MicRoundChangeEvent"
-//        mUiHandler.sendMessageDelayed(msg, 500)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicPlaySeatUpdateEvent) {
         MyLog.d(TAG, "onEvent event = $event")
         initData("MicPlaySeatUpdateEvent")
-//        mUiHandler.removeMessages(REFRESH_DATA)
-//        val msg = mUiHandler.obtainMessage()
-//        msg.what = REFRESH_DATA
-//        msg.obj = "MicPlaySeatUpdateEvent"
-//        mUiHandler.sendMessageDelayed(msg, 500)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicHomeOwnerChangeEvent) {
         MyLog.d(TAG, "onEvent event = $event")
         initData("MicHomeOwnerChangeEvent")
-//        mUiHandler.removeMessages(REFRESH_DATA)
-//        val msg = mUiHandler.obtainMessage()
-//        msg.what = REFRESH_DATA
-//        msg.obj = "MicHomeOwnerChangeEvent"
-//        mUiHandler.sendMessageDelayed(msg, 500)
+
+        if (mRoomData?.isOwner == true) {
+            emptyIv.visibility = View.VISIBLE
+        } else {
+            emptyIv.visibility = View.GONE
+        }
     }
 
     fun setListener(listener: Listener) {
