@@ -80,6 +80,8 @@ interface IGrabRoomView {
 
     fun changeRoomMode(isVideo: Boolean)
 
+    fun refreshWaitTips()
+
     fun joinNotice(playerInfoModel: UserInfoModel?)
     fun showChallengeStarView(cnt: Int, visiable: Boolean, justShowInChallenge: Boolean,continueShow:Boolean)
 }

@@ -1599,7 +1599,10 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             if (mRoomData.roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
 
             } else {
-                mUiHandler.post { mIGrabView.showPracticeFlag(finalSize <= 1) }
+                mUiHandler.post {
+                    mIGrabView.showPracticeFlag(finalSize <= 1)
+                    mIGrabView.refreshWaitTips()
+                }
             }
             // 处理挑战人气结果
             if (mRoomData.inChallenge) {

@@ -406,15 +406,6 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             }
         }
 
-        refreshWaitTips(true)
-    }
-
-    private fun refreshWaitTips(isFirst: Boolean) {
-        if (mRoomData?.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role == EQUserRole.EQUR_WAIT_USER.value) {
-            mWaitingTv.visibility = VISIBLE
-        } else {
-            mWaitingTv.visibility = GONE
-        }
     }
 
     private fun enterRoomEvent() {
@@ -1498,7 +1489,6 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     }
 
     override fun roundOver(lastInfoModel: GrabRoundInfoModel?, playNextSongInfoCard: Boolean, now: GrabRoundInfoModel?) {
-        refreshWaitTips(false)
         removeAllEnsureMsg()
         val msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER)
         msg.arg1 = if (playNextSongInfoCard) 1 else 0
@@ -1861,6 +1851,14 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         } else {
             mGrabVideoUiController.stopWork()
             mGrabBaseUiController = mGrabAudioUiController
+        }
+    }
+
+    override fun refreshWaitTips() {
+        if (mRoomData?.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role == EQUserRole.EQUR_WAIT_USER.value) {
+            mWaitingTv.visibility = VISIBLE
+        } else {
+            mWaitingTv.visibility = GONE
         }
     }
 
