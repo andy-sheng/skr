@@ -381,7 +381,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 })
             }
             tryShowInviteTipView()
-            tryShowManageSongTipView()
+//            tryShowManageSongTipView()
         } else {
             if (mRoomData?.roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK && mRoomData?.hasGameBegin() == false) {
                 // 歌单战，游戏未开始
