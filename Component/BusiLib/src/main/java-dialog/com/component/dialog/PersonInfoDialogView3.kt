@@ -91,18 +91,6 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
     private var mHasMore = false
     private var DEFAULT_CNT = 10
 
-    // 未关注
-    private val mUnFollowDrawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#FFC15B"))
-            .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
-            .build()
-
-    // 已关注 或 互关
-    private val mFollowDrawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#DB8800"))
-            .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
-            .build()
-
     init {
         View.inflate(context, R.layout.person_info3_card_view_layout, this)
 
@@ -440,15 +428,15 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         when {
             mUserInfoModel.isFriend -> {
                 followIv.text = "互关"
-                followIv.background = mFollowDrawable
+                followIv.background = U.getDrawable(R.drawable.common_hollow_yellow_icon)
             }
             mUserInfoModel.isFollow -> {
                 followIv.text = "已关注"
-                followIv.background = mFollowDrawable
+                followIv.background = U.getDrawable(R.drawable.common_hollow_yellow_icon)
             }
             else -> {
                 followIv.text = "关注Ta"
-                followIv.background = mUnFollowDrawable
+                followIv.background = U.getDrawable(R.drawable.common_yellow_button_icon)
             }
         }
     }

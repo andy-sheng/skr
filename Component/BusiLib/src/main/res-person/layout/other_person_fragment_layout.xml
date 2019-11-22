@@ -305,53 +305,53 @@
         android:padding="@dimen/view_24_dp"
         android:src="@drawable/common_more_icon" />
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/function_area"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_60_dp"
         android:layout_alignParentBottom="true"
-        android:background="#404A9A"
+        android:background="@color/white"
         android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+        <com.common.view.ex.ExTextView
+            android:id="@+id/follow_iv"
+            android:layout_width="@dimen/view_152_dp"
+            android:layout_height="@dimen/view_40_dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/common_yellow_button_icon"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_4_dp"
+            android:text="关注Ta"
+            android:textColor="#AD6C00"
+            android:textSize="@dimen/textsize_16_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/message_iv"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.common.view.ex.ExTextView
-                android:id="@+id/follow_iv"
-                android:layout_width="@dimen/view_152_dp"
-                android:layout_height="@dimen/view_40_dp"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="关注Ta"
-                android:textColor="#AD6C00"
-                android:textSize="@dimen/textsize_16_dp"
-                app:bl_corners_radius="@dimen/view_20_dp"
-                app:bl_shape="rectangle"
-                app:bl_solid_color="#FFC15B" />
 
-        </RelativeLayout>
+        <com.common.view.ex.ExTextView
+            android:id="@+id/message_iv"
+            android:layout_width="@dimen/view_152_dp"
+            android:layout_height="@dimen/view_40_dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/common_yellow_button_icon"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_4_dp"
+            android:text="发消息"
+            android:textColor="#AD6C00"
+            android:textSize="@dimen/textsize_16_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/follow_iv"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <RelativeLayout
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:background="@color/black_trans_20"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.common.view.ex.ExTextView
-                android:id="@+id/message_iv"
-                android:layout_width="@dimen/view_152_dp"
-                android:layout_height="@dimen/view_40_dp"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="发消息"
-                android:textColor="#AD6C00"
-                android:textSize="@dimen/textsize_16_dp"
-                app:bl_corners_radius="@dimen/view_20_dp"
-                app:bl_shape="rectangle"
-                app:bl_solid_color="#FFC15B" />
-        </RelativeLayout>
-
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </RelativeLayout>
