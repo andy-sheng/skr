@@ -1,8 +1,6 @@
 package com.module.playways.mic.room.top
 
 import android.content.Context
-import android.os.Handler
-import android.os.Message
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -17,6 +15,7 @@ import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
 import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
+import com.module.playways.mic.room.event.MicWantInviteEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -26,6 +25,7 @@ class MicTopContentView : ConstraintLayout {
     val REFRESH_DATA = 1
 
     val arrowIv: ImageView
+    lateinit var emptyIv: ImageView
     val recyclerView: RecyclerView
 
     val adapter: MicTopContentAdapter = MicTopContentAdapter()
@@ -53,18 +53,25 @@ class MicTopContentView : ConstraintLayout {
         View.inflate(context, R.layout.mic_top_content_view_layout, this)
 
         arrowIv = rootView.findViewById(R.id.arrow_iv)
+        emptyIv = rootView.findViewById(R.id.empty_iv)
         recyclerView = rootView.findViewById(R.id.recycler_view)
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
 
-        recyclerView.layoutManager =  LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
 
         arrowIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 mListener?.clickArrow(!mIsOpen)
+            }
+        })
+
+        emptyIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                EventBus.getDefault().post(MicWantInviteEvent())
             }
         })
     }

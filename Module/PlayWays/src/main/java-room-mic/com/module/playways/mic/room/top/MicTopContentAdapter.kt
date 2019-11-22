@@ -15,8 +15,6 @@ import com.component.busilib.view.VoiceChartView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
-import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
-import com.module.playways.mic.room.event.MicWantInviteEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.zq.live.proto.MicRoom.EMUserRole
 import org.greenrobot.eventbus.EventBus
@@ -24,11 +22,9 @@ import org.greenrobot.eventbus.EventBus
 class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var mDataList = ArrayList<MicPlayerInfoModel>()
-    val SEAT_TYPE = 0
-    val INVITE_TYPE = 1
     var mRoomData: MicRoomData? = null
 
-    var maxUserCount = 1
+    var maxUserCount = 0
         set(value) {
             if (value > 0) {
                 field = value
@@ -39,38 +35,17 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MicAvatarTopViewHolder) {
             holder.bindData(position, if (position < mDataList.size) mDataList[position] else null)
-        } else if (holder is MicInviteViewHolder) {
-            holder.bindData(position)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == SEAT_TYPE) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_top_avatar_item_layout, parent, false)
-            return MicAvatarTopViewHolder(view)
-        } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_top_invite_item_layout, parent, false)
-            return MicInviteViewHolder(view)
-        }
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        if (mDataList.size >= maxUserCount) {
-            return SEAT_TYPE
-        } else if (position < maxUserCount) {
-            return SEAT_TYPE
-        } else {
-            return INVITE_TYPE
-        }
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_top_avatar_item_layout, parent, false)
+        return MicAvatarTopViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        if (mRoomData?.isOwner == true) {
-            if (mDataList.size >= maxUserCount) {
-                return mDataList.size
-            } else {
-                return maxUserCount + 1
-            }
+        if (mDataList.size >= maxUserCount) {
+            return mDataList.size
         } else {
             return maxUserCount
         }
@@ -142,7 +117,7 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             if (model?.role == EMUserRole.MQUR_ROOM_OWNER.value || model?.userID == mRoomData?.ownerId) {
-                if(mRoomData?.ownerId != model.userID){
+                if (mRoomData?.ownerId != model.userID) {
                     handler.post {
                         // 如果不post  这里会同步导致列表刷新，会有崩溃
                         mRoomData?.ownerId = model.userID
@@ -159,23 +134,7 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    fun destroy(){
+    fun destroy() {
         handler.removeCallbacksAndMessages(null)
-    }
-
-    inner class MicInviteViewHolder(item: View) : RecyclerView.ViewHolder(item) {
-        var mPostion = 0
-
-        init {
-            item.setOnClickListener(object : DebounceViewClickListener() {
-                override fun clickValid(v: View?) {
-                    EventBus.getDefault().post(MicWantInviteEvent())
-                }
-            })
-        }
-
-        fun bindData(position: Int) {
-            this.mPostion = position
-        }
     }
 }

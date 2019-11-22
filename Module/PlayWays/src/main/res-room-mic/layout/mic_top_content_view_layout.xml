@@ -14,14 +14,27 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/content_ll" />
 
+    <ImageView
+        android:id="@+id/empty_iv"
+        android:layout_width="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginLeft="@dimen/view_5_dp"
+        android:background="@drawable/xkf_yaoqing"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/arrow_iv"
+        app:layout_constraintRight_toLeftOf="@+id/arrow_iv"
+        app:layout_constraintTop_toTopOf="@+id/arrow_iv" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_47_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
         app:layout_constraintBottom_toBottomOf="@id/arrow_iv"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/arrow_iv"
-        app:layout_constraintTop_toTopOf="@id/arrow_iv" />
+        app:layout_constraintRight_toLeftOf="@id/empty_iv"
+        app:layout_constraintTop_toTopOf="@id/arrow_iv"
+        app:layout_goneMarginRight="@dimen/view_10_dp" />
 </merge>
