@@ -227,7 +227,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
                     mImageBg.scaleX = scale
                     mImageBg.scaleY = scale
                 }
-                if (offset >= 0) {
+                if (offset > 0) {
                     mBottomBg.translationY = offset.toFloat()
                 }
             }
@@ -236,7 +236,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             // TODO: 2019-06-23 也可以加效果，看产品怎么说
             mImageBg.translationY = verticalOffset.toFloat()
-            if (verticalOffset <= 0) {
+            if (verticalOffset < 0) {
                 mBottomBg.translationY = verticalOffset.toFloat()
             }
             if (lastVerticalOffset != verticalOffset) {
