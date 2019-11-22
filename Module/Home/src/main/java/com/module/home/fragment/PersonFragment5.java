@@ -135,7 +135,7 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
     IPersonFeedsWall mFeedsWallView;
     ProducationWallView mProducationWallView;
 
-    int srollDivider = U.getDisplayUtils().dip2px(122);  // 滑到分界线的时候
+    int srollDivider = U.getDisplayUtils().dip2px(72);  // 滑到分界线的时候
 
     int mFriendNum = 0;
     int mFansNum = 0;
