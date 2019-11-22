@@ -65,7 +65,7 @@ class BusinessCardDialogView(context: Context, userInfoModel: UserInfoModel, mei
             verifyTv.visibility = View.VISIBLE
             verifyTv.text = userInfoModel.vipInfo.vipDesc
         } else {
-            verifyTv.visibility = View.GONE;
+            verifyTv.visibility = View.GONE
         }
         personTagView.setUserID(userInfoModel.userId)
         personTagView.setSex(userInfoModel.sex)
