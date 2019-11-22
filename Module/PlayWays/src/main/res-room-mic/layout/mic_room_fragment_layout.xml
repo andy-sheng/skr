@@ -68,15 +68,10 @@
         android:layout_height="@dimen/view_24_dp"
         android:layout_marginTop="@dimen/view_59_dp"
         android:layout_marginRight="@dimen/view_14_dp"
+        android:background="@drawable/new_select_song"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/view_9_dp"
-        android:paddingRight="@dimen/view_9_dp"
-        android:text="点歌"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_12_dp"
-        app:bl_corners_radius="12dp"
-        app:bl_gradient_endColor="#835DFD"
-        app:bl_gradient_startColor="#835DFD"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
