@@ -193,7 +193,7 @@
         android:layout_width="@dimen/view_160_dp"
         android:layout_height="@dimen/view_20_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_390_dp"
+        android:layout_marginTop="@dimen/view_400_dp"
         android:gravity="center"
         android:text="候场中，下个轮次参与抢唱"
         android:textColor="@color/white"
