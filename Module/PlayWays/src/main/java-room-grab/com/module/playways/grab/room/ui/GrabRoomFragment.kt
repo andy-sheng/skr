@@ -309,6 +309,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         initBottomView()
         initCommentView()
         initTopView()
+        initSelectSongView()
         initTurnChangeView()
         initGiftDisplayView()
         initGrabOpView()
@@ -1079,13 +1080,25 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             val topLayoutParams = mGrabTopContentView.layoutParams as RelativeLayout.LayoutParams
             topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin
         }
+    }
 
+    fun initSelectSongView() {
         mAddSongIv = rootView.findViewById(R.id.select_song_tv)
         mAddSongIv.setAnimateDebounceViewClickListener {
             mSkrAudioPermission.ensurePermission({
                 SongManagerActivity.open(activity, mRoomData!!)
                 removeManageSongTipView()
             }, true)
+        }
+
+        adjustSelectSongView()
+    }
+
+    private fun adjustSelectSongView() {
+        if (mRoomData?.ownerId != 0) {
+            mAddSongIv.visibility = VISIBLE
+        } else {
+            mAddSongIv.visibility = GONE
         }
     }
 
@@ -1684,6 +1697,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             mVIPEnterView?.switchRoom()
             // 重新决定显示mic按钮
             mBottomContainerView?.setRoomData(mRoomData!!)
+            adjustSelectSongView()
         }
     }
 
