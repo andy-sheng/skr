@@ -333,6 +333,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
     }
 
     fun addPhotos(list: List<PhotoModel>?, totalCount: Int, clear: Boolean) {
+        mHasMore = !list.isNullOrEmpty()
         if (clear) {
             photoAdapter?.mDataList?.clear()
             if (!list.isNullOrEmpty()) {
