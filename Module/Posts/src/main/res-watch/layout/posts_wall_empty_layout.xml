@@ -19,7 +19,7 @@
         android:layout_gravity="center"
         android:text="暂未发布任何帖子"
         android:layout_marginTop="@dimen/view_10_dp"
-        android:textColor="@color/white_trans_50"
+        android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_14_dp" />
 
 </LinearLayout>
