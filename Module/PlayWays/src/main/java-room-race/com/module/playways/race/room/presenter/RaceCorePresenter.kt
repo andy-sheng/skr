@@ -260,7 +260,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     EventBus.getDefault().post(RaceBlightByMeEvent(it))
                 }
 
-                if (roundSeq == mRoomData.realRoundSeq && subRoundSeq == mRoomData.realRoundInfo?.subRoundSeq ?: 0) {
+                if (roundSeq == mRoomData.realRoundSeq && subRoundSeq == mRoomData.realRoundInfo?.subRoundSeq) {
                     callback?.invoke(true)
                 }
             } else {
