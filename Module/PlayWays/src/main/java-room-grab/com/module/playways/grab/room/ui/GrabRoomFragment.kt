@@ -843,6 +843,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             true
         }
 
+        mPersonInfoDialog?.dismiss(false)
         mPersonInfoDialog = PersonInfoDialog.Builder(activity, QuickFeedbackFragment.FROM_GRAB_ROOM, userID, mShowKick, mRoomData?.roomType != GrabRoomType.ROOM_TYPE_PLAYBOOK)
                 .setRoomID(mRoomData!!.gameId)
                 .setInviteDoubleListener { userInfoModel ->
