@@ -12,14 +12,15 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.view.setDebounceViewClickListener
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.subscribe
+import com.common.log.MyLog
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.RouterConstants
 import com.module.home.R
+import com.module.home.WalletServerApi
 import com.module.mall.MallServerApi
 import com.module.mall.event.BuyMallEvent
 import com.module.mall.event.BuyMallSuccessEvent
@@ -51,6 +52,7 @@ class MallActivity : BaseActivity() {
     var viewList: ArrayList<ProductView>? = null
 
     val rankedServerApi = ApiManager.getInstance().createService(MallServerApi::class.java)
+    val mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi::class.java)
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.mall_activity_layout
@@ -92,6 +94,7 @@ class MallActivity : BaseActivity() {
         }
 
         loadTags()
+        getZSBalance()
     }
 
     fun initAdapter(list: List<MallTag>) {
@@ -194,10 +197,23 @@ class MallActivity : BaseActivity() {
             if (obj.errno == 0) {
                 EventBus.getDefault().post(BuyMallSuccessEvent(event.productModel))
                 U.getToastUtil().showShort("购买成功")
+                getZSBalance()
             } else {
                 U.getToastUtil().showShort(obj.errmsg)
             }
         }
+    }
+
+    fun getZSBalance() {
+        ApiMethods.subscribe(mWalletServerApi.getZSBalance(), object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult) {
+                MyLog.w(TAG, "getZSBalance process obj=$obj")
+                if (obj.errno == 0) {
+                    val amount = obj.data!!.getString("totalAmountStr")
+                    diamondTv.text = "$amount"
+                }
+            }
+        }, this)
     }
 
     override fun canSlide(): Boolean {
