@@ -22,7 +22,6 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.CircleCountDownView
 import com.component.level.utils.LevelConfigUtils
-import com.component.level.view.NormalLevelView2
 import com.glidebitmappool.BitmapFactoryAdapter
 import com.module.RouterConstants
 import com.module.playways.R
@@ -44,10 +43,11 @@ class RaceResultActivity : BaseActivity() {
 
     lateinit var changeTv: TextView
     lateinit var circleView: CircleCountDownView
-    lateinit var levelView: NormalLevelView2
+    lateinit var levelView: ImageView
     lateinit var levelSvga: SVGAImageView
     lateinit var levelDescTv: ExTextView
     lateinit var descTv: TextView
+    lateinit var subLevelSvga: SVGAImageView
     lateinit var countDownTv: TextView
     lateinit var playAgainTv: ExTextView
     lateinit var ivBack: ExImageView
@@ -90,10 +90,10 @@ class RaceResultActivity : BaseActivity() {
         levelSvga = findViewById(R.id.level_svga)
         levelDescTv = findViewById(R.id.level_desc_tv)
         descTv = findViewById(R.id.desc_tv)
+        subLevelSvga = findViewById(R.id.sub_level_svga)
         countDownTv = findViewById(R.id.count_down_tv)
         playAgainTv = findViewById(R.id.play_again_tv)
         ivBack = findViewById(R.id.iv_back)
-
 
         levelSave = findViewById(R.id.level_save)
         levelSaveDesc = findViewById(R.id.level_save_desc)
@@ -180,9 +180,58 @@ class RaceResultActivity : BaseActivity() {
             val middle = raceResultModel.states?.get(1)!!
             val end = raceResultModel.states?.get(2)!!
 
+//            // todo 搞一个测试数据
+              // todo 段位结果数据
+//            val begin = ScoreStateModel()
+//            begin.seq = 0
+//            begin.mainRanking = 1
+//            begin.subRanking = 1
+//            begin.currExp = 0
+//            begin.maxExp = 5
+//            begin.rankingDesc = "潜力新秀I"
+//            val middle = ScoreStateModel()
+//            middle.seq = 0
+//            middle.mainRanking = 2
+//            middle.subRanking = 2
+//            middle.currExp = 2
+//            middle.maxExp = 5
+//            middle.rankingDesc = "潜力新秀II"
+//            val end = ScoreStateModel()
+//            end.seq = 0
+//            end.mainRanking = 1
+//            end.subRanking = 1
+//            end.currExp = 0
+//            end.maxExp = 5
+//            end.rankingDesc = "潜力新秀I"
+              // todo 普通保段数据
+//            val beginSimple = SaveRankModel()
+//            beginSimple.status = 1
+//            beginSimple.curBar = 2
+//            beginSimple.maxBar = 6
+//            val middleSimple = SaveRankModel()
+//            middleSimple.status = 2
+//            middleSimple.curBar = 6
+//            middleSimple.maxBar = 6
+//            val endSimple = SaveRankModel()
+//            endSimple.status = 3
+//            endSimple.curBar = 6
+//            endSimple.maxBar = 6
+              // todo vip保段数据
+//            val beginVip = SaveRankModel()
+//            beginVip.status = 2
+//            beginVip.curBar = 0
+//            beginVip.maxBar = 0
+//            val endVip = SaveRankModel()
+//            endVip.status = 2
+//            endVip.curBar = 0
+//            endVip.maxBar = 0
+//            // todo 测试数据
+
             levelDescTv.text = begin.rankingDesc
 
-            levelView.bindData(begin.mainRanking, begin.subRanking)
+            if (LevelConfigUtils.getImageResoucesLevel(begin.mainRanking) != 0) {
+                levelView.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(begin.mainRanking))
+            }
             circleView.cancelAnim()
             circleView.max = 360
             circleView.progress = 360 * begin.currExp / begin.maxExp
@@ -195,6 +244,7 @@ class RaceResultActivity : BaseActivity() {
             } else {
                 null
             }
+
             levelSave.cancelAnim()
             levelSave.max = 360
             levelSave.progress = 360 * beginSimple.curBar / beginSimple.maxBar
@@ -226,10 +276,8 @@ class RaceResultActivity : BaseActivity() {
                                 } else if (endVip.status > beginVip.status && endVip.status == SaveRankModel.ESRS_USED) {
                                     U.getToastUtil().showShort("VIP保段成功")
                                 }
-                                levelDescTv.text = middle.rankingDesc
                                 levelChangeAnimation(middle, end, object : AnimationListener {
                                     override fun onFinish() {
-                                        levelDescTv.text = end.rankingDesc
                                     }
                                 })
                             }
@@ -239,8 +287,11 @@ class RaceResultActivity : BaseActivity() {
             })
         } else {
             // 服务器有错误
-            levelView.bindData(raceResultModel.getLastState()?.mainRanking
-                    ?: 0, raceResultModel.getLastState()?.subRanking ?: 0)
+            if (LevelConfigUtils.getImageResoucesLevel(raceResultModel.getLastState()?.mainRanking
+                            ?: 0) != 0) {
+                levelView.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(raceResultModel.getLastState()?.mainRanking
+                        ?: 0))
+            }
         }
 
         goMatchJob?.cancel()
@@ -441,61 +492,116 @@ class RaceResultActivity : BaseActivity() {
             listener.onFinish()
         } else {
             // 做动画吧
-            levelSvga.clearAnimation()
-            levelSvga.visibility = View.VISIBLE
-            levelSvga.loops = 1
-            SvgaParserAdapter.parse("level_change.svga", object : SVGAParser.ParseCompletion {
-                override fun onComplete(videoItem: SVGAVideoEntity) {
-                    val drawable = SVGADrawable(videoItem, requestDynamicBitmapItem(before.mainRanking, before.subRanking, after.mainRanking, after.subRanking))
-                    levelSvga.setImageDrawable(drawable)
-                    levelSvga.startAnimation()
+            // 只要不相等，一定有subLevelAnimation动画
+            if (before.mainRanking != after.mainRanking) {
+                mainLevelAnimation(before, after, listener)
+                subLevelAnimation(after, null)
+            } else {
+                subLevelAnimation(after, listener)
+            }
+        }
+    }
+
+    private fun mainLevelAnimation(before: ScoreStateModel, after: ScoreStateModel, listener: AnimationListener) {
+        levelSvga.callback = null
+        levelSvga.clearAnimation()
+        levelSvga.visibility = View.VISIBLE
+        levelSvga.loops = 1
+        SvgaParserAdapter.parse("level_change.svga", object : SVGAParser.ParseCompletion {
+            override fun onComplete(videoItem: SVGAVideoEntity) {
+                val drawable = SVGADrawable(videoItem, requestDynamicBitmapItem(before.mainRanking, before.subRanking, after.mainRanking, after.subRanking))
+                levelSvga.setImageDrawable(drawable)
+                levelSvga.startAnimation()
+            }
+
+            override fun onError() {
+
+            }
+        })
+
+        levelSvga.callback = object : SVGACallback {
+            override fun onPause() {
+
+            }
+
+            override fun onFinished() {
+                levelSvga.callback = null
+                levelSvga.stopAnimation(true)
+                levelSvga.visibility = View.GONE
+
+                levelDescTv.text = after.rankingDesc
+                if (LevelConfigUtils.getImageResoucesLevel(after.mainRanking) != null) {
+                    levelView.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(after.mainRanking))
                 }
+                listener.onFinish()
+            }
 
-                override fun onError() {
-
+            override fun onRepeat() {
+                if (levelSvga.isAnimating) {
+                    levelSvga.stopAnimation(false)
                 }
-            })
+            }
 
-            levelSvga.callback = object : SVGACallback {
-                override fun onPause() {
+            override fun onStep(i: Int, v: Double) {
 
+            }
+        }
+    }
+
+    private fun subLevelAnimation(after: ScoreStateModel, listener: AnimationListener?) {
+        subLevelSvga.callback = null
+        subLevelSvga.clearAnimation()
+        subLevelSvga.visibility = View.VISIBLE
+        subLevelSvga.loops = 1
+        SvgaParserAdapter.parse("sub_level_change.svga", object : SVGAParser.ParseCompletion {
+            override fun onComplete(videoItem: SVGAVideoEntity) {
+                val drawable = SVGADrawable(videoItem)
+                subLevelSvga.setImageDrawable(drawable)
+                subLevelSvga.startAnimation()
+            }
+
+            override fun onError() {
+
+            }
+        })
+
+        subLevelSvga.callback = object : SVGACallback {
+            override fun onPause() {
+
+            }
+
+            override fun onFinished() {
+                subLevelSvga.callback = null
+                subLevelSvga.stopAnimation(true)
+                subLevelSvga.visibility = View.GONE
+
+                levelDescTv.text = after.rankingDesc
+                listener?.onFinish()
+            }
+
+            override fun onRepeat() {
+                if (subLevelSvga.isAnimating) {
+                    subLevelSvga.stopAnimation(false)
                 }
+            }
 
-                override fun onFinished() {
-                    levelSvga.callback = null
-                    levelSvga.stopAnimation(true)
-                    levelSvga.visibility = View.GONE
+            override fun onStep(i: Int, v: Double) {
 
-                    levelView.bindData(after.mainRanking, after.subRanking)
-                    listener.onFinish()
-                }
-
-                override fun onRepeat() {
-                    if (levelSvga.isAnimating) {
-                        levelSvga.stopAnimation(false)
-                    }
-                }
-
-                override fun onStep(i: Int, v: Double) {
-
-                }
             }
         }
     }
 
     private fun requestDynamicBitmapItem(levelBefore: Int, subLevelBefore: Int, levelNow: Int, sublevelNow: Int): SVGADynamicEntity {
         val dynamicEntity = SVGADynamicEntity()
-        if (LevelConfigUtils.getImageResoucesSubLevel(levelBefore, subLevelBefore) != 0) {
-            dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeResource(resources, LevelConfigUtils.getImageResoucesSubLevel(levelBefore, subLevelBefore)), "keyLevelBefore")
-        }
+//        if (LevelConfigUtils.getImageResoucesSubLevel(levelBefore, subLevelBefore) != 0) {
+//            dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeResource(resources, LevelConfigUtils.getImageResoucesSubLevel(levelBefore, subLevelBefore)), "keyLevelBefore")
+//        }
         if (LevelConfigUtils.getImageResoucesLevel(levelBefore) != 0) {
             dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeResource(resources, LevelConfigUtils.getImageResoucesLevel(levelBefore)), "keyMedalBefore")
         }
-
-        if (LevelConfigUtils.getImageResoucesSubLevel(levelNow, sublevelNow) != 0) {
-            dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeResource(resources, LevelConfigUtils.getImageResoucesSubLevel(levelNow, sublevelNow)), "keyLevelNew")
-        }
-
+//        if (LevelConfigUtils.getImageResoucesSubLevel(levelNow, sublevelNow) != 0) {
+//            dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeResource(resources, LevelConfigUtils.getImageResoucesSubLevel(levelNow, sublevelNow)), "keyLevelNew")
+//        }
         if (LevelConfigUtils.getImageResoucesLevel(levelNow) != 0) {
             dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeResource(resources, LevelConfigUtils.getImageResoucesLevel(levelNow)), "keyMedalNew")
         }
