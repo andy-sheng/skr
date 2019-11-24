@@ -32,6 +32,7 @@ public class GrabConfigModel implements Serializable {
         }
         grabConfigModel.setKickUserConsumCoinCnt(config.getKickUserConsumCoinCnt());
         grabConfigModel.setChallengeRoundCnt(config.getChallengeRoundCnt());
+        grabConfigModel.setMaxUserCnt();
         return grabConfigModel;
     }
 

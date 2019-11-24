@@ -259,3 +259,16 @@ enum EMsgRoomMediaType {
     EMR_AUDIO   = 1; // 音频房
     EMR_VIDEO   = 2; // 视频房
 }
+
+//背景效果
+message BackgroundShowInfo
+ {
+    string sourceURL = 1; //资源，使用效果
+    string bgColor   = 2; //背景颜色
+ }
+
+//爆灯效果
+message BLightShowInfo
+ {
+    string sourceURL = 1; //资源，使用效果
+ }
