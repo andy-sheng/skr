@@ -2,6 +2,7 @@ package com.component.dialog
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.callback.Callback
@@ -51,6 +53,7 @@ import com.component.person.view.PersonTagView
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
+import com.module.RouterConstants
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -129,7 +132,20 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         followIv.setDebounceViewClickListener { clickListener?.onClickFollow(mUserId, mUserInfoModel.isFriend, mUserInfoModel.isFollow) }
 
         guardView.clickListener = {
-            //todo 待补全点击守护事件
+            if (it == null) {
+                // 去守护
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$mUserId"))
+                        .navigation()
+            } else {
+                // 跳到个人主页
+                val bundle = Bundle()
+                bundle.putInt("bundle_user_id", it.userId)
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                        .with(bundle)
+                        .navigation()
+            }
         }
 
         photoView.isFocusableInTouchMode = false
@@ -284,6 +300,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
                     val userInfoModel = JSON.parseObject(result.data!!.getString("userBaseInfo"), UserInfoModel::class.java)
                     val relationNumModes = JSON.parseArray(result.data!!.getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel::class.java)
                     val scoreDetailModel = JSON.parseObject(result.data.getString("scoreDetail"), ScoreDetailModel::class.java)
+                    val guardList = JSON.parseArray(result.data.getString("guardUserList"), UserInfoModel::class.java)
                     val isFriend = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isFriend")
                             ?: false
                     val isFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isFollow")
@@ -304,10 +321,15 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
                     showUserLevel(scoreDetailModel)
                     showUserRelationNum(relationNumModes)
                     showCharmsAndQinMiTag(meiLiCntTotal, qinMiCntTotal)
+                    showGuardList(guardList)
                     refreshFollow()
                 }
             }
         }, mContext as BaseActivity)
+    }
+
+    private fun showGuardList(guardList: List<UserInfoModel>?) {
+        guardView.bindData(guardList)
     }
 
     @JvmOverloads

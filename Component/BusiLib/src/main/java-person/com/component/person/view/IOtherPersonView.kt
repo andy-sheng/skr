@@ -12,7 +12,8 @@ interface IOtherPersonView {
                          relationNumModels: List<RelationNumModel>?,
                          meiLiCntTotal: Int, qinMiCntTotal: Int,
                          scoreDetailModel: ScoreDetailModel,
-                         voiceInfoModel: VoiceInfoModel?)
+                         voiceInfoModel: VoiceInfoModel?,
+                         guardUserList: List<UserInfoModel>?)
 
     fun getHomePageFail()
 

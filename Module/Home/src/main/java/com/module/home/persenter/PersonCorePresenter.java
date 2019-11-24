@@ -57,6 +57,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                     ScoreDetailModel scoreDetailModel = JSON.parseObject(result.getData().getString("scoreDetail"), ScoreDetailModel.class);
                     VoiceInfoModel voiceInfoModel = JSON.parseObject(result.getData().getString("voiceInfo"), VoiceInfoModel.class);
                     List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
+                    List<UserInfoModel> guardUserList = JSON.parseArray(result.getData().getString("guardUserList"), UserInfoModel.class);
 
                     MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
                     MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
@@ -64,7 +65,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
                     int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
 
-                    mView.showHomePageInfo(relationNumModes, meiLiCntTotal, voiceInfoModel);
+                    mView.showHomePageInfo(relationNumModes, meiLiCntTotal, voiceInfoModel, guardUserList);
                 } else {
                     mView.loadHomePageFailed();
                 }

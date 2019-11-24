@@ -416,6 +416,23 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
             mQinmiTv.visibility = View.VISIBLE
         }
 
+        mGuardView.clickListener = {
+            if (it == null) {
+                // 去守护
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$mUserId"))
+                        .navigation()
+            } else {
+                // 跳到个人主页
+                val bundle = Bundle()
+                bundle.putInt("bundle_user_id", it.userId)
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                        .with(bundle)
+                        .navigation()
+            }
+        }
+
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 BigImageBrowseFragment.open(false, activity, mUserInfoModel!!.avatar)
@@ -652,7 +669,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     override fun showHomePageInfo(userInfoModel: UserInfoModel,
                                   relationNumModels: List<RelationNumModel>?,
                                   meiLiCntTotal: Int, qinMiCntTotal: Int,
-                                  scoreDetailModel: ScoreDetailModel, voiceInfoModel: VoiceInfoModel?) {
+                                  scoreDetailModel: ScoreDetailModel, voiceInfoModel: VoiceInfoModel?, guardUserList: List<UserInfoModel>?) {
         mSmartRefresh.finishRefresh()
         showUserInfo(userInfoModel)
         showRelationNum(relationNumModels)
@@ -660,6 +677,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         showScoreDetail(scoreDetailModel)
 
         this.mMeliTotal = meiLiCntTotal
+        mGuardView.bindData(guardUserList)
 
         if (userInfoModel.isFollow) {
             if (!U.getPreferenceUtils().getSettingBoolean(SP_KEY_HAS_SHOW_SPFOLLOW, false)) {

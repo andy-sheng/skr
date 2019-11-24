@@ -33,6 +33,7 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
                     val relationNumModes = JSON.parseArray(result.data?.getJSONObject("userRelationCntInfo")?.getString("cnt"), RelationNumModel::class.java)
                     val scoreDetailModel = JSON.parseObject(result.data?.getString("scoreDetail"), ScoreDetailModel::class.java)
                     val voiceInfoModel = JSON.parseObject(result.data?.getString("voiceInfo"), VoiceInfoModel::class.java)
+                    val guardList = JSON.parseArray(result.data?.getString("guardUserList"), UserInfoModel::class.java)
 
                     val isFriend = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isFriend")
                             ?: false
@@ -51,7 +52,7 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
                     val meiLiCntTotal = result.data?.getIntValue("meiLiCntTotal") ?: 0
                     val qinMiCntTotal = result.data?.getIntValue("qinMiCntTotal") ?: 0
 
-                    view.showHomePageInfo(userInfoModel, relationNumModes, meiLiCntTotal, qinMiCntTotal, scoreDetailModel, voiceInfoModel)
+                    view.showHomePageInfo(userInfoModel, relationNumModes, meiLiCntTotal, qinMiCntTotal, scoreDetailModel, voiceInfoModel, guardList)
                 } else {
                     view.getHomePageFail()
                 }

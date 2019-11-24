@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField
 
 class PackageModel {
     @JSONField(name = "expireTime")
-    var expireTime: Int = 0
+    var expireTime: Long = 0
     @JSONField(name = "packetItemID")
     var packetItemID: String = ""
     @JSONField(name = "useStatus")

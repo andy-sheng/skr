@@ -53,7 +53,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     private HashSet<WantSingerInfo> wantSingInfos = new HashSet<>(); //已经抢了的人
 
-    private List<BackgroundEffectModel> bgShowInfoList = new ArrayList<>();
+    private List<BackgroundEffectModel> showInfos = new ArrayList<>();
 
     //0未知
     //1有种优秀叫一唱到底（全部唱完）
@@ -212,6 +212,14 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         return false;
     }
 
+    public List<BackgroundEffectModel> getShowInfos() {
+        return showInfos;
+    }
+
+    public void setShowInfos(List<BackgroundEffectModel> showInfos) {
+        this.showInfos = showInfos;
+    }
+
     public void setPlayUsers(List<GrabPlayerInfoModel> playUsers) {
         this.playUsers = playUsers;
     }
@@ -328,7 +336,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         if (!bLightInfos.contains(bLightInfoModel)) {
             bLightInfos.add(bLightInfoModel);
             if (notify) {
-                GrabSomeOneLightBurstEvent event = new GrabSomeOneLightBurstEvent(bLightInfoModel.getUserID(), this);
+                GrabSomeOneLightBurstEvent event = new GrabSomeOneLightBurstEvent(bLightInfoModel.getUserID(), this, bLightInfoModel.bLightEffectModel);
                 EventBus.getDefault().post(event);
             }
             return true;
@@ -576,9 +584,9 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             roundInfoModel.getMINIGameRoundInfoModels().add(miniGameRoundInfoModel);
         }
 
-        roundInfoModel.bgShowInfoList.clear();
+        roundInfoModel.showInfos.clear();
         if (roundInfo.getShowInfosList() != null && roundInfo.getShowInfosList().size() > 0) {
-            roundInfoModel.bgShowInfoList.addAll(BackgroundEffectModel.Companion.parseBackgroundEffectModelListFromPb(roundInfo.getShowInfosList()));
+            roundInfoModel.showInfos.addAll(BackgroundEffectModel.Companion.parseBackgroundEffectModelListFromPb(roundInfo.getShowInfosList()));
         }
         return roundInfoModel;
     }

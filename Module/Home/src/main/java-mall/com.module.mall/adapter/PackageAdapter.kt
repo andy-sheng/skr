@@ -94,10 +94,10 @@ class PackageAdapter(val getIndexMethod: (() -> Int)) : DiffAdapter<PackageModel
             this.index = position
 
             productName.text = model.goodsInfo?.goodsName
-            if (model.useStatus > 0) {
+            if (model.useStatus == 2) {
                 btnIv.isSelected = true
                 btnIv.text = "取消使用"
-            } else {
+            } else if (model.useStatus == 1) {
                 btnIv.isSelected = false
                 btnIv.text = "使用"
             }

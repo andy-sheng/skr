@@ -1,23 +1,18 @@
 package com.module.playways.grab.room.view
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
-
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.anim.svga.SvgaParserAdapter
 import com.common.log.MyLog
 import com.common.utils.U
 import com.module.playways.BaseRoomData
 import com.module.playways.R
-import com.opensource.svgaplayer.SVGACallback
-import com.opensource.svgaplayer.SVGADrawable
-import com.opensource.svgaplayer.SVGAImageView
-import com.opensource.svgaplayer.SVGAParser
-import com.opensource.svgaplayer.SVGAVideoEntity
-
-import java.util.ArrayList
+import com.opensource.svgaplayer.*
+import java.util.*
 
 /**
  * 灯的全屏效果
@@ -69,9 +64,9 @@ class GrabDengBigAnimationView : RelativeLayout {
         U.getSoundUtils().preLoad(TAG, R.raw.grab_olight)
     }
 
-    fun playBurstAnimation(flag: Boolean) {
+    fun playBurstAnimation(flag: Boolean, sourceURL: String?) {
         MyLog.d(TAG, "playBurstAnimation")
-        mViewObjectPlayControlTemplate!!.add(PlayData(flag), true)
+        mViewObjectPlayControlTemplate!!.add(PlayData(flag, sourceURL), true)
     }
 
     // 爆灯
@@ -96,7 +91,13 @@ class GrabDengBigAnimationView : RelativeLayout {
 
         dengSvga.visibility = View.VISIBLE
         dengSvga.loops = 1
-        SvgaParserAdapter.parse(BaseRoomData.GRAB_BURST_BIG_SVGA, object : SVGAParser.ParseCompletion {
+
+        var sourceURL: String? = BaseRoomData.GRAB_BURST_BIG_SVGA
+        if (!TextUtils.isEmpty(playData.sourceURL)) {
+            sourceURL = playData.sourceURL
+        }
+
+        SvgaParserAdapter.parse(sourceURL, object : SVGAParser.ParseCompletion {
             override fun onComplete(videoItem: SVGAVideoEntity) {
                 val drawable = SVGADrawable(videoItem)
                 dengSvga.setImageDrawable(drawable)
@@ -146,7 +147,8 @@ class GrabDengBigAnimationView : RelativeLayout {
         U.getSoundUtils().release(TAG)
     }
 
-    class PlayData(internal var isFromSelf: Boolean   //标记爆灯的发送者自己
+    class PlayData(internal var isFromSelf: Boolean,   //标记爆灯的发送者自己
+                   internal var sourceURL: String?
     )
 
     class SVGAImageViewEx(var mSVGAImageView: SVGAImageView?) {
