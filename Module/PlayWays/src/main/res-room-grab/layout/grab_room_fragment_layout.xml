@@ -7,6 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/room_bg_color">
 
+    <ViewStub
+        android:id="@+id/game_effect_bg_view_layout_viewStub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/game_effect_bg_view_layout" />
+
     <!--视频开始-->
     <ViewStub
         android:id="@+id/grab_video_display_view_stub"
