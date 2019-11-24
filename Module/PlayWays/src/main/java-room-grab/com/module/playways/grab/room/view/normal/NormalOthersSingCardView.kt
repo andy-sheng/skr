@@ -37,7 +37,7 @@ import org.greenrobot.eventbus.EventBus
  * 其他人主场景
  */
 class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
-    val TAG = "OthersSingCardView"
+    val TAG = "NormalOthersSingCardView"
 
     internal var mCountDownStatus = COUNT_DOWN_STATUS_WAIT
 
