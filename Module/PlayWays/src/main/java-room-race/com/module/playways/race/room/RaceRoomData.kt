@@ -31,7 +31,7 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
     var audience = false // 本人是否是观众
 
     init {
-//        isAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false)
+        isAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", true)
     }
 
     /**

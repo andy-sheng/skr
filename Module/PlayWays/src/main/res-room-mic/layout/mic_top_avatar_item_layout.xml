@@ -3,7 +3,7 @@
     xmlns:VoiceChartView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:avatarView="http://schemas.android.com/apk/res-auto"
-    android:layout_width="@dimen/view_52_dp"
+    android:layout_width="@dimen/view_45_dp"
     android:layout_height="47dp">
 
     <com.common.view.ex.ExImageView
@@ -40,25 +40,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/waiting_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/textsize_14_dp"
-        android:layout_marginTop="@dimen/view_26_dp"
-        android:gravity="center"
-        android:paddingLeft="@dimen/view_4_dp"
-        android:paddingRight="@dimen/view_4_dp"
-        android:text="下一首"
-        android:textColor="@color/white_trans_90"
-        android:textSize="@dimen/textsize_8_dp"
-        app:bl_corners_radius="@dimen/view_7_dp"
-        app:bl_solid_color="#6F57EC"
-        app:bl_stroke_color="@color/white"
-        app:bl_stroke_width="@dimen/view_1_dp"
-        app:layout_constraintLeft_toLeftOf="@+id/avatar_iv"
-        app:layout_constraintRight_toRightOf="@+id/avatar_iv"
-        app:layout_constraintTop_toTopOf="@+id/avatar_iv" />
-
     <com.component.busilib.view.VoiceChartView
         android:id="@+id/voice_chart_view"
         android:layout_width="@dimen/view_16_dp"
@@ -83,4 +64,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/avatar_iv"
         app:layout_constraintRight_toRightOf="@+id/avatar_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/waiting_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/textsize_14_dp"
+        android:layout_marginTop="@dimen/view_26_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_4_dp"
+        android:paddingRight="@dimen/view_4_dp"
+        android:text="下一首"
+        android:textColor="@color/white_trans_90"
+        android:textSize="@dimen/textsize_8_dp"
+        app:bl_corners_radius="@dimen/view_7_dp"
+        app:bl_solid_color="#6F57EC"
+        app:bl_stroke_color="@color/white"
+        app:bl_stroke_width="@dimen/view_1_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/avatar_iv"
+        app:layout_constraintRight_toRightOf="@+id/avatar_iv"
+        app:layout_constraintTop_toTopOf="@+id/avatar_iv" />
 </android.support.constraint.ConstraintLayout>

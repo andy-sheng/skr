@@ -2,13 +2,13 @@ package com.module.playways.songmanager.fragment
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-
 import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.base.FragmentDataListener
@@ -21,21 +21,16 @@ import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.playways.R
 import com.module.playways.grab.room.GrabRoomData
+import com.module.playways.room.song.fragment.GrabSearchSongFragment
+import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
 import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.event.SongNumChangeEvent
 import com.module.playways.songmanager.model.RecommendTagModel
 import com.module.playways.songmanager.presenter.GrabSongManagePresenter
-import com.module.playways.songmanager.view.GrabEditRoomNameView
-import com.module.playways.songmanager.view.GrabExistSongManageView
-import com.module.playways.songmanager.view.GrabSongWishView
-import com.module.playways.songmanager.view.ISongManageView
-import com.module.playways.songmanager.view.RecommendSongView
-import com.module.playways.room.song.fragment.GrabSearchSongFragment
-import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.view.*
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -58,7 +53,9 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
     lateinit var mOwnerManagePresenter: GrabSongManagePresenter
     private var mRoomData: GrabRoomData? = null
 
-    var mTagModelList: List<RecommendTagModel>? = null
+    val mTagModelList = ArrayList<RecommendTagModel>()
+
+    val handler = Handler()
 
     override fun initView(): Int {
         return R.layout.grab_song_manage_fragment_layout
@@ -107,7 +104,7 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
                         .setHasAnimation(true)
                         .addDataBeforeAdd(0, SongManagerActivity.TYPE_FROM_GRAB)
                         .addDataBeforeAdd(1, mRoomData!!.isOwner)
-                        .setFragmentDataListener(object :FragmentDataListener{
+                        .setFragmentDataListener(object : FragmentDataListener {
                             override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
                                 if (requestCode == 0 && resultCode == 0 && obj != null) {
                                     val model = obj as SongModel
@@ -119,6 +116,7 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
                         .build())
             }
         })
+
     }
 
     override fun showRoomName(roomName: String?) {
@@ -162,13 +160,8 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
 
         }
 
-        mTagModelList = recommendTagModelList
-        mTagTab.setCustomTabView(R.layout.manage_song_tab, R.id.tab_tv)
-        mTagTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
-        mTagTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
-        mTagTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
-        mTagTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(24f).toFloat())
-        mTagTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(12f).toFloat())
+        mTagModelList.clear()
+        mTagModelList.addAll(recommendTagModelList)
         mPagerAdapter = object : PagerAdapter() {
 
             override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
@@ -176,11 +169,11 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
             }
 
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
-                return instantiateItemGrab(container, position, mTagModelList!!)
+                return instantiateItemGrab(container, position, mTagModelList)
             }
 
             override fun getCount(): Int {
-                return mTagModelList!!.size
+                return mTagModelList.size
             }
 
             override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -188,38 +181,51 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
             }
 
             override fun getPageTitle(position: Int): CharSequence? {
-                return mTagModelList!![position].name
+                return mTagModelList[position].name
+            }
+
+            override fun getItemPosition(`object`: Any): Int {
+                return POSITION_NONE
             }
         }
 
-        mTagTab.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        mViewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
             }
 
             override fun onPageSelected(position: Int) {
-                val view = mViewpager.findViewWithTag<View>(position)
-                if (view != null) {
-                    if (view is RecommendSongView) {
-                        view.tryLoad()
-                    } else if (view is GrabSongWishView) {
-                        view.tryLoad()
-                    } else if (view is GrabExistSongManageView) {
-                        view.tryLoad()
-                    }
-                }
+                loadPageData(position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
 
             }
         })
-
+        mTagTab.setCustomTabView(R.layout.manage_song_tab, R.id.tab_tv)
+        mTagTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
+        mTagTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
+        mTagTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
+        mTagTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(24f).toFloat())
+        mTagTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(12f).toFloat())
         mViewpager.adapter = mPagerAdapter
         mTagTab.setViewPager(mViewpager)
         mPagerAdapter.notifyDataSetChanged()
+        handler.post {
+            loadPageData(0)
+        }
     }
 
+    private fun loadPageData(position:Int){
+        val view = mViewpager.findViewWithTag<View>(position)
+        if (view != null) {
+            when (view) {
+                is RecommendSongView -> view.tryLoad()
+                is GrabSongWishView -> view.tryLoad()
+                is GrabExistSongManageView -> view.tryLoad()
+            }
+        }
+    }
     fun instantiateItemGrab(container: ViewGroup, position: Int, recommendTagModelList: List<RecommendTagModel>): Any {
         MyLog.d(TAG, "instantiateItem container=$container position=$position")
         var view: View
@@ -272,7 +278,7 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
     }
 
     private fun showEditRoomDialog() {
-        val grabEditView = GrabEditRoomNameView(context!!, mRoomData?.roomName ?:"")
+        val grabEditView = GrabEditRoomNameView(context!!, mRoomData?.roomName ?: "")
         grabEditView.onClickCancel = {
             mEditRoomDialog?.dismiss()
         }
@@ -306,13 +312,9 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
         //            recommendSongView.destroy();
         //        }
 
-        if (mGrabSongManageView != null) {
-            mGrabSongManageView!!.destroy()
-        }
-
-        if (mGrabSongWishView != null) {
-            mGrabSongWishView!!.destroy()
-        }
+        mGrabSongManageView?.destroy()
+        mGrabSongWishView?.destroy()
+        handler.removeCallbacksAndMessages(null)
     }
 
     override fun onBackPressed(): Boolean {

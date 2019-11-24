@@ -27,7 +27,11 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
     var tagId: Int = 0//一场到底歌曲分类
     var grabConfigModel = GrabConfigModel()// 一唱到底配置
     var isHasExitGame = false// 是否已经正常退出房间
-    private var mIsAccEnable = false// 是否开启伴奏,只代表设置里伴奏开关
+    var isAccEnable = true// 是否开启伴奏,只代表设置里伴奏开关
+    set(value) {
+        field = value
+        U.getPreferenceUtils().setSettingBoolean("grab_acc_enable1", value)
+    }
     var songLineNum: Int = 0// 歌词总行数
     var roomType: Int = GrabRoomType.ROOM_TYPE_COMMON// 一唱到底房间类型，公开，好友，私密，普通 5为歌单房间
     var playbookRoomDataWhenNotStart: PlaybookRoomDataWhenNotStart? = null // 只针对歌单战，游戏未开始时的一些信息
@@ -63,13 +67,6 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
     override val gameType: Int
         get() = GameModeType.GAME_MODE_GRAB
 
-    var isAccEnable: Boolean
-        get() = mIsAccEnable
-        set(accEnable) {
-            mIsAccEnable = accEnable
-            U.getPreferenceUtils().setSettingBoolean("grab_acc_enable1", mIsAccEnable)
-        }
-
     /**
      * 是不是房主
      *
@@ -90,7 +87,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
     var enterRoundSeq = 0 // 刚进入房间时，所处的轮次
 
     init {
-        mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false)
+        isAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", true)
     }
 
 

@@ -381,7 +381,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 })
             }
             tryShowInviteTipView()
-            tryShowManageSongTipView()
+//            tryShowManageSongTipView()
         } else {
             if (mRoomData?.roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK && mRoomData?.hasGameBegin() == false) {
                 // 歌单战，游戏未开始
@@ -406,19 +406,6 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             }
         }
 
-        refreshWaitTips(true)
-    }
-
-    private fun refreshWaitTips(isFirst: Boolean) {
-        if (isFirst) {
-            if (mRoomData?.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role == EQUserRole.EQUR_WAIT_USER.value) {
-                mWaitingTv.visibility = VISIBLE
-            } else {
-                mWaitingTv.visibility = GONE
-            }
-        } else {
-            mWaitingTv.visibility = GONE
-        }
     }
 
     private fun enterRoomEvent() {
@@ -847,6 +834,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             true
         }
 
+        mPersonInfoDialog?.dismiss(false)
         mPersonInfoDialog = PersonInfoDialog.Builder(activity, QuickFeedbackFragment.FROM_GRAB_ROOM, userID, mShowKick, mRoomData?.roomType != GrabRoomType.ROOM_TYPE_PLAYBOOK)
                 .setRoomID(mRoomData!!.gameId)
                 .setInviteDoubleListener { userInfoModel ->
@@ -1502,7 +1490,6 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     }
 
     override fun roundOver(lastInfoModel: GrabRoundInfoModel?, playNextSongInfoCard: Boolean, now: GrabRoundInfoModel?) {
-        refreshWaitTips(false)
         removeAllEnsureMsg()
         val msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER)
         msg.arg1 = if (playNextSongInfoCard) 1 else 0
@@ -1699,6 +1686,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             mVIPEnterView?.switchRoom()
             // 重新决定显示mic按钮
             mBottomContainerView?.setRoomData(mRoomData!!)
+            mGrabTopContentView.onChangeRoom()
             adjustSelectSongView()
         }
     }
@@ -1865,6 +1853,14 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         } else {
             mGrabVideoUiController.stopWork()
             mGrabBaseUiController = mGrabAudioUiController
+        }
+    }
+
+    override fun refreshWaitTips() {
+        if (mRoomData?.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role == EQUserRole.EQUR_WAIT_USER.value) {
+            mWaitingTv.visibility = VISIBLE
+        } else {
+            mWaitingTv.visibility = GONE
         }
     }
 

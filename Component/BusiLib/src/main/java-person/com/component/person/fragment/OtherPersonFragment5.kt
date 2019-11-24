@@ -128,7 +128,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     private var mBusinessCardDialogView: BusinessCardDialogView? = null
 
-    internal var srollDivider = U.getDisplayUtils().dip2px(150f)  // 滑到分界线的时候
+    internal var srollDivider = U.getDisplayUtils().dip2px(90f)  // 滑到分界线的时候
 
     override fun initView(): Int {
         return R.layout.other_person_fragment_layout
@@ -227,7 +227,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
                     mImageBg.scaleX = scale
                     mImageBg.scaleY = scale
                 }
-                if (offset >= 0) {
+                if (offset > 0) {
                     mBottomBg.translationY = offset.toFloat()
                 }
             }
@@ -236,7 +236,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             // TODO: 2019-06-23 也可以加效果，看产品怎么说
             mImageBg.translationY = verticalOffset.toFloat()
-            if (verticalOffset <= 0) {
+            if (verticalOffset < 0) {
                 mBottomBg.translationY = verticalOffset.toFloat()
             }
             if (lastVerticalOffset != verticalOffset) {

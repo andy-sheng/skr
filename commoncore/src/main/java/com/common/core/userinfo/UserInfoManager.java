@@ -1000,7 +1000,7 @@ public class UserInfoManager {
         Collections.sort(list, new Comparator<UserInfoModel>() {
             @Override
             public int compare(UserInfoModel u1, UserInfoModel u2) {
-                MyLog.d(TAG, "compare" + " u1=" + u1 + " u2=" + u2);
+                //MyLog.d(TAG, "compare" + " u1=" + u1 + " u2=" + u2);
                 // todo 产品的神奇需求 我也不知道为什么要两套排序
                 if (isFromFollow) {
                     if (u1.isSPFollow() == u2.isSPFollow()) {

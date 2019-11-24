@@ -60,12 +60,15 @@ public class GrabSongInfoHolder extends RecyclerView.ViewHolder {
         }
 
         if (mSongModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
+            mSongTag.setVisibility(View.VISIBLE);
             mSongTag.setBackground(SongTagDrawableUtils.INSTANCE.getPkDrawable());
             mSongTag.setText("PK");
         } else if (mSongModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
+            mSongTag.setVisibility(View.VISIBLE);
             mSongTag.setBackground(SongTagDrawableUtils.INSTANCE.getChorusDrawable());
             mSongTag.setText("合唱");
         } else if (mSongModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
+            mSongTag.setVisibility(View.VISIBLE);
             mSongTag.setBackground(SongTagDrawableUtils.INSTANCE.getMiniGameDrawable());
             mSongTag.setText("双人游戏");
         } else {

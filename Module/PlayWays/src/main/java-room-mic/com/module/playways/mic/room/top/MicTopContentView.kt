@@ -123,8 +123,8 @@ class MicTopContentView : ConstraintLayout {
             }
         }
         if (targetPosition >= 0) {
-            return if (targetPosition >= 7) {
-                -1
+            return if (targetPosition >= 5) {
+                26.dp()
             } else {
                 val width = recyclerView.findViewHolderForAdapterPosition(targetPosition).itemView.measuredHeight
                 (targetPosition * width + width * 0.5).toInt()

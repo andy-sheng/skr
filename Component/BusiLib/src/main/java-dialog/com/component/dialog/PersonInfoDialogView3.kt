@@ -333,6 +333,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
     }
 
     fun addPhotos(list: List<PhotoModel>?, totalCount: Int, clear: Boolean) {
+        mHasMore = !list.isNullOrEmpty()
         if (clear) {
             photoAdapter?.mDataList?.clear()
             if (!list.isNullOrEmpty()) {
@@ -360,7 +361,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
             divider.visibility = View.GONE
         }
 
-        if (totalCount > 3) {
+        if (totalCount >= 3) {
             photoNumTv.visibility = View.VISIBLE
             photoNumTv.text = "${totalCount}张"
         } else {
