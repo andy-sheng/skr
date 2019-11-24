@@ -123,7 +123,7 @@ class PackageView : ExConstraintLayout {
                         if (it.packetItemID == packageModel.packetItemID) {
                             it.useStatus = 2
                         } else {
-                            it.useStatus = 0
+                            it.useStatus = 1
                         }
                     }
                 }
