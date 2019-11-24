@@ -18,6 +18,7 @@ import com.common.log.MyLog
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.person.event.ShowReportEvent
@@ -95,6 +96,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     private lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 比赛结果
     private var mRacePagerSelectSongView: RacePagerSelectSongView? = null
     private var mSignUpView: RaceSignUpBtnView? = null
+    lateinit var mGameEffectBgView: GameEffectBgView
 
     internal var mVIPEnterView: VIPEnterView? = null
 
@@ -157,6 +159,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         initTurnSenceView()
 //        initSelectSongView()
         initResultView()
+        initBgEffectView()
 
         initSingSenceView()
         initRightView()
@@ -281,6 +284,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     private fun initSingSenceView() {
         mRaceSelfSingLyricView = RaceSelfSingLyricView(rootView.findViewById(R.id.race_self_sing_lyric_view_stub) as ViewStub, mRoomData)
         mRaceOtherSingCardView = RaceOtherSingCardView(rootView.findViewById(R.id.race_other_sing_lyric_view_stub) as ViewStub, mRoomData)
+    }
+
+    private fun initBgEffectView() {
+        mGameEffectBgView = GameEffectBgView(rootView.findViewById(R.id.game_effect_bg_view_layout_viewStub))
     }
 
     private fun initInputView() {

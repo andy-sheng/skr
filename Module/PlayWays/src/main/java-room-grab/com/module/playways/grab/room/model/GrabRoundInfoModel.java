@@ -3,6 +3,7 @@ package com.module.playways.grab.room.model;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.component.busilib.model.BackgroundEffectModel;
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
@@ -52,6 +53,8 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     private HashSet<WantSingerInfo> wantSingInfos = new HashSet<>(); //已经抢了的人
 
+    private List<BackgroundEffectModel> bgShowInfoList = new ArrayList<>();
+
     //0未知
     //1有种优秀叫一唱到底（全部唱完）
     //2有种结束叫刚刚开始（t<30%）
@@ -92,6 +95,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     protected long endTs;// 结束时间，服务器的
     protected int sysScore;//本轮系统打分，先搞个默认60分
     protected boolean hasSing = false;// 是否已经在演唱，依据时引擎等回调，不是作为是否演唱阶段的依据
+
     public SongModel getMusic() {
         return music;
     }
@@ -157,7 +161,6 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     }
 
 
-
     public GrabRoundInfoModel() {
 
     }
@@ -190,6 +193,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     /**
      * 是否还在房间，用来sync优化
+     *
      * @return
      */
     public boolean isContainInRoom() {
@@ -571,6 +575,11 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             MINIGameRoundInfoModel miniGameRoundInfoModel = MINIGameRoundInfoModel.parse(qminiGameInnerRoundInfo);
             roundInfoModel.getMINIGameRoundInfoModels().add(miniGameRoundInfoModel);
         }
+
+        roundInfoModel.bgShowInfoList.clear();
+        if (roundInfo.getShowInfosList() != null && roundInfo.getShowInfosList().size() > 0) {
+            roundInfoModel.bgShowInfoList.addAll(BackgroundEffectModel.Companion.parseBackgroundEffectModelListFromPb(roundInfo.getShowInfosList()));
+        }
         return roundInfoModel;
     }
 
@@ -865,6 +874,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     /**
      * 本轮自己是否参与抢唱
+     *
      * @return
      */
     public boolean isSelfGrab() {
@@ -876,6 +886,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         }
         return false;
     }
+
     /**
      * 返回当前演唱者的id信息
      *

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.view.*
-import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
@@ -26,6 +25,7 @@ import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.constans.GameModeType
+import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.ConfirmDialog
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
@@ -144,6 +144,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     lateinit var mSingBeginTipsCardView: MicSingBeginTipsCardView// 演唱开始提示
     lateinit var mRoundOverCardView: RoundOverCardView// 结果页
     lateinit var mGrabScoreTipsView: GrabScoreTipsView // 打分提示
+    lateinit var mGameEffectBgView: GameEffectBgView
 
     lateinit var mAddSongIv: ExTextView
     private lateinit var mGiveUpView: GrabGiveupView
@@ -204,6 +205,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         initGiftDisplayView()
         initTopView()
         initTurnSenceView()
+        initBgEffectView()
 
         initVipEnterView()
         initMicSeatView()
@@ -398,6 +400,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 buyFlowerFromOuter()
             }
         })
+    }
+
+    private fun initBgEffectView() {
+        mGameEffectBgView = GameEffectBgView(findViewById(R.id.game_effect_bg_view_layout_viewStub))
     }
 
     private fun showPanelView() {

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:avatarView="http://schemas.android.com/apk/res-auto"
-    xmlns:levelView2="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -59,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/title"
-        android:layout_marginTop="@dimen/view_135_dp"
+        android:layout_marginTop="@dimen/view_195_dp"
         android:background="@drawable/common_gradient_bg" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -161,7 +159,6 @@
                             android:layout_marginLeft="@dimen/view_16_dp"
                             android:layout_marginTop="@dimen/view_8_dp"
                             android:layout_marginRight="@dimen/view_16_dp"
-                            android:visibility="gone"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/level_desc" />

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:levelView2="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -30,14 +29,14 @@
             android:layout_height="@dimen/view_32_dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/view_25_dp"
+            android:drawableRight="@drawable/triangle_up_icon"
+            android:drawablePadding="@dimen/view_10_dp"
             android:ellipsize="marquee"
+            android:gravity="center"
             android:maxWidth="@dimen/view_180_dp"
             android:paddingLeft="@dimen/view_32_dp"
             android:paddingRight="@dimen/view_25_dp"
-            android:drawablePadding="@dimen/view_10_dp"
-            android:drawableRight="@drawable/triangle_up_icon"
             android:singleLine="true"
-            android:gravity="center"
             android:text="全国榜"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_16_dp"
@@ -48,13 +47,13 @@
             android:id="@+id/refresh_location"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/view_32_dp"
+            android:layout_alignTop="@id/tv_area"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/view_18_dp"
-            android:text="刷新位置"
             android:gravity="center"
-            android:visibility="gone"
+            android:text="刷新位置"
             android:textColor="@color/white"
-            android:layout_alignTop="@id/tv_area"/>
+            android:visibility="gone" />
 
         <com.common.view.ex.ExRelativeLayout
             android:layout_width="@dimen/view_112_dp"
@@ -97,17 +96,12 @@
                 android:textColor="#0C2275"
                 android:textStyle="bold" />
 
-            <com.component.level.view.NormalLevelView2
+            <ImageView
                 android:id="@+id/right_chanpain_level_view"
                 android:layout_width="@dimen/view_60_dp"
                 android:layout_height="@dimen/view_53_dp"
                 android:layout_below="@id/tv_right_chanpain_name"
-                android:layout_centerHorizontal="true"
-                levelView2:mainHeight2="@dimen/view_53_dp"
-                levelView2:mainWidth2="@dimen/view_60_dp"
-                levelView2:subBottom2="@dimen/view_3_dp"
-                levelView2:subHeight2="@dimen/view_6_dp"
-                levelView2:subWidth2="@dimen/view_11_dp"></com.component.level.view.NormalLevelView2>
+                android:layout_centerHorizontal="true"></ImageView>
 
 
             <com.common.view.ex.ExTextView
@@ -164,17 +158,12 @@
                 android:textColor="#0C2275"
                 android:textStyle="bold" />
 
-            <com.component.level.view.NormalLevelView2
+            <ImageView
                 android:id="@+id/left_chanpain_level_view"
                 android:layout_width="@dimen/view_60_dp"
                 android:layout_height="@dimen/view_53_dp"
                 android:layout_below="@id/tv_left_chanpain_name"
-                android:layout_centerHorizontal="true"
-                levelView2:mainHeight2="@dimen/view_53_dp"
-                levelView2:mainWidth2="@dimen/view_60_dp"
-                levelView2:subBottom2="@dimen/view_3_dp"
-                levelView2:subHeight2="@dimen/view_6_dp"
-                levelView2:subWidth2="@dimen/view_11_dp"></com.component.level.view.NormalLevelView2>
+                android:layout_centerHorizontal="true"></ImageView>
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/left_chanpain_level_tv"
@@ -236,17 +225,12 @@
                 android:textColor="#0C2275"
                 android:textStyle="bold" />
 
-            <com.component.level.view.NormalLevelView2
+            <ImageView
                 android:id="@+id/chanpain_level_view"
                 android:layout_width="@dimen/view_60_dp"
                 android:layout_height="@dimen/view_53_dp"
                 android:layout_below="@id/tv_chanpain_name"
-                android:layout_centerHorizontal="true"
-                levelView2:mainHeight2="@dimen/view_53_dp"
-                levelView2:mainWidth2="@dimen/view_60_dp"
-                levelView2:subBottom2="@dimen/view_3_dp"
-                levelView2:subHeight2="@dimen/view_6_dp"
-                levelView2:subWidth2="@dimen/view_11_dp"></com.component.level.view.NormalLevelView2>
+                android:layout_centerHorizontal="true"></ImageView>
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/chanpain_level_tv"

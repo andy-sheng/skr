@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.text.SpannableStringBuilder;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -22,8 +23,8 @@ import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.constans.GrabRoomType;
+import com.component.level.utils.LevelConfigUtils;
 import com.component.level.view.LevelStarProgressBar;
-import com.component.level.view.NormalLevelView2;
 import com.module.RouterConstants;
 import com.module.playways.battle.songlist.view.BattleStarView;
 import com.module.playways.grab.room.GrabResultData;
@@ -44,7 +45,7 @@ public class GrabResultFragment extends BaseFragment {
 
     public final String TAG = "GrabResultFragment";
 
-    NormalLevelView2 mLevelView;
+    ImageView mLevelView;
     ExTextView mLevelDescTv;
     LevelStarProgressBar mLevelProgress;
     TextView mChangeTv;
@@ -221,7 +222,9 @@ public class GrabResultFragment extends BaseFragment {
                         progress = stateModel.getCurrExp() * 100 / stateModel.getMaxExp();
                     }
                     mLevelProgress.setCurProgress(progress);
-                    mLevelView.bindData(stateModel.getMainRanking(), stateModel.getSubRanking());
+                    if (LevelConfigUtils.getImageResoucesLevel(stateModel.getMainRanking()) != 0) {
+                        mLevelView.setBackground(U.getDrawable(LevelConfigUtils.getImageResoucesLevel(stateModel.getMainRanking())));
+                    }
                 }
             }
         } else {

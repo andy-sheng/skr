@@ -6,10 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.UserInfoManager;
+import com.component.level.utils.LevelConfigUtils;
 import com.module.playways.room.room.model.RankInfoModel;
 
 import com.common.utils.U;
@@ -18,7 +20,6 @@ import com.common.view.recyclerview.DiffAdapter;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.playways.R;
-import com.component.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
 
 public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.ViewHolder> {
@@ -65,17 +66,17 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
         SimpleDraweeView mSdvIcon;
         ExTextView mTvName;
         ExTextView mTvSegment;
-        NormalLevelView2 mLevelView;
+        ImageView mLevelView;
 
         RankInfoModel mRankInfoModel;
 
         public RankInfoItemHolder(View itemView) {
             super(itemView);
-            mTvRank = (ExTextView) itemView.findViewById(R.id.tv_rank);
-            mSdvIcon = (SimpleDraweeView) itemView.findViewById(R.id.sdv_icon);
-            mTvName = (ExTextView) itemView.findViewById(R.id.tv_name);
-            mTvSegment = (ExTextView) itemView.findViewById(R.id.tv_segment);
-            mLevelView = (NormalLevelView2) itemView.findViewById(R.id.level_view);
+            mTvRank = itemView.findViewById(R.id.tv_rank);
+            mSdvIcon = itemView.findViewById(R.id.sdv_icon);
+            mTvName = itemView.findViewById(R.id.tv_name);
+            mTvSegment = itemView.findViewById(R.id.tv_segment);
+            mLevelView = itemView.findViewById(R.id.level_view);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -94,9 +95,11 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
         public void bind(RankInfoModel rankInfoModel) {
             mRankInfoModel = rankInfoModel;
             mTvRank.setText(rankInfoModel.getRankSeq() + "");
-            mTvName.setText(UserInfoManager.getInstance().getRemarkName(rankInfoModel.getUserID(),rankInfoModel.getNickname()));
+            mTvName.setText(UserInfoManager.getInstance().getRemarkName(rankInfoModel.getUserID(), rankInfoModel.getNickname()));
             mTvSegment.setText(rankInfoModel.getLevelDesc());
-            mLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking());
+            if (LevelConfigUtils.getImageResoucesLevel(rankInfoModel.getMainRanking()) != 0) {
+                mLevelView.setBackground(U.getDrawable(LevelConfigUtils.getImageResoucesLevel(rankInfoModel.getMainRanking())));
+            }
             AvatarUtils.loadAvatarByUrl(mSdvIcon,
                     AvatarUtils.newParamsBuilder(rankInfoModel.getAvatar())
                             .setCircle(true)

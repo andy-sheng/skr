@@ -40,6 +40,7 @@ import com.common.view.ex.ExTextView
 import com.component.busilib.beauty.FROM_IN_GRAB_ROOM
 import com.component.busilib.constans.GrabRoomType
 import com.component.busilib.manager.BgMusicManager
+import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.ConfirmDialog
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
@@ -185,6 +186,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     lateinit var mGrabGameOverView: GrabGameOverView
 
+    lateinit var mGameEffectBgView: GameEffectBgView
+
     internal var mDengBigAnimation: GrabDengBigAnimationView? = null
 
     lateinit var mGrabChangeRoomTransitionView: GrabChangeRoomTransitionView
@@ -311,6 +314,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         initTopView()
         initSelectSongView()
         initTurnChangeView()
+        initBgEffectView()
         initGiftDisplayView()
         initGrabOpView()
         initSingStageView()
@@ -1109,6 +1113,10 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mRoundOverCardView = RoundOverCardView(rootView)
         mGrabGameOverView = rootView.findViewById(R.id.grab_game_over_view)
         mWaitingTv = rootView.findViewById(R.id.waiting_tv)
+    }
+
+    private fun initBgEffectView() {
+        mGameEffectBgView = GameEffectBgView(rootView.findViewById(R.id.game_effect_bg_view_layout_viewStub))
     }
 
     private fun initGiftDisplayView() {

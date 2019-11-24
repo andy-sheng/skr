@@ -17,6 +17,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.component.level.utils.LevelConfigUtils;
 import com.component.person.utils.StringFromatUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.home.R;
@@ -27,7 +28,6 @@ import com.module.home.ranked.model.RankTagModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.component.level.view.NormalLevelView2;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class RankedDetailView extends RelativeLayout {
     SimpleDraweeView mAvatarIv;
     TextView mNameTv;
     TextView mDuanDesc;
-    NormalLevelView2 mLevelView;
+    ImageView mLevelView;
     ImageView mRankedIconIv;
     TextView mRankedDescTv;
 
@@ -250,7 +250,9 @@ public class RankedDetailView extends RelativeLayout {
             mRankedDescTv.setVisibility(GONE);
 
             mDuanDesc.setText(rankDataModel.getLevelDesc());
-            mLevelView.bindData(rankDataModel.getMainRanking(), rankDataModel.getSubRanking());
+            if (LevelConfigUtils.getImageResoucesLevel(rankDataModel.getMainRanking()) != 0) {
+                mLevelView.setBackground(U.getDrawable(LevelConfigUtils.getImageResoucesLevel(rankDataModel.getMainRanking())));
+            }
             if (rankDataModel.getRankSeq() <= 3) {
                 mSeqTv.setText("");
                 if (rankDataModel.getRankSeq() == 1) {
