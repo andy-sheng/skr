@@ -5,14 +5,8 @@
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#020310">
+    android:background="@drawable/srf_haichang_bj">
 
-    <ImageView
-        android:id="@+id/top_background"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_465_dp"
-        android:background="@drawable/mic_room_bg"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/title_bar"
@@ -22,6 +16,7 @@
         app:showBottomLine="false"
         app:showMainView="false"
         app:statusBarColor="@color/transparent" />
+
     <!--底部按钮区-->
     <com.module.playways.mic.room.bottom.MicBottomContainerView
         android:id="@+id/bottom_container_view"
@@ -45,10 +40,10 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom_container_view"
         app:layout_constraintTop_toBottomOf="@id/top_background"
         app:layout_goneMarginBottom="@dimen/view_50_dp"
-        gameType:type="mic" />
+        gameType:type="relay" />
 
     <!-- 包括 顶部操作菜单栏 -->
-    <com.module.playways.mic.room.top.MicTopOpView
+    <com.module.playways.relay.room.top.RelayTopOpView
         android:id="@+id/top_op_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_38_dp"
@@ -56,7 +51,7 @@
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
     <!--包括嘉宾栏 和 观众栏-->
-    <com.module.playways.mic.room.top.MicTopContentView
+    <com.module.playways.relay.room.top.RelayTopContentView
         android:id="@+id/top_content_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_120_dp"
@@ -121,6 +116,7 @@
         android:layout_marginTop="@dimen/view_30_dp"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--    小k房邀请合唱，这里也有这个逻辑 -->
     <ViewStub
         android:id="@+id/mic_invite_view_stub"
         android:layout_width="match_parent"
@@ -200,14 +196,14 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <!--放弃演唱-->
-    <com.module.playways.grab.room.view.GrabGiveupView
-        android:id="@+id/give_up_view"
-        android:layout_width="@dimen/view_97_dp"
-        android:layout_height="@dimen/view_60_dp"
-        android:layout_marginBottom="@dimen/view_163_dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+<!--    <com.module.playways.grab.room.view.GrabGiveupView-->
+<!--        android:id="@+id/give_up_view"-->
+<!--        android:layout_width="@dimen/view_97_dp"-->
+<!--        android:layout_height="@dimen/view_60_dp"-->
+<!--        android:layout_marginBottom="@dimen/view_163_dp"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent" />-->
 
     <!--礼物面板-->
     <com.module.playways.room.gift.view.GiftPanelView
@@ -218,7 +214,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <!--输入框区域-->
-    <com.module.playways.mic.room.view.MicInputContainerView
+    <com.module.playways.room.room.view.InputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -232,12 +228,12 @@
         android:layout="@layout/voice_record_tips_view_layout" />
 
     <!-- 麦席-->
-    <ViewStub
-        android:id="@+id/mic_seat_view_layout_view_stub"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout="@layout/mic_seat_view_layout"
-        android:visibility="gone" />
+<!--    <ViewStub-->
+<!--        android:id="@+id/mic_seat_view_layout_view_stub"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout="@layout/mic_seat_view_layout"-->
+<!--        android:visibility="gone" />-->
 
     <ViewStub
         android:id="@+id/debug_log_view_stub"

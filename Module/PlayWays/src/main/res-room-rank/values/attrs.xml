@@ -31,6 +31,7 @@
             <enum name="grab" value="5" />
             <enum name="race" value="6" />
             <enum name="mic" value="7" />
+            <enum name="relay" value="8" />
         </attr>
     </declare-styleable>
 

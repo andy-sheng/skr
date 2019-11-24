@@ -131,4 +131,6 @@ public interface RouterConstants {
 
     String ACTIVITY_MALL_MALL = "/mall/MallActivity";
     String ACTIVITY_MALL_PACKAGE = "/mall/PackageActivity";
+
+    String ACTIVITY_RELAY_ROOM = "/relay/RelayRoomActivity";
 }

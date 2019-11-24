@@ -14,6 +14,7 @@ import com.module.playways.race.room.RaceRoomData;
 import com.module.playways.race.room.model.FakeUserInfoModel;
 import com.module.playways.race.room.model.RacePlayerInfoModel;
 import com.module.playways.race.room.model.RaceRoundInfoModel;
+import com.module.playways.relay.room.RelayRoomData;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 
 import java.util.List;
@@ -252,6 +253,9 @@ public class RoomDataUtils {
         return roomData.getPlayerOrWaiterInfoModel(uid);
     }
 
+    public static MicPlayerInfoModel getPlayerInfoById(RelayRoomData roomData, int uid) {
+        return roomData.getPlayerOrWaiterInfoModel(uid);
+    }
 
     public static String getSaveAudioForAiFilePath() {
         String saveAudioForAiFilePath = U.getAppInfoUtils().getFilePathInSubDir("upload", BaseRoomData.Companion.getAUDIO_FOR_AI_PATH());

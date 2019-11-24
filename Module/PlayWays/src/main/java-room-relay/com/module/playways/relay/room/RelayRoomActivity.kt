@@ -70,6 +70,12 @@ import com.module.playways.mic.room.view.MicSettingView
 import com.module.playways.mic.room.view.MicTurnInfoCardView
 import com.module.playways.mic.room.view.MicVoiceControlPanelView
 import com.module.playways.mic.room.view.control.MicSingBeginTipsCardView
+import com.module.playways.relay.room.presenter.RelayCorePresenter
+import com.module.playways.relay.room.top.RelayTopContentView
+import com.module.playways.relay.room.top.RelayTopOpView
+import com.module.playways.relay.room.ui.IRelayRoomView
+import com.module.playways.relay.room.ui.RelayWidgetAnimationController
+import com.module.playways.relay.room.view.RelayVoiceControlPanelView
 import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
@@ -99,8 +105,8 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-@Route(path = RouterConstants.ACTIVITY_MIC_ROOM)
-class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
+@Route(path = RouterConstants.ACTIVITY_RELAY_ROOM)
+class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     override fun ensureActivtyTop() {
         // 销毁其他的除排麦房页面所有界面
@@ -108,7 +114,7 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             if (activity === this) {
                 continue
             }
-            if (activity is MicHomeActivity) {
+            if (activity is RelayRoomActivity) {
                 continue
             }
             if (U.getActivityUtils().isHomeActivity(activity)) {
@@ -121,9 +127,9 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     /**
      * 存起该房间一些状态信息
      */
-    internal var mRoomData = MicRoomData()
+    internal var mRoomData = RelayRoomData()
 
-    private lateinit var mCorePresenter: MicCorePresenter
+    private lateinit var mCorePresenter: RelayCorePresenter
     internal var mDoubleRoomInvitePresenter = DoubleRoomInvitePresenter()
     //基础ui组件
     internal lateinit var mInputContainerView: MicInputContainerView
@@ -132,8 +138,8 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     internal lateinit var mCommentView: CommentView
     internal lateinit var mGiftPanelView: GiftPanelView
     internal lateinit var mContinueSendView: ContinueSendView
-    internal lateinit var mTopOpView: MicTopOpView
-    internal lateinit var mTopContentView: MicTopContentView
+    internal lateinit var mTopOpView: RelayTopOpView
+    internal lateinit var mTopContentView: RelayTopContentView
 
     internal var mMicInviteView: MicInviteView? = null
 
@@ -150,20 +156,19 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     private var mVIPEnterView: VIPEnterView? = null
     lateinit var mHasSelectSongNumTv: ExTextView
-    private lateinit var mMicSeatView: MicSeatView
 
     // 都是dialogplus
     private var mPersonInfoDialog: PersonInfoDialog? = null
     private var mGrabKickDialog: ConfirmDialog? = null
-    private var mVoiceControlPanelView: MicVoiceControlPanelView? = null
-    private var mMicSettingView: MicSettingView? = null
+    private var mVoiceControlPanelView: RelayVoiceControlPanelView? = null
+//    private var mMicSettingView: MicSettingView? = null
     private var mGameRuleDialog: DialogPlus? = null
     private var mTipsDialogView: TipsDialogView? = null
 
     internal var mVipEnterPresenter: VipEnterPresenter? = null
 
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
-    val mWidgetAnimationController = MicWidgetAnimationController(this)
+    val mWidgetAnimationController = RelayWidgetAnimationController(this)
     internal var mSkrAudioPermission = SkrAudioPermission()
 
     val mUiHanlder = object : Handler() {
@@ -182,10 +187,10 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         joinRaceRoomRspModel?.let {
             mRoomData.loadFromRsp(it)
         }
-        H.micRoomData = mRoomData
-        H.setType(GameModeType.GAME_MODE_MIC, "MicRoomActivity")
+//        H.micRoomData = mRoomData
+//        H.setType(GameModeType.GAME_MODE_MIC, "MicRoomActivity")
 
-        mCorePresenter = MicCorePresenter(mRoomData, this)
+        mCorePresenter = RelayCorePresenter(mRoomData, this)
         addPresent(mCorePresenter)
         mVipEnterPresenter = VipEnterPresenter(this, mRoomData)
         addPresent(mVipEnterPresenter)
@@ -227,8 +232,8 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             debugLogView.tryInflate()
         }
 
-        if (U.getPreferenceUtils().getSettingBoolean("is_first_enter_microom", true)) {
-            U.getPreferenceUtils().setSettingBoolean("is_first_enter_microom", false)
+        if (U.getPreferenceUtils().getSettingBoolean("is_first_enter_relay_room", true)) {
+            U.getPreferenceUtils().setSettingBoolean("is_first_enter_relay_room", false)
             showGameRuleDialog()
         }
 
@@ -295,13 +300,13 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
     private fun initMicSeatView() {
-        mHasSelectSongNumTv = findViewById(R.id.has_select_song_num_tv)
-        mMicSeatView = MicSeatView(findViewById(R.id.mic_seat_view_layout_view_stub))
-        mMicSeatView.hasSelectSongNumTv = mHasSelectSongNumTv
-        mMicSeatView.mRoomData = mRoomData
-        mHasSelectSongNumTv.setDebounceViewClickListener {
-            mMicSeatView.show()
-        }
+//        mHasSelectSongNumTv = findViewById(R.id.has_select_song_num_tv)
+//        mMicSeatView = MicSeatView(findViewById(R.id.mic_seat_view_layout_view_stub))
+//        mMicSeatView.hasSelectSongNumTv = mHasSelectSongNumTv
+//        mMicSeatView.mRoomData = mRoomData
+//        mHasSelectSongNumTv.setDebounceViewClickListener {
+//            mMicSeatView.show()
+//        }
     }
 
     private fun initVipEnterView() {
@@ -314,7 +319,7 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
     override fun invitedToOtherRoom() {
-        mMicSettingView?.dismiss(false)
+//        mMicSettingView?.dismiss(false)
         mVoiceControlPanelView?.dismiss(false)
     }
 
@@ -354,7 +359,7 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mAddSongIv = findViewById(R.id.select_song_tv)
         mAddSongIv.setAnimateDebounceViewClickListener {
             mSkrAudioPermission.ensurePermission({
-                SongManagerActivity.open(this, mRoomData)
+//                SongManagerActivity.open(this, mRoomData)
             }, true)
         }
 
@@ -467,14 +472,14 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     private fun initTopView() {
         mTopOpView = findViewById(R.id.top_op_view)
-        mTopOpView.setRoomData(mRoomData)
-        mTopOpView.setListener(object : MicTopOpView.Listener {
+//        mTopOpView.setRoomData(mRoomData)
+        mTopOpView.setListener(object : RelayTopOpView.Listener {
             override fun onClickVoiceAudition() {
                 // 调音面板
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(this@RelayRoomActivity)
                 dismissDialog()
                 if (mVoiceControlPanelView == null) {
-                    mVoiceControlPanelView = MicVoiceControlPanelView(this@RelayRoomActivity)
+                    mVoiceControlPanelView = RelayVoiceControlPanelView(this@RelayRoomActivity)
                     mVoiceControlPanelView?.setRoomData(mRoomData)
                 }
                 mVoiceControlPanelView?.showByDialog()
@@ -485,7 +490,7 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                         FragmentUtils.newAddParamsBuilder(this@RelayRoomActivity, QuickFeedbackFragment::class.java)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
-                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_MIC_ROOM)
+                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_RELAY_ROOM)
                                 .addDataBeforeAdd(1, QuickFeedbackFragment.FEED_BACK)
                                 .addDataBeforeAdd(3, mRoomData.gameId)
                                 .setEnterAnim(R.anim.slide_in_bottom)
@@ -507,15 +512,15 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 if (mRoomData.isOwner) {
                     U.getKeyBoardUtils().hideSoftInputKeyBoard(this@RelayRoomActivity)
                     dismissDialog()
-                    if (mMicSettingView == null) {
-                        mMicSettingView = MicSettingView(this@RelayRoomActivity)
-                        mMicSettingView?.mRoomData = mRoomData
-
-                        mMicSettingView?.callUpdate = {
-                            mCorePresenter?.changeMatchState(it)
-                        }
-                    }
-                    mMicSettingView?.showByDialog()
+//                    if (mMicSettingView == null) {
+//                        mMicSettingView = MicSettingView(this@RelayRoomActivity)
+//                        mMicSettingView?.mRoomData = mRoomData
+//
+//                        mMicSettingView?.callUpdate = {
+//                            mCorePresenter?.changeMatchState(it)
+//                        }
+//                    }
+//                    mMicSettingView?.showByDialog()
                 } else {
                     U.getToastUtil().showShort("只有房主能设置哦～")
                 }
@@ -526,7 +531,7 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mTopContentView = findViewById(R.id.top_content_view)
         mTopContentView.setRoomData(mRoomData)
 
-        mTopContentView.setListener(object : MicTopContentView.Listener {
+        mTopContentView.setListener(object : RelayTopContentView.Listener {
             override fun clickArrow(open: Boolean) {
                 if (open) {
                     mWidgetAnimationController.open()
@@ -680,7 +685,7 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         // 请求合唱或者pk
         val micUserMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
         if (micUserMusicModel.userID != MyUserInfoManager.uid.toInt()) {
-            mMicInviteView?.showInvite(micUserMusicModel, mTopContentView.getViewLeft(micUserMusicModel.userID), true)
+//            mMicInviteView?.showInvite(micUserMusicModel, mTopContentView.getViewLeft(micUserMusicModel.userID), true)
         } else {
             // 启一个任务去同步
             mMicInviteView?.startCheckSelfJob(micUserMusicModel)
@@ -706,7 +711,7 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         val userMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
         if (userMusicModel.music?.playType == StandPlayType.PT_SPK_TYPE.value || userMusicModel.music?.playType == StandPlayType.PT_CHO_TYPE.value) {
             // 合唱或者pk
-            mMicInviteView?.showInvite(userMusicModel, mTopContentView.getViewLeft(userMusicModel.userID), false)
+//            mMicInviteView?.showInvite(userMusicModel, mTopContentView.getViewLeft(userMusicModel.userID), false)
         }
     }
 
@@ -767,9 +772,9 @@ class RelayRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             return true
         }
 
-        if (mMicSeatView.onBackPressed()) {
-            return true
-        }
+//        if (mMicSeatView.onBackPressed()) {
+//            return true
+//        }
 
         dismissDialog()
         mTipsDialogView = TipsDialogView.Builder(this)
