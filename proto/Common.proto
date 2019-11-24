@@ -23,6 +23,20 @@ message UserInfo {
     HonorInfo honorInfo = 10;//会员信息
 }
 
+//背景效果
+message BackgroundShowInfo
+{
+    string sourceURL = 1; //资源，使用效果
+    string bgColor   = 2; //背景颜色
+}
+
+//爆灯效果
+message BLightShowInfo
+{
+    string sourceURL = 1; //资源，使用效果
+}
+
+
 message HonorInfo
 {
     EHonorType honorType = 1; //会员类型
