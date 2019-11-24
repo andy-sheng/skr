@@ -1279,9 +1279,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         if (RoomDataUtils.isMyRound(mRoomData!!.realRoundInfo)) {
             // 当前我是演唱者
             mDengBigAnimation?.translationY = U.getDisplayUtils().dip2px(200f).toFloat()
-            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid)
+            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid, event?.bLightEffectModel.sourceURL)
         } else {
-            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid)
+            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid, event?.bLightEffectModel.sourceURL)
         }
     }
 
@@ -1399,8 +1399,10 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         if (now != null && now.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
             // pk的第二轮，没有 vs 的演唱开始提示了
             onSingBeginTipsPlayOver()
+            playBgEffect(2)
         } else {
             singBeginTipsPlay { onSingBeginTipsPlayOver() }
+            playBgEffect(1)
         }
 
         StatisticsAdapter.recordCountEvent("grab", "game_sing", null)
@@ -1431,6 +1433,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 mGrabOpBtn.hide("singByOthers2")
             }
             onSingBeginTipsPlayOver()
+
+            playBgEffect(2)
         } else {
             singBeginTipsPlay {
                 val grabRoundInfoModel = mRoomData!!.realRoundInfo
@@ -1445,6 +1449,25 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                     mGrabOpBtn.hide("singByOthers2")
                 }
                 onSingBeginTipsPlayOver()
+            }
+
+            playBgEffect(1)
+        }
+    }
+
+    private fun playBgEffect(seq: Int) {
+        val now = mRoomData!!.realRoundInfo
+        if (seq == 1) {
+            if (now?.showInfos != null && now?.showInfos.size >= 1) {
+                mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+            } else {
+                mGameEffectBgView.hideBg()
+            }
+        } else if (seq == 2) {
+            if (now?.showInfos != null && now?.showInfos.size >= 2) {
+                mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
+            } else {
+                mGameEffectBgView.hideBg()
             }
         }
     }
@@ -1518,6 +1541,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 onRoundOverPlayOver(playNextSongInfoCard, now)
             }
         })
+        mGameEffectBgView.hideBg()
     }
 
     private fun onRoundOverPlayOver(playNextSongInfoCard: Boolean, now: GrabRoundInfoModel?) {

@@ -4,16 +4,11 @@ import com.alibaba.fastjson.annotation.JSONField
 import com.common.log.MyLog
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent
-import com.module.playways.mic.room.model.MicRoundInfoModel
-import com.zq.live.proto.GrabRoom.QBLightMsg
-import com.zq.live.proto.GrabRoom.QMLightMsg
 import com.zq.live.proto.GrabRoom.QSPKInnerRoundInfo
 import com.zq.live.proto.MicRoom.MSPKInnerRoundInfo
-
 import org.greenrobot.eventbus.EventBus
-
 import java.io.Serializable
-import java.util.HashSet
+import java.util.*
 
 class SPkRoundInfoModel : Serializable {
     val TAG = "SPkRoundInfoModel"
@@ -113,7 +108,7 @@ class SPkRoundInfoModel : Serializable {
         if (!bLightInfos.contains(bLightInfoModel)) {
             bLightInfos.add(bLightInfoModel)
             if (notify) {
-                val event = GrabSomeOneLightBurstEvent(bLightInfoModel.getUserID(), roundInfoModel)
+                val event = GrabSomeOneLightBurstEvent(bLightInfoModel.getUserID(), roundInfoModel, bLightInfoModel.bLightEffectModel)
                 EventBus.getDefault().post(event)
             }
             return true

@@ -1,9 +1,11 @@
 package com.component.busilib.view
 
 import android.graphics.Color
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
 import com.common.anim.svga.SvgaParserAdapter
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.ExViewStub
 import com.component.busilib.R
@@ -14,8 +16,8 @@ import com.opensource.svgaplayer.SVGAVideoEntity
 import org.greenrobot.greendao.annotation.NotNull
 
 class GameEffectBgView : ExViewStub {
-    lateinit var bg: View
-    lateinit var effectSvga: SVGAImageView
+    var bg: View? = null
+    var effectSvga: SVGAImageView? = null
 
     constructor(mViewStub: ViewStub?) : super(mViewStub)
 
@@ -25,6 +27,11 @@ class GameEffectBgView : ExViewStub {
     }
 
     fun showBgEffect(sourceURL: String, color: String) {
+        if (TextUtils.isEmpty(sourceURL)) {
+            hideBg()
+            return
+        }
+
         setVisibility(View.VISIBLE)
         effectSvga?.loops = 1
 
@@ -42,9 +49,10 @@ class GameEffectBgView : ExViewStub {
         })
 
         try {
-            bg.setBackgroundColor(Color.parseColor(color))
+            bg?.setBackgroundColor(Color.parseColor(color))
         } catch (color: IllegalArgumentException) {
-            bg.setBackgroundColor(U.getColor(R.color.black))
+            MyLog.e("GameEffectBgView", "IllegalArgumentException")
+            bg?.setBackgroundColor(U.getColor(R.color.black))
         }
     }
 
