@@ -25,7 +25,7 @@ class RaceBottomContainerView : BottomContainerView {
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
 
-    override fun getLayout(): Int {
-        return R.layout.race_bottom_container_view_layout
-    }
+//    override fun getLayout(): Int {
+//        return R.layout.race_bottom_container_view_layout
+//    }
 }
