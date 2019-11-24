@@ -26,7 +26,6 @@ import android.view.animation.DecelerateInterpolator;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.listener.AnimationListener;
-import com.module.playways.room.room.utils.ScoreAnimationHelp;
 import com.module.playways.R;
 
 /**

@@ -3,16 +3,17 @@ package com.module.home.ranked.view;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.component.level.utils.LevelConfigUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.home.R;
 import com.module.home.ranked.model.RankDataModel;
-import com.component.level.view.NormalLevelView2;
 import com.component.person.event.ShowPersonCenterEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,7 +28,7 @@ public class RankedDuanViewHolder extends RecyclerView.ViewHolder {
     SimpleDraweeView mAvatarIv;
     TextView mNameTv;
     TextView mDuanDesc;
-    NormalLevelView2 mLevelView;
+    ImageView mLevelView;
 
     public RankedDuanViewHolder(View itemView) {
         super(itemView);
@@ -57,7 +58,10 @@ public class RankedDuanViewHolder extends RecyclerView.ViewHolder {
                 .build());
         mNameTv.setText(UserInfoManager.getInstance().getRemarkName(model.getUserID(), model.getNickname()));
         mDuanDesc.setText(model.getLevelDesc());
-        mLevelView.bindData(model.getMainRanking(), model.getSubRanking());
+
+        if (LevelConfigUtils.getImageResoucesLevel(model.getMainRanking()) != 0) {
+            mLevelView.setBackground(U.getDrawable(LevelConfigUtils.getImageResoucesLevel(model.getMainRanking())));
+        }
         if (mRankDataModel.getRankSeq() <= 3) {
             mSeqTv.setText("");
             if (mRankDataModel.getRankSeq() == 1) {

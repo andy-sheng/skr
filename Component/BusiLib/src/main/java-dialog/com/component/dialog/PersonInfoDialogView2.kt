@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.View
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 
@@ -33,7 +34,6 @@ import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.statistics.StatisticsAdapter
-import com.common.utils.ImageUtils
 import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
@@ -45,6 +45,7 @@ import com.component.busilib.R
 import com.component.busilib.view.AvatarView
 import com.component.busilib.view.NickNameView
 import com.component.busilib.view.MarqueeTextView
+import com.component.level.utils.LevelConfigUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
@@ -54,7 +55,6 @@ import com.module.common.ICallback
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import com.component.level.view.NormalLevelView2
 import com.component.person.photo.adapter.PhotoAdapter
 import com.component.person.photo.model.PhotoModel
 import com.component.person.view.PersonMoreOpView
@@ -66,9 +66,6 @@ import org.greenrobot.eventbus.ThreadMode
 import com.component.person.model.RelationNumModel
 import com.component.person.model.ScoreDetailModel
 import com.component.person.view.PersonTagView
-import okhttp3.MediaType
-import okhttp3.RequestBody
-import java.util.HashMap
 
 class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: Int, showKick: Boolean, showInvite: Boolean) : RelativeLayout(mContext) {
 
@@ -85,7 +82,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     lateinit var mAvatarIv: AvatarView
     lateinit var mMoreBtn: ExImageView
 
-    lateinit var mLevelView: NormalLevelView2
+    lateinit var mLevelView: ImageView
     lateinit var mHonorTv: NickNameView
     lateinit var mSignTv: MarqueeTextView
     lateinit var mVerifyTv: TextView
@@ -267,7 +264,9 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     private fun showUserLevel(scoreDetailModel: ScoreDetailModel?) {
         scoreDetailModel?.scoreStateModel?.let {
             mLevelView.visibility = View.VISIBLE
-            mLevelView.bindData(it.mainRanking, it.subRanking)
+            if (LevelConfigUtils.getImageResoucesLevel(it.mainRanking) != 0) {
+                mLevelView.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(it.mainRanking))
+            }
         }
     }
 
