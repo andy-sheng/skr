@@ -9,7 +9,6 @@ import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-
 import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.base.FragmentDataListener
@@ -22,22 +21,16 @@ import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.playways.R
 import com.module.playways.grab.room.GrabRoomData
+import com.module.playways.room.song.fragment.GrabSearchSongFragment
+import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
 import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.event.SongNumChangeEvent
 import com.module.playways.songmanager.model.RecommendTagModel
 import com.module.playways.songmanager.presenter.GrabSongManagePresenter
-import com.module.playways.songmanager.view.GrabEditRoomNameView
-import com.module.playways.songmanager.view.GrabExistSongManageView
-import com.module.playways.songmanager.view.GrabSongWishView
-import com.module.playways.songmanager.view.ISongManageView
-import com.module.playways.songmanager.view.RecommendSongView
-import com.module.playways.room.song.fragment.GrabSearchSongFragment
-import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.view.*
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import kotlinx.coroutines.launch
-
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
