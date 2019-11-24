@@ -8,7 +8,6 @@ import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-
 import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.base.FragmentDataListener
@@ -21,21 +20,16 @@ import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.playways.R
 import com.module.playways.grab.room.GrabRoomData
+import com.module.playways.room.song.fragment.GrabSearchSongFragment
+import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
 import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.event.SongNumChangeEvent
 import com.module.playways.songmanager.model.RecommendTagModel
 import com.module.playways.songmanager.presenter.GrabSongManagePresenter
-import com.module.playways.songmanager.view.GrabEditRoomNameView
-import com.module.playways.songmanager.view.GrabExistSongManageView
-import com.module.playways.songmanager.view.GrabSongWishView
-import com.module.playways.songmanager.view.ISongManageView
-import com.module.playways.songmanager.view.RecommendSongView
-import com.module.playways.room.song.fragment.GrabSearchSongFragment
-import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.view.*
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -107,7 +101,7 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
                         .setHasAnimation(true)
                         .addDataBeforeAdd(0, SongManagerActivity.TYPE_FROM_GRAB)
                         .addDataBeforeAdd(1, mRoomData!!.isOwner)
-                        .setFragmentDataListener(object :FragmentDataListener{
+                        .setFragmentDataListener(object : FragmentDataListener {
                             override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
                                 if (requestCode == 0 && resultCode == 0 && obj != null) {
                                     val model = obj as SongModel
@@ -199,14 +193,8 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
 
             override fun onPageSelected(position: Int) {
                 val view = mViewpager.findViewWithTag<View>(position)
-                if (view != null) {
-                    if (view is RecommendSongView) {
-                        view.tryLoad()
-                    } else if (view is GrabSongWishView) {
-                        view.tryLoad()
-                    } else if (view is GrabExistSongManageView) {
-                        view.tryLoad()
-                    }
+                view?.let {
+                    tryLoad(it)
                 }
             }
 
@@ -218,6 +206,20 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
         mViewpager.adapter = mPagerAdapter
         mTagTab.setViewPager(mViewpager)
         mPagerAdapter.notifyDataSetChanged()
+
+        mViewpager.findViewWithTag<View>(0)?.let {
+            tryLoad(it)
+        }
+    }
+
+    fun tryLoad(view: View) {
+        if (view is RecommendSongView) {
+            view.tryLoad()
+        } else if (view is GrabSongWishView) {
+            view.tryLoad()
+        } else if (view is GrabExistSongManageView) {
+            view.tryLoad()
+        }
     }
 
     fun instantiateItemGrab(container: ViewGroup, position: Int, recommendTagModelList: List<RecommendTagModel>): Any {
@@ -272,7 +274,7 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
     }
 
     private fun showEditRoomDialog() {
-        val grabEditView = GrabEditRoomNameView(context!!, mRoomData?.roomName ?:"")
+        val grabEditView = GrabEditRoomNameView(context!!, mRoomData?.roomName ?: "")
         grabEditView.onClickCancel = {
             mEditRoomDialog?.dismiss()
         }
