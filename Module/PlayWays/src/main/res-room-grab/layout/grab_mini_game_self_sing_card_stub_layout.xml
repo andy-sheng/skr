@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_220_dp"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_133_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#FFE0AD" />
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/lyric_common_bg" />
 
     <ScrollView
         android:id="@+id/sv_lyric"

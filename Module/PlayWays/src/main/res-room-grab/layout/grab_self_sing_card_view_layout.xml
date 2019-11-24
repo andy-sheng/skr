@@ -1,63 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:parentTag="android.widget.RelativeLayout">
 
     <ViewStub
         android:id="@+id/normal_self_sing_card_view_stub"
-        android:inflatedId="@+id/normal_self_sing_card_view"
-        android:layout="@layout/grab_normal_self_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/grab_top_content_view"
-        android:layout_marginTop="-75dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="-75dp"
+        android:inflatedId="@+id/normal_self_sing_card_view"
+        android:layout="@layout/grab_normal_self_sing_card_stub_layout"
         android:visibility="gone" />
 
     <ViewStub
         android:id="@+id/chorus_self_sing_card_view_stub"
-        android:inflatedId="@+id/chorus_self_sing_card_view"
-        android:layout="@layout/grab_chorus_self_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/grab_top_content_view"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-75dp"
+        android:inflatedId="@+id/chorus_self_sing_card_view"
+        android:layout="@layout/grab_chorus_self_sing_card_stub_layout"
         android:visibility="gone" />
 
     <ViewStub
         android:id="@+id/pk_self_sing_card_view_stub"
-        android:inflatedId="@+id/pk_self_sing_card_view"
-        android:layout="@layout/grab_pk_self_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/grab_top_content_view"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-75dp"
+        android:inflatedId="@+id/pk_self_sing_card_view"
+        android:layout="@layout/grab_pk_self_sing_card_stub_layout"
         android:visibility="gone" />
 
     <ViewStub
         android:id="@+id/mini_game_self_sing_card_view_stub"
-        android:inflatedId="@+id/mini_game_self_sing_view"
-        android:layout="@layout/grab_mini_game_self_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/grab_top_content_view"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-75dp"
-        android:visibility="gone"/>
+        android:inflatedId="@+id/mini_game_self_sing_view"
+        android:layout="@layout/grab_mini_game_self_sing_card_stub_layout"
+        android:visibility="gone" />
 
     <ViewStub
         android:id="@+id/free_mic_self_sing_card_view_stub"
-        android:inflatedId="@+id/free_mic_self_sing_card_view"
-        android:layout="@layout/grab_free_mic_self_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/grab_top_content_view"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-75dp"
-        android:visibility="gone"/>
+        android:inflatedId="@+id/free_mic_self_sing_card_view"
+        android:layout="@layout/grab_free_mic_self_sing_card_stub_layout"
+        android:visibility="gone" />
 </merge>
