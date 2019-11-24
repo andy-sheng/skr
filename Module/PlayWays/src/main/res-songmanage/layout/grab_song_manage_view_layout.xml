@@ -11,8 +11,6 @@
     android:padding="@dimen/view_2_dp"
     app:bl_corners_radius="@dimen/view_16_dp"
     app:bl_solid_color="#4960CF"
-    app:bl_stroke_color="#3B4E79"
-    app:bl_stroke_width="@dimen/view_2_dp"
     tools:parentTag="com.common.view.ex.ExLinearLayout">
 
     <FrameLayout
@@ -42,7 +40,7 @@
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:background="#3B4E79" />
+            android:background="@color/white_trans_10" />
     </FrameLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
