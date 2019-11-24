@@ -644,6 +644,7 @@ message QRoundInfo {
     repeated QCHOInnerRoundInfo CHORoundInfos = 20; //一唱到底合唱：内部轮次信息
     repeated QSPKInnerRoundInfo SPKRoundInfos = 21; //一唱到底spk：内部轮次信息
     repeated QMINIGameInnerRoundInfo MINIGAMERoundInfos = 22; //一唱到底连麦小游戏：内部轮次信息
+    repeated Common.BackgroundShowInfo showInfos = 23;
 }
 
 message QCHOInnerRoundInfo {
@@ -672,6 +673,8 @@ message QMINIGameInnerRoundInfo {
 message QBLightMsg {
     uint32 userID = 1; //玩家id
     uint32 roundSeq = 2; // 轮次顺序
+    uint32 bLightCnt = 3; //当前爆灯总数量
+    Common.BLightShowInfo showInfo = 4;
 }
 
 message QMLightMsg {
