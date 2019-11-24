@@ -98,6 +98,7 @@ interface ClickGameListener {
     fun onClickTaskListener()
     fun onClickRankListener()
     fun onClickPracticeListener()
+    fun onClickMallListner()
 
     fun onCreateRoomListener()
     fun onPkRoomListener()

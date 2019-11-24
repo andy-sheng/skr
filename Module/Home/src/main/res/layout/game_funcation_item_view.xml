@@ -12,32 +12,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.33" />
+        app:layout_constraintGuide_percent="0.25" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guide_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.66" />
+        app:layout_constraintGuide_percent="0.5" />
 
-    <com.common.view.ex.ExTextView
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75"/>
+
+    <com.common.view.ex.ExImageView
         android:id="@+id/task_iv"
-        android:layout_width="@dimen/view_88_dp"
+        android:layout_width="@dimen/view_72_dp"
         android:layout_height="@dimen/view_36_dp"
-        android:drawableLeft="@drawable/game_task_icon"
+        android:background="@drawable/game_task_icon"
         android:gravity="center"
-        android:paddingLeft="@dimen/view_15_dp"
-        android:text="任务"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_14_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="@id/guide_1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:bl_corners_radius="@dimen/view_20_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#526AE3"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/task_red_iv"
@@ -49,40 +49,37 @@
         app:layout_constraintRight_toRightOf="@id/task_iv"
         app:layout_constraintTop_toTopOf="@id/task_iv" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/rank_iv"
-        android:layout_width="@dimen/view_88_dp"
-        android:layout_height="@dimen/view_36_dp"
-        android:drawableLeft="@drawable/game_rank_icon"
-        android:paddingLeft="@dimen/view_15_dp"
-        android:gravity="center"
-        android:text="排行"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/guide_2"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:bl_corners_radius="@dimen/view_20_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#526AE3"/>
-
-    <com.common.view.ex.ExTextView
+    <com.common.view.ex.ExImageView
         android:id="@+id/practice_iv"
-        android:layout_width="@dimen/view_88_dp"
+        android:layout_width="@dimen/view_72_dp"
         android:layout_height="@dimen/view_36_dp"
-        android:drawableLeft="@drawable/game_practice_icon"
+        android:background="@drawable/game_practice_icon"
         android:gravity="center"
-        android:text="练歌"
-        android:paddingLeft="@dimen/view_15_dp"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_14_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/guide_1"
         app:layout_constraintRight_toRightOf="@id/guide_2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:bl_corners_radius="@dimen/view_20_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#526AE3"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/rank_iv"
+        android:layout_width="@dimen/view_72_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:background="@drawable/game_rank_icon"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/guide_2"
+        app:layout_constraintRight_toRightOf="@id/guide_3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/mall_iv"
+        android:layout_width="@dimen/view_72_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:background="@drawable/game_mall_icon"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/guide_3"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

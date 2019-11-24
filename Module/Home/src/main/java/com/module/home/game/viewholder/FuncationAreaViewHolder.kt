@@ -3,6 +3,7 @@ package com.module.home.game.viewholder
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import com.common.core.view.setDebounceViewClickListener
 
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -14,30 +15,18 @@ import com.module.home.game.model.FuncationModel
 
 class FuncationAreaViewHolder(itemView: View,
                               listener: ClickGameListener) : RecyclerView.ViewHolder(itemView) {
-    val mTaskIv: ExTextView = itemView.findViewById(R.id.task_iv)
-    val mTaskRedIv: ExImageView = itemView.findViewById(R.id.task_red_iv)
-    val mRankIv: ExTextView = itemView.findViewById(R.id.rank_iv)
-    val mPracticeIv: ExTextView = itemView.findViewById(R.id.practice_iv)
+    private val mTaskIv: ExImageView = itemView.findViewById(R.id.task_iv)
+    private val mTaskRedIv: ExImageView = itemView.findViewById(R.id.task_red_iv)
+    private val mRankIv: ExImageView = itemView.findViewById(R.id.rank_iv)
+    private val mPracticeIv: ExImageView = itemView.findViewById(R.id.practice_iv)
+    private val mMallIv: ExImageView = itemView.findViewById(R.id.mall_iv)
+
 
     init {
-        mTaskIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                listener.onClickTaskListener()
-            }
-        })
-
-        mRankIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                listener.onClickRankListener()
-            }
-        })
-
-        mPracticeIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                listener.onClickPracticeListener()
-            }
-        })
-
+        mTaskIv.setDebounceViewClickListener { listener.onClickTaskListener() }
+        mRankIv.setDebounceViewClickListener { listener.onClickRankListener() }
+        mPracticeIv.setDebounceViewClickListener { listener.onClickPracticeListener() }
+        mMallIv.setDebounceViewClickListener { listener.onClickMallListner() }
     }
 
     fun bindData(model: FuncationModel) {

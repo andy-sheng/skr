@@ -83,12 +83,21 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
             }
         })
         mGameAdapter = GameAdapter(fragment, object : ClickGameListener {
+
             override fun onClickTaskListener() {
                 // 进入任务
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task"))
                         .navigation()
                 StatisticsAdapter.recordCountEvent("game", "express_tasks", null)
+            }
+
+            override fun onClickPracticeListener() {
+                // 进入练歌房
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
+                        .withBoolean("selectSong", true)
+                        .navigation()
+                StatisticsAdapter.recordCountEvent("game", "express_practice", null)
             }
 
             override fun onClickRankListener() {
@@ -98,12 +107,10 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                 StatisticsAdapter.recordCountEvent("game", "express_ranklist", null)
             }
 
-            override fun onClickPracticeListener() {
-                // 进入练歌房
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
-                        .withBoolean("selectSong", true)
+            override fun onClickMallListner() {
+                // 进入商城
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_MALL_MALL)
                         .navigation()
-                StatisticsAdapter.recordCountEvent("game", "express_practice", null)
             }
 
             override fun onCreateRoomListener() {
@@ -116,7 +123,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
             override fun onPkRoomListener() {
                 StatisticsAdapter.recordCountEvent("game", "express_rank", null)
-                openRaceActivity(context,false)
+                openRaceActivity(context, false)
             }
 
             override fun onDoubleRoomListener() {
@@ -369,7 +376,7 @@ fun openBattleActivity(ctx: Context) {
     }
 }
 
-fun openRaceActivity(ctx: Context,audience:Boolean) {
+fun openRaceActivity(ctx: Context, audience: Boolean) {
     GlobalScope.launch(Dispatchers.Main) {
         var tipsDialogView: TipsDialogView? = null
         val api = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
@@ -379,7 +386,7 @@ fun openRaceActivity(ctx: Context,audience:Boolean) {
             val skrAudioPermission = SkrAudioPermission()
             skrAudioPermission.ensurePermission({
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
-                        .withBoolean("audience",audience)
+                        .withBoolean("audience", audience)
                         .navigation()
             }, true)
         } else {
