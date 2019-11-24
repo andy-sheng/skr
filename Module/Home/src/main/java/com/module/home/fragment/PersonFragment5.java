@@ -57,6 +57,7 @@ import com.component.person.model.ScoreDetailModel;
 import com.component.person.photo.view.PhotoWallView;
 import com.component.person.producation.view.ProducationWallView;
 import com.component.person.view.CommonAudioView;
+import com.component.person.view.GuardView;
 import com.component.person.view.PersonTagView;
 import com.component.person.view.RequestCallBack;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -83,6 +84,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+
 /**
  * 自己
  * 带作品的照片墙
@@ -107,6 +111,7 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
     Group mOpenHonorArea;
 
     ImageView mBusinessIv;
+    GuardView mGuardView;
 
     CommonAudioView mAudioView;
     ExTextView mEditAudio;
@@ -373,9 +378,31 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
         mOpenHonorArea = getRootView().findViewById(R.id.open_honor_area);
 
         mBusinessIv = getRootView().findViewById(R.id.business_iv);
+        mGuardView = getRootView().findViewById(R.id.guard_view);
 
         mAudioView = getRootView().findViewById(R.id.audio_view);
         mEditAudio = getRootView().findViewById(R.id.edit_audio);
+
+        mGuardView.setClickListener(new Function1<UserInfoModel, Unit>() {
+            @Override
+            public Unit invoke(UserInfoModel userInfoModel) {
+                if (userInfoModel == null) {
+                    // 去守护
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                            .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=" + MyUserInfoManager.INSTANCE.getUid()))
+                            .navigation();
+                } else {
+                    // 跳到个人主页
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("bundle_user_id", userInfoModel.getUserId());
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation();
+                }
+                return null;
+            }
+        });
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -746,12 +773,17 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
     }
 
     @Override
-    public void showHomePageInfo(List<RelationNumModel> relationNumModels, int meiLiCntTotal, VoiceInfoModel voiceInfoModel) {
+    public void showHomePageInfo(List<RelationNumModel> relationNumModels, int meiLiCntTotal, VoiceInfoModel voiceInfoModel, List<UserInfoModel> guardsList) {
         mSmartRefresh.finishRefresh();
         showRelationNum(relationNumModels);
         showVoiceInfo(voiceInfoModel);
+        showGuardView(guardsList);
         refreshUserInfoView();
         this.meiLiCntTotal = meiLiCntTotal;
+    }
+
+    private void showGuardView(List<UserInfoModel> guardsList) {
+        mGuardView.bindData(guardsList);
     }
 
     private void showVoiceInfo(VoiceInfoModel voiceInfoModel) {
