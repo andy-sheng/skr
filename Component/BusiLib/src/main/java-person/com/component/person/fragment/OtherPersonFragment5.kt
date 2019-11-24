@@ -128,7 +128,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     private var mBusinessCardDialogView: BusinessCardDialogView? = null
 
-    internal var srollDivider = U.getDisplayUtils().dip2px(90f)  // 滑到分界线的时候
+    internal var srollDivider = U.getDisplayUtils().dip2px(150f)  // 滑到分界线的时候
 
     override fun initView(): Int {
         return R.layout.other_person_fragment_layout

@@ -49,7 +49,7 @@
         android:id="@+id/bottom_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/view_160_dp"
+        android:layout_marginTop="@dimen/view_220_dp"
         android:background="@drawable/common_gradient_bg" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -153,7 +153,6 @@
                             android:layout_height="@dimen/view_50_dp"
                             android:layout_marginLeft="@dimen/view_16_dp"
                             android:layout_marginTop="@dimen/view_8_dp"
-                            android:visibility="gone"
                             android:layout_marginRight="@dimen/view_16_dp"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
