@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,9 +12,7 @@
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_133_dp"
         android:layout_marginRight="@dimen/view_10_dp"
-        app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#FFE0AD" />
+        android:background="@drawable/free_mic_common_bg" />
 
     <ScrollView
         android:id="@+id/sv_lyric"

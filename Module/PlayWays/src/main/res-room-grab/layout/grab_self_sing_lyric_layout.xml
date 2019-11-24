@@ -2,28 +2,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_220_dp"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_133_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#FFE0AD" />
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/lyric_common_bg" />
 
     <ScrollView
         android:id="@+id/sv_lyric"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_180_dp"
         android:layout_alignTop="@id/iv_bg"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:layout_marginRight="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+
+        android:layout_marginRight="@dimen/view_10_dp"
         android:fadeScrollbars="false"
         android:fadingEdge="none"
         android:overScrollMode="never"
@@ -48,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_170_dp"
         android:layout_alignTop="@id/iv_bg"
-        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:visibility="visible"
@@ -84,15 +80,18 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_56_dp"
+        android:layout_alignTop="@+id/voice_scale_view"
+        android:background="#19001D6A" />
 
     <com.component.lyrics.widget.VoiceScaleView
         android:id="@+id/voice_scale_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_56_dp"
         android:layout_below="@+id/many_lyrics_view"
-        android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="-27dp"
-        android:layout_marginRight="@dimen/view_20_dp"
         android:visibility="visible"
         app:leftBgPaintColor="@color/transparent"
         app:leftPaintColor="@color/white"
