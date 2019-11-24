@@ -201,7 +201,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
             inviteIv.visibility = View.GONE
         }
 
-        getHomePage(mUserId)
+
         // 自己卡片的处理
         if (mUserId.toLong() == MyUserInfoManager.uid) {
             isShowKick = false
@@ -211,9 +211,10 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
             photoView.visibility = View.GONE
             photoViewBg.visibility = View.GONE
             divider.visibility = View.INVISIBLE
-        } else {
-            getPhotos(0)
         }
+
+        getHomePage(mUserId)
+        getPhotos(0)
     }
 
     private fun showMoreOpView() {
@@ -358,7 +359,9 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         } else {
             photoView.visibility = View.VISIBLE
             photoViewBg.visibility = View.VISIBLE
-            divider.visibility = View.GONE
+            if (mUserId != MyUserInfoManager.uid.toInt()) {
+                divider.visibility = View.GONE
+            }
         }
 
         if (totalCount >= 3) {
