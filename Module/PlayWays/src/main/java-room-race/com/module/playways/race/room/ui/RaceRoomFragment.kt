@@ -473,7 +473,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             showPersonInfoView(userId)
         })
         mCommentView.roomData = mRoomData
-        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn, mVoiceRecordTipsView, mCommentView)
+        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
     }
 
     private fun initGiftPanelView() {

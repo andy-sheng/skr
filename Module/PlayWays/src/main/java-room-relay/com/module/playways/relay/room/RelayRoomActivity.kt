@@ -133,7 +133,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     internal var mDoubleRoomInvitePresenter = DoubleRoomInvitePresenter()
     //基础ui组件
     internal lateinit var mInputContainerView: MicInputContainerView
-    internal lateinit var mBottomContainerView: MicBottomContainerView
+    internal lateinit var mBottomContainerView: BottomContainerView
     internal lateinit var mVoiceRecordTipsView: VoiceRecordTipsView
     internal lateinit var mCommentView: CommentView
     internal lateinit var mGiftPanelView: GiftPanelView
@@ -568,7 +568,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             showPersonInfoView(userId)
         })
         mCommentView.roomData = mRoomData
-        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn, mVoiceRecordTipsView, mCommentView)
+        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
     }
 
     private fun initGiftPanelView() {
