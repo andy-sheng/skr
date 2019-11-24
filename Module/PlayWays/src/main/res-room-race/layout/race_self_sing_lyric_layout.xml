@@ -2,16 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_220_dp"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:background="@drawable/race_lyric_bg" />
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/lyric_common_bg" />
 
     <com.module.playways.grab.room.view.SingCountDownView2
         android:id="@+id/sing_count_down_view"
@@ -25,9 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_180_dp"
         android:layout_alignTop="@id/iv_bg"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:layout_marginRight="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+
+        android:layout_marginRight="@dimen/view_10_dp"
         android:fadeScrollbars="false"
         android:fadingEdge="none"
         android:overScrollMode="never"
@@ -35,8 +34,6 @@
         android:scrollbars="vertical">
 
         <TextView
-            android:paddingBottom="@dimen/view_12_dp"
-            android:layout_marginTop="@dimen/view_15_dp"
             android:id="@+id/tv_lyric"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -72,31 +69,24 @@
         app:ly_top_line_num="2" />
 
     <View
-        android:visibility="gone"
-        android:id="@+id/voice_scale_divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignBottom="@+id/voice_scale_view"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:layout_marginBottom="@dimen/view_56_dp"
-        android:background="#1e404A9A" />
+        android:layout_height="@dimen/view_56_dp"
+        android:layout_alignTop="@+id/voice_scale_view"
+        android:background="#19001D6A" />
 
     <com.component.lyrics.widget.VoiceScaleView
         android:id="@+id/voice_scale_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_56_dp"
         android:layout_below="@+id/many_lyrics_view"
-        android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="-27dp"
-        android:layout_marginRight="@dimen/view_10_dp"
         android:visibility="visible"
         app:leftBgPaintColor="@color/transparent"
-        app:leftPaintColor="#FFFFC15B"
-        app:redInnerpaintColor="#FFFFC15B"
-        app:redLinePaintColor="#1e404A9A"
-        app:redOutpaintColor="#FFFFC15B"
+        app:leftPaintColor="@color/white"
+        app:redInnerpaintColor="#FFC15B"
+        app:redLinePaintColor="#D4AF72"
+        app:redOutpaintColor="#A9864E"
         app:rightBgPaintColor="@color/transparent"
-        app:rightPaintColor="#143A5489" />
+        app:rightPaintColor="#D4AF72" />
 
 </RelativeLayout>
