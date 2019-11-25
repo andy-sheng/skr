@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
@@ -15,16 +16,17 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ExViewStub;
 import com.common.view.ex.ExTextView;
+import com.component.level.utils.LevelConfigUtils;
+import com.component.person.event.ShowPersonCardEvent;
 import com.engine.EngineEvent;
 import com.engine.UserStatus;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
-import com.component.person.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.MINIGameRoundInfoModel;
-import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.room.song.model.MiniGameInfoModel;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -60,9 +62,11 @@ public class MiniGameOtherSingCardView extends ExViewStub {
 
     SimpleDraweeView mLeftIv;
     ExTextView mLeftName;
+    ImageView mLeftLevelBg;
 
     SimpleDraweeView mRightIv;
     ExTextView mRightName;
+    ImageView mRightLevelBg;
 
     SingCountDownView2 mSingCountDownView;
 
@@ -105,9 +109,11 @@ public class MiniGameOtherSingCardView extends ExViewStub {
 
         mLeftIv = (SimpleDraweeView) getMParentView().findViewById(R.id.left_iv);
         mLeftName = (ExTextView) getMParentView().findViewById(R.id.left_name);
+        mLeftLevelBg = getMParentView().findViewById(R.id.left_level_bg);
 
         mRightIv = (SimpleDraweeView) getMParentView().findViewById(R.id.right_iv);
         mRightName = (ExTextView) getMParentView().findViewById(R.id.right_name);
+        mRightLevelBg = getMParentView().findViewById(R.id.right_level_bg);
 
         mSingCountDownView = getMParentView().findViewById(R.id.sing_count_down_view);
 
@@ -231,6 +237,9 @@ public class MiniGameOtherSingCardView extends ExViewStub {
                 mUiHandler.removeMessages(MSG_ENSURE_PLAY);
                 mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 1000);
             }
+
+            mLeftLevelBg.setBackground(U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(mLeftUserInfoModel.getRanking().getMainRanking())));
+            mRightLevelBg.setBackground(U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(mRightUserInfoModel.getRanking().getMainRanking())));
         }
     }
 

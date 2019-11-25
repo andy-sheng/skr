@@ -1492,7 +1492,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 if (now?.showInfos != null && now?.showInfos.size >= 1) {
                     mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
                 }
-            } else if (now.isChorusRound || now.isMiniGameRound) {
+            } else if (now.isChorusRound) {
                 if (RoomDataUtils.isRoundSinger(it, MyUserInfoManager.uid)) {
                     //自己有演唱
                     if (now.chorusRoundInfoModels[0].userID.toLong() == MyUserInfoManager.uid) {
@@ -1520,6 +1520,26 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 } else if (now.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
                     if (now?.showInfos != null && now?.showInfos.size >= 2) {
                         mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
+                    }
+                }
+            } else if (now.isMiniGameRound) {
+                if (RoomDataUtils.isRoundSinger(it, MyUserInfoManager.uid)) {
+                    //自己有演唱
+                    if (now.miniGameRoundInfoModels[0].userID.toLong() == MyUserInfoManager.uid) {
+                        if (now?.showInfos != null && now?.showInfos.size >= 1) {
+                            mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+                        }
+                    } else {
+                        if (now?.showInfos != null && now?.showInfos.size >= 2) {
+                            mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
+                        }
+                    }
+                } else {
+                    //自己没有唱
+                    for (effect in now?.showInfos) {
+                        if (!TextUtils.isEmpty(effect.sourceURL)) {
+                            mGameEffectBgView.showBgEffect(effect.sourceURL, effect.bgColor)
+                        }
                     }
                 }
             } else if (now.isFreeMicRound) {

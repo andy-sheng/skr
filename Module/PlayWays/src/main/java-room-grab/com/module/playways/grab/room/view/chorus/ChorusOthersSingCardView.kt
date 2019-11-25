@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewStub
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import android.widget.ImageView
 import android.widget.LinearLayout
-
 import com.common.anim.svga.SvgaParserAdapter
 import com.common.core.account.UserAccountManager
 import com.common.core.avatar.AvatarUtils
@@ -15,25 +15,22 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
+import com.common.view.ExViewStub
 import com.common.view.ex.ExRelativeLayout
 import com.common.view.ex.ExTextView
+import com.component.level.utils.LevelConfigUtils
+import com.component.person.event.ShowPersonCardEvent
 import com.engine.EngineEvent
-import com.engine.UserStatus
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
-import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent
-import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.grab.room.model.ChorusRoundInfoModel
-import com.module.playways.grab.room.model.GrabRoundInfoModel
-import com.common.view.ExViewStub
 import com.module.playways.grab.room.view.SingCountDownView2
 import com.module.playways.room.data.H
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
 import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
-
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -55,11 +52,13 @@ class ChorusOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     internal var mLeftStatusArea: ExRelativeLayout? = null
     internal var mLeftStatus: ExTextView? = null
     internal var mLeftName: ExTextView? = null
+    internal var mLeftLevelBg: ImageView? = null
 
     internal var mRightIv: SimpleDraweeView? = null
     internal var mRightStatusArea: ExRelativeLayout? = null
     internal var mRightStatus: ExTextView? = null
     internal var mRightName: ExTextView? = null
+    internal var mRightLevelBg: ImageView? = null
 
     internal var mSingCountDownView: SingCountDownView2? = null
 
@@ -94,11 +93,13 @@ class ChorusOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         mLeftIv = mParentView!!.findViewById<View>(R.id.left_iv) as SimpleDraweeView
         mLeftStatus = mParentView!!.findViewById<View>(R.id.left_status) as ExTextView
         mLeftName = mParentView!!.findViewById<View>(R.id.left_name) as ExTextView
+        mLeftLevelBg = mParentView!!.findViewById(R.id.left_level_bg)
 
         mRightStatusArea = mParentView!!.findViewById<View>(R.id.right_status_area) as ExRelativeLayout
         mRightIv = mParentView!!.findViewById<View>(R.id.right_iv) as SimpleDraweeView
         mRightStatus = mParentView!!.findViewById<View>(R.id.right_status) as ExTextView
         mRightName = mParentView!!.findViewById<View>(R.id.right_name) as ExTextView
+        mRightLevelBg = mParentView!!.findViewById(R.id.right_level_bg)
 
         mSingCountDownView = mParentView!!.findViewById(R.id.sing_count_down_view)
 
@@ -168,23 +169,23 @@ class ChorusOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         mLeftUserInfoModel = null
         mRightUserInfoModel = null
 
-        if(H.isGrabRoom()){
+        if (H.isGrabRoom()) {
             val now = H.grabRoomData?.realRoundInfo ?: return
             val list = now.chorusRoundInfoModels
             if (list != null && list.size >= 2) {
                 mLeftChorusRoundInfoModel = list[0]
                 mRightChorusRoundInfoModel = list[1]
-                mLeftUserInfoModel =  H.grabRoomData?.getPlayerOrWaiterInfo(mLeftChorusRoundInfoModel!!.userID)
-                mRightUserInfoModel =  H.grabRoomData?.getPlayerOrWaiterInfo(mRightChorusRoundInfoModel!!.userID)
+                mLeftUserInfoModel = H.grabRoomData?.getPlayerOrWaiterInfo(mLeftChorusRoundInfoModel!!.userID)
+                mRightUserInfoModel = H.grabRoomData?.getPlayerOrWaiterInfo(mRightChorusRoundInfoModel!!.userID)
             }
-        }else if(H.isMicRoom()){
+        } else if (H.isMicRoom()) {
             val now = H.micRoomData?.realRoundInfo ?: return
             val list = now.chorusRoundInfoModels
             if (list != null && list.size >= 2) {
                 mLeftChorusRoundInfoModel = list[0]
                 mRightChorusRoundInfoModel = list[1]
-                mLeftUserInfoModel =  H.micRoomData?.getPlayerOrWaiterInfo(mLeftChorusRoundInfoModel!!.userID)
-                mRightUserInfoModel =  H.micRoomData?.getPlayerOrWaiterInfo(mRightChorusRoundInfoModel!!.userID)
+                mLeftUserInfoModel = H.micRoomData?.getPlayerOrWaiterInfo(mLeftChorusRoundInfoModel!!.userID)
+                mRightUserInfoModel = H.micRoomData?.getPlayerOrWaiterInfo(mRightChorusRoundInfoModel!!.userID)
             }
         }
 
@@ -215,7 +216,7 @@ class ChorusOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT
             mSingCountDownView?.reset()
 
-            if(H.isGrabRoom()){
+            if (H.isGrabRoom()) {
                 val grabRoundInfoModel = H.grabRoomData?.realRoundInfo ?: return
 
                 if (!grabRoundInfoModel.isParticipant && grabRoundInfoModel.isEnterInSingStatus) {
@@ -226,7 +227,7 @@ class ChorusOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     mUiHandler.removeMessages(MSG_ENSURE_PLAY)
                     mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 1000)
                 }
-            }else if(H.isMicRoom()){
+            } else if (H.isMicRoom()) {
                 val grabRoundInfoModel = H.micRoomData?.realRoundInfo ?: return
 
                 if (!grabRoundInfoModel.isParticipant && grabRoundInfoModel.isEnterInSingStatus) {
@@ -238,6 +239,9 @@ class ChorusOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 1000)
                 }
             }
+
+            mLeftLevelBg?.setBackground(U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(mLeftUserInfoModel!!.ranking.mainRanking)))
+            mRightLevelBg?.setBackground(U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(mRightUserInfoModel!!.ranking.mainRanking)))
         }
     }
 
@@ -321,7 +325,7 @@ class ChorusOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     private fun countDown(from: String) {
         MyLog.d(TAG, "countDown from=$from")
-        if(H.isGrabRoom()){
+        if (H.isGrabRoom()) {
             val infoModel = H.grabRoomData?.realRoundInfo ?: return
             val totalMs = infoModel.singTotalMs
             val progress: Int  //当前进度条
@@ -336,7 +340,7 @@ class ChorusOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 leaveTime = totalMs
             }
             mSingCountDownView?.startPlay(progress, leaveTime, true)
-        }else if(H.isMicRoom()){
+        } else if (H.isMicRoom()) {
             val infoModel = H.micRoomData?.realRoundInfo ?: return
             val totalMs = infoModel.singTotalMs
             val progress: Int  //当前进度条

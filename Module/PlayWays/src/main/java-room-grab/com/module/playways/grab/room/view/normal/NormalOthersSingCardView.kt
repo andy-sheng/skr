@@ -8,7 +8,7 @@ import android.view.ViewStub
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
-
+import android.widget.ImageView
 import com.common.anim.svga.SvgaParserAdapter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.model.UserInfoModel
@@ -16,13 +16,11 @@ import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
-import com.component.busilib.view.CircleCountDownView
-import com.common.view.ex.ExTextView
-import com.module.playways.R
-import com.module.playways.grab.room.GrabRoomData
-import com.component.person.event.ShowPersonCardEvent
-import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.common.view.ExViewStub
+import com.common.view.ex.ExTextView
+import com.component.level.utils.LevelConfigUtils
+import com.component.person.event.ShowPersonCardEvent
+import com.module.playways.R
 import com.module.playways.room.data.H
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
@@ -30,7 +28,6 @@ import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
 import com.zq.live.proto.GrabRoom.EQRoundStatus
 import com.zq.live.proto.MicRoom.EMRoundStatus
-
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -45,8 +42,9 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     internal var mGrabStageView: SVGAImageView? = null
     internal var mSingAvatarView: BaseImageView? = null
-    internal var mCircleCountDownView: CircleCountDownView? = null
+    //    internal var mCircleCountDownView: CircleCountDownView? = null
     internal var mTvSingerName: ExTextView? = null
+    internal var mLevelBg: ImageView? = null
 
     internal var mEnterAlphaAnimation: AlphaAnimation? = null                // 进场动画
     internal var mLeaveTranslateAnimation: TranslateAnimation? = null   // 出场动画
@@ -65,7 +63,8 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     override fun init(parentView: View) {
         mGrabStageView = mParentView!!.findViewById<View>(R.id.grab_stage_view) as SVGAImageView
         mSingAvatarView = mParentView!!.findViewById<View>(R.id.sing_avatar_view) as BaseImageView
-        mCircleCountDownView = mParentView!!.findViewById<View>(R.id.circle_count_down_view) as CircleCountDownView
+        mLevelBg = mParentView!!.findViewById<View>(R.id.level_bg) as ImageView
+//        mCircleCountDownView = mParentView!!.findViewById<View>(R.id.circle_count_down_view) as CircleCountDownView
         mTvSingerName = mParentView!!.findViewById<View>(R.id.tv_singer_name) as ExTextView
 
         mSingAvatarView?.setOnClickListener(object : DebounceViewClickListener() {
@@ -111,11 +110,10 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             this.mUseId = userInfoModel.userId
             AvatarUtils.loadAvatarByUrl(mSingAvatarView,
                     AvatarUtils.newParamsBuilder(userInfoModel.avatar)
-                            .setBorderColor(U.getColor(R.color.white))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(5f).toFloat())
                             .setCircle(true)
                             .build())
             mTvSingerName?.text = userInfoModel.nicknameRemark
+            mLevelBg?.setBackground(U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(userInfoModel.ranking.mainRanking)))
         } else {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败")
         }
@@ -145,9 +143,9 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         if (H.isGrabRoom()) {
             val grabRoundInfoModel = H.grabRoomData?.realRoundInfo ?: return
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT
-            mCircleCountDownView!!.cancelAnim()
-            mCircleCountDownView!!.max = 360
-            mCircleCountDownView!!.progress = 0
+//            mCircleCountDownView!!.cancelAnim()
+//            mCircleCountDownView!!.max = 360
+//            mCircleCountDownView!!.progress = 0
             if (!grabRoundInfoModel.isParticipant && grabRoundInfoModel.enterStatus == EQRoundStatus.QRS_SING.value) {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
                 countDown("中途进来")
@@ -158,9 +156,9 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         } else if (H.isMicRoom()) {
             val grabRoundInfoModel = H.micRoomData?.realRoundInfo ?: return
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT
-            mCircleCountDownView!!.cancelAnim()
-            mCircleCountDownView!!.max = 360
-            mCircleCountDownView!!.progress = 0
+//            mCircleCountDownView!!.cancelAnim()
+//            mCircleCountDownView!!.max = 360
+//            mCircleCountDownView!!.progress = 0
             if (!grabRoundInfoModel.isParticipant && grabRoundInfoModel.enterStatus == EMRoundStatus.MRS_SING.value) {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
                 countDown("中途进来")
@@ -200,7 +198,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 progress = 1
                 leaveTime = totalMs
             }
-            mCircleCountDownView!!.go(progress, leaveTime)
+//            mCircleCountDownView!!.go(progress, leaveTime)
         } else if (H.isMicRoom()) {
             val infoModel = H.micRoomData?.realRoundInfo ?: return
             val totalMs = infoModel.singTotalMs
@@ -215,7 +213,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 progress = 1
                 leaveTime = totalMs
             }
-            mCircleCountDownView!!.go(progress, leaveTime)
+//            mCircleCountDownView!!.go(progress, leaveTime)
         }
     }
 
@@ -248,13 +246,13 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 mParentView!!.clearAnimation()
                 setVisibility(View.GONE)
             }
-            if (mCircleCountDownView != null) {
-                mCircleCountDownView!!.cancelAnim()
-                mCircleCountDownView!!.max = 360
-                mCircleCountDownView!!.progress = 0
-
-                mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
-            }
+//            if (mCircleCountDownView != null) {
+//                mCircleCountDownView!!.cancelAnim()
+//                mCircleCountDownView!!.max = 360
+//                mCircleCountDownView!!.progress = 0
+//
+//                mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
+//            }
         }
     }
 

@@ -58,6 +58,13 @@
 
             </RelativeLayout>
 
+            <ImageView
+                android:id="@+id/left_level_bg"
+                android:layout_width="@dimen/view_111_dp"
+                android:layout_height="@dimen/view_125_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_18_dp" />
+
             <com.common.view.ex.ExTextView
                 android:id="@+id/left_status"
                 android:layout_width="wrap_content"
@@ -142,6 +149,13 @@
                     app:bl_solid_color="@color/black_trans_50" />
 
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/right_level_bg"
+                android:layout_width="@dimen/view_111_dp"
+                android:layout_height="@dimen/view_125_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_18_dp" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/right_status"

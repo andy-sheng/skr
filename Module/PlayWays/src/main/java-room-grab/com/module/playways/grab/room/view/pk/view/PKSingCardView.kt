@@ -3,7 +3,6 @@ package com.module.playways.grab.room.view.pk.view
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
@@ -11,9 +10,9 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.OvershootInterpolator
 import android.view.animation.ScaleAnimation
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-
 import com.common.anim.svga.SvgaParserAdapter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.model.UserInfoModel
@@ -22,20 +21,17 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExRelativeLayout
 import com.common.view.ex.ExTextView
-import com.facebook.drawee.view.SimpleDraweeView
-import com.module.playways.grab.room.GrabRoomData
+import com.component.level.utils.LevelConfigUtils
 import com.component.person.event.ShowPersonCardEvent
-import com.module.playways.grab.room.model.GrabRoundInfoModel
-import com.module.playways.grab.room.model.SPkRoundInfoModel
-import com.module.playways.grab.room.top.CircleAnimationView
+import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
+import com.module.playways.grab.room.top.CircleAnimationView
 import com.module.playways.room.data.H
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
 import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
 import com.zq.live.proto.GrabRoom.EQRoundOverReason
-
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -48,23 +44,25 @@ class PKSingCardView : RelativeLayout {
 
     internal var mLeftSingSvga: SVGAImageView? = null
     internal var mRightSingSvga: SVGAImageView? = null
-    internal var mPkArea: LinearLayout?=null
+    internal var mPkArea: LinearLayout? = null
 
-    internal var mLeftPkArea: RelativeLayout?=null
-    internal var mLeftArea: RelativeLayout?=null
-    internal var mLeftIv: SimpleDraweeView?=null
-    internal var mLeftStatusArea: ExRelativeLayout?=null
-    internal var mLeftName: ExTextView?=null
-    internal var mLeftStatus: ExTextView?=null
-    internal var mLeftCircleAnimationView: CircleAnimationView?=null
+    internal var mLeftPkArea: RelativeLayout? = null
+    internal var mLeftArea: RelativeLayout? = null
+    internal var mLeftIv: SimpleDraweeView? = null
+    internal var mLeftStatusArea: ExRelativeLayout? = null
+    internal var mLeftName: ExTextView? = null
+    internal var mLeftStatus: ExTextView? = null
+    internal var mLeftCircleAnimationView: CircleAnimationView? = null
+    internal var mLeftLevelBg: ImageView? = null
 
-    internal var mRightPkArea: RelativeLayout?=null
-    internal var mRightArea: RelativeLayout?=null
-    internal var mRightIv: SimpleDraweeView?=null
-    internal var mRightStatusArea: ExRelativeLayout?=null
-    internal var mRightName: ExTextView?=null
-    internal var mRightStatus: ExTextView?=null
-    internal var mRightCircleAnimationView: CircleAnimationView?=null
+    internal var mRightPkArea: RelativeLayout? = null
+    internal var mRightArea: RelativeLayout? = null
+    internal var mRightIv: SimpleDraweeView? = null
+    internal var mRightStatusArea: ExRelativeLayout? = null
+    internal var mRightName: ExTextView? = null
+    internal var mRightStatus: ExTextView? = null
+    internal var mRightCircleAnimationView: CircleAnimationView? = null
+    internal var mRightLevelBg: ImageView? = null
 
     internal var mScaleAnimation: ScaleAnimation? = null        // 头像放大动画
     internal var mValueAnimator: ValueAnimator? = null          // 画圆圈的属性动画
@@ -104,6 +102,7 @@ class PKSingCardView : RelativeLayout {
         mLeftName = findViewById<View>(R.id.left_name) as ExTextView
         mLeftStatus = findViewById<View>(R.id.left_status) as ExTextView
         mLeftCircleAnimationView = findViewById<View>(R.id.left_circle_animation_view) as CircleAnimationView
+        mLeftLevelBg = findViewById(R.id.left_level_bg)
 
         mRightPkArea = findViewById<View>(R.id.right_pk_area) as RelativeLayout
         mRightArea = findViewById<View>(R.id.right_area) as RelativeLayout
@@ -112,6 +111,7 @@ class PKSingCardView : RelativeLayout {
         mRightName = findViewById<View>(R.id.right_name) as ExTextView
         mRightStatus = findViewById<View>(R.id.right_status) as ExTextView
         mRightCircleAnimationView = findViewById<View>(R.id.right_circle_animation_view) as CircleAnimationView
+        mRightLevelBg = findViewById(R.id.right_level_bg)
 
         mLeftIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -131,7 +131,7 @@ class PKSingCardView : RelativeLayout {
     }
 
     fun bindData() {
-        if(H.isGrabRoom()){
+        if (H.isGrabRoom()) {
             val grabRoundInfoModel = H.grabRoomData!!.realRoundInfo
             if (grabRoundInfoModel == null) {
                 MyLog.w(TAG, "setRoomData grabRoundInfoModel=$grabRoundInfoModel")
@@ -148,7 +148,7 @@ class PKSingCardView : RelativeLayout {
                 mRightUserInfoModel = H.grabRoomData!!.getPlayerOrWaiterInfo(list[1].userID)
                 mRightOverReason = list[1].overReason
             }
-        }else if(H.isMicRoom()){
+        } else if (H.isMicRoom()) {
             val grabRoundInfoModel = H.micRoomData!!.realRoundInfo
             if (grabRoundInfoModel == null) {
                 MyLog.w(TAG, "setRoomData grabRoundInfoModel=$grabRoundInfoModel")
@@ -193,6 +193,7 @@ class PKSingCardView : RelativeLayout {
                             .setCircle(true)
                             .build())
             mLeftName?.text = mLeftUserInfoModel!!.nicknameRemark
+            mLeftLevelBg?.setBackground(U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(mLeftUserInfoModel!!.ranking.mainRanking)))
         }
         if (mRightUserInfoModel != null) {
             if (mRightOverReason == EQRoundOverReason.ROR_SELF_GIVE_UP.value) {
@@ -218,6 +219,7 @@ class PKSingCardView : RelativeLayout {
                             .setCircle(true)
                             .build())
             mRightName?.text = mRightUserInfoModel!!.nicknameRemark
+            mRightLevelBg?.setBackground(U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(mRightUserInfoModel!!.ranking.mainRanking)))
         }
     }
 

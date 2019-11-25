@@ -40,7 +40,7 @@
     <LinearLayout
         android:id="@+id/chorus_other_area"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_194_dp"
+        android:layout_height="@dimen/view_210_dp"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_125_dp"
         android:layout_marginRight="@dimen/view_16_dp"
@@ -56,7 +56,13 @@
                 android:layout_width="@dimen/view_90_dp"
                 android:layout_height="@dimen/view_90_dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_32_dp" />
+                android:layout_marginTop="@dimen/view_42_dp" />
+
+            <ImageView
+                android:id="@+id/left_level_bg"
+                android:layout_width="@dimen/view_164_dp"
+                android:layout_height="@dimen/view_175_dp"
+                android:layout_centerHorizontal="true" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/left_name"
@@ -65,7 +71,7 @@
                 android:layout_below="@id/left_iv"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
-                android:layout_marginTop="@dimen/view_30_dp"
+                android:layout_marginTop="@dimen/view_50_dp"
                 android:layout_marginRight="@dimen/view_10_dp"
                 android:ellipsize="end"
                 android:gravity="center"
@@ -91,7 +97,13 @@
                 android:layout_width="@dimen/view_90_dp"
                 android:layout_height="@dimen/view_90_dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_32_dp" />
+                android:layout_marginTop="@dimen/view_42_dp" />
+
+            <ImageView
+                android:id="@+id/right_level_bg"
+                android:layout_width="@dimen/view_164_dp"
+                android:layout_height="@dimen/view_175_dp"
+                android:layout_centerHorizontal="true" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/right_name"
@@ -100,7 +112,7 @@
                 android:layout_below="@id/right_iv"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
-                android:layout_marginTop="@dimen/view_30_dp"
+                android:layout_marginTop="@dimen/view_50_dp"
                 android:layout_marginRight="@dimen/view_10_dp"
                 android:ellipsize="end"
                 android:gravity="center"
