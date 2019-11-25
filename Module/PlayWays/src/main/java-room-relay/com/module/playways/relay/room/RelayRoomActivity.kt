@@ -83,11 +83,8 @@ import com.module.playways.room.room.gift.GiftBigContinuousView
 import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
-<<<<<<< HEAD
 import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.songmanager.SongManagerActivity
-=======
->>>>>>> dbf9683dd5412a0f045c0456c7f700483ec76d29
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.StandPlayType
