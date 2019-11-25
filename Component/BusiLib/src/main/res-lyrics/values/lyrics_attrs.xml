@@ -1,17 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--    当前正在演唱的字的颜色 支持从上到下的渐变色 ,在合唱模式中为自己演唱的颜色-->
     <attr name="ly_high_light_paint_color_from" format="color|reference" />
     <attr name="ly_high_light_paint_color_to" format="color|reference" />
+
+    <!--    只在合唱需要 当前正在演唱的字的颜色 支持从上到下的渐变色 ,在合唱模式中为他人演唱的颜色-->
+    <attr name="ly_high_light_paint_color_from2" format="color|reference" />
+    <attr name="ly_high_light_paint_color_to2" format="color|reference" />
+
+    <!--    当前演唱的行的颜色-->
     <attr name="ly_high_light_sub_paint_color" format="color|reference" />
+
+    <!-- 高亮行字体大小 -->
     <attr name="ly_high_light_paint_text_size" format="float|reference" />
+    <!--    非当前行 其他行的颜色-->
     <attr name="ly_paint_color_from" format="color|reference" />
     <attr name="ly_paint_color_to" format="color|reference" />
+    <!-- 其他行字体大小 -->
     <attr name="ly_paint_text_size" format="float|reference" />
+
+    <!--    轮廓画笔 不知道干嘛的 -->
     <attr name="ly_outline_paint_color" format="color|reference" />
-    <attr name="ly_eable_verbatim" format="boolean" />
-    <attr name="ly_eable_scroll" format="boolean" />
+
+    <!--    是逐字渲染还是逐行渲染-->
+    <attr name="ly_enable_verbatim" format="boolean" />
+    <!--    是否支持滚动 -->
+    <attr name="ly_enable_scroll" format="boolean" />
+    <!--    是否显示作者 -->
     <attr name="ly_show_author" format="boolean" />
+    <!--    是否显示歌曲名字 -->
     <attr name="ly_show_song_name" format="boolean" />
+
     <attr name="ly_top_line_num" format="integer" />
 
     <declare-styleable name="lrc_view">
@@ -24,15 +43,17 @@
         <attr name="ly_paint_text_size" />
         <attr name="ly_paint_dynamic_text_size" />
         <attr name="ly_outline_paint_color" />
-        <attr name="ly_eable_verbatim" />
+        <attr name="ly_enable_verbatim" />
     </declare-styleable>
 
     <declare-styleable name="many_line_lrc_view">
-        <attr name="ly_eable_scroll" />
+        <attr name="ly_enable_scroll" />
         <attr name="ly_show_author" />
         <attr name="ly_top_line_num" />
         <attr name="ly_show_song_name" />
         <attr name="custom_gravity" />
+        <attr name="ly_high_light_paint_color_from2" />
+        <attr name="ly_high_light_paint_color_to2" />
     </declare-styleable>
 
     <attr name="custom_gravity">

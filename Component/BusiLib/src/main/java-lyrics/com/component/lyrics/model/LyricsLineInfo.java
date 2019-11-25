@@ -117,7 +117,7 @@ public class LyricsLineInfo {
                 ", mLineLyrics='" + mLineLyrics + '\'' +
                 ", mLyricsWords=" + Arrays.toString(mLyricsWords) +
                 ", mWordsDisInterval=" + Arrays.toString(mWordsDisInterval) +
-                ", mSplitDynamicLrcLineInfos=" + mSplitDynamicLrcLineInfos +
+                ", mSplitDynamicLrcLineInfos.size=" + mSplitDynamicLrcLineInfos.size() +
                 '}';
     }
 }

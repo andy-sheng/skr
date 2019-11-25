@@ -67,7 +67,7 @@ public class FloatLyricsView extends AbstractLrcView {
 
         //设置歌词的最大宽度
         int textMaxWidth = screensWidth / 3 * 2;
-        setTextMaxWidth(textMaxWidth);
+        mTextMaxWidth = textMaxWidth;
 
     }
 
@@ -107,140 +107,127 @@ public class FloatLyricsView extends AbstractLrcView {
      */
     private void drawDynamicLyrics(Canvas canvas) {
         //获取数据
-        LyricsReader lyricsReader = getLyricsReader();
-        TreeMap<Integer, LyricsLineInfo> lrcLineInfos = getLrcLineInfos();
-        int lyricsLineNum = getLyricsLineNum();
-        int splitLyricsLineNum = getSplitLyricsLineNum();
-        int splitLyricsWordIndex = getSplitLyricsWordIndex();
-        float lyricsWordHLTime = getLyricsWordHLTime();
-        Paint paint = getPaint();
-        Paint paintHL = getPaintHL();
-        Paint paintOutline = getPaintOutline();
-        int[] paintColors = getPaintColors();
-        int[] paintHLColors = getPaintHLColors();
-        float spaceLineHeight = getSpaceLineHeight();
-        float paddingLeftOrRight = getPaddingLeftOrRight();
         int[] subPaintHLColors = new int[]{getSubPaintHLColor(), getSubPaintHLColor()};
 
 
         // 先设置当前歌词，之后再根据索引判断是否放在左边还是右边
-        List<LyricsLineInfo> splitLyricsLineInfos = lrcLineInfos.get(lyricsLineNum).getSplitLyricsLineInfos();
-        LyricsLineInfo lyricsLineInfo = splitLyricsLineInfos.get(splitLyricsLineNum);
+        List<LyricsLineInfo> splitLyricsLineInfos = mLrcLineInfos.get(mLyricsLineNum).getSplitLyricsLineInfos();
+        LyricsLineInfo lyricsLineInfo = splitLyricsLineInfos.get(mSplitLyricsLineNum);
         //获取行歌词高亮宽度
-        float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(lyricsReader.getLyricsType(), paintHL, lyricsLineInfo, splitLyricsWordIndex, lyricsWordHLTime);
+        float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(mLyricsReader.getLyricsType(), mPaintHL, lyricsLineInfo, mSplitLyricsWordIndex, mLyricsWordHLTime);
         // 当行歌词
         String curLyrics = lyricsLineInfo.getLineLyrics();
         //获取当前高亮歌词的宽度
-        float curLrcTextWidth = LyricsUtils.getTextWidth(paintHL, curLyrics);
+        float curLrcTextWidth = LyricsUtils.getTextWidth(mPaintHL, curLyrics);
         // 当前歌词行的x坐标
         float textX = 0;
         // 当前歌词行的y坐标
         float textY = 0;
-        int splitLyricsRealLineNum = LyricsUtils.getSplitLyricsRealLineNum(lrcLineInfos, lyricsLineNum, splitLyricsLineNum);
-        float topPadding = (getHeight() - spaceLineHeight - 2 * LyricsUtils.getTextHeight(paint)) / 2;
+        int splitLyricsRealLineNum = LyricsUtils.getSplitLyricsRealLineNum(mLrcLineInfos, mLyricsLineNum, mSplitLyricsLineNum);
+        float topPadding = (getHeight() - mSpaceLineHeight - 2 * LyricsUtils.getTextHeight(mPaint)) / 2;
         if (splitLyricsRealLineNum % 2 == 0) {
             if (mOrientation == ORIENTATION_LEFT) {
-                textX = paddingLeftOrRight;
+                textX = mPaddingLeftOrRight;
             } else {
                 textX = (getWidth() - curLrcTextWidth) / 2;
             }
-            textY = topPadding + LyricsUtils.getTextHeight(paint);
-            float nextLrcTextY = textY + spaceLineHeight + LyricsUtils.getTextHeight(paint);
+            textY = topPadding + LyricsUtils.getTextHeight(mPaint);
+            float nextLrcTextY = textY + mSpaceLineHeight + LyricsUtils.getTextHeight(mPaint);
 
             // 画下一句的歌词，该下一句还在该行的分割集合里面
-            if (splitLyricsLineNum + 1 < splitLyricsLineInfos.size()) {
+            if (mSplitLyricsLineNum + 1 < splitLyricsLineInfos.size()) {
                 String lrcRightText = splitLyricsLineInfos.get(
-                        splitLyricsLineNum + 1).getLineLyrics();
-                float lrcRightTextWidth = LyricsUtils.getTextWidth(paint, lrcRightText);
+                        mSplitLyricsLineNum + 1).getLineLyrics();
+                float lrcRightTextWidth = LyricsUtils.getTextWidth(mPaint, lrcRightText);
                 float textRightX = 0;
 
                 if (mOrientation == ORIENTATION_LEFT) {
-                    textRightX = getWidth() - lrcRightTextWidth - paddingLeftOrRight;
+                    textRightX = getWidth() - lrcRightTextWidth - mPaddingLeftOrRight;
                 } else {
                     textRightX = (getWidth() - lrcRightTextWidth) / 2;
                 }
 
-                LyricsUtils.drawOutline(canvas, paintOutline, lrcRightText, textRightX, nextLrcTextY);
+                LyricsUtils.drawOutline(canvas, mPaintOutline, lrcRightText, textRightX, nextLrcTextY);
 
-                LyricsUtils.drawText(canvas, paint, paintColors, lrcRightText, textRightX,
+                LyricsUtils.drawText(canvas, mPaint, mPaintColors, lrcRightText, textRightX,
                         nextLrcTextY);
 
-            } else if (lyricsLineNum + 1 < lrcLineInfos.size()) {
+            } else if (mLyricsLineNum + 1 < mLrcLineInfos.size()) {
                 // 画下一句的歌词，该下一句不在该行分割歌词里面，需要从原始下一行的歌词里面找
-                List<LyricsLineInfo> nextSplitLyricsLineInfos = lrcLineInfos.get(lyricsLineNum + 1).getSplitLyricsLineInfos();
+                List<LyricsLineInfo> nextSplitLyricsLineInfos = mLrcLineInfos.get(mLyricsLineNum + 1).getSplitLyricsLineInfos();
                 String lrcRightText = nextSplitLyricsLineInfos.get(0).getLineLyrics();
-                float lrcRightTextWidth = LyricsUtils.getTextWidth(paint, lrcRightText);
+                float lrcRightTextWidth = LyricsUtils.getTextWidth(mPaint, lrcRightText);
                 float textRightX = 0;
 
                 if (mOrientation == ORIENTATION_LEFT) {
-                    textRightX = getWidth() - lrcRightTextWidth - paddingLeftOrRight;
+                    textRightX = getWidth() - lrcRightTextWidth - mPaddingLeftOrRight;
                 } else {
                     textRightX = (getWidth() - lrcRightTextWidth) / 2;
                 }
 
-                LyricsUtils.drawOutline(canvas, paintOutline, lrcRightText, textRightX,
+                LyricsUtils.drawOutline(canvas, mPaintOutline, lrcRightText, textRightX,
                         nextLrcTextY);
 
-                LyricsUtils.drawText(canvas, paint, paintColors, lrcRightText, textRightX, nextLrcTextY);
+                LyricsUtils.drawText(canvas, mPaint, mPaintColors, lrcRightText, textRightX, nextLrcTextY);
             }
 
         } else {
             if (mOrientation == ORIENTATION_LEFT) {
-                textX = getWidth() - curLrcTextWidth - paddingLeftOrRight;
+                textX = getWidth() - curLrcTextWidth - mPaddingLeftOrRight;
             } else {
                 textX = (getWidth() - curLrcTextWidth) / 2;
             }
-            float preLrcTextY = topPadding + LyricsUtils.getTextHeight(paint);
-            textY = preLrcTextY + spaceLineHeight + LyricsUtils.getTextHeight(paint);
+            float preLrcTextY = topPadding + LyricsUtils.getTextHeight(mPaint);
+            textY = preLrcTextY + mSpaceLineHeight + LyricsUtils.getTextHeight(mPaint);
 
             // 画下一句的歌词，该下一句还在该行的分割集合里面
-            if (splitLyricsLineNum + 1 < splitLyricsLineInfos.size()) {
+            if (mSplitLyricsLineNum + 1 < splitLyricsLineInfos.size()) {
                 String lrcLeftText = splitLyricsLineInfos.get(
-                        splitLyricsLineNum + 1).getLineLyrics();
-                float lrcLeftTextWidth = LyricsUtils.getTextWidth(paint, lrcLeftText);
+                        mSplitLyricsLineNum + 1).getLineLyrics();
+                float lrcLeftTextWidth = LyricsUtils.getTextWidth(mPaint, lrcLeftText);
 
                 float textLeftX = 0;
                 if (mOrientation == ORIENTATION_LEFT) {
-                    textLeftX = paddingLeftOrRight;
+                    textLeftX = mPaddingLeftOrRight;
                 } else {
                     textLeftX = (getWidth() - lrcLeftTextWidth) / 2;
                 }
 
-                LyricsUtils.drawOutline(canvas, paintOutline, lrcLeftText, textLeftX,
+                LyricsUtils.drawOutline(canvas, mPaintOutline, lrcLeftText, textLeftX,
                         preLrcTextY);
-                LyricsUtils.drawText(canvas, paint, paintColors, lrcLeftText, textLeftX,
+                LyricsUtils.drawText(canvas, mPaint, mPaintColors, lrcLeftText, textLeftX,
                         preLrcTextY);
 
-            } else if (lyricsLineNum + 1 < lrcLineInfos.size()) {
+            } else if (mLyricsLineNum + 1 < mLrcLineInfos.size()) {
                 // 画下一句的歌词，该下一句不在该行分割歌词里面，需要从原始下一行的歌词里面找
-                List<LyricsLineInfo> nextSplitLyricsLineInfos = lrcLineInfos.get(lyricsLineNum + 1).getSplitLyricsLineInfos();
+                List<LyricsLineInfo> nextSplitLyricsLineInfos = mLrcLineInfos.get(mLyricsLineNum + 1).getSplitLyricsLineInfos();
                 String lrcLeftText = nextSplitLyricsLineInfos.get(0).getLineLyrics();
-                float lrcLeftTextWidth = LyricsUtils.getTextWidth(paint, lrcLeftText);
+                float lrcLeftTextWidth = LyricsUtils.getTextWidth(mPaint, lrcLeftText);
 
                 float textLeftX = 0;
                 if (mOrientation == ORIENTATION_LEFT) {
-                    textLeftX = paddingLeftOrRight;
+                    textLeftX = mPaddingLeftOrRight;
                 } else {
                     textLeftX = (getWidth() - lrcLeftTextWidth) / 2;
                 }
 
-                LyricsUtils.drawOutline(canvas, paintOutline, lrcLeftText, textLeftX,
+                LyricsUtils.drawOutline(canvas, mPaintOutline, lrcLeftText, textLeftX,
                         preLrcTextY);
-                LyricsUtils.drawText(canvas, paint, paintColors, lrcLeftText, textLeftX,
+                LyricsUtils.drawText(canvas, mPaint, mPaintColors, lrcLeftText, textLeftX,
                         preLrcTextY);
             }
         }
 
         //画歌词,在画高亮和普通歌词的时候轮廓大小不一样
-        float outLineHLSize = paintOutline.getTextSize();
-        paintOutline.setTextSize(paintHL.getTextSize());
-        LyricsUtils.drawOutline(canvas, paintOutline, curLyrics, textX, textY);
-        paintOutline.setTextSize(outLineHLSize);
+        float outLineHLSize = mPaintOutline.getTextSize();
+        mPaintOutline.setTextSize(mPaintHL.getTextSize());
+        LyricsUtils.drawOutline(canvas, mPaintOutline, curLyrics, textX, textY);
+        mPaintOutline.setTextSize(outLineHLSize);
 
         if (mEnableVerbatim) {
-            LyricsUtils.drawDynamicText(canvas, paint, paintHL, subPaintHLColors, paintHLColors, curLyrics, lineLyricsHLWidth, textX, textY);
+            LyricsUtils.drawDynamicText(canvas, mPaint, mPaintHL, subPaintHLColors, mPaintHLColors, curLyrics, lineLyricsHLWidth, textX, textY);
         }else {
-            LyricsUtils.drawText(canvas, paintHL, paintHLColors, curLyrics, textX, textY);
+            LyricsUtils.drawText(canvas, mPaintHL, mPaintHLColors, curLyrics, textX, textY);
         }
     }
 
@@ -252,54 +239,33 @@ public class FloatLyricsView extends AbstractLrcView {
      */
     private void drawDynamiAndExtraLyrics(Canvas canvas) {
         //获取数据
-        LyricsReader lyricsReader = getLyricsReader();
-        Paint paint = getPaint();
-        Paint paintHL = getPaintHL();
-        Paint paintOutline = getPaintOutline();
-        Paint extraLrcPaint = getExtraLrcPaint();
-        Paint extraLrcPaintHL = getExtraLrcPaintHL();
-        Paint extraLrcPaintOutline = getExtraLrcPaintOutline();
-        int[] paintColors = getPaintColors();
-        int[] paintHLColors = getPaintHLColors();
-        int extraLrcStatus = getExtraLrcStatus();
-        TreeMap<Integer, LyricsLineInfo> lrcLineInfos = getLrcLineInfos();
-        int lyricsLineNum = getLyricsLineNum();
-        int lyricsWordIndex = getLyricsWordIndex();
-        int extraLyricsWordIndex = getExtraLyricsWordIndex();
-        float lyricsWordHLTime = getLyricsWordHLTime();
-        float translateLyricsWordHLTime = getTranslateLyricsWordHLTime();
-        float extraLrcSpaceLineHeight = getExtraLrcSpaceLineHeight();
-        float paddingLeftOrRight = getPaddingLeftOrRight();
-        int translateDrawType = getTranslateDrawType();
-        List<LyricsLineInfo> translateLrcLineInfos = getTranslateLrcLineInfos();
-        List<LyricsLineInfo> transliterationLrcLineInfos = getTransliterationLrcLineInfos();
 
         //
-        float topPadding = (getHeight() - extraLrcSpaceLineHeight - LyricsUtils.getTextHeight(paint) - LyricsUtils.getTextHeight(extraLrcPaint)) / 2;
+        float topPadding = (getHeight() - mExtraLrcSpaceLineHeight - LyricsUtils.getTextHeight(mPaint) - LyricsUtils.getTextHeight(mExtraLrcPaint)) / 2;
         // 当前歌词行的y坐标
-        float lrcTextY = topPadding + LyricsUtils.getTextHeight(paint);
+        float lrcTextY = topPadding + LyricsUtils.getTextHeight(mPaint);
         //额外歌词行的y坐标
-        float extraLrcTextY = lrcTextY + extraLrcSpaceLineHeight + LyricsUtils.getTextHeight(extraLrcPaint);
+        float extraLrcTextY = lrcTextY + mExtraLrcSpaceLineHeight + LyricsUtils.getTextHeight(mExtraLrcPaint);
 
-        LyricsLineInfo lyricsLineInfo = lrcLineInfos.get(lyricsLineNum);
+        LyricsLineInfo lyricsLineInfo = mLrcLineInfos.get(mLyricsLineNum);
         //获取行歌词高亮宽度
-        float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(lyricsReader.getLyricsType(), paint, lyricsLineInfo, lyricsWordIndex, lyricsWordHLTime);
+        float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(mLyricsReader.getLyricsType(), mPaint, lyricsLineInfo, mLyricsWordIndex, mLyricsWordHLTime);
         //画默认歌词
-        LyricsUtils.drawDynamiLyrics(canvas, lyricsReader.getLyricsType(), paint, paintHL, paintOutline, lyricsLineInfo, lineLyricsHLWidth, getWidth(), lyricsWordIndex, lyricsWordHLTime, lrcTextY, paddingLeftOrRight, paintColors, paintHLColors);
+        LyricsUtils.drawDynamiLyrics(canvas, mLyricsReader.getLyricsType(), mPaint, mPaintHL, mPaintOutline, lyricsLineInfo, lineLyricsHLWidth, getWidth(), mLyricsWordIndex, mLyricsWordHLTime, lrcTextY, mPaddingLeftOrRight, mPaintColors, mPaintHLColors);
 
         //显示翻译歌词
-        if (lyricsReader.getLyricsType() == LyricsInfo.DYNAMIC && extraLrcStatus == AbstractLrcView.EXTRALRCSTATUS_SHOWTRANSLATELRC && translateDrawType == AbstractLrcView.TRANSLATE_DRAW_TYPE_DYNAMIC) {
+        if (mLyricsReader.getLyricsType() == LyricsInfo.DYNAMIC && mExtraLrcStatus == AbstractLrcView.EXTRALRCSTATUS_SHOWTRANSLATELRC && mTranslateDrawType == AbstractLrcView.TRANSLATE_DRAW_TYPE_DYNAMIC) {
 
-            LyricsLineInfo translateLyricsLineInfo = translateLrcLineInfos.get(lyricsLineNum);
-            float extraLyricsLineHLWidth = LyricsUtils.getLineLyricsHLWidth(lyricsReader.getLyricsType(), extraLrcPaint, translateLyricsLineInfo, extraLyricsWordIndex, translateLyricsWordHLTime);
+            LyricsLineInfo translateLyricsLineInfo = mTranslateLrcLineInfos.get(mLyricsLineNum);
+            float extraLyricsLineHLWidth = LyricsUtils.getLineLyricsHLWidth(mLyricsReader.getLyricsType(), mExtraLrcPaint, translateLyricsLineInfo, mExtraLyricsWordIndex, mTranslateLyricsWordHLTime);
             //画翻译歌词
-            LyricsUtils.drawDynamiLyrics(canvas, lyricsReader.getLyricsType(), extraLrcPaint, extraLrcPaintHL, extraLrcPaintOutline, translateLyricsLineInfo, extraLyricsLineHLWidth, getWidth(), extraLyricsWordIndex, translateLyricsWordHLTime, extraLrcTextY, paddingLeftOrRight, paintColors, paintHLColors);
+            LyricsUtils.drawDynamiLyrics(canvas, mLyricsReader.getLyricsType(), mExtraLrcPaint, mExtraLrcPaintHL, mExtraLrcPaintOutline, translateLyricsLineInfo, extraLyricsLineHLWidth, getWidth(), mExtraLyricsWordIndex, mTranslateLyricsWordHLTime, extraLrcTextY, mPaddingLeftOrRight, mPaintColors, mPaintHLColors);
 
         } else {
-            LyricsLineInfo transliterationLineInfo = transliterationLrcLineInfos.get(lyricsLineNum);
-            float extraLyricsLineHLWidth = LyricsUtils.getLineLyricsHLWidth(lyricsReader.getLyricsType(), extraLrcPaint, transliterationLineInfo, extraLyricsWordIndex, lyricsWordHLTime);
+            LyricsLineInfo transliterationLineInfo = mTransliterationLrcLineInfos.get(mLyricsLineNum);
+            float extraLyricsLineHLWidth = LyricsUtils.getLineLyricsHLWidth(mLyricsReader.getLyricsType(), mExtraLrcPaint, transliterationLineInfo, mExtraLyricsWordIndex, mLyricsWordHLTime);
             //画音译歌词
-            LyricsUtils.drawDynamiLyrics(canvas, lyricsReader.getLyricsType(), extraLrcPaint, extraLrcPaintHL, extraLrcPaintOutline, transliterationLineInfo, extraLyricsLineHLWidth, getWidth(), extraLyricsWordIndex, lyricsWordHLTime, extraLrcTextY, paddingLeftOrRight, paintColors, paintHLColors);
+            LyricsUtils.drawDynamiLyrics(canvas, mLyricsReader.getLyricsType(), mExtraLrcPaint, mExtraLrcPaintHL, mExtraLrcPaintOutline, transliterationLineInfo, extraLyricsLineHLWidth, getWidth(), mExtraLyricsWordIndex, mLyricsWordHLTime, extraLrcTextY, mPaddingLeftOrRight, mPaintColors, mPaintHLColors);
 
         }
 
@@ -313,10 +279,8 @@ public class FloatLyricsView extends AbstractLrcView {
      */
     private void updateFloatLrcView(long playProgress) {
 
-        LyricsReader lyricsReader = getLyricsReader();
-        TreeMap<Integer, LyricsLineInfo> lrcLineInfos = getLrcLineInfos();
-        int lyricsLineNum = LyricsUtils.getLineNumber(lyricsReader.getLyricsType(), lrcLineInfos, playProgress, lyricsReader.getPlayOffset());
-        setLyricsLineNum(lyricsLineNum);
+        int lyricsLineNum = LyricsUtils.getLineNumber(mLyricsReader.getLyricsType(), mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
+        mLyricsLineNum = lyricsLineNum;
         updateSplitData(playProgress);
     }
 

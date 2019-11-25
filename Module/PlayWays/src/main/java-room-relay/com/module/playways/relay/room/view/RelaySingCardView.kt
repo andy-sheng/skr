@@ -1,16 +1,25 @@
 package com.module.playways.relay.room.view
 
-import android.support.constraint.Group
 import android.view.View
 import android.view.ViewStub
 import android.widget.TextView
+import com.common.log.DebugLogView
+import com.common.log.MyLog
 import com.common.view.ExViewStub
 import com.common.view.ex.ExView
+import com.component.lyrics.LyricsManager
+import com.component.lyrics.LyricsReader
+import com.component.lyrics.widget.AbstractLrcView
 import com.component.lyrics.widget.ManyLyricsView
 import com.component.lyrics.widget.VoiceScaleView
 import com.module.playways.R
+import com.zq.mediaengine.kit.ZqEngineKit
+import java.util.HashSet
 
 class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
+
+    val TAG = "RelaySingCardView"
+
     lateinit var dotView: ExView
     lateinit var songNameTv: TextView
     lateinit var songPlayProgressTv:TextView
@@ -50,8 +59,20 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
         singBeginTipsTv1.visibility = View.GONE
         singBeginTipsTv2.visibility = View.GONE
 
-        
-
+        LyricsManager
+                .loadStandardLyric("http://song-static.inframe.mobi/lrc/4ee4ac0711c74d6f333fcac10c113239.zrce")
+                .subscribe({ lyricsReader ->
+                    manyLyricsView?.visibility = View.VISIBLE
+                    manyLyricsView?.initLrcData()
+                    manyLyricsView?.lyricsReader = lyricsReader
+                    val set = HashSet<Int>()
+                    set.add(lyricsReader.getLineInfoIdByStartTs(0))
+                    manyLyricsView?.needCountDownLine = set
+                    manyLyricsView?.play(0)
+                }, { throwable ->
+                    MyLog.e(TAG, throwable)
+                    DebugLogView.println(TAG, "歌词下载失败，采用不滚动方式播放歌词")
+                })
     }
 
     fun turnNoSong(){

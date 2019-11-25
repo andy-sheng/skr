@@ -450,6 +450,7 @@ public class LyricsUtils {
         LinearGradient linearGradientHL = new LinearGradient(x, y - getTextHeight(paint), x, y, paintHLColor, null, Shader.TileMode.CLAMP);
         paintHL.setShader(linearGradientHL);
         canvas.drawText(text, x, y, paintHL);
+
         canvas.restore();
     }
 

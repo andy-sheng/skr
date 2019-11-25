@@ -353,6 +353,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         mAddSongIv.setAnimateDebounceViewClickListener {
             mSkrAudioPermission.ensurePermission({
                 //                SongManagerActivity.open(this, mRoomData)
+                relaySingCardView.turnSing()
             }, true)
         }
 

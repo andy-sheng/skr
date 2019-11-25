@@ -8,16 +8,17 @@
     app:bl_shape="rectangle"
     app:bl_solid_color="@color/black_trans_20"
     app:bl_stroke_color="@color/white"
-    app:bl_stroke_width="@dimen/view_1_dp"
-    >
+    app:bl_stroke_width="@dimen/view_1_dp">
 
-    <View
+    <com.common.view.ex.ExView
         android:id="@+id/bottom_bg_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_50_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/black_trans_10"
-        />
+        app:bl_corners_bottomLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_bottomRightRadius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_20"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.common.view.ex.ExView
         android:id="@+id/dot_view"
@@ -38,49 +39,57 @@
         android:text="《歌曲名称》"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/view_12_dp"
-        app:layout_constraintTop_toTopOf="@+id/dot_view"
         app:layout_constraintBottom_toBottomOf="@+id/dot_view"
         app:layout_constraintLeft_toRightOf="@+id/dot_view"
-        />
+        app:layout_constraintTop_toTopOf="@+id/dot_view" />
 
     <TextView
         android:id="@+id/song_play_progress_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        app:layout_constraintTop_toTopOf="@+id/song_name_tv"
-        app:layout_constraintBottom_toBottomOf="@+id/song_name_tv"
-        app:layout_constraintLeft_toRightOf="@+id/song_name_tv"
         android:text="00:00"
         android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/view_12_dp" />
+        android:textSize="@dimen/view_12_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/song_name_tv"
+        app:layout_constraintLeft_toRightOf="@+id/song_name_tv"
+        app:layout_constraintTop_toTopOf="@+id/song_name_tv" />
 
     <!--正在唱的人的歌词-->
     <com.component.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:maxHeight="@dimen/view_210_dp"
-        app:ly_eable_scroll="false"
-        app:ly_eable_verbatim="false"
-        app:ly_high_light_paint_color_from="@color/black_trans_30"
-        app:ly_high_light_paint_color_to="@color/black_trans_30"
-        app:ly_high_light_paint_text_size="20.0"
-        app:ly_high_light_sub_paint_color="@color/white"
-        app:ly_outline_paint_color="@color/white"
+        android:layout_height="0dp"
         android:visibility="gone"
-        app:ly_paint_color_from="@color/white_trans_50"
-        app:ly_paint_color_to="@color/white_trans_50"
+        app:layout_constraintBottom_toTopOf="@id/bottom_bg_view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:ly_enable_scroll="false"
+        app:ly_enable_verbatim="false"
+        app:ly_high_light_paint_color_from="#4DA5DB"
+        app:ly_high_light_paint_color_to="#4DA5DB"
+
+        app:ly_high_light_paint_color_from2="#DB4D84"
+        app:ly_high_light_paint_color_to2="#DB4D84"
+
+        app:ly_high_light_paint_text_size="18.0"
+
+        app:ly_high_light_sub_paint_color="@color/white_trans_80"
+        app:ly_outline_paint_color="#ff00ff"
+
+        app:ly_paint_color_from="@color/white_trans_30"
+        app:ly_paint_color_to="@color/white_trans_30"
+
         app:ly_paint_text_size="16.0"
         app:ly_show_author="true" />
 
+
     <com.component.lyrics.widget.VoiceScaleView
         android:id="@+id/voice_scale_view"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_88_dp"
+        android:layout_height="0dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bottom_bg_view"
         app:leftBgPaintColor="@color/transparent"
         app:redInnerpaintColor="#FFC15B"
         app:redOutpaintColor="@color/transparent"
@@ -93,26 +102,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bottom_bg_view"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:text="对方演唱中...."
         android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/view_14_dp" />
+        android:textSize="@dimen/view_14_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bottom_bg_view" />
 
     <TextView
         android:id="@+id/no_song_tips_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
+        android:text="暂无歌曲"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/view_18_dp"
         app:layout_constraintBottom_toTopOf="@id/bottom_bg_view"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:text="暂无歌曲"
-        android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/view_18_dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
@@ -124,11 +133,11 @@
         android:text="即将合唱"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/view_24_dp"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/sing_begin_tips_tv2"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/sing_begin_tips_tv2"
@@ -139,9 +148,9 @@
         android:text="《歌曲名称》"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/view_18_dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_bg_view"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottom_bg_view"
         app:layout_constraintTop_toBottomOf="@+id/sing_begin_tips_tv1" />
 
 
