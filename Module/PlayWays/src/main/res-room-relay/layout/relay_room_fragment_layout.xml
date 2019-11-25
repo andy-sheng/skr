@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/srf_haichang_bj">
 
+    <ViewStub
+        android:id="@+id/game_effect_bg_view_layout_viewStub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/game_effect_bg_view_layout" />
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/title_bar"
