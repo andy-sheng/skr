@@ -334,7 +334,7 @@ open class BottomContainerView : RelativeLayout {
         mBottomContainerListener = l
     }
 
-    fun setRoomData(roomData: BaseRoomData<*>) {
+    open fun setRoomData(roomData: BaseRoomData<*>) {
         mRoomData = roomData
         mVoiceRecordBtn?.mRoomData = mRoomData
     }

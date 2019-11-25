@@ -13,6 +13,7 @@ import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.model.MicConfigModel
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
+import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.zq.live.proto.MicRoom.EMRoundStatus
 import com.zq.live.proto.MicRoom.EMUserRole
 import com.zq.live.proto.MicRoom.ERoomMatchStatus
@@ -135,32 +136,32 @@ class RelayRoomData : BaseRoomData<MicRoundInfoModel>() {
      * 检查轮次信息是否需要更新
      */
     override fun checkRoundInEachMode() {
-        if (isIsGameFinish) {
-            MyLog.d(TAG, "游戏结束了，不需要再checkRoundInEachMode")
-            return
-        }
-        if (expectRoundInfo == null) {
-            MyLog.d(TAG, "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo == null")
-            // 结束状态了
-            if (realRoundInfo != null) {
-                val lastRoundInfoModel = realRoundInfo
-                lastRoundInfoModel?.updateStatus(false, EMRoundStatus.MRS_END.value)
-                realRoundInfo = null
-                EventBus.getDefault().post(MicRoundChangeEvent(lastRoundInfoModel, null))
-            }
-            return
-        }
-        MyLog.d(TAG, "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo.roundSeq=" + expectRoundInfo!!.roundSeq)
-        if (RoomDataUtils.roundSeqLarger<MicRoundInfoModel>(expectRoundInfo, realRoundInfo) || realRoundInfo == null) {
-            // 轮次大于，才切换
-            val lastRoundInfoModel = realRoundInfo
-            lastRoundInfoModel?.updateStatus(false, EMRoundStatus.MRS_END.value)
-            realRoundInfo = expectRoundInfo
-            if (realRoundInfo != null) {
-                (realRoundInfo as MicRoundInfoModel).updateStatus(false, EMRoundStatus.MRS_INTRO.value)
-            }
-            EventBus.getDefault().post(MicRoundChangeEvent(lastRoundInfoModel, realRoundInfo))
-        }
+//        if (isIsGameFinish) {
+//            MyLog.d(TAG, "游戏结束了，不需要再checkRoundInEachMode")
+//            return
+//        }
+//        if (expectRoundInfo == null) {
+//            MyLog.d(TAG, "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo == null")
+//            // 结束状态了
+//            if (realRoundInfo != null) {
+//                val lastRoundInfoModel = realRoundInfo
+//                lastRoundInfoModel?.updateStatus(false, EMRoundStatus.MRS_END.value)
+//                realRoundInfo = null
+//                EventBus.getDefault().post(MicRoundChangeEvent(lastRoundInfoModel, null))
+//            }
+//            return
+//        }
+//        MyLog.d(TAG, "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo.roundSeq=" + expectRoundInfo!!.roundSeq)
+//        if (RoomDataUtils.roundSeqLarger<MicRoundInfoModel>(expectRoundInfo, realRoundInfo) || realRoundInfo == null) {
+//            // 轮次大于，才切换
+//            val lastRoundInfoModel = realRoundInfo
+//            lastRoundInfoModel?.updateStatus(false, EMRoundStatus.MRS_END.value)
+//            realRoundInfo = expectRoundInfo
+//            if (realRoundInfo != null) {
+//                (realRoundInfo as MicRoundInfoModel).updateStatus(false, EMRoundStatus.MRS_INTRO.value)
+//            }
+//            EventBus.getDefault().post(MicRoundChangeEvent(lastRoundInfoModel, realRoundInfo))
+//        }
     }
 
 //    fun hasGameBegin(): Boolean {
@@ -171,7 +172,7 @@ class RelayRoomData : BaseRoomData<MicRoundInfoModel>() {
 //        this.hasGameBegin = hasGameBegin
 //    }
 
-    fun loadFromRsp(rsp: JoinMicRoomRspModel) {
+    fun loadFromRsp(rsp: JoinRelayRoomRspModel) {
         this.gameId = rsp.roomID
         this.setCoin(rsp.coin)
         this.setHzCount(rsp.hongZuan, 0)

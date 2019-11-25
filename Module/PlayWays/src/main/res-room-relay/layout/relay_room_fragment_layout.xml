@@ -18,7 +18,7 @@
         app:statusBarColor="@color/transparent" />
 
     <!--底部按钮区-->
-    <com.module.playways.room.room.view.BottomContainerView
+    <com.module.playways.relay.room.bottom.RelayBottomContainerView
         android:id="@+id/bottom_container_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_32_dp"

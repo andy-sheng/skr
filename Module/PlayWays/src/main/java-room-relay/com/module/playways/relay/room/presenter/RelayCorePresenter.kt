@@ -39,6 +39,7 @@ import com.module.playways.mic.room.event.MicRoundStatusChangeEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.mic.room.ui.IMicRoomView
+import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.relay.room.ui.IRelayRoomView
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
@@ -450,17 +451,17 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: MicChangeRoomEvent) {
-        roomView.ensureActivtyTop()
-        onChangeRoomSuccess(event.mJoinGrabRoomRspModel)
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onEvent(event: MicChangeRoomEvent) {
+//        roomView.ensureActivtyTop()
+//        onChangeRoomSuccess(event.mJoinGrabRoomRspModel)
+//    }
 
-    private fun onChangeRoomSuccess(joinGrabRoomRspModel: JoinMicRoomRspModel?) {
-        MyLog.d(TAG, "onChangeRoomSuccess joinGrabRoomRspModel=$joinGrabRoomRspModel")
-        if (joinGrabRoomRspModel != null) {
+    private fun onChangeRoomSuccess(rspModel: JoinRelayRoomRspModel?) {
+        MyLog.d(TAG, "onChangeRoomSuccess rspModel=$rspModel")
+        if (rspModel != null) {
 //            EventBus.getDefault().post(SwitchRoomEvent())
-            mRoomData.loadFromRsp(joinGrabRoomRspModel)
+            mRoomData.loadFromRsp(rspModel)
             joinRoomAndInit(false)
             mRoomData.checkRoundInEachMode()
             roomView.dismissKickDialog()

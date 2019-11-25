@@ -70,6 +70,8 @@ import com.module.playways.mic.room.view.MicSettingView
 import com.module.playways.mic.room.view.MicTurnInfoCardView
 import com.module.playways.mic.room.view.MicVoiceControlPanelView
 import com.module.playways.mic.room.view.control.MicSingBeginTipsCardView
+import com.module.playways.relay.match.model.JoinRelayRoomRspModel
+import com.module.playways.relay.room.bottom.RelayBottomContainerView
 import com.module.playways.relay.room.presenter.RelayCorePresenter
 import com.module.playways.relay.room.top.RelayTopContentView
 import com.module.playways.relay.room.top.RelayTopOpView
@@ -93,6 +95,7 @@ import com.module.playways.room.room.gift.GiftBigContinuousView
 import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
+import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
@@ -132,10 +135,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     private lateinit var mCorePresenter: RelayCorePresenter
     internal var mDoubleRoomInvitePresenter = DoubleRoomInvitePresenter()
     //基础ui组件
-    internal lateinit var mInputContainerView: MicInputContainerView
-    internal lateinit var mBottomContainerView: BottomContainerView
+    internal lateinit var mInputContainerView: InputContainerView
+    internal lateinit var mBottomContainerView: RelayBottomContainerView
     internal lateinit var mVoiceRecordTipsView: VoiceRecordTipsView
-    internal lateinit var mCommentView: CommentView
+//    internal lateinit var mCommentView: CommentView
     internal lateinit var mGiftPanelView: GiftPanelView
     internal lateinit var mContinueSendView: ContinueSendView
     internal lateinit var mTopOpView: RelayTopOpView
@@ -152,10 +155,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     lateinit var mGrabScoreTipsView: GrabScoreTipsView // 打分提示
 
     lateinit var mAddSongIv: ExTextView
-    private lateinit var mGiveUpView: GrabGiveupView
+//    private lateinit var mGiveUpView: GrabGiveupView
 
     private var mVIPEnterView: VIPEnterView? = null
-    lateinit var mHasSelectSongNumTv: ExTextView
+//    lateinit var mHasSelectSongNumTv: ExTextView
 
     // 都是dialogplus
     private var mPersonInfoDialog: PersonInfoDialog? = null
@@ -183,7 +186,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     override fun initData(savedInstanceState: Bundle?) {
         ensureActivtyTop()
-        val joinRaceRoomRspModel = intent.getSerializableExtra("JoinMicRoomRspModel") as JoinMicRoomRspModel?
+        val joinRaceRoomRspModel = intent.getSerializableExtra("JoinRelayRoomRspModel") as JoinRelayRoomRspModel?
         joinRaceRoomRspModel?.let {
             mRoomData.loadFromRsp(it)
         }
@@ -288,9 +291,9 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         if (mTurnInfoCardView != exclude) {
             mTurnInfoCardView.visibility = View.GONE
         }
-        if (mGiveUpView != exclude) {
-            mGiveUpView.hideWithAnimation(false)
-        }
+//        if (mGiveUpView != exclude) {
+//            mGiveUpView.hideWithAnimation(false)
+//        }
         if (mRoundOverCardView != exclude) {
             mRoundOverCardView.setVisibility(View.GONE)
         }
@@ -350,12 +353,12 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     }
 
     private fun initBottomView() {
-        mGiveUpView = findViewById<GrabGiveupView>(R.id.give_up_view)
-        mGiveUpView.mGiveUpListener = { _ ->
-            mCorePresenter.giveUpSing {
-                mGiveUpView.hideWithAnimation(true)
-            }
-        }
+//        mGiveUpView = findViewById<GrabGiveupView>(R.id.give_up_view)
+//        mGiveUpView.mGiveUpListener = { _ ->
+//            mCorePresenter.giveUpSing {
+//                mGiveUpView.hideWithAnimation(true)
+//            }
+//        }
         mAddSongIv = findViewById(R.id.select_song_tv)
         mAddSongIv.setAnimateDebounceViewClickListener {
             mSkrAudioPermission.ensurePermission({
@@ -563,12 +566,12 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     }
 
     private fun initCommentView() {
-        mCommentView = findViewById(R.id.comment_view)
-        mCommentView.setListener(CommentViewItemListener { userId ->
-            showPersonInfoView(userId)
-        })
-        mCommentView.roomData = mRoomData
-        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
+//        mCommentView = findViewById(R.id.comment_view)
+//        mCommentView.setListener(CommentViewItemListener { userId ->
+//            showPersonInfoView(userId)
+//        })
+//        mCommentView.roomData = mRoomData
+//        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
     }
 
     private fun initGiftPanelView() {
@@ -607,7 +610,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     }
 
     override fun showSongCount(count: Int) {
-        mHasSelectSongNumTv?.text = "已点${count}首"
+//        mHasSelectSongNumTv?.text = "已点${count}首"
     }
 
     override fun startEnterAnimation(playerInfoModel: UserInfoModel, finishCall: () -> Unit) {
@@ -819,7 +822,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             mGrabScoreTipsView.reset()
             singCardShowListener.invoke()
             mSelfSingCardView.playLyric()
-            mGiveUpView.delayShowGiveUpView(false)
+//            mGiveUpView.delayShowGiveUpView(false)
         }
 
         var step1 = {
