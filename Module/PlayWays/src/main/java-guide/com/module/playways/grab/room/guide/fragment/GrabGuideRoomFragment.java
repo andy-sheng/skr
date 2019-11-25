@@ -42,7 +42,7 @@ import com.module.playways.grab.room.view.GrabOpView;
 import com.module.playways.grab.room.view.GrabScoreTipsView;
 import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.grab.room.view.TurnInfoCardView;
-import com.module.playways.grab.room.view.control.OthersSingCardView;
+import com.module.playways.grab.room.view.control.SingBackgroundCardView;
 import com.module.playways.grab.room.view.control.RoundOverCardView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.control.SingBeginTipsCardView;

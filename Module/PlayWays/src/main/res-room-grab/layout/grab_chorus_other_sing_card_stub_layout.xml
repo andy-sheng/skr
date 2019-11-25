@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,7 +13,8 @@
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_125_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/grab_chorus_bg" />
+        android:background="@drawable/grab_chorus_bg"
+        android:visibility="gone" />
 
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/left_sing_svga"

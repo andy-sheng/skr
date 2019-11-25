@@ -1,7 +1,9 @@
 package com.module.playways.race.room.model
 
+import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
+import com.component.busilib.model.BackgroundEffectModel
 import com.module.playways.race.room.event.*
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.song.model.SongModel
@@ -19,6 +21,9 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     var subRoundInfo = ArrayList<RaceSubRoundInfo>() //子轮次信息
     var playUsers = ArrayList<RacePlayerInfoModel>() // 选手
     var waitUsers = ArrayList<RacePlayerInfoModel>() // 观众
+
+    @JSONField(name = "showInfos")
+    var showInfos: ArrayList<BackgroundEffectModel> = ArrayList()
     var introBeginMs = 0 //竞选开始相对时间（相对于createTimeMs时间）
     var introEndMs = 0 // 竞选结束相对时间（相对于createTimeMs时间）
     //var wantSingInfos = ArrayList<RaceWantSingInfo>() // 想唱信息列表
@@ -227,6 +232,12 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                 }
             }
         }
+
+        showInfos.clear()
+        if (round.showInfos != null && round.showInfos.size > 0) {
+            showInfos.addAll(round.showInfos)
+        }
+
         if (roundInfo.currentRoundChoiceUserCnt > 0) {
             this.currentRoundChoiceUserCnt = roundInfo.currentRoundChoiceUserCnt
         }
@@ -245,6 +256,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
 
         audienceUserCnt = roundInfo.audienceUserCnt
         updateAudienceUserCnt(notify)
+
         return
     }
 
@@ -375,6 +387,10 @@ internal fun parseFromRoundInfoPB(pb: RaceRoundInfo): RaceRoundInfoModel {
         model.currentRoundChoiceUserCnt = pb.currentRoundChoiceUserCnt
     }
     model.audienceUserCnt = pb.audienceUserCnt
+
+    if (pb.hasShowInfosList() && pb.showInfosList.size > 0) {
+        model.showInfos.addAll(BackgroundEffectModel.parseBackgroundEffectModelListFromPb(pb.showInfosList))
+    }
     return model
 }
 

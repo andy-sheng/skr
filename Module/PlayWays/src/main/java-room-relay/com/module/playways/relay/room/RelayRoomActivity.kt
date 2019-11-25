@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.view.*
-import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
@@ -17,7 +16,6 @@ import com.common.core.userinfo.ResponseCallBack
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
-import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
@@ -50,25 +48,15 @@ import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.listener.AnimationListener
 import com.module.playways.listener.SVGAListener
-import com.module.playways.mic.home.MicHomeActivity
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
-import com.module.playways.mic.room.bottom.MicBottomContainerView
 import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
 import com.module.playways.mic.room.event.MicWantInviteEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.mic.room.model.MicUserMusicModel
-import com.module.playways.mic.room.presenter.MicCorePresenter
-import com.module.playways.mic.room.seat.MicSeatView
 import com.module.playways.mic.room.top.MicInviteView
-import com.module.playways.mic.room.top.MicTopContentView
-import com.module.playways.mic.room.top.MicTopOpView
-import com.module.playways.mic.room.ui.IMicRoomView
-import com.module.playways.mic.room.ui.MicWidgetAnimationController
 import com.module.playways.mic.room.view.MicInputContainerView
-import com.module.playways.mic.room.view.MicSettingView
 import com.module.playways.mic.room.view.MicTurnInfoCardView
-import com.module.playways.mic.room.view.MicVoiceControlPanelView
 import com.module.playways.mic.room.view.control.MicSingBeginTipsCardView
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.room.bottom.RelayBottomContainerView
@@ -95,8 +83,11 @@ import com.module.playways.room.room.gift.GiftBigContinuousView
 import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
+<<<<<<< HEAD
 import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.songmanager.SongManagerActivity
+=======
+>>>>>>> dbf9683dd5412a0f045c0456c7f700483ec76d29
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.StandPlayType
@@ -164,7 +155,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     private var mPersonInfoDialog: PersonInfoDialog? = null
     private var mGrabKickDialog: ConfirmDialog? = null
     private var mVoiceControlPanelView: RelayVoiceControlPanelView? = null
-//    private var mMicSettingView: MicSettingView? = null
+    //    private var mMicSettingView: MicSettingView? = null
     private var mGameRuleDialog: DialogPlus? = null
     private var mTipsDialogView: TipsDialogView? = null
 
@@ -362,7 +353,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         mAddSongIv = findViewById(R.id.select_song_tv)
         mAddSongIv.setAnimateDebounceViewClickListener {
             mSkrAudioPermission.ensurePermission({
-//                SongManagerActivity.open(this, mRoomData)
+                //                SongManagerActivity.open(this, mRoomData)
             }, true)
         }
 

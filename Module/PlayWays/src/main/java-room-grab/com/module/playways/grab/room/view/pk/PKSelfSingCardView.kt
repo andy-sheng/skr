@@ -4,20 +4,13 @@ import android.view.View
 import android.view.ViewStub
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
-
 import com.common.core.userinfo.model.UserInfoModel
-import com.common.log.MyLog
 import com.common.utils.U
-import com.module.playways.R
-import com.module.playways.grab.room.GrabRoomData
-import com.module.playways.grab.room.model.GrabRoundInfoModel
-import com.module.playways.grab.room.model.SPkRoundInfoModel
 import com.common.view.ExViewStub
+import com.module.playways.R
 import com.module.playways.grab.room.view.SingCountDownView2
-import com.module.playways.grab.room.view.control.SelfSingCardView
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView
 import com.module.playways.grab.room.view.pk.view.PKSingCardView
-import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.room.data.H
 import com.zq.live.proto.GrabRoom.EQRoundStatus
 
@@ -35,7 +28,7 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     internal var mEnterTranslateAnimation: TranslateAnimation? = null // 飞入的进场动画
     //    TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
 
-    var mOverListener:(()->Unit)?=null
+    var mOverListener: (() -> Unit)? = null
 
     override fun init(parentView: View) {
         val viewStub = mParentView!!.findViewById<ViewStub>(R.id.pk_self_sing_lyric_view_stub)
@@ -108,7 +101,7 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
         mPkSingCardView!!.playScaleAnimation(userId, false, object : PKSingCardView.AnimationListerner {
             override fun onAnimationEndExcludeSvga() {
-                mPkSingCardView!!.playWithDraw()
+//                mPkSingCardView!!.playWithDraw()
                 playRealLyric()
             }
 

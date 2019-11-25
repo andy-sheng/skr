@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#7088FF">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_18_dp"
+        app:centerType="textView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightDrawable="@drawable/common_search_icon"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="@color/transparent"
+        app:titleBarColor="@color/transparent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/join_tips_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_100_dp"
+        android:layout_marginLeft="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_30_dp"
+        android:gravity="center"
+        android:text="Ta正在赶来的路上..."
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_50"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titlebar" />
+
+    <TextView
+        android:id="@+id/quick_tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_42_dp"
+        android:text="快速加入合唱"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/join_tips_tv" />
+
+    <View
+        android:id="@+id/left"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginLeft="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:background="@color/white_trans_20"
+        app:layout_constraintBottom_toBottomOf="@id/quick_tips_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/quick_tips_tv"
+        app:layout_constraintTop_toTopOf="@id/quick_tips_tv" />
+
+    <View
+        android:id="@+id/right"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_30_dp"
+        android:background="@color/white_trans_20"
+        app:layout_constraintBottom_toBottomOf="@id/quick_tips_tv"
+        app:layout_constraintLeft_toRightOf="@id/quick_tips_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/quick_tips_tv" />
+
+    <com.component.busilib.view.recyclercardview.SpeedRecyclerView
+        android:id="@+id/speed_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_0_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginBottom="@dimen/view_50_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/quick_tips_tv" />
+
+</android.support.constraint.ConstraintLayout>

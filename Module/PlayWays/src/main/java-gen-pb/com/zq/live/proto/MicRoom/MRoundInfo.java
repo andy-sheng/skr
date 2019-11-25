@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.BackgroundShowInfo;
 import com.zq.live.proto.Common.MusicInfo;
 import java.io.IOException;
 import java.lang.Integer;
@@ -171,19 +172,30 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
   )
   private final MCommonRoundResult commonRoundResult;
 
+  /**
+   * 背景效果
+   */
+  @WireField(
+      tag = 16,
+      adapter = "com.zq.live.proto.Common.BackgroundShowInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<BackgroundShowInfo> showInfos;
+
   public MRoundInfo(Integer userID, Integer roundSeq, Integer introBeginMs, Integer introEndMs,
       Integer singBeginMs, Integer singEndMs, EMRoundStatus status, EMRoundOverReason overReason,
       MusicInfo music, List<MOnlineInfo> users, EMWantSingType wantSingType,
       List<MCHOInnerRoundInfo> CHORoundInfos, List<MSPKInnerRoundInfo> SPKRoundInfos,
-      MCommonRoundResult commonRoundResult) {
-    this(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, users, wantSingType, CHORoundInfos, SPKRoundInfos, commonRoundResult, ByteString.EMPTY);
+      MCommonRoundResult commonRoundResult, List<BackgroundShowInfo> showInfos) {
+    this(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, users, wantSingType, CHORoundInfos, SPKRoundInfos, commonRoundResult, showInfos, ByteString.EMPTY);
   }
 
   public MRoundInfo(Integer userID, Integer roundSeq, Integer introBeginMs, Integer introEndMs,
       Integer singBeginMs, Integer singEndMs, EMRoundStatus status, EMRoundOverReason overReason,
       MusicInfo music, List<MOnlineInfo> users, EMWantSingType wantSingType,
       List<MCHOInnerRoundInfo> CHORoundInfos, List<MSPKInnerRoundInfo> SPKRoundInfos,
-      MCommonRoundResult commonRoundResult, ByteString unknownFields) {
+      MCommonRoundResult commonRoundResult, List<BackgroundShowInfo> showInfos,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.roundSeq = roundSeq;
@@ -199,6 +211,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     this.CHORoundInfos = Internal.immutableCopyOf("CHORoundInfos", CHORoundInfos);
     this.SPKRoundInfos = Internal.immutableCopyOf("SPKRoundInfos", SPKRoundInfos);
     this.commonRoundResult = commonRoundResult;
+    this.showInfos = Internal.immutableCopyOf("showInfos", showInfos);
   }
 
   @Override
@@ -218,6 +231,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     builder.CHORoundInfos = Internal.copyOf("CHORoundInfos", CHORoundInfos);
     builder.SPKRoundInfos = Internal.copyOf("SPKRoundInfos", SPKRoundInfos);
     builder.commonRoundResult = commonRoundResult;
+    builder.showInfos = Internal.copyOf("showInfos", showInfos);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -241,7 +255,8 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
         && Internal.equals(wantSingType, o.wantSingType)
         && CHORoundInfos.equals(o.CHORoundInfos)
         && SPKRoundInfos.equals(o.SPKRoundInfos)
-        && Internal.equals(commonRoundResult, o.commonRoundResult);
+        && Internal.equals(commonRoundResult, o.commonRoundResult)
+        && showInfos.equals(o.showInfos);
   }
 
   @Override
@@ -263,6 +278,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
       result = result * 37 + CHORoundInfos.hashCode();
       result = result * 37 + SPKRoundInfos.hashCode();
       result = result * 37 + (commonRoundResult != null ? commonRoundResult.hashCode() : 0);
+      result = result * 37 + showInfos.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -285,6 +301,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     if (!CHORoundInfos.isEmpty()) builder.append(", CHORoundInfos=").append(CHORoundInfos);
     if (!SPKRoundInfos.isEmpty()) builder.append(", SPKRoundInfos=").append(SPKRoundInfos);
     if (commonRoundResult != null) builder.append(", commonRoundResult=").append(commonRoundResult);
+    if (!showInfos.isEmpty()) builder.append(", showInfos=").append(showInfos);
     return builder.replace(0, 2, "MRoundInfo{").append('}').toString();
   }
 
@@ -439,6 +456,16 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
   }
 
   /**
+   * 背景效果
+   */
+  public List<BackgroundShowInfo> getShowInfosList() {
+    if(showInfos==null){
+        return new java.util.ArrayList<BackgroundShowInfo>();
+    }
+    return showInfos;
+  }
+
+  /**
    * 抢唱成功的玩家id
    */
   public boolean hasUserID() {
@@ -536,6 +563,13 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     return commonRoundResult!=null;
   }
 
+  /**
+   * 背景效果
+   */
+  public boolean hasShowInfosList() {
+    return showInfos!=null;
+  }
+
   public static final class Builder extends Message.Builder<MRoundInfo, Builder> {
     private Integer userID;
 
@@ -565,10 +599,13 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
 
     private MCommonRoundResult commonRoundResult;
 
+    private List<BackgroundShowInfo> showInfos;
+
     public Builder() {
       users = Internal.newMutableList();
       CHORoundInfos = Internal.newMutableList();
       SPKRoundInfos = Internal.newMutableList();
+      showInfos = Internal.newMutableList();
     }
 
     /**
@@ -686,9 +723,18 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
       return this;
     }
 
+    /**
+     * 背景效果
+     */
+    public Builder addAllShowInfos(List<BackgroundShowInfo> showInfos) {
+      Internal.checkElementsNotNull(showInfos);
+      this.showInfos = showInfos;
+      return this;
+    }
+
     @Override
     public MRoundInfo build() {
-      return new MRoundInfo(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, users, wantSingType, CHORoundInfos, SPKRoundInfos, commonRoundResult, super.buildUnknownFields());
+      return new MRoundInfo(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, users, wantSingType, CHORoundInfos, SPKRoundInfos, commonRoundResult, showInfos, super.buildUnknownFields());
     }
   }
 
@@ -713,6 +759,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
           + MCHOInnerRoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(13, value.CHORoundInfos)
           + MSPKInnerRoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(14, value.SPKRoundInfos)
           + MCommonRoundResult.ADAPTER.encodedSizeWithTag(15, value.commonRoundResult)
+          + BackgroundShowInfo.ADAPTER.asRepeated().encodedSizeWithTag(16, value.showInfos)
           + value.unknownFields().size();
     }
 
@@ -732,6 +779,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
       MCHOInnerRoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 13, value.CHORoundInfos);
       MSPKInnerRoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 14, value.SPKRoundInfos);
       MCommonRoundResult.ADAPTER.encodeWithTag(writer, 15, value.commonRoundResult);
+      BackgroundShowInfo.ADAPTER.asRepeated().encodeWithTag(writer, 16, value.showInfos);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -776,6 +824,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
           case 13: builder.CHORoundInfos.add(MCHOInnerRoundInfo.ADAPTER.decode(reader)); break;
           case 14: builder.SPKRoundInfos.add(MSPKInnerRoundInfo.ADAPTER.decode(reader)); break;
           case 15: builder.setCommonRoundResult(MCommonRoundResult.ADAPTER.decode(reader)); break;
+          case 16: builder.showInfos.add(BackgroundShowInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -795,6 +844,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
       Internal.redactElements(builder.CHORoundInfos, MCHOInnerRoundInfo.ADAPTER);
       Internal.redactElements(builder.SPKRoundInfos, MSPKInnerRoundInfo.ADAPTER);
       if (builder.commonRoundResult != null) builder.commonRoundResult = MCommonRoundResult.ADAPTER.redact(builder.commonRoundResult);
+      Internal.redactElements(builder.showInfos, BackgroundShowInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }
