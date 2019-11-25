@@ -821,6 +821,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             singCardShowListener.invoke()
             mSelfSingCardView.playLyric()
             mGiveUpView.delayShowGiveUpView(false)
+            mOthersSingCardView.bindData()
         }
 
         var step1 = {

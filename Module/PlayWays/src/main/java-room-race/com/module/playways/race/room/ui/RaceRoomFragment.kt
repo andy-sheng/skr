@@ -603,6 +603,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 mCorePresenter.sendSingComplete("singBySelfFirstRound")
             }
             mRaceSelfSingLyricView.setVisibility(View.VISIBLE)
+
+            mRaceOtherSingCardView.bindData()
+            mRaceOtherSingCardView.setVisibility(View.VISIBLE)
         }
 
         hideSignUpUI(true)
@@ -703,6 +706,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 mCorePresenter.sendSingComplete("singBySelfSecondRound")
             }
             mRaceSelfSingLyricView.setVisibility(View.VISIBLE)
+
+            mRaceOtherSingCardView.bindData()
+            mRaceOtherSingCardView.setVisibility(View.VISIBLE)
         }
 
         hideSignUpUI(true)

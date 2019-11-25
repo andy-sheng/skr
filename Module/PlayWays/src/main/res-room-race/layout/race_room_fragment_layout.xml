@@ -199,10 +199,13 @@
 
     <!--自己唱的view-->
     <ViewStub
+        android:layout_marginTop="@dimen/view_120_dp"
         android:id="@+id/race_self_sing_lyric_view_stub"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout="@layout/race_self_sing_lyric_layout" />
+        android:layout_height="0dp"
+        android:layout="@layout/race_self_sing_lyric_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
     <!--中礼物展示-->
     <com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
