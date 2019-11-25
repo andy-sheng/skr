@@ -2,6 +2,7 @@ package com.module.playways.race.room.model
 
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
+import com.component.busilib.model.BackgroundEffectModel
 import com.module.playways.race.room.event.*
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.song.model.SongModel
@@ -19,6 +20,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     var subRoundInfo = ArrayList<RaceSubRoundInfo>() //子轮次信息
     var playUsers = ArrayList<RacePlayerInfoModel>() // 选手
     var waitUsers = ArrayList<RacePlayerInfoModel>() // 观众
+    var showInfos: ArrayList<BackgroundEffectModel> = ArrayList()
     var introBeginMs = 0 //竞选开始相对时间（相对于createTimeMs时间）
     var introEndMs = 0 // 竞选结束相对时间（相对于createTimeMs时间）
     //var wantSingInfos = ArrayList<RaceWantSingInfo>() // 想唱信息列表

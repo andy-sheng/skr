@@ -740,6 +740,23 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         hideSignUpUI(mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.uid.toInt()) == true)
     }
 
+//    private fun playBgEffect(seq: Int) {
+//        val now = mRoomData!!.realRoundInfo
+//        if (seq == 1) {
+//            if (now?.showInfos != null && now?.showInfos.size >= 1) {
+//                mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+//            } else {
+//                mGameEffectBgView.hideBg()
+//            }
+//        } else if (seq == 2) {
+//            if (now?.showInfos != null && now?.showInfos.size >= 2) {
+//                mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
+//            } else {
+//                mGameEffectBgView.hideBg()
+//            }
+//        }
+//    }
+
     override fun showRoundOver(lastRoundInfo: RaceRoundInfoModel, continueOp: (() -> Unit)?) {
         MyLog.d(TAG, "showRoundOver lastRoundInfo = $lastRoundInfo, continueOp = $continueOp")
         mRaceRightOpView.visibility = View.GONE
