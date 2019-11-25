@@ -19,7 +19,8 @@
             android:layout_height="@dimen/view_220_dp"
             android:layout_marginLeft="@dimen/view_10_dp"
             android:layout_marginTop="@dimen/view_133_dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:clipChildren="false">
 
             <com.opensource.svgaplayer.SVGAImageView
                 android:id="@+id/left_sing_svga"
@@ -36,34 +37,35 @@
 
             <RelativeLayout
                 android:id="@+id/left_area"
-                android:layout_width="@dimen/view_68_dp"
-                android:layout_height="@dimen/view_68_dp"
+                android:layout_width="@dimen/view_125_dp"
+                android:layout_height="@dimen/view_125_dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_47_dp">
+                android:layout_marginTop="@dimen/view_17_dp">
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/left_iv"
                     android:layout_width="@dimen/view_68_dp"
-                    android:layout_height="@dimen/view_68_dp" />
+                    android:layout_height="@dimen/view_68_dp"
+                    android:layout_centerInParent="true" />
 
                 <com.common.view.ex.ExRelativeLayout
                     android:id="@+id/left_status_area"
                     android:layout_width="@dimen/view_64_dp"
                     android:layout_height="@dimen/view_64_dp"
+                    android:layout_centerInParent="true"
                     android:layout_marginLeft="@dimen/view_2_dp"
                     android:layout_marginTop="@dimen/view_2_dp"
                     android:visibility="gone"
                     app:bl_shape="oval"
                     app:bl_solid_color="@color/black_trans_50" />
 
+                <ImageView
+                    android:id="@+id/left_level_bg"
+                    android:layout_width="@dimen/view_111_dp"
+                    android:layout_height="@dimen/view_125_dp"
+                    android:layout_centerInParent="true" />
             </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/left_level_bg"
-                android:layout_width="@dimen/view_111_dp"
-                android:layout_height="@dimen/view_125_dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_18_dp" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/left_status"
@@ -128,34 +130,35 @@
 
             <RelativeLayout
                 android:id="@+id/right_area"
-                android:layout_width="@dimen/view_68_dp"
-                android:layout_height="@dimen/view_68_dp"
+                android:layout_width="@dimen/view_125_dp"
+                android:layout_height="@dimen/view_125_dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_47_dp">
+                android:layout_marginTop="@dimen/view_17_dp">
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/right_iv"
                     android:layout_width="@dimen/view_68_dp"
-                    android:layout_height="@dimen/view_68_dp" />
+                    android:layout_height="@dimen/view_68_dp"
+                    android:layout_centerInParent="true" />
 
                 <com.common.view.ex.ExRelativeLayout
                     android:id="@+id/right_status_area"
                     android:layout_width="@dimen/view_64_dp"
                     android:layout_height="@dimen/view_64_dp"
+                    android:layout_centerInParent="true"
                     android:layout_marginLeft="@dimen/view_2_dp"
                     android:layout_marginTop="@dimen/view_2_dp"
                     android:visibility="gone"
                     app:bl_shape="oval"
                     app:bl_solid_color="@color/black_trans_50" />
 
-            </RelativeLayout>
+                <ImageView
+                    android:id="@+id/right_level_bg"
+                    android:layout_width="@dimen/view_111_dp"
+                    android:layout_height="@dimen/view_125_dp"
+                    android:layout_centerInParent="true" />
 
-            <ImageView
-                android:id="@+id/right_level_bg"
-                android:layout_width="@dimen/view_111_dp"
-                android:layout_height="@dimen/view_125_dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_18_dp" />
+            </RelativeLayout>
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/right_status"

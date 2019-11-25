@@ -52,7 +52,7 @@ class PKSingCardView : RelativeLayout {
     internal var mLeftStatusArea: ExRelativeLayout? = null
     internal var mLeftName: ExTextView? = null
     internal var mLeftStatus: ExTextView? = null
-    internal var mLeftCircleAnimationView: CircleAnimationView? = null
+//    internal var mLeftCircleAnimationView: CircleAnimationView? = null
     internal var mLeftLevelBg: ImageView? = null
 
     internal var mRightPkArea: RelativeLayout? = null
@@ -61,7 +61,7 @@ class PKSingCardView : RelativeLayout {
     internal var mRightStatusArea: ExRelativeLayout? = null
     internal var mRightName: ExTextView? = null
     internal var mRightStatus: ExTextView? = null
-    internal var mRightCircleAnimationView: CircleAnimationView? = null
+//    internal var mRightCircleAnimationView: CircleAnimationView? = null
     internal var mRightLevelBg: ImageView? = null
 
     internal var mScaleAnimation: ScaleAnimation? = null        // 头像放大动画
@@ -101,7 +101,7 @@ class PKSingCardView : RelativeLayout {
         mLeftStatusArea = findViewById<View>(R.id.left_status_area) as ExRelativeLayout
         mLeftName = findViewById<View>(R.id.left_name) as ExTextView
         mLeftStatus = findViewById<View>(R.id.left_status) as ExTextView
-        mLeftCircleAnimationView = findViewById<View>(R.id.left_circle_animation_view) as CircleAnimationView
+//        mLeftCircleAnimationView = findViewById<View>(R.id.left_circle_animation_view) as CircleAnimationView
         mLeftLevelBg = findViewById(R.id.left_level_bg)
 
         mRightPkArea = findViewById<View>(R.id.right_pk_area) as RelativeLayout
@@ -110,7 +110,7 @@ class PKSingCardView : RelativeLayout {
         mRightStatusArea = findViewById<View>(R.id.right_status_area) as ExRelativeLayout
         mRightName = findViewById<View>(R.id.right_name) as ExTextView
         mRightStatus = findViewById<View>(R.id.right_status) as ExTextView
-        mRightCircleAnimationView = findViewById<View>(R.id.right_circle_animation_view) as CircleAnimationView
+//        mRightCircleAnimationView = findViewById<View>(R.id.right_circle_animation_view) as CircleAnimationView
         mRightLevelBg = findViewById(R.id.right_level_bg)
 
         mLeftIv?.setOnClickListener(object : DebounceViewClickListener() {
@@ -226,8 +226,8 @@ class PKSingCardView : RelativeLayout {
     fun reset() {
         mLeftIv?.clearAnimation()
         mRightIv?.clearAnimation()
-        mLeftCircleAnimationView?.visibility = View.GONE
-        mRightCircleAnimationView?.visibility = View.GONE
+//        mLeftCircleAnimationView?.visibility = View.GONE
+//        mRightCircleAnimationView?.visibility = View.GONE
         mLeftStatusArea?.visibility = View.GONE
         mLeftStatusArea?.visibility = View.GONE
         mLeftStatus?.visibility = View.GONE
@@ -327,9 +327,9 @@ class PKSingCardView : RelativeLayout {
         mValueAnimator!!.addUpdateListener { animation ->
             val p = animation.animatedValue as Int
             if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel!!.userId) {
-                mLeftCircleAnimationView?.setProgress(p)
+//                mLeftCircleAnimationView?.setProgress(p)
             } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel!!.userId) {
-                mRightCircleAnimationView?.setProgress(p)
+//                mRightCircleAnimationView?.setProgress(p)
             }
         }
 
@@ -337,27 +337,27 @@ class PKSingCardView : RelativeLayout {
             override fun onAnimationStart(animation: Animator) {
                 super.onAnimationStart(animation)
                 if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel!!.userId) {
-                    mLeftCircleAnimationView?.visibility = View.VISIBLE
+//                    mLeftCircleAnimationView?.visibility = View.VISIBLE
                 } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel!!.userId) {
-                    mRightCircleAnimationView?.visibility = View.VISIBLE
+//                    mRightCircleAnimationView?.visibility = View.VISIBLE
                 }
             }
 
             override fun onAnimationCancel(animation: Animator) {
                 super.onAnimationCancel(animation)
                 if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel!!.userId) {
-                    mLeftCircleAnimationView?.visibility = View.GONE
+//                    mLeftCircleAnimationView?.visibility = View.GONE
                 } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel!!.userId) {
-                    mRightCircleAnimationView?.visibility = View.GONE
+//                    mRightCircleAnimationView?.visibility = View.GONE
                 }
             }
 
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
                 if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel!!.userId) {
-                    mLeftCircleAnimationView?.visibility = View.GONE
+//                    mLeftCircleAnimationView?.visibility = View.GONE
                 } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel!!.userId) {
-                    mRightCircleAnimationView?.visibility = View.GONE
+//                    mRightCircleAnimationView?.visibility = View.GONE
                 }
 
                 if (mAnimationListerner != null) {
