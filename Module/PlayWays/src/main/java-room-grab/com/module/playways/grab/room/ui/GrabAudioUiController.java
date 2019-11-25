@@ -22,11 +22,11 @@ public class GrabAudioUiController extends GrabBaseUiController{
         mF.getMSelfSingCardView().setVisibility(View.VISIBLE);
         mF.getMOthersSingCardView().setVisibility(GONE);
         mF.getMSelfSingCardView().playLyric();
-        if(mF.getMGrabWidgetAnimationController().isOpen()){
-            mF.getMSelfSingCardView().setTranslateY(mF.getMGrabWidgetAnimationController().getTranslateByOpenType());
-        }else{
-            mF.getMSelfSingCardView().setTranslateY(0);
-        }
+//        if(mF.getMGrabWidgetAnimationController().isOpen()){
+//            mF.getMSelfSingCardView().setTranslateY(mF.getMGrabWidgetAnimationController().getTranslateByOpenType());
+//        }else{
+//            mF.getMSelfSingCardView().setTranslateY(0);
+//        }
         if (mF.getMRoomData().isNewUser()) {
             mF.tryShowGrabSelfSingTipView();
 
