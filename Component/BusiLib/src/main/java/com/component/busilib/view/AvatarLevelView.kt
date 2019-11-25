@@ -6,6 +6,7 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.U
