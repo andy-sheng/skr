@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.text.TextUtils
 import android.view.*
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -428,6 +429,23 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         }
     }
 
+    private fun playBgEffect(seq: Int) {
+        val now = mRoomData!!.realRoundInfo
+        if (seq == 1) {
+            if (now?.showInfos != null && now?.showInfos.size >= 1) {
+                mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+            } else {
+                mGameEffectBgView.hideBg()
+            }
+        } else if (seq == 2) {
+            if (now?.showInfos != null && now?.showInfos.size >= 2) {
+                mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
+            } else {
+                mGameEffectBgView.hideBg()
+            }
+        }
+    }
+
     private fun buyFlowerFromOuter() {
         if (mRoomData!!.realRoundInfo != null) {
             val now = mRoomData!!.realRoundInfo
@@ -829,9 +847,11 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             if (mRoomData?.realRoundInfo?.status != EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
                 mSingBeginTipsCardView.bindData(SVGAListener {
                     step2.invoke()
+                    playBgEffect(2)
                 })
             } else {
                 step2.invoke()
+                playBgEffect(1)
             }
         }
 
@@ -845,6 +865,51 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         } else {
             step1.invoke()
         }
+
+        playBgEffect()
+    }
+
+    private fun playBgEffect() {
+        val now = mRoomData!!.realRoundInfo
+        now?.let {
+            if (now.isNormalRound) {
+                if (now?.showInfos != null && now?.showInfos.size >= 1) {
+                    mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+                }
+            } else if (now.isChorusRound) {
+                if (RoomDataUtils.isRoundSinger(it, MyUserInfoManager.uid)) {
+                    //自己有演唱
+                    if (now.chorusRoundInfoModels[0].userID.toLong() == MyUserInfoManager.uid) {
+                        if (now?.showInfos != null && now?.showInfos.size >= 1) {
+                            mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+                        }
+                    } else {
+                        if (now?.showInfos != null && now?.showInfos.size >= 2) {
+                            mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
+                        }
+                    }
+                } else {
+                    //自己没有唱
+                    for (effect in now?.showInfos) {
+                        if (!TextUtils.isEmpty(effect.sourceURL)) {
+                            mGameEffectBgView.showBgEffect(effect.sourceURL, effect.bgColor)
+                        }
+                    }
+                }
+            } else if (now.isPKRound) {
+                if (now.status == EMRoundStatus.MRS_SPK_FIRST_PEER_SING.value) {
+                    if (now?.showInfos != null && now?.showInfos.size >= 1) {
+                        mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+                    }
+                } else if (now.status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
+                    if (now?.showInfos != null && now?.showInfos.size >= 2) {
+                        mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
+                    }
+                }
+            } else {
+                mGameEffectBgView.hideBg()
+            }
+        }
     }
 
     override fun singByOthers(lastRoundInfo: MicRoundInfoModel?) {
@@ -853,6 +918,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             hideAllSceneView(null)
             mGrabScoreTipsView.reset()
             mOthersSingCardView.bindData()
+            playBgEffect(1)
         }
 
         var step1 = {
@@ -878,6 +944,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         } else {
             step1.invoke()
         }
+
+        playBgEffect()
     }
 
     override fun joinNotice(model: MicPlayerInfoModel?) {
