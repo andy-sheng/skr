@@ -24,6 +24,7 @@ import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.constans.GameModeType
+import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.ConfirmDialog
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
@@ -121,11 +122,13 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     internal lateinit var mTopOpView: RelayTopOpView
     internal lateinit var mTopContentView: RelayTopContentView
 
+    internal lateinit var mGameEffectBgView: GameEffectBgView
+
     internal var mMicInviteView: MicInviteView? = null
 
     // 专场ui组件
     lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
-//    lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
+    //    lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
 //    lateinit var mSelfSingCardView: SelfSingCardView // 自己演唱卡片
 //    lateinit var mSingBeginTipsCardView: MicSingBeginTipsCardView// 演唱开始提示
 //    lateinit var mRoundOverCardView: RoundOverCardView// 结果页
@@ -183,6 +186,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             }
             false
         }
+
+        initBgEffectView()
         initInputView()
         initBottomView()
         initCommentView()
@@ -292,6 +297,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     private fun initVipEnterView() {
         mVIPEnterView = VIPEnterView(findViewById(R.id.vip_enter_view_stub))
+    }
+
+    private fun initBgEffectView() {
+        mGameEffectBgView = GameEffectBgView(findViewById(R.id.game_effect_bg_view_layout_viewStub))
     }
 
     private fun initInputView() {
