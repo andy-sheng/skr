@@ -10,6 +10,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.mic.room.MicRoomData;
 import com.module.playways.mic.room.model.MicPlayerInfoModel;
+import com.module.playways.mic.room.model.MicRoundInfoModel;
 import com.module.playways.race.room.RaceRoomData;
 import com.module.playways.race.room.model.FakeUserInfoModel;
 import com.module.playways.race.room.model.RacePlayerInfoModel;
@@ -331,6 +332,42 @@ public class RoomDataUtils {
      * @return
      */
     public static boolean isRoundSinger(GrabRoundInfoModel now, long uid) {
+        if (now == null) {
+            return false;
+        }
+        {
+            List<SPkRoundInfoModel> list = now.getsPkRoundInfoModels();
+            for (SPkRoundInfoModel infoModel : list) {
+                if (infoModel.getUserID() == uid) {
+                    return true;
+                }
+            }
+        }
+        {
+            List<ChorusRoundInfoModel> list = now.getChorusRoundInfoModels();
+            for (ChorusRoundInfoModel infoModel : list) {
+                if (infoModel.getUserID() == uid) {
+                    return true;
+                }
+            }
+        }
+        {
+            if (now.getUserID() == uid) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    /**
+     * 这个轮次的演唱者
+     *
+     * @param now
+     * @param uid
+     * @return
+     */
+    public static boolean isRoundSinger(MicRoundInfoModel now, long uid) {
         if (now == null) {
             return false;
         }

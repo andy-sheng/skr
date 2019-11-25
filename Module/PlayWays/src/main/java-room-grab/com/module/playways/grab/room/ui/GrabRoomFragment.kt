@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.v4.app.Fragment
+import android.text.TextUtils
 import android.util.Log
 import android.view.*
 import android.view.View.GONE
@@ -1399,12 +1400,11 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         if (now != null && now.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
             // pk的第二轮，没有 vs 的演唱开始提示了
             onSingBeginTipsPlayOver()
-            playBgEffect(2)
         } else {
             singBeginTipsPlay { onSingBeginTipsPlayOver() }
-            playBgEffect(1)
         }
 
+        playBgEffect()
         StatisticsAdapter.recordCountEvent("grab", "game_sing", null)
     }
 
@@ -1433,8 +1433,6 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 mGrabOpBtn.hide("singByOthers2")
             }
             onSingBeginTipsPlayOver()
-
-            playBgEffect(2)
         } else {
             singBeginTipsPlay {
                 val grabRoundInfoModel = mRoomData!!.realRoundInfo
@@ -1450,23 +1448,81 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 }
                 onSingBeginTipsPlayOver()
             }
-
-            playBgEffect(1)
         }
+
+        playBgEffect()
     }
 
-    private fun playBgEffect(seq: Int) {
+    /**
+     *
+    1
+    独唱
+    演唱者
+    显示自己所购买背景
+    观众
+    显示正在演唱用户所购买背景
+
+    2
+    双人合唱、双人小游戏、新接唱
+    演唱者
+    显示自己所购买背景
+    观众
+    谁有商品背景显示谁的
+    若双方都有则显示第一个用户的背景
+    若双方都没有则显示默认背景
+
+    3
+    双人pk
+    演唱者
+    显示自己所购买背景
+    观众
+    显示正在演唱用户所购买背景
+
+    4
+    多人自由语音
+    演唱者、观众
+    显示默认背景
+
+    以上适用于抢唱房间、小k房、排位赛、接唱
+     */
+    private fun playBgEffect() {
         val now = mRoomData!!.realRoundInfo
-        if (seq == 1) {
-            if (now?.showInfos != null && now?.showInfos.size >= 1) {
-                mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
-            } else {
-                mGameEffectBgView.hideBg()
-            }
-        } else if (seq == 2) {
-            if (now?.showInfos != null && now?.showInfos.size >= 2) {
-                mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
-            } else {
+        now?.let {
+            if (now.isNormalRound) {
+                if (now?.showInfos != null && now?.showInfos.size >= 1) {
+                    mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+                }
+            } else if (now.isChorusRound || now.isMiniGameRound) {
+                if (RoomDataUtils.isRoundSinger(it, MyUserInfoManager.uid)) {
+                    //自己有演唱
+                    if (now.chorusRoundInfoModels[0].userID.toLong() == MyUserInfoManager.uid) {
+                        if (now?.showInfos != null && now?.showInfos.size >= 1) {
+                            mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+                        }
+                    } else {
+                        if (now?.showInfos != null && now?.showInfos.size >= 2) {
+                            mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
+                        }
+                    }
+                } else {
+                    //自己没有唱
+                    for (effect in now?.showInfos) {
+                        if (!TextUtils.isEmpty(effect.sourceURL)) {
+                            mGameEffectBgView.showBgEffect(effect.sourceURL, effect.bgColor)
+                        }
+                    }
+                }
+            } else if (now.isPKRound) {
+                if (now.status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.value) {
+                    if (now?.showInfos != null && now?.showInfos.size >= 1) {
+                        mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+                    }
+                } else if (now.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
+                    if (now?.showInfos != null && now?.showInfos.size >= 2) {
+                        mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
+                    }
+                }
+            } else if (now.isFreeMicRound) {
                 mGameEffectBgView.hideBg()
             }
         }
