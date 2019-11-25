@@ -376,46 +376,46 @@ class PKSingCardView : RelativeLayout {
     /**
      * 大幕拉开
      */
-    fun playWithDraw() {
-        if (mAnimatorSet == null) {
-            mAnimatorSet = AnimatorSet()
-            val left = ObjectAnimator.ofFloat<View>(mLeftPkArea, View.TRANSLATION_X, 0f, -U.getDisplayUtils().screenWidth / 2f)
-            left.setDuration(500)
-
-            val right = ObjectAnimator.ofFloat<View>(mRightPkArea, View.TRANSLATION_X, 0f, U.getDisplayUtils().screenWidth / 2f)
-            right.setDuration(500)
-
-            mAnimatorSet!!.playTogether(left, right)
-        }
-
-        visibility = View.VISIBLE
-        mAnimatorSet!!.removeAllListeners()
-        mAnimatorSet!!.cancel()
-
-        mAnimatorSet!!.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator) {
-
-            }
-
-            override fun onAnimationEnd(animation: Animator) {
-                visibility = View.GONE
-                mLeftPkArea?.translationX = 0f
-                mRightPkArea?.translationX = 0f
-                if (mAnimationListerner != null) {
-                    mAnimationListerner!!.onAnimationEndWithDraw()
-                }
-            }
-
-            override fun onAnimationCancel(animation: Animator) {
-                onAnimationEnd(animation)
-            }
-
-            override fun onAnimationRepeat(animation: Animator) {
-
-            }
-        })
-        mAnimatorSet!!.start()
-    }
+//    fun playWithDraw() {
+//        if (mAnimatorSet == null) {
+//            mAnimatorSet = AnimatorSet()
+//            val left = ObjectAnimator.ofFloat<View>(mLeftPkArea, View.TRANSLATION_X, 0f, -U.getDisplayUtils().screenWidth / 2f)
+//            left.setDuration(500)
+//
+//            val right = ObjectAnimator.ofFloat<View>(mRightPkArea, View.TRANSLATION_X, 0f, U.getDisplayUtils().screenWidth / 2f)
+//            right.setDuration(500)
+//
+//            mAnimatorSet!!.playTogether(left, right)
+//        }
+//
+//        visibility = View.VISIBLE
+//        mAnimatorSet!!.removeAllListeners()
+//        mAnimatorSet!!.cancel()
+//
+//        mAnimatorSet!!.addListener(object : Animator.AnimatorListener {
+//            override fun onAnimationStart(animation: Animator) {
+//
+//            }
+//
+//            override fun onAnimationEnd(animation: Animator) {
+//                visibility = View.GONE
+//                mLeftPkArea?.translationX = 0f
+//                mRightPkArea?.translationX = 0f
+//                if (mAnimationListerner != null) {
+//                    mAnimationListerner!!.onAnimationEndWithDraw()
+//                }
+//            }
+//
+//            override fun onAnimationCancel(animation: Animator) {
+//                onAnimationEnd(animation)
+//            }
+//
+//            override fun onAnimationRepeat(animation: Animator) {
+//
+//            }
+//        })
+//        mAnimatorSet!!.start()
+//    }
 
     // TODO: 2019/4/23 播放声纹动画，同时倒计时开始计时
     fun playSingAnimation(uid: Int) {

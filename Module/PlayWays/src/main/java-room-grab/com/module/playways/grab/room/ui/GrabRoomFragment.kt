@@ -1508,6 +1508,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 mGrabBaseUiController.singByOthers()
             }
         }
+
+        mOthersSingCardView.bindData()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

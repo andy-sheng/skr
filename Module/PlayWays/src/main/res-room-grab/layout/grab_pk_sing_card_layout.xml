@@ -19,8 +19,7 @@
             android:layout_height="@dimen/view_220_dp"
             android:layout_marginLeft="@dimen/view_10_dp"
             android:layout_marginTop="@dimen/view_133_dp"
-            android:layout_weight="1"
-            android:background="@drawable/pk_banzi_bg_blue">
+            android:layout_weight="1">
 
             <com.opensource.svgaplayer.SVGAImageView
                 android:id="@+id/left_sing_svga"
@@ -105,8 +104,7 @@
             android:layout_height="@dimen/view_220_dp"
             android:layout_marginTop="@dimen/view_133_dp"
             android:layout_marginRight="@dimen/view_10_dp"
-            android:layout_weight="1"
-            android:background="@drawable/pk_banzi_bg_red">
+            android:layout_weight="1">
 
             <com.opensource.svgaplayer.SVGAImageView
                 android:id="@+id/right_sing_svga"
