@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/view_16_dp"
-    android:layout_marginRight="@dimen/view_16_dp"
-    android:layout_marginBottom="@dimen/view_8_dp"
-    android:background="@drawable/common_dialog_bg"
-    android:orientation="vertical">
+    android:background="@drawable/common_gradient_bg">
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_24_dp"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_25_dp"
         android:drawableLeft="@drawable/works_save_tips_icon"
         android:gravity="center"
         android:text="已保存到个人中心"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/textsize_14_dp" />
+        android:textColor="#8B572A"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginTop="@dimen/view_60_dp"
-        android:background="#333B4E79"
+        android:background="@color/black_trans_10"
         android:paddingLeft="@dimen/view_2_dp"
-        android:paddingRight="@dimen/view_2_dp" />
+        android:paddingRight="@dimen/view_2_dp"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_text"
@@ -37,89 +37,83 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_17_dp"
         android:text="分享"
-        android:textColor="@color/textColorPrimary"
+        android:textColor="#cc8B572A"
         android:textSize="@dimen/textsize_14_dp"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_108_dp"
-        android:layout_below="@id/tv_text"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_qq_share"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_80_dp"
-                android:layout_centerInParent="true"
-                android:drawableTop="@drawable/yaoqing_qq"
-                android:drawablePadding="@dimen/view_10_dp"
-                android:text="QQ好友"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="@dimen/textsize_14_dp" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_qzone_share"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_80_dp"
-                android:layout_centerInParent="true"
-                android:drawableTop="@drawable/yaoqing_kongjian"
-                android:drawablePadding="@dimen/view_10_dp"
-                android:text="QQ空间"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="@dimen/textsize_14_dp" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_weixin_share"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_80_dp"
-                android:layout_centerInParent="true"
-                android:drawableTop="@drawable/yaoqing_weixin"
-                android:drawablePadding="@dimen/view_10_dp"
-                android:text="微信好友"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="@dimen/textsize_14_dp" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_quan_share"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_80_dp"
-                android:layout_centerInParent="true"
-                android:drawableTop="@drawable/yaoqing_quan"
-                android:drawablePadding="@dimen/view_10_dp"
-                android:text="朋友圈"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="@dimen/textsize_14_dp" />
-
-        </RelativeLayout>
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
 
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_qq_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:layout_marginBottom="@dimen/view_24_dp"
+        android:drawableTop="@drawable/icon_qq"
+        android:drawablePadding="@dimen/view_10_dp"
+        android:text="QQ好友"
+        android:textColor="#cc8B572A"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tv_qzone_share"
+        app:layout_constraintTop_toBottomOf="@id/tv_text" />
 
-</com.common.view.ex.ExRelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_qzone_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:layout_marginBottom="@dimen/view_24_dp"
+        android:drawableTop="@drawable/icon_qzone"
+        android:drawablePadding="@dimen/view_10_dp"
+        android:text="QQ空间"
+        android:textColor="#cc8B572A"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/tv_qq_share"
+        app:layout_constraintRight_toLeftOf="@id/tv_weixin_share"
+        app:layout_constraintTop_toBottomOf="@id/tv_text" />
+
+
+    <TextView
+        android:id="@+id/tv_weixin_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:layout_marginBottom="@dimen/view_24_dp"
+        android:drawableTop="@drawable/icon_weixin"
+        android:drawablePadding="@dimen/view_10_dp"
+        android:text="微信好友"
+        android:textColor="#cc8B572A"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/tv_qzone_share"
+        app:layout_constraintRight_toLeftOf="@id/tv_quan_share"
+        app:layout_constraintTop_toBottomOf="@id/tv_text" />
+
+
+    <TextView
+        android:id="@+id/tv_quan_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:layout_marginBottom="@dimen/view_24_dp"
+        android:drawableTop="@drawable/icon_quan"
+        android:drawablePadding="@dimen/view_10_dp"
+        android:text="朋友圈"
+        android:textColor="#cc8B572A"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/tv_weixin_share"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_text" />
+
+
+</android.support.constraint.ConstraintLayout>

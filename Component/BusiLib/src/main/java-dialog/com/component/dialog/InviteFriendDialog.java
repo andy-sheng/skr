@@ -22,8 +22,8 @@ public class InviteFriendDialog {
 
     DialogPlus mShareDialog;
 
-    public InviteFriendDialog(Context context, int type, int gameId,int tagId,int mediaType, String kouLingToken) {
-        InviteFriendDialogView inviteFriendDialogView = new InviteFriendDialogView(context, type, gameId,tagId,mediaType, kouLingToken);
+    public InviteFriendDialog(Context context, int type, int gameId, int tagId, int mediaType, String kouLingToken) {
+        InviteFriendDialogView inviteFriendDialogView = new InviteFriendDialogView(context, type, gameId, tagId, mediaType, kouLingToken);
 
         inviteFriendDialogView.setListener(new InviteFriendDialogView.Listener() {
             @Override
@@ -61,6 +61,7 @@ public class InviteFriendDialog {
                 .setContentHolder(new ViewHolder(inviteFriendDialogView))
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setMargin(U.getDisplayUtils().dip2px(16), -1, U.getDisplayUtils().dip2px(16), U.getDisplayUtils().dip2px(16))
                 .setExpanded(false)
                 .setGravity(Gravity.BOTTOM)
                 .create();

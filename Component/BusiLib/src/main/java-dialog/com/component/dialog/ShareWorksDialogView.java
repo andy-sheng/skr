@@ -1,6 +1,7 @@
 package com.component.dialog;
 
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -9,7 +10,7 @@ import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 
-public class ShareWorksDialogView extends RelativeLayout {
+public class ShareWorksDialogView extends ConstraintLayout {
 
     String mSongName;
     Listener mListener;
