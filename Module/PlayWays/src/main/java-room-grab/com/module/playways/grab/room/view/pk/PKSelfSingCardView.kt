@@ -20,7 +20,7 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     internal var mPkSelfSingLyricView: SelfSingLyricView? = null
     internal var mPkSingCardView: PKSingCardView? = null
-    internal var mSingCountDownView: SingCountDownView2? = null
+//    internal var mSingCountDownView: SingCountDownView2? = null
 
     internal var mLeftUserInfoModel: UserInfoModel? = null
     internal var mRightUserInfoModel: UserInfoModel? = null
@@ -34,8 +34,8 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         val viewStub = mParentView!!.findViewById<ViewStub>(R.id.pk_self_sing_lyric_view_stub)
         mPkSelfSingLyricView = SelfSingLyricView(viewStub)
         mPkSingCardView = mParentView!!.findViewById(R.id.pk_sing_card_view)
-        mSingCountDownView = mParentView!!.findViewById(R.id.sing_count_down_view)
-        mSingCountDownView!!.setListener(mOverListener)
+//        mSingCountDownView = mParentView!!.findViewById(R.id.sing_count_down_view)
+//        mSingCountDownView!!.setListener(mOverListener)
     }
 
     override fun layoutDesc(): Int {
@@ -92,12 +92,12 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
      * @param userId
      */
     private fun playIndicateAnimation(userId: Int) {
-        if (H.isGrabRoom()) {
-            mSingCountDownView!!.startPlay(0, H.grabRoomData?.realRoundInfo?.singTotalMs
-                    ?: 0, false)
-        } else if (H.isMicRoom()) {
-            mSingCountDownView!!.startPlay(0, H.micRoomData?.realRoundInfo?.singTotalMs ?: 0, false)
-        }
+//        if (H.isGrabRoom()) {
+//            mSingCountDownView!!.startPlay(0, H.grabRoomData?.realRoundInfo?.singTotalMs
+//                    ?: 0, false)
+//        } else if (H.isMicRoom()) {
+//            mSingCountDownView!!.startPlay(0, H.micRoomData?.realRoundInfo?.singTotalMs ?: 0, false)
+//        }
 
         mPkSingCardView!!.playScaleAnimation(userId, false, object : PKSingCardView.AnimationListerner {
             override fun onAnimationEndExcludeSvga() {
@@ -115,11 +115,11 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         if (H.isGrabRoom()) {
             mPkSelfSingLyricView!!.playWithAcc(H.getSongModel(), H.grabRoomData?.realRoundInfo?.singTotalMs
                     ?: 0)
-            mSingCountDownView!!.startPlay(0, H.grabRoomData?.realRoundInfo?.singTotalMs ?: 0, true)
+//            mSingCountDownView!!.startPlay(0, H.grabRoomData?.realRoundInfo?.singTotalMs ?: 0, true)
         } else if (H.isMicRoom()) {
             mPkSelfSingLyricView!!.playWithAcc(H.getSongModel(), H.micRoomData?.realRoundInfo?.singTotalMs
                     ?: 0)
-            mSingCountDownView!!.startPlay(0, H.micRoomData?.realRoundInfo?.singTotalMs ?: 0, true)
+//            mSingCountDownView!!.startPlay(0, H.micRoomData?.realRoundInfo?.singTotalMs ?: 0, true)
         }
     }
 
@@ -189,9 +189,9 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
         if (visibility == View.GONE) {
-            if (mSingCountDownView != null) {
-                mSingCountDownView!!.reset()
-            }
+//            if (mSingCountDownView != null) {
+//                mSingCountDownView!!.reset()
+//            }
             if (mPkSelfSingLyricView != null) {
                 mPkSelfSingLyricView!!.reset()
             }
