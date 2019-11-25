@@ -116,8 +116,8 @@ class RelayWidgetAnimationController(internal var mF: RelayRoomActivity) {
 //        } else {
 //            viewList.addAll(mF.mOthersSingCardView.getRealViews())
 //        }
-        viewList.addAll(mF.mSelfSingCardView.realViews)
-        viewList.addAll(mF.mOthersSingCardView.realViews)
+//        viewList.addAll(mF.mSelfSingCardView.realViews)
+//        viewList.addAll(mF.mOthersSingCardView.realViews)
         viewList.add(mF.mAddSongIv)
 //        viewList.add(mF.mHasSelectSongNumTv)
     }

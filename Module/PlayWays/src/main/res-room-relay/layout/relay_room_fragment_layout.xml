@@ -70,24 +70,24 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/has_select_song_num_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_marginTop="@dimen/view_100_dp"
-        android:layout_marginRight="@dimen/view_14_dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/view_9_dp"
-        android:paddingRight="@dimen/view_9_dp"
-        android:text="已点0首"
-        android:textColor="@color/white_trans_80"
-        android:textSize="@dimen/textsize_13_dp"
-        android:textStyle="bold"
-        app:bl_corners_radius="12dp"
-        app:bl_gradient_endColor="#835DFD"
-        app:bl_gradient_startColor="#835DFD"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+<!--    <com.common.view.ex.ExTextView-->
+<!--        android:id="@+id/has_select_song_num_tv"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="@dimen/view_24_dp"-->
+<!--        android:layout_marginTop="@dimen/view_100_dp"-->
+<!--        android:layout_marginRight="@dimen/view_14_dp"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:paddingLeft="@dimen/view_9_dp"-->
+<!--        android:paddingRight="@dimen/view_9_dp"-->
+<!--        android:text="已点0首"-->
+<!--        android:textColor="@color/white_trans_80"-->
+<!--        android:textSize="@dimen/textsize_13_dp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:bl_corners_radius="12dp"-->
+<!--        app:bl_gradient_endColor="#835DFD"-->
+<!--        app:bl_gradient_startColor="#835DFD"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/title_bar" />-->
 
     <!--下一局-->
     <com.module.playways.mic.room.view.MicTurnInfoCardView
@@ -99,15 +99,24 @@
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
+    <ViewStub
+        android:id="@+id/relay_sing_card_view_layout_stub"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_200_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_container_view"
+        android:layout="@layout/relay_sing_card_view_layout"
+        />
 
-    <!--唱歌提示卡片场景-->
-    <include layout="@layout/mic_sing_begin_card_layout" />
-    <!--他人唱歌时场景-->
-    <include layout="@layout/mic_other_sing_card_layout" />
-    <!--自己唱歌场景-->
-    <include layout="@layout/mic_self_sing_card_view_layout" />
-    <!--轮次结束卡片-->
-    <include layout="@layout/mic_round_over_card_layout" />
+<!--    &lt;!&ndash;唱歌提示卡片场景&ndash;&gt;-->
+<!--    <include layout="@layout/mic_sing_begin_card_layout" />-->
+<!--    &lt;!&ndash;他人唱歌时场景&ndash;&gt;-->
+<!--    <include layout="@layout/mic_other_sing_card_layout" />-->
+<!--    &lt;!&ndash;自己唱歌场景&ndash;&gt;-->
+<!--    <include layout="@layout/mic_self_sing_card_view_layout" />-->
+<!--    &lt;!&ndash;轮次结束卡片&ndash;&gt;-->
+<!--    <include layout="@layout/mic_round_over_card_layout" />-->
 
     <com.module.playways.grab.room.view.GrabScoreTipsView
         android:id="@+id/grab_score_tips_view"

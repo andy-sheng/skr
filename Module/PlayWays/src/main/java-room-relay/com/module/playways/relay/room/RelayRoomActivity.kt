@@ -65,6 +65,7 @@ import com.module.playways.relay.room.top.RelayTopContentView
 import com.module.playways.relay.room.top.RelayTopOpView
 import com.module.playways.relay.room.ui.IRelayRoomView
 import com.module.playways.relay.room.ui.RelayWidgetAnimationController
+import com.module.playways.relay.room.view.RelaySingCardView
 import com.module.playways.relay.room.view.RelayVoiceControlPanelView
 import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
@@ -119,7 +120,6 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
      * 存起该房间一些状态信息
      */
     internal var mRoomData = RelayRoomData()
-
     private lateinit var mCorePresenter: RelayCorePresenter
     internal var mDoubleRoomInvitePresenter = DoubleRoomInvitePresenter()
     //基础ui组件
@@ -136,10 +136,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     // 专场ui组件
     lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
-    lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
-    lateinit var mSelfSingCardView: SelfSingCardView // 自己演唱卡片
-    lateinit var mSingBeginTipsCardView: MicSingBeginTipsCardView// 演唱开始提示
-    lateinit var mRoundOverCardView: RoundOverCardView// 结果页
+//    lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
+//    lateinit var mSelfSingCardView: SelfSingCardView // 自己演唱卡片
+//    lateinit var mSingBeginTipsCardView: MicSingBeginTipsCardView// 演唱开始提示
+//    lateinit var mRoundOverCardView: RoundOverCardView// 结果页
     lateinit var mGrabScoreTipsView: GrabScoreTipsView // 打分提示
 
     lateinit var mAddSongIv: ExTextView
@@ -161,6 +161,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mWidgetAnimationController = RelayWidgetAnimationController(this)
     internal var mSkrAudioPermission = SkrAudioPermission()
+    lateinit var relaySingCardView: RelaySingCardView
 
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
@@ -251,7 +252,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         super.destroy()
         dismissDialog()
         mGiftPanelView?.destroy()
-        mSelfSingCardView?.destroy()
+//        mSelfSingCardView?.destroy()
         H.reset("MicRoomActivity")
     }
 
@@ -270,24 +271,24 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
 
     private fun hideAllSceneView(exclude: Any?) {
-        if (mSelfSingCardView != exclude) {
-            mSelfSingCardView.setVisibility(View.GONE)
-        }
-        if (mOthersSingCardView != exclude) {
-            mOthersSingCardView.setVisibility(View.GONE)
-        }
+//        if (mSelfSingCardView != exclude) {
+//            mSelfSingCardView.setVisibility(View.GONE)
+//        }
+//        if (mOthersSingCardView != exclude) {
+//            mOthersSingCardView.setVisibility(View.GONE)
+//        }
         if (mTurnInfoCardView != exclude) {
             mTurnInfoCardView.visibility = View.GONE
         }
 //        if (mGiveUpView != exclude) {
 //            mGiveUpView.hideWithAnimation(false)
 //        }
-        if (mRoundOverCardView != exclude) {
-            mRoundOverCardView.setVisibility(View.GONE)
-        }
-        if (mSingBeginTipsCardView != exclude) {
-            mSingBeginTipsCardView.setVisibility(View.GONE)
-        }
+//        if (mRoundOverCardView != exclude) {
+//            mRoundOverCardView.setVisibility(View.GONE)
+//        }
+//        if (mSingBeginTipsCardView != exclude) {
+//            mSingBeginTipsCardView.setVisibility(View.GONE)
+//        }
     }
 
     private fun initMicSeatView() {
@@ -321,23 +322,26 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         // 下一首
         mTurnInfoCardView = findViewById(R.id.turn_card_view)
         mTurnInfoCardView.visibility = View.GONE
-        // 演唱开始名片
-        mSingBeginTipsCardView = MicSingBeginTipsCardView(rootView)
-        // 自己演唱
-        mSelfSingCardView = SelfSingCardView(rootView)
-        mSelfSingCardView?.setListener {
-            //            removeNoAccSrollTipsView()
-//            removeGrabSelfSingTipView()
-            mCorePresenter?.sendRoundOverInfo()
-        }
-        // 他人演唱
-//        mSelfSingCardView?.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
-        mOthersSingCardView = OthersSingCardView(rootView)
-        // 结果页面
-        mRoundOverCardView = RoundOverCardView(rootView)
+//         演唱开始名片
+//        mSingBeginTipsCardView = MicSingBeginTipsCardView(rootView)
+//        // 自己演唱
+//        mSelfSingCardView = SelfSingCardView(rootView)
+//        mSelfSingCardView?.setListener {
+//            //            removeNoAccSrollTipsView()
+////            removeGrabSelfSingTipView()
+//            mCorePresenter?.sendRoundOverInfo()
+//        }
+//        // 他人演唱
+////        mSelfSingCardView?.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
+//        mOthersSingCardView = OthersSingCardView(rootView)
+//        // 结果页面
+//        mRoundOverCardView = RoundOverCardView(rootView)
 
         // 打分
         mGrabScoreTipsView = rootView.findViewById(R.id.grab_score_tips_view)
+
+        relaySingCardView = RelaySingCardView(rootView.findViewById(R.id.relay_sing_card_view_layout_stub))
+        relaySingCardView.setVisibility(View.VISIBLE)
     }
 
     private fun initBottomView() {
@@ -809,16 +813,16 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             hideAllSceneView(null)
             mGrabScoreTipsView.reset()
             singCardShowListener.invoke()
-            mSelfSingCardView.playLyric()
+//            mSelfSingCardView.playLyric()
 //            mGiveUpView.delayShowGiveUpView(false)
         }
 
         var step1 = {
             //不是pk 第二轮 都显示 卡片
             if (mRoomData?.realRoundInfo?.status != EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
-                mSingBeginTipsCardView.bindData(SVGAListener {
-                    step2.invoke()
-                })
+//                mSingBeginTipsCardView.bindData(SVGAListener {
+//                    step2.invoke()
+//                })
             } else {
                 step2.invoke()
             }
@@ -841,7 +845,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         var step2 = {
             hideAllSceneView(null)
             mGrabScoreTipsView.reset()
-            mOthersSingCardView.bindData()
+//            mOthersSingCardView.bindData()
         }
 
         var step1 = {
@@ -851,9 +855,9 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             if (b2 || b1) {
                 step2.invoke()
             } else {
-                mSingBeginTipsCardView.bindData(SVGAListener {
-                    step2.invoke()
-                })
+//                mSingBeginTipsCardView.bindData(SVGAListener {
+//                    step2.invoke()
+//                })
             }
         }
 
@@ -883,9 +887,9 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             // 等待阶段直接跳转 不走结果页
             continueOp?.invoke()
         } else {
-            mRoundOverCardView.bindData(lastRoundInfo, SVGAListener {
-                continueOp?.invoke()
-            })
+//            mRoundOverCardView.bindData(lastRoundInfo, SVGAListener {
+//                continueOp?.invoke()
+//            })
         }
     }
 
