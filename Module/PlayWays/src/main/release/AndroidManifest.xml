@@ -184,7 +184,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"></activity>
 
-
         <activity
             android:name="com.module.playways.relay.room.RelayRoomActivity"
             android:screenOrientation="portrait"
@@ -199,6 +198,8 @@
             android:name="com.module.playways.relay.match.RelayMatchActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"></activity>
+
+<!--        <activity android:name=".demo.DoubleDemoTestActivity"/>-->
 
         <meta-data
             android:name="com.module.playways.PlayWaysConfiguration"

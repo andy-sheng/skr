@@ -196,9 +196,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         mMainVp.setAdapter(fragmentPagerAdapter);
 
-        mHomePresenter = new
-
-                HomeCorePresenter(this, this);
+        mHomePresenter = new HomeCorePresenter(this, this);
         if (!UserAccountManager.INSTANCE.hasAccount()) {
             mMainActContainer.setVisibility(View.GONE);
             mUiHandler.postDelayed(new Runnable() {
@@ -320,7 +318,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         if (U.getChannelUtils().getChannel().startsWith("FEED")) {
             mPostBtn.callOnClick();
         }
-
     }
 
     @Override
