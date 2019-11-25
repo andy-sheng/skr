@@ -38,34 +38,26 @@ import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.presenter.DoubleRoomInvitePresenter
 import com.module.playways.grab.room.presenter.VipEnterPresenter
-import com.module.playways.grab.room.view.GrabGiveupView
 import com.module.playways.grab.room.view.GrabScoreTipsView
 import com.module.playways.grab.room.view.VIPEnterView
-import com.module.playways.grab.room.view.control.OthersSingCardView
-import com.module.playways.grab.room.view.control.RoundOverCardView
-import com.module.playways.grab.room.view.control.SelfSingCardView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.listener.AnimationListener
-import com.module.playways.listener.SVGAListener
-import com.module.playways.mic.match.model.JoinMicRoomRspModel
 import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
 import com.module.playways.mic.room.event.MicWantInviteEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.mic.room.model.MicUserMusicModel
 import com.module.playways.mic.room.top.MicInviteView
-import com.module.playways.mic.room.view.MicInputContainerView
 import com.module.playways.mic.room.view.MicTurnInfoCardView
-import com.module.playways.mic.room.view.control.MicSingBeginTipsCardView
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.room.bottom.RelayBottomContainerView
 import com.module.playways.relay.room.presenter.RelayCorePresenter
-import com.module.playways.relay.room.top.RelayTopContentView
-import com.module.playways.relay.room.top.RelayTopOpView
 import com.module.playways.relay.room.ui.IRelayRoomView
 import com.module.playways.relay.room.ui.RelayWidgetAnimationController
 import com.module.playways.relay.room.view.RelaySingCardView
+import com.module.playways.relay.room.view.RelayTopContentView
+import com.module.playways.relay.room.view.RelayTopOpView
 import com.module.playways.relay.room.view.RelayVoiceControlPanelView
 import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
@@ -74,8 +66,6 @@ import com.module.playways.room.gift.model.NormalGift
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
-import com.module.playways.room.room.comment.CommentView
-import com.module.playways.room.room.comment.listener.CommentViewItemListener
 import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
@@ -85,7 +75,6 @@ import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.room.view.InputContainerView
-import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.StandPlayType
@@ -126,7 +115,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     internal lateinit var mInputContainerView: InputContainerView
     internal lateinit var mBottomContainerView: RelayBottomContainerView
     internal lateinit var mVoiceRecordTipsView: VoiceRecordTipsView
-//    internal lateinit var mCommentView: CommentView
+    //    internal lateinit var mCommentView: CommentView
     internal lateinit var mGiftPanelView: GiftPanelView
     internal lateinit var mContinueSendView: ContinueSendView
     internal lateinit var mTopOpView: RelayTopOpView
@@ -467,17 +456,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     private fun initTopView() {
         mTopOpView = findViewById(R.id.top_op_view)
-//        mTopOpView.setRoomData(mRoomData)
-        mTopOpView.setListener(object : RelayTopOpView.Listener {
-            override fun onClickVoiceAudition() {
-                // 调音面板
+        mTopOpView.listener = object : RelayTopOpView.Listener {
+            override fun onClickGameRule() {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(this@RelayRoomActivity)
-                dismissDialog()
-                if (mVoiceControlPanelView == null) {
-                    mVoiceControlPanelView = RelayVoiceControlPanelView(this@RelayRoomActivity)
-                    mVoiceControlPanelView?.setRoomData(mRoomData)
-                }
-                mVoiceControlPanelView?.showByDialog()
+                showGameRuleDialog()
             }
 
             override fun onClickFeedBack() {
@@ -493,40 +475,20 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
                                 .build())
             }
 
-            override fun closeBtnClick() {
-                quitGame()
-            }
-
-            override fun onClickGameRule() {
+            override fun onClickVoiceAudition() {
+                // 调音面板
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(this@RelayRoomActivity)
-                showGameRuleDialog()
-            }
-
-            override fun onClickSetting() {
-                //设置界面
-                if (mRoomData.isOwner) {
-                    U.getKeyBoardUtils().hideSoftInputKeyBoard(this@RelayRoomActivity)
-                    dismissDialog()
-//                    if (mMicSettingView == null) {
-//                        mMicSettingView = MicSettingView(this@RelayRoomActivity)
-//                        mMicSettingView?.mRoomData = mRoomData
-//
-//                        mMicSettingView?.callUpdate = {
-//                            mCorePresenter?.changeMatchState(it)
-//                        }
-//                    }
-//                    mMicSettingView?.showByDialog()
-                } else {
-                    U.getToastUtil().showShort("只有房主能设置哦～")
+                dismissDialog()
+                if (mVoiceControlPanelView == null) {
+                    mVoiceControlPanelView = RelayVoiceControlPanelView(this@RelayRoomActivity)
+                    mVoiceControlPanelView?.setRoomData(mRoomData)
                 }
+                mVoiceControlPanelView?.showByDialog()
             }
-        })
 
-
+        }
         mTopContentView = findViewById(R.id.top_content_view)
-        mTopContentView.setRoomData(mRoomData)
-
-        mTopContentView.setListener(object : RelayTopContentView.Listener {
+        mTopContentView.listener = object : RelayTopContentView.Listener {
             override fun clickArrow(open: Boolean) {
                 if (open) {
                     mWidgetAnimationController.open()
@@ -534,7 +496,11 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
                     mWidgetAnimationController.close()
                 }
             }
-        })
+
+            override fun clickLove() {
+
+            }
+        }
 
         mMicInviteView = MicInviteView(findViewById(R.id.mic_invite_view_stub))
         mMicInviteView?.agreeInviteListener = {
