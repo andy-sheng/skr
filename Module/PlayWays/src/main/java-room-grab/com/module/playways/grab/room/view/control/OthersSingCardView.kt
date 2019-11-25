@@ -2,17 +2,13 @@ package com.module.playways.grab.room.view.control
 
 import android.view.View
 import android.view.ViewStub
-
-import com.module.playways.RoomDataUtils
-import com.module.playways.grab.room.GrabRoomData
+import com.module.playways.R
 import com.module.playways.grab.room.view.chorus.ChorusOthersSingCardView
 import com.module.playways.grab.room.view.minigame.MiniGameOtherSingCardView
 import com.module.playways.grab.room.view.normal.NormalOthersSingCardView
 import com.module.playways.grab.room.view.pk.PKOthersSingCardView
-import com.module.playways.R
 import com.module.playways.room.data.H
-
-import java.util.ArrayList
+import java.util.*
 
 class OthersSingCardView(mRootView: View) {
 
@@ -24,6 +20,7 @@ class OthersSingCardView(mRootView: View) {
     val realViews: List<View?>
         get() {
             val list = ArrayList<View?>()
+            list.add(mNormalOthersSingCardView?.realView)
             list.add(mChorusOtherSingCardView?.realView)
             list.add(mPKOtherSingCardView?.realView)
             list.add(mMiniGameOtherSingView?.realView)
