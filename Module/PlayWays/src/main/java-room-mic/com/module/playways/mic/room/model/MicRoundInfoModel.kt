@@ -3,10 +3,12 @@ package com.module.playways.mic.room.model
 import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
+import com.component.busilib.model.BackgroundEffectModel
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent
 import com.module.playways.grab.room.model.ChorusRoundInfoModel
 import com.module.playways.grab.room.model.SPkRoundInfoModel
-import com.module.playways.mic.room.event.*
+import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
+import com.module.playways.mic.room.event.MicRoundStatusChangeEvent
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.Common.StandPlayType
@@ -53,6 +55,9 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
     @JSONField(name = "SPKRoundInfos")
     internal var sPkRoundInfoModels: ArrayList<SPkRoundInfoModel> = ArrayList()
 
+    @JSONField(name = "showInfos")
+    internal var showInfos: ArrayList<BackgroundEffectModel> = ArrayList()
+
     var userID: Int = 0// 本人在演唱的人
     var music: SongModel? = null//本轮次要唱的歌儿的详细信息
     var singBeginMs: Int = 0 // 轮次开始时间
@@ -62,7 +67,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
     var sysScore: Int = 0//本轮系统打分，先搞个默认60分
     var isHasSing = false// 是否已经在演唱，依据时引擎等回调，不是作为是否演唱阶段的依据
 
-    var commonRoundResult:MicRoundResult?=null
+    var commonRoundResult: MicRoundResult? = null
     /**
      * 是否还在房间，用来sync优化
      * @return
@@ -229,7 +234,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
     private fun updatePlayUsers(l: List<MicPlayerInfoModel>, notify: Boolean) {
         playUsers.clear()
         playUsers.addAll(l)
-        if(notify){
+        if (notify) {
             EventBus.getDefault().post(MicPlaySeatUpdateEvent(playUsers))
         }
     }
@@ -314,8 +319,13 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
                 }
             }
         }
-        if(commonRoundResult==null || commonRoundResult?.finalMsg?.isEmpty()==true){
+        if (commonRoundResult == null || commonRoundResult?.finalMsg?.isEmpty() == true) {
             commonRoundResult = roundInfo.commonRoundResult
+        }
+
+        showInfos.clear()
+        if (round.showInfos != null && round.showInfos.size > 0) {
+            showInfos.addAll(round.showInfos)
         }
         updateStatus(notify, roundInfo.status)
         return
@@ -339,7 +349,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
     }
 
     fun addUser(b: Boolean, playerInfoModel: MicPlayerInfoModel): Boolean {
-            return addPlayUser(b, playerInfoModel)
+        return addPlayUser(b, playerInfoModel)
     }
 
     fun removeUser(notify: Boolean, uid: Int) {
@@ -394,7 +404,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
             if (getsPkRoundInfoModels().size > 1) {
                 return getsPkRoundInfoModels()[1].userID.toLong() == MyUserInfoManager.uid
             }
-        }  else if (status == EMRoundStatus.MRS_END.value) {
+        } else if (status == EMRoundStatus.MRS_END.value) {
             // 如果轮次都结束了 还要判断出这个轮次是不是自己唱的
             if (userID.toLong() == MyUserInfoManager.uid) {
                 return true
@@ -511,6 +521,10 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
                 roundInfoModel.getsPkRoundInfoModels().add(pkRoundInfoModel)
             }
             roundInfoModel.commonRoundResult = MicRoundResult.parseFromInfoPB(roundInfo.commonRoundResult)
+
+            if (roundInfo.hasShowInfosList() && roundInfo.showInfosList.size > 0) {
+                roundInfoModel.showInfos.addAll(BackgroundEffectModel.parseBackgroundEffectModelListFromPb(roundInfo.showInfosList))
+            }
             return roundInfoModel
         }
     }
