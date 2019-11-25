@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/avatar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="@id/level_bg"
+        app:layout_constraintLeft_toLeftOf="@id/level_bg"
+        app:layout_constraintRight_toRightOf="@id/level_bg"
+        app:layout_constraintTop_toTopOf="@id/level_bg" />
+
+    <ImageView
+        android:id="@+id/level_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</merge>

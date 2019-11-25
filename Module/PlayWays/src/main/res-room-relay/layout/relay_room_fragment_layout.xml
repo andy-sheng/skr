@@ -48,7 +48,7 @@
         gameType:type="relay" />
 
     <!-- 包括 顶部操作菜单栏 -->
-    <com.module.playways.relay.room.view.RelayTopOpView
+    <com.module.playways.relay.room.top.RelayTopOpView
         android:id="@+id/top_op_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_38_dp"
@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
     <!--包括嘉宾栏 和 观众栏-->
-    <com.module.playways.relay.room.view.RelayTopContentView
+    <com.module.playways.relay.room.top.RelayTopContentView
         android:id="@+id/top_content_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_120_dp"

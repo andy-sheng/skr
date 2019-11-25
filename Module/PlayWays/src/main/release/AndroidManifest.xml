@@ -190,6 +190,11 @@
             android:windowSoftInputMode="adjustResize"></activity>
 
         <activity
+            android:name="com.module.playways.relay.room.RelayResultActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
+
+        <activity
             android:name="com.module.playways.relay.match.RelayHomeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"></activity>

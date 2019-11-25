@@ -1,4 +1,4 @@
-package com.module.playways.relay.room.view
+package com.module.playways.relay.room.top
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
@@ -9,7 +9,6 @@ import android.widget.TextView
 import com.common.core.view.setDebounceViewClickListener
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
-import org.greenrobot.eventbus.EventBus
 
 // 顶部头像栏
 class RelayTopContentView : ConstraintLayout {

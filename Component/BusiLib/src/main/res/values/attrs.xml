@@ -40,6 +40,12 @@
         </attr>
     </declare-styleable>
 
+    <!-- AvatarView 的属性(头像都是圆的：丁一)-->
+    <declare-styleable name="avatarLevel">
+        <!--头像的大小-->
+        <attr name="avatarSize" format="dimension" />
+    </declare-styleable>
+
     <declare-styleable name="VoiceChartView">
         <attr name="chartFitWidth" format="boolean"/>
         <attr name="chartCount" format="integer" />
