@@ -501,6 +501,11 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             }
         }
 
+        showInfos.clear();
+        if (roundInfo.getShowInfos() != null && roundInfo.getShowInfos().size() > 0) {
+            showInfos.addAll(roundInfo.getShowInfos());
+        }
+
         updateStatus(notify, roundInfo.getStatus());
         return;
     }
