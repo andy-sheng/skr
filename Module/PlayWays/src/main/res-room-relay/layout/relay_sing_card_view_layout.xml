@@ -144,10 +144,5 @@
         app:layout_constraintBottom_toTopOf="@id/bottom_bg_view"
         app:layout_constraintTop_toBottomOf="@+id/sing_begin_tips_tv1" />
 
-    <android.support.constraint.Group
-        android:id="@+id/sing_begin_tips_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="sing_begin_tips_tv1,sing_begin_tips_tv2" />
 
 </com.common.view.ex.ExConstraintLayout>

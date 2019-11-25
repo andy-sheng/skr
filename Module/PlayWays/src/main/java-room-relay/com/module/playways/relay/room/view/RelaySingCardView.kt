@@ -20,8 +20,8 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
     lateinit var noSongTipsTv:TextView
     lateinit var singBeginTipsTv1:TextView
     lateinit var singBeginTipsTv2:TextView
-    lateinit var singBeginTipsTv: Group
-    
+
+
     override fun init(parentView: View) {
         dotView = parentView.findViewById(R.id.dot_view)
         songNameTv = parentView.findViewById(R.id.song_name_tv)
@@ -32,11 +32,37 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
         noSongTipsTv = parentView.findViewById(R.id.no_song_tips_tv)
         singBeginTipsTv1 = parentView.findViewById(R.id.sing_begin_tips_tv1)
         singBeginTipsTv2 = parentView.findViewById(R.id.sing_begin_tips_tv2)
-        singBeginTipsTv = parentView.findViewById(R.id.sing_begin_tips_tv)
     }
 
     override fun layoutDesc(): Int {
         return R.layout.relay_sing_card_view_layout
     }
 
+    fun turnSing(){
+        dotView.visibility = View.VISIBLE
+        songNameTv.visibility = View.VISIBLE
+        songPlayProgressTv.visibility = View.VISIBLE
+        manyLyricsView.visibility = View.VISIBLE
+        voiceScaleView.visibility = View.VISIBLE
+
+        otherSingTipsTv.visibility = View.GONE
+        noSongTipsTv.visibility = View.GONE
+        singBeginTipsTv1.visibility = View.GONE
+        singBeginTipsTv2.visibility = View.GONE
+
+        
+
+    }
+
+    fun turnNoSong(){
+        dotView.visibility = View.GONE
+        songNameTv.visibility = View.GONE
+        songPlayProgressTv.visibility = View.GONE
+        manyLyricsView.visibility = View.GONE
+        voiceScaleView.visibility = View.GONE
+        otherSingTipsTv.visibility = View.GONE
+        noSongTipsTv.visibility = View.VISIBLE
+        singBeginTipsTv1.visibility = View.GONE
+        singBeginTipsTv2.visibility = View.GONE
+    }
 }
