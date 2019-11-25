@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,15 +6,16 @@
 
     <ViewStub
         android:id="@+id/pk_self_sing_lyric_view_stub"
-        android:inflatedId="@+id/self_sing_lyric_view"
-        android:layout="@layout/grab_self_sing_lyric_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inflatedId="@+id/self_sing_lyric_view"
+        android:layout="@layout/grab_self_sing_lyric_layout" />
 
     <com.module.playways.grab.room.view.pk.view.PKSingCardView
         android:id="@+id/pk_sing_card_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:alpha="0" />
 
     <com.module.playways.grab.room.view.SingCountDownView2
         android:id="@+id/sing_count_down_view"
