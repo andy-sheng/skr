@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.component.busilib.view.recyclercardview.CardAdapterHelper
 import com.module.playways.R
 import com.module.playways.room.song.model.SongModel
@@ -31,6 +32,14 @@ class RelayHomeSongAdapter : RecyclerView.Adapter<RelayHomeSongAdapter.RelaySong
     }
 
     inner class RelaySongViewHolder(item: View) : RecyclerView.ViewHolder(item) {
+
+        val songNameTv: TextView = item.findViewById(R.id.song_name_tv)
+        val songAuthorTv: TextView = item.findViewById(R.id.song_author_tv)
+        val singYouself: TextView = item.findViewById(R.id.sing_youself)
+        val singYouselfContent: TextView = item.findViewById(R.id.sing_youself_content)
+        val singOther: TextView = item.findViewById(R.id.sing_other)
+        val singOtherContent: TextView = item.findViewById(R.id.sing_other_content)
+        val startTv: TextView = item.findViewById(R.id.start_tv)
 
         var mPos = -1
         var mModel: SongModel? = null
