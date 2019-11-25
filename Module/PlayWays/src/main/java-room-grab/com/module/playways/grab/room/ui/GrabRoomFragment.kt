@@ -69,7 +69,7 @@ import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.top.GrabTopContentView
 import com.module.playways.grab.room.top.GrabTopOpView
 import com.module.playways.grab.room.view.*
-import com.module.playways.grab.room.view.control.SingBackgroundCardView
+import com.module.playways.grab.room.view.control.OthersSingCardView
 import com.module.playways.grab.room.view.control.RoundOverCardView
 import com.module.playways.grab.room.view.control.SelfSingCardView
 import com.module.playways.grab.room.view.control.SingBeginTipsCardView
@@ -168,7 +168,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     lateinit var mRoundOverCardView: RoundOverCardView // 轮次结束卡片
 
-    lateinit var mOthersSingCardView: SingBackgroundCardView// 他人演唱卡片
+    lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
 
     var mSelfSingCardView: SelfSingCardView? = null// 自己演唱卡片
 
@@ -1231,7 +1231,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             mCorePresenter?.sendRoundOverInfo()
         }
         mSelfSingCardView?.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
-        mOthersSingCardView = SingBackgroundCardView(rootView)
+        mOthersSingCardView = OthersSingCardView(rootView)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

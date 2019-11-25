@@ -41,7 +41,7 @@ import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.GrabGiveupView
 import com.module.playways.grab.room.view.GrabScoreTipsView
 import com.module.playways.grab.room.view.VIPEnterView
-import com.module.playways.grab.room.view.control.SingBackgroundCardView
+import com.module.playways.grab.room.view.control.OthersSingCardView
 import com.module.playways.grab.room.view.control.RoundOverCardView
 import com.module.playways.grab.room.view.control.SelfSingCardView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
@@ -132,7 +132,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     // 专场ui组件
     lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
-    lateinit var mOthersSingCardView: SingBackgroundCardView// 他人演唱卡片
+    lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
     lateinit var mSelfSingCardView: SelfSingCardView // 自己演唱卡片
     lateinit var mSingBeginTipsCardView: MicSingBeginTipsCardView// 演唱开始提示
     lateinit var mRoundOverCardView: RoundOverCardView// 结果页
@@ -148,7 +148,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     private var mPersonInfoDialog: PersonInfoDialog? = null
     private var mGrabKickDialog: ConfirmDialog? = null
     private var mVoiceControlPanelView: RelayVoiceControlPanelView? = null
-//    private var mMicSettingView: MicSettingView? = null
+    //    private var mMicSettingView: MicSettingView? = null
     private var mGameRuleDialog: DialogPlus? = null
     private var mTipsDialogView: TipsDialogView? = null
 
@@ -328,7 +328,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         }
         // 他人演唱
 //        mSelfSingCardView?.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
-        mOthersSingCardView = SingBackgroundCardView(rootView)
+        mOthersSingCardView = OthersSingCardView(rootView)
         // 结果页面
         mRoundOverCardView = RoundOverCardView(rootView)
 
@@ -346,7 +346,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         mAddSongIv = findViewById(R.id.select_song_tv)
         mAddSongIv.setAnimateDebounceViewClickListener {
             mSkrAudioPermission.ensurePermission({
-//                SongManagerActivity.open(this, mRoomData)
+                //                SongManagerActivity.open(this, mRoomData)
             }, true)
         }
 
