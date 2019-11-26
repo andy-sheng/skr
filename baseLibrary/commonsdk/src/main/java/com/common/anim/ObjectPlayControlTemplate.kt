@@ -124,21 +124,19 @@ abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
     /**
      * 复位
      */
-    @Synchronized
     fun reset() {
-        mQueue.clear()
+        mHandlerThread.post {
+            mQueue.clear()
+        }
     }
 
     /**
      * 复位
      */
-    @Synchronized
     fun destroy() {
-        mQueue.clear()
-        if (mUiHandler != null) {
-            mUiHandler.removeCallbacksAndMessages(null)
-        }
+        mUiHandler?.removeCallbacksAndMessages(null)
         mHandlerThread.destroy()
+        mQueue.clear()
     }
 
 
@@ -173,7 +171,6 @@ abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
      *
      * @return
      */
-    @Synchronized
     fun hasMoreData(): Boolean {
         return !mQueue.isEmpty()
     }

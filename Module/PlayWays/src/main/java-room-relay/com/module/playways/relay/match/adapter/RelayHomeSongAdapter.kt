@@ -31,6 +31,14 @@ class RelayHomeSongAdapter : RecyclerView.Adapter<RelayHomeSongAdapter.RelaySong
         holder.bindData(position, mDataList[position])
     }
 
+    fun addData(list: List<SongModel>) {
+        if (list.isNotEmpty()) {
+            val startNotifyIndex = if (mDataList.size > 0) mDataList.size - 1 else 0
+            mDataList.addAll(list)
+            notifyItemRangeChanged(startNotifyIndex, mDataList.size - startNotifyIndex)
+        }
+    }
+
     inner class RelaySongViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
         val songNameTv: TextView = item.findViewById(R.id.song_name_tv)

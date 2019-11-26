@@ -88,6 +88,7 @@ import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
 import com.module.playways.room.prepare.model.OnlineInfoModel
 import com.module.playways.room.room.comment.CommentView
+import com.module.playways.room.room.comment.fly.FlyCommentView
 import com.module.playways.room.room.comment.listener.CommentViewItemListener
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup
 import com.module.playways.room.room.gift.GiftBigContinuousView
@@ -143,6 +144,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     //    RedPkgCountDownView mRedPkgView;
 
     lateinit var mCommentView: CommentView
+
+    lateinit var mFlyCommentView: FlyCommentView
 
     //    GrabTopContainerView mTopContainerView;// 顶部，抢唱阶段，以及非本人的演唱阶段
     lateinit var mGrabTopOpView: GrabTopOpView
@@ -768,6 +771,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         //        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
         //        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
         mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView?.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
+
+        mFlyCommentView = rootView.findViewById(R.id.fly_comment_view)
+        mFlyCommentView.roomData = mRoomData!!
     }
 
     private fun initChangeRoomTransitionView() {
@@ -1404,12 +1410,14 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             singBeginTipsPlay { onSingBeginTipsPlayOver() }
         }
 
+        showFlyCommentView()
         playBgEffect()
         StatisticsAdapter.recordCountEvent("grab", "game_sing", null)
     }
 
     override fun singByOthers() {
         removeAllEnsureMsg()
+        hideFlyCommentView()
         mCorePresenter?.stopGuide()
         mGrabTopContentView.setModeSing()
         mSongInfoCardView.hide()
@@ -1451,6 +1459,21 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
 
         playBgEffect()
+    }
+
+    private fun showFlyCommentView() {
+        val now = mRoomData!!.realRoundInfo
+        now?.let {
+            if (it.isFreeMicRound) {
+                mFlyCommentView.visibility = GONE
+            } else {
+                mFlyCommentView.visibility = VISIBLE
+            }
+        }
+    }
+
+    private fun hideFlyCommentView() {
+        mFlyCommentView.visibility = GONE
     }
 
     /**
@@ -1600,6 +1623,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     override fun roundOver(lastInfoModel: GrabRoundInfoModel?, playNextSongInfoCard: Boolean, now: GrabRoundInfoModel?) {
         removeAllEnsureMsg()
+        hideFlyCommentView()
         val msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER)
         msg.arg1 = if (playNextSongInfoCard) 1 else 0
         msg.obj = now

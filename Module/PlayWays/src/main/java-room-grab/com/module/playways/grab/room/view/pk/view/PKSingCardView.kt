@@ -1,10 +1,9 @@
 package com.module.playways.grab.room.view.pk.view
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
-import android.animation.ValueAnimator
 import android.content.Context
+import android.os.Handler
+import android.os.Message
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
@@ -25,7 +24,6 @@ import com.component.level.utils.LevelConfigUtils
 import com.component.person.event.ShowPersonCardEvent
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
-import com.module.playways.grab.room.top.CircleAnimationView
 import com.module.playways.room.data.H
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
@@ -42,6 +40,8 @@ class PKSingCardView : RelativeLayout {
 
     val TAG = "PKSingCardView"
 
+    val MSG_DELAY_SHOW = 1
+
     internal var mLeftSingSvga: SVGAImageView? = null
     internal var mRightSingSvga: SVGAImageView? = null
     internal var mPkArea: LinearLayout? = null
@@ -52,7 +52,7 @@ class PKSingCardView : RelativeLayout {
     internal var mLeftStatusArea: ExRelativeLayout? = null
     internal var mLeftName: ExTextView? = null
     internal var mLeftStatus: ExTextView? = null
-//    internal var mLeftCircleAnimationView: CircleAnimationView? = null
+    //    internal var mLeftCircleAnimationView: CircleAnimationView? = null
     internal var mLeftLevelBg: ImageView? = null
 
     internal var mRightPkArea: RelativeLayout? = null
@@ -61,11 +61,11 @@ class PKSingCardView : RelativeLayout {
     internal var mRightStatusArea: ExRelativeLayout? = null
     internal var mRightName: ExTextView? = null
     internal var mRightStatus: ExTextView? = null
-//    internal var mRightCircleAnimationView: CircleAnimationView? = null
+    //    internal var mRightCircleAnimationView: CircleAnimationView? = null
     internal var mRightLevelBg: ImageView? = null
 
     internal var mScaleAnimation: ScaleAnimation? = null        // 头像放大动画
-    internal var mValueAnimator: ValueAnimator? = null          // 画圆圈的属性动画
+    //    internal var mValueAnimator: ValueAnimator? = null          // 画圆圈的属性动画
     internal var mAnimatorSet: AnimatorSet? = null              // 左右拉开动画
     internal var mIsPlaySVGA: Boolean = false                   // 是否播放SVGA
 
@@ -75,6 +75,14 @@ class PKSingCardView : RelativeLayout {
     internal var mLeftUserInfoModel: UserInfoModel? = null
     internal var mRightUserInfoModel: UserInfoModel? = null
     internal var mAnimationListerner: AnimationListerner? = null
+
+    val mUiHandler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message?) {
+            if (msg?.what == MSG_DELAY_SHOW) {
+                delayPlayAnimation(msg.obj as Int)
+            }
+        }
+    }
 
     constructor(context: Context) : super(context) {
         init()
@@ -242,11 +250,7 @@ class PKSingCardView : RelativeLayout {
             mScaleAnimation!!.setAnimationListener(null)
             mScaleAnimation!!.cancel()
         }
-        if (mValueAnimator != null) {
-            mValueAnimator!!.removeAllListeners()
-            mValueAnimator!!.removeAllUpdateListeners()
-            mValueAnimator!!.cancel()
-        }
+        mUiHandler.removeCallbacksAndMessages(null)
         if (mLeftSingSvga != null) {
             mLeftSingSvga!!.callback = null
             mLeftSingSvga!!.stopAnimation(true)
@@ -315,64 +319,23 @@ class PKSingCardView : RelativeLayout {
 
 
     private fun playCircleAnimation(uid: Int) {
-        if (mValueAnimator != null) {
-            mValueAnimator!!.removeAllUpdateListeners()
-            mValueAnimator!!.cancel()
-        }
-        if (mValueAnimator == null) {
-            mValueAnimator = ValueAnimator()
-            mValueAnimator!!.setIntValues(0, 100)
-            mValueAnimator!!.duration = 495
-        }
-        mValueAnimator!!.addUpdateListener { animation ->
-            val p = animation.animatedValue as Int
-            if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel!!.userId) {
-//                mLeftCircleAnimationView?.setProgress(p)
-            } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel!!.userId) {
-//                mRightCircleAnimationView?.setProgress(p)
-            }
+        mUiHandler.removeMessages(MSG_DELAY_SHOW)
+        val message = mUiHandler.obtainMessage(MSG_DELAY_SHOW, uid)
+        mUiHandler.sendMessageDelayed(message, 495)
+
+    }
+
+    private fun delayPlayAnimation(uid: Int) {
+        if (mAnimationListerner != null) {
+            mAnimationListerner!!.onAnimationEndExcludeSvga()
         }
 
-        mValueAnimator!!.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator) {
-                super.onAnimationStart(animation)
-                if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel!!.userId) {
-//                    mLeftCircleAnimationView?.visibility = View.VISIBLE
-                } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel!!.userId) {
-//                    mRightCircleAnimationView?.visibility = View.VISIBLE
-                }
-            }
-
-            override fun onAnimationCancel(animation: Animator) {
-                super.onAnimationCancel(animation)
-                if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel!!.userId) {
-//                    mLeftCircleAnimationView?.visibility = View.GONE
-                } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel!!.userId) {
-//                    mRightCircleAnimationView?.visibility = View.GONE
-                }
-            }
-
-            override fun onAnimationEnd(animation: Animator) {
-                super.onAnimationEnd(animation)
-                if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel!!.userId) {
-//                    mLeftCircleAnimationView?.visibility = View.GONE
-                } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel!!.userId) {
-//                    mRightCircleAnimationView?.visibility = View.GONE
-                }
-
-                if (mAnimationListerner != null) {
-                    mAnimationListerner!!.onAnimationEndExcludeSvga()
-                }
-
-                if (mIsPlaySVGA) {
-                    playSingAnimation(uid)
-                } else {
-                    mLeftSingSvga!!.visibility = View.GONE
-                    mRightSingSvga!!.visibility = View.GONE
-                }
-            }
-        })
-        mValueAnimator!!.start()
+        if (mIsPlaySVGA) {
+            playSingAnimation(uid)
+        } else {
+            mLeftSingSvga!!.visibility = View.GONE
+            mRightSingSvga!!.visibility = View.GONE
+        }
     }
 
     /**
