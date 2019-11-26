@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-package messenger;
-
 import "Common.proto";
 
 package com.zq.live.proto.RelayRoom;
@@ -29,6 +27,7 @@ message RelayRoomMsg
     RAddMusicMsg rAddMusicMsg       = 16; //点歌
     RDelMusicMsg rDelMusicMsg       = 17; //删歌
     RUpMusicMsg rUpMusicMsg         = 18; //置顶
+    RMuteMsg rMuteMsg               = 19; //静音
 }
 
 enum ERelayRoomMsgType {
@@ -43,15 +42,25 @@ enum ERelayRoomMsgType {
     RRT_ADD_MUSIC     = 16; //点歌
     RRT_DEL_MUSIC     = 17; //删歌
     RRT_UP_MUSIC      = 18; //置顶
+    RRT_MUTE          = 19; //静音
+}
+
+message RMuteMsg
+{
+    uint32 userID = 1;
+    bool isMute   = 2;
 }
 
 message RUserEnterMsg
 {
-    uint32 roomID                  = 1; //房间ID
-    sint64 createdTimeMs           = 2; //房间创建的时间戳
-    repeated UserInfo users        = 3; //玩家信息
-    RelayRoomConfig config         = 4; //配置信息
-    repeated AgoraTokenInfo tokens = 5; //声网token
+    uint32 roomID                       = 1; //房间ID
+    sint64 createdTimeMs                = 2; //房间创建的时间戳
+    repeated Common.UserInfo users             = 3; //玩家信息
+    RelayRoomConfig config              = 4; //配置信息
+    repeated Common.AgoraTokenInfo tokens      = 5; //声网token
+    repeated RUserLockInfo userLockInfo = 6; //用户锁定信息
+    bool enableNoLimitDuration          = 7; //开启没有限制的持续时间
+    RRoundInfo currentRound             = 8; //当前轮次信息
 }
 
 message RelayRoomConfig
@@ -80,8 +89,8 @@ message RRoundInfo
     uint32 singEndMs                      = 5; //演唱结束相对时间（相对于createdTimeMs时间）
     ERRoundStatus status                  = 6; //轮次状态
     ERRoundOverReason overReason          = 7; //切换轮次原因
-    MusicInfo music                       = 8; //本轮次的歌曲信息
-    repeated BackgroundShowInfo showInfos = 9; //背景效果
+    Common.MusicInfo music                       = 8; //本轮次的歌曲信息
+    repeated Common.BackgroundShowInfo showInfos = 9; //背景效果
 }
 
 enum ERRoundStatus {
@@ -129,7 +138,7 @@ message RUserMusicDetail
     uint32 userID       = 1; //发起用户
     uint32 peerID       = 2; //合唱用户
     string uniqTag      = 3; //歌曲标识
-    MusicInfo music     = 4; //演唱音乐
+    Common.MusicInfo music     = 4; //演唱音乐
     ERSongStatus status = 5; //状态
 }
 

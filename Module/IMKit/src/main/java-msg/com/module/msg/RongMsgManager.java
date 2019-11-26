@@ -38,6 +38,8 @@ import com.module.msg.model.MicRoomHighMsg;
 import com.module.msg.model.MicRoomLowMsg;
 import com.module.msg.model.RaceRoomHighMsg;
 import com.module.msg.model.RaceRoomLowMsg;
+import com.module.msg.model.RelayRoomHighMsg;
+import com.module.msg.model.RelayRoomLowMsg;
 import com.module.msg.model.SpecailOpMsg;
 
 import org.greenrobot.eventbus.EventBus;
@@ -68,6 +70,7 @@ import static com.module.msg.CustomMsgType.MSG_TYPE_COMBINE_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_MIC_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_NOTIFICATION;
 import static com.module.msg.CustomMsgType.MSG_TYPE_RACE_ROOM;
+import static com.module.msg.CustomMsgType.MSG_TYPE_RELAY_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_ROOM;
 
 public class RongMsgManager implements RongIM.UserInfoProvider {
@@ -202,7 +205,19 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 dispatchMicRoomMsg(customChatRoomMsg);
 
                 return true;
-            }  else if (message.getContent() instanceof CustomNotificationMsg) {
+            }else if (message.getContent() instanceof RelayRoomHighMsg) {
+
+                RelayRoomHighMsg customChatRoomMsg = (RelayRoomHighMsg) message.getContent();
+                dispatchMicRoomMsg(customChatRoomMsg);
+
+                return true;
+            } else if (message.getContent() instanceof RelayRoomLowMsg) {
+
+                RelayRoomLowMsg customChatRoomMsg = (RelayRoomLowMsg) message.getContent();
+                dispatchRelayRoomMsg(customChatRoomMsg);
+
+                return true;
+            }   else if (message.getContent() instanceof CustomNotificationMsg) {
                 CustomNotificationMsg notificationMsg = (CustomNotificationMsg) message.getContent();
                 byte[] data = U.getBase64Utils().decode(notificationMsg.getContentJsonStr());
 
@@ -372,6 +387,29 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             }
         }
     }
+
+    private void dispatchRelayRoomMsg(MessageContent messageContent) {
+        if (messageContent instanceof RelayRoomHighMsg) {
+            RelayRoomHighMsg msg = (RelayRoomHighMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(msg.getContentJsonStr());
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_RELAY_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_RELAY_ROOM, data);
+                }
+            }
+        } else if (messageContent instanceof RelayRoomLowMsg) {
+            RelayRoomLowMsg msg = (RelayRoomLowMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(msg.getContentJsonStr());
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_RELAY_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_RELAY_ROOM, data);
+                }
+            }
+        }
+    }
+
     // 是否初始化
     private boolean mIsInit = false;
 
@@ -411,6 +449,8 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.registerMessageType(SpecailOpMsg.class);
             RongIM.registerMessageType(MicRoomHighMsg.class);
             RongIM.registerMessageType(MicRoomLowMsg.class);
+            RongIM.registerMessageType(RelayRoomHighMsg.class);
+            RongIM.registerMessageType(RelayRoomLowMsg.class);
 
             RongIM.getInstance().registerConversationTemplate(new MyPrivateConversationProvider());
 

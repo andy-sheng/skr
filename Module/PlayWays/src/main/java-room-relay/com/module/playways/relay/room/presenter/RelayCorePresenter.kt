@@ -49,7 +49,7 @@ import com.module.playways.room.msg.event.GiftPresentEvent
 import com.module.playways.room.msg.event.MachineScoreEvent
 import com.module.playways.room.msg.event.QChangeRoomNameEvent
 import com.module.playways.room.msg.filter.PushMsgFilter
-import com.module.playways.room.msg.manager.MicRoomMsgManager
+import com.module.playways.room.msg.manager.RelayRoomMsgManager
 import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.comment.model.CommentTextModel
@@ -113,7 +113,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
-        MicRoomMsgManager.addFilter(mPushMsgFilter)
+        RelayRoomMsgManager.addFilter(mPushMsgFilter)
         joinRoomAndInit(true)
         U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("grab_save"))
         startSyncGameStatus()
@@ -139,7 +139,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 //            params.setStyleEnum(Params.AudioEffect.none);
                 params.scene = Params.Scene.grab
                 params.isEnableAudio = true
-                ZqEngineKit.getInstance().init("microom", params)
+                ZqEngineKit.getInstance().init("relayroom", params)
             }
             ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), false, mRoomData.agoraToken)
             // 不发送本地音频, 会造成第一次抢没声音
@@ -321,9 +321,9 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
-        ZqEngineKit.getInstance().destroy("microom")
+        ZqEngineKit.getInstance().destroy("relayroom")
         mUiHandler.removeCallbacksAndMessages(null)
-        MicRoomMsgManager.removeFilter(mPushMsgFilter)
+        RelayRoomMsgManager.removeFilter(mPushMsgFilter)
         ModuleServiceManager.getInstance().msgService.leaveChatRoom(mRoomData.gameId.toString())
         JiGuangPush.exitSkrRoomId(mRoomData.gameId.toString())
         MyLog.d(TAG, "destroy over")
