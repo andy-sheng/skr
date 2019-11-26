@@ -13,6 +13,7 @@ import com.component.lyrics.widget.AbstractLrcView
 import com.component.lyrics.widget.ManyLyricsView
 import com.component.lyrics.widget.VoiceScaleView
 import com.module.playways.R
+import com.module.playways.relay.room.RelayRoomData
 import com.zq.mediaengine.kit.ZqEngineKit
 import java.util.HashSet
 
@@ -30,6 +31,7 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
     lateinit var singBeginTipsTv1:TextView
     lateinit var singBeginTipsTv2:TextView
 
+    var roomData:RelayRoomData?=null
 
     override fun init(parentView: View) {
         dotView = parentView.findViewById(R.id.dot_view)
@@ -47,7 +49,7 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
         return R.layout.relay_sing_card_view_layout
     }
 
-    fun turnSing(){
+    fun turnSingBegin(){
         dotView.visibility = View.VISIBLE
         songNameTv.visibility = View.VISIBLE
         songPlayProgressTv.visibility = View.VISIBLE
@@ -88,5 +90,18 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
         noSongTipsTv.visibility = View.VISIBLE
         singBeginTipsTv1.visibility = View.GONE
         singBeginTipsTv2.visibility = View.GONE
+    }
+
+    fun turnSingPrepare() {
+        dotView.visibility = View.GONE
+        songNameTv.visibility = View.GONE
+        songPlayProgressTv.visibility = View.GONE
+        manyLyricsView.visibility = View.GONE
+        voiceScaleView.visibility = View.GONE
+        otherSingTipsTv.visibility = View.GONE
+        noSongTipsTv.visibility = View.GONE
+        singBeginTipsTv1.visibility = View.VISIBLE
+        singBeginTipsTv2.visibility = View.VISIBLE
+        singBeginTipsTv2.text = "《${roomData?.realRoundInfo?.music?.displaySongName}》"
     }
 }

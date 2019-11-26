@@ -254,10 +254,6 @@ public class RoomDataUtils {
         return roomData.getPlayerOrWaiterInfoModel(uid);
     }
 
-    public static MicPlayerInfoModel getPlayerInfoById(RelayRoomData roomData, int uid) {
-        return roomData.getPlayerOrWaiterInfoModel(uid);
-    }
-
     public static String getSaveAudioForAiFilePath() {
         String saveAudioForAiFilePath = U.getAppInfoUtils().getFilePathInSubDir("upload", BaseRoomData.Companion.getAUDIO_FOR_AI_PATH());
         return saveAudioForAiFilePath;

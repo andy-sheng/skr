@@ -3,6 +3,7 @@ package com.module.playways.mic.room.model
 import com.alibaba.fastjson.annotation.JSONField
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.MicRoom.UserMusicDetail
+import com.zq.live.proto.RelayRoom.RUserMusicDetail
 import java.io.Serializable
 
 // 邀请合唱或者PK的model
@@ -28,6 +29,19 @@ class MicUserMusicModel : Serializable {
             model.uniqTag = pb.uniqTag
             model.status = pb.status.value
             model.wantSingType = pb.wantSingType.value
+            val songModel = SongModel()
+            songModel.parse(pb.music)
+            model.music = songModel
+            return model
+        }
+
+        internal fun parseFromInfoPB(pb: RUserMusicDetail): MicUserMusicModel {
+            val model = MicUserMusicModel()
+            model.userID = pb.userID
+            model.peerID = pb.peerID
+            model.uniqTag = pb.uniqTag
+            model.status = pb.status.value
+//            model.wantSingType = pb.wantSingType.value
             val songModel = SongModel()
             songModel.parse(pb.music)
             model.music = songModel

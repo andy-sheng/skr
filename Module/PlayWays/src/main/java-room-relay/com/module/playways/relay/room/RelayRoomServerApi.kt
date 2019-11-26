@@ -9,6 +9,25 @@ import retrofit2.http.*
 
 interface RelayRoomServerApi {
 
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/round-over")
+    fun sendRoundOver(@Body body: RequestBody): Call<ApiResult>
+
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/give-up")
+    fun giveUpSing(@Body body: RequestBody): Call<ApiResult>
+
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/exit-room")
+    fun exitRoom(@Body body: RequestBody): Call<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/heartbeat")
+    fun heartbeat(@Body body: RequestBody): Call<ApiResult>
+
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/sync-status")
+    fun syncStatus(@Query("roomID") roomID: Long): Call<ApiResult>
+
+
+
     @GET("v1/fuel/mic-room-list")
     fun getMicHomeRoomList(@Query("offset") offset: Int, @Query("testList") testList: String, @Query("vars") vars: String): Call<ApiResult>
 
@@ -32,23 +51,12 @@ interface RelayRoomServerApi {
     fun getRoomPermmissionList(): Call<ApiResult>
 
 
-    @PUT("http://dev.game.inframe.mobi/v1/micgame/round-over")
-    fun sendRoundOver(@Body body: RequestBody): Call<ApiResult>
-
-    @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.game.inframe.mobi/v1/micgame/give-up")
-    fun giveUpSing(@Body body: RequestBody): Call<ApiResult>
-
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.game.inframe.mobi/v1/microom/kickout")
     fun reqKickUser(@Body body: RequestBody): Call<ApiResult>
 
-    @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.game.inframe.mobi/v1/microom/exit-room")
-    fun exitRoom(@Body body: RequestBody): Call<ApiResult>
 
-    @GET("http://dev.game.inframe.mobi/v1/micgame/sync-status")
-    fun syncStatus(@Query("roomID") roomID: Long): Call<ApiResult>
+
 
     /**
      * 拉取房间可邀请的段位
@@ -80,9 +88,6 @@ interface RelayRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/microom/join-room")
     fun joinRoom2(@Body body: RequestBody): Observable<ApiResult>
-
-    @PUT("http://dev.game.inframe.mobi/v1/microom/heartbeat")
-    fun heartbeat(@Body body: RequestBody): Call<ApiResult>
 
     @PUT("http://dev.game.inframe.mobi/v1/micgame/pk-commit-segment-result")
     fun sendPkPerSegmentResult(@Body body: RequestBody): Call<ApiResult>

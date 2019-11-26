@@ -11,7 +11,7 @@
         app:bl_shape="rectangle"
         app:bl_solid_color="#4C56AA">
 
-        <include layout="@layout/voice_control_panel_base_view2" />
+<!--        <include layout="@layout/voice_control_panel_base_view2" />-->
         <include layout="@layout/voice_control_panel_base_view" />
     </com.common.view.ex.ExRelativeLayout>
 </FrameLayout>

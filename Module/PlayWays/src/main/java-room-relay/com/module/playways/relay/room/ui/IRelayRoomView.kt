@@ -2,29 +2,24 @@ package com.module.playways.relay.room.ui
 
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
+import com.module.playways.relay.room.model.RelayRoundInfoModel
 
 interface IRelayRoomView {
-    fun showWaiting()
-    fun singBySelf(lastRoundInfo:MicRoundInfoModel?,singCardShowListener:()->Unit)
-    fun singByOthers(lastRoundInfo:MicRoundInfoModel?)
-    fun joinNotice(model: MicPlayerInfoModel?)
-    fun kickBySomeOne(b: Boolean)
-    fun dismissKickDialog()
+    fun showRoundOver(lastRoundInfo:RelayRoundInfoModel?,continueOp:(()->Unit)?)
+    fun singPrepare(lastRoundInfo:RelayRoundInfoModel?,singCardShowListener:()->Unit)
+    fun singBegin()
     fun gameOver()
-    fun showRoundOver(lastRoundInfo:MicRoundInfoModel?,continueOp:(()->Unit)?)
-    fun receiveScoreEvent(score: Int)
-    fun showSongCount(count: Int)
-    fun ensureActivtyTop()
-    fun invitedToOtherRoom()
-//    fun showWaiting(showAnimation: Boolean) // 是否需要入场动画
-//    fun showChoiceView(showNextRound: Boolean)// 是否要显示下一句
-//    fun showMatchAnimationView(overListener: ()->Unit)// 是否要显示下一句
-//    fun showRoundOver(lastRoundInfo:RaceRoundInfoModel,continueOp:(()->Unit)?)
-//    fun singBySelfFirstRound(songModel: SongModel?)
-//    fun singByOtherFirstRound(songModel: SongModel?, userModel: UserInfoModel?)
-//    fun singBySelfSecondRound(songModel: SongModel?)
-//    fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?)
-//    fun goResultPage(lastRound: RaceRoundInfoModel)
-//    fun joinNotice(playerInfoModel: UserInfoModel?)
-//    fun gameOver(lastRound: RaceRoundInfoModel?)
+    fun showWaiting()
+
+//
+//    fun singByOthers(lastRoundInfo:MicRoundInfoModel?)
+//    fun joinNotice(model: MicPlayerInfoModel?)
+//    fun kickBySomeOne(b: Boolean)
+//    fun dismissKickDialog()
+
+//
+//    fun receiveScoreEvent(score: Int)
+//    fun showSongCount(count: Int)
+//    fun ensureActivtyTop()
+//    fun invitedToOtherRoom()
 }

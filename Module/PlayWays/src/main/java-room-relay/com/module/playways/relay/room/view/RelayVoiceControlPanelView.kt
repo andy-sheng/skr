@@ -5,6 +5,7 @@ import android.support.constraint.ConstraintLayout
 import android.view.Gravity
 import android.widget.CompoundButton
 import android.widget.LinearLayout
+import android.widget.SeekBar
 import com.common.utils.U
 import com.component.voice.control.VoiceControlPanelView
 import com.kyleduo.switchbutton.SwitchButton
@@ -13,6 +14,7 @@ import com.module.playways.mic.room.MicRoomData
 import com.module.playways.relay.room.RelayRoomData
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.mediaengine.kit.ZqEngineKit
 
 class RelayVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) {
 
@@ -37,24 +39,24 @@ class RelayVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) 
 
     override fun init(context: Context?) {
         super.init(context)
-        mLlSwitchContainer = findViewById(R.id.ll_switch_container)
-        mAccSb = findViewById(R.id.acc_sb)
+        mMusicVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(progress)
+//                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(progress,true)
+            }
 
-        mAccSb?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            roomData?.realRoundInfo?.let {
-                if (it.singBySelf()) {
-                    U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式")
-                    mAccSb?.isChecked = !roomData!!.isAccEnable
-                    return@OnCheckedChangeListener
-                }
-                roomData?.isAccEnable = isChecked
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+
             }
         })
     }
 
     override fun bindData() {
         super.bindData()
-        mAccSb?.isChecked = roomData!!.isAccEnable
     }
 
     fun setRoomData(raceRoomData: RelayRoomData) {
