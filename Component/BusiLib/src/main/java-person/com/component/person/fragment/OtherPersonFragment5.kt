@@ -423,13 +423,19 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
                         .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$mUserId"))
                         .navigation()
             } else {
-                // 跳到个人主页
-                val bundle = Bundle()
-                bundle.putInt("bundle_user_id", it.userId)
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
-                        .with(bundle)
-                        .navigation()
+                if (it.userId == MyUserInfoManager.uid.toInt()) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                            .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$mUserId"))
+                            .navigation()
+                } else {
+                    // 跳到个人主页
+                    val bundle = Bundle()
+                    bundle.putInt("bundle_user_id", it.userId)
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation()
+                }
             }
         }
 

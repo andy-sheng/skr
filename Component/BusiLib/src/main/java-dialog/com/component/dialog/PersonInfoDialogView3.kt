@@ -140,7 +140,14 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
                         .navigation()
             } else {
                 // 跳到个人卡片
-                EventBus.getDefault().post(ShowPersonCardEvent(it.userId))
+                if (it.userId == MyUserInfoManager.uid.toInt()) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                            .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$mUserId"))
+                            .navigation()
+                } else {
+                    EventBus.getDefault().post(ShowPersonCardEvent(it.userId))
+                }
+
             }
         }
 
