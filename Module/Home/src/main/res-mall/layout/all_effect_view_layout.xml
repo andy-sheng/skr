@@ -12,6 +12,12 @@
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_solid_color="#404A9A" />
 
+    <ImageView
+        android:id="@+id/default_bg_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/bg_svga"
         android:layout_width="match_parent"

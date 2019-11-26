@@ -158,11 +158,20 @@ class ProductView : ExConstraintLayout {
                 val list = JSON.parseArray(obj.data.getString("list"), ProductModel::class.java)
                 if (list != null && list.size > 0) {
                     productAdapter?.insertListLast(list)
+                    if (offset == 0) {
+                        selectedIndex = 0
+                        productAdapter?.notifyItemChanged(0, 1)
+                        EventBus.getDefault().post(ShowEffectEvent(productAdapter!!.dataList[0]!!))
+                    }
+                    mLoadService.showSuccess()
+                } else {
+                    if (productAdapter?.dataList?.size == 0) {
+                        mLoadService.showCallback(DqEmptyCallBack::class.java)
+                    }
                 }
 
                 offset = obj.data.getIntValue("offset")
                 hasMore = obj.data.getBooleanValue("hasMore")
-                mLoadService.showSuccess()
                 refreshLayout.setEnableLoadMore(hasMore)
             } else {
                 if (productAdapter?.dataList?.size == 0) {
