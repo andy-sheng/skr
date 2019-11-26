@@ -52,6 +52,7 @@ import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
 import com.module.playways.room.room.comment.CommentView
+import com.module.playways.room.room.comment.fly.FlyCommentView
 import com.module.playways.room.room.comment.listener.CommentViewItemListener
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup
 import com.module.playways.room.room.gift.GiftContinueViewGroup
@@ -65,6 +66,7 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundOverReason
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
+import kotlinx.android.synthetic.main.grab_room_fragment_layout.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -77,6 +79,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     internal lateinit var mBottomContainerView: RaceBottomContainerView
     internal lateinit var mVoiceRecordTipsView: VoiceRecordTipsView
     internal lateinit var mCommentView: CommentView
+    internal lateinit var mFlyCommentView: FlyCommentView
     internal lateinit var mGiftPanelView: GiftPanelView
     internal lateinit var mContinueSendView: ContinueSendView
     internal lateinit var mRaceTopOpView: RaceTopOpView
@@ -131,6 +134,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mRaceTurnInfoCardView?.visibility = View.GONE
         mRaceMatchView?.visibility = View.GONE
         mRaceWantingSignUpCardView?.visibility = View.GONE
+        mFlyCommentView.visibility = View.GONE
+        mGameEffectBgView.hideBg()
     }
 
     var mRoomData: RaceRoomData = RaceRoomData()
@@ -474,6 +479,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         })
         mCommentView.roomData = mRoomData
         mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
+        mFlyCommentView = rootView.findViewById(R.id.fly_comment_view)
+        mFlyCommentView.roomData = mRoomData
     }
 
     private fun initGiftPanelView() {
@@ -606,10 +613,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
             mRaceOtherSingCardView.bindData()
             mRaceOtherSingCardView.setVisibility(View.VISIBLE)
+            
+            showFlyCommentView()
+            playBgEffect(1)
         }
 
         hideSignUpUI(true)
-        playBgEffect(1)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -711,10 +720,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
             mRaceOtherSingCardView.bindData()
             mRaceOtherSingCardView.setVisibility(View.VISIBLE)
-        }
 
+            showFlyCommentView()
+            playBgEffect(2)
+        }
         hideSignUpUI(true)
-        playBgEffect(2)
     }
 
     override fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?) {
@@ -744,6 +754,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         playBgEffect(2)
     }
 
+    private fun showFlyCommentView() {
+        mFlyCommentView.visibility = View.VISIBLE
+    }
+
     private fun playBgEffect(seq: Int) {
         val now = mRoomData!!.realRoundInfo
         if (seq == 1) {
@@ -765,7 +779,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         MyLog.d(TAG, "showRoundOver lastRoundInfo = $lastRoundInfo, continueOp = $continueOp")
         mRaceRightOpView.visibility = View.GONE
         mRaceTopVsView.visibility = View.GONE
-
         if (lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NO_ONE_SING.value ||
                 lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value) {
             // 无人应战

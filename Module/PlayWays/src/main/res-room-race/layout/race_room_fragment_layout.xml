@@ -174,6 +174,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <com.module.playways.room.room.comment.fly.FlyCommentView
+        android:id="@+id/fly_comment_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_120_dp"
+        android:layout_marginTop="@dimen/view_150_dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--礼物连送按钮-->
     <com.module.playways.room.gift.view.ContinueSendView
@@ -199,13 +206,14 @@
 
     <!--自己唱的view-->
     <ViewStub
-        android:layout_marginTop="@dimen/view_120_dp"
         android:id="@+id/race_self_sing_lyric_view_stub"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/view_120_dp"
         android:layout="@layout/race_self_sing_lyric_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
 
     <!--中礼物展示-->
     <com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
@@ -218,7 +226,7 @@
         android:id="@+id/gift_continue_vg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-55dp"
+        android:layout_marginTop="-65dp"
         android:layout_marginBottom="@dimen/view_10_dp"
         android:paddingLeft="@dimen/view_10_dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -252,7 +260,7 @@
         android:id="@+id/race_right_op_view"
         android:layout_width="@dimen/view_133_dp"
         android:layout_height="@dimen/view_133_dp"
-        android:layout_marginBottom="@dimen/view_156_dp"
+        android:layout_marginBottom="@dimen/view_240_dp"
         android:clipChildren="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
