@@ -8,9 +8,7 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.U
 import com.common.view.ExViewStub
 import com.module.playways.R
-import com.module.playways.grab.room.view.SingCountDownView2
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView
-import com.module.playways.grab.room.view.pk.view.PKSingCardView
 import com.module.playways.room.data.H
 import com.zq.live.proto.GrabRoom.EQRoundStatus
 
@@ -19,7 +17,7 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     val TAG = "PKSelfSingCardView"
 
     internal var mPkSelfSingLyricView: SelfSingLyricView? = null
-    internal var mPkSingCardView: PKSingCardView? = null
+//    internal var mPkSingCardView: PKSingCardView? = null
 //    internal var mSingCountDownView: SingCountDownView2? = null
 
     internal var mLeftUserInfoModel: UserInfoModel? = null
@@ -33,7 +31,7 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     override fun init(parentView: View) {
         val viewStub = mParentView!!.findViewById<ViewStub>(R.id.pk_self_sing_lyric_view_stub)
         mPkSelfSingLyricView = SelfSingLyricView(viewStub)
-        mPkSingCardView = mParentView!!.findViewById(R.id.pk_sing_card_view)
+//        mPkSingCardView = mParentView!!.findViewById(R.id.pk_sing_card_view)
 //        mSingCountDownView = mParentView!!.findViewById(R.id.sing_count_down_view)
 //        mSingCountDownView!!.setListener(mOverListener)
     }
@@ -73,13 +71,13 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
         setVisibility(View.VISIBLE)
         // 绑定数据
-        mPkSingCardView!!.bindData()
+//        mPkSingCardView!!.bindData()
         if (firstRound) {
             // pk第一个人唱
-            mPkSingCardView!!.visibility = View.VISIBLE
+//            mPkSingCardView!!.visibility = View.VISIBLE
             playCardEnterAnimation()
         } else {
-            mPkSingCardView!!.visibility = View.VISIBLE
+//            mPkSingCardView!!.visibility = View.VISIBLE
             if (mRightUserInfoModel != null) {
                 playIndicateAnimation(mRightUserInfoModel!!.userId)
             }
@@ -99,16 +97,17 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 //            mSingCountDownView!!.startPlay(0, H.micRoomData?.realRoundInfo?.singTotalMs ?: 0, false)
 //        }
 
-        mPkSingCardView!!.playScaleAnimation(userId, false, object : PKSingCardView.AnimationListerner {
-            override fun onAnimationEndExcludeSvga() {
-//                mPkSingCardView!!.playWithDraw()
-                playRealLyric()
-            }
-
-            override fun onAnimationEndWithDraw() {
-
-            }
-        })
+//        mPkSingCardView!!.playScaleAnimation(userId, false, object : PKSingCardView.AnimationListerner {
+//            override fun onAnimationEndExcludeSvga() {
+////                mPkSingCardView!!.playWithDraw()
+//                playRealLyric()
+//            }
+//
+//            override fun onAnimationEndWithDraw() {
+//
+//            }
+//        })
+        playRealLyric()
     }
 
     private fun playRealLyric() {
@@ -195,9 +194,9 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             if (mPkSelfSingLyricView != null) {
                 mPkSelfSingLyricView!!.reset()
             }
-            if (mPkSingCardView != null) {
-                mPkSingCardView!!.reset()
-            }
+//            if (mPkSingCardView != null) {
+//                mPkSingCardView!!.reset()
+//            }
         }
     }
 
