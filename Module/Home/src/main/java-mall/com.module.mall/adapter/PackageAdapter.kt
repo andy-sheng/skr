@@ -74,7 +74,7 @@ class PackageAdapter(val getPacketItemIDMethod: (() -> String)) : DiffAdapter<Pa
             btnIv.setDebounceViewClickListener {
                 if (model?.useStatus == 2) {
                     cancelUseEffectMethod?.invoke(model!!)
-                } else if (model?.useStatus == 2) {
+                } else if (model?.useStatus == 1) {
                     useEffectMethod?.invoke(model!!)
                 }
             }

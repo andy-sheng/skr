@@ -54,6 +54,6 @@ interface MallServerApi {
     "packetItemID": "string"
     }
      */
-    @PUT("http://sandbox.api.inframe.mobi/v1/mall/use-goods")
+    @PUT("http://sandbox.api.inframe.mobi/v1/mall/cancel-use-goods")
     fun cancelUseGoods(@Body body: RequestBody): Call<ApiResult>
 }

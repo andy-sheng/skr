@@ -150,7 +150,7 @@ class PackageView : ExConstraintLayout {
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val obj = subscribe {
-                rankedServerApi.useGoods(body)
+                rankedServerApi.cancelUseGoods(body)
             }
 
             if (obj.errno == 0) {
