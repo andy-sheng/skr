@@ -1,0 +1,157 @@
+syntax = "proto3";
+
+package messenger;
+
+import "Common.proto";
+
+package com.zq.live.proto.RelayRoom;
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./Module/PlayWays/src/main/java-gen-pb/ relay_room.proto
+
+*/
+
+// 接唱房信令消息
+message RelayRoomMsg
+{
+    sint64 timeMs             = 1; //房间消息产生时间，单位毫秒
+    ERelayRoomMsgType msgType = 2; //消息类型
+    uint32 roomID             = 3; //房间ID
+
+    RUserEnterMsg rUserEnterMsg     = 10; //进入房间(系统消息下发）
+    RGameOverMsg rGameOverMsg       = 11; //结束房间(倒计时结束、玩家退出)
+    RNextRoundMsg rNextRoundMsg     = 12; //加载下个轮次
+    RUnlockMsg rUnlockMsg           = 13; //解锁点歌
+    RSyncMsg rSyncMsg               = 14; //同步状态
+    RReqAddMusicMsg rReqAddMusicMsg = 15; //请求接唱
+    RAddMusicMsg rAddMusicMsg       = 16; //点歌
+    RDelMusicMsg rDelMusicMsg       = 17; //删歌
+    RUpMusicMsg rUpMusicMsg         = 18; //置顶
+}
+
+enum ERelayRoomMsgType {
+    RRT_UNKNOWN = 0; //未知消息
+
+    RRT_USER_ENTER    = 10; //进入房间
+    RRT_GAME_OVER     = 11; //进入房间
+    RRT_NEXT_ROUND    = 12; //加载下个轮次
+    RRT_UNLOCK        = 13; //解锁点歌
+    RRT_SYNC          = 14; //同步
+    RRT_REQ_ADD_MUSIC = 15; //请求接唱
+    RRT_ADD_MUSIC     = 16; //点歌
+    RRT_DEL_MUSIC     = 17; //删歌
+    RRT_UP_MUSIC      = 18; //置顶
+}
+
+message RUserEnterMsg
+{
+    uint32 roomID                  = 1; //房间ID
+    sint64 createdTimeMs           = 2; //房间创建的时间戳
+    repeated UserInfo users        = 3; //玩家信息
+    RelayRoomConfig config         = 4; //配置信息
+    repeated AgoraTokenInfo tokens = 5; //声网token
+}
+
+message RelayRoomConfig
+{
+    sint32 durationTimeMs = 1; //房间持续时间
+}
+
+message RGameOverMsg
+{
+    uint32 roomID = 1; //房间ID
+}
+
+message RNextRoundMsg
+{
+    sint64 roundOverTimeMs  = 1; //本轮次结束的毫秒时间戳
+    RRoundInfo currentRound = 2; //当前结束轮次的信息
+    RRoundInfo nextRound    = 3; //下个加载轮次的信息
+}
+
+message RRoundInfo
+{
+    uint32 roundSeq                       = 1; //轮次序号
+    uint32 introBeginMs                   = 2; //导唱开始相对时间（相对于createdTimeMs时间） p.s.导唱为等待阶段
+    uint32 introEndMs                     = 3; //导唱结束相对时间（相对于createdTimeMs时间） p.s.导唱为等待阶段
+    uint32 singBeginMs                    = 4; //演唱开始相对时间（相对于createdTimeMs时间）
+    uint32 singEndMs                      = 5; //演唱结束相对时间（相对于createdTimeMs时间）
+    ERRoundStatus status                  = 6; //轮次状态
+    ERRoundOverReason overReason          = 7; //切换轮次原因
+    MusicInfo music                       = 8; //本轮次的歌曲信息
+    repeated BackgroundShowInfo showInfos = 9; //背景效果
+}
+
+enum ERRoundStatus {
+    RRS_UNKNOWN = 0; //轮次状态未知
+    RRS_INTRO   = 1; //轮次进入导唱阶段(等待阶段)
+    RRS_SING    = 2; //轮次进入演唱阶段(演唱阶段)
+    RRS_END     = 3; //轮次已结束
+}
+
+enum ERRoundOverReason {
+    RROR_UNKNOWN           = 0; //未知
+    RROR_ROUND_NORMAL_OVER = 1; //上个轮次结束
+    RROR_ROUND_PASS        = 2; //切歌
+    RROR_INTRO_OVER        = 3; //等待阶段结束
+}
+
+message RUnlockMsg
+{
+    repeated RUserLockInfo userLockInfo = 1; //解锁信息
+    bool enableNoLimitDuration          = 2; //开启没有限制的持续时间
+}
+
+message RUserLockInfo
+{
+    uint32 userID = 1; //解锁信息的用户ID
+    bool hasLock  = 2; //是否锁定: true为锁定,false为解锁
+}
+
+message RSyncMsg
+{
+    sint64 syncStatusTimeMs             = 1; //状态同步时的毫秒时间戳
+    sint64 passedTimeMs                 = 2; //房间已经经历的毫秒数
+    repeated RUserLockInfo userLockInfo = 3; //用户锁定信息
+    bool enableNoLimitDuration          = 4; //开启没有限制的持续时间
+    RRoundInfo currentRound             = 5; //当前轮次信息
+}
+
+message RReqAddMusicMsg
+{
+    RUserMusicDetail detail = 1;
+}
+
+message RUserMusicDetail
+{
+    uint32 userID       = 1; //发起用户
+    uint32 peerID       = 2; //合唱用户
+    string uniqTag      = 3; //歌曲标识
+    MusicInfo music     = 4; //演唱音乐
+    ERSongStatus status = 5; //状态
+}
+
+enum ERSongStatus {
+    ERUSI_UNKNOWN   = 0; //未知
+    ERUSI_IN_PLAY   = 1; //演唱中
+    ERUSI_NEXT_PLAY = 2; //下一首
+}
+
+message RAddMusicMsg
+{
+    RUserMusicDetail detail = 1;
+    uint32 musicCnt         = 2;
+}
+
+message RDelMusicMsg
+{
+    string uniqTag  = 1; //歌曲标识
+    uint32 musicCnt = 2; //歌曲总数量
+}
+
+message RUpMusicMsg
+{
+    string uniqTag = 1; //歌曲标识
+}
