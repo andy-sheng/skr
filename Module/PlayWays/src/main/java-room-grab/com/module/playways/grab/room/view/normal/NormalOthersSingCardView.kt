@@ -21,6 +21,7 @@ import com.common.view.ex.ExTextView
 import com.component.level.utils.LevelConfigUtils
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
+import com.module.playways.grab.room.view.SingCountDownView2
 import com.module.playways.room.data.H
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
@@ -43,6 +44,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     internal var mGrabStageView: SVGAImageView? = null
     internal var mSingAvatarView: BaseImageView? = null
     //    internal var mCircleCountDownView: CircleCountDownView? = null
+    internal var mCircleCountDownView: SingCountDownView2? = null
     internal var mTvSingerName: ExTextView? = null
     internal var mLevelBg: ImageView? = null
 
@@ -64,7 +66,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         mGrabStageView = mParentView!!.findViewById<View>(R.id.grab_stage_view) as SVGAImageView
         mSingAvatarView = mParentView!!.findViewById<View>(R.id.sing_avatar_view) as BaseImageView
         mLevelBg = mParentView!!.findViewById<View>(R.id.level_bg) as ImageView
-//        mCircleCountDownView = mParentView!!.findViewById<View>(R.id.circle_count_down_view) as CircleCountDownView
+        mCircleCountDownView = mParentView!!.findViewById<View>(R.id.sing_count_down_view) as SingCountDownView2
         mTvSingerName = mParentView!!.findViewById<View>(R.id.tv_singer_name) as ExTextView
 
         mSingAvatarView?.setOnClickListener(object : DebounceViewClickListener() {
@@ -143,9 +145,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         if (H.isGrabRoom()) {
             val grabRoundInfoModel = H.grabRoomData?.realRoundInfo ?: return
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT
-//            mCircleCountDownView!!.cancelAnim()
-//            mCircleCountDownView!!.max = 360
-//            mCircleCountDownView!!.progress = 0
+            mCircleCountDownView!!.reset()
             if (!grabRoundInfoModel.isParticipant && grabRoundInfoModel.enterStatus == EQRoundStatus.QRS_SING.value) {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
                 countDown("中途进来")
@@ -156,9 +156,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         } else if (H.isMicRoom()) {
             val grabRoundInfoModel = H.micRoomData?.realRoundInfo ?: return
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT
-//            mCircleCountDownView!!.cancelAnim()
-//            mCircleCountDownView!!.max = 360
-//            mCircleCountDownView!!.progress = 0
+            mCircleCountDownView!!.reset()
             if (!grabRoundInfoModel.isParticipant && grabRoundInfoModel.enterStatus == EMRoundStatus.MRS_SING.value) {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
                 countDown("中途进来")
@@ -198,7 +196,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 progress = 1
                 leaveTime = totalMs
             }
-//            mCircleCountDownView!!.go(progress, leaveTime)
+            mCircleCountDownView!!.startPlay(progress, leaveTime, true)
         } else if (H.isMicRoom()) {
             val infoModel = H.micRoomData?.realRoundInfo ?: return
             val totalMs = infoModel.singTotalMs
@@ -213,7 +211,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 progress = 1
                 leaveTime = totalMs
             }
-//            mCircleCountDownView!!.go(progress, leaveTime)
+            mCircleCountDownView!!.startPlay(progress, leaveTime, true)
         }
     }
 
@@ -246,13 +244,10 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 mParentView!!.clearAnimation()
                 setVisibility(View.GONE)
             }
-//            if (mCircleCountDownView != null) {
-//                mCircleCountDownView!!.cancelAnim()
-//                mCircleCountDownView!!.max = 360
-//                mCircleCountDownView!!.progress = 0
-//
-//                mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
-//            }
+            if (mCircleCountDownView != null) {
+                mCircleCountDownView!!.reset()
+                mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
+            }
         }
     }
 

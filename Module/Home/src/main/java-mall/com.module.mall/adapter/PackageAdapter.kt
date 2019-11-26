@@ -1,6 +1,7 @@
 package com.module.mall.adapter
 
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +16,11 @@ import com.module.home.R
 import com.module.mall.model.PackageModel
 import com.module.mall.model.ProductModel
 
-class PackageAdapter(val getIndexMethod: (() -> Int)) : DiffAdapter<PackageModel, PackageAdapter.PackageHolder>() {
+class PackageAdapter(val getPacketItemIDMethod: (() -> String)) : DiffAdapter<PackageModel, PackageAdapter.PackageHolder>() {
 
     var useEffectMethod: ((PackageModel) -> Unit)? = null
-    var selectItemMethod: ((ProductModel, Int) -> Unit)? = null
+    var cancelUseEffectMethod: ((PackageModel) -> Unit)? = null
+    var selectItemMethod: ((ProductModel, Int, String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PackageHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.package_product_item_layout, parent, false)
@@ -70,11 +72,15 @@ class PackageAdapter(val getIndexMethod: (() -> Int)) : DiffAdapter<PackageModel
             effectIv = itemView.findViewById(R.id.effect_iv)
 
             btnIv.setDebounceViewClickListener {
-                useEffectMethod?.invoke(model!!)
+                if (model?.useStatus == 2) {
+                    cancelUseEffectMethod?.invoke(model!!)
+                } else if (model?.useStatus == 2) {
+                    useEffectMethod?.invoke(model!!)
+                }
             }
 
             bg.setDebounceViewClickListener {
-                selectItemMethod?.invoke(model?.goodsInfo!!, index)
+                selectItemMethod?.invoke(model?.goodsInfo!!, index, model!!.packetItemID)
             }
         }
 
@@ -102,10 +108,18 @@ class PackageAdapter(val getIndexMethod: (() -> Int)) : DiffAdapter<PackageModel
                 btnIv.text = "使用"
             }
 
-            if (getIndexMethod.invoke() == index) {
-                strokeIv.visibility = View.VISIBLE
+            if (TextUtils.isEmpty(getPacketItemIDMethod.invoke())) {
+                if (model.useStatus == 2) {
+                    strokeIv.visibility = View.VISIBLE
+                } else if (model.useStatus == 1) {
+                    strokeIv.visibility = View.GONE
+                }
             } else {
-                strokeIv.visibility = View.GONE
+                if (getPacketItemIDMethod.invoke().equals(model.packetItemID)) {
+                    strokeIv.visibility = View.VISIBLE
+                } else {
+                    strokeIv.visibility = View.GONE
+                }
             }
         }
     }

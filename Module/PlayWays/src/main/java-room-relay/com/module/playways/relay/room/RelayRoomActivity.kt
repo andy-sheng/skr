@@ -57,8 +57,8 @@ import com.module.playways.relay.room.presenter.RelayCorePresenter
 import com.module.playways.relay.room.ui.IRelayRoomView
 import com.module.playways.relay.room.ui.RelayWidgetAnimationController
 import com.module.playways.relay.room.view.RelaySingCardView
-import com.module.playways.relay.room.view.RelayTopContentView
-import com.module.playways.relay.room.view.RelayTopOpView
+import com.module.playways.relay.room.top.RelayTopContentView
+import com.module.playways.relay.room.top.RelayTopOpView
 import com.module.playways.relay.room.view.RelayVoiceControlPanelView
 import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent

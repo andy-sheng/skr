@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageView
 import com.common.anim.svga.SvgaParserAdapter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
@@ -23,6 +24,7 @@ class EffectView : ConstraintLayout {
     var avatarIv: BaseImageView
     var avatarBox: BaseImageView
     var lightSvga: SVGAImageView
+    var defaultBgIv: ImageView
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -35,6 +37,7 @@ class EffectView : ConstraintLayout {
         avatarIv = rootView.findViewById(R.id.avatar_iv)
         avatarBox = rootView.findViewById(R.id.avatar_box)
         lightSvga = rootView.findViewById(R.id.light_svga)
+        defaultBgIv = rootView.findViewById(R.id.default_bg_iv)
 
         AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                 .setCircle(true)
@@ -50,6 +53,9 @@ class EffectView : ConstraintLayout {
     }
 
     fun showBgEffect(productModel: ProductModel) {
+        defaultBgIv.visibility = View.GONE
+        defaultBgIv.background = null
+
         bgSvga?.visibility = View.VISIBLE
         bgSvga?.loops = 1
 
@@ -85,6 +91,29 @@ class EffectView : ConstraintLayout {
         })
     }
 
+    fun showDefaultBgEffect() {
+        defaultBgIv.visibility = View.VISIBLE
+        defaultBgIv.background = U.getDrawable(R.drawable.effect_default)
+    }
+
+    fun showDefaultLightEffect() {
+        lightSvga?.visibility = View.VISIBLE
+        lightSvga?.loops = 1
+
+        SvgaParserAdapter.parse(GRAB_BURST_BIG_SVGA, object : SVGAParser.ParseCompletion {
+            override fun onComplete(@NotNull videoItem: SVGAVideoEntity) {
+                val drawable = SVGADrawable(videoItem)
+                lightSvga!!.loops = -1
+                lightSvga!!.setImageDrawable(drawable)
+                lightSvga!!.startAnimation()
+            }
+
+            override fun onError() {
+
+            }
+        })
+    }
+
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         if (lightSvga != null) {
@@ -96,5 +125,9 @@ class EffectView : ConstraintLayout {
             bgSvga!!.callback = null
             bgSvga!!.stopAnimation(true)
         }
+    }
+
+    companion object {
+        val GRAB_BURST_BIG_SVGA = "http://res-static.inframe.mobi/app/grab_burst_big_animation.svga"
     }
 }

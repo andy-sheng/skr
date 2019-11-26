@@ -1,6 +1,7 @@
 package com.component.dialog;
 
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -11,6 +12,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExConstraintLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.module.common.ICallback;
@@ -20,7 +22,7 @@ import static com.component.dialog.InviteFriendDialog.INVITE_GRAB_FRIEND;
 import static com.component.dialog.InviteFriendDialog.INVITE_GRAB_GAME;
 import static com.component.dialog.InviteFriendDialog.INVITE_MIC_GAME;
 
-public class InviteFriendDialogView extends RelativeLayout {
+public class InviteFriendDialogView extends ConstraintLayout {
     public final String TAG = "InviteFriendDialogView";
 
     ExTextView mTvTitle;
@@ -50,11 +52,11 @@ public class InviteFriendDialogView extends RelativeLayout {
     private void init(Context context) {
         inflate(context, R.layout.invite_friend_panel, this);
 
-        mTvTitle = (ExTextView) this.findViewById(R.id.tv_title);
-        mTvKouling = (TextView) this.findViewById(R.id.tv_kouling);
-        mTvText = (ExTextView) this.findViewById(R.id.tv_text);
-        mTvQqShare = (TextView) this.findViewById(R.id.tv_qq_share);
-        mTvWeixinShare = (TextView) this.findViewById(R.id.tv_weixin_share);
+        mTvTitle = this.findViewById(R.id.tv_title);
+        mTvKouling = this.findViewById(R.id.tv_kouling);
+        mTvText = this.findViewById(R.id.tv_text);
+        mTvQqShare = this.findViewById(R.id.tv_qq_share);
+        mTvWeixinShare = this.findViewById(R.id.tv_weixin_share);
 
         if (!TextUtils.isEmpty(mKouLingToken)) {
             mTvKouling.setText(mKouLingToken);

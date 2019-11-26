@@ -23,6 +23,7 @@ import com.module.home.R
 import com.module.home.WalletServerApi
 import com.module.mall.MallServerApi
 import com.module.mall.event.PackageShowEffectEvent
+import com.module.mall.event.ShowDefaultEffectEvent
 import com.module.mall.model.MallTag
 import com.module.mall.view.EffectView
 import com.module.mall.view.PackageView
@@ -159,6 +160,14 @@ class PackageActivity : BaseActivity() {
         when (event.productModel.displayType) {
             4 -> effectView.showBgEffect(event.productModel)
             5 -> effectView.showLightEffect(event.productModel)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ShowDefaultEffectEvent) {
+        when (event.displayType) {
+            4 -> effectView.showDefaultBgEffect()
+            5 -> effectView.showDefaultLightEffect()
         }
     }
 

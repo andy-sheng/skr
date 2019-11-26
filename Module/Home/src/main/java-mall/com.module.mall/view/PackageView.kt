@@ -20,7 +20,9 @@ import com.module.home.loadsir.DqEmptyCallBack
 import com.module.mall.MallServerApi
 import com.module.mall.adapter.PackageAdapter
 import com.module.mall.event.PackageShowEffectEvent
+import com.module.mall.event.ShowDefaultEffectEvent
 import com.module.mall.model.PackageModel
+import com.module.mall.model.ProductModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -51,6 +53,7 @@ class PackageView : ExConstraintLayout {
     internal var mLoadService: LoadService<*>
 
     var selectedIndex = -1
+    var packageItemId = ""
 
     constructor(context: Context?) : super(context!!)
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs)
@@ -63,7 +66,7 @@ class PackageView : ExConstraintLayout {
         refreshLayout = rootView.findViewById(R.id.refreshLayout)
         recyclerView.layoutManager = GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false)
         productAdapter = PackageAdapter {
-            selectedIndex
+            packageItemId
         }
 
         recyclerView.adapter = productAdapter
@@ -72,10 +75,15 @@ class PackageView : ExConstraintLayout {
             useEffect(it)
         }
 
-        productAdapter?.selectItemMethod = { productModel, i ->
-            if (selectedIndex != i) {
+        productAdapter?.cancelUseEffectMethod = {
+            cancelUseEffect(it)
+        }
+
+        productAdapter?.selectItemMethod = { productModel, index, packageItemID ->
+            if (selectedIndex != index) {
                 val pre = selectedIndex
-                selectedIndex = i
+                selectedIndex = index
+                packageItemId = packageItemID
                 if (pre > -1) {
                     productAdapter?.notifyItemChanged(pre, 1)
                 }
@@ -134,9 +142,41 @@ class PackageView : ExConstraintLayout {
         }
     }
 
+    fun cancelUseEffect(packageModel: PackageModel) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["packetItemID"] = packageModel.packetItemID
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val obj = subscribe {
+                rankedServerApi.useGoods(body)
+            }
+
+            if (obj.errno == 0) {
+                for (i in 0 until ((productAdapter?.dataList?.size) ?: 0)) {
+                    if (productAdapter?.dataList?.get(i)?.packetItemID == packageModel.packetItemID) {
+                        productAdapter?.dataList?.get(i)?.useStatus = 1
+                        productAdapter?.notifyItemChanged(i, 1)
+                        break
+                    }
+                }
+            } else {
+                U.getToastUtil().showShort(obj.errmsg)
+            }
+        }
+    }
+
     fun selected() {
         if (productAdapter?.dataList?.size == 0) {
             tryLoad()
+        }
+    }
+
+    private fun showSelectedEffect(list: List<ProductModel>?) {
+        if (list != null && list.size > 0) {
+            EventBus.getDefault().post(PackageShowEffectEvent(list[0]))
+        } else {
+            EventBus.getDefault().post(ShowDefaultEffectEvent(displayType))
         }
     }
 
@@ -155,11 +195,23 @@ class PackageView : ExConstraintLayout {
                 val list = JSON.parseArray(obj.data.getString("list"), PackageModel::class.java)
                 if (list != null && list.size > 0) {
                     productAdapter?.insertListLast(list)
+                    if (offset == 0) {
+                        val list = JSON.parseArray(obj.data.getString("useList"), ProductModel::class.java)
+                        showSelectedEffect(list)
+                    }
+                    mLoadService.showSuccess()
+                } else {
+                    if (productAdapter?.dataList?.size == 0) {
+                        mLoadService.showCallback(DqEmptyCallBack::class.java)
+                    }
+
+                    if (offset == 0) {
+                        EventBus.getDefault().post(ShowDefaultEffectEvent(displayType))
+                    }
                 }
 
                 offset = obj.data.getIntValue("offset")
                 hasMore = obj.data.getBooleanValue("hasMore")
-                mLoadService.showSuccess()
                 refreshLayout.setEnableLoadMore(hasMore)
             } else {
                 if (productAdapter?.dataList?.size == 0) {

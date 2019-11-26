@@ -135,4 +135,5 @@ public interface RouterConstants {
     String ACTIVITY_RELAY_HOME = "/relay/RelayHomeActivity";
     String ACTIVITY_RELAY_MATCH = "/relay/RelayMatchActivity";
     String ACTIVITY_RELAY_ROOM = "/relay/RelayRoomActivity";
+    String ACTIVITY_RELAY_RESULT = "/relay/RelayResultActivity";
 }

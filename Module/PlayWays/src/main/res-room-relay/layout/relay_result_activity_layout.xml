@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:avatarLevel="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/double_room_view_bg">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showBottomLine="false"
+        app:showMainView="false"
+        app:statusBarColor="@color/transparent" />
+
+    <TextView
+        android:id="@+id/report_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/view_18_dp"
+        android:text="举报！"
+        android:textColor="#FF8AB6"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/content_area"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_0_dp"
+        android:layout_marginLeft="@dimen/view_30_dp"
+        android:layout_marginTop="@dimen/view_42_dp"
+        android:layout_marginRight="@dimen/view_30_dp"
+        android:layout_marginBottom="@dimen/view_62_dp"
+        android:background="@drawable/common_gradient_bg"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/back_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/report_tv">
+
+        <com.component.busilib.view.AvatarLevelView
+            android:id="@+id/avatar_level"
+            android:layout_width="@dimen/view_80_dp"
+            android:layout_height="@dimen/view_85_dp"
+            android:layout_marginTop="@dimen/view_30_dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            avatarLevel:avatarSize="@dimen/view_45_dp" />
+
+        <TextView
+            android:id="@+id/game_status_tv"
+            android:layout_width="@dimen/view_100_dp"
+            android:layout_height="@dimen/view_30_dp"
+            android:layout_marginTop="@dimen/view_144_dp"
+            android:text="合唱结束了"
+            android:textColor="@color/black_trans_80"
+            android:textSize="@dimen/textsize_24_dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/game_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_25_dp"
+            android:layout_marginTop="@dimen/view_4_dp"
+            android:gravity="center"
+            android:text="你与KTV酒彪子合唱了45分钟"
+            android:textColor="@color/black_trans_50"
+            android:textSize="@dimen/textsize_14_dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/game_status_tv" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/view_3_dp"
+            android:text="你们的相互陪伴\n让岁月多一份温暖"
+            android:textColor="@color/black_trans_50"
+            android:textSize="@dimen/textsize_12_dp"
+            app:layout_constraintBottom_toTopOf="@id/follow_tv"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/game_time_tv" />
+
+        <TextView
+            android:id="@+id/follow_tv"
+            android:layout_width="@dimen/view_136_dp"
+            android:layout_height="@dimen/view_40_dp"
+            android:layout_marginBottom="@dimen/view_22_dp"
+            android:background="@drawable/common_yellow_button_icon"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_5_dp"
+            android:text="关注Ta"
+            android:textColor="#e68B572A"
+            android:textSize="@dimen/textsize_14_dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/back_tv"
+        android:layout_width="@dimen/view_136_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginBottom="@dimen/view_50_dp"
+        android:background="@drawable/common_yellow_button_icon"
+        android:gravity="center"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:text="返回"
+        android:textColor="#e68B572A"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

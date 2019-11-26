@@ -88,6 +88,7 @@ public class ShareWorksDialog {
                 .setContentHolder(new ViewHolder(shareWorksDialogView))
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setMargin(U.getDisplayUtils().dip2px(16), -1, U.getDisplayUtils().dip2px(16), U.getDisplayUtils().dip2px(16))
                 .setExpanded(false)
                 .setGravity(Gravity.BOTTOM)
                 .create();

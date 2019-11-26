@@ -19,7 +19,7 @@ class NormalSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     val TAG = "NormalSelfSingCardView"
 
     internal var mSelfSingLyricView: SelfSingLyricView? = null
-    internal var mSingCountDownView: SingCountDownView2? = null
+//    internal var mSingCountDownView: SingCountDownView2? = null
 
     var mOverListener: (() -> Unit)? = null
 
@@ -28,8 +28,8 @@ class NormalSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             val viewStub = mParentView!!.findViewById<ViewStub>(R.id.self_sing_lyric_view_stub)
             mSelfSingLyricView = SelfSingLyricView(viewStub)
         }
-        mSingCountDownView = mParentView!!.findViewById(R.id.sing_count_down_view)
-        mSingCountDownView!!.setListener(mOverListener)
+//        mSingCountDownView = mParentView!!.findViewById(R.id.sing_count_down_view)
+//        mSingCountDownView!!.setListener(mOverListener)
     }
 
     override fun layoutDesc(): Int {
@@ -54,7 +54,7 @@ class NormalSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         } else {
             mSelfSingLyricView!!.playWithNoAcc(songModel)
         }
-        mSingCountDownView!!.startPlay(0, totalTs, true)
+//        mSingCountDownView!!.startPlay(0, totalTs, true)
     }
 
     private fun getTotalMs(): Int {
@@ -79,9 +79,9 @@ class NormalSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
         if (visibility == View.GONE) {
-            if (mSingCountDownView != null) {
-                mSingCountDownView!!.reset()
-            }
+//            if (mSingCountDownView != null) {
+//                mSingCountDownView!!.reset()
+//            }
             if (mSelfSingLyricView != null) {
                 mSelfSingLyricView!!.reset()
             }

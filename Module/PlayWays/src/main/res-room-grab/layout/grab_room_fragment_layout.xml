@@ -5,7 +5,12 @@
     android:id="@+id/grab_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/room_bg_color">
+    android:background="@color/black">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_465_dp"
+        android:background="@drawable/mic_room_bg" />
 
     <ViewStub
         android:id="@+id/game_effect_bg_view_layout_viewStub"
