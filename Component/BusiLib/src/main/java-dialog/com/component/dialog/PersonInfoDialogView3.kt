@@ -40,6 +40,7 @@ import com.component.busilib.R
 import com.component.busilib.view.NickNameView
 import com.component.busilib.view.MarqueeTextView
 import com.component.level.utils.LevelConfigUtils
+import com.component.person.event.ShowPersonCardEvent
 import com.component.person.model.RelationNumModel
 import com.component.person.model.ScoreDetailModel
 import com.component.person.photo.adapter.PhotoAdapter
@@ -138,13 +139,8 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
                         .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$mUserId"))
                         .navigation()
             } else {
-                // 跳到个人主页
-                val bundle = Bundle()
-                bundle.putInt("bundle_user_id", it.userId)
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
-                        .with(bundle)
-                        .navigation()
+                // 跳到个人卡片
+                EventBus.getDefault().post(ShowPersonCardEvent(it.userId))
             }
         }
 
