@@ -16,18 +16,18 @@
         app:autoPlay="false"
         app:loopCount="-1" />
 
-    <com.component.busilib.view.CircleCountDownView
-        android:id="@+id/circle_count_down_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_189_dp"
-        app:bg_color="@color/transparent"
-        app:inner_color="#FFC15B"
-        app:inner_stroke_raduis="@dimen/view_64_dp"
-        app:inner_stroke_width="@dimen/view_6_dp"
-        app:stroke_bg_color="#353E89"
-        app:stroke_bg_width="@dimen/view_8_dp" />
+<!--    <com.component.busilib.view.CircleCountDownView-->
+<!--        android:id="@+id/circle_count_down_view"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginTop="@dimen/view_189_dp"-->
+<!--        app:bg_color="@color/transparent"-->
+<!--        app:inner_color="#FFC15B"-->
+<!--        app:inner_stroke_raduis="@dimen/view_64_dp"-->
+<!--        app:inner_stroke_width="@dimen/view_6_dp"-->
+<!--        app:stroke_bg_color="#353E89"-->
+<!--        app:stroke_bg_width="@dimen/view_8_dp" />-->
 
 
     <com.common.image.fresco.BaseImageView
