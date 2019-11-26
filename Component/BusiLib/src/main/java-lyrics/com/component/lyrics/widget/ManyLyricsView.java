@@ -403,8 +403,9 @@ public class ManyLyricsView extends AbstractLrcView {
         boolean thisLineIsSplit = false;
         long curProgress = getCurPlayingTime() + getPlayerSpendTime();
         //MyLog.d(TAG, "drawManyLrcView" + " mLyricsLineNum=" + mLyricsLineNum + " curProgress=" + curProgress);
+        boolean firstSingerTime= false;
         if (mSplitChorusArray != null) {
-            boolean firstSingerTime = mSplitChorusArray.length%2==0;
+             firstSingerTime = mSplitChorusArray.length%2==0;
             // 判断当前的进度歌词归属于第几个人唱
             // 歌词的绘制归属不严格按当前划分
             for (int i = 0; i < mSplitChorusArray.length; i++) {
