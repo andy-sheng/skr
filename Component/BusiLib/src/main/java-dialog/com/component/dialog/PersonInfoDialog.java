@@ -57,6 +57,8 @@ public class PersonInfoDialog {
     InviteDoubleListener mInviteDoubleListener;
     DialogPlus mDialogPlus;
 
+    PersonInfoDialogView3 personInfoDialogView;
+
     private PersonInfoDialog(Builder builder) {
         mActivity = builder.mActivity;
         mFrom = builder.mFrom;
@@ -70,7 +72,11 @@ public class PersonInfoDialog {
         init();
     }
 
-    PersonInfoDialogView3 personInfoDialogView;
+    public void refreshHomepage() {
+        if (personInfoDialogView != null) {
+            personInfoDialogView.refreshHomepage();
+        }
+    }
 
     private void init() {
         personInfoDialogView = new PersonInfoDialogView3(mActivity, mUserID, mShowKick, mShowInvite);

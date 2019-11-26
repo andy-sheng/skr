@@ -1,11 +1,8 @@
 package com.component.dialog
 
 import android.content.Context
-import android.graphics.Color
-import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
@@ -35,12 +32,12 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
-import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.R
 import com.component.busilib.view.NickNameView
 import com.component.busilib.view.MarqueeTextView
 import com.component.level.utils.LevelConfigUtils
 import com.component.person.event.ShowPersonCardEvent
+import com.component.person.event.UploadHomePageEvent
 import com.component.person.model.RelationNumModel
 import com.component.person.model.ScoreDetailModel
 import com.component.person.photo.adapter.PhotoAdapter
@@ -95,6 +92,8 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
     private var mHasMore = false
     private var DEFAULT_CNT = 10
 
+    var uploadHomePageFlag = false
+
     init {
         View.inflate(context, R.layout.person_info3_card_view_layout, this)
 
@@ -135,12 +134,14 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         guardView.clickListener = {
             if (it == null) {
                 // 去守护
+                EventBus.getDefault().post(UploadHomePageEvent())
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$mUserId"))
                         .navigation()
             } else {
                 // 跳到个人卡片
                 if (it.userId == MyUserInfoManager.uid.toInt()) {
+                    EventBus.getDefault().post(UploadHomePageEvent())
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                             .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$mUserId"))
                             .navigation()
@@ -296,10 +297,17 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         mPersonMoreOpView!!.showAt(moreIv)
     }
 
+    fun refreshHomepage() {
+        if (uploadHomePageFlag) {
+            getHomePage(mUserId)
+        }
+    }
+
     private fun getHomePage(userId: Int) {
         ApiMethods.subscribe(mUserInfoServerApi.getHomePage(userId.toLong()), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
+                    uploadHomePageFlag = false
                     val userInfoModel = JSON.parseObject(result.data!!.getString("userBaseInfo"), UserInfoModel::class.java)
                     val relationNumModes = JSON.parseArray(result.data!!.getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel::class.java)
                     val scoreDetailModel = JSON.parseObject(result.data.getString("scoreDetail"), ScoreDetailModel::class.java)
@@ -326,6 +334,8 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
                     showCharmsAndQinMiTag(meiLiCntTotal, qinMiCntTotal)
                     showGuardList(guardList)
                     refreshFollow()
+                } else {
+                    uploadHomePageFlag = false
                 }
             }
         }, mContext as BaseActivity)
@@ -489,6 +499,11 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
 
             refreshFollow()
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: UploadHomePageEvent) {
+        uploadHomePageFlag = true
     }
 
     override fun onAttachedToWindow() {

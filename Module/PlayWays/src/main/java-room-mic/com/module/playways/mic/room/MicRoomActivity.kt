@@ -251,6 +251,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         super.onResume()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         mSkrAudioPermission.onBackFromPermisionManagerMaybe(this)
+        if (mPersonInfoDialog?.isShowing == true) {
+            mPersonInfoDialog?.refreshHomepage()
+        }
     }
 
     override fun destroy() {
@@ -435,7 +438,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         }
     }
 
-    private fun showFlyCommentView(){
+    private fun showFlyCommentView() {
         mFlyCommentView.visibility = View.VISIBLE
     }
 

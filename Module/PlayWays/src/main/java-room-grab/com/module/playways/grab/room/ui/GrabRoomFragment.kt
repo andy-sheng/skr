@@ -279,6 +279,13 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         return R.layout.grab_room_fragment_layout
     }
 
+    override fun onFragmentVisible() {
+        super.onFragmentVisible()
+        if(mPersonInfoDialog?.isShowing == true){
+            mPersonInfoDialog?.refreshHomepage()
+        }
+    }
+
     override fun initData(savedInstanceState: Bundle?) {
         if (mRoomData == null) {
             Log.w(TAG, "initData，mRoomData == null, 直接finish Activity")

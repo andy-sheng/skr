@@ -143,6 +143,13 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         return R.layout.race_room_fragment_layout
     }
 
+    override fun onFragmentVisible() {
+        super.onFragmentVisible()
+        if (mPersonInfoDialog?.isShowing == true) {
+            mPersonInfoDialog?.refreshHomepage()
+        }
+    }
+
     override fun initData(savedInstanceState: Bundle?) {
         mCorePresenter = RaceCorePresenter(mRoomData, this)
         addPresent(mCorePresenter)
@@ -613,7 +620,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
             mRaceOtherSingCardView.bindData()
             mRaceOtherSingCardView.setVisibility(View.VISIBLE)
-            
+
             showFlyCommentView()
             playBgEffect(1)
         }
