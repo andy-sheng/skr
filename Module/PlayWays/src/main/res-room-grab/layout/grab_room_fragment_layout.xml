@@ -249,7 +249,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/bottom_bg_vp"
-        android:layout_marginTop="-55dp"
+        android:layout_marginTop="-65dp"
         android:layout_marginBottom="@dimen/view_10_dp"
         android:paddingLeft="@dimen/view_10_dp" />
 
@@ -314,9 +314,9 @@
         android:id="@+id/grab_giveup_view"
         android:layout_width="@dimen/view_97_dp"
         android:layout_height="@dimen/view_60_dp"
-        android:layout_alignTop="@+id/bottom_bg_vp"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_20_dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/view_240_dp" />
 
     <ViewStub
         android:id="@+id/grab_beauty_control_panel_view_stub"
