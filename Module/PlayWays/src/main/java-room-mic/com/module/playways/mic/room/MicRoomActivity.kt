@@ -295,6 +295,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         if (mSingBeginTipsCardView != exclude) {
             mSingBeginTipsCardView.setVisibility(View.GONE)
         }
+        if (mGameEffectBgView != exclude) {
+            mGameEffectBgView.hideBg()
+        }
     }
 
     private fun initMicSeatView() {
