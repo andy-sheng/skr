@@ -12,4 +12,6 @@ class PackageModel : Serializable {
     var useStatus: Int = 0
     @JSONField(name = "goodsInfo")
     var goodsInfo: ProductModel? = null
+    @JSONField(name = "expireTimeStr")
+    var expireTimeStr: String? = null
 }
