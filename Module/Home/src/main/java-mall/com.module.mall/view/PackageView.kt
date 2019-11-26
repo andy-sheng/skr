@@ -21,6 +21,7 @@ import com.module.mall.MallServerApi
 import com.module.mall.adapter.PackageAdapter
 import com.module.mall.event.PackageShowEffectEvent
 import com.module.mall.event.ShowDefaultEffectEvent
+import com.module.mall.loadsir.MallEmptyCallBack
 import com.module.mall.model.PackageModel
 import com.module.mall.model.ProductModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -109,7 +110,7 @@ class PackageView : ExConstraintLayout {
         })
 
         val mLoadSir = LoadSir.Builder()
-                .addCallback(DqEmptyCallBack())
+                .addCallback(MallEmptyCallBack())
                 .build()
 
         mLoadService = mLoadSir.register(refreshLayout) { tryLoad() }
@@ -202,7 +203,7 @@ class PackageView : ExConstraintLayout {
                     mLoadService.showSuccess()
                 } else {
                     if (productAdapter?.dataList?.size == 0) {
-                        mLoadService.showCallback(DqEmptyCallBack::class.java)
+                        mLoadService.showCallback(MallEmptyCallBack::class.java)
                     }
 
                     if (offset == 0) {

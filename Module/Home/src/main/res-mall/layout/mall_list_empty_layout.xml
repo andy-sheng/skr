@@ -5,10 +5,12 @@
     android:orientation="vertical">
 
     <com.common.view.ex.ExTextView
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="加载失败，点击重试"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_18_dp" />
+        android:layout_gravity="center"
+        android:drawableTop="@drawable/beibao_kongyemian"
+        android:drawablePadding="@dimen/view_5_dp"
+        android:text="这里没有购买的商品哦～"
+        android:textColor="@color/white_trans_60"
+        android:textSize="@dimen/textsize_14_dp" />
 </FrameLayout>
