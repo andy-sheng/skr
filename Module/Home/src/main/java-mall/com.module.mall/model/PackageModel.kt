@@ -1,8 +1,9 @@
 package com.module.mall.model
 
 import com.alibaba.fastjson.annotation.JSONField
+import java.io.Serializable
 
-class PackageModel {
+class PackageModel : Serializable {
     @JSONField(name = "expireTime")
     var expireTime: Long = 0
     @JSONField(name = "packetItemID")
