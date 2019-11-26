@@ -7,6 +7,7 @@ import android.view.ViewStub
 import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
+import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.utils.SpanUtils
 import com.common.view.ExViewStub
@@ -43,18 +44,19 @@ open class SelfSingLyricView(viewStub: ViewStub) : ExViewStub(viewStub) {
         mManyLyricsView = mParentView!!.findViewById(R.id.many_lyrics_view)
         mVoiceScaleView = mParentView!!.findViewById(R.id.voice_scale_view)
         mIvChallengeIcon = mParentView!!.findViewById(R.id.iv_challenge_icon)
+        mParentView!!.findViewById<View>(R.id.iv_bg).setDebounceViewClickListener { }
     }
 
     override fun layoutDesc(): Int {
         return R.layout.grab_self_sing_lyric_layout
     }
 
-    private fun initLyric(acc:Boolean) {
-        if(acc){
+    private fun initLyric(acc: Boolean) {
+        if (acc) {
             mSvlyric?.visibility = View.GONE
             mManyLyricsView?.visibility = View.VISIBLE
             mManyLyricsView?.initLrcData()
-        }else{
+        } else {
             mSvlyric?.visibility = View.VISIBLE
             mManyLyricsView?.visibility = View.GONE
         }
@@ -72,7 +74,7 @@ open class SelfSingLyricView(viewStub: ViewStub) : ExViewStub(viewStub) {
         mVoiceScaleView?.visibility = View.GONE
     }
 
-    fun playWithAcc(songModel: SongModel?,totalTs: Int) {
+    fun playWithAcc(songModel: SongModel?, totalTs: Int) {
         tryInflate()
         initLyric(true)
         if (songModel == null) {

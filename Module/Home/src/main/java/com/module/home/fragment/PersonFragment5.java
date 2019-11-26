@@ -393,12 +393,18 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
                             .navigation();
                 } else {
                     // 跳到个人主页
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("bundle_user_id", userInfoModel.getUserId());
-                    ARouter.getInstance()
-                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
-                            .with(bundle)
-                            .navigation();
+                    if (userInfoModel.getUserId() == MyUserInfoManager.INSTANCE.getUid()) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=" + MyUserInfoManager.INSTANCE.getUid()))
+                                .navigation();
+                    } else {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("bundle_user_id", userInfoModel.getUserId());
+                        ARouter.getInstance()
+                                .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                                .with(bundle)
+                                .navigation();
+                    }
                 }
                 return null;
             }

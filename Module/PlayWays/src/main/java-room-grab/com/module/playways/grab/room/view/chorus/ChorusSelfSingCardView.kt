@@ -2,6 +2,7 @@ package com.module.playways.grab.room.view.chorus
 
 import android.view.View
 import android.view.ViewStub
+import com.common.core.view.setDebounceViewClickListener
 import com.module.playways.R
 
 
@@ -19,6 +20,7 @@ class ChorusSelfSingCardView(viewStub: ViewStub) : BaseChorusSelfCardView(viewSt
         super.init(parentView)
 //        mSingCountDownView = mParentView!!.findViewById(R.id.sing_count_down_view)
 //        mSingCountDownView?.setListener(mOverListener)
+        parentView.findViewById<View>(R.id.relative_container).setDebounceViewClickListener { }
     }
 
     override fun layoutDesc(): Int {

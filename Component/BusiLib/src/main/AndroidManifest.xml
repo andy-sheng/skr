@@ -15,6 +15,7 @@
         <activity
             android:name="com.component.person.OtherPersonActivity"
             android:screenOrientation="portrait"
+            android:launchMode="standard"
             android:windowSoftInputMode="adjustPan" />
 
     </application>

@@ -1,7 +1,6 @@
 package com.component.person.fragment
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.AppBarLayout
@@ -13,7 +12,6 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
@@ -36,7 +34,6 @@ import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
-import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.R
@@ -45,6 +42,7 @@ import com.component.dialog.BusinessCardDialogView
 import com.component.level.utils.LevelConfigUtils
 import com.component.person.OtherPersonActivity.Companion.BUNDLE_USER_ID
 import com.component.person.event.ChildViewPlayAudioEvent
+import com.component.person.event.UploadHomePageEvent
 import com.component.person.model.RelationNumModel
 import com.component.person.model.ScoreDetailModel
 import com.component.person.photo.view.OtherPhotoWallView
@@ -64,6 +62,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.math.abs
@@ -129,6 +128,8 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     private var mBusinessCardDialogView: BusinessCardDialogView? = null
 
     internal var srollDivider = U.getDisplayUtils().dip2px(150f)  // 滑到分界线的时候
+
+    var uploadHomePageFlag = false
 
     override fun initView(): Int {
         return R.layout.other_person_fragment_layout
@@ -419,17 +420,25 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mGuardView.clickListener = {
             if (it == null) {
                 // 去守护
+                EventBus.getDefault().post(UploadHomePageEvent())
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$mUserId"))
                         .navigation()
             } else {
-                // 跳到个人主页
-                val bundle = Bundle()
-                bundle.putInt("bundle_user_id", it.userId)
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
-                        .with(bundle)
-                        .navigation()
+                if (it.userId == MyUserInfoManager.uid.toInt()) {
+                    EventBus.getDefault().post(UploadHomePageEvent())
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                            .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$mUserId"))
+                            .navigation()
+                } else {
+                    // 跳到个人主页
+                    val bundle = Bundle()
+                    bundle.putInt("bundle_user_id", it.userId)
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation()
+                }
             }
         }
 
@@ -589,6 +598,9 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     override fun onFragmentVisible() {
         super.onFragmentVisible()
         viewSelected(mPersonVp.currentItem)
+        if (uploadHomePageFlag) {
+            mPresenter.getHomePage(mUserId)
+        }
     }
 
     override fun onFragmentInvisible(reason: Int) {
@@ -670,6 +682,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
                                   relationNumModels: List<RelationNumModel>?,
                                   meiLiCntTotal: Int, qinMiCntTotal: Int,
                                   scoreDetailModel: ScoreDetailModel, voiceInfoModel: VoiceInfoModel?, guardUserList: List<UserInfoModel>?) {
+        uploadHomePageFlag = false
         mSmartRefresh.finishRefresh()
         showUserInfo(userInfoModel)
         showRelationNum(relationNumModels)
@@ -746,6 +759,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     }
 
     override fun getHomePageFail() {
+        uploadHomePageFlag = false
         mSmartRefresh.finishRefresh()
     }
 
@@ -816,6 +830,11 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         isPlay = false
         SinglePlayer.stop(playTag)
         mAudioView.setPlay(false)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: UploadHomePageEvent) {
+        uploadHomePageFlag = true
     }
 
     override fun showSpFollowVip() {

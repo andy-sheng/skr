@@ -9,43 +9,42 @@
     <!--演唱时两个主场景view-->
     <ViewStub
         android:id="@+id/normal_other_sing_card_view_stub"
-        android:inflatedId="@+id/normal_other_sing_card_view"
-        android:layout="@layout/grab_normal_other_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:inflatedId="@+id/normal_other_sing_card_view"
+        android:layout="@layout/grab_normal_other_sing_card_stub_layout"
         android:visibility="gone"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--演唱时两个主场景view-->
     <ViewStub
         android:id="@+id/chorus_other_sing_card_view_stub"
-        android:inflatedId="@+id/chorus_other_sing_card_view"
-        android:layout="@layout/grab_chorus_other_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_30_dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:inflatedId="@+id/chorus_other_sing_card_view"
+        android:layout="@layout/grab_chorus_other_sing_card_stub_layout"
         android:visibility="gone"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--<com.module.playways.grab.room.view.chorus.ChorusOthersSingCardView-->
-        <!--android:id="@+id/chorus_other_sing_card_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_below="@+id/top_container_view"-->
-        <!--android:layout_marginTop="@dimen/view_d_185_dp"-->
-        <!--android:visibility="gone"/>-->
+    <!--android:id="@+id/chorus_other_sing_card_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_below="@+id/top_container_view"-->
+    <!--android:layout_marginTop="@dimen/view_d_185_dp"-->
+    <!--android:visibility="gone"/>-->
 
     <ViewStub
         android:id="@+id/pk_other_sing_card_view_stub"
-        android:inflatedId="@+id/pk_other_sing_card_view"
-        android:layout="@layout/grab_pk_other_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_30_dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:inflatedId="@+id/pk_other_sing_card_view"
+        android:layout="@layout/grab_pk_other_sing_card_stub_layout"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </merge>

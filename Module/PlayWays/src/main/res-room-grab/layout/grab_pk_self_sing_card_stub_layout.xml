@@ -11,11 +11,11 @@
         android:inflatedId="@+id/self_sing_lyric_view"
         android:layout="@layout/grab_self_sing_lyric_layout" />
 
-    <com.module.playways.grab.room.view.pk.view.PKSingCardView
-        android:id="@+id/pk_sing_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:alpha="0" />
+<!--    <com.module.playways.grab.room.view.pk.view.PKSingCardView-->
+<!--        android:id="@+id/pk_sing_card_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:alpha="0" />-->
 
 <!--    <com.module.playways.grab.room.view.SingCountDownView2-->
 <!--        android:id="@+id/sing_count_down_view"-->

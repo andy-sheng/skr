@@ -70,7 +70,7 @@
                 android:layout_width="@dimen/view_86_dp"
                 android:layout_height="@dimen/view_86_dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_34_dp"
+                android:layout_marginTop="@dimen/view_44_dp"
                 android:visibility="gone"
                 app:bl_shape="oval"
                 app:bl_solid_color="@color/black_trans_50" />
@@ -101,7 +101,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_88_dp"
+                android:layout_marginTop="@dimen/view_79_dp"
+                android:text="不唱了"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp"
                 android:visibility="gone" />
@@ -130,7 +131,7 @@
                 android:layout_width="@dimen/view_86_dp"
                 android:layout_height="@dimen/view_86_dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_34_dp"
+                android:layout_marginTop="@dimen/view_44_dp"
                 android:visibility="gone"
                 app:bl_shape="oval"
                 app:bl_solid_color="@color/black_trans_50" />
@@ -161,7 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_88_dp"
+                android:layout_marginTop="@dimen/view_79_dp"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp"
                 android:visibility="gone" />

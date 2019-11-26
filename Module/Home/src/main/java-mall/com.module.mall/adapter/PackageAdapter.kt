@@ -92,6 +92,8 @@ class PackageAdapter(val getPacketItemIDMethod: (() -> String)) : DiffAdapter<Pa
                             .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                             .build())
 
+
+            dataTv.text = model.expireTimeStr
             updateText(model, index)
         }
 
