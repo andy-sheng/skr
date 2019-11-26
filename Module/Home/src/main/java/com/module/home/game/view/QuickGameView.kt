@@ -123,7 +123,9 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
             override fun onPkRoomListener() {
                 StatisticsAdapter.recordCountEvent("game", "express_rank", null)
-                openRaceActivity(context, false)
+                mRealNameVerifyUtils.checkAgeSettingState {
+                    openRaceActivity(context, false)
+                }
             }
 
             override fun onDoubleRoomListener() {
