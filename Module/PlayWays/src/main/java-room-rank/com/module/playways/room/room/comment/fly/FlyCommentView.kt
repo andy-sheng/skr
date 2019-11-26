@@ -29,11 +29,12 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.ArrayList
+import kotlin.math.absoluteValue
 
 // todo 飞行弹幕
 class FlyCommentView(context: Context?, attrs: AttributeSet?) : RelativeLayout(context, attrs), CoroutineScope by MainScope() {
 
-    val TAG = "FlyCommentView"
+    private val TAG = "FlyCommentView"
 
     constructor(context: Context?) : this(context, null)
 
@@ -47,7 +48,7 @@ class FlyCommentView(context: Context?, attrs: AttributeSet?) : RelativeLayout(c
     private val BOTTOM_SPACING = 30 // view 底部流的空隙，防止最小面的那个空间太小，显示不全
     private val PLAYER_SPACING = 20 // 同一条跑道中两个选手的间距
 
-    private val ITEM_HEIGHT = 26.dp()
+    private val ITEM_HEIGHT = 26.dp()  // 每个飞行弹幕的高度
 
     private val mRoadEnterNumber = IntArray(ROAD_NUM) // 这条道路上有多少选手还处于进场状态，进场完成的标记是尾部进场
     private val mRoadRunNumber = IntArray(ROAD_NUM)   // 这条道路上有多少选手已经进场，处于奔跑状态
@@ -66,7 +67,9 @@ class FlyCommentView(context: Context?, attrs: AttributeSet?) : RelativeLayout(c
         override fun onStart(model: CommentModel, consumer: FlyCommentViewWithExtraInfo) {
             // 飞弹幕
             MyLog.d(TAG, "onStart model = $model, consumer = $consumer")
-            startPlayFly(model, consumer)
+            if (visibility == View.VISIBLE) {
+                startPlayFly(model, consumer)
+            }
         }
 
         override fun onEnd(model: CommentModel?) {
@@ -80,7 +83,7 @@ class FlyCommentView(context: Context?, attrs: AttributeSet?) : RelativeLayout(c
         }
     }
 
-    private fun startPlayFly(model: CommentModel, consumer: FlyCommentView.FlyCommentViewWithExtraInfo) {
+    private fun startPlayFly(model: CommentModel, consumer: FlyCommentViewWithExtraInfo) {
         launch(Dispatchers.Main) {
             val textView = consumer.view
             val width = textView?.width ?: 0
@@ -136,14 +139,33 @@ class FlyCommentView(context: Context?, attrs: AttributeSet?) : RelativeLayout(c
         }
     }
 
-    fun destory() {
-        cancel()
+    override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
+        if (visibility == View.GONE) {
+            reset()
+            removeAllViews()
+        }
+    }
+
+    fun reset() {
         if (!animatorSet.isNullOrEmpty()) {
             animatorSet.forEach {
+                it.removeAllListeners()
                 it.cancel()
             }
         }
         animatorSet.clear()
+        for (i in 0 until ROAD_NUM) {
+            mRoadEnterNumber[i] = 0
+            mRoadRunNumber[i] = 0
+        }
+        flyCommentControl.reset()
+    }
+
+    fun destory() {
+        cancel()
+        reset()
+        mFlyCommentViewCache.clear()
         flyCommentControl.destroy()
     }
 
@@ -152,7 +174,7 @@ class FlyCommentView(context: Context?, attrs: AttributeSet?) : RelativeLayout(c
         MyLog.d(TAG, "onEvent CommentMsgEvent = $event")
         if (visibility == View.VISIBLE) {
             val commentTextModel = CommentTextModel.parseFromEvent(event, roomData)
-            flyCommentControl.add(commentTextModel, true)
+            flyCommentControl.add(commentTextModel, false)
         }
     }
 
@@ -160,7 +182,7 @@ class FlyCommentView(context: Context?, attrs: AttributeSet?) : RelativeLayout(c
     fun onEvent(event: PretendCommentMsgEvent) {
         MyLog.d(TAG, "onEvent PretendCommentMsgEvent = $event")
         if (visibility == View.VISIBLE) {
-            flyCommentControl.add(event.mCommentModel, true)
+            flyCommentControl.add(event.mCommentModel, false)
         }
     }
 
@@ -201,7 +223,7 @@ class FlyCommentView(context: Context?, attrs: AttributeSet?) : RelativeLayout(c
         return null
     }
 
-    private fun bindCommentData(model: CommentModel, info: FlyCommentView.FlyCommentViewWithExtraInfo) {
+    private fun bindCommentData(model: CommentModel, info: FlyCommentViewWithExtraInfo) {
         val spanUtils = SpanUtils().append("\u202D")
         if (model.userInfo != null
                 && model.userInfo!!.ranking != null

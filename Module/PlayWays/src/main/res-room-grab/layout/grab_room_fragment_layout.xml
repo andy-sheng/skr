@@ -232,6 +232,13 @@
     <!--自己唱歌场景-->
     <include layout="@layout/grab_self_sing_card_view_layout" />
 
+    <com.module.playways.room.room.comment.fly.FlyCommentView
+        android:id="@+id/fly_comment_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_120_dp"
+        android:layout_marginTop="@dimen/view_150_dp"
+        android:visibility="gone" />
+
     <com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
         android:id="@+id/gift_overlay_animation_vg"
         android:layout_width="match_parent"
