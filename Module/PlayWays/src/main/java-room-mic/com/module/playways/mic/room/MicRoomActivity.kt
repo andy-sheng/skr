@@ -79,6 +79,7 @@ import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
 import com.module.playways.room.room.comment.CommentView
+import com.module.playways.room.room.comment.fly.FlyCommentView
 import com.module.playways.room.room.comment.listener.CommentViewItemListener
 import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
@@ -131,6 +132,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     internal lateinit var mBottomContainerView: MicBottomContainerView
     internal lateinit var mVoiceRecordTipsView: VoiceRecordTipsView
     internal lateinit var mCommentView: CommentView
+    internal lateinit var mFlyCommentView: FlyCommentView
     internal lateinit var mGiftPanelView: GiftPanelView
     internal lateinit var mContinueSendView: ContinueSendView
     internal lateinit var mTopOpView: MicTopOpView
@@ -298,6 +300,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         if (mGameEffectBgView != exclude) {
             mGameEffectBgView.hideBg()
         }
+        mFlyCommentView.visibility = View.GONE
     }
 
     private fun initMicSeatView() {
@@ -432,21 +435,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         }
     }
 
-    private fun playBgEffect(seq: Int) {
-        val now = mRoomData!!.realRoundInfo
-        if (seq == 1) {
-            if (now?.showInfos != null && now?.showInfos.size >= 1) {
-                mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
-            } else {
-                mGameEffectBgView.hideBg()
-            }
-        } else if (seq == 2) {
-            if (now?.showInfos != null && now?.showInfos.size >= 2) {
-                mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
-            } else {
-                mGameEffectBgView.hideBg()
-            }
-        }
+    private fun showFlyCommentView(){
+        mFlyCommentView.visibility = View.VISIBLE
     }
 
     private fun buyFlowerFromOuter() {
@@ -591,7 +581,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         })
         mCommentView.roomData = mRoomData
         mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
+        mFlyCommentView = findViewById(R.id.fly_comment_view)
+        mFlyCommentView.roomData = mRoomData
     }
+
 
     private fun initGiftPanelView() {
         mGiftPanelView = findViewById<View>(R.id.gift_panel_view) as GiftPanelView
@@ -843,6 +836,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             mSelfSingCardView.playLyric()
             mGiveUpView.delayShowGiveUpView(false)
             mOthersSingCardView.bindData()
+            showFlyCommentView()
+            playBgEffect()
         }
 
         var step1 = {
@@ -850,11 +845,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             if (mRoomData?.realRoundInfo?.status != EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
                 mSingBeginTipsCardView.bindData(SVGAListener {
                     step2.invoke()
-                    playBgEffect(2)
                 })
             } else {
                 step2.invoke()
-                playBgEffect(1)
             }
         }
 
@@ -868,8 +861,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         } else {
             step1.invoke()
         }
-
-        playBgEffect()
     }
 
     private fun playBgEffect() {
@@ -921,7 +912,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             hideAllSceneView(null)
             mGrabScoreTipsView.reset()
             mOthersSingCardView.bindData()
-            playBgEffect(1)
+
+            playBgEffect()
         }
 
         var step1 = {
@@ -947,8 +939,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         } else {
             step1.invoke()
         }
-
-        playBgEffect()
     }
 
     override fun joinNotice(model: MicPlayerInfoModel?) {

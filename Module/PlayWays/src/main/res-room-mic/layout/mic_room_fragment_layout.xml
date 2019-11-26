@@ -138,6 +138,14 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
+    <com.module.playways.room.room.comment.fly.FlyCommentView
+        android:id="@+id/fly_comment_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_120_dp"
+        android:layout_marginTop="@dimen/view_150_dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <!--点歌-->
     <!--    <ImageView-->
     <!--        android:id="@+id/add_song_iv"-->
@@ -182,7 +190,7 @@
         android:id="@+id/gift_continue_vg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-55dp"
+        android:layout_marginTop="-65dp"
         android:layout_marginBottom="@dimen/view_10_dp"
         android:paddingLeft="@dimen/view_10_dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -210,7 +218,7 @@
         android:id="@+id/give_up_view"
         android:layout_width="@dimen/view_97_dp"
         android:layout_height="@dimen/view_60_dp"
-        android:layout_marginBottom="@dimen/view_163_dp"
+        android:layout_marginBottom="@dimen/view_240_dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
