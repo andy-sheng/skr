@@ -35,7 +35,7 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 //        mPkSingCardView = mParentView!!.findViewById(R.id.pk_sing_card_view)
 //        mSingCountDownView = mParentView!!.findViewById(R.id.sing_count_down_view)
 //        mSingCountDownView!!.setListener(mOverListener)
-        mParentView!!.findViewById<View>(R.id.iv_bg).setDebounceViewClickListener { }
+//        mParentView!!.findViewById<View>(R.id.iv_bg).setDebounceViewClickListener { }
     }
 
     override fun layoutDesc(): Int {
