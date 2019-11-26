@@ -2,6 +2,7 @@ package com.module.playways.grab.room.view.minigame
 
 import android.view.View
 import android.view.ViewStub
+import com.common.core.view.setDebounceViewClickListener
 import com.module.playways.R
 import com.module.playways.grab.room.GrabRoomData
 
@@ -16,6 +17,7 @@ class MiniGameSelfSingCardView(viewStub: ViewStub, roomData: GrabRoomData?) : Ba
         super.init(parentView)
 //        mSingCountDownView = mParentView!!.findViewById(R.id.sing_count_down_view)
 //        mSingCountDownView!!.setListener(mOverListener)
+        mParentView!!.findViewById<View>(R.id.iv_bg).setDebounceViewClickListener { }
     }
 
     override fun layoutDesc(): Int {

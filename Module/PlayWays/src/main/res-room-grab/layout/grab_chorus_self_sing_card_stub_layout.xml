@@ -7,6 +7,7 @@
 
 
     <com.common.view.ex.ExRelativeLayout
+        android:id="@+id/relative_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_220_dp"
         android:layout_alignParentBottom="true"
@@ -24,11 +25,11 @@
 
     </com.common.view.ex.ExRelativeLayout>
 
-<!--    <com.module.playways.grab.room.view.SingCountDownView2-->
-<!--        android:id="@+id/sing_count_down_view"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginLeft="@dimen/view_10_dp"-->
-<!--        android:layout_marginTop="@dimen/view_78_dp" />-->
+    <!--    <com.module.playways.grab.room.view.SingCountDownView2-->
+    <!--        android:id="@+id/sing_count_down_view"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginLeft="@dimen/view_10_dp"-->
+    <!--        android:layout_marginTop="@dimen/view_78_dp" />-->
 
 </RelativeLayout>
