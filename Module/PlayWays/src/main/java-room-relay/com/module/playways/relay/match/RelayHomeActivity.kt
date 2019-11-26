@@ -5,11 +5,14 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.WindowManager
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
@@ -64,6 +67,8 @@ class RelayHomeActivity : BaseActivity() {
         speedRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         speedRecyclerView?.adapter = adapter
 
+        cardScaleHelper = CardScaleHelper(8, 12)
+        cardScaleHelper?.attachToRecyclerView(speedRecyclerView)
         speedRecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -77,24 +82,33 @@ class RelayHomeActivity : BaseActivity() {
             }
         })
 
-        cardScaleHelper = CardScaleHelper(8, 12)
-        cardScaleHelper?.attachToRecyclerView(speedRecyclerView)
-
-
         titlebar?.leftTextView?.setDebounceViewClickListener { finish() }
         titlebar?.rightTextView?.setDebounceViewClickListener {
             // todo 去搜歌
         }
         adapter.listener = object : RelayHomeSongAdapter.RelayHomeListener {
+            override fun selectSong(position: Int, model: SongModel?) {
+                // 跳到匹配中到页面
+                model?.let {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_MATCH)
+                            .withSerializable("songModel", model)
+                            .navigation()
+                }
+            }
+
             override fun getRecyclerViewPosition(): Int {
                 return currentPosition
             }
         }
+
+        getPlayBookList(0, true)
     }
 
     fun getPlayBookList(off: Int, clean: Boolean) {
         launch {
-            val result = subscribe { relayMatchServerApi.getPlayBookList(off, cnt, MyUserInfoManager.uid.toInt()) }
+            val result = subscribe (RequestControl("getPlayBookList", ControlType.CancelThis)){
+                relayMatchServerApi.getPlayBookList(off, cnt, MyUserInfoManager.uid.toInt())
+            }
             loadMore = false
 
             if (result.errno == 0) {

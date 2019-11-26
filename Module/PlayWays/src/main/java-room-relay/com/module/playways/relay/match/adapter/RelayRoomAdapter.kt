@@ -6,15 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.common.core.view.setDebounceViewClickListener
 import com.component.busilib.view.NickNameView
 import com.component.busilib.view.recyclercardview.CardAdapterHelper
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
+import com.module.playways.relay.match.model.RelayRecommendRoomInfo
 import com.module.playways.room.song.model.SongModel
 
 class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHolder>() {
 
-    var mDataList = ArrayList<SongModel>()
+    var mDataList = ArrayList<RelayRecommendRoomInfo>()
     var listener: RelayRoomListener? = null
     private val cardAdapterHelper = CardAdapterHelper(8, 12)
 
@@ -43,9 +45,15 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
         val joinTv: TextView = item.findViewById(R.id.join_tv)
 
         var mPos = -1
-        var mModel: SongModel? = null
+        var mModel: RelayRecommendRoomInfo? = null
 
-        fun bindData(position: Int, model: SongModel) {
+        init {
+            joinTv.setDebounceViewClickListener {
+                listener?.selectRoom(mPos, mModel)
+            }
+        }
+
+        fun bindData(position: Int, model: RelayRecommendRoomInfo) {
             this.mPos = position
             this.mModel = model
         }
@@ -53,5 +61,6 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
 
     interface RelayRoomListener {
         fun getRecyclerViewPosition(): Int
+        fun selectRoom(position: Int, model: RelayRecommendRoomInfo?)
     }
 }
