@@ -76,6 +76,8 @@ public class ManyLyricsView extends AbstractLrcView {
      * 画线
      */
     private Paint mPaintLine;
+    private Paint mCirclePaint;
+    private Paint mWhoTurnsPaint;
 
     /**
      * 画线颜色
@@ -194,7 +196,23 @@ public class ManyLyricsView extends AbstractLrcView {
     //    <flag name="center" value="0" />
     //    <flag name="left" value="1" />
     private int mLyricGravity = 0;
-    private int mPaintHLColorsForOthers[] = null;
+
+    // 合唱别人演唱的高亮颜色
+    protected int mPaintHLColorsForOthers[] = null;
+
+    // 合唱分割歌词的依据数组
+    protected int mSplitChorusArray[] = null;
+
+    // 合唱我是第一个唱还是第二个唱
+    protected boolean mFirstSingByMe = true;
+
+    public void setSplitChorusArray(int[] mSplitChorusArray) {
+        this.mSplitChorusArray = mSplitChorusArray;
+    }
+
+    public void setFirstSingByMe(boolean mFirstSingByMe) {
+        this.mFirstSingByMe = mFirstSingByMe;
+    }
 
     /**
      * Handler处理滑动指示器隐藏和歌词滚动到当前播放的位置
@@ -304,6 +322,9 @@ public class ManyLyricsView extends AbstractLrcView {
         mPaintPlay.setAntiAlias(true);
         mPaintPlay.setStrokeWidth(2);
 
+         mCirclePaint = new com.common.view.ExPaint();
+        mWhoTurnsPaint = new com.common.view.ExPaint();
+
 
         setGotoSearchTextColor(Color.WHITE);
         setGotoSearchTextPressedColor(U.getColorUtils().parserColor("#0288d1"));
@@ -372,17 +393,60 @@ public class ManyLyricsView extends AbstractLrcView {
      * @param canvas
      */
     private void drawManyLrcView(Canvas canvas) {
-        //获取数据
-        //获取中间位置
-        mCentreY = (getHeight() + LyricsUtils.getTextHeight(mPaintHL)) * 0.5f + getLineAtHeightY(mLyricsLineNum) - mOffsetY;
-
-
         //画当前行歌词
         //获取分割后的歌词列表 里面会有每个字的信息时间戳
         LyricsLineInfo lyricsLineInfo = mLrcLineInfos.get(mLyricsLineNum);
 
+        LyricsLineInfo nextLyricsLineInfo = mLrcLineInfos.get(mLyricsLineNum + 1);
+
+        // 这行是否是合唱时 切换的行
+        boolean thisLineIsSplit = false;
+        long curProgress = getCurPlayingTime() + getPlayerSpendTime();
+        //MyLog.d(TAG, "drawManyLrcView" + " mLyricsLineNum=" + mLyricsLineNum + " curProgress=" + curProgress);
+        boolean firstSingerTime = mSplitChorusArray.length%2==0;
+        if (mSplitChorusArray != null) {
+            // 判断当前的进度歌词归属于第几个人唱
+            // 歌词的绘制归属不严格按当前划分
+            for (int i = 0; i < mSplitChorusArray.length; i++) {
+                if (lyricsLineInfo != null && nextLyricsLineInfo != null) {
+                    if (lyricsLineInfo.getStartTime() < mSplitChorusArray[i] && nextLyricsLineInfo.getStartTime() > mSplitChorusArray[i]) {
+                        thisLineIsSplit = true;
+                    }
+                }
+                // 这里要按歌词的开始时间决定归属 不能用 curProgress 会导致一个间奏内 归属权的变化
+                if (lyricsLineInfo.getStartTime() < mSplitChorusArray[i]) {
+                    if (i % 2 == 0) {
+                        firstSingerTime = true;
+                    } else {
+                        firstSingerTime = false;
+                    }
+                    MyLog.d(TAG,"drawManyLrcView" + " firstSingerTime="+firstSingerTime +" mSplitChorusArray[i]="+mSplitChorusArray[i] +" i="+i);
+                    break;
+                }
+            }
+        }
+        //获取数据
+        //获取中间位置
+        mCentreY = (getHeight() + LyricsUtils.getTextHeight(mPaintHL)) * 0.5f + getLineAtHeightY(mLyricsLineNum) - mOffsetY;
+
         List<LyricsLineInfo> splitLyricsLineInfos = lyricsLineInfo.getSplitLyricsLineInfos();
-        float lineBottomY = drawDownLyrics("drawManyLrcView1",canvas, mPaint, mPaintHL, splitLyricsLineInfos, mSplitLyricsLineNum, mSplitLyricsWordIndex, mSpaceLineHeight, mLyricsWordHLTime, mCentreY);
+        int[] subPaintHLColors = new int[]{getSubPaintHLColor(), getSubPaintHLColor()};
+        int[] paintHLColors;
+
+        if (mPaintHLColorsForOthers != null) {
+            if (firstSingerTime && mFirstSingByMe) {
+                paintHLColors = mPaintHLColors;
+            } else if (!firstSingerTime && !mFirstSingByMe) {
+                paintHLColors = mPaintHLColors;
+            } else {
+                paintHLColors = mPaintHLColorsForOthers;
+            }
+        } else {
+            paintHLColors = mPaintHLColors;
+        }
+
+        // 画当前演唱那行的歌词
+        float lineBottomY = drawDownLyrics("drawManyLrcView1", canvas, mPaint, subPaintHLColors, mPaintHL, paintHLColors, splitLyricsLineInfos, mSplitLyricsLineNum, mSplitLyricsWordIndex, mSpaceLineHeight, mLyricsWordHLTime, mCentreY);
 
         if (mLyricsLineNum == mLrcLineInfos.size() - 1) {
             if (mShowAuthor)
@@ -397,11 +461,26 @@ public class ManyLyricsView extends AbstractLrcView {
 
         //画倒计时圆点
         if (getNeedCountDownLine().contains(mLyricsLineNum)) {
-            drawCountDownPoint(canvas, lineBottomY);
-        }
+            boolean result = drawCountDownPoint(canvas,paintHLColors[0] ,lineBottomY);
+            if (result) {
+                //成功画 3 2 1 倒计时了
+            } else {
+                //如果还没画 说明时间还没到 合唱一般显示轮到谁唱
 
+            }
+        }
         //画额外歌词
         lineBottomY = drawDownExtraLyrics(canvas, mExtraLrcPaint, mExtraLrcPaintHL, mLyricsLineNum, mExtraSplitLyricsLineNum, mExtraSplitLyricsWordIndex, mExtraLrcSpaceLineHeight, mLyricsWordHLTime, mTranslateLyricsWordHLTime, lineBottomY);
+
+        if (thisLineIsSplit) {
+            if(firstSingerTime && mFirstSingByMe){
+                lineBottomY = drawWhoTurns( false,canvas, lineBottomY);
+            }else if(!firstSingerTime && !mFirstSingByMe){
+                lineBottomY = drawWhoTurns( false,canvas, lineBottomY);
+            }else{
+                lineBottomY = drawWhoTurns( true,canvas, lineBottomY);
+            }
+        }
 
         {
             //画当前行下面的歌词
@@ -411,7 +490,7 @@ public class ManyLyricsView extends AbstractLrcView {
                         .get(i);
                 //获取分割后的歌词列表
                 List<LyricsLineInfo> lyricsLineInfos = downLyricsLineInfo.getSplitLyricsLineInfos();
-                lineBottomY = drawDownLyrics("drawManyLrcView2",canvas, mPaint, mPaintHL, lyricsLineInfos, -1, -2, mSpaceLineHeight, -1, lineBottomY);
+                lineBottomY = drawDownLyrics("drawManyLrcView2", canvas, mPaint, subPaintHLColors, mPaintHL, paintHLColors, lyricsLineInfos, -1, -2, mSpaceLineHeight, -1, lineBottomY);
                 //画额外歌词
                 lineBottomY = drawDownExtraLyrics(canvas, mExtraLrcPaint, mExtraLrcPaintHL, i, -1, -2, mExtraLrcSpaceLineHeight, -1, -1, lineBottomY);
                 //最后一行
@@ -497,7 +576,9 @@ public class ManyLyricsView extends AbstractLrcView {
         mDownLineNum = downLineNum;
     }
 
-    private void drawCountDownPoint(Canvas canvas, float y) {
+
+
+    private boolean drawCountDownPoint(Canvas canvas,int color, float y) {
         LyricsLineInfo currentLine = mLrcLineInfos.get(mLyricsLineNum);
         int splitLyricsLineNum = mSplitLyricsLineNum;
         LyricsLineInfo realInfo = currentLine.getSplitLyricsLineInfos().get(splitLyricsLineNum);
@@ -513,41 +594,74 @@ public class ManyLyricsView extends AbstractLrcView {
         float textX = (getWidth() - textWidth) * 0.5f + 10;
         int textHeight = LyricsUtils.getTextHeight(mPaintHL);
 
-        Paint circlePaint = new com.common.view.ExPaint();
-        circlePaint.setColor(mPaintHLColors[0]);
+
+        mCirclePaint.setColor(color);
 //        MyLog.v(TAG, "degree " + degree);
 
         if (degree <= 0) {
 //            MyLog.v(TAG, "倒计时 0");
-            return;
+            return false;
         }
         float radius = U.getDisplayUtils().dip2px(3.3f);
         float dy = y - textHeight - radius * 2 - U.getDisplayUtils().dip2px(33);
 
         if (degree <= 1000) {
 //            MyLog.v(TAG, "倒计时 1");
-            circlePaint.setColor(mPaintHLColors[0]);
-            canvas.drawCircle(textX, dy, radius, circlePaint);
-            return;
+            canvas.drawCircle(textX, dy, radius, mCirclePaint);
+            return true;
         }
 
         if (degree <= 2000) {
 //            MyLog.v(TAG, "倒计时 2");
-            circlePaint.setColor(mPaintHLColors[0]);
-            canvas.drawCircle(textX, dy, radius, circlePaint);
-            canvas.drawCircle(textX + 40, dy, radius, circlePaint);
-            circlePaint.setColor(getSubPaintHLColor());
-            return;
+            canvas.drawCircle(textX, dy, radius, mCirclePaint);
+            canvas.drawCircle(textX + 40, dy, radius, mCirclePaint);
+            return true;
         }
 
         if (degree <= 3000) {
 //            MyLog.v(TAG, "倒计时 3");
-            circlePaint.setColor(mPaintHLColors[0]);
-            canvas.drawCircle(textX, dy, radius, circlePaint);
-            canvas.drawCircle(textX + 40, dy, radius, circlePaint);
-            canvas.drawCircle(textX + 80, dy, radius, circlePaint);
-            return;
+            canvas.drawCircle(textX, dy, radius, mCirclePaint);
+            canvas.drawCircle(textX + 40, dy, radius, mCirclePaint);
+            canvas.drawCircle(textX + 80, dy, radius, mCirclePaint);
+            return true;
         }
+        return false;
+    }
+
+
+    private float drawWhoTurns( boolean singByMe, Canvas canvas, float lineBottomY) {
+
+        //歌词和空行高度
+//        float lineHeight = LyricsUtils.getTextHeight(paint) + spaceLineHeight;
+//        //往下绘画歌词
+//
+//            String text = splitLyricsLineInfos.get(i).getLineLyrics();
+//
+//            lineBottomY = fristLineTextY + i * lineHeight;
+
+
+        //lineBottomY = lineBottomY - LyricsUtils.getTextHeight(paint) - mSpaceLineHeight * 2 - U.getDisplayUtils().dip2px(10);
+
+        mWhoTurnsPaint.setTextSize(mFontSize*0.8f);
+        float textWidth = LyricsUtils.getTextWidth(mWhoTurnsPaint, "轮到你唱了");
+        float textX = 0.0f;
+        if (mLyricGravity == 0) {
+            textX = (getWidth() - textWidth) * 0.5f;
+        } else if (mLyricGravity == 1) {
+            textX = 0.0f;
+        }
+        int[] colors;
+        String text;
+        if (singByMe) {
+            colors = mPaintHLColors;
+            text = "轮到你唱了";
+        } else {
+            colors = mPaintHLColorsForOthers;
+            text = "轮到对方唱了";
+        }
+        LyricsUtils.drawText(canvas, mWhoTurnsPaint, colors, text, textX, lineBottomY, getMeasuredWidth());
+        lineBottomY = lineBottomY + LyricsUtils.getTextHeight(mWhoTurnsPaint) + mSpaceLineHeight;
+        return lineBottomY;
     }
 
     /**
@@ -564,8 +678,8 @@ public class ManyLyricsView extends AbstractLrcView {
      * @param fristLineTextY       第一行文字位置
      * @return
      */
-    private float drawDownLyrics(String from,Canvas canvas, Paint paint, Paint paintHL, List<LyricsLineInfo> splitLyricsLineInfos, int splitLyricsLineNum, int splitLyricsWordIndex, float spaceLineHeight, float lyricsWordHLTime, float fristLineTextY) {
-        MyLog.d(TAG,"drawDownLyrics" + " from=" + from + " canvas=" + canvas + " paint=" + paint + " paintHL=" + paintHL + " splitLyricsLineInfos=" + splitLyricsLineInfos + " splitLyricsLineNum=" + splitLyricsLineNum + " splitLyricsWordIndex=" + splitLyricsWordIndex + " spaceLineHeight=" + spaceLineHeight + " lyricsWordHLTime=" + lyricsWordHLTime + " fristLineTextY=" + fristLineTextY);
+    private float drawDownLyrics(String from, Canvas canvas, Paint paint, int paintColor[], Paint paintHL, int paintHLColor[], List<LyricsLineInfo> splitLyricsLineInfos, int splitLyricsLineNum, int splitLyricsWordIndex, float spaceLineHeight, float lyricsWordHLTime, float fristLineTextY) {
+        //MyLog.d(TAG,"drawDownLyrics" + " from=" + from + " canvas=" + canvas + " paint=" + paint + " paintHL=" + paintHL + " splitLyricsLineInfos=" + splitLyricsLineInfos + " splitLyricsLineNum=" + splitLyricsLineNum + " splitLyricsWordIndex=" + splitLyricsWordIndex + " spaceLineHeight=" + spaceLineHeight + " lyricsWordHLTime=" + lyricsWordHLTime + " fristLineTextY=" + fristLineTextY);
         //获取数据
         //
         float lineBottomY = 0;
@@ -638,7 +752,7 @@ public class ManyLyricsView extends AbstractLrcView {
                 }
                 float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(mLyricsReader.getLyricsType(), paintHL, splitLyricsLineInfos.get(i), splitLyricsWordIndex, lyricsWordHLTime);
 
-                LyricsUtils.drawDynamicText(canvas, paint, paintHL, new int[]{getSubPaintHLColor(), getSubPaintHLColor()}, mPaintHLColors, text, lineLyricsHLWidth, textX, lineBottomY, getMeasuredWidth());
+                LyricsUtils.drawDynamicText(canvas, paint, paintHL, paintColor, paintHLColor, text, lineLyricsHLWidth, textX, lineBottomY, getMeasuredWidth());
 
                 //再把原来的大小设置进去
                 paint.setTextSize(paintOriginalTextSize);
@@ -690,10 +804,10 @@ public class ManyLyricsView extends AbstractLrcView {
                 List<LyricsLineInfo> translateSplitLyricsLineInfos = mTranslateLrcLineInfos.get(lyricsLineNum).getSplitLyricsLineInfos();
                 lineBottomY += extraLrcSpaceLineHeight - mSpaceLineHeight;
                 if (mLyricsReader.getLyricsType() == LyricsInfo.DYNAMIC && extraLrcStatus == AbstractLrcView.EXTRALRCSTATUS_SHOWTRANSLATELRC && mTranslateDrawType == AbstractLrcView.TRANSLATE_DRAW_TYPE_DYNAMIC) {
-                    lineBottomY = drawDownLyrics("drawDownExtraLyrics1",canvas, paint, paintHL, translateSplitLyricsLineInfos, extraSplitLyricsLineNum, extraSplitLyricsWordIndex, extraLrcSpaceLineHeight, translateLyricsWordHLTime, lineBottomY);
+                    lineBottomY = drawDownLyrics("drawDownExtraLyrics1", canvas, paint, new int[]{getSubPaintHLColor(), getSubPaintHLColor()}, paintHL, mPaintHLColors, translateSplitLyricsLineInfos, extraSplitLyricsLineNum, extraSplitLyricsWordIndex, extraLrcSpaceLineHeight, translateLyricsWordHLTime, lineBottomY);
                 } else {
                     //画lrc歌词
-                    lineBottomY = drawDownLyrics("drawDownExtraLyrics2",canvas, paint, paintHL, translateSplitLyricsLineInfos, -1, -2, extraLrcSpaceLineHeight, -1, lineBottomY);
+                    lineBottomY = drawDownLyrics("drawDownExtraLyrics2", canvas, paint, new int[]{getSubPaintHLColor(), getSubPaintHLColor()}, paintHL, mPaintHLColors, translateSplitLyricsLineInfos, -1, -2, extraLrcSpaceLineHeight, -1, lineBottomY);
                 }
                 lineBottomY += mSpaceLineHeight - extraLrcSpaceLineHeight;
             }
@@ -703,7 +817,7 @@ public class ManyLyricsView extends AbstractLrcView {
                 //获取分割后的音译歌词行
                 List<LyricsLineInfo> transliterationSplitLrcLineInfos = mTransliterationLrcLineInfos.get(lyricsLineNum).getSplitLyricsLineInfos();
                 lineBottomY += extraLrcSpaceLineHeight - mSpaceLineHeight;
-                lineBottomY = drawDownLyrics("drawDownExtraLyrics3",canvas, paint, paintHL, transliterationSplitLrcLineInfos, extraSplitLyricsLineNum, extraSplitLyricsWordIndex, extraLrcSpaceLineHeight, lyricsWordHLTime, lineBottomY);
+                lineBottomY = drawDownLyrics("drawDownExtraLyrics3", canvas, paint, new int[]{getSubPaintHLColor(), getSubPaintHLColor()}, paintHL, mPaintHLColors, transliterationSplitLrcLineInfos, extraSplitLyricsLineNum, extraSplitLyricsWordIndex, extraLrcSpaceLineHeight, lyricsWordHLTime, lineBottomY);
                 lineBottomY += mSpaceLineHeight - extraLrcSpaceLineHeight;
             }
         }

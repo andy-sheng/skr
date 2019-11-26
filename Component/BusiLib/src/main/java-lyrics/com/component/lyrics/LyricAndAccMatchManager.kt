@@ -225,6 +225,7 @@ class LyricAndAccMatchManager {
                         DebugLogView.println(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=$ts1 伴奏ts=$ts2")
                         params?.manyLyricsView?.seekTo(ts2.toInt())
                     }
+
                 }
             }
         }
