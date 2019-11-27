@@ -93,6 +93,10 @@ class MallActivity : BaseActivity() {
         mallTv.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_MALL_PACKAGE)
                     .navigation()
+
+            callWhenResume = {
+                getZSBalance()
+            }
         }
 
         btnBack.setDebounceViewClickListener {
