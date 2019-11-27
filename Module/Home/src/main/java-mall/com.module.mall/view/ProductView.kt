@@ -53,6 +53,8 @@ class ProductView : ExConstraintLayout {
 
     var buyEffectDialogView: BuyEffectDialogView? = null
 
+    var hasPostProductModel: ProductModel? = null
+
     constructor(context: Context?) : super(context!!)
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context!!, attrs, defStyleAttr)
@@ -88,6 +90,7 @@ class ProductView : ExConstraintLayout {
 
                 productAdapter?.notifyItemChanged(selectedIndex, 1)
                 EventBus.getDefault().post(ShowEffectEvent(productModel))
+                hasPostProductModel = productModel
             }
         }
 
@@ -139,6 +142,10 @@ class ProductView : ExConstraintLayout {
     fun selected() {
         if (productAdapter?.dataList?.size == 0) {
             tryLoad()
+        } else {
+            hasPostProductModel?.let {
+                EventBus.getDefault().post(ShowEffectEvent(it))
+            }
         }
     }
 
@@ -162,6 +169,7 @@ class ProductView : ExConstraintLayout {
                         selectedIndex = 0
                         productAdapter?.notifyItemChanged(0, 1)
                         EventBus.getDefault().post(ShowEffectEvent(productAdapter!!.dataList[0]!!))
+                        hasPostProductModel = productAdapter!!.dataList[0]!!
                     }
                     mLoadService.showSuccess()
                 } else {
