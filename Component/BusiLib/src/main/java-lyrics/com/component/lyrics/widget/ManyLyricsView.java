@@ -202,7 +202,7 @@ public class ManyLyricsView extends AbstractLrcView {
     protected int mPaintHLColorsForOthers[] = null;
 
     // 合唱分割歌词的依据数组
-    protected ArrayList mSplitChorusArray = null;
+    protected ArrayList<Integer> mSplitChorusArray = null;
 
     // 合唱我是第一个唱还是第二个唱
     protected boolean mFirstSingByMe = true;
@@ -406,23 +406,23 @@ public class ManyLyricsView extends AbstractLrcView {
         //MyLog.d(TAG, "drawManyLrcView" + " mLyricsLineNum=" + mLyricsLineNum + " curProgress=" + curProgress);
         boolean firstSingerTime= false;
         if (mSplitChorusArray != null) {
-             firstSingerTime = mSplitChorusArray.length%2==0;
+             firstSingerTime = mSplitChorusArray.size()%2==0;
             // 判断当前的进度歌词归属于第几个人唱
             // 歌词的绘制归属不严格按当前划分
-            for (int i = 0; i < mSplitChorusArray.length; i++) {
+            for (int i = 0; i < mSplitChorusArray.size(); i++) {
                 if (lyricsLineInfo != null && nextLyricsLineInfo != null) {
-                    if (lyricsLineInfo.getStartTime() < mSplitChorusArray[i] && nextLyricsLineInfo.getStartTime() > mSplitChorusArray[i]) {
+                    if (lyricsLineInfo.getStartTime() < mSplitChorusArray.get(i) && nextLyricsLineInfo.getStartTime() > mSplitChorusArray.get(i)) {
                         thisLineIsSplit = true;
                     }
                 }
                 // 这里要按歌词的开始时间决定归属 不能用 curProgress 会导致一个间奏内 归属权的变化
-                if (lyricsLineInfo.getStartTime() < mSplitChorusArray[i]) {
+                if (lyricsLineInfo.getStartTime() < mSplitChorusArray.get(i)) {
                     if (i % 2 == 0) {
                         firstSingerTime = true;
                     } else {
                         firstSingerTime = false;
                     }
-                    MyLog.d(TAG,"drawManyLrcView" + " firstSingerTime="+firstSingerTime +" mSplitChorusArray[i]="+mSplitChorusArray[i] +" i="+i);
+                    MyLog.d(TAG,"drawManyLrcView" + " firstSingerTime="+firstSingerTime +" mSplitChorusArray[i]="+mSplitChorusArray.get(i) +" i="+i);
                     break;
                 }
             }
