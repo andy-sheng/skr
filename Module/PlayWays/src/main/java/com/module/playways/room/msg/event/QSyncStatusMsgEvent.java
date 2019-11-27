@@ -2,6 +2,7 @@
 // Source file: Room.proto
 package com.module.playways.room.msg.event;
 
+import com.common.log.MyLog;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.zq.live.proto.GrabRoom.QSyncStatusMsg;

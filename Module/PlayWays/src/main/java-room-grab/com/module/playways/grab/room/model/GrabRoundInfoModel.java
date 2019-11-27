@@ -593,6 +593,10 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         if (roundInfo.getShowInfosList() != null && roundInfo.getShowInfosList().size() > 0) {
             roundInfoModel.showInfos.addAll(BackgroundEffectModel.Companion.parseBackgroundEffectModelListFromPb(roundInfo.getShowInfosList()));
         }
+
+        for (BackgroundEffectModel model : roundInfoModel.showInfos) {
+            MyLog.d("GrabRoundInfoModel", "roundInfoModel " + model);
+        }
         return roundInfoModel;
     }
 

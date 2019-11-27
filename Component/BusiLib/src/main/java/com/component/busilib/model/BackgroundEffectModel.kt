@@ -10,6 +10,8 @@ class BackgroundEffectModel : Serializable {
 
     constructor()
 
+
+
     companion object {
         fun parseBackgroundEffectModelListFromPb(list: List<BackgroundShowInfo>): List<BackgroundEffectModel> {
             val backgroundEffectModelList = ArrayList<BackgroundEffectModel>()
@@ -26,5 +28,9 @@ class BackgroundEffectModel : Serializable {
                 bgColor = backgroundEffectModel.bgColor
             }
         }
+    }
+
+    override fun toString(): String {
+        return "BackgroundEffectModel(sourceURL='$sourceURL', bgColor='$bgColor')"
     }
 }

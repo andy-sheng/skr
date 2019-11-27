@@ -7,6 +7,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.MINIGameRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.mic.room.MicRoomData;
 import com.module.playways.mic.room.model.MicPlayerInfoModel;
@@ -342,6 +343,14 @@ public class RoomDataUtils {
         {
             List<ChorusRoundInfoModel> list = now.getChorusRoundInfoModels();
             for (ChorusRoundInfoModel infoModel : list) {
+                if (infoModel.getUserID() == uid) {
+                    return true;
+                }
+            }
+        }
+        {
+            List<MINIGameRoundInfoModel> list = now.getMINIGameRoundInfoModels();
+            for (MINIGameRoundInfoModel infoModel : list) {
                 if (infoModel.getUserID() == uid) {
                     return true;
                 }
