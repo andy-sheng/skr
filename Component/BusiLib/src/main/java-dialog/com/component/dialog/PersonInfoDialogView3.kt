@@ -146,7 +146,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
                             .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$mUserId"))
                             .navigation()
                 } else {
-                    EventBus.getDefault().post(ShowPersonCardEvent(it.userId))
+                    EventBus.getDefault().post(ShowPersonCardEvent(it.userId, false))
                 }
 
             }
