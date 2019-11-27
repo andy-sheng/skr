@@ -26,6 +26,9 @@ interface RelayRoomServerApi {
     @GET("http://dev.game.inframe.mobi/v1/relaygame/sync-status")
     fun syncStatus(@Query("roomID") roomID: Long): Call<ApiResult>
 
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/unlock-user-info")
+    fun sendUnlock(body: RequestBody): Call<ApiResult>
+
 
 
     @GET("v1/fuel/mic-room-list")
@@ -118,4 +121,6 @@ interface RelayRoomServerApi {
 
     @PUT("http://dev.game.inframe.mobi/v1/game/user-statistic")
     fun userStatistic(@Body body: RequestBody): Call<ApiResult>
+
+
 }

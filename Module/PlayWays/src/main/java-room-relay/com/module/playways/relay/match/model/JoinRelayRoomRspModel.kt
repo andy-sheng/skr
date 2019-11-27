@@ -12,6 +12,7 @@ class JoinRelayRoomRspModel : Serializable {
     var config: RelayConfigModel? = null
     var agoraToken: String? = null// 声网token
     var currentRound: RelayRoundInfoModel? = null // 目前轮次
+    var leftSeat = true // 我的位置是否在左边 即数组的0位置是否是我
 
     override fun toString(): String {
         return "JoinRelayRoomRspModel(roomID=$roomID, createTimeMs=$createTimeMs, user=$peerUser, config=$config, agoraToken=$agoraToken, currentRound=$currentRound)"

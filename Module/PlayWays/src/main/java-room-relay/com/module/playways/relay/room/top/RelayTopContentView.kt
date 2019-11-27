@@ -1,17 +1,31 @@
 package com.module.playways.relay.room.top
 
 import android.content.Context
+import android.graphics.Color
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
+import com.common.utils.U
+import com.common.utils.dp
+import com.common.view.ex.ExConstraintLayout
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
+import com.module.playways.relay.room.RelayRoomData
+import com.module.playways.relay.room.event.RelayLockChangeEvent
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 // 顶部头像栏
-class RelayTopContentView : ConstraintLayout {
+class RelayTopContentView : ExConstraintLayout {
 
     constructor(context: Context) : super(context)
 
@@ -20,6 +34,7 @@ class RelayTopContentView : ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     private val arrowIv: ImageView
+    private val unlimtIv: ImageView
     private val leftAvatarSdv: SimpleDraweeView
     private val loveBg: ImageView
     private val loveStatusIv: ImageView
@@ -29,6 +44,9 @@ class RelayTopContentView : ConstraintLayout {
 
     var listener: Listener? = null
     var mIsOpen = true
+    var countDownJob: Job? = null
+
+    var roomData:RelayRoomData?=null
 
     init {
         View.inflate(context, R.layout.relay_top_content_view_layout, this)
@@ -40,7 +58,7 @@ class RelayTopContentView : ConstraintLayout {
         rightAvatarSdv = this.findViewById(R.id.right_avatar_sdv)
         countTimeTv = this.findViewById(R.id.count_time_tv)
         tipsIv = this.findViewById(R.id.tips_iv)
-
+        unlimtIv = this.findViewById(R.id.unlimt_iv)
         loveBg.setDebounceViewClickListener {
             listener?.clickLove()
         }
@@ -62,22 +80,100 @@ class RelayTopContentView : ConstraintLayout {
         }
     }
 
+    fun bindData(){
+        if(roomData?.leftSeat == true){
+            AvatarUtils.loadAvatarByUrl(leftAvatarSdv,AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
+                    .setCircle(true)
+                    .setBorderColor(Color.parseColor("#ffd8d8d8"))
+                    .setBorderWidth(1.dp().toFloat())
+                    .build())
+            AvatarUtils.loadAvatarByUrl(rightAvatarSdv,AvatarUtils.newParamsBuilder(roomData?.peerUser?.userInfo?.avatar)
+                    .setCircle(true)
+                    .setBorderColor(Color.parseColor("#ffd8d8d8"))
+                    .setBorderWidth(1.dp().toFloat())
+                    .build())
+        }else{
+            AvatarUtils.loadAvatarByUrl(rightAvatarSdv,AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
+                    .setCircle(true)
+                    .setBorderColor(Color.parseColor("#ffd8d8d8"))
+                    .setBorderWidth(1.dp().toFloat())
+                    .build())
+            AvatarUtils.loadAvatarByUrl(leftAvatarSdv,AvatarUtils.newParamsBuilder(roomData?.peerUser?.userInfo?.avatar)
+                    .setCircle(true)
+                    .setBorderColor(Color.parseColor("#ffd8d8d8"))
+                    .setBorderWidth(1.dp().toFloat())
+                    .build())
+        }
+        loveBg.setImageResource(R.drawable.normal_love_icon)
+        countTimeTv.text = U.getDateTimeUtils().formatVideoTime(5*60*1000)
+        tipsIv.visibility = View.VISIBLE
+    }
+
+    fun launchCountDown(){
+        if(countTimeTv.visibility == View.VISIBLE){
+            var music = roomData?.realRoundInfo?.music
+            countDownJob = launch {
+                while(true){
+                    var t = music?.endMs!! - music?.beginMs+3000
+                    var leftTs = t - (roomData?.getSingCurPosition() ?: 0)
+                    if (leftTs < 0) {
+                        leftTs = 0
+                    }
+                    countTimeTv.text = U.getDateTimeUtils().formatVideoTime(leftTs);
+                    if(leftTs==0L){
+                        break
+                    }
+                    delay(1000)
+                }
+                listener?.countDownOver()
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RelayLockChangeEvent){
+            if(roomData?.unLockMe == true && roomData?.unLockPeer==true){
+                loveBg.setImageResource(R.drawable.light_love_icon)
+                unlimtIv.visibility = View.VISIBLE
+                tipsIv.visibility = View.GONE
+                countTimeTv.visibility = View.GONE
+                countDownJob?.cancel()
+            }else if(roomData?.unLockMe == false && roomData?.unLockPeer==false){
+                loveBg.setImageResource(R.drawable.normal_love_icon)
+            }else if(roomData?.unLockMe == true){
+                tipsIv.visibility = View.GONE
+                if(roomData?.leftSeat == true){
+                    loveBg.setImageResource(R.drawable.light_left_love_icon)
+                }else{
+                    loveBg.setImageResource(R.drawable.light_right_love_icon)
+                }
+            }else if(roomData?.unLockPeer == true){
+                tipsIv.visibility = View.VISIBLE
+                if(roomData?.leftSeat == true){
+                    loveBg.setImageResource(R.drawable.light_right_love_icon)
+                }else{
+                    loveBg.setImageResource(R.drawable.light_left_love_icon)
+                }
+            }
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-//        if (!EventBus.getDefault().isRegistered(this)) {
-//            EventBus.getDefault().register(this)
-//        }
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-//        if (EventBus.getDefault().isRegistered(this)) {
-//            EventBus.getDefault().unregister(this)
-//        }
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
     }
 
     interface Listener {
         fun clickArrow(open: Boolean)
         fun clickLove()
+        fun countDownOver()
     }
 }

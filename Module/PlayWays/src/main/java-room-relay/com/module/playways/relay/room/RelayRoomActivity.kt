@@ -458,6 +458,11 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         }
         mTopContentView = findViewById(R.id.top_content_view)
         mTopContentView.listener = object : RelayTopContentView.Listener {
+            override fun countDownOver() {
+                // 时间到了 调退出
+                gameOver()
+            }
+
             override fun clickArrow(open: Boolean) {
                 if (open) {
                     mWidgetAnimationController.open()
@@ -467,7 +472,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             }
 
             override fun clickLove() {
-
+                mCorePresenter.sendUnlock()
             }
         }
 
@@ -672,6 +677,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     override fun singPrepare(lastRoundInfo: RelayRoundInfoModel?, singCardShowListener: () -> Unit) {
         hideAllSceneView(null)
         relaySingCardView.turnSingPrepare()
+        mTopContentView.launchCountDown()
         singCardShowListener.invoke()
     }
 

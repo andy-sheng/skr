@@ -1005,6 +1005,30 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         }
     }
 
+    fun sendUnlock() {
+        MyLog.w(TAG, "解锁爱心")
+        val map = HashMap<String, Any>()
+        map["roomID"] = mRoomData.gameId
+
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe { mRoomServerApi.sendUnlock(body) }
+            if (result.errno == 0) {
+                val ja = result.data.getJSONArray("userLockInfo")
+
+                for( i in 0 until ja.size){
+                    var userID = ja.getJSONObject(i).getIntValue("userID")
+                    var hasLock = ja.getJSONObject(i).getBooleanValue("hasLock")
+                    if(userID==MyUserInfoManager.uid.toInt()){
+                        mRoomData.unLockMe = hasLock
+                    }else if(userID == mRoomData.peerUser?.userID){
+                        mRoomData.unLockPeer = hasLock
+                    }
+                }
+            }
+        }
+    }
+
 //    @Subscribe(threadMode = ThreadMode.MAIN)
 //    fun onEvent(event: MCancelMusic) {
 //        MyLog.d(TAG, "onEvent MCancelMusic=$event")

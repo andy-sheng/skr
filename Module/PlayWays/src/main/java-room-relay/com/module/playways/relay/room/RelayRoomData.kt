@@ -7,6 +7,7 @@ import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
+import com.module.playways.relay.room.event.RelayLockChangeEvent
 import com.module.playways.relay.room.event.RelayRoundChangeEvent
 import com.module.playways.relay.room.model.RelayConfigModel
 import com.module.playways.relay.room.model.RelayRoundInfoModel
@@ -17,10 +18,10 @@ import org.greenrobot.eventbus.EventBus
 
 
 class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
-    companion object
-    {
+    companion object {
         var MUSIC_PUBLISH_VOLUME = 85
     }
+
     override fun getPlayerAndWaiterInfoList(): List<PlayerInfoModel> {
         return null!!
     }
@@ -41,8 +42,20 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
     var peerUser: ReplayPlayerInfoModel? = null
 
     var unLockMe = false // 我是否解锁
+        set(value) {
+            if (value != field) {
+                field = value
+                EventBus.getDefault().post(RelayLockChangeEvent())
+            }
+        }
     var unLockPeer = false // 对方是否解锁
-
+        set(value) {
+            if (value != field) {
+                field = value
+                EventBus.getDefault().post(RelayLockChangeEvent())
+            }
+        }
+    var leftSeat = true;// 我的未知是否在左边
     var isHasExitGame = false
 
     override val gameType: Int
@@ -104,7 +117,7 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
     /**
      * 算出下一次轮次切换的时间 如果没有轮次切换了 返回-1
      */
-    fun getNextTurnChangeTs():Long{
+    fun getNextTurnChangeTs(): Long {
         var now = getSingCurPosition()
         if (now != Long.MAX_VALUE) {
             // 拿到歌曲分段信息
@@ -112,7 +125,7 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
                 var index = 0
                 for (s in it) {
                     if (now < s) {
-                        return s-now;
+                        return s - now;
                     }
                     index++
                 }
@@ -128,6 +141,7 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         // 第二个人演唱阶段
         return getSingerIdNow() == MyUserInfoManager.uid.toInt()
     }
+
     /**
      * 我是否第一个唱
      */
