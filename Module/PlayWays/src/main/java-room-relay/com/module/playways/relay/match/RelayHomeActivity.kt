@@ -22,6 +22,7 @@ import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.relay.match.adapter.RelayHomeSongAdapter
 import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.SongManagerActivity
 import kotlinx.coroutines.launch
 
 @Route(path = RouterConstants.ACTIVITY_RELAY_HOME)
@@ -84,7 +85,7 @@ class RelayHomeActivity : BaseActivity() {
 
         titlebar?.leftTextView?.setDebounceViewClickListener { finish() }
         titlebar?.rightTextView?.setDebounceViewClickListener {
-            // todo 去搜歌
+            SongManagerActivity.open(this)
         }
         adapter.listener = object : RelayHomeSongAdapter.RelayHomeListener {
             override fun selectSong(position: Int, model: SongModel?) {
@@ -106,7 +107,7 @@ class RelayHomeActivity : BaseActivity() {
 
     fun getPlayBookList(off: Int, clean: Boolean) {
         launch {
-            val result = subscribe (RequestControl("getPlayBookList", ControlType.CancelThis)){
+            val result = subscribe(RequestControl("getPlayBookList", ControlType.CancelThis)) {
                 relayMatchServerApi.getPlayBookList(off, cnt, MyUserInfoManager.uid.toInt())
             }
             loadMore = false

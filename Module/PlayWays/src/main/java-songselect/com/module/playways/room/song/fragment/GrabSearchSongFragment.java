@@ -103,7 +103,7 @@ public class GrabSearchSongFragment extends BaseFragment {
         mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
+                if (mFrom == SongManagerActivity.TYPE_FROM_RACE || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
                     if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                         mUihandler.postDelayed(new Runnable() {
@@ -143,7 +143,7 @@ public class GrabSearchSongFragment extends BaseFragment {
         mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
+                if (mFrom == SongManagerActivity.TYPE_FROM_RACE || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
                     finishSongManageActivity();
                 } else {
                     U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
@@ -369,7 +369,7 @@ public class GrabSearchSongFragment extends BaseFragment {
 
     @Override
     public boolean onBackPressed() {
-        if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
+        if (mFrom == SongManagerActivity.TYPE_FROM_RACE || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
             finishSongManageActivity();
             return true;
         } else {

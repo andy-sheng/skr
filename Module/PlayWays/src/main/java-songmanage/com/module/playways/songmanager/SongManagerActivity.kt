@@ -15,6 +15,7 @@ import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.room.song.fragment.GrabSearchSongFragment
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.event.AddSongEvent
@@ -75,6 +76,25 @@ class SongManagerActivity : BaseActivity() {
                         }
                     })
                     .build())
+        } else if (from == TYPE_FROM_RELAY_HOME) {
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabSearchSongFragment::class.java)
+                    .setAddToBackStack(true)
+                    .setHasAnimation(false)
+                    .addDataBeforeAdd(0, TYPE_FROM_RELAY_HOME)
+                    .addDataBeforeAdd(1, false)
+                    .setFragmentDataListener(object : FragmentDataListener {
+                        override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
+                            if (requestCode == 0 && resultCode == 0 && obj != null) {
+                                val model = obj as SongModel
+                                MyLog.d(TAG, "onFragmentResult model=$model")
+                                EventBus.getDefault().post(AddSongEvent(model))
+                            }
+                            finish()
+                        }
+                    })
+                    .build())
+        } else if (from == TYPE_FROM_RELAY_ROOM) {
+
         }
     }
 
@@ -92,10 +112,12 @@ class SongManagerActivity : BaseActivity() {
 
     companion object {
 
-        const val TYPE_FROM_GRAB = 1
-        const val TYPE_FROM_DOUBLE = 2
-        const val TYPE_FROM_MIC = 3
-        const val TYPE_FROM_RACE = 4
+        const val TYPE_FROM_GRAB = 1      //抢唱
+        const val TYPE_FROM_DOUBLE = 2    //双人聊
+        const val TYPE_FROM_MIC = 3       //排麦房
+        const val TYPE_FROM_RACE = 4      //排位赛
+        const val TYPE_FROM_RELAY_HOME = 5   //接唱首页
+        const val TYPE_FROM_RELAY_ROOM = 6   //接唱房间
 
         fun open(activity: FragmentActivity?, roomData: GrabRoomData) {
             val intent = Intent(activity, SongManagerActivity::class.java)
@@ -121,6 +143,19 @@ class SongManagerActivity : BaseActivity() {
         fun open(activity: FragmentActivity?, roomData: RaceRoomData) {
             val intent = Intent(activity, SongManagerActivity::class.java)
             intent.putExtra("from", TYPE_FROM_RACE)
+            intent.putExtra("room_data", roomData)
+            activity?.startActivity(intent)
+        }
+
+        fun open(activity: FragmentActivity?) {
+            val intent = Intent(activity, SongManagerActivity::class.java)
+            intent.putExtra("from", TYPE_FROM_RELAY_HOME)
+            activity?.startActivity(intent)
+        }
+
+        fun open(activity: FragmentActivity?, roomData: RelayRoomData) {
+            val intent = Intent(activity, SongManagerActivity::class.java)
+            intent.putExtra("from", TYPE_FROM_RELAY_ROOM)
             intent.putExtra("room_data", roomData)
             activity?.startActivity(intent)
         }
