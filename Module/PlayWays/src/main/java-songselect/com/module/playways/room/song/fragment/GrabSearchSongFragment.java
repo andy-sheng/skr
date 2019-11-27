@@ -99,6 +99,8 @@ public class GrabSearchSongFragment extends BaseFragment {
             selectMode = SongSelectAdapter.MIC_MODE;
         } else if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
             selectMode = SongSelectAdapter.RACE_MODE;
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_RELAY_ROOM || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+
         }
         mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
@@ -336,6 +338,8 @@ public class GrabSearchSongFragment extends BaseFragment {
             return songSelectServerApi.searchMicMusicItems(content).subscribeOn(Schedulers.io());
         } else if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
             return songSelectServerApi.searchRaceMusicItems(content).subscribeOn(Schedulers.io());
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME || mFrom == SongManagerActivity.TYPE_FROM_RELAY_ROOM) {
+            return songSelectServerApi.searchRelayMusicItems(content).subscribeOn(Schedulers.io());
         } else {
             return songSelectServerApi.searchDoubleMusicItems(content).subscribeOn(Schedulers.io());
         }
