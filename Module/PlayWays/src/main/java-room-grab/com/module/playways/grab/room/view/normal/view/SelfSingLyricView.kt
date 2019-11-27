@@ -44,7 +44,7 @@ open class SelfSingLyricView(viewStub: ViewStub) : ExViewStub(viewStub) {
         mManyLyricsView = mParentView!!.findViewById(R.id.many_lyrics_view)
         mVoiceScaleView = mParentView!!.findViewById(R.id.voice_scale_view)
         mIvChallengeIcon = mParentView!!.findViewById(R.id.iv_challenge_icon)
-        mParentView!!.findViewById<View>(R.id.iv_bg).setDebounceViewClickListener { }
+        mParentView!!.findViewById<View>(R.id.iv_bg)?.setDebounceViewClickListener { }
     }
 
     override fun layoutDesc(): Int {

@@ -17,7 +17,7 @@ class MiniGameSelfSingCardView(viewStub: ViewStub, roomData: GrabRoomData?) : Ba
         super.init(parentView)
 //        mSingCountDownView = mParentView!!.findViewById(R.id.sing_count_down_view)
 //        mSingCountDownView!!.setListener(mOverListener)
-        mParentView!!.findViewById<View>(R.id.iv_bg).setDebounceViewClickListener { }
+        mParentView!!.findViewById<View>(R.id.iv_bg)?.setDebounceViewClickListener { }
     }
 
     override fun layoutDesc(): Int {
