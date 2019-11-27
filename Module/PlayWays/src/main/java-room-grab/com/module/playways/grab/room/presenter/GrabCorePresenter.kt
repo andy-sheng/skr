@@ -749,7 +749,8 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                         if (result.data!!.getBoolean("isBLightSuccess")!!) {
                             val m = BLightInfoModel()
                             m.userID = MyUserInfoManager.uid.toInt()
-                            now.addLightBurstUid(true, m)
+                            //因为爆灯需要服务器的效果，所以不能自己添加了
+//                            now.addLightBurstUid(true, m)
                         } else {
                             val reason = result.data!!.getString("bLightFailedMsg")
                             if (!TextUtils.isEmpty(reason)) {
