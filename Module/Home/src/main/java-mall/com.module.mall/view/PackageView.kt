@@ -54,7 +54,9 @@ class PackageView : ExConstraintLayout {
     internal var mLoadService: LoadService<*>
 
     var selectedIndex = -1
-    var packageItemId = ""
+    var selectedPackageItemId = ""
+
+    var hasPostProductModel: ProductModel? = null
 
     constructor(context: Context?) : super(context!!)
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs)
@@ -67,7 +69,7 @@ class PackageView : ExConstraintLayout {
         refreshLayout = rootView.findViewById(R.id.refreshLayout)
         recyclerView.layoutManager = GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false)
         productAdapter = PackageAdapter {
-            packageItemId
+            selectedPackageItemId
         }
 
         recyclerView.adapter = productAdapter
@@ -84,13 +86,14 @@ class PackageView : ExConstraintLayout {
             if (selectedIndex != index) {
                 val pre = selectedIndex
                 selectedIndex = index
-                packageItemId = packageItemID
+                selectedPackageItemId = packageItemID
                 if (pre > -1) {
                     productAdapter?.notifyItemChanged(pre, 1)
                 }
 
                 productAdapter?.notifyItemChanged(selectedIndex, 1)
                 EventBus.getDefault().post(PackageShowEffectEvent(productModel))
+                hasPostProductModel = productModel
             }
         }
 
@@ -131,6 +134,8 @@ class PackageView : ExConstraintLayout {
                     productAdapter?.dataList?.get(i)?.let {
                         if (it.packetItemID == packageModel.packetItemID) {
                             it.useStatus = 2
+                            selectedPackageItemId = it.packetItemID
+                            EventBus.getDefault().post(PackageShowEffectEvent(it.goodsInfo!!))
                         } else {
                             it.useStatus = 1
                         }
@@ -157,6 +162,10 @@ class PackageView : ExConstraintLayout {
                 for (i in 0 until ((productAdapter?.dataList?.size) ?: 0)) {
                     if (productAdapter?.dataList?.get(i)?.packetItemID == packageModel.packetItemID) {
                         productAdapter?.dataList?.get(i)?.useStatus = 1
+                        hasPostProductModel = null
+                        selectedPackageItemId = ""
+                        selectedIndex = -1
+                        EventBus.getDefault().post(ShowDefaultEffectEvent(displayType))
                         productAdapter?.notifyItemChanged(i, 1)
                         break
                     }
@@ -170,12 +179,19 @@ class PackageView : ExConstraintLayout {
     fun selected() {
         if (productAdapter?.dataList?.size == 0) {
             tryLoad()
+        } else {
+            if (hasPostProductModel == null) {
+                EventBus.getDefault().post(ShowDefaultEffectEvent(displayType))
+            } else {
+                EventBus.getDefault().post(PackageShowEffectEvent(hasPostProductModel!!))
+            }
         }
     }
 
     private fun showSelectedEffect(list: List<ProductModel>?) {
         if (list != null && list.size > 0) {
             EventBus.getDefault().post(PackageShowEffectEvent(list[0]))
+            hasPostProductModel = list[0]
         } else {
             EventBus.getDefault().post(ShowDefaultEffectEvent(displayType))
         }
