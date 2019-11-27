@@ -388,9 +388,10 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
             public Unit invoke(UserInfoModel userInfoModel) {
                 if (userInfoModel == null) {
                     // 去守护
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                            .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=" + MyUserInfoManager.INSTANCE.getUid()))
-                            .navigation();
+                    // todo 空的就不让点了 by产品
+//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+//                            .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=" + MyUserInfoManager.INSTANCE.getUid()))
+//                            .navigation();
                 } else {
                     // 跳到个人主页
                     if (userInfoModel.getUserId() == MyUserInfoManager.INSTANCE.getUid()) {
