@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_130_dp"
         android:visibility="gone"
-        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_corners_radius="@dimen/view_7_dp"
         app:bl_stroke_color="#FFC15B"
         app:bl_stroke_width="@dimen/view_3_dp"
         app:layout_constraintTop_toTopOf="parent" />

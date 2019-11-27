@@ -99,11 +99,13 @@ public class GrabSearchSongFragment extends BaseFragment {
             selectMode = SongSelectAdapter.MIC_MODE;
         } else if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
             selectMode = SongSelectAdapter.RACE_MODE;
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_RELAY_ROOM || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+
         }
         mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
+                if (mFrom == SongManagerActivity.TYPE_FROM_RACE || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
                     if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                         mUihandler.postDelayed(new Runnable() {
@@ -143,7 +145,7 @@ public class GrabSearchSongFragment extends BaseFragment {
         mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
+                if (mFrom == SongManagerActivity.TYPE_FROM_RACE || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
                     finishSongManageActivity();
                 } else {
                     U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
@@ -336,6 +338,8 @@ public class GrabSearchSongFragment extends BaseFragment {
             return songSelectServerApi.searchMicMusicItems(content).subscribeOn(Schedulers.io());
         } else if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
             return songSelectServerApi.searchRaceMusicItems(content).subscribeOn(Schedulers.io());
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME || mFrom == SongManagerActivity.TYPE_FROM_RELAY_ROOM) {
+            return songSelectServerApi.searchRelayMusicItems(content).subscribeOn(Schedulers.io());
         } else {
             return songSelectServerApi.searchDoubleMusicItems(content).subscribeOn(Schedulers.io());
         }
@@ -369,7 +373,7 @@ public class GrabSearchSongFragment extends BaseFragment {
 
     @Override
     public boolean onBackPressed() {
-        if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
+        if (mFrom == SongManagerActivity.TYPE_FROM_RACE || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
             finishSongManageActivity();
             return true;
         } else {

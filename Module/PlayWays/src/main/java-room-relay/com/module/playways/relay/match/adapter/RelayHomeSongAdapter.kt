@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.common.core.view.setDebounceViewClickListener
 import com.component.busilib.view.recyclercardview.CardAdapterHelper
 import com.module.playways.R
 import com.module.playways.room.song.model.SongModel
@@ -52,13 +53,24 @@ class RelayHomeSongAdapter : RecyclerView.Adapter<RelayHomeSongAdapter.RelaySong
         var mPos = -1
         var mModel: SongModel? = null
 
+        init {
+            startTv.setDebounceViewClickListener {
+                listener?.selectSong(mPos, mModel)
+            }
+        }
+
         fun bindData(position: Int, model: SongModel) {
             this.mPos = position
             this.mModel = model
+
+            songNameTv.text = model.itemName
+            songAuthorTv.text = model.songDesc
+
         }
     }
 
     interface RelayHomeListener {
         fun getRecyclerViewPosition(): Int
+        fun selectSong(position: Int, model: SongModel?)
     }
 }

@@ -5,12 +5,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.WindowManager
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.subscribe
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.recyclercardview.CardScaleHelper
@@ -19,7 +19,13 @@ import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.relay.match.adapter.RelayHomeSongAdapter
 import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.SongManagerActivity
+import com.module.playways.songmanager.event.AddSongEvent
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_RELAY_HOME)
 class RelayHomeActivity : BaseActivity() {
@@ -64,6 +70,8 @@ class RelayHomeActivity : BaseActivity() {
         speedRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         speedRecyclerView?.adapter = adapter
 
+        cardScaleHelper = CardScaleHelper(8, 12)
+        cardScaleHelper?.attachToRecyclerView(speedRecyclerView)
         speedRecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -77,24 +85,58 @@ class RelayHomeActivity : BaseActivity() {
             }
         })
 
-        cardScaleHelper = CardScaleHelper(8, 12)
-        cardScaleHelper?.attachToRecyclerView(speedRecyclerView)
-
-
         titlebar?.leftTextView?.setDebounceViewClickListener { finish() }
         titlebar?.rightTextView?.setDebounceViewClickListener {
-            // todo 去搜歌
+            SongManagerActivity.open(this)
         }
         adapter.listener = object : RelayHomeSongAdapter.RelayHomeListener {
+            override fun selectSong(position: Int, model: SongModel?) {
+                // 跳到匹配中到页面
+                startMatch(model)
+            }
+
             override fun getRecyclerViewPosition(): Int {
                 return currentPosition
             }
         }
+
+        getPlayBookList(0, true)
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: AddSongEvent) {
+        startMatch(event.songModel)
+    }
+
+    fun startMatch(model: SongModel?) {
+        model?.let {
+            launch {
+                val map = mutableMapOf(
+                        "itemID" to it.itemID,
+                        "platform" to 20)
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val result = subscribe(RequestControl("startMatch", ControlType.CancelThis)) {
+                    relayMatchServerApi.queryMatch(body)
+                }
+                if (result.errno == 0) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_MATCH)
+                            .withSerializable("songModel", model)
+                            .navigation()
+                } else {
+                    if (result.errno == ERROR_NETWORK_BROKEN) {
+                        U.getToastUtil().showShort("网络异常，请检查网络后重试")
+                    }
+                }
+            }
+        }
+    }
+
 
     fun getPlayBookList(off: Int, clean: Boolean) {
         launch {
-            val result = subscribe { relayMatchServerApi.getPlayBookList(off, cnt, MyUserInfoManager.uid.toInt()) }
+            val result = subscribe(RequestControl("getPlayBookList", ControlType.CancelThis)) {
+                relayMatchServerApi.getPlayBookList(off, cnt, MyUserInfoManager.uid.toInt())
+            }
             loadMore = false
 
             if (result.errno == 0) {
@@ -121,7 +163,7 @@ class RelayHomeActivity : BaseActivity() {
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 
     override fun onResume() {

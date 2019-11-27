@@ -105,5 +105,8 @@ public interface SongSelectServerApi {
 
     @GET("http://dev.game.inframe.mobi/v1/racegame/search")
     Observable<ApiResult> searchRaceMusicItems(@Query("keyword") String keyword);
+
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/search")
+    Observable<ApiResult> searchRelayMusicItems(@Query("keyword") String keyword);
 }
 
