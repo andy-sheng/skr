@@ -1617,7 +1617,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             }
         }
 
-        mOthersSingCardView.bindData()
+        if (!(mRoomData?.isVideoRoom!!)) {
+            mOthersSingCardView.bindData()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
