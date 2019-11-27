@@ -82,15 +82,16 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         val music = roomData?.realRoundInfo?.music
         songNameTv.text = "《${music?.displaySongName}》"
         countDownJob = launch {
-            var t = music?.endMs!! - music?.beginMs
-            var leftTs = t - (roomData?.getSingCurPosition() ?: 0)
-            if (leftTs < 0) {
-                leftTs = 0
+            while (true){
+                var t = music?.endMs!! - music?.beginMs
+                var leftTs = t - (roomData?.getSingCurPosition() ?: 0)
+                if (leftTs < 0) {
+                    leftTs = 0
+                }
+                songPlayProgressTv.text = U.getDateTimeUtils().formatVideoTime(leftTs);
+                delay(1000)
             }
-            songPlayProgressTv.text = U.getDateTimeUtils().formatVideoTime(leftTs);
-            delay(1000)
         }
-
         manyLyricsView?.setSplitChorusArray(music?.relaySegments)
         manyLyricsView?.setFirstSingByMe(roomData?.isFirstSingByMe() == true)
 
