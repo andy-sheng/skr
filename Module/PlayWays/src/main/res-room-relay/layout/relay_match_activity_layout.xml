@@ -15,8 +15,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
-        app:rightDrawable="@drawable/common_search_icon"
-        app:rightType="textView"
         app:showBottomLine="false"
         app:statusBarColor="@color/transparent"
         app:titleBarColor="@color/transparent" />

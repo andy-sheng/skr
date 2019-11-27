@@ -35,6 +35,14 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
         holder.bindData(position, mDataList[position])
     }
 
+    fun addData(list: List<RelayRecommendRoomInfo>) {
+        if (list.isNotEmpty()) {
+            val startNotifyIndex = if (mDataList.size > 0) mDataList.size - 1 else 0
+            mDataList.addAll(list)
+            notifyItemRangeChanged(startNotifyIndex, mDataList.size - startNotifyIndex)
+        }
+    }
+
     inner class RelayRoomViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
         val avatarIv: SimpleDraweeView = item.findViewById(R.id.avatar_iv)

@@ -28,4 +28,18 @@ interface RelayMatchServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/relaygame/query-match")
     fun queryMatch(@Body body: RequestBody): Call<ApiResult>
+
+
+    /**
+     * 请求匹配
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/cancel-match")
+    fun cancelMatch(@Body body: RequestBody): Call<ApiResult>
+
+
+    /**
+     * 选中匹配列表中
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/choice-match-item")
+    fun choiceRoom(@Body body: RequestBody): Call<ApiResult>
 }

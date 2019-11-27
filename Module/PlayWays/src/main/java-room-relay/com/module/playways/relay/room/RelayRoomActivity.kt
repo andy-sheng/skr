@@ -92,7 +92,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
      */
     internal var mRoomData = RelayRoomData()
     private lateinit var mCorePresenter: RelayCorePresenter
-//    internal var mDoubleRoomInvitePresenter = DoubleRoomInvitePresenter()
+    //    internal var mDoubleRoomInvitePresenter = DoubleRoomInvitePresenter()
     //基础ui组件
     internal lateinit var mInputContainerView: InputContainerView
     internal lateinit var mBottomContainerView: RelayBottomContainerView
@@ -123,7 +123,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     // 都是dialogplus
     private var mPersonInfoDialog: PersonInfoDialog? = null
-//    private var mGrabKickDialog: ConfirmDialog? = null
+    //    private var mGrabKickDialog: ConfirmDialog? = null
     private var mVoiceControlPanelView: RelayVoiceControlPanelView? = null
     //    private var mMicSettingView: MicSettingView? = null
     private var mGameRuleDialog: DialogPlus? = null
@@ -149,20 +149,22 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     override fun initData(savedInstanceState: Bundle?) {
         ensureActivtyTop()
         var joinRaceRoomRspModel = intent.getSerializableExtra("JoinRelayRoomRspModel") as JoinRelayRoomRspModel?
-        if(joinRaceRoomRspModel==null){
+        if (joinRaceRoomRspModel == null) {
             // 构造假数据 用于测试
             var joinRaceRoomRspModel1 = JoinRelayRoomRspModel()
             joinRaceRoomRspModel1?.roomID = 10001
             joinRaceRoomRspModel1?.createTimeMs = (System.currentTimeMillis()/30000)*30000
+            val list = ArrayList<UserInfoModel>()
             if(MyUserInfoManager.uid.toInt() == 1705476){
                 var userInfoModel = UserInfoModel()
                 userInfoModel.userId = 1985618
-                joinRaceRoomRspModel1?.peerUser = userInfoModel
-            }else{
+                list.add(userInfoModel)
+            } else {
                 var userInfoModel = UserInfoModel()
                 userInfoModel.userId = 1705476
-                joinRaceRoomRspModel1?.peerUser = userInfoModel
+                list.add(userInfoModel)
             }
+            joinRaceRoomRspModel1.users = list
             var roundInfoModel = RelayRoundInfoModel()
             roundInfoModel.status = ERRoundStatus.RRS_SING.value
             roundInfoModel.singBeginMs = 30*1000
@@ -172,8 +174,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             music.acc = "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3"
             music.lyric = "http://song-static.inframe.mobi/lrc/4ee4ac0711c74d6f333fcac10c113239.zrce"
             music.beginMs = 0
-            music.endMs = 4*60*1000
-            music.relaySegments = arrayListOf(43*1000,65*1000,87*1000)
+            music.endMs = 4 * 60 * 1000
+            music.relaySegments = arrayListOf(43 * 1000, 65 * 1000, 87 * 1000)
             roundInfoModel.music = music
             joinRaceRoomRspModel1.currentRound = roundInfoModel
             joinRaceRoomRspModel = joinRaceRoomRspModel1

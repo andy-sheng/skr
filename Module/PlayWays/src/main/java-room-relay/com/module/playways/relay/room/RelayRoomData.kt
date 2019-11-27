@@ -182,13 +182,23 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
     fun loadFromRsp(rsp: JoinRelayRoomRspModel) {
         this.gameId = rsp.roomID
         this.gameCreateTs = rsp.createTimeMs
-        this.agoraToken = rsp.agoraToken
+        rsp.tokens?.forEach {
+            if (it.userID == MyUserInfoManager.uid.toInt()) {
+                this.agoraToken = it.token
+                return@forEach
+            }
+        }
         this.configModel = rsp.config ?: RelayConfigModel()
-
         this.peerUser = ReplayPlayerInfoModel()
-        this.peerUser?.userInfo = rsp.peerUser
+        rsp.users?.forEach {
+            if (it.userId != MyUserInfoManager.uid.toInt()) {
+                this.peerUser?.userInfo = it
+                return@forEach
+            }
+        }
         this.peerUser?.isOnline = true
         this.expectRoundInfo = rsp.currentRound
+
     }
 
 

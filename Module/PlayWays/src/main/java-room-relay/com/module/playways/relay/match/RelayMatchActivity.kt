@@ -5,25 +5,36 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.WindowManager
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ControlType
-import com.common.rxretrofit.RequestControl
-import com.common.rxretrofit.subscribe
+import com.common.log.MyLog
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.recyclercardview.CardScaleHelper
 import com.component.busilib.view.recyclercardview.SpeedRecyclerView
+import com.module.ModuleServiceManager
 import com.module.RouterConstants
+import com.module.common.ICallback
 import com.module.playways.R
+import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.relay.match.adapter.RelayRoomAdapter
+import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.match.model.RelayRecommendRoomInfo
+import com.module.playways.room.prepare.presenter.GrabMatchPresenter
 import com.module.playways.room.song.model.SongModel
+import com.zq.live.proto.RelayRoom.RUserEnterMsg
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_RELAY_MATCH)
 class RelayMatchActivity : BaseActivity() {
@@ -44,6 +55,9 @@ class RelayMatchActivity : BaseActivity() {
     var loadMore: Boolean = false
     var currentPosition = -1
 
+    var model: SongModel? = null
+    var matchJob: Job? = null
+
     /**
      * 存起该房间一些状态信息
      */
@@ -52,14 +66,9 @@ class RelayMatchActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        for (activity in U.getActivityUtils().activityList) {
-            if (U.getActivityUtils().isHomeActivity(activity)) {
-                continue
-            }
-            if (activity === this) {
-                continue
-            }
-            activity.finish()
+        val model = intent.getSerializableExtra("songModel") as SongModel?
+        if (model == null) {
+            finish()
         }
 
         titlebar = findViewById(R.id.titlebar)
@@ -86,21 +95,66 @@ class RelayMatchActivity : BaseActivity() {
 
         adapter.listener = object : RelayRoomAdapter.RelayRoomListener {
             override fun selectRoom(position: Int, model: RelayRecommendRoomInfo?) {
-                // todo 选中某个房间了
+                model?.let {
+                    choiceRoom(it)
+                }
             }
 
             override fun getRecyclerViewPosition(): Int {
                 return currentPosition
             }
-
         }
 
-        titlebar?.leftTextView?.setDebounceViewClickListener { finish() }
-        titlebar?.rightTextView?.setDebounceViewClickListener {
-            // todo 去搜歌
+        titlebar?.leftTextView?.setDebounceViewClickListener {
+            cancelMatch()
+            finish()
         }
+
+        titlebar?.centerTextView?.text = "《${model?.itemName}》"
 
         getRecommendRoomList(0, true)
+        startMatch()
+    }
+
+    // 开始匹配
+    private fun startMatch() {
+        model?.let {
+            matchJob?.cancel()
+            matchJob = launch {
+                val map = mutableMapOf(
+                        "itemID" to it.itemID,
+                        "platform" to 20)
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                repeat(Int.MAX_VALUE) {
+                    if (it % 2 == 0) {
+                        joinTipsTv?.text = "ta正在赶来的路上..."
+                    } else {
+                        joinTipsTv?.text = "等太久，试试加入别人等合唱吧～"
+                    }
+                    val result = subscribe(RequestControl("startMatch", ControlType.CancelThis)) {
+                        relayMatchServerApi.queryMatch(body)
+                    }
+                    if (result.errno == 0) {
+
+                    }
+                    delay(10 * 1000)
+                }
+            }
+        }
+    }
+
+    // 取消匹配
+    private fun cancelMatch() {
+        matchJob?.cancel()
+        launch {
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(null))
+            val result = subscribe(RequestControl("cancelMatch", ControlType.CancelThis)) {
+                relayMatchServerApi.cancelMatch(body)
+            }
+            if (result.errno == 0) {
+
+            }
+        }
     }
 
     fun getRecommendRoomList(off: Int, clean: Boolean) {
@@ -119,11 +173,60 @@ class RelayMatchActivity : BaseActivity() {
     }
 
     private fun addRoomList(list: List<RelayRecommendRoomInfo>?, clean: Boolean) {
+        if (clean) {
+            adapter.mDataList.clear()
+            if (!list.isNullOrEmpty()) {
+                adapter.mDataList.addAll(list)
+            }
+            adapter.notifyDataSetChanged()
+        } else {
+            if (!list.isNullOrEmpty()) {
+                adapter.addData(list)
+            }
+        }
+    }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    private fun onEvent(event: RUserEnterMsg) {
+        // 进入房间的信令 直接加入融云的房间
+        matchJob?.cancel()
+        tryGoRelayRoom(JoinRelayRoomRspModel.parseFromPB(event))
+    }
+
+    private fun choiceRoom(model: RelayRecommendRoomInfo) {
+        launch {
+            val map = mutableMapOf(
+                    "itemID" to (model.item?.itemID ?: 0),
+                    "peerUserID" to (model.user?.userId ?: 0))
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("selectRoom", ControlType.CancelThis)) {
+                relayMatchServerApi.choiceRoom(body)
+            }
+            if (result.errno == 0) {
+                val joinRelayRoomRspModel = JSON.parseObject(result.data.toJSONString(), JoinRelayRoomRspModel::class.java)
+                tryGoRelayRoom(joinRelayRoomRspModel)
+            }
+        }
+    }
+
+    private fun tryGoRelayRoom(model: JoinRelayRoomRspModel) {
+        ModuleServiceManager.getInstance().msgService.joinChatRoom(model.roomID.toString(), 10, object : ICallback {
+            override fun onSucess(obj: Any?) {
+                // todo 补全加融云成功直接
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_ROOM)
+                        .withSerializable("JoinRelayRoomRspModel", model)
+                        .navigation()
+            }
+
+            override fun onFailed(obj: Any?, errcode: Int, message: String?) {
+
+            }
+        })
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 
     override fun onResume() {
@@ -131,9 +234,9 @@ class RelayMatchActivity : BaseActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
-
     override fun destroy() {
         super.destroy()
+        matchJob?.cancel()
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
