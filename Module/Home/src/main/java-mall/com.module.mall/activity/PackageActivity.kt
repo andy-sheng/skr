@@ -35,7 +35,6 @@ import org.greenrobot.eventbus.ThreadMode
 class PackageActivity : BaseActivity() {
     lateinit var title: CommonTitleBar
     lateinit var btnBack: ImageView
-    lateinit var mallTv: ExTextView
     lateinit var effectView: EffectView
     lateinit var tagTab: SlidingTabLayout
     lateinit var viewpager: ViewPager
@@ -57,7 +56,6 @@ class PackageActivity : BaseActivity() {
         U.getStatusBarUtil().setTransparentBar(this, false)
         title = findViewById(R.id.title)
         btnBack = findViewById(R.id.btn_back)
-        mallTv = findViewById(R.id.mall_tv)
         effectView = findViewById(R.id.effect_view)
         tagTab = findViewById(R.id.tag_tab)
         viewpager = findViewById(R.id.viewpager)
@@ -83,10 +81,10 @@ class PackageActivity : BaseActivity() {
             }
         }
 
-        mallTv.setDebounceViewClickListener {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_MALL_MALL)
-                    .navigation()
-        }
+//        mallTv.setDebounceViewClickListener {
+//            ARouter.getInstance().build(RouterConstants.ACTIVITY_MALL_MALL)
+//                    .navigation()
+//        }
 
         btnBack.setDebounceViewClickListener {
             finish()
