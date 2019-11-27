@@ -66,7 +66,6 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundOverReason
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
-import kotlinx.android.synthetic.main.grab_room_fragment_layout.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -664,6 +663,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 mRaceOtherSingCardView.bindData()
                 hideAllSceneView()
                 mRaceOtherSingCardView.setVisibility(View.VISIBLE)
+                playBgEffect(1)
             } else {
                 mRaceTopVsView.startVs()
                 mRaceTopVsView.startSingByOther(1) {
@@ -671,12 +671,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                     mRaceOtherSingCardView.bindData()
                     hideAllSceneView()
                     mRaceOtherSingCardView.setVisibility(View.VISIBLE)
+                    playBgEffect(1)
                 }
             }
         }
 
         hideSignUpUI(mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.uid.toInt()) == true)
-        playBgEffect(1)
     }
 
     private fun hideSignUpUI(hide: Boolean) {
@@ -747,18 +747,19 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 mRaceOtherSingCardView.bindData()
                 hideAllSceneView()
                 mRaceOtherSingCardView.setVisibility(View.VISIBLE)
+                playBgEffect(2)
             } else {
                 mRaceTopVsView.startSingByOther(2) {
                     showRightVote()
                     mRaceOtherSingCardView.bindData()
                     hideAllSceneView()
                     mRaceOtherSingCardView.setVisibility(View.VISIBLE)
+                    playBgEffect(2)
                 }
             }
         }
 
         hideSignUpUI(mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.uid.toInt()) == true)
-        playBgEffect(2)
     }
 
     private fun showFlyCommentView() {
