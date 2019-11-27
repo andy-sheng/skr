@@ -53,8 +53,12 @@ class EffectView : ConstraintLayout {
     }
 
     fun showBgEffect(productModel: ProductModel) {
+        reset()
         defaultBgIv.visibility = View.GONE
         defaultBgIv.background = null
+
+        avatarIv.visibility = View.VISIBLE
+        avatarBox.visibility = View.VISIBLE
 
         bgSvga?.visibility = View.VISIBLE
         bgSvga?.loops = 1
@@ -74,6 +78,7 @@ class EffectView : ConstraintLayout {
     }
 
     fun showLightEffect(productModel: ProductModel) {
+        reset()
         lightSvga?.visibility = View.VISIBLE
         lightSvga?.loops = 1
 
@@ -92,11 +97,16 @@ class EffectView : ConstraintLayout {
     }
 
     fun showDefaultBgEffect() {
+        reset()
+
+        avatarIv.visibility = View.VISIBLE
+        avatarBox.visibility = View.VISIBLE
         defaultBgIv.visibility = View.VISIBLE
         defaultBgIv.background = U.getDrawable(R.drawable.effect_default)
     }
 
     fun showDefaultLightEffect() {
+        reset()
         lightSvga?.visibility = View.VISIBLE
         lightSvga?.loops = 1
 
@@ -116,15 +126,27 @@ class EffectView : ConstraintLayout {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        reset()
+    }
+
+    private fun reset() {
         if (lightSvga != null) {
             lightSvga!!.callback = null
             lightSvga!!.stopAnimation(true)
+            lightSvga.visibility = View.GONE
         }
 
         if (bgSvga != null) {
             bgSvga!!.callback = null
             bgSvga!!.stopAnimation(true)
+            bgSvga.visibility = View.GONE
         }
+
+        defaultBgIv.visibility = View.GONE
+        defaultBgIv.background = null
+
+        avatarIv.visibility = View.GONE
+        avatarBox.visibility = View.GONE
     }
 
     companion object {

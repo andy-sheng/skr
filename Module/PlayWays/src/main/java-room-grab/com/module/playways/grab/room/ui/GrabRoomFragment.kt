@@ -281,7 +281,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     override fun onFragmentVisible() {
         super.onFragmentVisible()
-        if(mPersonInfoDialog?.isShowing == true){
+        if (mPersonInfoDialog?.isShowing == true) {
             mPersonInfoDialog?.refreshHomepage()
         }
     }
@@ -773,7 +773,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     private fun initCommentView() {
         mCommentView = rootView.findViewById(R.id.comment_view)
-        mCommentView.setListener(CommentViewItemListener { userId -> showPersonInfoView(userId) })
+        mCommentView.setListener(CommentViewItemListener { userId -> showPersonInfoView(userId, null) })
         mCommentView.roomData = mRoomData!!
         //        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
         //        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
@@ -799,7 +799,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
-        showPersonInfoView(event.uid)
+        showPersonInfoView(event.uid, event.showKick)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -838,14 +838,16 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mVIPEnterView?.enter(playerInfoModel, finishCall)
     }
 
-    private fun showPersonInfoView(userID: Int) {
+    private fun showPersonInfoView(userID: Int, showKick: Boolean?) {
         if (!U.getNetworkUtils().hasNetwork()) {
             U.getToastUtil().showShort("网络异常，请检查网络后重试!")
             return
         }
         mInputContainerView.hideSoftInput()
 
-        val mShowKick: Boolean = if (mRoomData!!.roomType != GrabRoomType.ROOM_TYPE_COMMON) {
+        val mShowKick: Boolean = if (showKick == false) {
+            false
+        } else if (mRoomData!!.roomType != GrabRoomType.ROOM_TYPE_COMMON) {
             mRoomData!!.isOwner
         } else {
             // 普通房

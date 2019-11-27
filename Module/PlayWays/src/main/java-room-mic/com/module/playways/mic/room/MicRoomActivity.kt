@@ -580,7 +580,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     private fun initCommentView() {
         mCommentView = findViewById(R.id.comment_view)
         mCommentView.setListener(CommentViewItemListener { userId ->
-            showPersonInfoView(userId)
+            showPersonInfoView(userId, null)
         })
         mCommentView.roomData = mRoomData
         mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
@@ -632,14 +632,15 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mVIPEnterView?.enter(playerInfoModel, finishCall)
     }
 
-    private fun showPersonInfoView(userID: Int) {
+    private fun showPersonInfoView(userID: Int, showKick: Boolean?) {
         if (!U.getNetworkUtils().hasNetwork()) {
             U.getToastUtil().showShort("网络异常，请检查网络后重试!")
             return
         }
         dismissDialog()
         mInputContainerView.hideSoftInput()
-        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_MIC_ROOM, userID, true, true)
+        val mShowKick = showKick != false
+        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_MIC_ROOM, userID, mShowKick, true)
                 .setRoomID(mRoomData.gameId)
                 .setInviteDoubleListener { userInfoModel ->
                     if (userInfoModel.isFriend) {
@@ -743,7 +744,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
-        showPersonInfoView(event.uid)
+        showPersonInfoView(event.uid, event.showKick)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
