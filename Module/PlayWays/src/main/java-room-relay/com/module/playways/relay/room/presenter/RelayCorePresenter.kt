@@ -278,6 +278,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
         }
         launcherNextTurn()
+        roomView.turnChange()
     }
 
     private fun launcherNextTurn(){
@@ -369,6 +370,14 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             } else {
                 MyLog.w(TAG, "演唱结束上报失败 traceid is " + result.traceId)
             }
+        }
+        if(MyLog.isDebugLogOpen()){
+            //TODO 只为调试
+            var relayRoundInfoModel = RelayRoundInfoModel()
+            relayRoundInfoModel.status = ERRoundStatus.RRS_INTRO.value
+            relayRoundInfoModel.roundSeq = 3
+            mRoomData.expectRoundInfo = relayRoundInfoModel
+            mRoomData.checkRoundInEachMode()
         }
     }
 
@@ -634,7 +643,10 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                     MyLog.e(TAG, "当前播放进度非法2")
                 }
             }
-        } else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
+        } else if(event.getType() == EngineEvent.TYPE_MUSIC_PLAY_FINISH){
+            DebugLogView.println(TAG,"伴奏播放完毕")
+            sendRoundOverInfo()
+        }else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
 //            val roleChangeInfo = event.getObj<EngineEvent.RoleChangeInfo>()
 //            if (roleChangeInfo.newRole == 1) {
 //                val roundInfoModel = mRoomData.realRoundInfo

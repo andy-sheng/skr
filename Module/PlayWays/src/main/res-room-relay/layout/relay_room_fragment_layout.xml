@@ -111,6 +111,7 @@
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_container_view"
+        android:layout_marginBottom="@dimen/view_10_dp"
         android:layout="@layout/relay_sing_card_view_layout"
         />
 

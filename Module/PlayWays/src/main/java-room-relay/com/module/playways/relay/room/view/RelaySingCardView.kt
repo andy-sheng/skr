@@ -5,6 +5,7 @@ import android.view.ViewStub
 import android.widget.TextView
 import com.common.log.DebugLogView
 import com.common.log.MyLog
+import com.common.utils.U
 import com.common.view.ExViewStub
 import com.common.view.ex.ExView
 import com.component.lyrics.LyricAndAccMatchManager
@@ -16,25 +17,30 @@ import com.component.lyrics.widget.VoiceScaleView
 import com.module.playways.R
 import com.module.playways.relay.room.RelayRoomData
 import com.zq.mediaengine.kit.ZqEngineKit
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.HashSet
 
-class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
+class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     val TAG = "RelaySingCardView"
 
     lateinit var dotView: ExView
     lateinit var songNameTv: TextView
-    lateinit var songPlayProgressTv:TextView
+    lateinit var songPlayProgressTv: TextView
     lateinit var manyLyricsView: ManyLyricsView
     lateinit var voiceScaleView: VoiceScaleView
-    lateinit var otherSingTipsTv:TextView
-    lateinit var noSongTipsTv:TextView
-    lateinit var singBeginTipsTv1:TextView
-    lateinit var singBeginTipsTv2:TextView
+    lateinit var otherSingTipsTv: TextView
+    lateinit var noSongTipsTv: TextView
+    lateinit var singBeginTipsTv1: TextView
+    lateinit var singBeginTipsTv2: TextView
 
-    var roomData:RelayRoomData?=null
+    var roomData: RelayRoomData? = null
 
     val lyricAndAccMatchManager = LyricAndAccMatchManager()
+
+    var countDownJob: Job? = null
 
     override fun init(parentView: View) {
         dotView = parentView.findViewById(R.id.dot_view)
@@ -46,26 +52,45 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
         noSongTipsTv = parentView.findViewById(R.id.no_song_tips_tv)
         singBeginTipsTv1 = parentView.findViewById(R.id.sing_begin_tips_tv1)
         singBeginTipsTv2 = parentView.findViewById(R.id.sing_begin_tips_tv2)
+        turnNoSong()
     }
 
     override fun layoutDesc(): Int {
         return R.layout.relay_sing_card_view_layout
     }
 
-    fun turnSingBegin(){
+    fun turnSingBegin() {
         dotView.visibility = View.VISIBLE
         songNameTv.visibility = View.VISIBLE
         songPlayProgressTv.visibility = View.VISIBLE
         manyLyricsView.visibility = View.VISIBLE
         voiceScaleView.visibility = View.VISIBLE
 
-        otherSingTipsTv.visibility = View.GONE
         noSongTipsTv.visibility = View.GONE
         singBeginTipsTv1.visibility = View.GONE
         singBeginTipsTv2.visibility = View.GONE
 
+        processTurnChange()
+        if (roomData?.isSingByMeNow() == true) {
+            dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg1)
+            otherSingTipsTv.visibility = View.GONE
+        } else {
+            dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg2)
+            otherSingTipsTv.visibility = View.VISIBLE
+        }
 
         val music = roomData?.realRoundInfo?.music
+        songNameTv.text = "《${music?.displaySongName}》"
+        countDownJob = launch {
+            var t = music?.endMs!! - music?.beginMs
+            var leftTs = t - (roomData?.getSingCurPosition() ?: 0)
+            if (leftTs < 0) {
+                leftTs = 0
+            }
+            songPlayProgressTv.text = U.getDateTimeUtils().formatVideoTime(leftTs);
+            delay(1000)
+        }
+
         manyLyricsView?.setSplitChorusArray(music?.relaySegments)
         manyLyricsView?.setFirstSingByMe(roomData?.isFirstSingByMe() == true)
 
@@ -112,7 +137,23 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
 //                })
     }
 
-    fun turnNoSong(){
+    private fun processTurnChange() {
+        if (roomData?.isSingByMeNow() == true) {
+            dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg1)
+            otherSingTipsTv.visibility = View.GONE
+            voiceScaleView.setHide(false)
+        } else {
+            dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg2)
+            otherSingTipsTv.visibility = View.VISIBLE
+            voiceScaleView.setHide(true)
+        }
+    }
+
+    fun turnSingTurnChange() {
+        processTurnChange()
+    }
+
+    fun turnNoSong() {
         dotView.visibility = View.GONE
         songNameTv.visibility = View.GONE
         songPlayProgressTv.visibility = View.GONE
@@ -123,6 +164,7 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
         singBeginTipsTv1.visibility = View.GONE
         singBeginTipsTv2.visibility = View.GONE
         lyricAndAccMatchManager.stop()
+        countDownJob?.cancel()
     }
 
     fun turnSingPrepare() {
@@ -137,5 +179,6 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
         singBeginTipsTv2.visibility = View.VISIBLE
         singBeginTipsTv2.text = "《${roomData?.realRoundInfo?.music?.displaySongName}》"
         lyricAndAccMatchManager.stop()
+        countDownJob?.cancel()
     }
 }

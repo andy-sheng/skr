@@ -153,7 +153,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             // 构造假数据 用于测试
             var joinRaceRoomRspModel1 = JoinRelayRoomRspModel()
             joinRaceRoomRspModel1?.roomID = 10001
-            joinRaceRoomRspModel1?.createTimeMs = (System.currentTimeMillis()/20000)*20000
+            joinRaceRoomRspModel1?.createTimeMs = (System.currentTimeMillis()/30000)*30000
             if(MyUserInfoManager.uid.toInt() == 1705476){
                 var userInfoModel = UserInfoModel()
                 userInfoModel.userId = 1985618
@@ -165,7 +165,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             }
             var roundInfoModel = RelayRoundInfoModel()
             roundInfoModel.status = ERRoundStatus.RRS_SING.value
-            roundInfoModel.singBeginMs = 10*1000
+            roundInfoModel.singBeginMs = 30*1000
             roundInfoModel.originId = 1705476
             var music = SongModel()
             music.itemName = "告白气球"
@@ -678,6 +678,11 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     override fun singBegin() {
         hideAllSceneView(null)
         relaySingCardView.turnSingBegin()
+    }
+
+    override fun turnChange() {
+        hideAllSceneView(null)
+        relaySingCardView.turnSingTurnChange()
     }
 
     override fun showRoundOver(lastRoundInfo: RelayRoundInfoModel?, continueOp: (() -> Unit)?) {

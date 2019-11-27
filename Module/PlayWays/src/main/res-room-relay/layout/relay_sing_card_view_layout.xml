@@ -1,4 +1,4 @@
-<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +8,8 @@
     app:bl_shape="rectangle"
     app:bl_solid_color="@color/black_trans_20"
     app:bl_stroke_color="@color/white"
-    app:bl_stroke_width="@dimen/view_1_dp">
+    app:bl_stroke_width="@dimen/view_1_dp"
+    tools:background="@color/blue">
 
     <com.common.view.ex.ExView
         android:id="@+id/bottom_bg_view"
@@ -26,10 +27,10 @@
         android:layout_height="@dimen/view_8_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_10_dp"
-        app:bl_shape="oval"
-        app:bl_solid_color="#DB4D84"
+        android:background="@drawable/relay_sing_card_dot_view_bg1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/song_name_tv"
@@ -66,9 +67,9 @@
         app:ly_enable_scroll="false"
         app:ly_enable_verbatim="false"
         app:ly_high_light_paint_color_from="#4DA5DB"
-        app:ly_high_light_paint_color_to="#4DA5DB"
-
         app:ly_high_light_paint_color_from2="#DB4D84"
+
+        app:ly_high_light_paint_color_to="#4DA5DB"
         app:ly_high_light_paint_color_to2="#DB4D84"
 
         app:ly_high_light_paint_text_size="18.0"
@@ -97,14 +98,16 @@
         app:showBottomBound="true"
         app:showTopBound="true" />
 
-    <TextView
+    <com.common.view.ex.ExTextView
         android:id="@+id/other_sing_tips_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:gravity="center"
         android:text="对方演唱中...."
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/view_14_dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -154,4 +157,4 @@
         app:layout_constraintTop_toBottomOf="@+id/sing_begin_tips_tv1" />
 
 
-</com.common.view.ex.ExConstraintLayout>
+</android.support.constraint.ConstraintLayout>

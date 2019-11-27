@@ -25,6 +25,15 @@ import java.util.List;
 public class VoiceScaleView extends View {
     public final String TAG = "VoiceScaleView";
     static final int SPEED = U.getDisplayUtils().dip2px(72);// 每秒走72个像素单位
+    boolean hide = false; // 隐藏
+
+    public void setHide(boolean hide) {
+        this.hide = hide;
+        if(this.hide == false){
+            postInvalidate();
+        }
+    }
+
     float mReadLineX = 0.2f;// 红线大约在距离左边 20% 的位置
     boolean mShowReadDot = true;
     float mRedCy;
@@ -136,6 +145,9 @@ public class VoiceScaleView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if(hide){
+            return;
+        }
         if (mWidth < 0) {
             mWidth = getWidth();
         }
