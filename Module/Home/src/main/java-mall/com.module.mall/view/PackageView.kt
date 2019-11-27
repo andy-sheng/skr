@@ -178,7 +178,11 @@ class PackageView : ExConstraintLayout {
 
     fun selected() {
         if (productAdapter?.dataList?.size == 0) {
-            tryLoad()
+            if (hasMore) {
+                tryLoad()
+            } else {
+                EventBus.getDefault().post(ShowDefaultEffectEvent(displayType))
+            }
         } else {
             if (hasPostProductModel == null) {
                 EventBus.getDefault().post(ShowDefaultEffectEvent(displayType))
