@@ -457,6 +457,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
         }
         mTopContentView = findViewById(R.id.top_content_view)
+        mTopContentView.roomData = mRoomData
+        mTopContentView.bindData()
         mTopContentView.listener = object : RelayTopContentView.Listener {
             override fun countDownOver() {
                 // 时间到了 调退出

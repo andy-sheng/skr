@@ -82,7 +82,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 MSG_LAUNER_MUSIC -> {
                     realSingBegin()
                 }
-                MSG_TURN_CHANGE->{
+                MSG_TURN_CHANGE -> {
                     turnChange()
                 }
             }
@@ -230,24 +230,10 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             MyLog.e(TAG, "当前播放进度非法")
             return
         }
-
-        if (progress >= 0) {
-            MyLog.d(TAG, "preOpWhenSelfRound 时间来不及了 快上车了")
-            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
-            ZqEngineKit.getInstance().setAudioMixingPosition(progress.toInt())
-            realSingBegin()
-        } else {
-            MyLog.d(TAG, "preOpWhenSelfRound  时间还早 先准备 静音起伴奏")
-            if (mRoomData.isSingByMeNow()) {
-                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
-                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
-                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
-            } else {
-                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
-                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
-                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
-            }
-        }
+        ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
+        ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
+        // 等待回调
+        ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
     }
 
     private fun realSingBegin() {
@@ -281,14 +267,14 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         roomView.turnChange()
     }
 
-    private fun launcherNextTurn(){
+    private fun launcherNextTurn() {
         // 算出下一次轮次切换的时间
         var nextTs = mRoomData.getNextTurnChangeTs()
-        if(nextTs > 0){
+        if (nextTs > 0) {
             DebugLogView.println(TAG, "${nextTs}ms 后进行轮次切换")
             mUiHandler.removeMessages(MSG_TURN_CHANGE)
-            mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE,nextTs)
-        }else{
+            mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE, nextTs)
+        } else {
             DebugLogView.println(TAG, "${nextTs} 没有轮次切换了")
         }
     }
@@ -371,7 +357,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 MyLog.w(TAG, "演唱结束上报失败 traceid is " + result.traceId)
             }
         }
-        if(MyLog.isDebugLogOpen()){
+        if (MyLog.isDebugLogOpen()) {
             //TODO 只为调试
             var relayRoundInfoModel = RelayRoundInfoModel()
             relayRoundInfoModel.status = ERRoundStatus.RRS_INTRO.value
@@ -620,33 +606,27 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_STATE_CHANGE) {
             var state = event.obj as EngineEvent.MusicStateChange
             if (state.isPlayOk) {
-                DebugLogView.println(TAG,"伴奏加载ok")
                 var progress = mRoomData.getSingCurPosition()
+                DebugLogView.println(TAG, "伴奏加载ok progress=${progress}")
                 if (progress != Long.MAX_VALUE) {
                     if (progress > 0) {
-                        MyLog.d(TAG, "EngineEvent 调整音量继续走")
-                        if (mRoomData.isSingByMeNow()) {
-                            ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(RelayRoomData.MUSIC_PUBLISH_VOLUME, false)
-                            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(ZqEngineKit.getInstance().params.playbackSignalVolume, false)
-                        } else {
-                            ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
-                            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
-                        }
+                        DebugLogView.println(TAG, "EngineEvent 超时上车了")
+                        ZqEngineKit.getInstance().setAudioMixingPosition(progress.toInt())
+                        realSingBegin()
                     } else {
                         DebugLogView.println(TAG, "EngineEvent 先暂停 ${-progress}ms后 resume")
                         ZqEngineKit.getInstance().pauseAudioMixing()
                         mUiHandler.removeMessages(MSG_LAUNER_MUSIC)
                         mUiHandler.sendEmptyMessageDelayed(MSG_LAUNER_MUSIC, -progress)
-
                     }
                 } else {
                     MyLog.e(TAG, "当前播放进度非法2")
                 }
             }
-        } else if(event.getType() == EngineEvent.TYPE_MUSIC_PLAY_FINISH){
-            DebugLogView.println(TAG,"伴奏播放完毕")
+        } else if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_FINISH) {
+            DebugLogView.println(TAG, "伴奏播放完毕")
             sendRoundOverInfo()
-        }else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
+        } else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
 //            val roleChangeInfo = event.getObj<EngineEvent.RoleChangeInfo>()
 //            if (roleChangeInfo.newRole == 1) {
 //                val roundInfoModel = mRoomData.realRoundInfo
@@ -1016,12 +996,12 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             if (result.errno == 0) {
                 val ja = result.data.getJSONArray("userLockInfo")
 
-                for( i in 0 until ja.size){
+                for (i in 0 until ja.size) {
                     var userID = ja.getJSONObject(i).getIntValue("userID")
                     var hasLock = ja.getJSONObject(i).getBooleanValue("hasLock")
-                    if(userID==MyUserInfoManager.uid.toInt()){
+                    if (userID == MyUserInfoManager.uid.toInt()) {
                         mRoomData.unLockMe = hasLock
-                    }else if(userID == mRoomData.peerUser?.userID){
+                    } else if (userID == mRoomData.peerUser?.userID) {
                         mRoomData.unLockPeer = hasLock
                     }
                 }
