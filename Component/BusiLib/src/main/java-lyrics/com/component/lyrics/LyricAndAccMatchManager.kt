@@ -262,10 +262,10 @@ class LyricAndAccMatchManager {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: LrcEvent.LineLineEndEvent) {
-        DebugLogView.println(TAG, "获取第${event.lineNum}句得分")
         if (this.params?.needScore == false) {
             return
         }
+        DebugLogView.println(TAG, "获取第${event.lineNum}句得分")
         if (ScoreConfig.isMelp2Enable()) {
             ZqEngineKit.getInstance().getLineScore2(event.lineNum) { lineNum, score ->
                 DebugLogView.println(TAG, "melp2 onGetScore lineNum=$lineNum score=$score")

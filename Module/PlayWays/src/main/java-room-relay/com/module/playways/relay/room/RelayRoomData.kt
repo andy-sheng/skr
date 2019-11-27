@@ -174,6 +174,7 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         this.peerUser = ReplayPlayerInfoModel()
         this.peerUser?.userInfo = rsp.peerUser
         this.peerUser?.isOnline = true
+        this.expectRoundInfo = rsp.currentRound
     }
 
 

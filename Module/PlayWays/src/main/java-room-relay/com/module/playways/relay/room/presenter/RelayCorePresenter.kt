@@ -137,7 +137,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
 //                }
 //                pretendEnterRoom(playerInfoModel)
 //            }
-            pretendRoomNameSystemMsg("双人接唱", CommentSysModel.TYPE_ENTER_ROOM)
+//            pretendRoomNameSystemMsg("双人接唱", CommentSysModel.TYPE_ENTER_ROOM)
         }
         startHeartbeat()
         startSyncGameStatus()
@@ -225,7 +225,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
      */
     fun preOpWhenSelfRound() {
         var progress = mRoomData.getSingCurPosition()
-        MyLog.d(TAG, "preOpWhenSelfRound progress=$progress")
+        DebugLogView.println(TAG, "preOpWhenSelfRound progress=$progress")
         if (progress == Long.MAX_VALUE) {
             MyLog.e(TAG, "当前播放进度非法")
             return
@@ -251,42 +251,44 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     }
 
     private fun realSingBegin() {
-        MyLog.d(TAG, "realSingBegin 到时间了，继续伴奏，开启音量")
+        DebugLogView.println(TAG, "realSingBegin 开始伴奏 progress=${mRoomData?.getSingCurPosition()}")
         ZqEngineKit.getInstance().resumeAudioMixing()
         if (mRoomData.isSingByMeNow()) {
-            MyLog.d(TAG, "realSingBegin 当前是我唱 开启音量")
+            DebugLogView.println(TAG, "realSingBegin 当前是我唱 开启音量")
             ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(RelayRoomData.MUSIC_PUBLISH_VOLUME, false)
             ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(ZqEngineKit.getInstance().params.playbackSignalVolume, false)
         } else {
-            MyLog.d(TAG, "realSingBegin 当前不是我唱 关闭音量")
+            DebugLogView.println(TAG, "realSingBegin 当前不是我唱 关闭音量")
             ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
             ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
         }
-        // 算出下一次轮次切换的时间
-        var nextTs = mRoomData.getNextTurnChangeTs()
-        if(nextTs > 0){
-            mUiHandler.removeMessages(MSG_TURN_CHANGE)
-            mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE,nextTs)
-        }
+        launcherNextTurn()
         roomView.singBegin()
     }
 
     private fun turnChange() {
-        MyLog.d(TAG, "turnChange 到时间了，继续伴奏，开启音量")
+        DebugLogView.println(TAG, "turnChange 开始轮换 progress=${mRoomData?.getSingCurPosition()}")
         if (mRoomData.isSingByMeNow()) {
-            MyLog.d(TAG, "turnChange 当前是我唱 开启音量")
+            DebugLogView.println(TAG, "turnChange 当前是我唱 开启音量")
             ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(RelayRoomData.MUSIC_PUBLISH_VOLUME, false)
             ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(ZqEngineKit.getInstance().params.playbackSignalVolume, false)
         } else {
-            MyLog.d(TAG, "turnChange 当前不是我唱 关闭音量")
+            DebugLogView.println(TAG, "turnChange 当前不是我唱 关闭音量")
             ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
             ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
         }
+        launcherNextTurn()
+    }
+
+    private fun launcherNextTurn(){
         // 算出下一次轮次切换的时间
         var nextTs = mRoomData.getNextTurnChangeTs()
         if(nextTs > 0){
+            DebugLogView.println(TAG, "${nextTs}ms 后进行轮次切换")
             mUiHandler.removeMessages(MSG_TURN_CHANGE)
             mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE,nextTs)
+        }else{
+            DebugLogView.println(TAG, "${nextTs} 没有轮次切换了")
         }
     }
 
@@ -563,6 +565,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             }
 
         } else if (thisRound.isSingStatus) {
+
             roomView.showRoundOver(lastRound) {
                 // 演唱阶段
                 val size = U.getActivityUtils().activityList.size
@@ -605,10 +608,10 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: EngineEvent) {
-        MyLog.d(TAG, "EngineEvent event = $event")
         if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_STATE_CHANGE) {
             var state = event.obj as EngineEvent.MusicStateChange
             if (state.isPlayOk) {
+                DebugLogView.println(TAG,"伴奏加载ok")
                 var progress = mRoomData.getSingCurPosition()
                 if (progress != Long.MAX_VALUE) {
                     if (progress > 0) {
@@ -621,7 +624,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                             ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
                         }
                     } else {
-                        MyLog.d(TAG, "EngineEvent 先暂停 ${-progress}ms后 resume")
+                        DebugLogView.println(TAG, "EngineEvent 先暂停 ${-progress}ms后 resume")
                         ZqEngineKit.getInstance().pauseAudioMixing()
                         mUiHandler.removeMessages(MSG_LAUNER_MUSIC)
                         mUiHandler.sendEmptyMessageDelayed(MSG_LAUNER_MUSIC, -progress)

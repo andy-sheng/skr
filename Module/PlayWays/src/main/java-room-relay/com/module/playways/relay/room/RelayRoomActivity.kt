@@ -56,9 +56,11 @@ import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.room.view.InputContainerView
+import com.module.playways.room.song.model.SongModel
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.StandPlayType
+import com.zq.live.proto.RelayRoom.ERRoundStatus
 import com.zq.live.proto.RelayRoom.RAddMusicMsg
 import com.zq.live.proto.RelayRoom.RReqAddMusicMsg
 import org.greenrobot.eventbus.EventBus
@@ -146,7 +148,36 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     override fun initData(savedInstanceState: Bundle?) {
         ensureActivtyTop()
-        val joinRaceRoomRspModel = intent.getSerializableExtra("JoinRelayRoomRspModel") as JoinRelayRoomRspModel?
+        var joinRaceRoomRspModel = intent.getSerializableExtra("JoinRelayRoomRspModel") as JoinRelayRoomRspModel?
+        if(joinRaceRoomRspModel==null){
+            // 构造假数据 用于测试
+            var joinRaceRoomRspModel1 = JoinRelayRoomRspModel()
+            joinRaceRoomRspModel1?.roomID = 10001
+            joinRaceRoomRspModel1?.createTimeMs = (System.currentTimeMillis()/20000)*20000
+            if(MyUserInfoManager.uid.toInt() == 1705476){
+                var userInfoModel = UserInfoModel()
+                userInfoModel.userId = 1985618
+                joinRaceRoomRspModel1?.peerUser = userInfoModel
+            }else{
+                var userInfoModel = UserInfoModel()
+                userInfoModel.userId = 1705476
+                joinRaceRoomRspModel1?.peerUser = userInfoModel
+            }
+            var roundInfoModel = RelayRoundInfoModel()
+            roundInfoModel.status = ERRoundStatus.RRS_SING.value
+            roundInfoModel.singBeginMs = 10*1000
+            roundInfoModel.originId = 1705476
+            var music = SongModel()
+            music.itemName = "告白气球"
+            music.acc = "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3"
+            music.lyric = "http://song-static.inframe.mobi/lrc/4ee4ac0711c74d6f333fcac10c113239.zrce"
+            music.beginMs = 0
+            music.endMs = 4*60*1000
+            music.relaySegments = arrayListOf(43*1000,65*1000,87*1000)
+            roundInfoModel.music = music
+            joinRaceRoomRspModel1.currentRound = roundInfoModel
+            joinRaceRoomRspModel = joinRaceRoomRspModel1
+        }
         joinRaceRoomRspModel?.let {
             mRoomData.loadFromRsp(it)
         }
@@ -315,6 +346,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
         relaySingCardView = RelaySingCardView(rootView.findViewById(R.id.relay_sing_card_view_layout_stub))
         relaySingCardView.setVisibility(View.VISIBLE)
+        relaySingCardView.roomData = mRoomData
     }
 
     private fun initBottomView() {

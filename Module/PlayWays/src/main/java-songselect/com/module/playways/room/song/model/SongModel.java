@@ -375,7 +375,11 @@ public class SongModel implements Serializable {
         this.setWriter(musicInfo.getWriter());
         this.setComposer(musicInfo.getComposer());
         this.setUploaderName(musicInfo.getUploaderName());
-        this.setRelaySegments((ArrayList<Integer>) musicInfo.getRelaySegmentsList() );
+        if(musicInfo.getRelaySegmentsList()!=null){
+            ArrayList<Integer> l = new ArrayList<>();
+            l.addAll(musicInfo.getRelaySegmentsList());
+            this.setRelaySegments(l);
+        }
     }
 
     public SongModel getPkMusic() {

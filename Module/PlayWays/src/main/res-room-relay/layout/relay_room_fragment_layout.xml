@@ -31,21 +31,21 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <!--评论区-->
-    <com.module.playways.room.room.comment.CommentView
-        android:id="@+id/comment_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_0_dp"
-        android:layout_marginRight="@dimen/view_100_dp"
-        android:layout_marginBottom="@dimen/view_10_dp"
-        android:paddingLeft="@dimen/view_10_dp"
-        android:paddingBottom="@dimen/view_7_dp"
-        app:edge_position="top"
-        app:edge_width="30dp"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_container_view"
-        app:layout_constraintTop_toBottomOf="@id/top_background"
-        app:layout_goneMarginBottom="@dimen/view_50_dp"
-        gameType:type="relay" />
+<!--    <com.module.playways.room.room.comment.CommentView-->
+<!--        android:id="@+id/comment_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/view_0_dp"-->
+<!--        android:layout_marginRight="@dimen/view_100_dp"-->
+<!--        android:layout_marginBottom="@dimen/view_10_dp"-->
+<!--        android:paddingLeft="@dimen/view_10_dp"-->
+<!--        android:paddingBottom="@dimen/view_7_dp"-->
+<!--        app:edge_position="top"-->
+<!--        app:edge_width="30dp"-->
+<!--        app:layout_constrainedHeight="true"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/bottom_container_view"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/top_background"-->
+<!--        app:layout_goneMarginBottom="@dimen/view_50_dp"-->
+<!--        gameType:type="relay" />-->
 
     <!-- 包括 顶部操作菜单栏 -->
     <com.module.playways.relay.room.top.RelayTopOpView
