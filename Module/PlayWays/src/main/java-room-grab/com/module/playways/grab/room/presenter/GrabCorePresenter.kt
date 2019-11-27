@@ -749,7 +749,8 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                         if (result.data!!.getBoolean("isBLightSuccess")!!) {
                             val m = BLightInfoModel()
                             m.userID = MyUserInfoManager.uid.toInt()
-                            now.addLightBurstUid(true, m)
+                            //因为爆灯需要服务器的效果，所以不能自己添加了
+//                            now.addLightBurstUid(true, m)
                         } else {
                             val reason = result.data!!.getString("bLightFailedMsg")
                             if (!TextUtils.isEmpty(reason)) {
@@ -1969,6 +1970,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             //            roundInfoModel.updateStatus(true, EQRoundStatus.QRS_SING.getValue());
             val noPassingInfo = BLightInfoModel()
             noPassingInfo.userID = event.userID
+            noPassingInfo.setbLightEffectModel(event.bLightEffectModel)
             roundInfoModel!!.addLightBurstUid(true, noPassingInfo)
         } else {
             MyLog.w(TAG, "有人爆灯了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.expectRoundInfo)
