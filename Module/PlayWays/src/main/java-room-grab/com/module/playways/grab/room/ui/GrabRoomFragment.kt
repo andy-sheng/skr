@@ -1295,9 +1295,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         if (RoomDataUtils.isMyRound(mRoomData!!.realRoundInfo)) {
             // 当前我是演唱者
             mDengBigAnimation?.translationY = U.getDisplayUtils().dip2px(200f).toFloat()
-            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid, event?.bLightEffectModel.sourceURL)
+            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid, event?.bLightEffectModel?.sourceURL)
         } else {
-            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid, event?.bLightEffectModel.sourceURL)
+            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid, event?.bLightEffectModel?.sourceURL)
         }
     }
 
