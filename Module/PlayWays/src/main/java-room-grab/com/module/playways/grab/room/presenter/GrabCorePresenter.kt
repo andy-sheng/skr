@@ -1969,6 +1969,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             //            roundInfoModel.updateStatus(true, EQRoundStatus.QRS_SING.getValue());
             val noPassingInfo = BLightInfoModel()
             noPassingInfo.userID = event.userID
+            noPassingInfo.setbLightEffectModel(event.bLightEffectModel)
             roundInfoModel!!.addLightBurstUid(true, noPassingInfo)
         } else {
             MyLog.w(TAG, "有人爆灯了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.expectRoundInfo)
