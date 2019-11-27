@@ -19,6 +19,7 @@ public class EngineEvent {
     public static final int TYPE_MUSIC_PLAY_TIME_FLY_LISTENER = 14;// 伴奏时间流逝
     public static final int TYPE_MUSIC_PLAY_FIRST_PKT = 15; // 伴奏首帧开始播放，仅在自采集模式下生效
     public static final int TYPE_MUSIC_PLAY_ERROR = 16; // 伴奏播放出错
+    public static final int TYPE_MUSIC_PLAY_STATE_CHANGE = 17; // 伴奏播放状态变化
 
     public static final int TYPE_ENGINE_INITED = 100;// 引擎初始化完毕
     public static final int TYPE_ENGINE_DESTROY = 99;// 引擎销毁完毕
@@ -63,7 +64,7 @@ public class EngineEvent {
     }
 
     public <T> T getObj() {
-        return (T)obj;
+        return (T) obj;
     }
 
     public void setObj(Object obj) {
@@ -156,8 +157,37 @@ public class EngineEvent {
         }
     }
 
-    String getTypeDesc(int type){
-        switch (type){
+    /**
+     * state	状态码：
+     * MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY(710)：音乐文件正常播放
+     * MEDIA_ENGINE_AUDIO_EVENT_MIXING_PAUSED(711)：音乐文件暂停播放
+     * MEDIA_ENGINE_AUDIO_EVENT_MIXING_STOPPED(713)：音乐文件停止播放
+     * MEDIA_ENGINE_AUDIO_EVENT_MIXING_ERROR(714)：音乐文件报错。SDK 会在 errorCode 参数中返回具体的报错原因
+     * errorCode	错误码：
+     * MEDIA_ENGINE_AUDIO_ERROR_MIXING_OPEN(701)：音乐文件打开出错
+     * MEDIA_ENGINE_AUDIO_ERROR_MIXING_TOO_FREQUENT(702)：音乐文件打开太频繁
+     * MEDIA_ENGINE_AUDIO_EVENT_MIXING_INTERRUPTED_EOF(703)：音乐文件播放异常中断
+     */
+    public static class MusicStateChange{
+        int state;
+        int errorCode;
+
+        public MusicStateChange(int state, int errorCode) {
+            this.state = state;
+            this.errorCode = errorCode;
+        }
+
+        public boolean isPlayOk() {
+            if (state == 710) {
+                return true;
+            }
+            return false;
+        }
+
+    }
+
+    String getTypeDesc(int type) {
+        switch (type) {
             case TYPE_USER_SELF_JOIN_SUCCESS:
                 return "SELF_JOIN_SUCCESS";
             case TYPE_USER_JOIN:
@@ -210,15 +240,17 @@ public class EngineEvent {
                 return "CAMERA_FACING_CHANGED";
             case TYPE_CAMERA_ERROR:
                 return "CAMERA_ERROR";
+            case TYPE_MUSIC_PLAY_STATE_CHANGE:
+                return "TYPE_MUSIC_PLAY_STATE_CHANGE";
         }
-        return type+"";
+        return type + "";
     }
 
     @Override
     public String toString() {
         return "EngineEvent{" +
                 "type=" + getTypeDesc(type) +
-                " user="+userStatus+
+                " user=" + userStatus +
                 '}';
     }
 }

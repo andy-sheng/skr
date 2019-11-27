@@ -433,6 +433,14 @@ public class AgoraRTCAdapter {
         }
 
         @Override
+        public void onAudioMixingStateChanged(int state, int errorCode) {
+            super.onAudioMixingStateChanged(state, errorCode);
+            if (mOutCallback != null) {
+                mOutCallback.onAudioMixingStateChanged(state,errorCode);
+            }
+        }
+
+        @Override
         public void onError(int error) {
             super.onError(error);
             if (mOutCallback != null) {

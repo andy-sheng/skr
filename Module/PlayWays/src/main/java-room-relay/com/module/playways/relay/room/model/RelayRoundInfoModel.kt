@@ -17,7 +17,7 @@ class RelayRoundInfoModel : BaseRoundInfoModel() {
     var music: SongModel? = null//本轮次要唱的歌儿的详细信息
     var singBeginMs: Int = 0 // 轮次开始时间 相对时间
     var singEndMs: Int = 0 // 轮次结束时间
-
+    var originId:Int = 0
     /**
      * 判断是各种演唱阶段
      *

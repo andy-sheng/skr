@@ -87,6 +87,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
 
   public static final String DEFAULT_UPLOADERNAME = "";
 
+  public static final Integer DEFAULT_SINGCOUNT = 0;
+
   /**
    * 音乐条目标识
    */
@@ -376,6 +378,25 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   )
   private final String uploaderName;
 
+  /**
+   * 演唱次数
+   */
+  @WireField(
+      tag = 33,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer singCount;
+
+  /**
+   * 双人接唱歌词段落划分
+   */
+  @WireField(
+      tag = 34,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32",
+      label = WireField.Label.REPEATED
+  )
+  private final List<Integer> relaySegments;
+
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
       String ori, String acc, String midi, String zip, String rankBgm, Integer beginMs,
       Integer endMs, String standIntro, Integer standIntroBeginT, Integer standIntroEndT,
@@ -383,8 +404,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT, Integer task,
       Integer standTotalMs, Boolean challengeAvailable, StandPlayType playType,
       List<MusicInfo> SPKMusic, MiniGameInfo miniGame, String writer, String composer,
-      String uploaderName) {
-    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, miniGame, writer, composer, uploaderName, ByteString.EMPTY);
+      String uploaderName, Integer singCount, List<Integer> relaySegments) {
+    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, miniGame, writer, composer, uploaderName, singCount, relaySegments, ByteString.EMPTY);
   }
 
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
@@ -394,7 +415,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT, Integer task,
       Integer standTotalMs, Boolean challengeAvailable, StandPlayType playType,
       List<MusicInfo> SPKMusic, MiniGameInfo miniGame, String writer, String composer,
-      String uploaderName, ByteString unknownFields) {
+      String uploaderName, Integer singCount, List<Integer> relaySegments,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.itemID = itemID;
     this.itemName = itemName;
@@ -428,6 +450,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     this.writer = writer;
     this.composer = composer;
     this.uploaderName = uploaderName;
+    this.singCount = singCount;
+    this.relaySegments = Internal.immutableCopyOf("relaySegments", relaySegments);
   }
 
   @Override
@@ -465,6 +489,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     builder.writer = writer;
     builder.composer = composer;
     builder.uploaderName = uploaderName;
+    builder.singCount = singCount;
+    builder.relaySegments = Internal.copyOf("relaySegments", relaySegments);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -506,7 +532,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
         && Internal.equals(miniGame, o.miniGame)
         && Internal.equals(writer, o.writer)
         && Internal.equals(composer, o.composer)
-        && Internal.equals(uploaderName, o.uploaderName);
+        && Internal.equals(uploaderName, o.uploaderName)
+        && Internal.equals(singCount, o.singCount)
+        && relaySegments.equals(o.relaySegments);
   }
 
   @Override
@@ -546,6 +574,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       result = result * 37 + (writer != null ? writer.hashCode() : 0);
       result = result * 37 + (composer != null ? composer.hashCode() : 0);
       result = result * 37 + (uploaderName != null ? uploaderName.hashCode() : 0);
+      result = result * 37 + (singCount != null ? singCount.hashCode() : 0);
+      result = result * 37 + relaySegments.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -586,6 +616,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     if (writer != null) builder.append(", writer=").append(writer);
     if (composer != null) builder.append(", composer=").append(composer);
     if (uploaderName != null) builder.append(", uploaderName=").append(uploaderName);
+    if (singCount != null) builder.append(", singCount=").append(singCount);
+    if (!relaySegments.isEmpty()) builder.append(", relaySegments=").append(relaySegments);
     return builder.replace(0, 2, "MusicInfo{").append('}').toString();
   }
 
@@ -920,6 +952,26 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
+   * 演唱次数
+   */
+  public Integer getSingCount() {
+    if(singCount==null){
+        return DEFAULT_SINGCOUNT;
+    }
+    return singCount;
+  }
+
+  /**
+   * 双人接唱歌词段落划分
+   */
+  public List<Integer> getRelaySegmentsList() {
+    if(relaySegments==null){
+        return new java.util.ArrayList<Integer>();
+    }
+    return relaySegments;
+  }
+
+  /**
    * 音乐条目标识
    */
   public boolean hasItemID() {
@@ -1143,6 +1195,20 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     return uploaderName!=null;
   }
 
+  /**
+   * 演唱次数
+   */
+  public boolean hasSingCount() {
+    return singCount!=null;
+  }
+
+  /**
+   * 双人接唱歌词段落划分
+   */
+  public boolean hasRelaySegmentsList() {
+    return relaySegments!=null;
+  }
+
   public static final class Builder extends Message.Builder<MusicInfo, Builder> {
     private Integer itemID;
 
@@ -1208,8 +1274,13 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
 
     private String uploaderName;
 
+    private Integer singCount;
+
+    private List<Integer> relaySegments;
+
     public Builder() {
       SPKMusic = Internal.newMutableList();
+      relaySegments = Internal.newMutableList();
     }
 
     /**
@@ -1469,9 +1540,26 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       return this;
     }
 
+    /**
+     * 演唱次数
+     */
+    public Builder setSingCount(Integer singCount) {
+      this.singCount = singCount;
+      return this;
+    }
+
+    /**
+     * 双人接唱歌词段落划分
+     */
+    public Builder addAllRelaySegments(List<Integer> relaySegments) {
+      Internal.checkElementsNotNull(relaySegments);
+      this.relaySegments = relaySegments;
+      return this;
+    }
+
     @Override
     public MusicInfo build() {
-      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, miniGame, writer, composer, uploaderName, super.buildUnknownFields());
+      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, miniGame, writer, composer, uploaderName, singCount, relaySegments, super.buildUnknownFields());
     }
   }
 
@@ -1514,6 +1602,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           + ProtoAdapter.STRING.encodedSizeWithTag(30, value.writer)
           + ProtoAdapter.STRING.encodedSizeWithTag(31, value.composer)
           + ProtoAdapter.STRING.encodedSizeWithTag(32, value.uploaderName)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(33, value.singCount)
+          + ProtoAdapter.UINT32.asRepeated().encodedSizeWithTag(34, value.relaySegments)
           + value.unknownFields().size();
     }
 
@@ -1551,6 +1641,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       ProtoAdapter.STRING.encodeWithTag(writer, 30, value.writer);
       ProtoAdapter.STRING.encodeWithTag(writer, 31, value.composer);
       ProtoAdapter.STRING.encodeWithTag(writer, 32, value.uploaderName);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 33, value.singCount);
+      ProtoAdapter.UINT32.asRepeated().encodeWithTag(writer, 34, value.relaySegments);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1599,6 +1691,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           case 30: builder.setWriter(ProtoAdapter.STRING.decode(reader)); break;
           case 31: builder.setComposer(ProtoAdapter.STRING.decode(reader)); break;
           case 32: builder.setUploaderName(ProtoAdapter.STRING.decode(reader)); break;
+          case 33: builder.setSingCount(ProtoAdapter.UINT32.decode(reader)); break;
+          case 34: builder.relaySegments.add(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

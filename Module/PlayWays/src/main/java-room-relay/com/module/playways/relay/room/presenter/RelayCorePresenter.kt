@@ -16,8 +16,6 @@ import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.U
-import com.component.busilib.constans.GameModeType
-import com.component.lyrics.utils.SongResUtils
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
@@ -37,7 +35,6 @@ import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.RelayRoomMsgManager
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
-import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RelayRoom.ERRoundStatus
 import com.zq.live.proto.RelayRoom.RNextRoundMsg
 import com.zq.live.proto.RelayRoom.RSyncMsg
@@ -56,6 +53,16 @@ import org.greenrobot.eventbus.ThreadMode
 
 class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomView) : RxLifeCyclePresenter() {
 
+    companion object {
+
+        internal val MSG_ENSURE_IN_RC_ROOM = 9// 确保在融云的聊天室，保证融云的长链接
+
+        internal val MSG_LAUNER_MUSIC = 21 // 到时间了 启动伴奏播放
+
+        internal val MSG_TURN_CHANGE = 22 // 到时间了 轮次切换
+
+    }
+
     internal var mAbsenTimes = 0
 
     internal var mRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
@@ -72,7 +79,12 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                     joinRcRoom(0)
                     ensureInRcRoom()
                 }
-//                MSG_ENSURE_SWITCH_BROADCAST_SUCCESS -> onChangeBroadcastSuccess()
+                MSG_LAUNER_MUSIC -> {
+                    realSingBegin()
+                }
+                MSG_TURN_CHANGE->{
+                    turnChange()
+                }
             }
         }
     }
@@ -114,8 +126,8 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), true, mRoomData.agoraToken)
             // 不发送本地音频, 会造成第一次抢没声音
             //ZqEngineKit.getInstance().muteLocalAudioStream(true)
-        }else{
-            MyLog.e(TAG,"房间号不合法 mRoomData.gameId="+mRoomData.gameId)
+        } else {
+            MyLog.e(TAG, "房间号不合法 mRoomData.gameId=" + mRoomData.gameId)
         }
         joinRcRoom(-1)
         if (mRoomData.gameId > 0) {
@@ -211,38 +223,71 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     /**
      * 如果确定是自己唱了,预先可以做的操作
      */
-     fun preOpWhenSelfRound() {
-        if(true){
+    fun preOpWhenSelfRound() {
+        var progress = mRoomData.getSingCurPosition()
+        MyLog.d(TAG, "preOpWhenSelfRound progress=$progress")
+        if (progress == Long.MAX_VALUE) {
+            MyLog.e(TAG, "当前播放进度非法")
+            return
+        }
+
+        if (progress >= 0) {
+            MyLog.d(TAG, "preOpWhenSelfRound 时间来不及了 快上车了")
             ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
-            roomView.singBegin()
-            return
-        }
-        // TODO 开始对时 这里先忽略 后续直接以音量为0加载伴奏完了pause住，时间到了resume
-        var songModel: SongModel? = mRoomData.realRoundInfo?.music
-        if (songModel == null) {
-            return
-        }
-        // 开始开始混伴奏，开始解除引擎mute
-        val accFile = SongResUtils.getAccFileByUrl(songModel?.acc)
-        // midi不需要在这下，只要下好，native就会解析，打分就能恢复
-        val midiFile = SongResUtils.getMIDIFileByUrl(songModel?.midi)
-        MyLog.d(TAG, "onChangeBroadcastSuccess 我的演唱环节 info=${songModel.toSimpleString()} acc=${songModel.acc} midi=${songModel.midi} ")
-
-        // 下载midi
-        if (midiFile != null && !midiFile.exists()) {
-            MyLog.d(TAG, "onChangeBroadcastSuccess 下载midi文件 url=${songModel.midi} => local=${midiFile.path}")
-            U.getHttpUtils().downloadFileAsync(songModel.midi, midiFile, true, null)
-        }
-
-        //  播放伴奏
-        val songBeginTs = songModel.beginMs
-        if (accFile != null && accFile.exists()) {
-            // 伴奏文件存在
-            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+            ZqEngineKit.getInstance().setAudioMixingPosition(progress.toInt())
+            realSingBegin()
         } else {
-            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+            MyLog.d(TAG, "preOpWhenSelfRound  时间还早 先准备 静音起伴奏")
+            if (mRoomData.isSingByMeNow()) {
+                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
+                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
+                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
+            } else {
+                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
+                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
+                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
+            }
+        }
+    }
+
+    private fun realSingBegin() {
+        MyLog.d(TAG, "realSingBegin 到时间了，继续伴奏，开启音量")
+        ZqEngineKit.getInstance().resumeAudioMixing()
+        if (mRoomData.isSingByMeNow()) {
+            MyLog.d(TAG, "realSingBegin 当前是我唱 开启音量")
+            ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(RelayRoomData.MUSIC_PUBLISH_VOLUME, false)
+            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(ZqEngineKit.getInstance().params.playbackSignalVolume, false)
+        } else {
+            MyLog.d(TAG, "realSingBegin 当前不是我唱 关闭音量")
+            ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
+            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
+        }
+        // 算出下一次轮次切换的时间
+        var nextTs = mRoomData.getNextTurnChangeTs()
+        if(nextTs > 0){
+            mUiHandler.removeMessages(MSG_TURN_CHANGE)
+            mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE,nextTs)
         }
         roomView.singBegin()
+    }
+
+    private fun turnChange() {
+        MyLog.d(TAG, "turnChange 到时间了，继续伴奏，开启音量")
+        if (mRoomData.isSingByMeNow()) {
+            MyLog.d(TAG, "turnChange 当前是我唱 开启音量")
+            ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(RelayRoomData.MUSIC_PUBLISH_VOLUME, false)
+            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(ZqEngineKit.getInstance().params.playbackSignalVolume, false)
+        } else {
+            MyLog.d(TAG, "turnChange 当前不是我唱 关闭音量")
+            ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
+            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
+        }
+        // 算出下一次轮次切换的时间
+        var nextTs = mRoomData.getNextTurnChangeTs()
+        if(nextTs > 0){
+            mUiHandler.removeMessages(MSG_TURN_CHANGE)
+            mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE,nextTs)
+        }
     }
 
     private fun preOpWhenOtherRound() {
@@ -560,7 +605,33 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: EngineEvent) {
-        if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
+        MyLog.d(TAG, "EngineEvent event = $event")
+        if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_STATE_CHANGE) {
+            var state = event.obj as EngineEvent.MusicStateChange
+            if (state.isPlayOk) {
+                var progress = mRoomData.getSingCurPosition()
+                if (progress != Long.MAX_VALUE) {
+                    if (progress > 0) {
+                        MyLog.d(TAG, "EngineEvent 调整音量继续走")
+                        if (mRoomData.isSingByMeNow()) {
+                            ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(RelayRoomData.MUSIC_PUBLISH_VOLUME, false)
+                            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(ZqEngineKit.getInstance().params.playbackSignalVolume, false)
+                        } else {
+                            ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
+                            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
+                        }
+                    } else {
+                        MyLog.d(TAG, "EngineEvent 先暂停 ${-progress}ms后 resume")
+                        ZqEngineKit.getInstance().pauseAudioMixing()
+                        mUiHandler.removeMessages(MSG_LAUNER_MUSIC)
+                        mUiHandler.sendEmptyMessageDelayed(MSG_LAUNER_MUSIC, -progress)
+
+                    }
+                } else {
+                    MyLog.e(TAG, "当前播放进度非法2")
+                }
+            }
+        } else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
 //            val roleChangeInfo = event.getObj<EngineEvent.RoleChangeInfo>()
 //            if (roleChangeInfo.newRole == 1) {
 //                val roundInfoModel = mRoomData.realRoundInfo
@@ -925,13 +996,5 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
 //        pretendSystemMsg(event.cancelMusicMsg)
 //    }
 
-    companion object {
-
-        internal val MSG_ENSURE_IN_RC_ROOM = 9// 确保在融云的聊天室，保证融云的长链接
-
-//        internal val MSG_ENSURE_SWITCH_BROADCAST_SUCCESS = 21 // 确保用户切换成主播成功，防止引擎不回调的保护
-
-
-    }
 
 }

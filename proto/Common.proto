@@ -104,6 +104,8 @@ message MusicInfo {
     string writer = 30; //作词人
     string composer = 31; //作曲人
     string uploaderName = 32; //上传者用户名
+    uint32 singCount    = 33; //演唱次数
+    repeated uint32 relaySegments   = 34; //双人接唱歌词段落划分
 }
 
 message MiniGameInfo

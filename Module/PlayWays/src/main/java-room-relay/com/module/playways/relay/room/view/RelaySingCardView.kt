@@ -7,6 +7,7 @@ import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.view.ExViewStub
 import com.common.view.ex.ExView
+import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.LyricsReader
 import com.component.lyrics.widget.AbstractLrcView
@@ -32,6 +33,8 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
     lateinit var singBeginTipsTv2:TextView
 
     var roomData:RelayRoomData?=null
+
+    val lyricAndAccMatchManager = LyricAndAccMatchManager()
 
     override fun init(parentView: View) {
         dotView = parentView.findViewById(R.id.dot_view)
@@ -61,23 +64,51 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
         singBeginTipsTv1.visibility = View.GONE
         singBeginTipsTv2.visibility = View.GONE
 
-        LyricsManager
-                .loadStandardLyric("http://song-static.inframe.mobi/lrc/4ee4ac0711c74d6f333fcac10c113239.zrce")
-                .subscribe({ lyricsReader ->
-                    manyLyricsView?.visibility = View.VISIBLE
-                    manyLyricsView?.initLrcData()
-                    manyLyricsView?.lyricsReader = lyricsReader
-                    manyLyricsView?.setSplitChorusArray(intArrayOf(43*1000,65*1000,87*1000))
-                    manyLyricsView?.setFirstSingByMe(false)
-                    val set = HashSet<Int>()
-                    set.add(lyricsReader.getLineInfoIdByStartTs(0))
-                    set.add(19)
-                    manyLyricsView?.needCountDownLine = set
-                    manyLyricsView?.play(18*1000)
-                }, { throwable ->
-                    MyLog.e(TAG, throwable)
-                    DebugLogView.println(TAG, "歌词下载失败，采用不滚动方式播放歌词")
-                })
+
+        val music = roomData?.realRoundInfo?.music
+        manyLyricsView?.setSplitChorusArray(music?.relaySegments)
+        manyLyricsView?.setFirstSingByMe(roomData?.isFirstSingByMe() == true)
+
+        val configParams = LyricAndAccMatchManager.ConfigParams()
+        configParams.manyLyricsView = manyLyricsView
+        configParams.lyricUrl = music?.lyric
+        configParams.lyricBeginTs = music?.beginMs!!
+        configParams.lyricEndTs = music?.endMs!!
+        configParams.accBeginTs = music?.beginMs!!
+        configParams.accEndTs = music?.endMs!!
+        configParams.voiceScaleView = voiceScaleView
+        // 间隔 是否第一个唱
+        lyricAndAccMatchManager!!.setArgs(configParams)
+        lyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener {
+
+            override fun onLyricParseSuccess(reader: LyricsReader) {
+//                mSvlyric?.visibility = View.GONE
+            }
+
+            override fun onLyricParseFailed() {
+//                playWithNoAcc(songModel)
+            }
+
+            override fun onLyricEventPost(lineNum: Int) {
+            }
+        })
+//        LyricsManager
+//                .loadStandardLyric("http://song-static.inframe.mobi/lrc/4ee4ac0711c74d6f333fcac10c113239.zrce")
+//                .subscribe({ lyricsReader ->
+//                    manyLyricsView?.visibility = View.VISIBLE
+//                    manyLyricsView?.initLrcData()
+//                    manyLyricsView?.lyricsReader = lyricsReader
+//                    manyLyricsView?.setSplitChorusArray(intArrayOf(43*1000,65*1000,87*1000))
+//                    manyLyricsView?.setFirstSingByMe(false)
+//                    val set = HashSet<Int>()
+//                    set.add(lyricsReader.getLineInfoIdByStartTs(0))
+//                    set.add(19)
+//                    manyLyricsView?.needCountDownLine = set
+//                    manyLyricsView?.play(18*1000)
+//                }, { throwable ->
+//                    MyLog.e(TAG, throwable)
+//                    DebugLogView.println(TAG, "歌词下载失败，采用不滚动方式播放歌词")
+//                })
     }
 
     fun turnNoSong(){
@@ -90,6 +121,7 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
         noSongTipsTv.visibility = View.VISIBLE
         singBeginTipsTv1.visibility = View.GONE
         singBeginTipsTv2.visibility = View.GONE
+        lyricAndAccMatchManager.stop()
     }
 
     fun turnSingPrepare() {
@@ -103,5 +135,6 @@ class RelaySingCardView(viewStub: ViewStub) :ExViewStub(viewStub) {
         singBeginTipsTv1.visibility = View.VISIBLE
         singBeginTipsTv2.visibility = View.VISIBLE
         singBeginTipsTv2.text = "《${roomData?.realRoundInfo?.music?.displaySongName}》"
+        lyricAndAccMatchManager.stop()
     }
 }

@@ -349,6 +349,9 @@ class LyricAndAccMatchManager {
         var authorName: String? = null
         var accLoadOk: Boolean = false
         var needScore: Boolean = true
+//        var splitChorusArray:ArrayList<Int>? = null
+//        var firstSingByMe: Boolean = true
+
         override fun toString(): String {
             return "ConfigParams(lyricUrl=$lyricUrl, lyricBeginTs=$lyricBeginTs, lyricEndTs=$lyricEndTs, accBeginTs=$accBeginTs, accEndTs=$accEndTs, authorName=$authorName, accLoadOk=$accLoadOk, needScore=$needScore)"
         }

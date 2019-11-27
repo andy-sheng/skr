@@ -34,6 +34,7 @@ import com.component.lyrics.model.LyricsLineInfo;
 import com.component.lyrics.utils.LyricsUtils;
 import com.component.lyrics.utils.TimeUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -201,12 +202,12 @@ public class ManyLyricsView extends AbstractLrcView {
     protected int mPaintHLColorsForOthers[] = null;
 
     // 合唱分割歌词的依据数组
-    protected int mSplitChorusArray[] = null;
+    protected ArrayList mSplitChorusArray = null;
 
     // 合唱我是第一个唱还是第二个唱
     protected boolean mFirstSingByMe = true;
 
-    public void setSplitChorusArray(int[] mSplitChorusArray) {
+    public void setSplitChorusArray(ArrayList mSplitChorusArray) {
         this.mSplitChorusArray = mSplitChorusArray;
     }
 

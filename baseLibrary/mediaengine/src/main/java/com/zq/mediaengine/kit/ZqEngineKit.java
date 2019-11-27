@@ -420,6 +420,26 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
+    /**
+     * state	状态码：
+     * MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY(710)：音乐文件正常播放
+     * MEDIA_ENGINE_AUDIO_EVENT_MIXING_PAUSED(711)：音乐文件暂停播放
+     * MEDIA_ENGINE_AUDIO_EVENT_MIXING_STOPPED(713)：音乐文件停止播放
+     * MEDIA_ENGINE_AUDIO_EVENT_MIXING_ERROR(714)：音乐文件报错。SDK 会在 errorCode 参数中返回具体的报错原因
+     * errorCode	错误码：
+     * MEDIA_ENGINE_AUDIO_ERROR_MIXING_OPEN(701)：音乐文件打开出错
+     * MEDIA_ENGINE_AUDIO_ERROR_MIXING_TOO_FREQUENT(702)：音乐文件打开太频繁
+     * MEDIA_ENGINE_AUDIO_EVENT_MIXING_INTERRUPTED_EOF(703)：音乐文件播放异常中断
+     * @param state
+     * @param errorCode
+     */
+    @Override
+    public void onAudioMixingStateChanged(int state, int errorCode) {
+        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STATE_CHANGE, null);
+        engineEvent.obj = new EngineEvent.MusicStateChange(state,errorCode);
+        EventBus.getDefault().post(engineEvent);
+    }
+
     private UserStatus ensureJoin(int uid) {
         if (!mUserStatusMap.containsKey(uid)) {
             UserStatus userStatus = new UserStatus(uid);

@@ -69,6 +69,8 @@ public class SongModel implements Serializable {
     private String composer;   //作曲人
     private String uploaderName; //上传用户名
 
+    private ArrayList<Integer> relaySegments;
+
     public int getSingCount() {
         return singCount;
     }
@@ -318,6 +320,14 @@ public class SongModel implements Serializable {
         this.uploaderName = uploaderName;
     }
 
+    public ArrayList<Integer> getRelaySegments() {
+        return relaySegments;
+    }
+
+    public void setRelaySegments(ArrayList<Integer> relaySegments) {
+        this.relaySegments = relaySegments;
+    }
+
     public void parse(MusicInfo musicInfo) {
         if (musicInfo == null) {
             MyLog.e("SongModel MusicInfo == null");
@@ -365,6 +375,7 @@ public class SongModel implements Serializable {
         this.setWriter(musicInfo.getWriter());
         this.setComposer(musicInfo.getComposer());
         this.setUploaderName(musicInfo.getUploaderName());
+        this.setRelaySegments((ArrayList<Integer>) musicInfo.getRelaySegmentsList() );
     }
 
     public SongModel getPkMusic() {

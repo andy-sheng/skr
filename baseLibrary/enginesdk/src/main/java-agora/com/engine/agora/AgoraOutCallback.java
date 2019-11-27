@@ -41,4 +41,6 @@ public interface AgoraOutCallback {
     void onWarning(int warn);
 
     void onError(int error);
+
+    void onAudioMixingStateChanged(int state, int errorCode);
 }
