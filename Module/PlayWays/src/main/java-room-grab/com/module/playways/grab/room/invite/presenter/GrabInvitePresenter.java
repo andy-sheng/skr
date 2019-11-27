@@ -62,7 +62,7 @@ public class GrabInvitePresenter {
 
 
     public void getFansList(int mOffset, int mLimit) {
-        ApiMethods.subscribe(mGrabRoomServerApi.getRoomFansList(mOffset, mLimit), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mGrabRoomServerApi.getRoomFansList(mOffset, mLimit, roomID, gameType), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 mIGrabInviteView.finishRefresh();

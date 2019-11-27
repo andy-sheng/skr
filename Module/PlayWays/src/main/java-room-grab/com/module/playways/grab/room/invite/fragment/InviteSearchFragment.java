@@ -210,7 +210,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
                 public ObservableSource<ApiResult> apply(SearchModel model) {
                     isAutoSearch = model.isAutoSearch();
                     GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
-                    return grabRoomServerApi.searchFans(model.getSearchContent());
+                    return grabRoomServerApi.searchFans(model.getSearchContent(), mRoomID, mGameMode);
                 }
             }), new ApiObserver<ApiResult>() {
                 @Override
