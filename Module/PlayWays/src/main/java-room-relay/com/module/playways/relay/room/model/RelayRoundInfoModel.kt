@@ -11,6 +11,7 @@ import java.util.*
 
 class RelayRoundInfoModel : BaseRoundInfoModel() {
 
+    var accLoadingOk = false
     /* 一唱到底使用 */
     var status = ERRoundStatus.RRS_UNKNOWN.value
 

@@ -605,7 +605,8 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     fun onEvent(event: EngineEvent) {
         if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_STATE_CHANGE) {
             var state = event.obj as EngineEvent.MusicStateChange
-            if (state.isPlayOk) {
+            if (state.isPlayOk && mRoomData.realRoundInfo?.accLoadingOk == false) {
+                mRoomData.realRoundInfo?.accLoadingOk = true
                 var progress = mRoomData.getSingCurPosition()
                 DebugLogView.println(TAG, "伴奏加载ok progress=${progress}")
                 if (progress != Long.MAX_VALUE) {
