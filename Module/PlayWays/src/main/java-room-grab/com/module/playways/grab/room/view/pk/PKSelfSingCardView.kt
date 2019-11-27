@@ -12,6 +12,8 @@ import com.module.playways.R
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView
 import com.module.playways.room.data.H
 import com.zq.live.proto.GrabRoom.EQRoundStatus
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
@@ -109,7 +111,11 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 //
 //            }
 //        })
-        playRealLyric()
+
+        launch {
+            delay(1000)
+            playRealLyric()
+        }
     }
 
     private fun playRealLyric() {
