@@ -32,9 +32,10 @@ import okio.Sink;
 public class AcrCloudManager implements IACRCloudListener {
     public final String TAG = "ArcCloudManager";
 
-    static final int BUFFER_LEN = 10 * 44100 * 2;
+//    static final int BUFFER_LEN = 10 * 44100 * 2;
+    static final int BUFFER_DURATION = 10;
 
-    byte[] mBuffer = new byte[BUFFER_LEN];
+    byte[] mBuffer;
     int mLength = 0;
     int mSampleRate = -1;
     int mChannels = -1;
@@ -205,12 +206,16 @@ public class AcrCloudManager implements IACRCloudListener {
             if (mChannels < 0) {
                 mChannels = nChannels;
             }
+            if (mBuffer == null) {
+                int maxSize = mSampleRate * BUFFER_DURATION * 2;
+                mBuffer = new byte[maxSize];
+            }
             int tl = mLength;
-            if (tl + newBuffer.length <= BUFFER_LEN) {
+            if (tl + newBuffer.length <= mBuffer.length) {
                 // buffer还没满，足够容纳，那就放呗
                 System.arraycopy(newBuffer, 0, mBuffer, tl, newBuffer.length);
                 setLen(tl + newBuffer.length);
-                if (mLength == BUFFER_LEN) {
+                if (mLength == mBuffer.length) {
                     if (recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
                         if (recognizeConfig.isWantRecognizeInManualMode()) {
                             recognizeInner(mLineNo);
@@ -219,14 +224,14 @@ public class AcrCloudManager implements IACRCloudListener {
                 }
             } else {
                 // 再放buffer就要满了，头部的要移走
-                int left = tl + newBuffer.length - BUFFER_LEN;
+                int left = tl + newBuffer.length - mBuffer.length;
                 //MyLog.d(TAG, "left=" + left + " mLenth=" + mLength + " buffer.length:" + buffer.length + " BUFFER_LEN:" + BUFFER_LEN);
                 // 往左移动 left 个位置
 //            byte [] temp = new byte[BUFFER_LEN];
 
                 System.arraycopy(mBuffer, left, mBuffer, 0, tl - left);
                 System.arraycopy(newBuffer, 0, mBuffer, tl - left, newBuffer.length);
-                setLen(BUFFER_LEN);
+                setLen(mBuffer.length);
                 if (recognizeConfig.getMode() == RecognizeConfig.MODE_AUTO && recognizeConfig.getAutoTimes() > 0) {
                     // 自动识别
                     recognizeInner(mLineNo);
@@ -252,7 +257,7 @@ public class AcrCloudManager implements IACRCloudListener {
         tryInit();
         MyLog.d(TAG,"recognizeInner" + " lineNo=" + lineNo);
         if (this.mClient != null) {
-            if (mLength >= BUFFER_LEN) {
+            if (mBuffer != null && mLength >= mBuffer.length) {
                 if (!mProcessing) {
                     mProcessing = true;
                     int len = mLength;
@@ -265,7 +270,7 @@ public class AcrCloudManager implements IACRCloudListener {
                             RecognizeConfig recognizeConfig = AcrCloudManager.this.mRecognizeConfig;
                             if (recognizeConfig != null
                                     && recognizeConfig.getResultListener() != null
-                                    && mLength >= BUFFER_LEN) {
+                                    && mBuffer != null && mLength >= mBuffer.length) {
                                 // 识别次数打点
                                 StatisticsAdapter.recordCountEvent("acr", "recognize", null);
                                 mProcessing = true;
