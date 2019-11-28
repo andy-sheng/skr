@@ -34,7 +34,6 @@ public class GrabTopItemView extends RelativeLayout {
     public ExImageView mFlagIv;
     public PlayerInfoModel mPlayerInfoModel;
     public AnimationDrawable mFlickerAnim;
-    public ExTextView mTvIconBg;
     public ExImageView mOwnerIconIv;
     public SpeakingTipsAnimationView mSpeakingTipsAnimationView;
     public boolean mShowEmptySeat = false;
@@ -65,7 +64,6 @@ public class GrabTopItemView extends RelativeLayout {
         mAvatarIv = this.findViewById(R.id.avatar_iv);
         mFlagIv = this.findViewById(R.id.flag_iv);
         mOwnerIconIv = findViewById(R.id.owner_icon_iv);
-        mTvIconBg = findViewById(R.id.tv_icon_bg);
         mSpeakingTipsAnimationView = findViewById(R.id.speaker_animation_iv);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
@@ -132,15 +130,6 @@ public class GrabTopItemView extends RelativeLayout {
         } else {
             mOwnerIconIv.setVisibility(GONE);
         }
-
-        Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
-                .setSolidColor(Color.parseColor("#6EBDFF"))
-                .setCornersRadius(U.getDisplayUtils().dip2px(20))
-                .setStrokeWidth(U.getDisplayUtils().dip2px(2))
-                .setStrokeColor(Color.parseColor("#3B4E79"))
-                .build();
-
-        mTvIconBg.setBackground(drawable);
     }
 
     //占位的View
@@ -151,22 +140,13 @@ public class GrabTopItemView extends RelativeLayout {
 //                EventBus.getDefault().post(new InviteBtnVisibleEvent(true));
 //            }
 //        } else {
-        mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.yichangdaodi_guanzhong));
+        mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.xkf_guanzhong));
         if (mLast) {
             EventBus.getDefault().post(new InviteBtnVisibleEvent(false));
         }
 //        }
         mOwnerIconIv.setVisibility(GONE);
         mShowEmptySeat = true;
-
-        Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
-                .setSolidColor(Color.parseColor("#5C67C1"))
-                .setCornersRadius(U.getDisplayUtils().dip2px(20))
-                .setStrokeWidth(U.getDisplayUtils().dip2px(2))
-                .setStrokeColor(Color.parseColor("#3B4E79"))
-                .build();
-
-        mTvIconBg.setBackground(drawable);
     }
 
     //开始闪烁，有人爆灯的时候
