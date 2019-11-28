@@ -194,6 +194,7 @@ public class AcrCloudManager implements IACRCloudListener {
         if (recognizeConfig != null) {
             if (recognizeConfig.mode == RecognizeConfig.MODE_AUTO) {
                 if (recognizeConfig.getAutoTimes() <= 0) {
+                    MyLog.d(TAG,"putPool recognizeConfig.getAutoTimes() <= 0");
                     return;
                 }
             }
@@ -249,6 +250,7 @@ public class AcrCloudManager implements IACRCloudListener {
 
     private void recognizeInner(final int lineNo) {
         tryInit();
+        MyLog.d(TAG,"recognizeInner" + " lineNo=" + lineNo);
         if (this.mClient != null) {
             if (mLength >= BUFFER_LEN) {
                 if (!mProcessing) {
