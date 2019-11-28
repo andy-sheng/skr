@@ -412,23 +412,23 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     var heartbeatJob: Job? = null
 
     private fun startHeartbeat() {
-        heartbeatJob?.cancel()
-        heartbeatJob = launch {
-            while (true) {
-                val map = mutableMapOf(
-                        "roomID" to mRoomData.gameId,
-                        "userID" to MyUserInfoManager.uid
-                )
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                val result = subscribe { mRoomServerApi.heartbeat(body) }
-                if (result.errno == 0) {
-
-                } else {
-
-                }
-                delay(60 * 1000)
-            }
-        }
+//        heartbeatJob?.cancel()
+//        heartbeatJob = launch {
+//            while (true) {
+//                val map = mutableMapOf(
+//                        "roomID" to mRoomData.gameId,
+//                        "userID" to MyUserInfoManager.uid
+//                )
+//                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+//                val result = subscribe { mRoomServerApi.heartbeat(body) }
+//                if (result.errno == 0) {
+//
+//                } else {
+//
+//                }
+//                delay(60 * 1000)
+//            }
+//        }
     }
 
     private fun cancelSyncGameStatus() {
