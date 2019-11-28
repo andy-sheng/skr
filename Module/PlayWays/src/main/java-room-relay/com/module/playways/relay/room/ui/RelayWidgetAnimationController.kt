@@ -99,7 +99,7 @@ class RelayWidgetAnimationController(internal var mF: RelayRoomActivity) {
 
     internal fun fillView(viewList: MutableList<View?>) {
         viewList.add(mF.mTopContentView)
-        viewList.add(mF.mMicInviteView?.realView)
+        viewList.add(mF.mRoomInviteView?.realView)
 //        viewList.add(mF.mHasSelectSongNumTv)
 //        viewList.add(mF.mTopVsView)
 //        viewList.add(mF.mPracticeFlagIv)
