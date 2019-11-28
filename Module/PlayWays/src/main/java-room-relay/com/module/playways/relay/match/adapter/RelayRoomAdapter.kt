@@ -1,14 +1,21 @@
 package com.module.playways.relay.match.adapter
 
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
+import com.common.image.fresco.FrescoWorker
+import com.common.image.model.ImageFactory
+import com.common.utils.U
 import com.component.busilib.view.NickNameView
 import com.component.busilib.view.recyclercardview.CardAdapterHelper
+import com.component.level.utils.LevelConfigUtils
+import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.relay.match.model.RelayRecommendRoomInfo
@@ -45,12 +52,12 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
 
     inner class RelayRoomViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
-        val avatarIv: SimpleDraweeView = item.findViewById(R.id.avatar_iv)
-        val levelBg: ImageView = item.findViewById(R.id.level_bg)
-        val nicknameView: NickNameView = item.findViewById(R.id.nickname_view)
-        val songNameTv: TextView = item.findViewById(R.id.song_name_tv)
-        val recommendTagSdv: SimpleDraweeView = item.findViewById(R.id.recommend_tag_sdv)
-        val joinTv: TextView = item.findViewById(R.id.join_tv)
+        private val avatarIv: SimpleDraweeView = item.findViewById(R.id.avatar_iv)
+        private val levelBg: ImageView = item.findViewById(R.id.level_bg)
+        private val nicknameView: NickNameView = item.findViewById(R.id.nickname_view)
+        private val songNameTv: TextView = item.findViewById(R.id.song_name_tv)
+        private val recommendTagSdv: SimpleDraweeView = item.findViewById(R.id.recommend_tag_sdv)
+        private val joinTv: TextView = item.findViewById(R.id.join_tv)
 
         var mPos = -1
         var mModel: RelayRecommendRoomInfo? = null
@@ -64,6 +71,28 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
         fun bindData(position: Int, model: RelayRecommendRoomInfo) {
             this.mPos = position
             this.mModel = model
+
+            AvatarUtils.loadAvatarByUrl(avatarIv,
+                    AvatarUtils.newParamsBuilder(model.user?.avatar)
+                            .setCircle(true)
+                            .build())
+            if (LevelConfigUtils.getImageResoucesLevel(model.user?.ranking?.mainRanking
+                            ?: 0) != 0) {
+                levelBg.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(model.user?.ranking?.mainRanking
+                        ?: 0))
+            }
+            nicknameView.setAllStateText(model.user)
+            songNameTv.text = model.item?.itemName
+
+            if (!TextUtils.isEmpty(model.recommendTag?.url)) {
+                recommendTagSdv.visibility = View.VISIBLE
+                FrescoWorker.loadImage(recommendTagSdv, ImageFactory.newPathImage(model.recommendTag?.url)
+                        .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
+                        .build())
+            } else {
+                recommendTagSdv.visibility = View.GONE
+            }
+
         }
     }
 

@@ -59,8 +59,7 @@ class RelayHomeActivity : BaseActivity() {
         speedRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         speedRecyclerView?.adapter = adapter
 
-        cardScaleHelper = CardScaleHelper(8, 12)
-        cardScaleHelper?.attachToRecyclerView(speedRecyclerView)
+
         speedRecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -73,6 +72,9 @@ class RelayHomeActivity : BaseActivity() {
                 }
             }
         })
+
+        cardScaleHelper = CardScaleHelper(8, 12)
+        cardScaleHelper?.attachToRecyclerView(speedRecyclerView)
 
         titlebar?.leftTextView?.setDebounceViewClickListener { finish() }
         titlebar?.rightTextView?.setDebounceViewClickListener {

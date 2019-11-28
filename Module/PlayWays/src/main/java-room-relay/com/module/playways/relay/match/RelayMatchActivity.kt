@@ -66,7 +66,7 @@ class RelayMatchActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        val model = intent.getSerializableExtra("songModel") as SongModel?
+        model = intent.getSerializableExtra("songModel") as SongModel?
         if (model == null) {
             finish()
         }
@@ -135,7 +135,14 @@ class RelayMatchActivity : BaseActivity() {
                         relayMatchServerApi.queryMatch(body)
                     }
                     if (result.errno == 0) {
-
+                        val hasMatchedRoom = result.data.getBoolean("hasMatchedRoom")
+                        if (hasMatchedRoom) {
+                            val joinRelayRoomRspModel = JSON.parseObject(result.data.toJSONString(), JoinRelayRoomRspModel::class.java)
+                            matchJob?.cancel()
+                            tryGoRelayRoom(joinRelayRoomRspModel)
+                        } else {
+                            // 没匹配到 donothing
+                        }
                     }
                     delay(10 * 1000)
                 }
@@ -186,9 +193,8 @@ class RelayMatchActivity : BaseActivity() {
         }
     }
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
-    private fun onEvent(event: RUserEnterMsg) {
+    fun onEvent(event: RUserEnterMsg) {
         // 进入房间的信令 直接加入融云的房间
         matchJob?.cancel()
         tryGoRelayRoom(JoinRelayRoomRspModel.parseFromPB(event))
@@ -206,6 +212,9 @@ class RelayMatchActivity : BaseActivity() {
             if (result.errno == 0) {
                 val joinRelayRoomRspModel = JSON.parseObject(result.data.toJSONString(), JoinRelayRoomRspModel::class.java)
                 tryGoRelayRoom(joinRelayRoomRspModel)
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+                // todo 补充一个UI更新的逻辑
             }
         }
     }
@@ -220,9 +229,24 @@ class RelayMatchActivity : BaseActivity() {
             }
 
             override fun onFailed(obj: Any?, errcode: Int, message: String?) {
-
+                // 加入失败
+                reportEnterFail(model)
             }
         })
+    }
+
+    private fun reportEnterFail(model: JoinRelayRoomRspModel) {
+        launch {
+            val map = mutableMapOf("roomID" to (model.roomID))
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("reportEnterFail", ControlType.CancelThis)) {
+                relayMatchServerApi.enterRoomFailed(body)
+            }
+            if (result.errno == 0) {
+                // 进入失败，重新开始匹配
+                startMatch()
+            }
+        }
     }
 
     override fun useEventBus(): Boolean {

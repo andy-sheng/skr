@@ -258,7 +258,7 @@ class SLogServiceAliyun extends SLogServiceBase{
             conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
             conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
             conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
-            conf.setCachable(true);
+            conf.setCachable(false); //先关闭cache，绕开aliyun SLS的问题
             conf.setConnectType(ClientConfiguration.NetworkPolicy.WWAN_OR_WIFI);
 
             if (!mUseMainPrj) { //说明是测试版

@@ -42,4 +42,10 @@ interface RelayMatchServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/relaygame/choice-match-item")
     fun choiceRoom(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 选中匹配列表中
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/enter-failed")
+    fun enterRoomFailed(@Body body: RequestBody): Call<ApiResult>
 }

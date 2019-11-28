@@ -46,7 +46,6 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
-        android:text="《爱在西元前》"
         android:textColor="@color/black_trans_80"
         android:textSize="@dimen/textsize_20_dp"
         android:textStyle="bold"
