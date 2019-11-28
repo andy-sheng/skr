@@ -45,7 +45,6 @@ class RelayHomeActivity : BaseActivity() {
     var loadMore: Boolean = false
     var currentPosition = -1
 
-
     /**
      * 存起该房间一些状态信息
      */
@@ -54,16 +53,6 @@ class RelayHomeActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        for (activity in U.getActivityUtils().activityList) {
-            if (U.getActivityUtils().isHomeActivity(activity)) {
-                continue
-            }
-            if (activity === this) {
-                continue
-            }
-            activity.finish()
-        }
-
         titlebar = findViewById(R.id.titlebar)
         speedRecyclerView = findViewById(R.id.speed_recyclerView)
 
@@ -92,7 +81,7 @@ class RelayHomeActivity : BaseActivity() {
         adapter.listener = object : RelayHomeSongAdapter.RelayHomeListener {
             override fun selectSong(position: Int, model: SongModel?) {
                 // 跳到匹配中到页面
-                startMatch(model)
+                goMatch(model)
             }
 
             override fun getRecyclerViewPosition(): Int {
@@ -105,29 +94,15 @@ class RelayHomeActivity : BaseActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AddSongEvent) {
-        startMatch(event.songModel)
+        goMatch(event.songModel)
     }
 
-    fun startMatch(model: SongModel?) {
+    fun goMatch(model: SongModel?) {
+        // 先跳到匹配页面发起匹配
         model?.let {
-            launch {
-                val map = mutableMapOf(
-                        "itemID" to it.itemID,
-                        "platform" to 20)
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                val result = subscribe(RequestControl("startMatch", ControlType.CancelThis)) {
-                    relayMatchServerApi.queryMatch(body)
-                }
-                if (result.errno == 0) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_MATCH)
-                            .withSerializable("songModel", model)
-                            .navigation()
-                } else {
-                    if (result.errno == ERROR_NETWORK_BROKEN) {
-                        U.getToastUtil().showShort("网络异常，请检查网络后重试")
-                    }
-                }
-            }
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_MATCH)
+                    .withSerializable("songModel", model)
+                    .navigation()
         }
     }
 

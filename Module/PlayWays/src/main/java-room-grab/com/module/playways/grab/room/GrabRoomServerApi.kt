@@ -318,8 +318,8 @@ interface GrabRoomServerApi {
      * @param count
      * @return
      */
-    @GET("http://dev.api.inframe.mobi/v1/mate/room-fans-by-page")
-    fun getRoomFansList(@Query("offset") offset: Int, @Query("cnt") count: Int): Observable<ApiResult>
+    @GET("http://dev.api.inframe.mobi/v2/mate/room-fans-by-page")
+    fun getRoomFansList(@Query("offset") offset: Int, @Query("cnt") count: Int, @Query("roomID") roomID: Int, @Query("mode") model: Int): Observable<ApiResult>
 
     /**
      * 搜索房间内粉丝
@@ -327,8 +327,8 @@ interface GrabRoomServerApi {
      * @param searchContent
      * @return
      */
-    @GET("http://dev.api.inframe.mobi/v1/mate/room-search-fans")
-    fun searchFans(@Query("searchContent") searchContent: String): Observable<ApiResult>
+    @GET("http://dev.api.inframe.mobi/v2/mate/room-search-fans")
+    fun searchFans(@Query("searchContent") searchContent: String, @Query("roomID") roomID: Int, @Query("mode") model: Int): Observable<ApiResult>
 
     /**
      * 邀请好友

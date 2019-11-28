@@ -60,20 +60,20 @@ public class InviteSearchPresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void searchFans(String searchContent) {
-        ApiMethods.subscribe(mGrabRoomServerApi.searchFans(searchContent), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<JSONObject> list = JSON.parseArray(result.getData().getString("fans"), JSONObject.class);
-                    List<UserInfoModel> userInfoModels = UserInfoDataUtils.parseRoomUserInfo(list);
-                    if (mView != null) {
-                        mView.showUserInfoList(userInfoModels);
-                    }
-                }
-            }
-        }, this);
-    }
+//    public void searchFans(String searchContent) {
+//        ApiMethods.subscribe(mGrabRoomServerApi.searchFans(searchContent, ), new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//                if (result.getErrno() == 0) {
+//                    List<JSONObject> list = JSON.parseArray(result.getData().getString("fans"), JSONObject.class);
+//                    List<UserInfoModel> userInfoModels = UserInfoDataUtils.parseRoomUserInfo(list);
+//                    if (mView != null) {
+//                        mView.showUserInfoList(userInfoModels);
+//                    }
+//                }
+//            }
+//        }, this);
+//    }
 
     public void inviteDoubleFriend(int roomID, UserInfoModel model, ExTextView view) {
         MyLog.d(getTAG(), "inviteDoubleFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
