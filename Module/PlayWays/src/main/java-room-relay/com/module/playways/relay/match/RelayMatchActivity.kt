@@ -25,6 +25,7 @@ import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.relay.match.adapter.RelayRoomAdapter
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.match.model.RelayRecommendRoomInfo
+import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.room.prepare.presenter.GrabMatchPresenter
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RelayRoom.RUserEnterMsg
@@ -114,6 +115,7 @@ class RelayMatchActivity : BaseActivity() {
 
         getRecommendRoomList(0, true)
         startMatch()
+        RelayRoomData.syncServerTs()
     }
 
     // 开始匹配

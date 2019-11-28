@@ -448,7 +448,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 delay(10 * 1000)
                 val result = subscribe { mRoomServerApi.syncStatus(mRoomData.gameId.toLong()) }
                 if (result.errno == 0) {
-                    val gameOverTimeMs = result.data.getLong("gameOverTimeMs")
+                    val gameOverTimeMs = result.data.getLongValue("gameOverTimeMs")
                     if (gameOverTimeMs > 0) {
                         mRoomData.gameOverTs = gameOverTimeMs
                         DebugLogView.println(TAG, "gameOverTimeMs=${gameOverTimeMs} 游戏结束时间>0 ，游戏结束，退出房间")
@@ -456,12 +456,12 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                         mRoomData.expectRoundInfo = null
                         mRoomData.checkRoundInEachMode()
                     } else {
-                        val syncStatusTimeMs = result.data.getLong("syncStatusTimeMs")
-                        if (syncStatusTimeMs > mRoomData.lastSyncTs) {
-                            mRoomData.lastSyncTs = syncStatusTimeMs
-                            val roundInfo = JSON.parseObject(result.data.getString("currentRound"), RelayRoundInfoModel::class.java)
-                            processSyncResult(roundInfo)
-                        }
+//                        val syncStatusTimeMs = result.data.getLongValue("syncStatusTimeMs")
+//                        if (syncStatusTimeMs > mRoomData.lastSyncTs) {
+//                            mRoomData.lastSyncTs = syncStatusTimeMs
+                        val roundInfo = JSON.parseObject(result.data.getString("currentRound"), RelayRoundInfoModel::class.java)
+                        processSyncResult(roundInfo)
+//                        }
                     }
                 } else {
 
@@ -763,7 +763,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         ensureInRcRoom()
         MyLog.w(TAG, "收到服务器 sync push更新状态 ,event=$event")
         var thisRound = RelayRoundInfoModel.parseFromRoundInfo(event.currentRound)
-        if(event.enableNoLimitDuration){
+        if (event.enableNoLimitDuration) {
             mRoomData.unLockMe = true
             mRoomData.unLockPeer = true
         }

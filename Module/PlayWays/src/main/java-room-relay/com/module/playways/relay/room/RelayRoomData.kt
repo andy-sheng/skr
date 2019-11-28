@@ -1,8 +1,9 @@
 package com.module.playways.relay.room
 
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
@@ -14,12 +15,25 @@ import com.module.playways.relay.room.model.RelayRoundInfoModel
 import com.module.playways.relay.room.model.ReplayPlayerInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.RelayRoom.ERRoundStatus
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 
 
 class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
     companion object {
         var MUSIC_PUBLISH_VOLUME = 85
+        var shiftTsForRelay = 0
+        fun syncServerTs(){
+            var serverApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
+            GlobalScope.launch {
+                var t1 = System.currentTimeMillis()
+                val result = subscribe { serverApi.timestamp(0) }
+                var t2 = System.currentTimeMillis()
+                var serverTs = result.data.getIntValue("timestamp")
+                shiftTsForRelay = (t1+(t2-t1)/2-serverTs).toInt()
+            }
+        }
     }
 
     override fun getPlayerAndWaiterInfoList(): List<PlayerInfoModel> {
@@ -37,7 +51,6 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
      * createTs + beginTs 代表服务器期望的两端商量好的演唱开始时间
      * System.currentTimeMillis() - shiftTsForRelay 与 createTs + beginTs 进行比较能得到演唱应该的进度
      */
-    var shiftTsForRelay = 0
     var configModel = RelayConfigModel()// 一唱到底配置
     var peerUser: ReplayPlayerInfoModel? = null
 
@@ -100,10 +113,10 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
                 }
                 if (index % 2 == 0) {
                     // 第一个人演唱阶段 看发起人
-                    return realRoundInfo?.originId!!
+                    return realRoundInfo?.userID!!
                 } else {
                     // 第二个人演唱阶段
-                    if (realRoundInfo?.originId!! == MyUserInfoManager.uid.toInt()) {
+                    if (realRoundInfo?.userID!! == MyUserInfoManager.uid.toInt()) {
                         return peerUser?.userID!!
                     } else {
                         return MyUserInfoManager.uid.toInt()
@@ -147,7 +160,7 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
      */
     fun isFirstSingByMe(): Boolean {
         // 第二个人演唱阶段
-        return MyUserInfoManager.uid.toInt() == realRoundInfo?.originId
+        return MyUserInfoManager.uid.toInt() == realRoundInfo?.userID
     }
 
     /**

@@ -18,7 +18,6 @@ import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
-import com.common.view.ex.ExTextView
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.PersonInfoDialog
@@ -62,7 +61,6 @@ import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.zq.live.proto.Common.StandPlayType
 import com.zq.live.proto.RelayRoom.ERRoundStatus
 import com.zq.live.proto.RelayRoom.RAddMusicMsg
 import com.zq.live.proto.RelayRoom.RReqAddMusicMsg
@@ -172,7 +170,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             var roundInfoModel = RelayRoundInfoModel()
             roundInfoModel.status = ERRoundStatus.RRS_SING.value
             roundInfoModel.singBeginMs = 30 * 1000
-            roundInfoModel.originId = 1705476
+            roundInfoModel.userID = 1705476
             var music = SongModel()
             music.itemName = "告白气球"
             music.acc = "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3"

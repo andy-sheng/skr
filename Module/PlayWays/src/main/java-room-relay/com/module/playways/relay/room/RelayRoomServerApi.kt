@@ -31,6 +31,10 @@ interface RelayRoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/relaygame/mute")
     fun mute(body: RequestBody): Observable<ApiResult>
 
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/timestamp")
+    fun timestamp(@Query("roomID") roomID: Int): Call<ApiResult>
+
+
 
     @GET("v1/fuel/mic-room-list")
     fun getMicHomeRoomList(@Query("offset") offset: Int, @Query("testList") testList: String, @Query("vars") vars: String): Call<ApiResult>
