@@ -37,6 +37,8 @@ class EffectModel : Serializable {
             list?.forEach {
                 if (it.hasSourcesJson()) {
                     backgroundEffectModelList.add(parseBackgroundEffectModelFromPb(it))
+                } else {
+                    backgroundEffectModelList.add(EffectModel())
                 }
             }
 
