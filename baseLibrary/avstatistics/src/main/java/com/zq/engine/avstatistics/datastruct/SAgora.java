@@ -3,8 +3,12 @@ package com.zq.engine.avstatistics.datastruct;
 
 import com.zq.engine.avstatistics.SUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.agora.rtc.IRtcEngineEventHandler;
 
@@ -15,6 +19,7 @@ import static io.agora.rtc.Constants.ADAPT_UP_BANDWIDTH;
 
 public class SAgora //all struct related to Agora is defined here!
 {
+    public static String TAG = "[SDM]";
 
     //将数值转回为相应的语义字符串
     protected static String transNetQuality(int quality) {
@@ -89,6 +94,112 @@ public class SAgora //all struct related to Agora is defined here!
     }
 
 
+    private final static int ASI_GROUP_MAX_CNT = 10;
+    public static class SAudioSamplingInfoGroup implements ILogItem {
+
+        public long ts = 0; //统计间隔结束点的时间戳
+        public List<SAudioSamplingInfo> infoList = new ArrayList<SAudioSamplingInfo>() ;
+
+        public SAudioSamplingInfoGroup(long ts) {
+            this.ts = ts;
+        }
+
+
+        public boolean isFull() {
+            if (infoList.size() >= ASI_GROUP_MAX_CNT)
+                return true;
+            else
+                return false;
+        }
+
+        public boolean hasData() {
+            if (infoList.size() > 0)
+                return true;
+            else
+                return false;
+        }
+
+
+        public void addInfo(SAudioSamplingInfo info) {
+            infoList.add(info);
+        }
+
+        @Override
+        public String toString(){
+
+            int infoCnt = infoList.size();
+            if (infoList.size() <= 0)
+                return "";
+
+            StringBuilder sb = new StringBuilder();
+            SAudioSamplingInfo e = infoList.get(0);
+
+
+            sb.append(SUtils.transTime(ts));
+            sb.append(" SAudioSamplingInfoGroup: infoCnt=").append(infoCnt);
+            sb.append(", smpRate=").append(e.smpRate);
+            sb.append(", chCnt=").append(e.chCnt).append("\n");
+
+            e = null;
+            for (int i=0; i<infoCnt; i++) {
+                e = infoList.get(i);
+                if (null == e) continue;
+
+                sb.append(TAG).append(i).append("# ");
+                sb.append(" smpCnt=").append(e.smpCnt);
+                sb.append(", pcmDur=").append(e.pcmDuration);
+                sb.append(", maxPCM=").append(e.maxAbsPCM);
+                sb.append(", meanPCM=").append(e.meanAbsPCM);
+                sb.append(", wSpan=").append(e.statisticSpan);
+                sb.append("\n");
+            }
+
+            return sb.toString();
+        }
+
+        @Override
+        public JSONObject toJSONObject() {
+            int infoCnt = infoList.size();
+
+            JSONObject jsObj = new JSONObject();
+
+            try {
+                jsObj.put("tsStr", SUtils.transTime(ts));
+                jsObj.put("tsValue", ts);
+
+
+                if (infoCnt > 0) {
+                    SAudioSamplingInfo info = infoList.get(0);
+                    jsObj.put("smpRate", info.smpRate);
+                    jsObj.put("chCnt", info.chCnt);
+                    jsObj.put("infoCnt", infoCnt);
+                }
+
+                JSONArray jsArray = new JSONArray();
+                for (int i=0; i<infoCnt; i++) {
+                    JSONObject elem = infoList.get(i).toJONSObject4Group();
+                    jsArray.put(elem);
+                }
+                jsObj.put("infos", jsArray);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return jsObj;
+        }
+
+
+        @Override
+        public String getKey() {
+            return "SAudioSamplingInfoGroup";
+        }
+
+
+        public void reset() { //TODO: reset可能有用，回头再看
+
+        }
+    }
+
     public static class SAudioSamplingInfo implements ILogItem {
         public long timeStamp; //统计间隔结束点的时间戳
 
@@ -121,31 +232,49 @@ public class SAgora //all struct related to Agora is defined here!
             return SUtils.transTime(timeStamp) + " SAudioSamplingInfo: smpRate=" + smpRate +
                     ", chCnt=" + chCnt +
                     ", smpCnt=" + smpCnt +
-                    ", maxAbsPCM=" + maxAbsPCM +
-                    ", meanAbsPCM=" + meanAbsPCM +
-                    ", pcmDuration=" + pcmDuration +
-                    ", statisticSpan=" + statisticSpan + additionInfo +"\n";
+                    ", maxPCM=" + maxAbsPCM +
+                    ", meanPCM=" + meanAbsPCM +
+                    ", pcmDur=" + pcmDuration +
+                    ", wSpan=" + statisticSpan + additionInfo +"\n";
         }
+
 
         @Override
         public JSONObject toJSONObject() {
             JSONObject jsObj = new JSONObject();
             try {
 
-                jsObj.put("timeStampStr", SUtils.transTime(timeStamp));
-                jsObj.put("timeStampValue", timeStamp);
+                jsObj.put("tsStr", SUtils.transTime(timeStamp));
+                jsObj.put("tsValue", timeStamp);
 
                 jsObj.put("smpRate",smpRate);
                 jsObj.put("chCnt", chCnt);
                 jsObj.put("smpCnt", smpCnt);
-                jsObj.put("pcmDuration", pcmDuration);
-                jsObj.put("statisticSpan", statisticSpan);
-                jsObj.put("maxAbsPCM", maxAbsPCM);
-                jsObj.put("meanAbsPCM", meanAbsPCM);
+                jsObj.put("pcmDur", pcmDuration);
+                jsObj.put("wSpan", statisticSpan);
+                jsObj.put("maxPCM", maxAbsPCM);
+                jsObj.put("meanPCM", meanAbsPCM);
                 jsObj.put("extraInfo", extraInfo);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            return jsObj;
+        }
+
+        public JSONObject toJONSObject4Group() {
+            JSONObject jsObj = new JSONObject();
+
+            try {
+                jsObj.put("smpCnt", smpCnt);
+                jsObj.put("pcmDur", pcmDuration);
+                jsObj.put("wSpan", statisticSpan);
+                jsObj.put("maxPCM", maxAbsPCM);
+                jsObj.put("meanPCM", meanAbsPCM);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
 
             return jsObj;
         }
@@ -165,6 +294,21 @@ public class SAgora //all struct related to Agora is defined here!
             this.meanAbsPCM = 0;
             this.maxAbsPCM = 0;
             this.totalAbsPCM = 0;
+        }
+
+        public SAudioSamplingInfo clone() {
+            SAudioSamplingInfo n = new SAudioSamplingInfo();
+            n.timeStamp = this.timeStamp;
+            n.smpRate = this.smpRate;
+            n.chCnt = this.chCnt;
+            n.smpCnt = this.smpCnt;
+            n.pcmDuration = this.pcmDuration;
+            n.statisticSpan = this.statisticSpan;
+            n.meanAbsPCM = this.meanAbsPCM;
+            n.maxAbsPCM = this.maxAbsPCM;
+            n.totalAbsPCM = this.totalAbsPCM;
+
+            return n;
         }
 
     }
