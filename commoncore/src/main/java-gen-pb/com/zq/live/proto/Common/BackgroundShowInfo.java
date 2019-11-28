@@ -24,7 +24,7 @@ public final class BackgroundShowInfo extends Message<BackgroundShowInfo, Backgr
 
   private static final long serialVersionUID = 0L;
 
-  public static final String DEFAULT_SOURCEURL = "";
+  public static final String DEFAULT_SOURCESJSON = "";
 
   public static final String DEFAULT_BGCOLOR = "";
 
@@ -35,7 +35,7 @@ public final class BackgroundShowInfo extends Message<BackgroundShowInfo, Backgr
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
-  private final String sourceURL;
+  private final String sourcesJson;
 
   /**
    * 背景颜色
@@ -46,20 +46,20 @@ public final class BackgroundShowInfo extends Message<BackgroundShowInfo, Backgr
   )
   private final String bgColor;
 
-  public BackgroundShowInfo(String sourceURL, String bgColor) {
-    this(sourceURL, bgColor, ByteString.EMPTY);
+  public BackgroundShowInfo(String sourcesJson, String bgColor) {
+    this(sourcesJson, bgColor, ByteString.EMPTY);
   }
 
-  public BackgroundShowInfo(String sourceURL, String bgColor, ByteString unknownFields) {
+  public BackgroundShowInfo(String sourcesJson, String bgColor, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
-    this.sourceURL = sourceURL;
+    this.sourcesJson = sourcesJson;
     this.bgColor = bgColor;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
-    builder.sourceURL = sourceURL;
+    builder.sourcesJson = sourcesJson;
     builder.bgColor = bgColor;
     builder.addUnknownFields(unknownFields());
     return builder;
@@ -71,7 +71,7 @@ public final class BackgroundShowInfo extends Message<BackgroundShowInfo, Backgr
     if (!(other instanceof BackgroundShowInfo)) return false;
     BackgroundShowInfo o = (BackgroundShowInfo) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(sourceURL, o.sourceURL)
+        && Internal.equals(sourcesJson, o.sourcesJson)
         && Internal.equals(bgColor, o.bgColor);
   }
 
@@ -80,7 +80,7 @@ public final class BackgroundShowInfo extends Message<BackgroundShowInfo, Backgr
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
-      result = result * 37 + (sourceURL != null ? sourceURL.hashCode() : 0);
+      result = result * 37 + (sourcesJson != null ? sourcesJson.hashCode() : 0);
       result = result * 37 + (bgColor != null ? bgColor.hashCode() : 0);
       super.hashCode = result;
     }
@@ -90,7 +90,7 @@ public final class BackgroundShowInfo extends Message<BackgroundShowInfo, Backgr
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (sourceURL != null) builder.append(", sourceURL=").append(sourceURL);
+    if (sourcesJson != null) builder.append(", sourcesJson=").append(sourcesJson);
     if (bgColor != null) builder.append(", bgColor=").append(bgColor);
     return builder.replace(0, 2, "BackgroundShowInfo{").append('}').toString();
   }
@@ -108,11 +108,11 @@ public final class BackgroundShowInfo extends Message<BackgroundShowInfo, Backgr
   /**
    * 资源，使用效果
    */
-  public String getSourceURL() {
-    if(sourceURL==null){
-        return DEFAULT_SOURCEURL;
+  public String getSourcesJson() {
+    if(sourcesJson==null){
+        return DEFAULT_SOURCESJSON;
     }
-    return sourceURL;
+    return sourcesJson;
   }
 
   /**
@@ -128,8 +128,8 @@ public final class BackgroundShowInfo extends Message<BackgroundShowInfo, Backgr
   /**
    * 资源，使用效果
    */
-  public boolean hasSourceURL() {
-    return sourceURL!=null;
+  public boolean hasSourcesJson() {
+    return sourcesJson!=null;
   }
 
   /**
@@ -140,7 +140,7 @@ public final class BackgroundShowInfo extends Message<BackgroundShowInfo, Backgr
   }
 
   public static final class Builder extends Message.Builder<BackgroundShowInfo, Builder> {
-    private String sourceURL;
+    private String sourcesJson;
 
     private String bgColor;
 
@@ -150,8 +150,8 @@ public final class BackgroundShowInfo extends Message<BackgroundShowInfo, Backgr
     /**
      * 资源，使用效果
      */
-    public Builder setSourceURL(String sourceURL) {
-      this.sourceURL = sourceURL;
+    public Builder setSourcesJson(String sourcesJson) {
+      this.sourcesJson = sourcesJson;
       return this;
     }
 
@@ -165,7 +165,7 @@ public final class BackgroundShowInfo extends Message<BackgroundShowInfo, Backgr
 
     @Override
     public BackgroundShowInfo build() {
-      return new BackgroundShowInfo(sourceURL, bgColor, super.buildUnknownFields());
+      return new BackgroundShowInfo(sourcesJson, bgColor, super.buildUnknownFields());
     }
   }
 
@@ -176,14 +176,14 @@ public final class BackgroundShowInfo extends Message<BackgroundShowInfo, Backgr
 
     @Override
     public int encodedSize(BackgroundShowInfo value) {
-      return ProtoAdapter.STRING.encodedSizeWithTag(1, value.sourceURL)
+      return ProtoAdapter.STRING.encodedSizeWithTag(1, value.sourcesJson)
           + ProtoAdapter.STRING.encodedSizeWithTag(2, value.bgColor)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, BackgroundShowInfo value) throws IOException {
-      ProtoAdapter.STRING.encodeWithTag(writer, 1, value.sourceURL);
+      ProtoAdapter.STRING.encodeWithTag(writer, 1, value.sourcesJson);
       ProtoAdapter.STRING.encodeWithTag(writer, 2, value.bgColor);
       writer.writeBytes(value.unknownFields());
     }
@@ -194,7 +194,7 @@ public final class BackgroundShowInfo extends Message<BackgroundShowInfo, Backgr
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setSourceURL(ProtoAdapter.STRING.decode(reader)); break;
+          case 1: builder.setSourcesJson(ProtoAdapter.STRING.decode(reader)); break;
           case 2: builder.setBgColor(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();

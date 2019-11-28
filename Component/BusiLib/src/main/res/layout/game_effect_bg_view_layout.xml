@@ -15,7 +15,14 @@
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/effect_svga"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_500_dp"
+        android:layout_height="wrap_content"
+        app:antiAlias="true"
+        app:autoPlay="false" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/dynamic_effect_svga"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:antiAlias="true"
         app:autoPlay="false" />
 </FrameLayout>

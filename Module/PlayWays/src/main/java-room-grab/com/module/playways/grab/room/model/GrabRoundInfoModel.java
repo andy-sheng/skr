@@ -3,7 +3,7 @@ package com.module.playways.grab.room.model;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.component.busilib.model.BackgroundEffectModel;
+import com.component.busilib.model.EffectModel;
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
@@ -53,7 +53,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     private HashSet<WantSingerInfo> wantSingInfos = new HashSet<>(); //已经抢了的人
 
-    private List<BackgroundEffectModel> showInfos = new ArrayList<>();
+    private List<EffectModel> showInfos = new ArrayList<>();
 
     //0未知
     //1有种优秀叫一唱到底（全部唱完）
@@ -212,11 +212,11 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         return false;
     }
 
-    public List<BackgroundEffectModel> getShowInfos() {
+    public List<EffectModel> getShowInfos() {
         return showInfos;
     }
 
-    public void setShowInfos(List<BackgroundEffectModel> showInfos) {
+    public void setShowInfos(List<EffectModel> showInfos) {
         this.showInfos = showInfos;
     }
 
@@ -591,10 +591,10 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
         roundInfoModel.showInfos.clear();
         if (roundInfo.getShowInfosList() != null && roundInfo.getShowInfosList().size() > 0) {
-            roundInfoModel.showInfos.addAll(BackgroundEffectModel.Companion.parseBackgroundEffectModelListFromPb(roundInfo.getShowInfosList()));
+            roundInfoModel.showInfos.addAll(EffectModel.Companion.parseBackgroundEffectModelListFromPb(roundInfo.getShowInfosList()));
         }
 
-        for (BackgroundEffectModel model : roundInfoModel.showInfos) {
+        for (EffectModel model : roundInfoModel.showInfos) {
             MyLog.d("GrabRoundInfoModel", "roundInfoModel " + model);
         }
         return roundInfoModel;

@@ -1,14 +1,14 @@
 package com.module.playways.grab.room.event;
 
-import com.component.busilib.model.BLightEffectModel;
+import com.component.busilib.model.EffectModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 
 public class GrabSomeOneLightBurstEvent {
     public GrabRoundInfoModel roundInfo;
     public int uid;
-    public BLightEffectModel bLightEffectModel;
+    public EffectModel bLightEffectModel;
 
-    public GrabSomeOneLightBurstEvent(int uid, GrabRoundInfoModel newRoundInfo, BLightEffectModel bLightEffectModel) {
+    public GrabSomeOneLightBurstEvent(int uid, GrabRoundInfoModel newRoundInfo, EffectModel bLightEffectModel) {
         this.uid = uid;
         this.roundInfo = newRoundInfo;
         this.bLightEffectModel = bLightEffectModel;

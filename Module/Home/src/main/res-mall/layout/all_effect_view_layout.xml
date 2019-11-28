@@ -26,10 +26,22 @@
         app:antiAlias="true"
         app:autoPlay="false" />
 
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/voiceprint_svga"
+        android:layout_width="@dimen/view_340_dp"
+        android:layout_height="@dimen/view_340_dp"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
+        app:layout_constraintLeft_toLeftOf="@+id/avatar_iv"
+        app:layout_constraintRight_toRightOf="@+id/avatar_iv"
+        app:layout_constraintTop_toTopOf="@+id/avatar_iv"
+        app:loopCount="-1" />
+
     <com.common.image.fresco.BaseImageView
         android:id="@+id/avatar_iv"
-        android:layout_width="@dimen/view_72_dp"
-        android:layout_height="@dimen/view_72_dp"
+        android:layout_width="@dimen/view_92_dp"
+        android:layout_height="@dimen/view_92_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -37,8 +49,8 @@
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/avatar_box"
-        android:layout_width="@dimen/view_110_dp"
-        android:layout_height="@dimen/view_110_dp"
+        android:layout_width="@dimen/view_138_dp"
+        android:layout_height="@dimen/view_138_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

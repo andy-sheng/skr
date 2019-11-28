@@ -4,7 +4,6 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
-import android.widget.ImageView
 import com.common.anim.svga.SvgaParserAdapter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
@@ -23,8 +22,7 @@ class EffectView : ConstraintLayout {
     var bgSvga: SVGAImageView
     var avatarIv: BaseImageView
     var avatarBox: BaseImageView
-    var lightSvga: SVGAImageView
-    var defaultBgIv: ImageView
+    var voiceprintSvga: SVGAImageView
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -33,11 +31,10 @@ class EffectView : ConstraintLayout {
     init {
         View.inflate(context, R.layout.all_effect_view_layout, this)
 
+        voiceprintSvga = rootView.findViewById(R.id.voiceprint_svga)
         bgSvga = rootView.findViewById(R.id.bg_svga)
         avatarIv = rootView.findViewById(R.id.avatar_iv)
         avatarBox = rootView.findViewById(R.id.avatar_box)
-        lightSvga = rootView.findViewById(R.id.light_svga)
-        defaultBgIv = rootView.findViewById(R.id.default_bg_iv)
 
         AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                 .setCircle(true)
@@ -50,12 +47,30 @@ class EffectView : ConstraintLayout {
             avatarBox.setImageResource(LevelConfigUtils.getRaceCenterAvatarBg(MyUserInfoManager.myUserInfo?.ranking?.mainRanking
                     ?: 0))
         }
+
+        showVoiceprint()
+    }
+
+    fun showVoiceprint() {
+        voiceprintSvga?.visibility = View.VISIBLE
+        voiceprintSvga?.loops = 1
+
+        SvgaParserAdapter.parse("grab_main_stage.svga", object : SVGAParser.ParseCompletion {
+            override fun onComplete(@NotNull videoItem: SVGAVideoEntity) {
+                val drawable = SVGADrawable(videoItem)
+                voiceprintSvga!!.loops = -1
+                voiceprintSvga!!.setImageDrawable(drawable)
+                voiceprintSvga!!.startAnimation()
+            }
+
+            override fun onError() {
+
+            }
+        })
     }
 
     fun showBgEffect(productModel: ProductModel) {
         reset()
-        defaultBgIv.visibility = View.GONE
-        defaultBgIv.background = null
 
         avatarIv.visibility = View.VISIBLE
         avatarBox.visibility = View.VISIBLE
@@ -63,7 +78,9 @@ class EffectView : ConstraintLayout {
         bgSvga?.visibility = View.VISIBLE
         bgSvga?.loops = 1
 
-        SvgaParserAdapter.parse(productModel.sourceURL, object : SVGAParser.ParseCompletion {
+        showVoiceprint()
+
+        SvgaParserAdapter.parse(getFirstLevelBgEffect(productModel), object : SVGAParser.ParseCompletion {
             override fun onComplete(@NotNull videoItem: SVGAVideoEntity) {
                 val drawable = SVGADrawable(videoItem)
                 bgSvga!!.loops = -1
@@ -77,17 +94,27 @@ class EffectView : ConstraintLayout {
         })
     }
 
+    private fun getFirstLevelBgEffect(productModel: ProductModel): String {
+        productModel.effectModel?.items?.forEach {
+            if (it.type == 1) {
+                return it.sourceUrl
+            }
+        }
+
+        return ""
+    }
+
     fun showLightEffect(productModel: ProductModel) {
         reset()
-        lightSvga?.visibility = View.VISIBLE
-        lightSvga?.loops = 1
+        bgSvga?.visibility = View.VISIBLE
+        bgSvga?.loops = 1
 
-        SvgaParserAdapter.parse(productModel.sourceURL, object : SVGAParser.ParseCompletion {
+        SvgaParserAdapter.parse(productModel?.effectModel?.items?.get(0)?.sourceUrl, object : SVGAParser.ParseCompletion {
             override fun onComplete(@NotNull videoItem: SVGAVideoEntity) {
                 val drawable = SVGADrawable(videoItem)
-                lightSvga!!.loops = -1
-                lightSvga!!.setImageDrawable(drawable)
-                lightSvga!!.startAnimation()
+                bgSvga!!.loops = -1
+                bgSvga!!.setImageDrawable(drawable)
+                bgSvga!!.startAnimation()
             }
 
             override fun onError() {
@@ -101,21 +128,20 @@ class EffectView : ConstraintLayout {
 
         avatarIv.visibility = View.VISIBLE
         avatarBox.visibility = View.VISIBLE
-        defaultBgIv.visibility = View.VISIBLE
-        defaultBgIv.background = U.getDrawable(R.drawable.effect_default)
+        showVoiceprint()
     }
 
     fun showDefaultLightEffect() {
         reset()
-        lightSvga?.visibility = View.VISIBLE
-        lightSvga?.loops = 1
+        bgSvga?.visibility = View.VISIBLE
+        bgSvga?.loops = 1
 
         SvgaParserAdapter.parse(GRAB_BURST_BIG_SVGA, object : SVGAParser.ParseCompletion {
             override fun onComplete(@NotNull videoItem: SVGAVideoEntity) {
                 val drawable = SVGADrawable(videoItem)
-                lightSvga!!.loops = -1
-                lightSvga!!.setImageDrawable(drawable)
-                lightSvga!!.startAnimation()
+                bgSvga!!.loops = -1
+                bgSvga!!.setImageDrawable(drawable)
+                bgSvga!!.startAnimation()
             }
 
             override fun onError() {
@@ -130,23 +156,16 @@ class EffectView : ConstraintLayout {
     }
 
     private fun reset() {
-        if (lightSvga != null) {
-            lightSvga!!.callback = null
-            lightSvga!!.stopAnimation(true)
-            lightSvga.visibility = View.GONE
-        }
-
         if (bgSvga != null) {
             bgSvga!!.callback = null
             bgSvga!!.stopAnimation(true)
             bgSvga.visibility = View.GONE
         }
 
-        defaultBgIv.visibility = View.GONE
-        defaultBgIv.background = null
-
         avatarIv.visibility = View.GONE
         avatarBox.visibility = View.GONE
+        voiceprintSvga.visibility = View.GONE
+        voiceprintSvga?.stopAnimation()
     }
 
     companion object {

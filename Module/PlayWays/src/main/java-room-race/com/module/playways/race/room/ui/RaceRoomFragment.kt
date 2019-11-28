@@ -770,13 +770,13 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         val now = mRoomData!!.realRoundInfo
         if (seq == 1) {
             if (now?.showInfos != null && now?.showInfos.size >= 1) {
-                mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+                mGameEffectBgView.showBgEffect(now?.showInfos[0])
             } else {
                 mGameEffectBgView.hideBg()
             }
         } else if (seq == 2) {
             if (now?.showInfos != null && now?.showInfos.size >= 2) {
-                mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
+                mGameEffectBgView.showBgEffect(now?.showInfos[1])
             } else {
                 mGameEffectBgView.hideBg()
             }

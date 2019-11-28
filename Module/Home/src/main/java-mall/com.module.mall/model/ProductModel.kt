@@ -1,6 +1,8 @@
 package com.module.mall.model
 
+import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.annotation.JSONField
+import com.component.busilib.model.EffectModel
 import java.io.Serializable
 
 class ProductModel : Serializable {
@@ -24,8 +26,18 @@ class ProductModel : Serializable {
     var price: List<Price> = listOf()
     @JSONField(name = "sortID")
     var sortID: Int = 0
-    @JSONField(name = "sourceURL")
-    var sourceURL: String = ""
+
+    @JSONField(name = "sourcesJson")
+    var sourcesJson: String? = null
+
+    var effectModel: EffectModel? = null
+        get() {
+            if (field == null) {
+                field = JSON.parseObject(sourcesJson, EffectModel::class.java)
+            }
+
+            return field
+        }
 
     constructor()
 }

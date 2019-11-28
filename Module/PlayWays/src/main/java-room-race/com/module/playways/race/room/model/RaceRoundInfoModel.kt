@@ -3,7 +3,7 @@ package com.module.playways.race.room.model
 import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
-import com.component.busilib.model.BackgroundEffectModel
+import com.component.busilib.model.EffectModel
 import com.module.playways.race.room.event.*
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.song.model.SongModel
@@ -23,7 +23,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     var waitUsers = ArrayList<RacePlayerInfoModel>() // 观众
 
     @JSONField(name = "showInfos")
-    var showInfos: ArrayList<BackgroundEffectModel> = ArrayList()
+    var showInfos: ArrayList<EffectModel> = ArrayList()
     var introBeginMs = 0 //竞选开始相对时间（相对于createTimeMs时间）
     var introEndMs = 0 // 竞选结束相对时间（相对于createTimeMs时间）
     //var wantSingInfos = ArrayList<RaceWantSingInfo>() // 想唱信息列表
@@ -389,7 +389,7 @@ internal fun parseFromRoundInfoPB(pb: RaceRoundInfo): RaceRoundInfoModel {
     model.audienceUserCnt = pb.audienceUserCnt
 
     if (pb.hasShowInfosList() && pb.showInfosList.size > 0) {
-        model.showInfos.addAll(BackgroundEffectModel.parseBackgroundEffectModelListFromPb(pb.showInfosList))
+        model.showInfos.addAll(EffectModel.parseBackgroundEffectModelListFromPb(pb.showInfosList))
     }
     return model
 }
