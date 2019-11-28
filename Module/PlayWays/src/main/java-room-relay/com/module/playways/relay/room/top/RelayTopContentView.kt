@@ -36,8 +36,8 @@ class RelayTopContentView : ExConstraintLayout {
     private val arrowIv: ImageView
     private val unlimitIv: ImageView
     private val leftAvatarSdv: SimpleDraweeView
-    private val leftMuteIv:ImageView
-    private val rightMuteIv:ImageView
+    private val leftMuteIv: ImageView
+    private val rightMuteIv: ImageView
     private val loveBg: ImageView
     private val loveStatusIv: ImageView
     private val rightAvatarSdv: SimpleDraweeView
@@ -48,7 +48,7 @@ class RelayTopContentView : ExConstraintLayout {
     var mIsOpen = true
     var countDownJob: Job? = null
 
-    var roomData:RelayRoomData?=null
+    var roomData: RelayRoomData? = null
 
     init {
         View.inflate(context, R.layout.relay_top_content_view_layout, this)
@@ -87,47 +87,47 @@ class RelayTopContentView : ExConstraintLayout {
         }
     }
 
-    fun bindData(){
-        if(roomData?.leftSeat == true){
-            AvatarUtils.loadAvatarByUrl(leftAvatarSdv,AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
+    fun bindData() {
+        if (roomData?.leftSeat == true) {
+            AvatarUtils.loadAvatarByUrl(leftAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                     .setCircle(true)
                     .setBorderColor(Color.parseColor("#ffd8d8d8"))
                     .setBorderWidth(1.dp().toFloat())
                     .build())
-            AvatarUtils.loadAvatarByUrl(rightAvatarSdv,AvatarUtils.newParamsBuilder(roomData?.peerUser?.userInfo?.avatar)
+            AvatarUtils.loadAvatarByUrl(rightAvatarSdv, AvatarUtils.newParamsBuilder(roomData?.peerUser?.userInfo?.avatar)
                     .setCircle(true)
                     .setBorderColor(Color.parseColor("#ffd8d8d8"))
                     .setBorderWidth(1.dp().toFloat())
                     .build())
-        }else{
-            AvatarUtils.loadAvatarByUrl(rightAvatarSdv,AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
+        } else {
+            AvatarUtils.loadAvatarByUrl(rightAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                     .setCircle(true)
                     .setBorderColor(Color.parseColor("#ffd8d8d8"))
                     .setBorderWidth(1.dp().toFloat())
                     .build())
-            AvatarUtils.loadAvatarByUrl(leftAvatarSdv,AvatarUtils.newParamsBuilder(roomData?.peerUser?.userInfo?.avatar)
+            AvatarUtils.loadAvatarByUrl(leftAvatarSdv, AvatarUtils.newParamsBuilder(roomData?.peerUser?.userInfo?.avatar)
                     .setCircle(true)
                     .setBorderColor(Color.parseColor("#ffd8d8d8"))
                     .setBorderWidth(1.dp().toFloat())
                     .build())
         }
         loveBg.setImageResource(R.drawable.normal_love_icon)
-        countTimeTv.text = U.getDateTimeUtils().formatVideoTime(5*60*1000)
+        countTimeTv.text = U.getDateTimeUtils().formatVideoTime(5 * 60 * 1000)
         tipsIv.visibility = View.VISIBLE
     }
 
-    fun launchCountDown(){
-        if(countTimeTv.visibility == View.VISIBLE){
+    fun launchCountDown() {
+        if (countTimeTv.visibility == View.VISIBLE) {
             var music = roomData?.realRoundInfo?.music
             countDownJob = launch {
-                while(true){
-                    var t = music?.endMs!! - music?.beginMs+3000
+                while (true) {
+                    var t = music?.endMs!! - music?.beginMs + 3000
                     var leftTs = t - (roomData?.getSingCurPosition() ?: 0)
                     if (leftTs < 0) {
                         leftTs = 0
                     }
                     countTimeTv.text = U.getDateTimeUtils().formatVideoTime(leftTs);
-                    if(leftTs==0L){
+                    if (leftTs == 0L) {
                         break
                     }
                     delay(1000)
@@ -138,59 +138,76 @@ class RelayTopContentView : ExConstraintLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RelayLockChangeEvent){
-            if(roomData?.unLockMe == true && roomData?.unLockPeer==true){
-                loveBg.setImageResource(R.drawable.light_love_icon)
-                unlimitIv.visibility = View.VISIBLE
-                tipsIv.visibility = View.GONE
-                countTimeTv.visibility = View.GONE
-                countDownJob?.cancel()
-            }else if(roomData?.unLockMe == false && roomData?.unLockPeer==false){
-                loveBg.setImageResource(R.drawable.normal_love_icon)
-            }else if(roomData?.unLockMe == true){
-                tipsIv.visibility = View.GONE
-                if(roomData?.leftSeat == true){
-                    loveBg.setImageResource(R.drawable.light_left_love_icon)
-                }else{
-                    loveBg.setImageResource(R.drawable.light_right_love_icon)
-                }
-            }else if(roomData?.unLockPeer == true){
-                tipsIv.visibility = View.VISIBLE
-                if(roomData?.leftSeat == true){
-                    loveBg.setImageResource(R.drawable.light_right_love_icon)
-                }else{
-                    loveBg.setImageResource(R.drawable.light_left_love_icon)
-                }
+    fun onEvent(event: RelayLockChangeEvent) {
+        if (roomData?.unLockMe == true && roomData?.unLockPeer == true) {
+            loveBg.setImageResource(R.drawable.light_love_icon)
+            unlimitIv.visibility = View.VISIBLE
+            tipsIv.visibility = View.GONE
+            countTimeTv.visibility = View.GONE
+            countDownJob?.cancel()
+        } else if (roomData?.unLockMe == false && roomData?.unLockPeer == false) {
+            loveBg.setImageResource(R.drawable.normal_love_icon)
+        } else if (roomData?.unLockMe == true) {
+            tipsIv.visibility = View.GONE
+            if (roomData?.leftSeat == true) {
+                loveBg.setImageResource(R.drawable.light_left_love_icon)
+            } else {
+                loveBg.setImageResource(R.drawable.light_right_love_icon)
             }
+        } else if (roomData?.unLockPeer == true) {
+            tipsIv.visibility = View.VISIBLE
+            if (roomData?.leftSeat == true) {
+                loveBg.setImageResource(R.drawable.light_right_love_icon)
+            } else {
+                loveBg.setImageResource(R.drawable.light_left_love_icon)
+            }
+        }
+    }
+
+    fun getViewLeft(userID: Int): Int {
+        var userSeatLeft = true  // 默认这个id在左边的位置上
+        userSeatLeft = if (userID == MyUserInfoManager.uid.toInt()) {
+            roomData?.leftSeat ?: true
+        } else {
+            !(roomData?.leftSeat ?: true)
+        }
+
+        return if (userSeatLeft) {
+            // 左边的位置
+            U.getDisplayUtils().screenWidth / 2 - 85.dp()
+        } else {
+            // 右边的位置
+            U.getDisplayUtils().screenWidth / 2 + 85.dp()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RMuteMsg){
-        if(event.userID == MyUserInfoManager.uid.toInt()){
-            if(roomData?.leftSeat == true){
-                if(event.isMute){
+    fun onEvent(event: RMuteMsg) {
+        if (event.userID == MyUserInfoManager.uid.toInt()) {
+            if (roomData?.leftSeat == true) {
+                if (event.isMute) {
                     leftMuteIv.visibility = View.VISIBLE
-                }else{
+                } else {
                     leftMuteIv.visibility = View.GONE
                 }
-            }else{
-                if(event.isMute){
+            } else {
+                if (event.isMute) {
                     rightMuteIv.visibility = View.VISIBLE
-                }else{
+                } else {
                     rightMuteIv.visibility = View.GONE
                 }
             }
-        }else if (event.userID == roomData?.peerUser?.userID){
-            if(roomData?.leftSeat == true){
-                if(event.isMute){
+        } else if (event.userID == roomData?.peerUser?.userID) {
+            if (roomData?.leftSeat == true) {
+                if (event.isMute) {
                     rightMuteIv.visibility = View.VISIBLE
-                }else{
+                } else {
                     rightMuteIv.visibility = View.GONE
                 }
-            }else{
-                if(event.isMute){
+            } else {
+                if (event.isMute) {
                     leftMuteIv.visibility = View.VISIBLE
-                }else{
+                } else {
                     leftMuteIv.visibility = View.GONE
                 }
             }

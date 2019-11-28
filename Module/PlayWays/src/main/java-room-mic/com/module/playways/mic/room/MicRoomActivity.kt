@@ -58,10 +58,10 @@ import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
 import com.module.playways.mic.room.event.MicWantInviteEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
-import com.module.playways.mic.room.model.MicUserMusicModel
+import com.module.playways.mic.room.model.RoomInviteMusicModel
 import com.module.playways.mic.room.presenter.MicCorePresenter
 import com.module.playways.mic.room.seat.MicSeatView
-import com.module.playways.mic.room.top.MicInviteView
+import com.module.playways.mic.room.top.RoomInviteView
 import com.module.playways.mic.room.top.MicTopContentView
 import com.module.playways.mic.room.top.MicTopOpView
 import com.module.playways.mic.room.ui.IMicRoomView
@@ -138,7 +138,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     internal lateinit var mTopOpView: MicTopOpView
     internal lateinit var mTopContentView: MicTopContentView
 
-    internal var mMicInviteView: MicInviteView? = null
+    internal var mMicInviteView: RoomInviteView? = null
 
     // 专场ui组件
     lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
@@ -556,7 +556,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             }
         })
 
-        mMicInviteView = MicInviteView(findViewById(R.id.mic_invite_view_stub))
+        mMicInviteView = RoomInviteView(findViewById(R.id.mic_invite_view_stub))
         mMicInviteView?.agreeInviteListener = {
             mSkrAudioPermission.ensurePermission({
                 mMicInviteView?.agreeInvite()
@@ -702,9 +702,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MReqAddMusicMsg) {
         // 请求合唱或者pk
-        val micUserMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
+        val micUserMusicModel = RoomInviteMusicModel.parseFromInfoPB(event.detail)
         if (micUserMusicModel.userID != MyUserInfoManager.uid.toInt()) {
-            mMicInviteView?.showInvite(micUserMusicModel, mTopContentView.getViewLeft(micUserMusicModel.userID), true)
+            mMicInviteView?.showInvite(micUserMusicModel, mTopContentView.getViewLeft(micUserMusicModel.userID), true, GameModeType.GAME_MODE_MIC)
         } else {
             // 启一个任务去同步
             mMicInviteView?.startCheckSelfJob(micUserMusicModel)
@@ -727,10 +727,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MAddMusicMsg) {
         // 合唱 pk 成功 点歌成功，要来判断是否当前合唱
-        val userMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
+        val userMusicModel = RoomInviteMusicModel.parseFromInfoPB(event.detail)
         if (userMusicModel.music?.playType == StandPlayType.PT_SPK_TYPE.value || userMusicModel.music?.playType == StandPlayType.PT_CHO_TYPE.value) {
             // 合唱或者pk
-            mMicInviteView?.showInvite(userMusicModel, mTopContentView.getViewLeft(userMusicModel.userID), false)
+            mMicInviteView?.showInvite(userMusicModel, mTopContentView.getViewLeft(userMusicModel.userID), false, GameModeType.GAME_MODE_MIC)
         }
     }
 

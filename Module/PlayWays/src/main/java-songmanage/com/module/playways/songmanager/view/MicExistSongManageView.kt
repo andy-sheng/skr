@@ -13,8 +13,7 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
-import com.module.playways.mic.room.event.MicRoundChangeEvent
-import com.module.playways.mic.room.model.MicUserMusicModel
+import com.module.playways.mic.room.model.RoomInviteMusicModel
 import com.module.playways.songmanager.SongManagerServerApi
 import com.module.playways.songmanager.adapter.MicExistSongAdapter
 import com.module.playways.songmanager.model.MicExistSongModel
@@ -192,7 +191,7 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MAddMusicMsg) {
-        val userMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
+        val userMusicModel = RoomInviteMusicModel.parseFromInfoPB(event.detail)
         if (userMusicModel.userID == MyUserInfoManager.uid.toInt()) {
             isSongChange = true
         }

@@ -6,8 +6,8 @@ import com.zq.live.proto.MicRoom.UserMusicDetail
 import com.zq.live.proto.RelayRoom.RUserMusicDetail
 import java.io.Serializable
 
-// 邀请合唱或者PK的model
-class MicUserMusicModel : Serializable {
+// 邀请合唱或者PK的model 以及接唱的model
+class RoomInviteMusicModel : Serializable {
     @JSONField(name = "userID")
     var userID: Int = 0
     @JSONField(name = "peerID")
@@ -22,8 +22,8 @@ class MicUserMusicModel : Serializable {
     var music: SongModel? = null
 
     companion object {
-        internal fun parseFromInfoPB(pb: UserMusicDetail): MicUserMusicModel {
-            val model = MicUserMusicModel()
+        internal fun parseFromInfoPB(pb: UserMusicDetail): RoomInviteMusicModel {
+            val model = RoomInviteMusicModel()
             model.userID = pb.userID
             model.peerID = pb.peerID
             model.uniqTag = pb.uniqTag
@@ -35,8 +35,8 @@ class MicUserMusicModel : Serializable {
             return model
         }
 
-        internal fun parseFromInfoPB(pb: RUserMusicDetail): MicUserMusicModel {
-            val model = MicUserMusicModel()
+        internal fun parseFromInfoPB(pb: RUserMusicDetail): RoomInviteMusicModel {
+            val model = RoomInviteMusicModel()
             model.userID = pb.userID
             model.peerID = pb.peerID
             model.uniqTag = pb.uniqTag

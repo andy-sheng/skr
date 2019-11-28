@@ -19,6 +19,7 @@ import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.ex.ExTextView
+import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
@@ -32,9 +33,8 @@ import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
-import com.module.playways.mic.room.model.MicUserMusicModel
-import com.module.playways.mic.room.top.MicInviteView
-import com.module.playways.mic.room.view.MicTurnInfoCardView
+import com.module.playways.mic.room.model.RoomInviteMusicModel
+import com.module.playways.mic.room.top.RoomInviteView
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.room.bottom.RelayBottomContainerView
 import com.module.playways.relay.room.event.RelayLockChangeEvent
@@ -108,7 +108,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     internal lateinit var mGameEffectBgView: GameEffectBgView
 
-    internal var mMicInviteView: MicInviteView? = null
+    internal var mRoomInviteView: RoomInviteView? = null
 
     // 专场ui组件
 //    lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
@@ -488,10 +488,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             }
         }
 
-        mMicInviteView = MicInviteView(findViewById(R.id.mic_invite_view_stub))
-        mMicInviteView?.agreeInviteListener = {
+        mRoomInviteView = RoomInviteView(findViewById(R.id.mic_invite_view_stub))
+        mRoomInviteView?.agreeInviteListener = {
             mSkrAudioPermission.ensurePermission({
-                mMicInviteView?.agreeInvite()
+                mRoomInviteView?.agreeInvite()
             }, true)
         }
     }
@@ -576,24 +576,21 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RReqAddMusicMsg) {
-        // 请求合唱或者pk
-        val micUserMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
+        // 请求接唱
+        val micUserMusicModel = RoomInviteMusicModel.parseFromInfoPB(event.detail)
         if (micUserMusicModel.userID != MyUserInfoManager.uid.toInt()) {
-//            mMicInviteView?.showInvite(micUserMusicModel, mTopContentView.getViewLeft(micUserMusicModel.userID), true)
+            mRoomInviteView?.showInvite(micUserMusicModel, mTopContentView.getViewLeft(micUserMusicModel.userID), true, GameModeType.GAME_MODE_RELAY)
         } else {
             // 启一个任务去同步
-            mMicInviteView?.startCheckSelfJob(micUserMusicModel)
+            mRoomInviteView?.startCheckSelfJob(micUserMusicModel)
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RAddMusicMsg) {
-        // 合唱 pk 成功 点歌成功，要来判断是否当前合唱
-        val userMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
-        if (userMusicModel.music?.playType == StandPlayType.PT_SPK_TYPE.value || userMusicModel.music?.playType == StandPlayType.PT_CHO_TYPE.value) {
-            // 合唱或者pk
-//            mMicInviteView?.showInvite(userMusicModel, mTopContentView.getViewLeft(userMusicModel.userID), false)
-        }
+        // 接唱发起请求
+        val userMusicModel = RoomInviteMusicModel.parseFromInfoPB(event.detail)
+        mRoomInviteView?.showInvite(userMusicModel, mTopContentView.getViewLeft(userMusicModel.userID), false, GameModeType.GAME_MODE_RELAY)
     }
 
 //    @Subscribe(threadMode = ThreadMode.MAIN)
