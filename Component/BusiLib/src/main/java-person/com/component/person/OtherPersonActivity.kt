@@ -4,6 +4,7 @@ import android.os.Bundle
 
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
+import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.component.busilib.R
@@ -22,7 +23,7 @@ class OtherPersonActivity : BaseActivity() {
             val ac = U.getActivityUtils().activityList[i]
             if (ac is OtherPersonActivity) {
                 num++
-                if (num >= 2) {
+                if (num >= 5) {
                     ac.finish()
                 }
             }

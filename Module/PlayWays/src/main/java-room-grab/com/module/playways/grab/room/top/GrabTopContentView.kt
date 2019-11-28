@@ -94,11 +94,11 @@ class GrabTopContentView : ConstraintLayout {
         if (open) {
             // 展开状态
             mIsOpen = true
-            mArrowIv.setImageResource(R.drawable.yichangdaodi_dingbuzhankai)
+            mArrowIv.setImageResource(R.drawable.race_expand_icon)
         } else {
             // 折叠状态
             mIsOpen = false
-            mArrowIv.setImageResource(R.drawable.yichangdaodi_dingbushouqi)
+            mArrowIv.setImageResource(R.drawable.race_shrink_icon)
         }
     }
 

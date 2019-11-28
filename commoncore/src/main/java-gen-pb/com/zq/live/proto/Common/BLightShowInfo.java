@@ -24,7 +24,7 @@ public final class BLightShowInfo extends Message<BLightShowInfo, BLightShowInfo
 
   private static final long serialVersionUID = 0L;
 
-  public static final String DEFAULT_SOURCEURL = "";
+  public static final String DEFAULT_SOURCESJSON = "";
 
   /**
    * 资源，使用效果
@@ -33,21 +33,21 @@ public final class BLightShowInfo extends Message<BLightShowInfo, BLightShowInfo
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
-  private final String sourceURL;
+  private final String sourcesJson;
 
-  public BLightShowInfo(String sourceURL) {
-    this(sourceURL, ByteString.EMPTY);
+  public BLightShowInfo(String sourcesJson) {
+    this(sourcesJson, ByteString.EMPTY);
   }
 
-  public BLightShowInfo(String sourceURL, ByteString unknownFields) {
+  public BLightShowInfo(String sourcesJson, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
-    this.sourceURL = sourceURL;
+    this.sourcesJson = sourcesJson;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
-    builder.sourceURL = sourceURL;
+    builder.sourcesJson = sourcesJson;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -58,7 +58,7 @@ public final class BLightShowInfo extends Message<BLightShowInfo, BLightShowInfo
     if (!(other instanceof BLightShowInfo)) return false;
     BLightShowInfo o = (BLightShowInfo) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(sourceURL, o.sourceURL);
+        && Internal.equals(sourcesJson, o.sourcesJson);
   }
 
   @Override
@@ -66,7 +66,7 @@ public final class BLightShowInfo extends Message<BLightShowInfo, BLightShowInfo
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
-      result = result * 37 + (sourceURL != null ? sourceURL.hashCode() : 0);
+      result = result * 37 + (sourcesJson != null ? sourcesJson.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -75,7 +75,7 @@ public final class BLightShowInfo extends Message<BLightShowInfo, BLightShowInfo
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (sourceURL != null) builder.append(", sourceURL=").append(sourceURL);
+    if (sourcesJson != null) builder.append(", sourcesJson=").append(sourcesJson);
     return builder.replace(0, 2, "BLightShowInfo{").append('}').toString();
   }
 
@@ -92,22 +92,22 @@ public final class BLightShowInfo extends Message<BLightShowInfo, BLightShowInfo
   /**
    * 资源，使用效果
    */
-  public String getSourceURL() {
-    if(sourceURL==null){
-        return DEFAULT_SOURCEURL;
+  public String getSourcesJson() {
+    if(sourcesJson==null){
+        return DEFAULT_SOURCESJSON;
     }
-    return sourceURL;
+    return sourcesJson;
   }
 
   /**
    * 资源，使用效果
    */
-  public boolean hasSourceURL() {
-    return sourceURL!=null;
+  public boolean hasSourcesJson() {
+    return sourcesJson!=null;
   }
 
   public static final class Builder extends Message.Builder<BLightShowInfo, Builder> {
-    private String sourceURL;
+    private String sourcesJson;
 
     public Builder() {
     }
@@ -115,14 +115,14 @@ public final class BLightShowInfo extends Message<BLightShowInfo, BLightShowInfo
     /**
      * 资源，使用效果
      */
-    public Builder setSourceURL(String sourceURL) {
-      this.sourceURL = sourceURL;
+    public Builder setSourcesJson(String sourcesJson) {
+      this.sourcesJson = sourcesJson;
       return this;
     }
 
     @Override
     public BLightShowInfo build() {
-      return new BLightShowInfo(sourceURL, super.buildUnknownFields());
+      return new BLightShowInfo(sourcesJson, super.buildUnknownFields());
     }
   }
 
@@ -133,13 +133,13 @@ public final class BLightShowInfo extends Message<BLightShowInfo, BLightShowInfo
 
     @Override
     public int encodedSize(BLightShowInfo value) {
-      return ProtoAdapter.STRING.encodedSizeWithTag(1, value.sourceURL)
+      return ProtoAdapter.STRING.encodedSizeWithTag(1, value.sourcesJson)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, BLightShowInfo value) throws IOException {
-      ProtoAdapter.STRING.encodeWithTag(writer, 1, value.sourceURL);
+      ProtoAdapter.STRING.encodeWithTag(writer, 1, value.sourcesJson);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -149,7 +149,7 @@ public final class BLightShowInfo extends Message<BLightShowInfo, BLightShowInfo
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setSourceURL(ProtoAdapter.STRING.decode(reader)); break;
+          case 1: builder.setSourcesJson(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

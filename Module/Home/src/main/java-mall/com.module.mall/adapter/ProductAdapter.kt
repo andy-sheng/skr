@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
+import com.common.utils.ImageUtils
 import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -86,6 +87,7 @@ class ProductAdapter(val getIndexMethod: (() -> Int)) : DiffAdapter<ProductModel
             this.index = index
             AvatarUtils.loadAvatarByUrl(effectIv,
                     AvatarUtils.newParamsBuilder(model.goodsURL)
+                            .setSizeType(ImageUtils.SIZE.SIZE_160)
                             .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                             .build())
             productName.text = model.goodsName

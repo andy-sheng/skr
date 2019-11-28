@@ -1292,13 +1292,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: GrabSomeOneLightBurstEvent) {
         // 爆灯
-        if (RoomDataUtils.isMyRound(mRoomData!!.realRoundInfo)) {
-            // 当前我是演唱者
-            mDengBigAnimation?.translationY = U.getDisplayUtils().dip2px(200f).toFloat()
-            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid, event?.bLightEffectModel?.sourceURL)
-        } else {
-            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid, event?.bLightEffectModel?.sourceURL)
-        }
+        mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid, event?.bLightEffectModel?.sourceURL)
     }
 
     private fun removeAllEnsureMsg() {
@@ -1522,36 +1516,36 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         now?.let {
             if (now.isNormalRound) {
                 if (now?.showInfos != null && now?.showInfos.size >= 1) {
-                    mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+                    mGameEffectBgView.showBgEffect(now?.showInfos[0])
                 }
             } else if (now.isChorusRound) {
                 if (RoomDataUtils.isRoundSinger(it, MyUserInfoManager.uid)) {
                     //自己有演唱
                     if (now.chorusRoundInfoModels[0].userID.toLong() == MyUserInfoManager.uid) {
                         if (now?.showInfos != null && now?.showInfos.size >= 1) {
-                            mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+                            mGameEffectBgView.showBgEffect(now?.showInfos[0])
                         }
                     } else {
                         if (now?.showInfos != null && now?.showInfos.size >= 2) {
-                            mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
+                            mGameEffectBgView.showBgEffect(now?.showInfos[1])
                         }
                     }
                 } else {
                     //自己没有唱
                     for (effect in now?.showInfos) {
                         if (!TextUtils.isEmpty(effect.sourceURL)) {
-                            mGameEffectBgView.showBgEffect(effect.sourceURL, effect.bgColor)
+                            mGameEffectBgView.showBgEffect(effect)
                         }
                     }
                 }
             } else if (now.isPKRound) {
                 if (now.status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.value) {
                     if (now?.showInfos != null && now?.showInfos.size >= 1) {
-                        mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+                        mGameEffectBgView.showBgEffect(now?.showInfos[0])
                     }
-                } else if (now.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
+                } else {
                     if (now?.showInfos != null && now?.showInfos.size >= 2) {
-                        mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
+                        mGameEffectBgView.showBgEffect(now?.showInfos[1])
                     }
                 }
             } else if (now.isMiniGameRound) {
@@ -1559,18 +1553,18 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                     //自己有演唱
                     if (now.miniGameRoundInfoModels[0].userID.toLong() == MyUserInfoManager.uid) {
                         if (now?.showInfos != null && now?.showInfos.size >= 1) {
-                            mGameEffectBgView.showBgEffect(now?.showInfos[0].sourceURL, now?.showInfos[0].bgColor)
+                            mGameEffectBgView.showBgEffect(now?.showInfos[0])
                         }
                     } else {
                         if (now?.showInfos != null && now?.showInfos.size >= 2) {
-                            mGameEffectBgView.showBgEffect(now?.showInfos[1].sourceURL, now?.showInfos[1].bgColor)
+                            mGameEffectBgView.showBgEffect(now?.showInfos[1])
                         }
                     }
                 } else {
                     //自己没有唱
                     for (effect in now?.showInfos) {
                         if (!TextUtils.isEmpty(effect.sourceURL)) {
-                            mGameEffectBgView.showBgEffect(effect.sourceURL, effect.bgColor)
+                            mGameEffectBgView.showBgEffect(effect)
                         }
                     }
                 }
@@ -1695,6 +1689,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         super.destroy()
         MyLog.d(TAG, "destroy")
         dismissDialog()
+        mFlyCommentView?.destory()
         if (mQuitTipsDialog != null && mQuitTipsDialog!!.isShowing) {
             mQuitTipsDialog?.dismiss(false)
             mQuitTipsDialog = null

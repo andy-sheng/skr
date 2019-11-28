@@ -30,7 +30,7 @@
             android:layout_marginRight="@dimen/view_10_dp"
             android:layout_toRightOf="@id/emoji_btn"
             android:scaleType="fitXY"
-            app:src_unPressed_drawable="@drawable/yichangdaodi_liwu" />
+            app:src_unPressed_drawable="@drawable/outer_gift" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/meigui_iv"
@@ -39,7 +39,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_10_dp"
             android:layout_toRightOf="@id/gift_mall_btn"
-            android:background="@drawable/outer_flawer"
+            android:background="@drawable/outer_flower"
             android:scaleType="fitXY" />
     </RelativeLayout>
 
@@ -74,7 +74,9 @@
         android:textColor="@color/white_trans_30"
         android:textSize="@dimen/textsize_15_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_solid_color="#5B72E8" />
+        app:bl_solid_color="@color/black_trans_20"
+        app:bl_stroke_width="@dimen/view_1_dp"
+        app:bl_stroke_color="@color/white_trans_20"/>
 
     <com.module.playways.grab.room.voicemsg.VoiceRecordTextView
         android:id="@+id/voice_record_btn"
@@ -92,6 +94,6 @@
         android:textSize="@dimen/textsize_16_dp"
         android:visibility="gone"
         app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_solid_color="#5B72E8" />
+        app:bl_solid_color="#807088FF" />
 
 </merge>

@@ -135,6 +135,7 @@ class PackageView : ExConstraintLayout {
                         if (it.packetItemID == packageModel.packetItemID) {
                             it.useStatus = 2
                             selectedPackageItemId = it.packetItemID
+                            selectedIndex = i
                             EventBus.getDefault().post(PackageShowEffectEvent(it.goodsInfo!!))
                         } else {
                             it.useStatus = 1

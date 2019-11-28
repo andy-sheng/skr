@@ -237,8 +237,19 @@ public class AgoraRTCAdapter {
         }
     }
 
+    public void flushCachedAudioSmpInfoGroup() {
+        if (null != mAudioSmpInfoGroup && mAudioSmpInfoGroup.hasData()) {
+            SDataManager.getInstance().getDataHolder().addSAudioSamplingInfoGroup(mAudioSmpInfoGroup);            
+        }
+		
+		if (null != mAudioSmpInfoGroup)
+			mAudioSmpInfoGroup = null;
+
+		return;
+    }
     public void stopStatistics() {//考虑到退出房间的时候，以标志量的方式更好。
         mRunStatistic = false;
+        flushCachedAudioSmpInfoGroup();//补上数据
     }
 
     public synchronized void stopStatisticThread() {
@@ -382,9 +393,10 @@ public class AgoraRTCAdapter {
         @Override
         public void onLeaveChannel(RtcStats stats) {
             super.onLeaveChannel(stats);
+            mInAudioStatistic = false; //下次启动采集的时候看到true，会记录时时间戳
             stopStatistics();
 //            SDataManager.getInstance().setChannelID("no-channel").setChannelJoinElipse(-1).setUserID(-1);
-            mInAudioStatistic = false; //下次启动采集的时候看到true，会记录时时间戳
+
             if (mOutCallback != null) {
                 mOutCallback.onLeaveChannel(stats);
             }
@@ -505,13 +517,15 @@ public class AgoraRTCAdapter {
     private long mAudioStatisticTS = 0;
     private boolean mInAudioStatistic = false;
     private SAgora.SAudioSamplingInfo mAgoraAduioSmpInfo = new SAgora.SAudioSamplingInfo();
+    private SAgora.SAudioSamplingInfoGroup mAudioSmpInfoGroup;// = new SAgora.SAudioSamplingInfoGroup();
+
 
     private SAgora.SAudioSamplingInfo makeAudioSamplingInfo(byte bytes[], int numOfSamples, int bytesPerSample, int channels,
                                                             int samplesPerSec, long curTs) {
 
 
         if (!mInAudioStatistic) {
-            mAudioStatisticTS = curTs;
+            mAudioStatisticTS =  curTs;
 //            mAgoraAduioSmpInfo.smpCnt += numOfSamples;
 
             mInAudioStatistic = true;
@@ -552,6 +566,35 @@ public class AgoraRTCAdapter {
         }
 
         return null;
+    }
+
+
+    private SAgora.SAudioSamplingInfoGroup makeAudioSamplingInfoGroup(byte bytes[], int numOfSamples, int bytesPerSample, int channels,
+                                                                      int samplesPerSec)
+    {
+        long curTS = System.currentTimeMillis();
+        SAgora.SAudioSamplingInfo shadowInfo = makeAudioSamplingInfo(bytes, numOfSamples, bytesPerSample, channels, samplesPerSec, curTS);
+        SAgora.SAudioSamplingInfo e = null;
+
+        SAgora.SAudioSamplingInfoGroup retGroup = null;
+
+        if (null != shadowInfo) { //说明满足一次统计周期的要求
+            e = shadowInfo.clone();
+            shadowInfo.reset();
+
+            if (null == mAudioSmpInfoGroup) {
+                mAudioSmpInfoGroup = new SAgora.SAudioSamplingInfoGroup(curTS);
+            }
+
+            mAudioSmpInfoGroup.addInfo(e);
+            if (mAudioSmpInfoGroup.isFull()) {
+                retGroup = mAudioSmpInfoGroup;
+                mAudioSmpInfoGroup = null;
+            }
+
+        }
+
+        return retGroup;
     }
 
 
@@ -698,11 +741,16 @@ public class AgoraRTCAdapter {
                     ByteBuffer byteBuffer = ByteBuffer.wrap(samples, 0, size);
                     byteBuffer.order(ByteOrder.nativeOrder());
 
-                    SAgora.SAudioSamplingInfo smpInfo = makeAudioSamplingInfo(samples, numOfSamples, bytesPerSample, channels, samplesPerSec, System.currentTimeMillis());
-                    if (null != smpInfo) { //说明达到一次统计间隔
-                        SDataManager.getInstance().getDataHolder().addAudioSamplingInfo(smpInfo, curTime);
-                        smpInfo.reset();
+//                    SAgora.SAudioSamplingInfo smpInfo = makeAudioSamplingInfo(samples, numOfSamples, bytesPerSample, channels, samplesPerSec, System.currentTimeMillis());
+//                    if (null != smpInfo) { //说明达到一次统计间隔
+//                        SDataManager.getInstance().getDataHolder().addAudioSamplingInfo(smpInfo, curTime);
+//                        smpInfo.reset();
+//                    }
+                    SAgora.SAudioSamplingInfoGroup ASIGroup = makeAudioSamplingInfoGroup(samples,numOfSamples,bytesPerSample,channels,samplesPerSec);
+                    if (null != ASIGroup) {
+                        SDataManager.getInstance().getDataHolder().addSAudioSamplingInfoGroup(ASIGroup);
                     }
+
 
                     AudioBufFrame frame = new AudioBufFrame(mLocalAudioFormat, byteBuffer, pts);
                     mLocalAudioSrcPin.onFrameAvailable(frame);

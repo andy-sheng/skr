@@ -5,9 +5,6 @@ import com.zq.engine.avstatistics.datastruct.ILogItem;
 import com.zq.engine.avstatistics.datastruct.SAgora;
 import com.zq.engine.avstatistics.datastruct.SAgoraUserEvent;
 import com.zq.engine.avstatistics.datastruct.Skr;
-import com.zq.engine.avstatistics.logservice.SLogServiceBase;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -251,6 +248,14 @@ public class SDataHolderEx
         mItemList.add(n);
     }
 
+    public void addSAudioSamplingInfoGroup(SAgora.SAudioSamplingInfoGroup e) {
+        if (0 == e.ts)
+            e.ts = System.currentTimeMillis();
+
+        mItemList.add(e);
+        return;
+    }
+
 
     public List<ILogItem> getItemList() {
         return mItemList;
@@ -262,7 +267,7 @@ public class SDataHolderEx
     }
 
 
-    private final static int LIST_COUNT_THRESHOLD = 50;
+    private final static int LIST_COUNT_THRESHOLD = 30;
     public boolean need2Flush() {
         if (mItemList.size() >= LIST_COUNT_THRESHOLD )
             return true;

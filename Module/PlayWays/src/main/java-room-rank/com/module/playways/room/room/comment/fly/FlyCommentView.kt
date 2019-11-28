@@ -99,12 +99,14 @@ class FlyCommentView(context: Context?, attrs: AttributeSet?) : RelativeLayout(c
                 }
 
                 override fun onAnimationEnd(animation: Animator?) {
+                    textView?.setLayerType(View.LAYER_TYPE_NONE, null)
                     removeItemView(consumer)
                     mRoadRunNumber[consumer.roadIndex]--
                     animatorSet.remove(animator)
                 }
 
                 override fun onAnimationCancel(animation: Animator?) {
+                    textView?.setLayerType(View.LAYER_TYPE_NONE, null)
                     removeItemView(consumer)
                     mRoadRunNumber[consumer.roadIndex]--
                     animatorSet.remove(animator)
@@ -112,7 +114,7 @@ class FlyCommentView(context: Context?, attrs: AttributeSet?) : RelativeLayout(c
 
                 override fun onAnimationStart(animation: Animator?) {
                     animatorSet.add(animator)
-
+                    textView?.setLayerType(View.LAYER_TYPE_NONE, null)
                 }
             })
             animator.start()
@@ -283,6 +285,8 @@ class FlyCommentView(context: Context?, attrs: AttributeSet?) : RelativeLayout(c
 
         val info = FlyCommentViewWithExtraInfo()
         info.view = TextView(context)
+        info.view?.maxLines = 1
+        info.view?.ellipsize = TextUtils.TruncateAt.END
         info.view?.setPadding(10.dp(), 0, 10.dp(), 0)
         info.view?.background = U.getDrawable(R.drawable.fly_comment_view_bg)
         if (mFlyCommentViewCache.size < CACHE_NUMBER) {

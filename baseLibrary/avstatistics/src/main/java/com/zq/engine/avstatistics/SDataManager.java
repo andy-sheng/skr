@@ -18,7 +18,7 @@ public class SDataManager {
 
     private String TAG = "[SLS]SDATA_MANAGER";
 
-    private String LOG_PREFIX = "[SDATA_MANAGER_FLUSHED]"; //"[SDATA_MANAGER FLUSHED]"
+    private String LOG_PREFIX = "[SDM]"; //"[SDATA_MANAGER FLUSHED]"
 
     private SDataMgrBasicInfo mBasicInfo = null;
 
@@ -143,6 +143,9 @@ public class SDataManager {
 
         List<ILogItem> itemList = mADHolder.getItemList();
         int listSize = 0;
+
+        long logLen = 0;
+
         if (null != itemList && (listSize = itemList.size()) > 0) {
             for (int i=0; i<listSize; i++) {
                 ILogItem e = itemList.get(i);
@@ -152,12 +155,21 @@ public class SDataManager {
                 logStr.delete(LOG_PREFIX.length()+1, logStr.length()); //+1是给空格留的
 
                 mLS.appendLog(e);
+
+                if (dbgMode) {
+                    logLen += (e.toJSONObject().toString().length());
+                }
+
+            }
+
+            if (dbgMode) {
+                MyLog.e(TAG, "SDataManager.flush() once flush string length="+logLen);
             }
 
             mLS.flushLog(true);
         }
 
-//        Log.d("SDataManager", "Flush List Cnt="+listSize);
+
 
         mADHolder.reset();
 

@@ -26,17 +26,17 @@ public class Skr
         }
 
         public String toString() {
-            return SUtils.transTime(ts)+" PingInfo: is_ping_ok="+isPingOk+", time="+timeCost+" ms\n";
+            return SUtils.transTime(ts)+" PingInfo: isOK="+isPingOk+", tc="+timeCost+" ms\n";
         }
 
         @Override
         public JSONObject toJSONObject() {
             JSONObject jsObj = new JSONObject();
             try {
-                jsObj.put("timeStampStr", SUtils.transTime(ts));
-                jsObj.put("timeStampValue", ts);
-                jsObj.put("isPingOk", isPingOk);
-                jsObj.put("timeCost",timeCost);
+                jsObj.put("tsStr", SUtils.transTime(ts));
+                jsObj.put("tsValue", ts);
+                jsObj.put("isOk", isPingOk);
+                jsObj.put("TC",timeCost);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -64,9 +64,9 @@ public class Skr
         public String extraInfo;
 
         public String toString() {
-            String retStr = SUtils.transTime(ts)+" Skr.NetworkInfo: networkType="+SUtils.trans2NetworkTypeStr(networkType)+
+            String retStr = SUtils.transTime(ts)+" NetworkInfo: type="+SUtils.trans2NetworkTypeStr(networkType)+
                             ", opName="+operatorName +
-                            ", externalIP="+SUtils.intToIPStr(externlIP);
+                            ", IP="+SUtils.intToIPStr(externlIP);
             if (null != extraInfo) {
                 retStr += (", extraInfo="+extraInfo+"\n");
             }
@@ -82,12 +82,12 @@ public class Skr
             JSONObject jsObj = new JSONObject();
             try {
 
-                jsObj.put("timeStampStr", SUtils.transTime(ts));
-                jsObj.put("timeStampValue", ts);
+                jsObj.put("tsStr", SUtils.transTime(ts));
+                jsObj.put("tsValue", ts);
 
-                jsObj.put("networkType", SUtils.trans2NetworkTypeStr(networkType));
-                jsObj.put("operatorName", operatorName);
-                jsObj.put("externlIP", SUtils.intToIPStr(externlIP));
+                jsObj.put("type", SUtils.trans2NetworkTypeStr(networkType));
+                jsObj.put("opName", operatorName);
+                jsObj.put("IP", SUtils.intToIPStr(externlIP));
 
                 if (null != extraInfo) {
                     jsObj.put("extraInfo", extraInfo);

@@ -20,7 +20,6 @@ public class GrabTopOpView extends RelativeLayout {
 
     ImageView mIvVoiceSetting;
     ImageView mCameraIv;
-    View mDivider;
     ImageView mGameRuleIv;
     ImageView mFeedBackIv;
 
@@ -54,13 +53,12 @@ public class GrabTopOpView extends RelativeLayout {
 
     public void init() {
         inflate(getContext(), R.layout.grab_top_op_view, this);
-        mTvChangeRoom = (ExTextView) findViewById(R.id.tv_change_room);
-        mCameraIv = (ImageView) findViewById(R.id.camera_iv);
-        mDivider = (View) findViewById(R.id.divider);
-        mGameRuleIv = (ImageView) findViewById(R.id.game_rule_iv);
-        mFeedBackIv = (ImageView) findViewById(R.id.feed_back_iv);
-        mExitTv = (ExTextView) findViewById(R.id.exit_tv);
-        mIvVoiceSetting = (ImageView) findViewById(R.id.iv_voice_setting);
+        mTvChangeRoom = findViewById(R.id.tv_change_room);
+        mCameraIv = findViewById(R.id.camera_iv);
+        mGameRuleIv = findViewById(R.id.game_rule_iv);
+        mFeedBackIv = findViewById(R.id.feed_back_iv);
+        mExitTv = findViewById(R.id.exit_tv);
+        mIvVoiceSetting = findViewById(R.id.iv_voice_setting);
 
         mTvChangeRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -121,8 +119,7 @@ public class GrabTopOpView extends RelativeLayout {
         mGrabRoomData = modelBaseRoomData;
         if (!mGrabRoomData.isVideoRoom()) {
             mCameraIv.setVisibility(GONE);
-            mDivider.setVisibility(GONE);
-            mIvVoiceSetting.setBackground(U.getDrawable(R.drawable.yichangdaodi_yinyue_audio));
+            mIvVoiceSetting.setBackground(U.getDrawable(R.drawable.grab_yinyue_audio));
         }
         if (mGrabRoomData.isOwner()) {
             // 是房主，肯定不能切换房间

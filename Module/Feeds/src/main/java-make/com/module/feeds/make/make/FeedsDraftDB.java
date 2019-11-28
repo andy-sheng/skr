@@ -6,6 +6,7 @@ import org.greenrobot.greendao.annotation.Id;
 
 import java.io.Serializable;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Keep;
 
 @Entity
 public class FeedsDraftDB implements Serializable {
@@ -15,7 +16,7 @@ public class FeedsDraftDB implements Serializable {
     Long updateTs;
     Integer from;
     String feedsMakeModelJson;
-    @Generated(hash = 2145716165)
+    @Keep
     public FeedsDraftDB(Long draftID, Long updateTs, Integer from,
             String feedsMakeModelJson) {
         this.draftID = draftID;
@@ -23,7 +24,7 @@ public class FeedsDraftDB implements Serializable {
         this.from = from;
         this.feedsMakeModelJson = feedsMakeModelJson;
     }
-    @Generated(hash = 1536597371)
+    @Keep
     public FeedsDraftDB() {
     }
     public Long getDraftID() {

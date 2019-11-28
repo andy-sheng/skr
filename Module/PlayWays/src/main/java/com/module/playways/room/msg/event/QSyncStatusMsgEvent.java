@@ -3,59 +3,61 @@
 package com.module.playways.room.msg.event;
 
 import com.common.log.MyLog;
-import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.room.msg.BasePushInfo;
 import com.zq.live.proto.GrabRoom.QSyncStatusMsg;
 
 public final class QSyncStatusMsgEvent {
-  public BasePushInfo info;
+    public BasePushInfo info;
 
-  /**
-   * 状态同步时的毫秒时间戳
-   */
-  public Long syncStatusTimeMs;
+    /**
+     * 状态同步时的毫秒时间戳
+     */
+    public Long syncStatusTimeMs;
 
-  /**
-   * 游戏结束时间
-   */
-  public Long gameOverTimeMs;
+    /**
+     * 游戏结束时间
+     */
+    public Long gameOverTimeMs;
 
 
-  /**
-   * 当前轮次信息
-   */
-  public GrabRoundInfoModel currentRound;
+    /**
+     * 当前轮次信息
+     */
+    public GrabRoundInfoModel currentRound;
 
-  /**
-   * 下一个轮次
-   */
-  public GrabRoundInfoModel mNextRound;
+    /**
+     * 下一个轮次
+     */
+    public GrabRoundInfoModel mNextRound;
 
-  public QSyncStatusMsgEvent(BasePushInfo info, QSyncStatusMsg qSyncStatusMsg) {
-    this.info = info;
-    this.syncStatusTimeMs = qSyncStatusMsg.getSyncStatusTimeMs();
-    this.gameOverTimeMs = qSyncStatusMsg.getGameOverTimeMs();
-    this.currentRound = GrabRoundInfoModel.parseFromRoundInfo(qSyncStatusMsg.getCurrentRound());
-    this.mNextRound = GrabRoundInfoModel.parseFromRoundInfo(qSyncStatusMsg.getNextRound());
-  }
+    public QSyncStatusMsgEvent(BasePushInfo info, QSyncStatusMsg qSyncStatusMsg) {
+        this.info = info;
+        this.syncStatusTimeMs = qSyncStatusMsg.getSyncStatusTimeMs();
+        this.gameOverTimeMs = qSyncStatusMsg.getGameOverTimeMs();
+        this.currentRound = GrabRoundInfoModel.parseFromRoundInfo(qSyncStatusMsg.getCurrentRound());
+        this.mNextRound = GrabRoundInfoModel.parseFromRoundInfo(qSyncStatusMsg.getNextRound());
+//        MyLog.d("GrabRoundInfoModel", "info ts is  " + info.getTimeMs());
 
-  public GrabRoundInfoModel getNextRound() {
-    return mNextRound;
-  }
+    }
 
-  public BasePushInfo getInfo() {
-    return info;
-  }
+    public GrabRoundInfoModel getNextRound() {
+        return mNextRound;
+    }
 
-  public Long getSyncStatusTimeMs() {
-    return syncStatusTimeMs;
-  }
+    public BasePushInfo getInfo() {
+        return info;
+    }
 
-  public Long getGameOverTimeMs() {
-    return gameOverTimeMs;
-  }
+    public Long getSyncStatusTimeMs() {
+        return syncStatusTimeMs;
+    }
 
-  public GrabRoundInfoModel getCurrentRound() {
-    return currentRound;
-  }
+    public Long getGameOverTimeMs() {
+        return gameOverTimeMs;
+    }
+
+    public GrabRoundInfoModel getCurrentRound() {
+        return currentRound;
+    }
 }
