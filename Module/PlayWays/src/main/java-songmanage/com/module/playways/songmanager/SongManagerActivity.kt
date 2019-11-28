@@ -22,6 +22,7 @@ import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.fragment.DoubleSongManageFragment
 import com.module.playways.songmanager.fragment.GrabSongManageFragment
 import com.module.playways.songmanager.fragment.MicSongManageFragment
+import com.module.playways.songmanager.fragment.RelaySongManageFragment
 import org.greenrobot.eventbus.EventBus
 
 class SongManagerActivity : BaseActivity() {
@@ -94,7 +95,14 @@ class SongManagerActivity : BaseActivity() {
                     })
                     .build())
         } else if (from == TYPE_FROM_RELAY_ROOM) {
-
+            val mRoomData = intent.getSerializableExtra("room_data") as RelayRoomData
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, RelaySongManageFragment::class.java)
+                    .setAddToBackStack(false)
+                    .setHasAnimation(false)
+                    .setEnterAnim(R.anim.slide_right_in)
+                    .setExitAnim(R.anim.slide_right_out)
+                    .addDataBeforeAdd(0, mRoomData)
+                    .build())
         }
     }
 

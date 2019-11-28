@@ -59,12 +59,12 @@ class RecommendSongView(context: Context, internal var mType: Int,
     private var mLimit = 20
     private var mMakeGamePanelView: MakeGamePanelView? = null
 
-    val mDrawableBg = DrawableCreator.Builder()
+    private val mDrawableBg = DrawableCreator.Builder()
             .setSolidColor(U.getColor(R.color.white_trans_20))
             .setCornersRadius(0f, 0f, U.getDisplayUtils().dip2px(8f).toFloat(), U.getDisplayUtils().dip2px(8f).toFloat())
             .build()
 
-    val mMicDrawableBg = DrawableCreator.Builder()
+    private val mMicDrawableBg = DrawableCreator.Builder()
             .setSolidColor(Color.parseColor("#576FE3"))
             .setCornersRadius(8.dp().toFloat())
             .build()
@@ -90,6 +90,9 @@ class RecommendSongView(context: Context, internal var mType: Int,
             })
         } else if (mType == SongManagerActivity.TYPE_FROM_MIC) {
             // 排麦房
+            mContainer.background = mMicDrawableBg
+            mRecommendSongAdapter = RecommendSongAdapter(true, mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model)) })
+        } else if (mType == SongManagerActivity.TYPE_FROM_RELAY_ROOM) {
             mContainer.background = mMicDrawableBg
             mRecommendSongAdapter = RecommendSongAdapter(true, mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model)) })
         } else {
@@ -187,6 +190,7 @@ class RecommendSongView(context: Context, internal var mType: Int,
         return when (mType) {
             SongManagerActivity.TYPE_FROM_GRAB -> mSongManageServerApi.getListStandBoards(tab, offset, mLimit)
             SongManagerActivity.TYPE_FROM_MIC -> mSongManageServerApi.getMicSongList(offset, mLimit, MyUserInfoManager.uid.toInt(), tab)
+            SongManagerActivity.TYPE_FROM_RELAY_ROOM -> mSongManageServerApi.getMicSongList(offset, mLimit, MyUserInfoManager.uid.toInt(), tab)
             else -> mSongManageServerApi.getDoubleListStandBoards(tab, offset, mLimit)
         }
     }

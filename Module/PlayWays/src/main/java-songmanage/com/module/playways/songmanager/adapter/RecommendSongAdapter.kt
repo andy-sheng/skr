@@ -63,6 +63,8 @@ class RecommendSongAdapter(internal var isOwner: Boolean, var type: Int, interna
                 } else {
                     mSelectTv.text = "发起"
                 }
+            } else if (type == SongManagerActivity.TYPE_FROM_RELAY_ROOM) {
+                mSelectTv.text = "发起"
             } else {
                 if (isOwner) {
                     mSelectTv.text = "点歌"
