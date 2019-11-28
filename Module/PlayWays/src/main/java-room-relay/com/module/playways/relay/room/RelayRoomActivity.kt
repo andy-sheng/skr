@@ -186,6 +186,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         }
         joinRaceRoomRspModel?.let {
             mRoomData.loadFromRsp(it)
+            MyLog.d(TAG, "initData mRoomData=$mRoomData")
         }
 //        H.micRoomData = mRoomData
 //        H.setType(GameModeType.GAME_MODE_MIC, "MicRoomActivity")

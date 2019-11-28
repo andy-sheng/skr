@@ -14,13 +14,12 @@ class JoinRelayRoomRspModel : Serializable {
 
     @JSONField(name = "roomID")
     var roomID: Int = 0// 房间id
-    @JSONField(name = "createTimeMs")
+    @JSONField(name = "createdTimeMs")
     var createTimeMs: Long = 0// 房间创建时间，绝对时间
     @JSONField(name = "config")
     var config: RelayConfigModel? = null
     @JSONField(name = "currentRound")
     var currentRound: RelayRoundInfoModel? = null // 目前轮次
-    var leftSeat = true // 我的位置是否在左边 即数组的0位置是否是我
     @JSONField(name = "enableNoLimitDuration")
     var enableNoLimitDuration: Boolean? = null    // 开启没有限制的持续时间
     @JSONField(name = "tokens")

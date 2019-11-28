@@ -195,6 +195,7 @@ class RelayMatchActivity : BaseActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RUserEnterMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
         // 进入房间的信令 直接加入融云的房间
         matchJob?.cancel()
         tryGoRelayRoom(JoinRelayRoomRspModel.parseFromPB(event))
@@ -220,19 +221,21 @@ class RelayMatchActivity : BaseActivity() {
     }
 
     private fun tryGoRelayRoom(model: JoinRelayRoomRspModel) {
-        ModuleServiceManager.getInstance().msgService.joinChatRoom(model.roomID.toString(), 10, object : ICallback {
-            override fun onSucess(obj: Any?) {
-                // todo 补全加融云成功直接
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_ROOM)
-                        .withSerializable("JoinRelayRoomRspModel", model)
-                        .navigation()
-            }
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_ROOM)
+                .withSerializable("JoinRelayRoomRspModel", model)
+                .navigation()
 
-            override fun onFailed(obj: Any?, errcode: Int, message: String?) {
-                // 加入失败
-                reportEnterFail(model)
-            }
-        })
+//        ModuleServiceManager.getInstance().msgService.joinChatRoom(model.roomID.toString(), 10, object : ICallback {
+//            override fun onSucess(obj: Any?) {
+//                // todo 补全加融云成功直接
+//
+//            }
+//
+//            override fun onFailed(obj: Any?, errcode: Int, message: String?) {
+//                // 加入失败
+//                reportEnterFail(model)
+//            }
+//        })
     }
 
     private fun reportEnterFail(model: JoinRelayRoomRspModel) {

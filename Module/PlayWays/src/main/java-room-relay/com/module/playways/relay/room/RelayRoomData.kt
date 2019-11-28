@@ -199,7 +199,10 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         }
         this.peerUser?.isOnline = true
         this.expectRoundInfo = rsp.currentRound
+    }
 
+    override fun toString(): String {
+        return "RelayRoomData(shiftTsForRelay=$shiftTsForRelay, configModel=$configModel, peerUser=$peerUser, unLockMe=$unLockMe, unLockPeer=$unLockPeer, leftSeat=$leftSeat, isHasExitGame=$isHasExitGame)"
     }
 
 
