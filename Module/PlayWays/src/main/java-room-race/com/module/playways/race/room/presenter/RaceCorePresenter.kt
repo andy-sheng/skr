@@ -94,9 +94,23 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
         //添加房间消息过滤器
         RaceRoomMsgManager.addFilter(mPushMsgFilter)
+        pretendEnterRoomMsg()
+        pretendHeadSetSystemMsg()
+
+        joinRoomAndInit(true)
+    }
+
+    private fun pretendEnterRoomMsg() {
         val commentSysModel = CommentSysModel(GameModeType.GAME_MODE_RACE, "欢迎加入撕歌排位赛，撕歌倡导文明竞演、理性投票，如遇恶意玩家请点击头像进行举报")
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
-        joinRoomAndInit(true)
+    }
+
+    private fun pretendHeadSetSystemMsg() {
+        val stringBuilder = SpanUtils()
+                .append(" 温馨提示：佩戴耳机能获得最佳演唱效果").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
+                .create()
+        val commentSysModel = CommentSysModel(mRoomData.gameType, stringBuilder)
+        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
 
     /**

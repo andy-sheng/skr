@@ -36,7 +36,7 @@ class CommentSysModel : CommentModel {
         this.stringBuilder = stringBuilder
     }
 
-    // 进入房间消息 一唱到底
+    // 进入房间弹幕消息
     constructor(roomName: String, type: Int) {
         commentType = TYPE_SYSTEM
         avatarColor = AVATAR_COLOR

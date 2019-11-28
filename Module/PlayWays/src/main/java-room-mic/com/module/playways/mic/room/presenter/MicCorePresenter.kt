@@ -144,13 +144,14 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         }
         joinRcRoom(-1)
         if (mRoomData.gameId > 0) {
+            pretendRoomNameSystemMsg(mRoomData.roomName, CommentSysModel.TYPE_MIC_ENTER_ROOM)
+            pretendHeadSetSystemMsg()
             for (playerInfoModel in mRoomData.getPlayerAndWaiterInfoList()) {
                 if (!playerInfoModel.isOnline) {
                     continue
                 }
                 pretendEnterRoom(playerInfoModel)
             }
-            pretendRoomNameSystemMsg(mRoomData.roomName, CommentSysModel.TYPE_MIC_ENTER_ROOM)
         }
         startHeartbeat()
         startSyncGameStatus()
@@ -219,6 +220,14 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
 
     private fun pretendRoomNameSystemMsg(roomName: String?, type: Int) {
         val commentSysModel = CommentSysModel(roomName ?: "", type)
+        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
+    }
+
+    private fun pretendHeadSetSystemMsg() {
+        val stringBuilder = SpanUtils()
+                .append(" 温馨提示：佩戴耳机能获得最佳演唱效果").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
+                .create()
+        val commentSysModel = CommentSysModel(mRoomData.gameType, stringBuilder)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
 

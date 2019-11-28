@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.presenter
 
 import android.animation.ValueAnimator
+import android.graphics.Color
 import android.os.Handler
 import android.os.Message
 import android.text.TextUtils
@@ -10,6 +11,7 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.engine.ScoreConfig
 import com.common.jiguang.JiGuangPush
@@ -227,6 +229,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             } else {
                 pretendRoomNameSystemMsg(mRoomData.roomName, CommentSysModel.TYPE_ENTER_ROOM)
             }
+            pretendHeadSetSystemMsg()
         }
         if (mRoomData.hasGameBegin()) {
             startSyncGameStateTask(sSyncStateTaskInterval)
@@ -272,6 +275,14 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
 
     private fun pretendRoomNameSystemMsg(roomName: String?, type: Int) {
         val commentSysModel = CommentSysModel(roomName ?: "", type)
+        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
+    }
+
+    private fun pretendHeadSetSystemMsg() {
+        val stringBuilder = SpanUtils()
+                .append(" 温馨提示：佩戴耳机能获得最佳演唱效果").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
+                .create()
+        val commentSysModel = CommentSysModel(mRoomData.gameType, stringBuilder)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
 
@@ -481,7 +492,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
              * 个人标签声音
              */
             val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd_HH_mm_ss")
-            val fileName = String.format(PERSON_LABEL_SAVE_PATH_FROMAT,simpleDateFormat.format(Date(System.currentTimeMillis())), mRoomData.gameId, mRoomData.realRoundInfo?.roundSeq)
+            val fileName = String.format(PERSON_LABEL_SAVE_PATH_FROMAT, simpleDateFormat.format(Date(System.currentTimeMillis())), mRoomData.gameId, mRoomData.realRoundInfo?.roundSeq)
             savePath = U.getAppInfoUtils().getFilePathInSubDir(ZqEngineKit.AUDIO_FEEDBACK_DIR, fileName)
             ZqEngineKit.getInstance().startAudioRecording(savePath, false)
         }
