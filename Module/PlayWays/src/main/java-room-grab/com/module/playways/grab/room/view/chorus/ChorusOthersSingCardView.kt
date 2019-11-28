@@ -195,16 +195,12 @@ class ChorusOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             mParentView!!.visibility = View.VISIBLE
             AvatarUtils.loadAvatarByUrl(mLeftIv,
                     AvatarUtils.newParamsBuilder(mLeftUserInfoModel!!.avatar)
-                            .setBorderColor(U.getColor(R.color.white))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                             .setCircle(true)
                             .build())
             mLeftName?.text = mLeftUserInfoModel!!.nicknameRemark
 
             AvatarUtils.loadAvatarByUrl(mRightIv,
                     AvatarUtils.newParamsBuilder(mRightUserInfoModel!!.avatar)
-                            .setBorderColor(U.getColor(R.color.white))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                             .setCircle(true)
                             .build())
             mRightName?.text = mRightUserInfoModel!!.nicknameRemark
