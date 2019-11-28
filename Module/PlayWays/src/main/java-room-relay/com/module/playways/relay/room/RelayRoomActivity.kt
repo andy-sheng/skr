@@ -57,6 +57,7 @@ import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.StandPlayType
@@ -153,9 +154,9 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             // 构造假数据 用于测试
             var joinRaceRoomRspModel1 = JoinRelayRoomRspModel()
             joinRaceRoomRspModel1?.roomID = 10001
-            joinRaceRoomRspModel1?.createTimeMs = (System.currentTimeMillis()/30000)*30000
+            joinRaceRoomRspModel1?.createTimeMs = (System.currentTimeMillis() / 30000) * 30000
             val list = ArrayList<UserInfoModel>()
-            if(MyUserInfoManager.uid.toInt() == 1705476){
+            if (MyUserInfoManager.uid.toInt() == 1705476) {
                 var userInfoModel = UserInfoModel()
                 userInfoModel.userId = 1985618
                 list.add(userInfoModel)
@@ -167,7 +168,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             joinRaceRoomRspModel1.users = list
             var roundInfoModel = RelayRoundInfoModel()
             roundInfoModel.status = ERRoundStatus.RRS_SING.value
-            roundInfoModel.singBeginMs = 30*1000
+            roundInfoModel.singBeginMs = 30 * 1000
             roundInfoModel.originId = 1705476
             var music = SongModel()
             music.itemName = "告白气球"
@@ -361,8 +362,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         mAddSongIv = findViewById(R.id.select_song_tv)
         mAddSongIv.setAnimateDebounceViewClickListener {
             mSkrAudioPermission.ensurePermission({
-                //                SongManagerActivity.open(this, mRoomData)
-                mCorePresenter.preOpWhenSelfRound()
+                SongManagerActivity.open(this, mRoomData)
             }, true)
         }
 
