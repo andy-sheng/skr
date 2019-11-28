@@ -303,19 +303,19 @@ public class SAgoraUserEvent implements ILogItem
         public static String transRoutine2String(int routine) {
             switch (routine) {
                 case AUDIO_ROUTE_DEFAULT:
-                    return "使用默认的音频路由";
+                    return "默认音频路由";
                 case AUDIO_ROUTE_HEADSET:
-                    return "使用耳机为语音路由";
+                    return "耳机";
                 case AUDIO_ROUTE_EARPIECE:
-                    return "使用听筒为语音路由";
+                    return "听筒";
                 case AUDIO_ROUTE_HEADSETNOMIC:
-                    return "使用不带麦的耳机为语音路由";
+                    return "不带麦的耳机";
                 case AUDIO_ROUTE_SPEAKERPHONE:
-                    return "使用手机的扬声器为语音路由";
+                    return "手机的扬声器";
                 case AUDIO_ROUTE_LOUDSPEAKER:
-                    return "使用外接的扬声器为语音路由";
+                    return "外接扬声器";
                 case AUDIO_ROUTE_HEADSETBLUETOOTH:
-                    return "使用蓝牙耳机为语音路由";
+                    return "蓝牙耳机";
                 default:
                     return "Unknow audio routine("+routine+")!!!";
             }

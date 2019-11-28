@@ -18,7 +18,7 @@ public class SDataManager {
 
     private String TAG = "[SLS]SDATA_MANAGER";
 
-    private String LOG_PREFIX = "[SDATA_MANAGER_FLUSHED]"; //"[SDATA_MANAGER FLUSHED]"
+    private String LOG_PREFIX = "[SDM]"; //"[SDATA_MANAGER FLUSHED]"
 
     private SDataMgrBasicInfo mBasicInfo = null;
 
