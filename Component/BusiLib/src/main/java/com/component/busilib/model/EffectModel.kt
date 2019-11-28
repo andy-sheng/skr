@@ -58,7 +58,7 @@ class EffectModel : Serializable {
 
 
     //每一个需要播的动画都是一个Obg
-    class EffectObg {
+    class EffectObg : Serializable {
         //分背景和动态图片，1为背景，2为动态图
         var type: Int = 0
         //资源的地址
