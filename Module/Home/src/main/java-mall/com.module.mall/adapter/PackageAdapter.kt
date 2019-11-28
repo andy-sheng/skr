@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
+import com.common.log.MyLog
+import com.common.utils.ImageUtils
 import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -89,6 +91,7 @@ class PackageAdapter(val getPacketItemIDMethod: (() -> String)) : DiffAdapter<Pa
             this.index = position
             AvatarUtils.loadAvatarByUrl(effectIv,
                     AvatarUtils.newParamsBuilder(model.goodsInfo?.goodsURL)
+                            .setSizeType(ImageUtils.SIZE.SIZE_160)
                             .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                             .build())
 
