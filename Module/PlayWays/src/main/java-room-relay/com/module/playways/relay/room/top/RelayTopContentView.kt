@@ -2,7 +2,6 @@ package com.module.playways.relay.room.top
 
 import android.content.Context
 import android.graphics.Color
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
@@ -17,6 +16,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.relay.room.event.RelayLockChangeEvent
+import com.zq.live.proto.RelayRoom.RMuteMsg
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -34,8 +34,10 @@ class RelayTopContentView : ExConstraintLayout {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     private val arrowIv: ImageView
-    private val unlimtIv: ImageView
+    private val unlimitIv: ImageView
     private val leftAvatarSdv: SimpleDraweeView
+    private val leftMuteIv:ImageView
+    private val rightMuteIv:ImageView
     private val loveBg: ImageView
     private val loveStatusIv: ImageView
     private val rightAvatarSdv: SimpleDraweeView
@@ -53,12 +55,15 @@ class RelayTopContentView : ExConstraintLayout {
 
         arrowIv = this.findViewById(R.id.arrow_iv)
         leftAvatarSdv = this.findViewById(R.id.left_avatar_sdv)
+        leftMuteIv = this.findViewById(R.id.left_mute_iv)
+        rightMuteIv = this.findViewById(R.id.right_mute_iv)
+
         loveBg = this.findViewById(R.id.love_bg)
         loveStatusIv = this.findViewById(R.id.love_status_iv)
         rightAvatarSdv = this.findViewById(R.id.right_avatar_sdv)
         countTimeTv = this.findViewById(R.id.count_time_tv)
         tipsIv = this.findViewById(R.id.tips_iv)
-        unlimtIv = this.findViewById(R.id.unlimt_iv)
+        unlimitIv = this.findViewById(R.id.unlimit_iv)
         loveBg.setDebounceViewClickListener {
             listener?.clickLove()
         }
@@ -66,6 +71,8 @@ class RelayTopContentView : ExConstraintLayout {
         arrowIv.setDebounceViewClickListener {
             listener?.clickArrow(!mIsOpen)
         }
+        leftMuteIv.visibility = View.GONE
+        rightMuteIv.visibility = View.GONE
     }
 
     fun setArrowIcon(open: Boolean) {
@@ -134,7 +141,7 @@ class RelayTopContentView : ExConstraintLayout {
     fun onEvent(event: RelayLockChangeEvent){
             if(roomData?.unLockMe == true && roomData?.unLockPeer==true){
                 loveBg.setImageResource(R.drawable.light_love_icon)
-                unlimtIv.visibility = View.VISIBLE
+                unlimitIv.visibility = View.VISIBLE
                 tipsIv.visibility = View.GONE
                 countTimeTv.visibility = View.GONE
                 countDownJob?.cancel()
@@ -155,6 +162,39 @@ class RelayTopContentView : ExConstraintLayout {
                     loveBg.setImageResource(R.drawable.light_left_love_icon)
                 }
             }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RMuteMsg){
+        if(event.userID == MyUserInfoManager.uid.toInt()){
+            if(roomData?.leftSeat == true){
+                if(event.isMute){
+                    leftMuteIv.visibility = View.VISIBLE
+                }else{
+                    leftMuteIv.visibility = View.GONE
+                }
+            }else{
+                if(event.isMute){
+                    rightMuteIv.visibility = View.VISIBLE
+                }else{
+                    rightMuteIv.visibility = View.GONE
+                }
+            }
+        }else if (event.userID == roomData?.peerUser?.userID){
+            if(roomData?.leftSeat == true){
+                if(event.isMute){
+                    rightMuteIv.visibility = View.VISIBLE
+                }else{
+                    rightMuteIv.visibility = View.GONE
+                }
+            }else{
+                if(event.isMute){
+                    leftMuteIv.visibility = View.VISIBLE
+                }else{
+                    leftMuteIv.visibility = View.GONE
+                }
+            }
+        }
     }
 
     override fun onAttachedToWindow() {

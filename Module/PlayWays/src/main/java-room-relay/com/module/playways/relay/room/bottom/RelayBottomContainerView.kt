@@ -7,7 +7,10 @@ import android.view.Gravity
 import android.view.View
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
+import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -21,8 +24,13 @@ import com.module.playways.grab.room.event.GrabRoundChangeEvent
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent
 import com.module.playways.grab.room.voicemsg.VoiceRecordTextView
 import com.module.playways.relay.room.RelayRoomData
+import com.module.playways.relay.room.RelayRoomServerApi
 import com.module.playways.room.room.view.BottomContainerView
 import com.zq.mediaengine.kit.ZqEngineKit
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -31,6 +39,8 @@ import org.greenrobot.eventbus.ThreadMode
 class RelayBottomContainerView : BottomContainerView {
 //    var mBottomMuteListener: ((mute:Boolean)->Unit)? = null
     var roomData:RelayRoomData? = null
+
+    internal var mRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
 
     constructor(context: Context) : super(context) {}
 
@@ -53,6 +63,20 @@ class RelayBottomContainerView : BottomContainerView {
                     mInputBtn?.setBackgroundResource(R.drawable.relay_mute)
                     ZqEngineKit.getInstance().adjustRecordingSignalVolume(0,false)
                 }
+
+                val map = mutableMapOf(
+                        "roomID" to roomData?.gameId,
+                        "userID" to MyUserInfoManager.uid,
+                        "isMute" to (roomData?.isMute == true)
+                )
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                ApiMethods.subscribe(mRoomServerApi.mute(body),object:ApiObserver<ApiResult>(){
+                    override fun process(obj: ApiResult?) {
+                        if(obj?.errno==0){
+
+                        }
+                    }
+                })
             }
         })
 

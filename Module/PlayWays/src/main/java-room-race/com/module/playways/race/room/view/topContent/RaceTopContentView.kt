@@ -95,7 +95,7 @@ class RaceTopContentView : ConstraintLayout {
                 .build())
     }
 
-    fun setName() {
+    private fun setName() {
         mRoomData?.let {
             if (it.audience) {
                 realNickNameTv.visibility = View.GONE

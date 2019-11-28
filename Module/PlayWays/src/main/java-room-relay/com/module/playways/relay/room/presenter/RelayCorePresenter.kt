@@ -382,7 +382,6 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 mRoomServerApi.giveUpSing(body)
             }
             if (result.errno == 0) {
-//                        roomView.giveUpSuccess(now.roundSeq)
                 closeEngine()
                 okCallback?.invoke()
                 MyLog.w(TAG, "放弃演唱上报成功 traceid is " + result.traceId)
@@ -764,6 +763,10 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         ensureInRcRoom()
         MyLog.w(TAG, "收到服务器 sync push更新状态 ,event=$event")
         var thisRound = RelayRoundInfoModel.parseFromRoundInfo(event.currentRound)
+        if(event.enableNoLimitDuration){
+            mRoomData.unLockMe = true
+            mRoomData.unLockPeer = true
+        }
         // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
         startSyncGameStatus()
         processSyncResult(thisRound)

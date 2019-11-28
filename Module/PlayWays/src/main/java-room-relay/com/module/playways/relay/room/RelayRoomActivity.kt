@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.view.*
+import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
@@ -36,6 +37,7 @@ import com.module.playways.mic.room.top.MicInviteView
 import com.module.playways.mic.room.view.MicTurnInfoCardView
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.room.bottom.RelayBottomContainerView
+import com.module.playways.relay.room.event.RelayLockChangeEvent
 import com.module.playways.relay.room.model.RelayRoundInfoModel
 import com.module.playways.relay.room.presenter.RelayCorePresenter
 import com.module.playways.relay.room.top.RelayTopContentView
@@ -116,7 +118,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 //    lateinit var mRoundOverCardView: RoundOverCardView// 结果页
 //    lateinit var mGrabScoreTipsView: GrabScoreTipsView // 打分提示
 
-    lateinit var mAddSongIv: ExTextView
+    lateinit var mAddSongIv: ImageView
+    lateinit var mChangeSongIv: ImageView
 //    private lateinit var mGiveUpView: GrabGiveupView
 
     private var mVIPEnterView: VIPEnterView? = null
@@ -359,6 +362,11 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 //                mGiveUpView.hideWithAnimation(true)
 //            }
 //        }
+        mChangeSongIv = findViewById(R.id.change_song_tv)
+        mChangeSongIv.setAnimateDebounceViewClickListener {
+            mCorePresenter.giveUpSing {  }
+        }
+
         mAddSongIv = findViewById(R.id.select_song_tv)
         mAddSongIv.setAnimateDebounceViewClickListener {
             mSkrAudioPermission.ensurePermission({
@@ -559,6 +567,14 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RelayLockChangeEvent){
+        if(mRoomData?.unLockMe && mRoomData?.unLockPeer){
+            mChangeSongIv.visibility = View.VISIBLE
+            mAddSongIv.visibility = View.VISIBLE
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RReqAddMusicMsg) {
         // 请求合唱或者pk
         val micUserMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
@@ -676,6 +692,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     override fun showWaiting() {
         hideAllSceneView(null)
         relaySingCardView.turnNoSong()
+        mChangeSongIv.visibility = View.GONE
     }
 
     override fun singPrepare(lastRoundInfo: RelayRoundInfoModel?, singCardShowListener: () -> Unit) {
@@ -683,11 +700,17 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         relaySingCardView.turnSingPrepare()
         mTopContentView.launchCountDown()
         singCardShowListener.invoke()
+        if(mRoomData?.unLockMe && mRoomData?.unLockPeer){
+            mChangeSongIv.visibility = View.VISIBLE
+        }
     }
 
     override fun singBegin() {
         hideAllSceneView(null)
         relaySingCardView.turnSingBegin()
+        if(mRoomData?.unLockMe && mRoomData?.unLockPeer){
+            mChangeSongIv.visibility = View.VISIBLE
+        }
     }
 
     override fun turnChange() {

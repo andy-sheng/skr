@@ -28,7 +28,8 @@ interface RelayRoomServerApi {
 
     @PUT("http://dev.game.inframe.mobi/v1/relaygame/unlock-user-info")
     fun sendUnlock(body: RequestBody): Call<ApiResult>
-
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/mute")
+    fun mute(body: RequestBody): Observable<ApiResult>
 
 
     @GET("v1/fuel/mic-room-list")
