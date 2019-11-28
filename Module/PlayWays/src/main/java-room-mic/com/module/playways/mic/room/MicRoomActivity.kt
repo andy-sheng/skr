@@ -261,6 +261,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
         super.destroy()
+        mFlyCommentView?.destory()
         dismissDialog()
         mGiftPanelView?.destroy()
         mSelfSingCardView?.destroy()

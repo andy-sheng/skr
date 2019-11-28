@@ -1694,6 +1694,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         super.destroy()
         MyLog.d(TAG, "destroy")
         dismissDialog()
+        mFlyCommentView?.destory()
         if (mQuitTipsDialog != null && mQuitTipsDialog!!.isShowing) {
             mQuitTipsDialog?.dismiss(false)
             mQuitTipsDialog = null

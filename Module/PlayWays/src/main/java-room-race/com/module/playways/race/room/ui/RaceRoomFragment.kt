@@ -958,6 +958,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     override fun destroy() {
         super.destroy()
         dismissDialog()
+        mFlyCommentView?.destory()
         mRaceActorPanelView?.destory()
         mGiftPanelView.destroy()
     }
