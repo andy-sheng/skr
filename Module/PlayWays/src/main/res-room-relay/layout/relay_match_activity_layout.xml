@@ -25,6 +25,7 @@
         android:layout_height="@dimen/view_100_dp"
         android:layout_marginLeft="@dimen/view_30_dp"
         android:layout_marginRight="@dimen/view_30_dp"
+        android:layout_marginTop="@dimen/view_25_dp"
         android:gravity="center"
         android:text="Ta正在赶来的路上..."
         android:textColor="@color/white_trans_80"

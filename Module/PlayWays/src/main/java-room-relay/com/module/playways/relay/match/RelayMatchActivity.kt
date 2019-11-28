@@ -66,7 +66,7 @@ class RelayMatchActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        val model = intent.getSerializableExtra("songModel") as SongModel?
+        model = intent.getSerializableExtra("songModel") as SongModel?
         if (model == null) {
             finish()
         }
@@ -135,7 +135,14 @@ class RelayMatchActivity : BaseActivity() {
                         relayMatchServerApi.queryMatch(body)
                     }
                     if (result.errno == 0) {
-
+                        val hasMatchedRoom = result.data.getBoolean("hasMatchedRoom")
+                        if (hasMatchedRoom) {
+                            val joinRelayRoomRspModel = JSON.parseObject(result.data.toJSONString(), JoinRelayRoomRspModel::class.java)
+                            matchJob?.cancel()
+                            tryGoRelayRoom(joinRelayRoomRspModel)
+                        } else {
+                            // 没匹配到 donothing
+                        }
                     }
                     delay(10 * 1000)
                 }
@@ -186,9 +193,8 @@ class RelayMatchActivity : BaseActivity() {
         }
     }
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
-    private fun onEvent(event: RUserEnterMsg) {
+    fun onEvent(event: RUserEnterMsg) {
         // 进入房间的信令 直接加入融云的房间
         matchJob?.cancel()
         tryGoRelayRoom(JoinRelayRoomRspModel.parseFromPB(event))
