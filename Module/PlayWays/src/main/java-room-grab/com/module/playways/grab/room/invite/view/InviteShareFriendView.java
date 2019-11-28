@@ -74,14 +74,14 @@ public class InviteShareFriendView extends RelativeLayout {
     private void initSharModel(int from) {
         if (from == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
             list.add(new ShareModel(ShareModel.SHARE_TYPE_CIPHER, R.drawable.yaoqing_anhao, "暗号邀请"));
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ, R.drawable.yaoqing_qq, "QQ好友"));
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT, R.drawable.yaoqing_weixin, "微信好友"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ, R.drawable.icon_qq, "QQ好友"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT, R.drawable.icon_weixin, "微信好友"));
         } else {
             list.add(new ShareModel(ShareModel.SHARE_TYPE_CIPHER, R.drawable.yaoqing_anhao, "暗号邀请"));
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ, R.drawable.yaoqing_qq, "QQ好友"));
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ_QZON, R.drawable.yaoqing_kongjian, "QQ空间"));
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT, R.drawable.yaoqing_weixin, "微信好友"));
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT_FRIEND, R.drawable.yaoqing_quan, "朋友圈"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ, R.drawable.icon_qq, "QQ好友"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ_QZON, R.drawable.icon_qzone, "QQ空间"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT, R.drawable.icon_weixin, "微信好友"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT_FRIEND, R.drawable.icon_quan, "朋友圈"));
         }
 
     }
