@@ -286,15 +286,16 @@ class PKSingCardView : RelativeLayout {
     fun playScaleAnimation(uid: Int, isPlaySVGA: Boolean, animationListerner: AnimationListerner) {
 
         // TODO: 2019/4/23 开始播放动画
-        if (mScaleAnimation == null) {
-            mScaleAnimation = ScaleAnimation(1.0f, 1.35f, 1f, 1.35f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-            mScaleAnimation!!.interpolator = OvershootInterpolator()
-            mScaleAnimation!!.fillAfter = true
-            mScaleAnimation!!.duration = 500
-        } else {
+        if (mScaleAnimation != null) {
             mScaleAnimation!!.setAnimationListener(null)
             mScaleAnimation!!.cancel()
         }
+
+        mScaleAnimation = ScaleAnimation(1.0f, 1.35f, 1f, 1.35f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+        mScaleAnimation!!.interpolator = OvershootInterpolator()
+        mScaleAnimation!!.fillAfter = true
+        mScaleAnimation!!.duration = 500
+
         mScaleAnimation!!.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
 
@@ -312,6 +313,8 @@ class PKSingCardView : RelativeLayout {
             mLeftArea?.startAnimation(mScaleAnimation)
         } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel!!.userId) {
             mRightArea?.startAnimation(mScaleAnimation)
+            mLeftArea?.scaleX = 1.0f
+            mLeftArea?.scaleY = 1.0f
         } else {
             MyLog.w(TAG, "playScaleAnimation uid 无效 uid=$uid")
         }
