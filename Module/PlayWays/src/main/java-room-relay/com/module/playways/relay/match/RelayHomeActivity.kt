@@ -128,9 +128,7 @@ class RelayHomeActivity : BaseActivity() {
     private fun addSongList(list: List<SongModel>?, clean: Boolean) {
         if (clean) {
             adapter.mDataList.clear()
-            if (!list.isNullOrEmpty()) {
-                adapter.mDataList.addAll(list)
-            }
+            adapter.addData(list)
             adapter.notifyDataSetChanged()
         } else {
             if (!list.isNullOrEmpty()) {

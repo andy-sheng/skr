@@ -33,20 +33,20 @@
 
 
     <TextView
-        android:id="@+id/sing_youself"
+        android:id="@+id/sing_self"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="【你唱】"
         android:textColor="#4DA5DB"
         android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintBottom_toTopOf="@id/sing_youself_content"
+        app:layout_constraintBottom_toTopOf="@id/sing_self_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/song_author_tv"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/sing_youself_content"
+        android:id="@+id/sing_self_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_6_dp"
@@ -60,7 +60,7 @@
         app:layout_constraintBottom_toTopOf="@id/sing_other"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sing_youself" />
+        app:layout_constraintTop_toBottomOf="@id/sing_self" />
 
     <TextView
         android:id="@+id/sing_other"
@@ -73,7 +73,7 @@
         app:layout_constraintBottom_toTopOf="@id/sing_other_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sing_youself_content" />
+        app:layout_constraintTop_toBottomOf="@id/sing_self_content" />
 
     <TextView
         android:id="@+id/sing_other_content"
