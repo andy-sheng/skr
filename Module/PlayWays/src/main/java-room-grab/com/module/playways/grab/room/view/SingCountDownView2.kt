@@ -1,8 +1,6 @@
 package com.module.playways.grab.room.view
 
 import android.content.Context
-import android.graphics.Color
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
@@ -10,11 +8,8 @@ import android.widget.TextView
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
-import com.common.view.ex.ExRelativeLayout
-import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.module.playways.R
-import com.module.playways.grab.room.view.control.SelfSingCardView
 import kotlinx.android.synthetic.main.grab_sing_count_down2_view_layout.view.*
 
 /**
@@ -23,7 +18,7 @@ import kotlinx.android.synthetic.main.grab_sing_count_down2_view_layout.view.*
 class SingCountDownView2 : RelativeLayout {
 
     internal var mOverListener: (() -> Unit)? = null
-    internal var mCounDownTask: HandlerTaskTimer? = null
+    internal var mCountDownTask: HandlerTaskTimer? = null
 
     val container: ExConstraintLayout
     val songNameTv: TextView
@@ -45,7 +40,7 @@ class SingCountDownView2 : RelativeLayout {
         circle_count_down_view.max = 360
         circle_count_down_view.cancelAnim()
 //        this.mOverListener = null
-        mCounDownTask?.dispose()
+        mCountDownTask?.dispose()
     }
 
     fun setBackColor(color: Int) {
@@ -70,14 +65,14 @@ class SingCountDownView2 : RelativeLayout {
         if (playNow) {
             startCountDownText(totalMs / 1000)
         } else {
-            mCounDownTask?.dispose()
+            mCountDownTask?.dispose()
             count_down_tv.text = (totalMs / 1000).toString() + "s"
         }
     }
 
     private fun startCountDownText(counDown: Int) {
-        mCounDownTask?.dispose()
-        mCounDownTask = HandlerTaskTimer.newBuilder()
+        mCountDownTask?.dispose()
+        mCountDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
                 .take(counDown)
                 .start(object : HandlerTaskTimer.ObserverW() {
@@ -94,7 +89,7 @@ class SingCountDownView2 : RelativeLayout {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mCounDownTask?.dispose()
+        mCountDownTask?.dispose()
     }
 
 }

@@ -233,7 +233,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
         ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
         // 等待回调
-        ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3", null, 0, false, false, 1)
+        ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), mRoomData?.realRoundInfo?.music?.acc, null, 0, false, false, 1)
     }
 
     private fun realSingBegin() {

@@ -11,6 +11,8 @@ import android.view.animation.TranslateAnimation
 import android.widget.ImageView
 import com.common.anim.svga.SvgaParserAdapter
 import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfo
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
@@ -104,6 +106,12 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             userInfoModel = H.grabRoomData?.getPlayerOrWaiterInfo(H.grabRoomData?.realRoundInfo?.userID)
         } else if (H.isMicRoom()) {
             userInfoModel = H.micRoomData?.getPlayerOrWaiterInfo(H.micRoomData?.realRoundInfo?.userID)
+        }else if(H.isRelayRoom()){
+            if(H.relayRoomData?.isSingByMeNow() == true){
+                userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo)
+            }else{
+                userInfoModel = H.relayRoomData?.peerUser?.userInfo
+            }
         }
         mUiHandler?.removeCallbacksAndMessages(null)
         mHasPlayFullAnimation = false
@@ -164,6 +172,8 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
                 mUiHandler!!.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 1000)
             }
+        }else if(H.isRelayRoom()){
+            mCircleCountDownView?.reset()
         }
 
     }
@@ -212,6 +222,8 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 leaveTime = totalMs
             }
             mCircleCountDownView!!.startPlay(progress, leaveTime, true)
+        }else if(H.isRelayRoom()){
+
         }
     }
 

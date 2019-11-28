@@ -30,6 +30,8 @@ import com.module.playways.R
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.VIPEnterView
+import com.module.playways.grab.room.view.control.OthersSingCardView
+import com.module.playways.grab.room.view.normal.NormalOthersSingCardView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.mic.room.model.RoomInviteMusicModel
@@ -45,6 +47,7 @@ import com.module.playways.relay.room.ui.IRelayRoomView
 import com.module.playways.relay.room.ui.RelayWidgetAnimationController
 import com.module.playways.relay.room.view.RelaySingCardView
 import com.module.playways.relay.room.view.RelayVoiceControlPanelView
+import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.model.NormalGift
@@ -108,6 +111,9 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     internal var mRoomInviteView: RoomInviteView? = null
 
+    //var othersSingCardView:NormalOthersSingCardView?=null
+
+
     // 专场ui组件
 //    lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
     //    lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
@@ -150,6 +156,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     override fun initData(savedInstanceState: Bundle?) {
         ensureActivtyTop()
+        H.setType(GameModeType.GAME_MODE_RELAY, "RelayRoomActivity")
+        H.relayRoomData = mRoomData
         var joinRaceRoomRspModel = intent.getSerializableExtra("JoinRelayRoomRspModel") as JoinRelayRoomRspModel?
         if (joinRaceRoomRspModel == null) {
             // 构造假数据 用于测试
@@ -244,7 +252,6 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             }
         }
 
-
         U.getStatusBarUtil().setTransparentBar(this, false)
     }
 
@@ -262,7 +269,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         dismissDialog()
         mGiftPanelView?.destroy()
 //        mSelfSingCardView?.destroy()
-//        H.reset("MicRoomActivity")
+        H.reset("RelayRoomActivity")
     }
 
     override fun finish() {
@@ -352,6 +359,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         relaySingCardView = RelaySingCardView(rootView.findViewById(R.id.relay_sing_card_view_layout_stub))
         relaySingCardView.setVisibility(View.VISIBLE)
         relaySingCardView.roomData = mRoomData
+        relaySingCardView.othersSingCardView = NormalOthersSingCardView(rootView.findViewById(R.id.normal_other_sing_card_view_stub))
+        relaySingCardView.effectBgView = GameEffectBgView(rootView.findViewById(R.id.game_effect_bg_view_layout_viewStub))
     }
 
     private fun initBottomView() {

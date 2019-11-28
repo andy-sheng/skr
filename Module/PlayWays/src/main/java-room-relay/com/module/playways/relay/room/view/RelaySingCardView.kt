@@ -1,5 +1,6 @@
 package com.module.playways.relay.room.view
 
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
 import android.widget.TextView
@@ -8,6 +9,8 @@ import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.ExViewStub
 import com.common.view.ex.ExView
+import com.component.busilib.model.BackgroundEffectModel
+import com.component.busilib.view.GameEffectBgView
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.LyricsReader
@@ -15,6 +18,7 @@ import com.component.lyrics.widget.AbstractLrcView
 import com.component.lyrics.widget.ManyLyricsView
 import com.component.lyrics.widget.VoiceScaleView
 import com.module.playways.R
+import com.module.playways.grab.room.view.normal.NormalOthersSingCardView
 import com.module.playways.relay.room.RelayRoomData
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.Job
@@ -24,6 +28,8 @@ import java.util.HashSet
 
 class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
+    lateinit var effectBgView: GameEffectBgView
+    lateinit var othersSingCardView: NormalOthersSingCardView
     val TAG = "RelaySingCardView"
 
     lateinit var dotView: ExView
@@ -143,11 +149,32 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg1)
             otherSingTipsTv.visibility = View.GONE
             voiceScaleView.setHide(false)
+            var effect:BackgroundEffectModel? = if(roomData?.leftSeat == true){
+                roomData?.realRoundInfo?.showInfos?.getOrNull(0)
+            }else{
+                roomData?.realRoundInfo?.showInfos?.getOrNull(1)
+            }
+            if(effect?.sourceURL?.isNotEmpty() == true){
+                effectBgView.showBgEffect(effect?.sourceURL!!, effect?.bgColor!!)
+            }else{
+                effectBgView.hideBg()
+            }
         } else {
             dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg2)
             otherSingTipsTv.visibility = View.VISIBLE
             voiceScaleView.setHide(true)
+            var effect:BackgroundEffectModel? = if(roomData?.leftSeat == true){
+                roomData?.realRoundInfo?.showInfos?.getOrNull(1)
+            }else{
+                roomData?.realRoundInfo?.showInfos?.getOrNull(0)
+            }
+            if(effect?.sourceURL?.isNotEmpty() == true){
+                effectBgView.showBgEffect(effect?.sourceURL!!, effect?.bgColor!!)
+            }else{
+                effectBgView.hideBg()
+            }
         }
+        othersSingCardView.bindData()
     }
 
     fun turnSingTurnChange() {
@@ -166,6 +193,7 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         singBeginTipsTv2.visibility = View.GONE
         lyricAndAccMatchManager.stop()
         countDownJob?.cancel()
+        othersSingCardView.setVisibility(View.GONE)
     }
 
     fun turnSingPrepare() {
@@ -181,5 +209,6 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         singBeginTipsTv2.text = "《${roomData?.realRoundInfo?.music?.displaySongName}》"
         lyricAndAccMatchManager.stop()
         countDownJob?.cancel()
+        othersSingCardView.setVisibility(View.GONE)
     }
 }

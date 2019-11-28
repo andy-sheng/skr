@@ -1617,6 +1617,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             }
         }
 
+        // 别人唱时 也展示头像
         if (!(mRoomData?.isVideoRoom!!)) {
             mOthersSingCardView.bindData()
         }

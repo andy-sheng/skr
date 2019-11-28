@@ -1,5 +1,6 @@
 package com.module.playways.relay.room.model
 import com.common.log.MyLog
+import com.component.busilib.model.BackgroundEffectModel
 import com.module.playways.relay.room.event.RelayRoundStatusChangeEvent
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.song.model.SongModel
@@ -7,6 +8,7 @@ import com.zq.live.proto.RelayRoom.ERRoundStatus
 import com.zq.live.proto.RelayRoom.RRoundInfo
 import org.greenrobot.eventbus.EventBus
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class RelayRoundInfoModel : BaseRoundInfoModel() {
@@ -42,6 +44,8 @@ class RelayRoundInfoModel : BaseRoundInfoModel() {
             }
             return totalTs
         }
+
+    var showInfos = ArrayList<BackgroundEffectModel>()
 
     override fun getType(): Int {
         return BaseRoundInfoModel.TYPE_RELAY

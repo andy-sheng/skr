@@ -4,6 +4,7 @@ import com.component.busilib.constans.GameModeType
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.GrabRoom.EQRoundStatus
 import com.zq.live.proto.MicRoom.EMRoundStatus
@@ -19,6 +20,7 @@ object H {
             micRoomData = null
             grabRoomData = null
             raceRoomData = null
+            relayRoomData = null
         }
     }
 
@@ -30,6 +32,10 @@ object H {
 
     fun isMicRoom(): Boolean {
         return curType == GameModeType.GAME_MODE_MIC
+    }
+
+    fun isRelayRoom():Boolean{
+        return curType == GameModeType.GAME_MODE_RELAY
     }
 
     public fun getSongModel(): SongModel? {
@@ -60,5 +66,6 @@ object H {
     var micRoomData: MicRoomData? = null
     var grabRoomData: GrabRoomData? = null
     var raceRoomData: RaceRoomData? = null
+    var relayRoomData: RelayRoomData? = null
 
 }
