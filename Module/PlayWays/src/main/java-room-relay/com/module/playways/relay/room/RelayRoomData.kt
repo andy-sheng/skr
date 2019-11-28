@@ -55,7 +55,7 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
                 EventBus.getDefault().post(RelayLockChangeEvent())
             }
         }
-    var leftSeat = true;// 我的未知是否在左边
+    var leftSeat = true   // 我的未知是否在左边
     var isHasExitGame = false
 
     override val gameType: Int
@@ -190,10 +190,11 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         }
         this.configModel = rsp.config ?: RelayConfigModel()
         this.peerUser = ReplayPlayerInfoModel()
-        rsp.users?.forEach {
-            if (it.userId != MyUserInfoManager.uid.toInt()) {
-                this.peerUser?.userInfo = it
-                return@forEach
+        rsp.users?.forEachIndexed { index, userInfoModel ->
+            if (userInfoModel.userId != MyUserInfoManager.uid.toInt()) {
+                this.peerUser?.userInfo = userInfoModel
+                this.leftSeat = index != 0
+                return@forEachIndexed
             }
         }
         this.peerUser?.isOnline = true

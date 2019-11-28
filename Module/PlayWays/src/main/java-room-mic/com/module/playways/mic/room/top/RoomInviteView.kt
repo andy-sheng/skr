@@ -1,5 +1,6 @@
 package com.module.playways.mic.room.top
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.support.constraint.ConstraintLayout
@@ -21,25 +22,21 @@ import com.common.utils.dp
 import com.common.view.ExViewStub
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
+import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.AvatarView
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomServerApi
-import com.module.playways.mic.room.model.MicUserMusicModel
+import com.module.playways.mic.room.model.RoomInviteMusicModel
+import com.module.playways.relay.room.RelayRoomServerApi
 import com.module.playways.room.data.H
-import com.module.playways.songmanager.SongManagerActivity
 import com.zq.live.proto.Common.StandPlayType
 import com.zq.live.proto.MicRoom.EMWantSingType
-import com.zq.live.proto.MicRoom.MAddMusicMsg
 import kotlinx.coroutines.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
-import kotlin.contracts.contract
 
-// 合唱或者PK的邀请view (包含邀请和邀请结果)
-class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
+// 合唱或者PK的邀请view (包含邀请和邀请结果) 接唱房间的邀请
+class RoomInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     private var triangleArrow: ImageView? = null
     private var inviteGroup: Group? = null
@@ -56,11 +53,14 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
     private var inviteJob: Job? = null
     private var resultJob: Job? = null
 
-    private var userMusicModel: MicUserMusicModel? = null
+    private var gameType: Int = 0
+    private var userMusicModel: RoomInviteMusicModel? = null
     private var leftMargin: Int = 0
 
     private val micRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
-    var agreeInviteListener:(()->Unit)? = null
+    private val relayRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
+
+    var agreeInviteListener: (() -> Unit)? = null
 
     val grayDrawable: Drawable = DrawableCreator.Builder()
             .setSolidColor(Color.parseColor("#B1AC99"))
@@ -100,7 +100,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         return R.layout.mic_invite_view_stub_layout
     }
 
-    fun startCheckSelfJob(micUserMusicModel: MicUserMusicModel?) {
+    fun startCheckSelfJob(micUserMusicModel: RoomInviteMusicModel?) {
         this.userMusicModel = micUserMusicModel
         cancelJob()
         inviteJob = launch {
@@ -110,10 +110,12 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
     }
 
-    fun showInvite(micUserMusicModel: MicUserMusicModel?, left: Int, isInvite: Boolean) {
+    @SuppressLint("SetTextI18n")
+    fun showInvite(micUserMusicModel: RoomInviteMusicModel?, left: Int, isInvite: Boolean, gameType: Int) {
         tryInflate()
 
         this.userMusicModel = micUserMusicModel
+        this.gameType = gameType
         setVisibility(View.VISIBLE)
         // 自适应一下箭头的位置
         if (left == -1) {
@@ -139,17 +141,23 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
             when {
                 micUserMusicModel?.music?.playType == StandPlayType.PT_CHO_TYPE.value -> descTv?.text = "邀请合唱"
                 micUserMusicModel?.music?.playType == StandPlayType.PT_SPK_TYPE.value -> descTv?.text = "邀请PK"
+                micUserMusicModel?.music?.playType == StandPlayType.PT_RELAY_TYPE.value -> descTv?.text = "邀请接唱"
                 else -> descTv?.text = "邀请"
             }
             songNameTv?.text = "《${micUserMusicModel?.music?.displaySongName}》"
             agreeTv?.isClickable = true
             agreeTv?.background = yellowDrawable
+
+            var agreeText = "抢唱"
+            if (gameType == GameModeType.GAME_MODE_RELAY) {
+                agreeText = "同意"
+            }
             inviteJob = launch {
                 repeat(8) {
-                    agreeTv?.text = "抢唱${8 - it}s"
+                    agreeTv?.text = "$agreeText ${8 - it}s"
                     delay(1000)
                 }
-                agreeTv?.text = "抢唱0s"
+                agreeTv?.text = "$agreeText 0s"
                 // 去拉一下演唱的状态
                 syncInviteResult(micUserMusicModel?.uniqTag)
             }
@@ -166,12 +174,17 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     inviteGroup?.visibility = View.GONE
                     val model = H.micRoomData?.getPlayerOrWaiterInfo(micUserMusicModel?.userID)  // 发起人
                     val peerModel = H.micRoomData?.getPlayerOrWaiterInfo(micUserMusicModel?.peerID)  // 接收人
+
                     resultAvatar?.bindData(peerModel)
                     resultName?.text = peerModel?.nicknameRemark
-                    if (micUserMusicModel?.wantSingType == EMWantSingType.MWST_SPK.value) {
-                        resultDesc?.text = "已接受${model?.nicknameRemark}的PK"
+                    if (gameType == GameModeType.GAME_MODE_MIC) {
+                        if (micUserMusicModel?.wantSingType == EMWantSingType.MWST_SPK.value) {
+                            resultDesc?.text = "已接受${model?.nicknameRemark}的PK"
+                        } else {
+                            resultDesc?.text = "已加入${model?.nicknameRemark}的合唱"
+                        }
                     } else {
-                        resultDesc?.text = "已加入${model?.nicknameRemark}的合唱"
+                        resultDesc?.text = "已加入接唱"
                     }
                 }
                 resultJob = launch {
@@ -185,6 +198,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     when {
                         micUserMusicModel.music?.playType == StandPlayType.PT_CHO_TYPE.value -> U.getToastUtil().showShort("发起${micUserMusicModel?.music?.displaySongName}合唱失败")
                         micUserMusicModel.music?.playType == StandPlayType.PT_SPK_TYPE.value -> U.getToastUtil().showShort("发起${micUserMusicModel?.music?.displaySongName}PK失败")
+                        micUserMusicModel.music?.playType == StandPlayType.PT_RELAY_TYPE.value -> U.getToastUtil().showShort("发起${micUserMusicModel?.music?.displaySongName}接唱失败")
                         else -> U.getToastUtil().showShort("${micUserMusicModel.music?.displaySongName}发起失败")
                     }
                 }
@@ -198,34 +212,67 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     fun agreeInvite() {
-        launch {
-            val map = mutableMapOf(
-                    "roomID" to (H.micRoomData?.gameId ?: 0),
-                    "uniqTag" to (userMusicModel?.uniqTag ?: ""))
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe(RequestControl("agreeInvite", ControlType.CancelLast)) {
-                micRoomServerApi.agreeSing(body)
+        if (gameType == GameModeType.GAME_MODE_MIC) {
+            launch {
+                val map = mutableMapOf(
+                        "roomID" to (H.micRoomData?.gameId ?: 0),
+                        "uniqTag" to (userMusicModel?.uniqTag ?: ""))
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val result = subscribe(RequestControl("agreeInvite", ControlType.CancelLast)) {
+                    micRoomServerApi.agreeSing(body)
+                }
+                if (result.errno == 0) {
+                    userMusicModel?.peerID = MyUserInfoManager.uid.toInt()
+                    showInvite(userMusicModel, -1, false, GameModeType.GAME_MODE_MIC)
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                }
             }
-            if (result.errno == 0) {
-                userMusicModel?.peerID = MyUserInfoManager.uid.toInt()
-                showInvite(userMusicModel, -1, false)
-            } else {
-                U.getToastUtil().showShort(result.errmsg)
+        } else if (gameType == GameModeType.GAME_MODE_RELAY) {
+            launch {
+                val map = mutableMapOf(
+                        "roomID" to (H.micRoomData?.gameId ?: 0),
+                        "uniqTag" to (userMusicModel?.uniqTag ?: ""))
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val result = subscribe(RequestControl("agreeInvite", ControlType.CancelLast)) {
+                    relayRoomServerApi.agreeSing(body)
+                }
+                if (result.errno == 0) {
+                    userMusicModel?.peerID = MyUserInfoManager.uid.toInt()
+                    showInvite(userMusicModel, -1, false, GameModeType.GAME_MODE_MIC)
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                }
             }
         }
     }
 
     private fun syncInviteResult(uniqTag: String?) {
-        launch {
-            val result = subscribe(RequestControl("syncInviteResult", ControlType.CancelLast)) {
-                micRoomServerApi.getAgreeSingResult(H.micRoomData?.gameId
-                        ?: 0, uniqTag ?: "")
+        if (gameType == GameModeType.GAME_MODE_MIC) {
+            launch {
+                val result = subscribe(RequestControl("syncInviteResult", ControlType.CancelLast)) {
+                    micRoomServerApi.getAgreeSingResult(H.micRoomData?.gameId
+                            ?: 0, uniqTag ?: "")
+                }
+                if (result.errno == 0) {
+                    val userMusicModel = JSON.parseObject(result.data.getString("music"), RoomInviteMusicModel::class.java)
+                    showInvite(userMusicModel, -1, false, GameModeType.GAME_MODE_MIC)
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                }
             }
-            if (result.errno == 0) {
-                val userMusicModel = JSON.parseObject(result.data.getString("music"), MicUserMusicModel::class.java)
-                showInvite(userMusicModel, -1, false)
-            } else {
-                U.getToastUtil().showShort(result.errmsg)
+        } else if (gameType == GameModeType.GAME_MODE_RELAY){
+            launch {
+                val result = subscribe(RequestControl("syncInviteResult", ControlType.CancelLast)) {
+                    relayRoomServerApi.getAgreeSingResult(H.micRoomData?.gameId
+                            ?: 0, uniqTag ?: "")
+                }
+                if (result.errno == 0) {
+                    val userMusicModel = JSON.parseObject(result.data.getString("music"), RoomInviteMusicModel::class.java)
+                    showInvite(userMusicModel, -1, false, GameModeType.GAME_MODE_RELAY)
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                }
             }
         }
     }
