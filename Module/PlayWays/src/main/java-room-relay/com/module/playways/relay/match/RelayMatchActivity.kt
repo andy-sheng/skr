@@ -212,6 +212,9 @@ class RelayMatchActivity : BaseActivity() {
             if (result.errno == 0) {
                 val joinRelayRoomRspModel = JSON.parseObject(result.data.toJSONString(), JoinRelayRoomRspModel::class.java)
                 tryGoRelayRoom(joinRelayRoomRspModel)
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+                // todo 补充一个UI更新的逻辑
             }
         }
     }
@@ -226,9 +229,24 @@ class RelayMatchActivity : BaseActivity() {
             }
 
             override fun onFailed(obj: Any?, errcode: Int, message: String?) {
-
+                // 加入失败
+                reportEnterFail(model)
             }
         })
+    }
+
+    private fun reportEnterFail(model: JoinRelayRoomRspModel) {
+        launch {
+            val map = mutableMapOf("roomID" to (model.roomID))
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("reportEnterFail", ControlType.CancelThis)) {
+                relayMatchServerApi.enterRoomFailed(body)
+            }
+            if (result.errno == 0) {
+                // 进入失败，重新开始匹配
+                startMatch()
+            }
+        }
     }
 
     override fun useEventBus(): Boolean {
