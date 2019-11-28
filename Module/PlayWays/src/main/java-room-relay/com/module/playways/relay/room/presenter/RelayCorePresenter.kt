@@ -613,7 +613,9 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                     if (progress > 0) {
                         DebugLogView.println(TAG, "EngineEvent 超时上车了")
                         ZqEngineKit.getInstance().setAudioMixingPosition(progress.toInt())
-                        realSingBegin()
+                        mUiHandler.post {
+                            realSingBegin()
+                        }
                     } else {
                         DebugLogView.println(TAG, "EngineEvent 先暂停 ${-progress}ms后 resume")
                         ZqEngineKit.getInstance().pauseAudioMixing()

@@ -23,11 +23,11 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
     }
 
     override fun getPlayerAndWaiterInfoList(): List<PlayerInfoModel> {
-        return null!!
+        return listOf(peerUser) as List<PlayerInfoModel>
     }
 
     override fun getInSeatPlayerInfoList(): List<PlayerInfoModel> {
-        return null!!
+        return listOf(peerUser) as List<PlayerInfoModel>
     }
 
     /**
