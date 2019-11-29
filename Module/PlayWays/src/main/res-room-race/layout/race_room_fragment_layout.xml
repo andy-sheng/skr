@@ -28,6 +28,7 @@
         app:showBottomLine="false"
         app:showMainView="false"
         app:statusBarColor="@color/transparent" />
+
     <!--底部按钮区-->
     <com.module.playways.race.room.bottom.RaceBottomContainerView
         android:id="@+id/bottom_container_view"
@@ -35,6 +36,14 @@
         android:layout_height="@dimen/view_32_dp"
         android:layout_marginBottom="@dimen/view_18_dp"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!--评论区分割线-->
+    <android.support.constraint.Guideline
+        android:id="@+id/comment_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.575" />
 
     <!--评论区-->
     <com.module.playways.room.room.comment.CommentView
@@ -49,7 +58,7 @@
         app:edge_width="30dp"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@+id/bottom_container_view"
-        app:layout_constraintTop_toBottomOf="@id/top_background"
+        app:layout_constraintTop_toBottomOf="@id/comment_guide"
         app:layout_goneMarginBottom="@dimen/view_50_dp"
         gameType:type="race" />
 
@@ -202,7 +211,8 @@
         android:layout="@layout/vip_enter_view_layout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+        app:layout_constraintTop_toTopOf="@id/comment_guide"
+        app:layout_constraintBottom_toTopOf="@id/comment_guide"/>
 
     <!--自己唱的view-->
     <ViewStub
@@ -230,7 +240,8 @@
         android:layout_marginBottom="@dimen/view_10_dp"
         android:paddingLeft="@dimen/view_10_dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@id/comment_view" />
+        app:layout_constraintBottom_toTopOf="@id/comment_guide"
+        app:layout_constraintTop_toTopOf="@id/comment_guide" />
 
     <!--大礼物动画-->
     <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
