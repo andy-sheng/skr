@@ -27,9 +27,10 @@ interface RelayRoomServerApi {
     fun syncStatus(@Query("roomID") roomID: Long): Call<ApiResult>
 
     @PUT("http://dev.game.inframe.mobi/v1/relaygame/unlock-user-info")
-    fun sendUnlock(body: RequestBody): Call<ApiResult>
+    fun sendUnlock(@Body body: RequestBody): Call<ApiResult>
+
     @PUT("http://dev.game.inframe.mobi/v1/relaygame/mute")
-    fun mute(body: RequestBody): Observable<ApiResult>
+    fun mute(@Body body: RequestBody): Observable<ApiResult>
 
     @GET("http://dev.game.inframe.mobi/v1/relaygame/timestamp")
     fun timestamp(@Query("roomID") roomID: Int): Call<ApiResult>

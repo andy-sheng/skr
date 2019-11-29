@@ -65,11 +65,11 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     internal var mHasPlayFullAnimation = false
 
     override fun init(parentView: View) {
-        mGrabStageView = mParentView!!.findViewById<View>(R.id.grab_stage_view) as SVGAImageView
-        mSingAvatarView = mParentView!!.findViewById<View>(R.id.sing_avatar_view) as BaseImageView
-        mLevelBg = mParentView!!.findViewById<View>(R.id.level_bg) as ImageView
-        mCircleCountDownView = mParentView!!.findViewById<View>(R.id.sing_count_down_view) as SingCountDownView2
-        mTvSingerName = mParentView!!.findViewById<View>(R.id.tv_singer_name) as ExTextView
+        mGrabStageView = parentView.findViewById<View>(R.id.grab_stage_view) as SVGAImageView
+        mSingAvatarView = parentView.findViewById<View>(R.id.sing_avatar_view) as BaseImageView
+        mLevelBg = parentView.findViewById<View>(R.id.level_bg) as ImageView
+        mCircleCountDownView = parentView.findViewById<View>(R.id.sing_count_down_view) as SingCountDownView2?
+        mTvSingerName = parentView.findViewById<View>(R.id.tv_singer_name) as ExTextView
 
         mSingAvatarView?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -81,22 +81,19 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     override fun layoutDesc(): Int {
+        if (H.isRelayRoom()) {
+            return R.layout.relay_sing_card_view_layout
+        }
         return R.layout.grab_normal_other_sing_card_stub_layout
     }
 
     override fun onViewDetachedFromWindow(v: View) {
         super.onViewDetachedFromWindow(v)
-        if (mEnterAlphaAnimation != null) {
-            mEnterAlphaAnimation!!.setAnimationListener(null)
-            mEnterAlphaAnimation!!.cancel()
-        }
-        if (mLeaveTranslateAnimation != null) {
-            mLeaveTranslateAnimation!!.setAnimationListener(null)
-            mLeaveTranslateAnimation!!.cancel()
-        }
-        if (mUiHandler != null) {
-            mUiHandler!!.removeCallbacksAndMessages(null)
-        }
+        mEnterAlphaAnimation?.setAnimationListener(null)
+        mEnterAlphaAnimation?.cancel()
+        mLeaveTranslateAnimation?.setAnimationListener(null)
+        mLeaveTranslateAnimation?.cancel()
+        mUiHandler?.removeCallbacksAndMessages(null)
     }
 
     fun bindData() {
@@ -106,10 +103,10 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             userInfoModel = H.grabRoomData?.getPlayerOrWaiterInfo(H.grabRoomData?.realRoundInfo?.userID)
         } else if (H.isMicRoom()) {
             userInfoModel = H.micRoomData?.getPlayerOrWaiterInfo(H.micRoomData?.realRoundInfo?.userID)
-        }else if(H.isRelayRoom()){
-            if(H.relayRoomData?.isSingByMeNow() == true){
+        } else if (H.isRelayRoom()) {
+            if (H.relayRoomData?.isSingByMeNow() == true) {
                 userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo)
-            }else{
+            } else {
                 userInfoModel = H.relayRoomData?.peerUser?.userInfo
             }
         }
@@ -133,7 +130,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             mEnterAlphaAnimation = AlphaAnimation(0f, 1f)
             mEnterAlphaAnimation!!.duration = 1000
         }
-        mParentView!!.startAnimation(mEnterAlphaAnimation)
+        mParentView?.startAnimation(mEnterAlphaAnimation)
 
         mGrabStageView?.visibility = View.VISIBLE
         mGrabStageView?.loops = 1
@@ -153,7 +150,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         if (H.isGrabRoom()) {
             val grabRoundInfoModel = H.grabRoomData?.realRoundInfo ?: return
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT
-            mCircleCountDownView!!.reset()
+            mCircleCountDownView?.reset()
             if (!grabRoundInfoModel.isParticipant && grabRoundInfoModel.enterStatus == EQRoundStatus.QRS_SING.value) {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
                 countDown("中途进来")
@@ -164,7 +161,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         } else if (H.isMicRoom()) {
             val grabRoundInfoModel = H.micRoomData?.realRoundInfo ?: return
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT
-            mCircleCountDownView!!.reset()
+            mCircleCountDownView?.reset()
             if (!grabRoundInfoModel.isParticipant && grabRoundInfoModel.enterStatus == EMRoundStatus.MRS_SING.value) {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
                 countDown("中途进来")
@@ -172,7 +169,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
                 mUiHandler!!.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 1000)
             }
-        }else if(H.isRelayRoom()){
+        } else if (H.isRelayRoom()) {
             mCircleCountDownView?.reset()
         }
 
@@ -206,7 +203,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 progress = 1
                 leaveTime = totalMs
             }
-            mCircleCountDownView!!.startPlay(progress, leaveTime, true)
+            mCircleCountDownView?.startPlay(progress, leaveTime, true)
         } else if (H.isMicRoom()) {
             val infoModel = H.micRoomData?.realRoundInfo ?: return
             val totalMs = infoModel.singTotalMs
@@ -221,8 +218,8 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 progress = 1
                 leaveTime = totalMs
             }
-            mCircleCountDownView!!.startPlay(progress, leaveTime, true)
-        }else if(H.isRelayRoom()){
+            mCircleCountDownView?.startPlay(progress, leaveTime, true)
+        } else if (H.isRelayRoom()) {
 
         }
     }
@@ -230,14 +227,14 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     fun hide() {
         mCountDownStatus = COUNT_DOWN_STATUS_WAIT
         mHasPlayFullAnimation = false
-        mUiHandler!!.removeCallbacksAndMessages(null)
+        mUiHandler?.removeCallbacksAndMessages(null)
         if (mParentView != null) {
-            if (mParentView!!.visibility == View.VISIBLE) {
+            if (mParentView?.visibility == View.VISIBLE) {
                 if (mLeaveTranslateAnimation == null) {
                     mLeaveTranslateAnimation = TranslateAnimation(0.0f, U.getDisplayUtils().screenWidth.toFloat(), 0.0f, 0.0f)
-                    mLeaveTranslateAnimation!!.duration = 200
+                    mLeaveTranslateAnimation?.duration = 200
                 }
-                mParentView!!.startAnimation(mLeaveTranslateAnimation)
+                mParentView?.startAnimation(mLeaveTranslateAnimation)
                 mLeaveTranslateAnimation!!.setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationStart(animation: Animation) {
 
@@ -253,13 +250,11 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     }
                 })
             } else {
-                mParentView!!.clearAnimation()
+                mParentView?.clearAnimation()
                 setVisibility(View.GONE)
             }
-            if (mCircleCountDownView != null) {
-                mCircleCountDownView!!.reset()
-                mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
-            }
+            mCircleCountDownView?.reset()
+            mUiHandler?.removeMessages(MSG_ENSURE_PLAY)
         }
     }
 
