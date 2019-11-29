@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#7088FF">
@@ -49,6 +50,7 @@
         android:layout_height="@dimen/view_24_dp"
         android:layout_marginRight="@dimen/textsize_10_dp"
         android:drawableLeft="@drawable/mall_diamond"
+        android:drawableRight="@drawable/mall_recharge_add"
         android:drawablePadding="@dimen/view_3_dp"
         android:gravity="center_horizontal"
         android:paddingLeft="@dimen/view_7_dp"
@@ -58,7 +60,6 @@
         android:textSize="@dimen/textsize_16_dp"
         app:bl_corners_radius="12dp"
         app:bl_solid_color="#526AE3"
-        android:drawableRight="@drawable/mall_recharge_add"
         app:layout_constraintBottom_toBottomOf="@+id/btn_back"
         app:layout_constraintRight_toLeftOf="@+id/mall_tv"
         app:layout_constraintTop_toTopOf="@+id/btn_back" />

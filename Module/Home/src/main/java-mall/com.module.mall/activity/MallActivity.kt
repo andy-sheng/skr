@@ -11,9 +11,11 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.base.FragmentDataListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.rxretrofit.*
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
@@ -22,6 +24,7 @@ import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.R
 import com.module.home.WalletServerApi
+import com.module.home.fragment.HalfRechargeFragment
 import com.module.mall.MallServerApi
 import com.module.mall.event.BuyMallEvent
 import com.module.mall.event.BuyMallSuccessEvent
@@ -85,12 +88,7 @@ class MallActivity : BaseActivity() {
         viewList = ArrayList()
 
         diamondTv.setDebounceViewClickListener {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_BALANCE)
-                    .navigation()
-
-            callWhenResume = {
-                getZSBalance()
-            }
+            showRechargeDialog()
         }
 
         mallTv.setDebounceViewClickListener {
@@ -231,9 +229,30 @@ class MallActivity : BaseActivity() {
                 }
                 tipsDialogView?.showByDialog()
             } else {
+                if (8428101 == obj.errno) {
+                    showRechargeDialog()
+                }
                 U.getToastUtil().showShort(obj.errmsg)
             }
         }
+    }
+
+    fun showRechargeDialog() {
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(this, HalfRechargeFragment::class.java)
+                        .setEnterAnim(R.anim.slide_in_bottom)
+                        .setExitAnim(R.anim.slide_out_bottom)
+                        .setAddToBackStack(true)
+                        .setFragmentDataListener(object : FragmentDataListener {
+                            override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
+                                //充值成功
+                                if (requestCode == 100 && resultCode == 0) {
+                                    getZSBalance()
+                                }
+                            }
+                        })
+                        .setHasAnimation(true)
+                        .build())
     }
 
     fun getZSBalance() {
