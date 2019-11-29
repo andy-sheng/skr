@@ -501,8 +501,8 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             }
         }
 
-        showInfos.clear();
         if (roundInfo.getShowInfos() != null && roundInfo.getShowInfos().size() > 0) {
+            showInfos.clear();
             showInfos.addAll(roundInfo.getShowInfos());
         }
 
@@ -589,8 +589,8 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             roundInfoModel.getMINIGameRoundInfoModels().add(miniGameRoundInfoModel);
         }
 
-        roundInfoModel.showInfos.clear();
         if (roundInfo.getShowInfosList() != null && roundInfo.getShowInfosList().size() > 0) {
+            roundInfoModel.showInfos.clear();
             roundInfoModel.showInfos.addAll(GameBackgroundEffectModel.Companion.parseToList(roundInfo.getShowInfosList()));
         }
 

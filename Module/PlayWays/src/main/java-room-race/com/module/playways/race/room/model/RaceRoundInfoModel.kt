@@ -234,8 +234,8 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
             }
         }
 
-        showInfos.clear()
         if (round.showInfos != null && round.showInfos.size > 0) {
+            showInfos.clear()
             showInfos.addAll(round.showInfos)
         }
 
@@ -390,6 +390,7 @@ internal fun parseFromRoundInfoPB(pb: RaceRoundInfo): RaceRoundInfoModel {
     model.audienceUserCnt = pb.audienceUserCnt
 
     if (pb.hasShowInfosList() && pb.showInfosList.size > 0) {
+        model.showInfos.clear()
         model.showInfos.addAll(GameBackgroundEffectModel.parseToList(pb.showInfosList))
     }
     return model

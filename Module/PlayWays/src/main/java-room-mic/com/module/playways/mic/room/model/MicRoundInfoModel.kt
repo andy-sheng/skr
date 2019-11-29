@@ -323,8 +323,8 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
             commonRoundResult = roundInfo.commonRoundResult
         }
 
-        showInfos.clear()
         if (round.showInfos != null && round.showInfos.size > 0) {
+            showInfos.clear()
             showInfos.addAll(round.showInfos)
         }
         updateStatus(notify, roundInfo.status)
@@ -523,6 +523,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
             roundInfoModel.commonRoundResult = MicRoundResult.parseFromInfoPB(roundInfo.commonRoundResult)
 
             if (roundInfo.hasShowInfosList() && roundInfo.showInfosList.size > 0) {
+                roundInfoModel.showInfos.clear()
                 roundInfoModel.showInfos.addAll(GameBackgroundEffectModel.parseToList(roundInfo.showInfosList))
             }
             return roundInfoModel
