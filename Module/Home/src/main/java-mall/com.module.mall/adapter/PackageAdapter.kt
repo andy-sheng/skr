@@ -115,11 +115,11 @@ class PackageAdapter(val getPacketItemIDMethod: (() -> String), val setSelectedI
             if (TextUtils.isEmpty(getPacketItemIDMethod.invoke())) {
                 if (model.useStatus == 2) {
                     strokeIv.visibility = View.VISIBLE
+                    setSelectedItemFirstMethod.invoke(model.packetItemID, position)
                 } else if (model.useStatus == 1) {
                     strokeIv.visibility = View.GONE
                 }
 
-                setSelectedItemFirstMethod.invoke(model.packetItemID, position)
             } else {
                 if (getPacketItemIDMethod.invoke().equals(model.packetItemID)) {
                     strokeIv.visibility = View.VISIBLE
