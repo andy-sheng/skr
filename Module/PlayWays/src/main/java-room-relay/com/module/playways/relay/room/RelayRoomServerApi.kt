@@ -17,7 +17,7 @@ interface RelayRoomServerApi {
     fun giveUpSing(@Body body: RequestBody): Call<ApiResult>
 
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.game.inframe.mobi/v1/relaygame/exit-room")
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/exit")
     fun exitRoom(@Body body: RequestBody): Call<ApiResult>
 
     @PUT("http://dev.game.inframe.mobi/v1/relaygame/heartbeat")
