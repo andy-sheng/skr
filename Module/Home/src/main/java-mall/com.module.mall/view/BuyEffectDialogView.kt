@@ -54,8 +54,8 @@ class BuyEffectDialogView : ConstraintLayout {
         }
 
         buyTv.setDebounceViewClickListener {
+            dismiss(false)
             EventBus.getDefault().post(BuyMallEvent(model!!, if (firstDes.isSelected) model!!.price[0] else model!!.price[1]))
-            dismiss(true)
         }
     }
 
