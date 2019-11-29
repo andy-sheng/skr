@@ -25,6 +25,8 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
 
   private static final long serialVersionUID = 0L;
 
+  public static final Integer DEFAULT_USERID = 0;
+
   public static final Integer DEFAULT_ROUNDSEQ = 0;
 
   public static final Integer DEFAULT_INTROBEGINMS = 0;
@@ -40,10 +42,19 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
   public static final ERRoundOverReason DEFAULT_OVERREASON = ERRoundOverReason.RROR_UNKNOWN;
 
   /**
-   * 轮次序号
+   * 发起者
    */
   @WireField(
       tag = 1,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer userID;
+
+  /**
+   * 轮次序号
+   */
+  @WireField(
+      tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer roundSeq;
@@ -52,7 +63,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
    * 导唱开始相对时间（相对于createdTimeMs时间） p.s.导唱为等待阶段
    */
   @WireField(
-      tag = 2,
+      tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer introBeginMs;
@@ -61,7 +72,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
    * 导唱结束相对时间（相对于createdTimeMs时间） p.s.导唱为等待阶段
    */
   @WireField(
-      tag = 3,
+      tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer introEndMs;
@@ -70,7 +81,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
    * 演唱开始相对时间（相对于createdTimeMs时间）
    */
   @WireField(
-      tag = 4,
+      tag = 5,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer singBeginMs;
@@ -79,7 +90,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
    * 演唱结束相对时间（相对于createdTimeMs时间）
    */
   @WireField(
-      tag = 5,
+      tag = 6,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer singEndMs;
@@ -88,7 +99,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
    * 轮次状态
    */
   @WireField(
-      tag = 6,
+      tag = 7,
       adapter = "com.zq.live.proto.RelayRoom.ERRoundStatus#ADAPTER"
   )
   private final ERRoundStatus status;
@@ -97,7 +108,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
    * 切换轮次原因
    */
   @WireField(
-      tag = 7,
+      tag = 8,
       adapter = "com.zq.live.proto.RelayRoom.ERRoundOverReason#ADAPTER"
   )
   private final ERRoundOverReason overReason;
@@ -106,7 +117,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
    * 本轮次的歌曲信息
    */
   @WireField(
-      tag = 8,
+      tag = 9,
       adapter = "com.zq.live.proto.Common.MusicInfo#ADAPTER"
   )
   private final MusicInfo music;
@@ -115,22 +126,23 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
    * 背景效果
    */
   @WireField(
-      tag = 9,
+      tag = 10,
       adapter = "com.zq.live.proto.Common.BackgroundShowInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
   private final List<BackgroundShowInfo> showInfos;
 
-  public RRoundInfo(Integer roundSeq, Integer introBeginMs, Integer introEndMs, Integer singBeginMs,
-      Integer singEndMs, ERRoundStatus status, ERRoundOverReason overReason, MusicInfo music,
-      List<BackgroundShowInfo> showInfos) {
-    this(roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, showInfos, ByteString.EMPTY);
+  public RRoundInfo(Integer userID, Integer roundSeq, Integer introBeginMs, Integer introEndMs,
+      Integer singBeginMs, Integer singEndMs, ERRoundStatus status, ERRoundOverReason overReason,
+      MusicInfo music, List<BackgroundShowInfo> showInfos) {
+    this(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, showInfos, ByteString.EMPTY);
   }
 
-  public RRoundInfo(Integer roundSeq, Integer introBeginMs, Integer introEndMs, Integer singBeginMs,
-      Integer singEndMs, ERRoundStatus status, ERRoundOverReason overReason, MusicInfo music,
-      List<BackgroundShowInfo> showInfos, ByteString unknownFields) {
+  public RRoundInfo(Integer userID, Integer roundSeq, Integer introBeginMs, Integer introEndMs,
+      Integer singBeginMs, Integer singEndMs, ERRoundStatus status, ERRoundOverReason overReason,
+      MusicInfo music, List<BackgroundShowInfo> showInfos, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
+    this.userID = userID;
     this.roundSeq = roundSeq;
     this.introBeginMs = introBeginMs;
     this.introEndMs = introEndMs;
@@ -145,6 +157,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
+    builder.userID = userID;
     builder.roundSeq = roundSeq;
     builder.introBeginMs = introBeginMs;
     builder.introEndMs = introEndMs;
@@ -164,6 +177,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
     if (!(other instanceof RRoundInfo)) return false;
     RRoundInfo o = (RRoundInfo) other;
     return unknownFields().equals(o.unknownFields())
+        && Internal.equals(userID, o.userID)
         && Internal.equals(roundSeq, o.roundSeq)
         && Internal.equals(introBeginMs, o.introBeginMs)
         && Internal.equals(introEndMs, o.introEndMs)
@@ -180,6 +194,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
+      result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
       result = result * 37 + (introBeginMs != null ? introBeginMs.hashCode() : 0);
       result = result * 37 + (introEndMs != null ? introEndMs.hashCode() : 0);
@@ -197,6 +212,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
+    if (userID != null) builder.append(", userID=").append(userID);
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
     if (introBeginMs != null) builder.append(", introBeginMs=").append(introBeginMs);
     if (introEndMs != null) builder.append(", introEndMs=").append(introEndMs);
@@ -217,6 +233,16 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
     RRoundInfo c = null;
        c = RRoundInfo.ADAPTER.decode(data);
     return c;
+  }
+
+  /**
+   * 发起者
+   */
+  public Integer getUserID() {
+    if(userID==null){
+        return DEFAULT_USERID;
+    }
+    return userID;
   }
 
   /**
@@ -310,6 +336,13 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
   }
 
   /**
+   * 发起者
+   */
+  public boolean hasUserID() {
+    return userID!=null;
+  }
+
+  /**
    * 轮次序号
    */
   public boolean hasRoundSeq() {
@@ -373,6 +406,8 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
   }
 
   public static final class Builder extends Message.Builder<RRoundInfo, Builder> {
+    private Integer userID;
+
     private Integer roundSeq;
 
     private Integer introBeginMs;
@@ -393,6 +428,14 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
 
     public Builder() {
       showInfos = Internal.newMutableList();
+    }
+
+    /**
+     * 发起者
+     */
+    public Builder setUserID(Integer userID) {
+      this.userID = userID;
+      return this;
     }
 
     /**
@@ -470,7 +513,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
 
     @Override
     public RRoundInfo build() {
-      return new RRoundInfo(roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, showInfos, super.buildUnknownFields());
+      return new RRoundInfo(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, showInfos, super.buildUnknownFields());
     }
   }
 
@@ -481,29 +524,31 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
 
     @Override
     public int encodedSize(RRoundInfo value) {
-      return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.roundSeq)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.introBeginMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.introEndMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.singBeginMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.singEndMs)
-          + ERRoundStatus.ADAPTER.encodedSizeWithTag(6, value.status)
-          + ERRoundOverReason.ADAPTER.encodedSizeWithTag(7, value.overReason)
-          + MusicInfo.ADAPTER.encodedSizeWithTag(8, value.music)
-          + BackgroundShowInfo.ADAPTER.asRepeated().encodedSizeWithTag(9, value.showInfos)
+      return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.roundSeq)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.introBeginMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.introEndMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.singBeginMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(6, value.singEndMs)
+          + ERRoundStatus.ADAPTER.encodedSizeWithTag(7, value.status)
+          + ERRoundOverReason.ADAPTER.encodedSizeWithTag(8, value.overReason)
+          + MusicInfo.ADAPTER.encodedSizeWithTag(9, value.music)
+          + BackgroundShowInfo.ADAPTER.asRepeated().encodedSizeWithTag(10, value.showInfos)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, RRoundInfo value) throws IOException {
-      ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.roundSeq);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.introBeginMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.introEndMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.singBeginMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.singEndMs);
-      ERRoundStatus.ADAPTER.encodeWithTag(writer, 6, value.status);
-      ERRoundOverReason.ADAPTER.encodeWithTag(writer, 7, value.overReason);
-      MusicInfo.ADAPTER.encodeWithTag(writer, 8, value.music);
-      BackgroundShowInfo.ADAPTER.asRepeated().encodeWithTag(writer, 9, value.showInfos);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.roundSeq);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.introBeginMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.introEndMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.singBeginMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 6, value.singEndMs);
+      ERRoundStatus.ADAPTER.encodeWithTag(writer, 7, value.status);
+      ERRoundOverReason.ADAPTER.encodeWithTag(writer, 8, value.overReason);
+      MusicInfo.ADAPTER.encodeWithTag(writer, 9, value.music);
+      BackgroundShowInfo.ADAPTER.asRepeated().encodeWithTag(writer, 10, value.showInfos);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -513,12 +558,13 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.setIntroBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 3: builder.setIntroEndMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 4: builder.setSingBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 5: builder.setSingEndMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 6: {
+          case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 2: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: builder.setIntroBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 4: builder.setIntroEndMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 5: builder.setSingBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 6: builder.setSingEndMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 7: {
             try {
               builder.setStatus(ERRoundStatus.ADAPTER.decode(reader));
             } catch (ProtoAdapter.EnumConstantNotFoundException e) {
@@ -526,7 +572,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
             }
             break;
           }
-          case 7: {
+          case 8: {
             try {
               builder.setOverReason(ERRoundOverReason.ADAPTER.decode(reader));
             } catch (ProtoAdapter.EnumConstantNotFoundException e) {
@@ -534,8 +580,8 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
             }
             break;
           }
-          case 8: builder.setMusic(MusicInfo.ADAPTER.decode(reader)); break;
-          case 9: builder.showInfos.add(BackgroundShowInfo.ADAPTER.decode(reader)); break;
+          case 9: builder.setMusic(MusicInfo.ADAPTER.decode(reader)); break;
+          case 10: builder.showInfos.add(BackgroundShowInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

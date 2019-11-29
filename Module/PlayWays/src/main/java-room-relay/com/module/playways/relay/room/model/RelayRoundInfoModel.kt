@@ -112,6 +112,7 @@ class RelayRoundInfoModel : BaseRoundInfoModel() {
 
         fun parseFromRoundInfo(roundInfo: RRoundInfo): RelayRoundInfoModel {
             val roundInfoModel = RelayRoundInfoModel()
+            roundInfoModel.userID = roundInfo.userID
             roundInfoModel.setRoundSeq(roundInfo.roundSeq!!)
             roundInfoModel.singBeginMs = roundInfo.singBeginMs
             roundInfoModel.singEndMs = roundInfo.singEndMs

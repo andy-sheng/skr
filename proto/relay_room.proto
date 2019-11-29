@@ -82,15 +82,16 @@ message RNextRoundMsg
 
 message RRoundInfo
 {
-    uint32 roundSeq                       = 1; //轮次序号
-    uint32 introBeginMs                   = 2; //导唱开始相对时间（相对于createdTimeMs时间） p.s.导唱为等待阶段
-    uint32 introEndMs                     = 3; //导唱结束相对时间（相对于createdTimeMs时间） p.s.导唱为等待阶段
-    uint32 singBeginMs                    = 4; //演唱开始相对时间（相对于createdTimeMs时间）
-    uint32 singEndMs                      = 5; //演唱结束相对时间（相对于createdTimeMs时间）
-    ERRoundStatus status                  = 6; //轮次状态
-    ERRoundOverReason overReason          = 7; //切换轮次原因
-    Common.MusicInfo music                       = 8; //本轮次的歌曲信息
-    repeated Common.BackgroundShowInfo showInfos = 9; //背景效果
+    uint32 userID                         = 1; //发起者
+    uint32 roundSeq                       = 2; //轮次序号
+    uint32 introBeginMs                   = 3; //导唱开始相对时间（相对于createdTimeMs时间） p.s.导唱为等待阶段
+    uint32 introEndMs                     = 4; //导唱结束相对时间（相对于createdTimeMs时间） p.s.导唱为等待阶段
+    uint32 singBeginMs                    = 5; //演唱开始相对时间（相对于createdTimeMs时间）
+    uint32 singEndMs                      = 6; //演唱结束相对时间（相对于createdTimeMs时间）
+    ERRoundStatus status                  = 7; //轮次状态
+    ERRoundOverReason overReason          = 8; //切换轮次原因
+    Common.MusicInfo music                       = 9; //本轮次的歌曲信息
+    repeated Common.BackgroundShowInfo showInfos = 10; //背景效果
 }
 
 enum ERRoundStatus {
