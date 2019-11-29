@@ -96,6 +96,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mBusinessIv: ImageView
     lateinit var mHonorIv: ImageView
     lateinit var mAudioView: CommonAudioView
+    lateinit var mSignTv: TextView
 
     lateinit var mToolbar: Toolbar
     lateinit var mToolbarLayout: RelativeLayout
@@ -409,6 +410,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mNameTv = rootView.findViewById(R.id.name_tv)
         mHonorIv = rootView.findViewById(R.id.honor_iv)
         mAudioView = rootView.findViewById(R.id.audio_view)
+        mSignTv = rootView.findViewById(R.id.sign_tv)
         mBusinessIv = rootView.findViewById(R.id.business_iv)
 
         if (mUserId == MyUserInfoManager.uid.toInt()) {
@@ -705,11 +707,14 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         }
 
         mVoiceInfoModel = voiceInfoModel
+        mSignTv.text = userInfoModel.signature
         if (voiceInfoModel != null) {
             mAudioView.bindData(voiceInfoModel.duration)
             mAudioView.visibility = View.VISIBLE
+            mSignTv.visibility = View.GONE
         } else {
             mAudioView.visibility = View.GONE
+            mSignTv.visibility = View.VISIBLE
         }
     }
 
