@@ -45,7 +45,7 @@ class JoinRelayRoomRspModel : Serializable {
             result.enableNoLimitDuration = msg.enableNoLimitDuration
             result.tokens = LocalAgoraTokenInfo.toLocalAgoraTokenInfo(msg.tokensList)
             result.users = UserInfoModel.parseFromPB(msg.usersList)
-            result.showInfos.addAll(EffectModel.parseBackgroundEffectModelListFromPb(m))
+            result.showInfos.addAll(EffectModel.parseBackgroundEffectModelListFromPb(msg.showInfosList))
 
             return result
         }
