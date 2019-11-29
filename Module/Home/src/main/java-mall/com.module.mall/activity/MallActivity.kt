@@ -223,8 +223,8 @@ class MallActivity : BaseActivity() {
                     tipsDialogView = TipsDialogView.Builder(this@MallActivity)
                             .setMessageTip("商品已购买成功，加入你的背包啦～")
 
-                            .setConfirmTip("确定")
-                            .setConfirmBtnClickListener {
+                            .setOkBtnTip("确定")
+                            .setOkBtnClickListener {
                                 tipsDialogView?.dismiss()
                             }
                             .build()
