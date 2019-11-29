@@ -132,7 +132,7 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         } else if (H.isMicRoom()) {
             mPkSelfSingLyricView!!.playWithAcc(H.getSongModel(), H.micRoomData?.realRoundInfo?.singTotalMs
                     ?: 0)
-            handler.postDelayed(Runnable { mOverListener?.invoke() }, H.grabRoomData?.realRoundInfo?.singTotalMs?.toLong()
+            handler.postDelayed(Runnable { mOverListener?.invoke() }, H.micRoomData?.realRoundInfo?.singTotalMs?.toLong()
                     ?: 0L)
 //            mSingCountDownView!!.startPlay(0, H.micRoomData?.realRoundInfo?.singTotalMs ?: 0, true)
         }
