@@ -1,11 +1,9 @@
 package com.module.playways.grab.room.model;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.component.busilib.model.EffectModel;
+import com.component.busilib.model.GameBackgroundEffectModel;
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
@@ -55,9 +53,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     private HashSet<WantSingerInfo> wantSingInfos = new HashSet<>(); //已经抢了的人
 
-    private List<EffectModel> mEffectModelArrayList = new ArrayList<>();
-
-    private List<JSONObject> showInfos = new ArrayList<>();
+    private List<GameBackgroundEffectModel> showInfos = new ArrayList<>();
 
     //0未知
     //1有种优秀叫一唱到底（全部唱完）
@@ -216,25 +212,12 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         return false;
     }
 
-    public List<EffectModel> getEffectModelArrayList() {
-        return mEffectModelArrayList;
-    }
-
-    public void setEffectModelArrayList(List<EffectModel> effectModelArrayList) {
-        this.mEffectModelArrayList = effectModelArrayList;
-    }
-
-    public List<JSONObject> getShowInfos() {
+    public List<GameBackgroundEffectModel> getShowInfos() {
         return showInfos;
     }
 
-    public void setShowInfos(List<JSONObject> showInfos) {
+    public void setShowInfos(List<GameBackgroundEffectModel> showInfos) {
         this.showInfos = showInfos;
-        if (this.showInfos != null && this.showInfos.size() > 0) {
-            for (JSONObject jsonObject : showInfos) {
-                mEffectModelArrayList.add(JSON.parseObject(jsonObject.getString("sourcesJson"), EffectModel.class));
-            }
-        }
     }
 
     public void setPlayUsers(List<GrabPlayerInfoModel> playUsers) {
@@ -518,9 +501,9 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             }
         }
 
-        mEffectModelArrayList.clear();
-        if (roundInfo.getEffectModelArrayList() != null && roundInfo.getEffectModelArrayList().size() > 0) {
-            mEffectModelArrayList.addAll(roundInfo.getEffectModelArrayList());
+        showInfos.clear();
+        if (roundInfo.getShowInfos() != null && roundInfo.getShowInfos().size() > 0) {
+            showInfos.addAll(roundInfo.getShowInfos());
         }
 
         updateStatus(notify, roundInfo.getStatus());
@@ -606,13 +589,13 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             roundInfoModel.getMINIGameRoundInfoModels().add(miniGameRoundInfoModel);
         }
 
-        roundInfoModel.mEffectModelArrayList.clear();
+        roundInfoModel.showInfos.clear();
         if (roundInfo.getShowInfosList() != null && roundInfo.getShowInfosList().size() > 0) {
-            roundInfoModel.mEffectModelArrayList.addAll(EffectModel.Companion.parseBackgroundEffectModelListFromPb(roundInfo.getShowInfosList()));
+            roundInfoModel.showInfos.addAll(GameBackgroundEffectModel.Companion.parseToList(roundInfo.getShowInfosList()));
         }
 
-        for (EffectModel model : roundInfoModel.mEffectModelArrayList) {
-            MyLog.d("GrabRoundInfoModel", "roundInfoModel " + model);
+        for (GameBackgroundEffectModel model : roundInfoModel.showInfos) {
+            MyLog.d("GrabRoundInfoModel", "roundInfoModel " + model.getEffectModel());
         }
         return roundInfoModel;
     }

@@ -133,7 +133,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mRaceTurnInfoCardView?.visibility = View.GONE
         mRaceMatchView?.visibility = View.GONE
         mRaceWantingSignUpCardView?.visibility = View.GONE
-        mFlyCommentView.visibility = View.GONE
+        hideFlyCommentView()
         mGameEffectBgView.hideBg()
     }
 
@@ -763,20 +763,34 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
     private fun showFlyCommentView() {
-        mFlyCommentView.visibility = View.VISIBLE
+        if (mFlyCommentView.visibility != View.VISIBLE) {
+            mFlyCommentView.visibility = View.VISIBLE
+        }
+        if (mCommentView.visibility != View.INVISIBLE) {
+            mCommentView.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun hideFlyCommentView() {
+        if (mFlyCommentView.visibility != View.GONE) {
+            mFlyCommentView.visibility = View.GONE
+        }
+        if (mCommentView.visibility != View.VISIBLE) {
+            mCommentView.visibility = View.VISIBLE
+        }
     }
 
     private fun playBgEffect(seq: Int) {
         val now = mRoomData!!.realRoundInfo
         if (seq == 1) {
             if (now?.showInfos != null && now?.showInfos.size >= 1) {
-                mGameEffectBgView.showBgEffect(now?.showInfos[0])
+                mGameEffectBgView.showBgEffect(now?.showInfos[0].effectModel)
             } else {
                 mGameEffectBgView.hideBg()
             }
         } else if (seq == 2) {
             if (now?.showInfos != null && now?.showInfos.size >= 2) {
-                mGameEffectBgView.showBgEffect(now?.showInfos[1])
+                mGameEffectBgView.showBgEffect(now?.showInfos[1].effectModel)
             } else {
                 mGameEffectBgView.hideBg()
             }

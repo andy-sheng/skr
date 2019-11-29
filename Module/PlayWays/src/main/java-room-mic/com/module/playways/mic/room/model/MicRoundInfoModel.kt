@@ -3,7 +3,7 @@ package com.module.playways.mic.room.model
 import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
-import com.component.busilib.model.EffectModel
+import com.component.busilib.model.GameBackgroundEffectModel
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent
 import com.module.playways.grab.room.model.ChorusRoundInfoModel
 import com.module.playways.grab.room.model.SPkRoundInfoModel
@@ -56,7 +56,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
     internal var sPkRoundInfoModels: ArrayList<SPkRoundInfoModel> = ArrayList()
 
     @JSONField(name = "showInfos")
-    internal var showInfos: ArrayList<EffectModel> = ArrayList()
+    var showInfos: ArrayList<GameBackgroundEffectModel> = ArrayList()
 
     var userID: Int = 0// 本人在演唱的人
     var music: SongModel? = null//本轮次要唱的歌儿的详细信息
@@ -523,7 +523,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
             roundInfoModel.commonRoundResult = MicRoundResult.parseFromInfoPB(roundInfo.commonRoundResult)
 
             if (roundInfo.hasShowInfosList() && roundInfo.showInfosList.size > 0) {
-                roundInfoModel.showInfos.addAll(EffectModel.parseBackgroundEffectModelListFromPb(roundInfo.showInfosList))
+                roundInfoModel.showInfos.addAll(GameBackgroundEffectModel.parseToList(roundInfo.showInfosList))
             }
             return roundInfoModel
         }

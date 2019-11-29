@@ -10,8 +10,7 @@ import android.support.v4.app.Fragment
 import android.text.TextUtils
 import android.util.Log
 import android.view.*
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -1471,15 +1470,25 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         val now = mRoomData!!.realRoundInfo
         now?.let {
             if (it.isFreeMicRound) {
-                mFlyCommentView.visibility = GONE
+                hideFlyCommentView()
             } else {
-                mFlyCommentView.visibility = VISIBLE
+                if (mFlyCommentView.visibility != VISIBLE) {
+                    mFlyCommentView.visibility = VISIBLE
+                }
+                if (mCommentView.visibility != INVISIBLE) {
+                    mCommentView.visibility = INVISIBLE
+                }
             }
         }
     }
 
     private fun hideFlyCommentView() {
-        mFlyCommentView.visibility = GONE
+        if (mFlyCommentView.visibility != GONE) {
+            mFlyCommentView.visibility = GONE
+        }
+        if (mCommentView.visibility != VISIBLE) {
+            mCommentView.visibility = VISIBLE
+        }
     }
 
     /**
@@ -1518,56 +1527,56 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         val now = mRoomData!!.realRoundInfo
         now?.let {
             if (now.isNormalRound) {
-                if (now?.effectModelArrayList != null && now?.effectModelArrayList.size >= 1) {
-                    mGameEffectBgView.showBgEffect(now?.effectModelArrayList[0])
+                if (now?.showInfos != null && now?.showInfos.size >= 1) {
+                    mGameEffectBgView.showBgEffect(now?.showInfos[0].effectModel)
                 }
             } else if (now.isChorusRound) {
                 if (RoomDataUtils.isRoundSinger(it, MyUserInfoManager.uid)) {
                     //自己有演唱
                     if (now.chorusRoundInfoModels[0].userID.toLong() == MyUserInfoManager.uid) {
-                        if (now?.effectModelArrayList != null && now?.effectModelArrayList.size >= 1) {
-                            mGameEffectBgView.showBgEffect(now?.effectModelArrayList[0])
+                        if (now?.showInfos != null && now?.showInfos.size >= 1) {
+                            mGameEffectBgView.showBgEffect(now?.showInfos[0].effectModel)
                         }
                     } else {
-                        if (now?.effectModelArrayList != null && now?.effectModelArrayList.size >= 2) {
-                            mGameEffectBgView.showBgEffect(now?.effectModelArrayList[1])
+                        if (now?.showInfos != null && now?.showInfos.size >= 2) {
+                            mGameEffectBgView.showBgEffect(now?.showInfos[1].effectModel)
                         }
                     }
                 } else {
                     //自己没有唱
-                    for (effect in now?.effectModelArrayList) {
-                        if (!TextUtils.isEmpty(effect.sourceURL)) {
-                            mGameEffectBgView.showBgEffect(effect)
+                    for (effect in now?.showInfos) {
+                        if (!TextUtils.isEmpty(effect.effectModel?.sourceURL)) {
+                            mGameEffectBgView.showBgEffect(effect.effectModel)
                         }
                     }
                 }
             } else if (now.isPKRound) {
                 if (now.status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.value) {
-                    if (now?.effectModelArrayList != null && now?.effectModelArrayList.size >= 1) {
-                        mGameEffectBgView.showBgEffect(now?.effectModelArrayList[0])
+                    if (now?.showInfos != null && now?.showInfos.size >= 1) {
+                        mGameEffectBgView.showBgEffect(now?.showInfos[0].effectModel)
                     }
                 } else {
-                    if (now?.effectModelArrayList != null && now?.effectModelArrayList.size >= 2) {
-                        mGameEffectBgView.showBgEffect(now?.effectModelArrayList[1])
+                    if (now?.showInfos != null && now?.showInfos.size >= 2) {
+                        mGameEffectBgView.showBgEffect(now?.showInfos[1].effectModel)
                     }
                 }
             } else if (now.isMiniGameRound) {
                 if (RoomDataUtils.isRoundSinger(it, MyUserInfoManager.uid)) {
                     //自己有演唱
                     if (now.miniGameRoundInfoModels[0].userID.toLong() == MyUserInfoManager.uid) {
-                        if (now?.effectModelArrayList != null && now?.effectModelArrayList.size >= 1) {
-                            mGameEffectBgView.showBgEffect(now?.effectModelArrayList[0])
+                        if (now?.showInfos != null && now?.showInfos.size >= 1) {
+                            mGameEffectBgView.showBgEffect(now?.showInfos[0].effectModel)
                         }
                     } else {
-                        if (now?.effectModelArrayList != null && now?.effectModelArrayList.size >= 2) {
-                            mGameEffectBgView.showBgEffect(now?.effectModelArrayList[1])
+                        if (now?.showInfos != null && now?.showInfos.size >= 2) {
+                            mGameEffectBgView.showBgEffect(now?.showInfos[1].effectModel)
                         }
                     }
                 } else {
                     //自己没有唱
-                    for (effect in now?.effectModelArrayList) {
-                        if (!TextUtils.isEmpty(effect.sourceURL)) {
-                            mGameEffectBgView.showBgEffect(effect)
+                    for (effect in now?.showInfos) {
+                        if (!TextUtils.isEmpty(effect.effectModel?.sourceURL)) {
+                            mGameEffectBgView.showBgEffect(effect.effectModel)
                         }
                     }
                 }
