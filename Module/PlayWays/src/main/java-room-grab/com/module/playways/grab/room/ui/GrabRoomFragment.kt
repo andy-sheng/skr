@@ -10,8 +10,7 @@ import android.support.v4.app.Fragment
 import android.text.TextUtils
 import android.util.Log
 import android.view.*
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -1471,15 +1470,25 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         val now = mRoomData!!.realRoundInfo
         now?.let {
             if (it.isFreeMicRound) {
-                mFlyCommentView.visibility = GONE
+                hideFlyCommentView()
             } else {
-                mFlyCommentView.visibility = VISIBLE
+                if (mFlyCommentView.visibility != VISIBLE) {
+                    mFlyCommentView.visibility = VISIBLE
+                }
+                if (mCommentView.visibility != INVISIBLE) {
+                    mCommentView.visibility = INVISIBLE
+                }
             }
         }
     }
 
     private fun hideFlyCommentView() {
-        mFlyCommentView.visibility = GONE
+        if (mFlyCommentView.visibility != GONE) {
+            mFlyCommentView.visibility = GONE
+        }
+        if (mCommentView.visibility != VISIBLE) {
+            mCommentView.visibility = VISIBLE
+        }
     }
 
     /**

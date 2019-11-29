@@ -304,7 +304,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         if (mGameEffectBgView != exclude) {
             mGameEffectBgView.hideBg()
         }
-        mFlyCommentView.visibility = View.GONE
+        hideFlyCommentView()
     }
 
     private fun initMicSeatView() {
@@ -440,7 +440,21 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
     private fun showFlyCommentView() {
-        mFlyCommentView.visibility = View.VISIBLE
+        if (mFlyCommentView.visibility != View.VISIBLE) {
+            mFlyCommentView.visibility = View.VISIBLE
+        }
+        if (mCommentView.visibility != View.INVISIBLE) {
+            mCommentView.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun hideFlyCommentView() {
+        if (mFlyCommentView.visibility != View.GONE) {
+            mFlyCommentView.visibility = View.GONE
+        }
+        if (mCommentView.visibility != View.VISIBLE) {
+            mCommentView.visibility = View.VISIBLE
+        }
     }
 
     private fun buyFlowerFromOuter() {
