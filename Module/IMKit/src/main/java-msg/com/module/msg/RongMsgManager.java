@@ -208,7 +208,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             }else if (message.getContent() instanceof RelayRoomHighMsg) {
 
                 RelayRoomHighMsg customChatRoomMsg = (RelayRoomHighMsg) message.getContent();
-                dispatchMicRoomMsg(customChatRoomMsg);
+                dispatchRelayRoomMsg(customChatRoomMsg);
 
                 return true;
             } else if (message.getContent() instanceof RelayRoomLowMsg) {
