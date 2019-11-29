@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.view.minigame
 
+import android.os.Handler
 import android.view.View
 import android.view.ViewStub
 import com.common.core.view.setDebounceViewClickListener
@@ -12,6 +13,8 @@ import com.module.playways.grab.room.GrabRoomData
 class MiniGameSelfSingCardView(viewStub: ViewStub, roomData: GrabRoomData?) : BaseMiniGameSelfSingCardView(viewStub, roomData) {
 
 //    internal var mSingCountDownView: SingCountDownView2? = null
+
+    var handler = Handler()
 
     override fun init(parentView: View) {
         super.init(parentView)
@@ -27,6 +30,8 @@ class MiniGameSelfSingCardView(viewStub: ViewStub, roomData: GrabRoomData?) : Ba
 
     override fun playLyric(): Boolean {
         if (super.playLyric()) {
+            handler.postDelayed({ mOverListener?.invoke() }, mGrabRoomData?.realRoundInfo?.singTotalMs?.toLong()
+                    ?: 0)
 //            val infoModel = mGrabRoomData?.realRoundInfo
 //            val totalTs = infoModel!!.singTotalMs
 //            mSingCountDownView!!.startPlay(0, totalTs, true)
@@ -38,10 +43,11 @@ class MiniGameSelfSingCardView(viewStub: ViewStub, roomData: GrabRoomData?) : Ba
 
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
-//        if (visibility == View.GONE) {
+        if (visibility == View.GONE) {
+            handler.removeCallbacksAndMessages(null)
 //            if (mSingCountDownView != null) {
 //                mSingCountDownView!!.reset()
 //            }
-//        }
+        }
     }
 }

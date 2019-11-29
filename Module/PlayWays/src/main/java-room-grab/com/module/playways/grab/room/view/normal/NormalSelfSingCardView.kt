@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.view.normal
 
+import android.os.Handler
 import android.view.View
 import android.view.ViewStub
 import com.common.view.ExViewStub
@@ -22,6 +23,7 @@ class NormalSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 //    internal var mSingCountDownView: SingCountDownView2? = null
 
     var mOverListener: (() -> Unit)? = null
+    var handler = Handler()
 
     override fun init(parentView: View) {
         run {
@@ -54,6 +56,9 @@ class NormalSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         } else {
             mSelfSingLyricView!!.playWithNoAcc(songModel)
         }
+        handler.postDelayed({
+            mOverListener?.invoke()
+        },totalTs.toLong())
 //        mSingCountDownView!!.startPlay(0, totalTs, true)
     }
 
@@ -82,6 +87,7 @@ class NormalSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 //            if (mSingCountDownView != null) {
 //                mSingCountDownView!!.reset()
 //            }
+            handler.removeCallbacksAndMessages(null)
             if (mSelfSingLyricView != null) {
                 mSelfSingLyricView!!.reset()
             }

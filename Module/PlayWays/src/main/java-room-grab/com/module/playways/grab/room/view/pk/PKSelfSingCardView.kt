@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.view.pk
 
+import android.os.Handler
 import android.view.View
 import android.view.ViewStub
 import android.view.animation.Animation
@@ -30,6 +31,7 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     //    TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
 
     var mOverListener: (() -> Unit)? = null
+    var handler = Handler()
 
     override fun init(parentView: View) {
         val viewStub = mParentView!!.findViewById<ViewStub>(R.id.pk_self_sing_lyric_view_stub)
@@ -122,10 +124,16 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         if (H.isGrabRoom()) {
             mPkSelfSingLyricView!!.playWithAcc(H.getSongModel(), H.grabRoomData?.realRoundInfo?.singTotalMs
                     ?: 0)
+
+            handler.postDelayed(Runnable { mOverListener?.invoke() }, H.grabRoomData?.realRoundInfo?.singTotalMs?.toLong()
+                    ?: 0L)
+
 //            mSingCountDownView!!.startPlay(0, H.grabRoomData?.realRoundInfo?.singTotalMs ?: 0, true)
         } else if (H.isMicRoom()) {
             mPkSelfSingLyricView!!.playWithAcc(H.getSongModel(), H.micRoomData?.realRoundInfo?.singTotalMs
                     ?: 0)
+            handler.postDelayed(Runnable { mOverListener?.invoke() }, H.grabRoomData?.realRoundInfo?.singTotalMs?.toLong()
+                    ?: 0L)
 //            mSingCountDownView!!.startPlay(0, H.micRoomData?.realRoundInfo?.singTotalMs ?: 0, true)
         }
     }
@@ -199,6 +207,7 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 //            if (mSingCountDownView != null) {
 //                mSingCountDownView!!.reset()
 //            }
+            handler.removeCallbacksAndMessages(null)
             if (mPkSelfSingLyricView != null) {
                 mPkSelfSingLyricView!!.reset()
             }
@@ -209,9 +218,7 @@ class PKSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     fun destroy() {
-        if (mPkSelfSingLyricView != null) {
-            mPkSelfSingLyricView!!.destroy()
-        }
+        mPkSelfSingLyricView?.destroy()
     }
 
     override fun onViewDetachedFromWindow(v: View) {

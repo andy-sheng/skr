@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.view.freemic
 
+import android.os.Handler
 import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
@@ -34,6 +35,7 @@ class FreeMicSelfSingCardView(viewStub: ViewStub, internal var mRoomData: GrabRo
     internal var mSingCountDownView: SingCountDownView2? = null
     internal var mmMicControlBtn: ExImageView?=null
     var mOverListener:(()->Unit)?=null
+//    var handler = Handler()
 
     override fun init(parentView: View) {
         mIvBg = parentView.findViewById(R.id.iv_bg)
