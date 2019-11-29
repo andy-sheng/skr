@@ -54,8 +54,8 @@ class BuyEffectDialogView : ConstraintLayout {
         }
 
         buyTv.setDebounceViewClickListener {
+            dismiss(false)
             EventBus.getDefault().post(BuyMallEvent(model!!, if (firstDes.isSelected) model!!.price[0] else model!!.price[1]))
-            dismiss(true)
         }
     }
 
@@ -84,11 +84,17 @@ class BuyEffectDialogView : ConstraintLayout {
                 .build())
 
         effectNameTv.text = model.goodsName
+
+        firstDes.visibility = View.GONE
+        secondDes.visibility = View.GONE
+
         repeat(if (model.price.size > 2) 2 else model.price.size) {
             if (it == 0) {
                 firstDes.text = "X${model.price[it].realPrice} /${model.price[it].buyTypeDes}"
+                firstDes.visibility = View.VISIBLE
             } else if (it == 1) {
                 secondDes.text = "X${model.price[it].realPrice} /${model.price[it].buyTypeDes}"
+                secondDes.visibility = View.VISIBLE
             }
         }
     }

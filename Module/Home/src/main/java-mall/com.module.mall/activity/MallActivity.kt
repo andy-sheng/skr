@@ -215,7 +215,7 @@ class MallActivity : BaseActivity() {
 
             if (obj.errno == 0) {
                 EventBus.getDefault().post(BuyMallSuccessEvent(event.productModel))
-                U.getToastUtil().showShort("购买成功")
+//                U.getToastUtil().showShort("购买成功")
                 getZSBalance()
 
                 tipsDialogView?.dismiss(false)
