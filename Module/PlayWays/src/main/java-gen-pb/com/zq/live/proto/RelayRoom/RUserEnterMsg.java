@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import com.zq.live.proto.Common.AgoraTokenInfo;
+import com.zq.live.proto.Common.BackgroundShowInfo;
 import com.zq.live.proto.Common.UserInfo;
 import java.io.IOException;
 import java.lang.Boolean;
@@ -108,15 +109,26 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
   )
   private final RRoundInfo currentRound;
 
+  /**
+   * 背景效果
+   */
+  @WireField(
+      tag = 9,
+      adapter = "com.zq.live.proto.Common.BackgroundShowInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<BackgroundShowInfo> showInfos;
+
   public RUserEnterMsg(Integer roomID, Long createdTimeMs, List<UserInfo> users,
       RelayRoomConfig config, List<AgoraTokenInfo> tokens, List<RUserLockInfo> userLockInfo,
-      Boolean enableNoLimitDuration, RRoundInfo currentRound) {
-    this(roomID, createdTimeMs, users, config, tokens, userLockInfo, enableNoLimitDuration, currentRound, ByteString.EMPTY);
+      Boolean enableNoLimitDuration, RRoundInfo currentRound, List<BackgroundShowInfo> showInfos) {
+    this(roomID, createdTimeMs, users, config, tokens, userLockInfo, enableNoLimitDuration, currentRound, showInfos, ByteString.EMPTY);
   }
 
   public RUserEnterMsg(Integer roomID, Long createdTimeMs, List<UserInfo> users,
       RelayRoomConfig config, List<AgoraTokenInfo> tokens, List<RUserLockInfo> userLockInfo,
-      Boolean enableNoLimitDuration, RRoundInfo currentRound, ByteString unknownFields) {
+      Boolean enableNoLimitDuration, RRoundInfo currentRound, List<BackgroundShowInfo> showInfos,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roomID = roomID;
     this.createdTimeMs = createdTimeMs;
@@ -126,6 +138,7 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
     this.userLockInfo = Internal.immutableCopyOf("userLockInfo", userLockInfo);
     this.enableNoLimitDuration = enableNoLimitDuration;
     this.currentRound = currentRound;
+    this.showInfos = Internal.immutableCopyOf("showInfos", showInfos);
   }
 
   @Override
@@ -139,6 +152,7 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
     builder.userLockInfo = Internal.copyOf("userLockInfo", userLockInfo);
     builder.enableNoLimitDuration = enableNoLimitDuration;
     builder.currentRound = currentRound;
+    builder.showInfos = Internal.copyOf("showInfos", showInfos);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -156,7 +170,8 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
         && tokens.equals(o.tokens)
         && userLockInfo.equals(o.userLockInfo)
         && Internal.equals(enableNoLimitDuration, o.enableNoLimitDuration)
-        && Internal.equals(currentRound, o.currentRound);
+        && Internal.equals(currentRound, o.currentRound)
+        && showInfos.equals(o.showInfos);
   }
 
   @Override
@@ -172,6 +187,7 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
       result = result * 37 + userLockInfo.hashCode();
       result = result * 37 + (enableNoLimitDuration != null ? enableNoLimitDuration.hashCode() : 0);
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
+      result = result * 37 + showInfos.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -188,6 +204,7 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
     if (!userLockInfo.isEmpty()) builder.append(", userLockInfo=").append(userLockInfo);
     if (enableNoLimitDuration != null) builder.append(", enableNoLimitDuration=").append(enableNoLimitDuration);
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
+    if (!showInfos.isEmpty()) builder.append(", showInfos=").append(showInfos);
     return builder.replace(0, 2, "RUserEnterMsg{").append('}').toString();
   }
 
@@ -282,6 +299,16 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
   }
 
   /**
+   * 背景效果
+   */
+  public List<BackgroundShowInfo> getShowInfosList() {
+    if(showInfos==null){
+        return new java.util.ArrayList<BackgroundShowInfo>();
+    }
+    return showInfos;
+  }
+
+  /**
    * 房间ID
    */
   public boolean hasRoomID() {
@@ -337,6 +364,13 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
     return currentRound!=null;
   }
 
+  /**
+   * 背景效果
+   */
+  public boolean hasShowInfosList() {
+    return showInfos!=null;
+  }
+
   public static final class Builder extends Message.Builder<RUserEnterMsg, Builder> {
     private Integer roomID;
 
@@ -354,10 +388,13 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
 
     private RRoundInfo currentRound;
 
+    private List<BackgroundShowInfo> showInfos;
+
     public Builder() {
       users = Internal.newMutableList();
       tokens = Internal.newMutableList();
       userLockInfo = Internal.newMutableList();
+      showInfos = Internal.newMutableList();
     }
 
     /**
@@ -427,9 +464,18 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
       return this;
     }
 
+    /**
+     * 背景效果
+     */
+    public Builder addAllShowInfos(List<BackgroundShowInfo> showInfos) {
+      Internal.checkElementsNotNull(showInfos);
+      this.showInfos = showInfos;
+      return this;
+    }
+
     @Override
     public RUserEnterMsg build() {
-      return new RUserEnterMsg(roomID, createdTimeMs, users, config, tokens, userLockInfo, enableNoLimitDuration, currentRound, super.buildUnknownFields());
+      return new RUserEnterMsg(roomID, createdTimeMs, users, config, tokens, userLockInfo, enableNoLimitDuration, currentRound, showInfos, super.buildUnknownFields());
     }
   }
 
@@ -448,6 +494,7 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
           + RUserLockInfo.ADAPTER.asRepeated().encodedSizeWithTag(6, value.userLockInfo)
           + ProtoAdapter.BOOL.encodedSizeWithTag(7, value.enableNoLimitDuration)
           + RRoundInfo.ADAPTER.encodedSizeWithTag(8, value.currentRound)
+          + BackgroundShowInfo.ADAPTER.asRepeated().encodedSizeWithTag(9, value.showInfos)
           + value.unknownFields().size();
     }
 
@@ -461,6 +508,7 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
       RUserLockInfo.ADAPTER.asRepeated().encodeWithTag(writer, 6, value.userLockInfo);
       ProtoAdapter.BOOL.encodeWithTag(writer, 7, value.enableNoLimitDuration);
       RRoundInfo.ADAPTER.encodeWithTag(writer, 8, value.currentRound);
+      BackgroundShowInfo.ADAPTER.asRepeated().encodeWithTag(writer, 9, value.showInfos);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -478,6 +526,7 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
           case 6: builder.userLockInfo.add(RUserLockInfo.ADAPTER.decode(reader)); break;
           case 7: builder.setEnableNoLimitDuration(ProtoAdapter.BOOL.decode(reader)); break;
           case 8: builder.setCurrentRound(RRoundInfo.ADAPTER.decode(reader)); break;
+          case 9: builder.showInfos.add(BackgroundShowInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -497,6 +546,7 @@ public final class RUserEnterMsg extends Message<RUserEnterMsg, RUserEnterMsg.Bu
       Internal.redactElements(builder.tokens, AgoraTokenInfo.ADAPTER);
       Internal.redactElements(builder.userLockInfo, RUserLockInfo.ADAPTER);
       if (builder.currentRound != null) builder.currentRound = RRoundInfo.ADAPTER.redact(builder.currentRound);
+      Internal.redactElements(builder.showInfos, BackgroundShowInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

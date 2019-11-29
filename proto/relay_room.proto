@@ -61,6 +61,7 @@ message RUserEnterMsg
     repeated RUserLockInfo userLockInfo = 6; //用户锁定信息
     bool enableNoLimitDuration          = 7; //开启没有限制的持续时间
     RRoundInfo currentRound             = 8; //当前轮次信息
+    repeated Common.BackgroundShowInfo showInfos = 9; //背景效果
 }
 
 message RelayRoomConfig
@@ -91,7 +92,6 @@ message RRoundInfo
     ERRoundStatus status                  = 7; //轮次状态
     ERRoundOverReason overReason          = 8; //切换轮次原因
     Common.MusicInfo music                       = 9; //本轮次的歌曲信息
-    repeated Common.BackgroundShowInfo showInfos = 10; //背景效果
 }
 
 enum ERRoundStatus {

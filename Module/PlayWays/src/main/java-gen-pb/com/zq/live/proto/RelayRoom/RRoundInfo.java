@@ -9,7 +9,6 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-import com.zq.live.proto.Common.BackgroundShowInfo;
 import com.zq.live.proto.Common.MusicInfo;
 import java.io.IOException;
 import java.lang.Integer;
@@ -17,7 +16,6 @@ import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
-import java.util.List;
 import okio.ByteString;
 
 public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
@@ -122,25 +120,15 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
   )
   private final MusicInfo music;
 
-  /**
-   * 背景效果
-   */
-  @WireField(
-      tag = 10,
-      adapter = "com.zq.live.proto.Common.BackgroundShowInfo#ADAPTER",
-      label = WireField.Label.REPEATED
-  )
-  private final List<BackgroundShowInfo> showInfos;
-
   public RRoundInfo(Integer userID, Integer roundSeq, Integer introBeginMs, Integer introEndMs,
       Integer singBeginMs, Integer singEndMs, ERRoundStatus status, ERRoundOverReason overReason,
-      MusicInfo music, List<BackgroundShowInfo> showInfos) {
-    this(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, showInfos, ByteString.EMPTY);
+      MusicInfo music) {
+    this(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, ByteString.EMPTY);
   }
 
   public RRoundInfo(Integer userID, Integer roundSeq, Integer introBeginMs, Integer introEndMs,
       Integer singBeginMs, Integer singEndMs, ERRoundStatus status, ERRoundOverReason overReason,
-      MusicInfo music, List<BackgroundShowInfo> showInfos, ByteString unknownFields) {
+      MusicInfo music, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.roundSeq = roundSeq;
@@ -151,7 +139,6 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
     this.status = status;
     this.overReason = overReason;
     this.music = music;
-    this.showInfos = Internal.immutableCopyOf("showInfos", showInfos);
   }
 
   @Override
@@ -166,7 +153,6 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
     builder.status = status;
     builder.overReason = overReason;
     builder.music = music;
-    builder.showInfos = Internal.copyOf("showInfos", showInfos);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -185,8 +171,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
         && Internal.equals(singEndMs, o.singEndMs)
         && Internal.equals(status, o.status)
         && Internal.equals(overReason, o.overReason)
-        && Internal.equals(music, o.music)
-        && showInfos.equals(o.showInfos);
+        && Internal.equals(music, o.music);
   }
 
   @Override
@@ -203,7 +188,6 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
       result = result * 37 + (status != null ? status.hashCode() : 0);
       result = result * 37 + (overReason != null ? overReason.hashCode() : 0);
       result = result * 37 + (music != null ? music.hashCode() : 0);
-      result = result * 37 + showInfos.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -221,7 +205,6 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
     if (status != null) builder.append(", status=").append(status);
     if (overReason != null) builder.append(", overReason=").append(overReason);
     if (music != null) builder.append(", music=").append(music);
-    if (!showInfos.isEmpty()) builder.append(", showInfos=").append(showInfos);
     return builder.replace(0, 2, "RRoundInfo{").append('}').toString();
   }
 
@@ -326,16 +309,6 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
   }
 
   /**
-   * 背景效果
-   */
-  public List<BackgroundShowInfo> getShowInfosList() {
-    if(showInfos==null){
-        return new java.util.ArrayList<BackgroundShowInfo>();
-    }
-    return showInfos;
-  }
-
-  /**
    * 发起者
    */
   public boolean hasUserID() {
@@ -398,13 +371,6 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
     return music!=null;
   }
 
-  /**
-   * 背景效果
-   */
-  public boolean hasShowInfosList() {
-    return showInfos!=null;
-  }
-
   public static final class Builder extends Message.Builder<RRoundInfo, Builder> {
     private Integer userID;
 
@@ -424,10 +390,7 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
 
     private MusicInfo music;
 
-    private List<BackgroundShowInfo> showInfos;
-
     public Builder() {
-      showInfos = Internal.newMutableList();
     }
 
     /**
@@ -502,18 +465,9 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
       return this;
     }
 
-    /**
-     * 背景效果
-     */
-    public Builder addAllShowInfos(List<BackgroundShowInfo> showInfos) {
-      Internal.checkElementsNotNull(showInfos);
-      this.showInfos = showInfos;
-      return this;
-    }
-
     @Override
     public RRoundInfo build() {
-      return new RRoundInfo(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, showInfos, super.buildUnknownFields());
+      return new RRoundInfo(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, super.buildUnknownFields());
     }
   }
 
@@ -533,7 +487,6 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
           + ERRoundStatus.ADAPTER.encodedSizeWithTag(7, value.status)
           + ERRoundOverReason.ADAPTER.encodedSizeWithTag(8, value.overReason)
           + MusicInfo.ADAPTER.encodedSizeWithTag(9, value.music)
-          + BackgroundShowInfo.ADAPTER.asRepeated().encodedSizeWithTag(10, value.showInfos)
           + value.unknownFields().size();
     }
 
@@ -548,7 +501,6 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
       ERRoundStatus.ADAPTER.encodeWithTag(writer, 7, value.status);
       ERRoundOverReason.ADAPTER.encodeWithTag(writer, 8, value.overReason);
       MusicInfo.ADAPTER.encodeWithTag(writer, 9, value.music);
-      BackgroundShowInfo.ADAPTER.asRepeated().encodeWithTag(writer, 10, value.showInfos);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -581,7 +533,6 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
             break;
           }
           case 9: builder.setMusic(MusicInfo.ADAPTER.decode(reader)); break;
-          case 10: builder.showInfos.add(BackgroundShowInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -597,7 +548,6 @@ public final class RRoundInfo extends Message<RRoundInfo, RRoundInfo.Builder> {
     public RRoundInfo redact(RRoundInfo value) {
       Builder builder = value.newBuilder();
       if (builder.music != null) builder.music = MusicInfo.ADAPTER.redact(builder.music);
-      Internal.redactElements(builder.showInfos, BackgroundShowInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

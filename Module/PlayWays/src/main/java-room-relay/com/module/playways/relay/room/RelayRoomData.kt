@@ -5,6 +5,7 @@ import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.component.busilib.constans.GameModeType
+import com.component.busilib.model.EffectModel
 import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
@@ -70,6 +71,8 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         }
     var leftSeat = true   // 我的未知是否在左边
     var isHasExitGame = false
+    var myEffectModel:EffectModel?=null
+    var peerEffectModel:EffectModel?=null
 
     override val gameType: Int
         get() = GameModeType.GAME_MODE_RELAY
@@ -206,8 +209,11 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         rsp.users?.forEachIndexed { index, userInfoModel ->
             if (userInfoModel.userId != MyUserInfoManager.uid.toInt()) {
                 this.peerUser?.userInfo = userInfoModel
+                this.peerEffectModel = rsp.showInfos.getOrNull(index)
                 this.leftSeat = index != 0
                 return@forEachIndexed
+            }else{
+                this.myEffectModel = rsp.showInfos.getOrNull(index)
             }
         }
         this.peerUser?.isOnline = true

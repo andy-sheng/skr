@@ -46,8 +46,6 @@ class RelayRoundInfoModel : BaseRoundInfoModel() {
             return totalTs
         }
 
-    var showInfos = ArrayList<EffectModel>()
-
     override fun getType(): Int {
         return BaseRoundInfoModel.TYPE_RELAY
     }

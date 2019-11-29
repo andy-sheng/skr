@@ -142,13 +142,8 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg1)
             otherSingTipsTv.visibility = View.GONE
             voiceScaleView.setHide(false)
-            var effect: EffectModel? = if(roomData?.leftSeat == true){
-                roomData?.realRoundInfo?.showInfos?.getOrNull(0)
-            }else{
-                roomData?.realRoundInfo?.showInfos?.getOrNull(1)
-            }
-            if(effect?.sourceURL?.isNotEmpty() == true){
-                effectBgView?.showBgEffect(effect)
+            if(roomData?.myEffectModel?.sourceURL?.isNotEmpty() == true){
+                effectBgView?.showBgEffect(roomData?.myEffectModel)
             }else{
                 effectBgView?.hideBg()
             }
@@ -156,13 +151,8 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg2)
             otherSingTipsTv.visibility = View.VISIBLE
             voiceScaleView.setHide(true)
-            var effect:EffectModel? = if(roomData?.leftSeat == true){
-                roomData?.realRoundInfo?.showInfos?.getOrNull(1)
-            }else{
-                roomData?.realRoundInfo?.showInfos?.getOrNull(0)
-            }
-            if(effect?.sourceURL?.isNotEmpty() == true){
-                effectBgView?.showBgEffect(effect)
+            if(roomData?.peerEffectModel?.sourceURL?.isNotEmpty() == true){
+                effectBgView?.showBgEffect(roomData?.peerEffectModel)
             }else{
                 effectBgView?.hideBg()
             }

@@ -2,6 +2,7 @@ package com.module.playways.relay.match.model
 
 import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.userinfo.model.UserInfoModel
+import com.component.busilib.model.EffectModel
 import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
 import com.module.playways.relay.room.model.RelayConfigModel
 import com.module.playways.relay.room.model.RelayRoundInfoModel
@@ -28,6 +29,7 @@ class JoinRelayRoomRspModel : Serializable {
     var userLockInfo: List<RelayUserLockModel>? = null  // 解锁信息
     @JSONField(name = "users")
     var users: List<UserInfoModel>? = null  // 用户信息
+    var showInfos = ArrayList<EffectModel>()
 
     override fun toString(): String {
         return "JoinRelayRoomRspModel(roomID=$roomID, createTimeMs=$createTimeMs, currentRound=$currentRound, enableNoLimitDuration=$enableNoLimitDuration, tokens=$tokens, userLockInfo=$userLockInfo, users=$users)"
@@ -43,6 +45,8 @@ class JoinRelayRoomRspModel : Serializable {
             result.enableNoLimitDuration = msg.enableNoLimitDuration
             result.tokens = LocalAgoraTokenInfo.toLocalAgoraTokenInfo(msg.tokensList)
             result.users = UserInfoModel.parseFromPB(msg.usersList)
+            result.showInfos.addAll(EffectModel.parseBackgroundEffectModelListFromPb(m))
+
             return result
         }
     }
