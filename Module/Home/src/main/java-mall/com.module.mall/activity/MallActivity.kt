@@ -18,6 +18,7 @@ import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.R
 import com.module.home.WalletServerApi
@@ -52,6 +53,8 @@ class MallActivity : BaseActivity() {
     var viewList: ArrayList<ProductView>? = null
 
     var callWhenResume: (() -> Unit)? = null
+
+    var tipsDialogView: TipsDialogView? = null
 
     val rankedServerApi = ApiManager.getInstance().createService(MallServerApi::class.java)
     val mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi::class.java)
@@ -214,6 +217,19 @@ class MallActivity : BaseActivity() {
                 EventBus.getDefault().post(BuyMallSuccessEvent(event.productModel))
                 U.getToastUtil().showShort("购买成功")
                 getZSBalance()
+
+                tipsDialogView?.dismiss(false)
+                if (tipsDialogView == null) {
+                    tipsDialogView = TipsDialogView.Builder(this@MallActivity)
+                            .setMessageTip("商品已购买成功，加入你的背包啦～")
+
+                            .setOkBtnTip("确定")
+                            .setOkBtnClickListener {
+                                tipsDialogView?.dismiss()
+                            }
+                            .build()
+                }
+                tipsDialogView?.showByDialog()
             } else {
                 U.getToastUtil().showShort(obj.errmsg)
             }

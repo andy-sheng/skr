@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
-import com.common.log.MyLog
 import com.common.utils.ImageUtils
 import com.common.utils.U
 import com.common.view.ex.ExImageView
@@ -18,7 +17,7 @@ import com.module.home.R
 import com.module.mall.model.PackageModel
 import com.module.mall.model.ProductModel
 
-class PackageAdapter(val getPacketItemIDMethod: (() -> String)) : DiffAdapter<PackageModel, PackageAdapter.PackageHolder>() {
+class PackageAdapter(val getPacketItemIDMethod: (() -> String), val setSelectedItemFirstMethod: ((packetItemID: String, index: Int) -> Unit)) : DiffAdapter<PackageModel, PackageAdapter.PackageHolder>() {
 
     var useEffectMethod: ((PackageModel) -> Unit)? = null
     var cancelUseEffectMethod: ((PackageModel) -> Unit)? = null
@@ -119,6 +118,8 @@ class PackageAdapter(val getPacketItemIDMethod: (() -> String)) : DiffAdapter<Pa
                 } else if (model.useStatus == 1) {
                     strokeIv.visibility = View.GONE
                 }
+
+                setSelectedItemFirstMethod.invoke(model.packetItemID, position)
             } else {
                 if (getPacketItemIDMethod.invoke().equals(model.packetItemID)) {
                     strokeIv.visibility = View.VISIBLE

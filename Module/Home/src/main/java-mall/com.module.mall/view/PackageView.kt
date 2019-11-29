@@ -68,9 +68,13 @@ class PackageView : ExConstraintLayout {
         recyclerView = rootView.findViewById(R.id.recycler_view)
         refreshLayout = rootView.findViewById(R.id.refreshLayout)
         recyclerView.layoutManager = GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false)
-        productAdapter = PackageAdapter {
+
+        productAdapter = PackageAdapter({
             selectedPackageItemId
-        }
+        }, { packetItemID, index ->
+            selectedPackageItemId = packetItemID
+            selectedIndex = index
+        })
 
         recyclerView.adapter = productAdapter
         productAdapter?.notifyDataSetChanged()

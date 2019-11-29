@@ -1392,6 +1392,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     override fun singBySelf() {
         removeAllEnsureMsg()
+        if (mRoomData?.isVideoRoom == true) {
+            hideInviteTipView()
+        }
         mCorePresenter?.stopGuide()
         val now = mRoomData!!.realRoundInfo
         // 第二轮不播这个动画
