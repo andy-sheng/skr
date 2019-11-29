@@ -20,6 +20,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
+import com.component.busilib.constans.GameModeType
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.event.MicRoundChangeEvent
@@ -29,9 +30,8 @@ import com.module.playways.songmanager.SongManagerActivity
 import com.module.playways.songmanager.SongManagerServerApi
 import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.model.RecommendTagModel
-import com.module.playways.songmanager.view.MicExistSongManageView
+import com.module.playways.songmanager.view.MicRelayExistSongManageView
 import com.module.playways.songmanager.view.RecommendSongView
-import com.zq.live.proto.Common.MusicInfo
 import com.zq.live.proto.Common.StandPlayType
 import com.zq.live.proto.MicRoom.EMWantSingType
 import kotlinx.coroutines.launch
@@ -53,7 +53,7 @@ class MicSongManageFragment : BaseFragment() {
     lateinit var mPagerAdapter: PagerAdapter
 
     private var mRoomData: MicRoomData? = null
-    private var micSongManageView: MicExistSongManageView? = null
+    private var micSongManageView: MicRelayExistSongManageView? = null
 
     val mSongManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
     var mTagModelList: List<RecommendTagModel>? = null
@@ -181,7 +181,7 @@ class MicSongManageFragment : BaseFragment() {
                 if (view != null) {
                     if (view is RecommendSongView) {
                         view.tryLoad()
-                    } else if (view is MicExistSongManageView) {
+                    } else if (view is MicRelayExistSongManageView) {
                         view.tryLoad()
                     }
                 }
@@ -203,7 +203,8 @@ class MicSongManageFragment : BaseFragment() {
 
         if (position == 0) {
             if (micSongManageView == null) {
-                micSongManageView = MicExistSongManageView(context!!, mRoomData!!)
+                micSongManageView = MicRelayExistSongManageView(context!!, mRoomData?.gameId
+                        ?: 0, GameModeType.GAME_MODE_MIC)
             }
             micSongManageView?.tag = position
             view = micSongManageView!!

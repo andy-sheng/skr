@@ -20,20 +20,28 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
+import com.component.busilib.constans.GameModeType
 import com.module.playways.R
-import com.module.playways.mic.room.MicRoomData
+import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.relay.room.RelayRoomData
+import com.module.playways.relay.room.event.RelayRoundChangeEvent
 import com.module.playways.room.song.fragment.GrabSearchSongFragment
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
 import com.module.playways.songmanager.SongManagerServerApi
 import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.model.RecommendTagModel
-import com.module.playways.songmanager.view.MicExistSongManageView
+import com.module.playways.songmanager.view.MicRelayExistSongManageView
 import com.module.playways.songmanager.view.RecommendSongView
-import com.module.playways.songmanager.view.RelayExistSongManageView
+import com.zq.live.proto.Common.StandPlayType
+import com.zq.live.proto.MicRoom.EMWantSingType
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import java.util.HashMap
 
 // 接唱点歌曲管理
 class RelaySongManageFragment : BaseFragment() {
@@ -46,7 +54,7 @@ class RelaySongManageFragment : BaseFragment() {
     lateinit var mPagerAdapter: PagerAdapter
 
     private var mRoomData: RelayRoomData? = null
-    private var relaySongManageView: RelayExistSongManageView? = null
+    private var relaySongManageView: MicRelayExistSongManageView? = null
     private val mSongManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
     private var mTagModelList: List<RecommendTagModel>? = null
 
@@ -112,9 +120,9 @@ class RelaySongManageFragment : BaseFragment() {
 
     private fun getSongManagerTag() {
         launch {
-            val result = subscribe(RequestControl("getMicSongTagList", ControlType.CancelThis)) {
+            val result = subscribe(RequestControl("getSongManagerTag", ControlType.CancelThis)) {
                 // todo 接口待更新
-                mSongManagerServerApi.getMicSongTagList()
+                mSongManagerServerApi.getRelaySongTagList()
             }
             if (result.errno == 0) {
                 val tagsList = JSON.parseArray(result.data.getString("tabs"), RecommendTagModel::class.java)
@@ -175,7 +183,7 @@ class RelaySongManageFragment : BaseFragment() {
                 if (view != null) {
                     if (view is RecommendSongView) {
                         view.tryLoad()
-                    } else if (view is RelayExistSongManageView) {
+                    } else if (view is MicRelayExistSongManageView) {
                         view.tryLoad()
                     }
                 }
@@ -197,7 +205,8 @@ class RelaySongManageFragment : BaseFragment() {
 
         if (position == 0) {
             if (relaySongManageView == null) {
-                relaySongManageView = RelayExistSongManageView(context!!, mRoomData!!)
+                relaySongManageView = MicRelayExistSongManageView(context!!, mRoomData?.gameId
+                        ?: 0, GameModeType.GAME_MODE_RELAY)
             }
             relaySongManageView?.tag = position
             view = relaySongManageView!!
@@ -216,7 +225,35 @@ class RelaySongManageFragment : BaseFragment() {
         return view
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RelayRoundChangeEvent) {
+        // TODO 当前页面被选中
+        relaySongManageView?.isSongChange = true
+        if (viewpager.currentItem == 0) {
+            // 当前页面就是已点，直接去更新吧
+            relaySongManageView?.tryLoad()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: AddSongEvent) {
+        // 想唱或者发起邀请
+        val map = HashMap<String, Any>()
+        map["itemID"] = event.songModel.itemID
+        map["roomID"] = mRoomData?.gameId ?: 0
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe { mSongManagerServerApi.addWantRelaySong(body) }
+            if (result.errno == 0) {
+                // todo 需不需要通知其它页面
+                U.getToastUtil().showShort("点歌请求发送成功")
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
+    }
+
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 }

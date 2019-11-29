@@ -11,6 +11,7 @@ import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
+import com.component.busilib.constans.GameModeType
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.model.RoomInviteMusicModel
@@ -21,6 +22,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import com.zq.live.proto.MicRoom.MAddMusicMsg
+import com.zq.live.proto.RelayRoom.RAddMusicMsg
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -33,18 +35,18 @@ import org.greenrobot.eventbus.ThreadMode
 import java.util.HashMap
 import com.module.playways.songmanager.adapter.MicExistListener as MicExistListener
 
-// 排麦房的已点
-class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomData) : FrameLayout(context), CoroutineScope by MainScope() {
-    val mTag = "MicExistSongManageView"
+// 排麦房和接唱的已点
+class MicRelayExistSongManageView(context: Context, var roomID: Int, var gameType: Int) : FrameLayout(context), CoroutineScope by MainScope() {
+    private val mTag = "MicExistSongManageView"
 
-    val songManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
-    val refreshLayout: SmartRefreshLayout
-    val recyclerView: RecyclerView
-    val manageSongAdapter: MicExistSongAdapter
+    private val songManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
+    private val refreshLayout: SmartRefreshLayout
+    private val recyclerView: RecyclerView
+    private val manageSongAdapter: MicExistSongAdapter
 
-    var offset = 0
-    var hasMore = true
-    val mCnt = 20
+    private var offset = 0
+    private var hasMore = true
+    private val mCnt = 20
 
     var isSongChange = false
 
@@ -124,7 +126,13 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
 
     private fun getMicExistSongList(off: Int, isClear: Boolean) {
         launch {
-            var result = subscribe { songManagerServerApi.getMicExistSongList(mRoomData.gameId, MyUserInfoManager.uid.toInt(), off, mCnt) }
+            var result = subscribe {
+                if (gameType == GameModeType.GAME_MODE_MIC) {
+                    songManagerServerApi.getMicExistSongList(roomID, MyUserInfoManager.uid.toInt(), off, mCnt)
+                } else {
+                    songManagerServerApi.getRelayExistSongList(roomID, MyUserInfoManager.uid.toInt(), off, mCnt)
+                }
+            }
             if (result.errno == 0) {
                 offset = result.data.getIntValue("offset")
                 hasMore = result.data.getBooleanValue("hasMore")
@@ -140,12 +148,18 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
 
     private fun deleteSong(model: MicExistSongModel) {
         val map = HashMap<String, Any>()
-        map["roomID"] = mRoomData.gameId
+        map["roomID"] = roomID
         map["uniqTag"] = model.uniqTag!!
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         launch {
-            var result = subscribe { songManagerServerApi.deleteMicSong(body) }
+            var result = subscribe {
+                if (gameType == GameModeType.GAME_MODE_MIC) {
+                    songManagerServerApi.deleteMicSong(body)
+                } else {
+                    songManagerServerApi.deleteRelaySong(body)
+                }
+            }
             if (result.errno == 0) {
                 // 删除成功，需要刷新页面
                 manageSongAdapter.mDataList.remove(model)
@@ -158,12 +172,18 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
 
     private fun stickSong(model: MicExistSongModel) {
         val map = HashMap<String, Any>()
-        map["roomID"] = mRoomData.gameId
+        map["roomID"] = roomID
         map["uniqTag"] = model.uniqTag!!
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         launch {
-            var result = subscribe { songManagerServerApi.stickMicSong(body) }
+            var result = subscribe {
+                if (gameType == GameModeType.GAME_MODE_MIC) {
+                    songManagerServerApi.stickMicSong(body)
+                } else {
+                    songManagerServerApi.stickRelaySong(body)
+                }
+            }
             if (result.errno == 0) {
                 // 置顶
                 manageSongAdapter.mDataList.remove(model)
@@ -191,6 +211,14 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MAddMusicMsg) {
+        val userMusicModel = RoomInviteMusicModel.parseFromInfoPB(event.detail)
+        if (userMusicModel.userID == MyUserInfoManager.uid.toInt()) {
+            isSongChange = true
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RAddMusicMsg) {
         val userMusicModel = RoomInviteMusicModel.parseFromInfoPB(event.detail)
         if (userMusicModel.userID == MyUserInfoManager.uid.toInt()) {
             isSongChange = true

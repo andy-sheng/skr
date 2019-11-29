@@ -110,7 +110,7 @@ class MicExistSongAdapter(var listener: MicExistListener?) : RecyclerView.Adapte
     }
 }
 
-public interface MicExistListener {
+interface MicExistListener {
     fun onClickDelete(model: MicExistSongModel?, position: Int)
     fun onStick(model: MicExistSongModel?, position: Int)
 }

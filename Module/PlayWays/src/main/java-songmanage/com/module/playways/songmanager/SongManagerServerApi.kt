@@ -218,4 +218,51 @@ interface SongManagerServerApi {
     fun stickMicSong(@Body body: RequestBody): Call<ApiResult>
 
 
+    /**
+     * 获取推荐tag列表(接唱房)
+     *
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/song-tabs")
+    fun getRelaySongTagList(): Call<ApiResult>
+
+    /**
+     * 获取推荐歌曲列表(接唱房)
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/song-list")
+    fun getRelaySongList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int, @Query("tab") tab: Int): Observable<ApiResult>
+
+    /**
+     * 获取已点歌曲列表(接唱房)
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/list-music")
+    fun getRelayExistSongList(@Query("roomID") roomID: Int, @Query("userID") userID: Int, @Query("offset") offset: Int, @Query("limit") limit: Int): Call<ApiResult>
+
+
+    /**
+     * 想唱歌曲(接唱房)
+     * {"itemID": 0,"roomID": 0}
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/want-sing")
+    fun addWantRelaySong(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 删除已点歌曲(接唱房)
+     *    {
+     *       "roomID": 0,
+     *       "uniqTag": "string"
+     *     }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/del-music")
+    fun deleteRelaySong(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 置顶已点歌曲(接唱房)
+     *    {
+     *       "roomID": 0,
+     *       "uniqTag": "string"
+     *     }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/up-music")
+    fun stickRelaySong(@Body body: RequestBody): Call<ApiResult>
+
 }

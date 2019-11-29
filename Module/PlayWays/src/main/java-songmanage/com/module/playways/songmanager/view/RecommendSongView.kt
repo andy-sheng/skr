@@ -53,7 +53,7 @@ class RecommendSongView(context: Context, internal var mType: Int,
     val mRefreshLayout: SmartRefreshLayout
     val mSongManageServerApi: SongManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
 
-    lateinit var mRecommendSongAdapter: RecommendSongAdapter
+    private var mRecommendSongAdapter: RecommendSongAdapter
     private var mDisposable: Disposable? = null
     private var mOffset = 0
     private var mLimit = 20
@@ -190,7 +190,7 @@ class RecommendSongView(context: Context, internal var mType: Int,
         return when (mType) {
             SongManagerActivity.TYPE_FROM_GRAB -> mSongManageServerApi.getListStandBoards(tab, offset, mLimit)
             SongManagerActivity.TYPE_FROM_MIC -> mSongManageServerApi.getMicSongList(offset, mLimit, MyUserInfoManager.uid.toInt(), tab)
-            SongManagerActivity.TYPE_FROM_RELAY_ROOM -> mSongManageServerApi.getMicSongList(offset, mLimit, MyUserInfoManager.uid.toInt(), tab)
+            SongManagerActivity.TYPE_FROM_RELAY_ROOM -> mSongManageServerApi.getRelaySongList(offset, mLimit, MyUserInfoManager.uid.toInt(), tab)
             else -> mSongManageServerApi.getDoubleListStandBoards(tab, offset, mLimit)
         }
     }
