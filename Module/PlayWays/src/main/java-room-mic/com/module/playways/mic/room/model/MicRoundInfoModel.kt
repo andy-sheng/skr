@@ -56,7 +56,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
     internal var sPkRoundInfoModels: ArrayList<SPkRoundInfoModel> = ArrayList()
 
     @JSONField(name = "showInfos")
-    internal var showInfos: ArrayList<GameBackgroundEffectModel> = ArrayList()
+    var showInfos: ArrayList<GameBackgroundEffectModel> = ArrayList()
 
     var userID: Int = 0// 本人在演唱的人
     var music: SongModel? = null//本轮次要唱的歌儿的详细信息
