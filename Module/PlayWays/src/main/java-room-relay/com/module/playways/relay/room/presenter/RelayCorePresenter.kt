@@ -1006,9 +1006,9 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                     var userID = ja.getJSONObject(i).getIntValue("userID")
                     var hasLock = ja.getJSONObject(i).getBooleanValue("hasLock")
                     if (userID == MyUserInfoManager.uid.toInt()) {
-                        mRoomData.unLockMe = hasLock
+                        mRoomData.unLockMe = !hasLock
                     } else if (userID == mRoomData.peerUser?.userID) {
-                        mRoomData.unLockPeer = hasLock
+                        mRoomData.unLockPeer = !hasLock
                     }
                 }
             }
