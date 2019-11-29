@@ -49,6 +49,7 @@
         android:textSize="@dimen/textsize_16_dp"
         app:bl_corners_radius="12dp"
         app:bl_solid_color="#526AE3"
+        android:drawableRight="@drawable/mall_recharge_add"
         app:layout_constraintBottom_toBottomOf="@+id/btn_back"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btn_back" />
