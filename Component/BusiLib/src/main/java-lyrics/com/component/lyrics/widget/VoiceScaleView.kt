@@ -122,9 +122,9 @@ class VoiceScaleView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
      * @param lyricsLineInfoList
      * @param translateTX        调用方告知的偏移量
      */
-    fun startWithData(lyricsLineInfoList: List<LyricsLineInfo>, translateTX: Int) {
+    fun startWithData(lyricsLineInfoList: List<LyricsLineInfo>?, translateTX: Int) {
         MyLog.d(TAG, "startWithData lyricsLineInfoList=$lyricsLineInfoList")
-        this.mLyricsLineInfoList = lyricsLineInfoList
+        this.mLyricsLineInfoList = lyricsLineInfoList!!
         this.mLocalBeginTs = -1
         this.mTranslateTX = translateTX.toLong()
         mShowReadDot = true
@@ -163,8 +163,11 @@ class VoiceScaleView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         duration = if(durationProvider==null){
             System.currentTimeMillis() - mLocalBeginTs
         }else{
+            mTranslateTX = 0
             durationProvider?.invoke() ?:0
         }
+//        MyLog.d(TAG,"a=${(System.currentTimeMillis() - mLocalBeginTs)} mTranslateTX=$mTranslateTX")
+//        MyLog.d(TAG, "b=$duration")
 
         for (lyricsLineInfo in mLyricsLineInfoList) {
             val left = divideLineTX + (lyricsLineInfo.startTime.toLong() - mTranslateTX - duration) * SPEED / 1000

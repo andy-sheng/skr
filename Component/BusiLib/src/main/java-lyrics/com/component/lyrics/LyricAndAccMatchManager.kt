@@ -125,9 +125,9 @@ class LyricAndAccMatchManager {
         if (mDisposable != null) {
             mDisposable!!.dispose()
         }
-        if(params?.lyricReader!=null){
+        if (params?.lyricReader != null) {
             parseReader(params!!.lyricReader!!)
-        }else{
+        } else {
             mDisposable = LyricsManager
                     .loadStandardLyric(params?.lyricUrl)
                     .subscribe({ lyricsReader ->
@@ -142,7 +142,7 @@ class LyricAndAccMatchManager {
         }
     }
 
-    private fun parseReader(lyricsReader:LyricsReader){
+    private fun parseReader(lyricsReader: LyricsReader) {
         DebugLogView.println(TAG, "onEventMainThread " + "play")
         mListener?.onLyricParseSuccess(lyricsReader)
         params?.manyLyricsView?.visibility = View.VISIBLE
@@ -193,6 +193,12 @@ class LyricAndAccMatchManager {
         }
         if (params?.manyLyricsView?.visibility == View.VISIBLE) {
             params?.voiceScaleView?.visibility = View.VISIBLE
+            params?.voiceScaleView?.durationProvider = {
+                val a1 = params?.manyLyricsView?.curPlayingTime ?: 0
+                val a2 = params?.manyLyricsView?.playerSpendTime ?: 0
+                val ts1 = a1 + a2
+                ts1
+            }
             params?.voiceScaleView?.startWithData(mLyricsReader?.lyricsLineInfoList, (params?.accBeginTs
                     ?: 0) + accPlayTs)
         }
@@ -217,9 +223,9 @@ class LyricAndAccMatchManager {
                 }
                 params?.accLoadOk = true
                 if (params?.manyLyricsView?.visibility == View.VISIBLE) {
-                    val a1 = params?.manyLyricsView?.curPlayingTime?:0
-                    val a2 = params?.manyLyricsView?.playerSpendTime?:0
-                    val ts1 = a1+a2
+                    val a1 = params?.manyLyricsView?.curPlayingTime ?: 0
+                    val a2 = params?.manyLyricsView?.playerSpendTime ?: 0
+                    val ts1 = a1 + a2
                     val ts2 = (`in`.current + (params?.accBeginTs ?: 0)).toLong()
                     if (abs(ts1 - ts2) > 500) {
                         DebugLogView.println(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=$ts1 伴奏ts=$ts2")
@@ -331,7 +337,7 @@ class LyricAndAccMatchManager {
         //void onScoreResult(String from,int melpScore, int acrScore, int line);
     }
 
-    class ScoreResultEvent(var from: String, var melpScore: Int, var acrScore: Int, var line: Int){
+    class ScoreResultEvent(var from: String, var melpScore: Int, var acrScore: Int, var line: Int) {
         override fun toString(): String {
             return "ScoreResultEvent(from='$from', melpScore=$melpScore, acrScore=$acrScore, line=$line)"
         }

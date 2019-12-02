@@ -91,9 +91,9 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 delay(1000)
             }
         }
-        voiceScaleView?.durationProvider = {
-            roomData?.getSingCurPosition() ?: 0L
-        }
+//        voiceScaleView?.durationProvider = {
+//            roomData?.getSingCurPosition() ?: 0L
+//        }0L
         manyLyricsView?.setSplitChorusArray(music?.relaySegments)
         manyLyricsView?.setFirstSingByMe(roomData?.isFirstSingByMe() == true)
 
