@@ -525,6 +525,10 @@ public class ManyLyricsView extends AbstractLrcView {
             // 画当前歌词之前的歌词
             float lineTopY = mCentreY;
             if (thisLineIsUpSplit) {
+                /**
+                 * 往上往下 你唱 我唱的标准不一样 如果是当前是我的时间 那往上的 提示就是 我唱
+                 * 往下的提示就是别人唱
+                 */
                 if (firstSingerTime && mFirstSingByMe) {
                     lineTopY = drawWhoTurns(true, canvas, lineTopY, false);
                 } else if (!firstSingerTime && !mFirstSingByMe) {
