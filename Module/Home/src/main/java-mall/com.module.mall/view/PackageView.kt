@@ -16,7 +16,6 @@ import com.common.view.ex.ExConstraintLayout
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.home.R
-import com.module.home.loadsir.DqEmptyCallBack
 import com.module.mall.MallServerApi
 import com.module.mall.adapter.PackageAdapter
 import com.module.mall.event.PackageShowEffectEvent
@@ -241,7 +240,7 @@ class PackageView : ExConstraintLayout {
                 refreshLayout.setEnableLoadMore(hasMore)
             } else {
                 if (productAdapter?.dataList?.size == 0) {
-                    mLoadService.showCallback(DqEmptyCallBack::class.java)
+                    mLoadService.showCallback(MallEmptyCallBack::class.java)
                 } else {
                     U.getToastUtil().showShort(obj.errmsg)
                 }

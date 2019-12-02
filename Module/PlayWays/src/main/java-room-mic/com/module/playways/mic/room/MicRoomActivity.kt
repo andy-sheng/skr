@@ -132,7 +132,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     internal lateinit var mBottomContainerView: MicBottomContainerView
     internal lateinit var mVoiceRecordTipsView: VoiceRecordTipsView
     internal lateinit var mCommentView: CommentView
-    internal lateinit var mFlyCommentView: FlyCommentView
+    private var mFlyCommentView: FlyCommentView? = null
+
     internal lateinit var mGiftPanelView: GiftPanelView
     internal lateinit var mContinueSendView: ContinueSendView
     internal lateinit var mTopOpView: MicTopOpView
@@ -440,8 +441,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
     private fun showFlyCommentView() {
-        if (mFlyCommentView.visibility != View.VISIBLE) {
-            mFlyCommentView.visibility = View.VISIBLE
+        if (mFlyCommentView?.visibility != View.VISIBLE) {
+            mFlyCommentView?.visibility = View.VISIBLE
         }
         if (mCommentView.visibility != View.INVISIBLE) {
             mCommentView.visibility = View.INVISIBLE
@@ -449,8 +450,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
     private fun hideFlyCommentView() {
-        if (mFlyCommentView.visibility != View.GONE) {
-            mFlyCommentView.visibility = View.GONE
+        if (mFlyCommentView?.visibility != View.GONE) {
+            mFlyCommentView?.visibility = View.GONE
         }
         if (mCommentView.visibility != View.VISIBLE) {
             mCommentView.visibility = View.VISIBLE
@@ -600,7 +601,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mCommentView.roomData = mRoomData
         mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
         mFlyCommentView = findViewById(R.id.fly_comment_view)
-        mFlyCommentView.roomData = mRoomData
+        mFlyCommentView?.roomData = mRoomData
     }
 
 
