@@ -179,6 +179,7 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         singBeginTipsTv2.visibility = View.GONE
         lyricAndAccMatchManager.stop()
         countDownJob?.cancel()
+        effectBgView?.hideBg()
         othersSingCardView?.setVisibility(View.GONE)
     }
 
@@ -195,6 +196,7 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         singBeginTipsTv2.text = "《${roomData?.realRoundInfo?.music?.displaySongName}》"
         lyricAndAccMatchManager.stop()
         countDownJob?.cancel()
+        effectBgView?.hideBg()
         othersSingCardView?.setVisibility(View.GONE)
     }
 }
