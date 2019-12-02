@@ -110,13 +110,13 @@ interface RelayRoomServerApi {
     /**
      *  同意合唱/PK的结果 {"roomID": 0,"uniqTag": "string"}
      */
-    @PUT("http://dev.game.inframe.mobi/v1/micgame/agree-sing")
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/agree-sing")
     fun agreeSing(@Body body: RequestBody): Call<ApiResult>
 
     /**
      *  查询同意合唱/PK的结果 {"roomID": 0,"uniqTag": "string"}
      */
-    @GET("http://dev.game.inframe.mobi/v1/micgame/agree-sing-result")
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/agree-sing-result")
     fun getAgreeSingResult(@Query("roomID") roomID: Int, @Query("uniqTag") uniqTag: String): Call<ApiResult>
 
     /**

@@ -231,7 +231,7 @@ class RoomInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         } else if (gameType == GameModeType.GAME_MODE_RELAY) {
             launch {
                 val map = mutableMapOf(
-                        "roomID" to (H.micRoomData?.gameId ?: 0),
+                        "roomID" to (H.relayRoomData?.gameId ?: 0),
                         "uniqTag" to (userMusicModel?.uniqTag ?: ""))
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                 val result = subscribe(RequestControl("agreeInvite", ControlType.CancelLast)) {
@@ -264,7 +264,7 @@ class RoomInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         } else if (gameType == GameModeType.GAME_MODE_RELAY){
             launch {
                 val result = subscribe(RequestControl("syncInviteResult", ControlType.CancelLast)) {
-                    relayRoomServerApi.getAgreeSingResult(H.micRoomData?.gameId
+                    relayRoomServerApi.getAgreeSingResult(H.relayRoomData?.gameId
                             ?: 0, uniqTag ?: "")
                 }
                 if (result.errno == 0) {
