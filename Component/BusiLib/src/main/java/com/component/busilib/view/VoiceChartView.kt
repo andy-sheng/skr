@@ -72,7 +72,7 @@ class VoiceChartView : View {
             chartCount = mWidth / (chartWidth + chartMarginLeft)
         }
 
-        if (itemheights == null) {
+        if (itemheights.isNullOrEmpty() || itemheights?.size != chartCount) {
             itemheights = arrayOfNulls(chartCount)
         }
 
