@@ -267,6 +267,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+        MyLog.d(TAG,"onJoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
         UserStatus userStatus = ensureJoin(uid);
         userStatus.setIsSelf(true);
         mConfig.setSelfUid(uid);
@@ -282,6 +283,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
+        MyLog.d(TAG,"onRejoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
         UserStatus userStatus = ensureJoin(uid);
         userStatus.setIsSelf(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_REJOIN, userStatus));
@@ -319,6 +321,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onAudioMixingFinished() {
+        MyLog.d(TAG,"onAudioMixingFinished" );
         mConfig.setMixMusicPlaying(false);
         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_FINISH, null);
         EventBus.getDefault().post(engineEvent);
@@ -381,6 +384,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onError(int error) {
+        MyLog.d(TAG,"onError" + " error=" + error);
         if (error == Constants.ERR_JOIN_CHANNEL_REJECTED) {
             // 加入 channel 失败，在不要token时，传入token也会触发这个
             if (mCustomHandlerThread != null) {
@@ -435,6 +439,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      */
     @Override
     public void onAudioMixingStateChanged(int state, int errorCode) {
+        MyLog.d(TAG,"onAudioMixingStateChanged" + " state=" + state + " errorCode=" + errorCode);
         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STATE_CHANGE, null);
         engineEvent.obj = new EngineEvent.MusicStateChange(state,errorCode);
         EventBus.getDefault().post(engineEvent);

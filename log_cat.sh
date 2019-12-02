@@ -1,5 +1,7 @@
 #! /bin/bash
 if [[ $1 == "" ]]; then
+    adb shell am broadcast -a com.zq.live.FLUSH_LOG
+    sleep 1
 	rm -rf logs/
 	adb pull /sdcard/ZQ_LIVE/logs ./
 

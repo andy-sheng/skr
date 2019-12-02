@@ -35,10 +35,7 @@ import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.RelayRoomMsgManager
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
-import com.zq.live.proto.RelayRoom.ERRoundStatus
-import com.zq.live.proto.RelayRoom.RNextRoundMsg
-import com.zq.live.proto.RelayRoom.RSyncMsg
-import com.zq.live.proto.RelayRoom.RelayRoomMsg
+import com.zq.live.proto.RelayRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -787,6 +784,19 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             muteAllRemoteAudioStreams(mRoomData.isMute, false)
         } else {
             muteAllRemoteAudioStreams(true, false)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RUnlockMsg) {
+        ensureInRcRoom()
+        MyLog.w(TAG, "event=$event")
+        for (us in event.userLockInfoList) {
+            if (us.userID == MyUserInfoManager.uid.toInt()) {
+                mRoomData.unLockMe = !us.hasLock
+            } else if (us.userID == mRoomData.peerUser?.userID) {
+                mRoomData.unLockPeer = !us.hasLock
+            }
         }
     }
 
