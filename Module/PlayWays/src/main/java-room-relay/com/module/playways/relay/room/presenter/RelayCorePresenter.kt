@@ -665,6 +665,8 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     private fun closeEngine() {
         if (mRoomData.gameId > 0) {
             ZqEngineKit.getInstance().stopAudioMixing()
+            mUiHandler.removeMessages(MSG_TURN_CHANGE)
+            mUiHandler.removeMessages(MSG_LAUNER_MUSIC)
 //            ZqEngineKit.getInstance().stopAudioRecording()
 //            if (ZqEngineKit.getInstance().params.isAnchor) {
 //                ZqEngineKit.getInstance().setClientRole(false)
