@@ -149,8 +149,9 @@ public class SDataManager {
         if (null != itemList && (listSize = itemList.size()) > 0) {
             for (int i=0; i<listSize; i++) {
                 ILogItem e = itemList.get(i);
-
-                logStr.append(e.toString());
+                if(e!=null){
+                    logStr.append(e.toString());
+                }
                 MyLog.w(logStr.toString());//MyLog的flush行为由其自己控制
                 logStr.delete(LOG_PREFIX.length()+1, logStr.length()); //+1是给空格留的
 
