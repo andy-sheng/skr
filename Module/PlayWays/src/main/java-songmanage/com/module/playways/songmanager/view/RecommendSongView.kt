@@ -142,7 +142,7 @@ class RecommendSongView(context: Context, internal var mType: Int,
                 mRefreshLayout.finishLoadMore()
 
                 if (result.errno == 0) {
-                    val recommendTagModelArrayList = if (mType == SongManagerActivity.TYPE_FROM_MIC) {
+                    val recommendTagModelArrayList = if (mType == SongManagerActivity.TYPE_FROM_MIC || mType == SongManagerActivity.TYPE_FROM_RELAY_ROOM) {
                         JSONObject.parseArray(result.data!!.getString("details"), SongModel::class.java)
                     } else {
                         JSONObject.parseArray(result.data!!.getString("items"), SongModel::class.java)
