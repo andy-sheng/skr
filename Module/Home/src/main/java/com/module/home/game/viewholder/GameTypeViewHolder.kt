@@ -28,7 +28,7 @@ class GameTypeViewHolder(itemView: View,
                 // 新版本
                 GrabSpecialModel.TBT_STANDCREATE -> listener.onCreateRoomListener()
                 GrabSpecialModel.TBT_RACE_TAB -> listener.onPkRoomListener()
-//                GrabSpecialModel.TBT_GODOUBLE_TAB -> listener.onDoubleRoomListener()
+                GrabSpecialModel.TBT_GODOUBLE_TAB -> listener.onDoubleRoomListener()
                 GrabSpecialModel.TBT_GOALBUM_TAB -> listener.onGrabRoomListener()
                 GrabSpecialModel.TBT_MICROOM_TAB -> listener.onMicRoomListener()
                 GrabSpecialModel.TBT_RELAY_TAB -> listener.onRelayRoomListener()

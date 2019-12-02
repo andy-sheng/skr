@@ -133,11 +133,11 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                 }
             }
 
-//            override fun onDoubleRoomListener() {
-//                StatisticsAdapter.recordCountEvent("game", "express_cp", null)
-//                ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_HOME)
-//                        .navigation()
-//            }
+            override fun onDoubleRoomListener() {
+                StatisticsAdapter.recordCountEvent("game", "express_cp", null)
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_HOME)
+                        .navigation()
+            }
 
             override fun onBattleRoomListener() {
                 StatisticsAdapter.recordCountEvent("game", "express_grab_song_list", null)
