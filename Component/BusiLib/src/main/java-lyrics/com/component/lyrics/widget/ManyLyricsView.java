@@ -422,7 +422,7 @@ public class ManyLyricsView extends AbstractLrcView {
                     } else {
                         firstSingerTime = false;
                     }
-                    MyLog.d(TAG,"drawManyLrcView" + " firstSingerTime="+firstSingerTime +" mSplitChorusArray[i]="+mSplitChorusArray.get(i) +" i="+i);
+                    //MyLog.d(TAG,"drawManyLrcView" + " firstSingerTime="+firstSingerTime +" mSplitChorusArray[i]="+mSplitChorusArray.get(i) +" i="+i);
                     break;
                 }
             }

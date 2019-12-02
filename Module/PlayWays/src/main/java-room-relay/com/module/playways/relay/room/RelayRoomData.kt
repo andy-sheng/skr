@@ -45,6 +45,8 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         return listOf(peerUser) as List<PlayerInfoModel>
     }
 
+    var lastSingerID:Int?=null
+
     /**
      * 本地时间比服务器时间快多少，使用专门的校时接口校对 t1+(t2-t1)/2 - s1
      * t1为本地发包时间 t2为本地收包时间  s1 为服务器收包时间
