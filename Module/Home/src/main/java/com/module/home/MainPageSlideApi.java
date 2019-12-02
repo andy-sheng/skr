@@ -118,7 +118,7 @@ public interface MainPageSlideApi {
     @GET("http://dev.game.inframe.mobi/v2/raceroom/check-rank")
     Call<ApiResult> checkRank(@Query("roomType") int roomType);
 
-    @GET("http://test.api.inframe.mobi/v2/home/game-tab-blocks")
+    @GET("http://test.api.inframe.mobi/v3/home/game-tab-blocks")
     Observable<ApiResult> getIndexTabBlocks();
 
     /**

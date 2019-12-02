@@ -293,6 +293,8 @@ public class QuickFeedbackFragment extends BaseFragment {
             map.put("source", 8);
         } else if (mFrom == FROM_MIC_ROOM) {
             map.put("source", 11);
+        } else if (mFrom == FROM_RELAY_ROOM) {
+            map.put("source", 12);
         }
         map.put("type", typeList);
         map.put("content", content);
@@ -348,6 +350,8 @@ public class QuickFeedbackFragment extends BaseFragment {
             map.put("source", 1);
         } else if (mFrom == FROM_DOUBLE_ROOM) {
             map.put("source", 3);
+        } else if (mFrom == FROM_RELAY_ROOM) {
+            map.put("source", 12);
         }
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));

@@ -196,6 +196,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
+    <com.module.playways.room.room.comment.fly.FlyCommentView
+        android:id="@+id/fly_comment_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_120_dp"
+        android:layout_marginTop="@dimen/view_150_dp"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <!--中礼物展示-->
     <com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
         android:id="@+id/gift_overlay_animation_vg"

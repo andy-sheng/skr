@@ -24,6 +24,7 @@ import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
 import com.dialog.view.TipsDialogView
+import com.facebook.drawee.drawable.RoundedColorDrawable
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.R
@@ -54,6 +55,7 @@ import com.module.playways.room.gift.model.NormalGift
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
+import com.module.playways.room.room.comment.fly.FlyCommentView
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup
 import com.module.playways.room.room.gift.GiftBigContinuousView
 import com.module.playways.room.room.gift.GiftContinueViewGroup
@@ -143,6 +145,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     val mWidgetAnimationController = RelayWidgetAnimationController(this)
     internal var mSkrAudioPermission = SkrAudioPermission()
     lateinit var relaySingCardView: RelaySingCardView
+
+    var mFlyCommentView: FlyCommentView? = null
 
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
@@ -267,6 +271,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         }
         super.destroy()
         dismissDialog()
+        mFlyCommentView?.destory()
         mGiftPanelView?.destroy()
 //        mSelfSingCardView?.destroy()
         H.reset("RelayRoomActivity")
@@ -372,7 +377,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 //        }
         mChangeSongIv = findViewById(R.id.change_song_tv)
         mChangeSongIv.setAnimateDebounceViewClickListener {
-            mCorePresenter.giveUpSing {  }
+            mCorePresenter.giveUpSing { }
         }
 
         mAddSongIv = findViewById(R.id.select_song_tv)
@@ -524,6 +529,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 //        })
 //        mCommentView.roomData = mRoomData
 //        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
+        mFlyCommentView = findViewById(R.id.fly_comment_view)
+        mFlyCommentView?.roomData = mRoomData
     }
 
     private fun initGiftPanelView() {
@@ -575,8 +582,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RelayLockChangeEvent){
-        if(mRoomData?.unLockMe && mRoomData?.unLockPeer){
+    fun onEvent(event: RelayLockChangeEvent) {
+        if (mRoomData?.unLockMe && mRoomData?.unLockPeer) {
             mChangeSongIv.visibility = View.VISIBLE
             mAddSongIv.visibility = View.VISIBLE
         }
@@ -705,7 +712,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         relaySingCardView.turnSingPrepare()
         mTopContentView.launchCountDown()
         singCardShowListener.invoke()
-        if(mRoomData?.unLockMe && mRoomData?.unLockPeer){
+        if (mRoomData?.unLockMe && mRoomData?.unLockPeer) {
             mChangeSongIv.visibility = View.VISIBLE
         }
     }
@@ -713,7 +720,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     override fun singBegin() {
         hideAllSceneView(null)
         relaySingCardView.turnSingBegin()
-        if(mRoomData?.unLockMe && mRoomData?.unLockPeer){
+        if (mRoomData?.unLockMe && mRoomData?.unLockPeer) {
             mChangeSongIv.visibility = View.VISIBLE
         }
     }
@@ -730,7 +737,11 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     override fun gameOver() {
         mCorePresenter.exitRoom("gameOver")
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_RESULT)
+                .withSerializable("roomData", mRoomData)
+                .navigation()
         finish()
+
     }
 
 
