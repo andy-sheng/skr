@@ -144,7 +144,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     lateinit var mCommentView: CommentView
 
-    lateinit var mFlyCommentView: FlyCommentView
+    var mFlyCommentView: FlyCommentView? = null
 
     //    GrabTopContainerView mTopContainerView;// 顶部，抢唱阶段，以及非本人的演唱阶段
     lateinit var mGrabTopOpView: GrabTopOpView
@@ -779,7 +779,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView?.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
 
         mFlyCommentView = rootView.findViewById(R.id.fly_comment_view)
-        mFlyCommentView.roomData = mRoomData!!
+        mFlyCommentView?.roomData = mRoomData!!
     }
 
     private fun initChangeRoomTransitionView() {
@@ -1472,8 +1472,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             if (it.isFreeMicRound) {
                 hideFlyCommentView()
             } else {
-                if (mFlyCommentView.visibility != VISIBLE) {
-                    mFlyCommentView.visibility = VISIBLE
+                if (mFlyCommentView?.visibility != VISIBLE) {
+                    mFlyCommentView?.visibility = VISIBLE
                 }
                 if (mCommentView.visibility != INVISIBLE) {
                     mCommentView.visibility = INVISIBLE
@@ -1483,8 +1483,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     }
 
     private fun hideFlyCommentView() {
-        if (mFlyCommentView.visibility != GONE) {
-            mFlyCommentView.visibility = GONE
+        if (mFlyCommentView?.visibility != GONE) {
+            mFlyCommentView?.visibility = GONE
         }
         if (mCommentView.visibility != VISIBLE) {
             mCommentView.visibility = VISIBLE

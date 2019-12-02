@@ -32,13 +32,13 @@ import java.util.ArrayList
 import kotlin.math.absoluteValue
 
 // todo 飞行弹幕
-class FlyCommentView(context: Context?, attrs: AttributeSet?) : RelativeLayout(context, attrs), CoroutineScope by MainScope() {
+class FlyCommentView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : RelativeLayout(context, attrs, defStyleAttr), CoroutineScope by MainScope() {
 
     private val TAG = "FlyCommentView"
 
-    constructor(context: Context?) : this(context, null)
+    constructor(context: Context?) : this(context, null, 0)
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : this(context, attrs)
+    constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
 
     var roomData: BaseRoomData<*>? = null
 
