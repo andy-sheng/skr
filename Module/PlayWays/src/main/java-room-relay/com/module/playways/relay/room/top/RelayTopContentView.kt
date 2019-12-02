@@ -174,10 +174,10 @@ class RelayTopContentView : ExConstraintLayout {
 
         return if (userSeatLeft) {
             // 左边的位置
-            U.getDisplayUtils().screenWidth / 2 - 85.dp()
+            U.getDisplayUtils().screenWidth / 2 - 85.dp() + 21.dp() - 8.dp()
         } else {
             // 右边的位置
-            U.getDisplayUtils().screenWidth / 2 + 85.dp()
+            U.getDisplayUtils().screenWidth / 2 + 85.dp() - 21.dp() - 8.dp()
         }
     }
 
