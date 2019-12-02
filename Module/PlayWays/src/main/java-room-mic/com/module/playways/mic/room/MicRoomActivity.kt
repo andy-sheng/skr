@@ -61,9 +61,9 @@ import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.mic.room.model.RoomInviteMusicModel
 import com.module.playways.mic.room.presenter.MicCorePresenter
 import com.module.playways.mic.room.seat.MicSeatView
-import com.module.playways.mic.room.top.RoomInviteView
 import com.module.playways.mic.room.top.MicTopContentView
 import com.module.playways.mic.room.top.MicTopOpView
+import com.module.playways.mic.room.top.RoomInviteView
 import com.module.playways.mic.room.ui.IMicRoomView
 import com.module.playways.mic.room.ui.MicWidgetAnimationController
 import com.module.playways.mic.room.view.MicInputContainerView
@@ -907,6 +907,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                     for (effect in now?.showInfos) {
                         if (!TextUtils.isEmpty(effect.effectModel?.sourceURL)) {
                             mGameEffectBgView.showBgEffect(effect.effectModel)
+                            break
                         }
                     }
                 }

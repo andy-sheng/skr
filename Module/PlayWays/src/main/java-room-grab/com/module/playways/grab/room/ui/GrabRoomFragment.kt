@@ -1547,6 +1547,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                     for (effect in now?.showInfos) {
                         if (!TextUtils.isEmpty(effect.effectModel?.sourceURL)) {
                             mGameEffectBgView.showBgEffect(effect.effectModel)
+                            break
                         }
                     }
                 }
