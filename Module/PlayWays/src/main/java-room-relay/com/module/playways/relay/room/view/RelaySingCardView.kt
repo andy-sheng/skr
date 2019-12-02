@@ -199,4 +199,10 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         effectBgView?.hideBg()
         othersSingCardView?.setVisibility(View.GONE)
     }
+
+    fun destroy() {
+        lyricAndAccMatchManager.stop()
+        countDownJob?.cancel()
+        effectBgView?.hideBg()
+    }
 }

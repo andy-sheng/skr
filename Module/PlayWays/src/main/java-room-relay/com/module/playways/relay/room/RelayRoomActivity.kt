@@ -273,6 +273,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         dismissDialog()
         mFlyCommentView?.destory()
         mGiftPanelView?.destroy()
+        relaySingCardView?.destroy()
 //        mSelfSingCardView?.destroy()
         H.reset("RelayRoomActivity")
     }
