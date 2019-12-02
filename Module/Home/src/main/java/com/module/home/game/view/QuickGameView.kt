@@ -83,6 +83,11 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
             }
         })
         mGameAdapter = GameAdapter(fragment, object : ClickGameListener {
+            override fun onRelayRoomListener() {
+                // 进入双人接唱
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
+                        .navigation()
+            }
 
             override fun onClickTaskListener() {
                 // 进入任务
@@ -128,14 +133,11 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                 }
             }
 
-            override fun onDoubleRoomListener() {
-                StatisticsAdapter.recordCountEvent("game", "express_cp", null)
-
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
-                        .navigation()
+//            override fun onDoubleRoomListener() {
+//                StatisticsAdapter.recordCountEvent("game", "express_cp", null)
 //                ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_HOME)
 //                        .navigation()
-            }
+//            }
 
             override fun onBattleRoomListener() {
                 StatisticsAdapter.recordCountEvent("game", "express_grab_song_list", null)

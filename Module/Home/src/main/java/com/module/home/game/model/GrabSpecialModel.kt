@@ -15,6 +15,7 @@ class GrabSpecialModel : Serializable {
         const val TBT_GODOUBLE_TAB = 7  // 跳双人唱聊tab(新版)
         const val TBT_GOALBUM_TAB = 8  // 跳新版抢唱tab(新版)
         const val TBT_MICROOM_TAB = 9 // 跳新版小K房等入口
+        const val TBT_RELAY_TAB = 10  // 跳双人接唱
     }
     @JSONField(name = "bType")
     var type: Int? = null

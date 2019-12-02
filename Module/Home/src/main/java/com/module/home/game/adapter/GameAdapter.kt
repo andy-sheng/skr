@@ -102,7 +102,7 @@ interface ClickGameListener {
 
     fun onCreateRoomListener()
     fun onPkRoomListener()
-    fun onDoubleRoomListener()
+    fun onRelayRoomListener()
     fun onBattleRoomListener()
     fun onGrabRoomListener()
     fun onMicRoomListener()
