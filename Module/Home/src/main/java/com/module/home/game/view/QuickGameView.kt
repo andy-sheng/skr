@@ -130,8 +130,11 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
             override fun onDoubleRoomListener() {
                 StatisticsAdapter.recordCountEvent("game", "express_cp", null)
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_HOME)
+
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
                         .navigation()
+//                ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_HOME)
+//                        .navigation()
             }
 
             override fun onBattleRoomListener() {

@@ -456,6 +456,7 @@ public class LyricsUtils {
 
     /**
      * 有时候歌词太长没办法显示完整，需要特殊处理
+     *
      * @param paint
      * @param text
      * @param viewWidth
@@ -516,17 +517,18 @@ public class LyricsUtils {
 
     /**
      * 得到渐变画笔大小
-     * @param lyricsWordHLTime   过去的时间
-     * @param textSizeOne        原始大小
-     * @param textSizeTwo        需要到达的大小
+     *
+     * @param lyricsWordHLTime 过去的时间
+     * @param textSizeOne      原始大小
+     * @param textSizeTwo      需要到达的大小
      * @return
      */
-    public static float getDrawDynamicTextPaintSize(long lyricsWordHLTime, float textSizeOne, float textSizeTwo){
-        if(lyricsWordHLTime < 0){
+    public static float getDrawDynamicTextPaintSize(long lyricsWordHLTime, float textSizeOne, float textSizeTwo) {
+        if (lyricsWordHLTime < 0) {
             return textSizeTwo;
         }
 
-        if(lyricsWordHLTime >= 300){
+        if (lyricsWordHLTime >= 300) {
             return textSizeTwo;
         }
 
@@ -836,12 +838,35 @@ public class LyricsUtils {
      * @return
      */
     public static int getLineNumber(int lyricsType, TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap, long curPlayingTime, long playOffset) {
-
-        if(lyricsLineTreeMap == null){
+        if (lyricsLineTreeMap == null) {
             MyLog.e(TAG, "getLineNumber lyricsLineTreeMap 为null，为什么？？？");
             return 0;
         }
+        //添加歌词增量
+        long newPlayingTime = curPlayingTime + playOffset;
+        //动感歌词
+        for (int i = 0; i < lyricsLineTreeMap.size(); i++) {
+            if (newPlayingTime <= lyricsLineTreeMap.get(i).getEndTime()) {
+                return i;
+            }
+        }
+        return lyricsLineTreeMap.size() - 1;
+    }
 
+    /**
+     * 通过播放的进度，获取所唱歌词行数
+     *
+     * @param lyricsType        歌词类型 LyricsInfo.LRC OR LyricsInfo.DYNAMIC
+     * @param lyricsLineTreeMap 歌词集合
+     * @param curPlayingTime    当前播放进度
+     * @param playOffset        时间补偿值
+     * @return
+     */
+    public static int getLineNumber2(int lyricsType, TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap, long curPlayingTime, long playOffset) {
+        if (lyricsLineTreeMap == null) {
+            MyLog.e(TAG, "getLineNumber lyricsLineTreeMap 为null，为什么？？？");
+            return 0;
+        }
         //添加歌词增量
         long newPlayingTime = curPlayingTime + playOffset;
         if (lyricsType == LyricsInfo.LRC) {
@@ -879,7 +904,6 @@ public class LyricsUtils {
         }
         return 0;
     }
-
 
     /**
      * 获取当前时间对应的行歌词文本
