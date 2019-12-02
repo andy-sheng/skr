@@ -24,6 +24,7 @@ import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
 import com.dialog.view.TipsDialogView
+import com.facebook.drawee.drawable.RoundedColorDrawable
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.R
@@ -736,7 +737,11 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     override fun gameOver() {
         mCorePresenter.exitRoom("gameOver")
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_RESULT)
+                .withSerializable("roomData", mRoomData)
+                .navigation()
         finish()
+
     }
 
 
