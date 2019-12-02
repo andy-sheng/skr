@@ -74,11 +74,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     internal lateinit var mCorePresenter: RaceCorePresenter
 
-    internal lateinit var mInputContainerView: RaceInputContainerView
-    internal lateinit var mBottomContainerView: RaceBottomContainerView
-    internal lateinit var mVoiceRecordTipsView: VoiceRecordTipsView
-    internal lateinit var mCommentView: CommentView
-    internal lateinit var mFlyCommentView: FlyCommentView
+    private lateinit var mInputContainerView: RaceInputContainerView
+    private lateinit var mBottomContainerView: RaceBottomContainerView
+    private lateinit var mVoiceRecordTipsView: VoiceRecordTipsView
+    private lateinit var mCommentView: CommentView
+    private var mFlyCommentView: FlyCommentView? = null
+
     internal lateinit var mGiftPanelView: GiftPanelView
     internal lateinit var mContinueSendView: ContinueSendView
     internal lateinit var mRaceTopOpView: RaceTopOpView
@@ -486,7 +487,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mCommentView.roomData = mRoomData
         mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
         mFlyCommentView = rootView.findViewById(R.id.fly_comment_view)
-        mFlyCommentView.roomData = mRoomData
+        mFlyCommentView?.roomData = mRoomData
     }
 
     private fun initGiftPanelView() {
@@ -763,8 +764,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
     private fun showFlyCommentView() {
-        if (mFlyCommentView.visibility != View.VISIBLE) {
-            mFlyCommentView.visibility = View.VISIBLE
+        if (mFlyCommentView?.visibility != View.VISIBLE) {
+            mFlyCommentView?.visibility = View.VISIBLE
         }
         if (mCommentView.visibility != View.INVISIBLE) {
             mCommentView.visibility = View.INVISIBLE
@@ -772,8 +773,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
     private fun hideFlyCommentView() {
-        if (mFlyCommentView.visibility != View.GONE) {
-            mFlyCommentView.visibility = View.GONE
+        if (mFlyCommentView?.visibility != View.GONE) {
+            mFlyCommentView?.visibility = View.GONE
         }
         if (mCommentView.visibility != View.VISIBLE) {
             mCommentView.visibility = View.VISIBLE
