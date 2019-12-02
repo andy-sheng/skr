@@ -3,9 +3,12 @@
     xmlns:NickNameView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/common_gradient_bg">
+    android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/common_gradient_bg" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar_iv"
@@ -57,11 +60,11 @@
         android:id="@+id/recommend_tag_sdv"
         android:layout_width="@dimen/view_36_dp"
         android:layout_height="@dimen/view_16_dp"
-        android:gravity="center"
-        android:layout_marginRight="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/join_tv"
