@@ -706,7 +706,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             DebugLogView.println(TAG, "伴奏播放完毕")
             sendRoundOverInfo()
         } else if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
-            DebugLogView.println(TAG, "伴奏播放进度")
+            //DebugLogView.println(TAG, "伴奏播放进度")
             val timeInfo = event.getObj() as EngineEvent.MixMusicTimeInfo
             //这个是唱的时间，先在按长度算时间
             val shift = mRoomData.getSingCurPosition()-timeInfo.current
@@ -891,6 +891,15 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             }
         }
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RGameOverMsg) {
+        ensureInRcRoom()
+        roomView.gameOver()
+    }
+
+
 
 //    /**
 //     * 录制小游戏事件，防止录进去背景音
