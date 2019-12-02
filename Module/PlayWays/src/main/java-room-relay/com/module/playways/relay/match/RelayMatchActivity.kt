@@ -269,6 +269,11 @@ class RelayMatchActivity : BaseActivity() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
+    override fun onBackPressedForActivity(): Boolean {
+        cancelMatch()
+        return super.onBackPressedForActivity()
+    }
+
     override fun canSlide(): Boolean {
         return false
     }
