@@ -120,7 +120,7 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                             .setCircle(true)
                             .build())
             mTvSingerName?.text = userInfoModel.nicknameRemark
-            mLevelBg?.setBackground(U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(userInfoModel.ranking.mainRanking)))
+            mLevelBg?.setBackground(U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(userInfoModel?.ranking?.mainRanking ?:0)))
         } else {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败")
         }
