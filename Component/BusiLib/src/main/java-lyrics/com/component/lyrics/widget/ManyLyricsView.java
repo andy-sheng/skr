@@ -408,7 +408,7 @@ public class ManyLyricsView extends AbstractLrcView {
         boolean thisLineIsUpSplit = false;
 
         long curProgress = getCurPlayingTime() + getPlayerSpendTime();
-        MyLog.d(TAG, "drawManyLrcView" + " mLyricsLineNum=" + mLyricsLineNum + " curProgress=" + curProgress);
+        //MyLog.d(TAG, "drawManyLrcView" + " mLyricsLineNum=" + mLyricsLineNum + " curProgress=" + curProgress);
         boolean firstSingerTime = false;
         if (mSplitChorusArray != null) {
             firstSingerTime = mSplitChorusArray.size() % 2 == 0;

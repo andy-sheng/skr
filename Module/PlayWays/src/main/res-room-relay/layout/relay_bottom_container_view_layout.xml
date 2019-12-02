@@ -13,14 +13,14 @@
         android:layout_alignParentBottom="true"
         android:gravity="right">
 
-<!--        <com.common.view.ex.ExImageView-->
-<!--            android:id="@+id/emoji_btn"-->
-<!--            android:layout_width="@dimen/view_39_dp"-->
-<!--            android:layout_height="@dimen/view_35_dp"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:layout_marginRight="@dimen/view_10_dp"-->
-<!--            android:scaleType="centerInside"-->
-<!--            app:src_unPressed_drawable="@drawable/biaoqing" />-->
+        <!--        <com.common.view.ex.ExImageView-->
+        <!--            android:id="@+id/emoji_btn"-->
+        <!--            android:layout_width="@dimen/view_39_dp"-->
+        <!--            android:layout_height="@dimen/view_35_dp"-->
+        <!--            android:layout_centerVertical="true"-->
+        <!--            android:layout_marginRight="@dimen/view_10_dp"-->
+        <!--            android:scaleType="centerInside"-->
+        <!--            app:src_unPressed_drawable="@drawable/biaoqing" />-->
 
         <com.common.view.ex.ExImageView
             android:id="@+id/gift_mall_btn"
@@ -73,24 +73,26 @@
         android:textColor="@color/white_trans_30"
         android:textSize="@dimen/textsize_15_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_solid_color="#5B72E8" />
+        app:bl_solid_color="@color/black_trans_20"
+        app:bl_stroke_color="@color/white_trans_20"
+        app:bl_stroke_width="1dp" />
 
-<!--    <com.module.playways.grab.room.voicemsg.VoiceRecordTextView-->
-<!--        android:id="@+id/voice_record_btn"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/view_32_dp"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_marginLeft="@dimen/view_10_dp"-->
-<!--        android:layout_marginRight="@dimen/view_20_dp"-->
-<!--        android:layout_toLeftOf="@+id/emoji_area"-->
-<!--        android:layout_toRightOf="@+id/input_btn"-->
-<!--        android:gravity="center"-->
-<!--        android:singleLine="true"-->
-<!--        android:text="按住说话"-->
-<!--        android:textColor="@color/white_trans_80"-->
-<!--        android:textSize="@dimen/textsize_16_dp"-->
-<!--        android:visibility="gone"-->
-<!--        app:bl_corners_radius="@dimen/view_16_dp"-->
-<!--        app:bl_solid_color="#5B72E8" />-->
+    <!--    <com.module.playways.grab.room.voicemsg.VoiceRecordTextView-->
+    <!--        android:id="@+id/voice_record_btn"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="@dimen/view_32_dp"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_marginLeft="@dimen/view_10_dp"-->
+    <!--        android:layout_marginRight="@dimen/view_20_dp"-->
+    <!--        android:layout_toLeftOf="@+id/emoji_area"-->
+    <!--        android:layout_toRightOf="@+id/input_btn"-->
+    <!--        android:gravity="center"-->
+    <!--        android:singleLine="true"-->
+    <!--        android:text="按住说话"-->
+    <!--        android:textColor="@color/white_trans_80"-->
+    <!--        android:textSize="@dimen/textsize_16_dp"-->
+    <!--        android:visibility="gone"-->
+    <!--        app:bl_corners_radius="@dimen/view_16_dp"-->
+    <!--        app:bl_solid_color="#5B72E8" />-->
 
 </merge>
