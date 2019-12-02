@@ -22,8 +22,8 @@ import kotlinx.coroutines.launch
 class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     val TAG = "RelaySingCardView"
 
-     var effectBgView: GameEffectBgView?=null
-     var othersSingCardView: NormalOthersSingCardView?=null
+    var effectBgView: GameEffectBgView? = null
+    var othersSingCardView: NormalOthersSingCardView? = null
 
     lateinit var dotView: ExView
     lateinit var songNameTv: TextView
@@ -81,7 +81,7 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         val music = roomData?.realRoundInfo?.music
         songNameTv.text = "《${music?.displaySongName}》"
         countDownJob = launch {
-            while (true){
+            while (true) {
                 var t = music?.endMs!! - music?.beginMs
                 var leftTs = t - (roomData?.getSingCurPosition() ?: 0)
                 if (leftTs < 0) {
@@ -90,6 +90,9 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 songPlayProgressTv.text = U.getDateTimeUtils().formatVideoTime(leftTs);
                 delay(1000)
             }
+        }
+        voiceScaleView?.durationProvider = {
+            roomData?.getSingCurPosition() ?: 0L
         }
         manyLyricsView?.setSplitChorusArray(music?.relaySegments)
         manyLyricsView?.setFirstSingByMe(roomData?.isFirstSingByMe() == true)
@@ -142,18 +145,18 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg1)
             otherSingTipsTv.visibility = View.GONE
             voiceScaleView.setHide(false)
-            if(roomData?.myEffectModel?.sourceURL?.isNotEmpty() == true){
+            if (roomData?.myEffectModel?.sourceURL?.isNotEmpty() == true) {
                 effectBgView?.showBgEffect(roomData?.myEffectModel)
-            }else{
+            } else {
                 effectBgView?.hideBg()
             }
         } else {
             dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg2)
             otherSingTipsTv.visibility = View.VISIBLE
             voiceScaleView.setHide(true)
-            if(roomData?.peerEffectModel?.sourceURL?.isNotEmpty() == true){
+            if (roomData?.peerEffectModel?.sourceURL?.isNotEmpty() == true) {
                 effectBgView?.showBgEffect(roomData?.peerEffectModel)
-            }else{
+            } else {
                 effectBgView?.hideBg()
             }
         }
