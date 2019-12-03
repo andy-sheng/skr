@@ -55,7 +55,7 @@ class RelayMatchActivity : BaseActivity() {
     private val relayMatchServerApi = ApiManager.getInstance().createService(RelayMatchServerApi::class.java)
     var offset: Int = 0
     var hasMore: Boolean = false
-    val cnt = 15
+    val cnt = 10    // 房间列表实质上并不是一个分页的接口，客户端当成每次刷新的接口来做 offset和hasMore 都没有用
 
     //在滑动到最后的时候自动加载更多
     var loadMore: Boolean = false
@@ -63,6 +63,9 @@ class RelayMatchActivity : BaseActivity() {
 
     var model: SongModel? = null
     var matchJob: Job? = null
+
+    var roomJob: Job? = null
+    val roomInterval = 6 * 1000L
 
     var mLoadService: LoadService<*>? = null
 
@@ -93,10 +96,13 @@ class RelayMatchActivity : BaseActivity() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     currentPosition = cardScaleHelper?.currentItemPos ?: 0
-                    if (!loadMore && currentPosition > (adapter.mDataList.size - 3)) {
-                        loadMore = true
-                        getRecommendRoomList(offset, false)
-                    }
+//                    if (!loadMore && currentPosition > (adapter.mDataList.size - 3)) {
+//                        loadMore = true
+//                        getRecommendRoomList()
+//                    }
+                    startTimerRoom(roomInterval)
+                } else {
+                    cancelTimeRoom()
                 }
             }
         })
@@ -120,16 +126,33 @@ class RelayMatchActivity : BaseActivity() {
 
         titlebar?.centerTextView?.text = "《${model?.itemName}》"
 
-        getRecommendRoomList(0, true)
+
         startMatch()
+        startTimerRoom(0)
         RelayRoomData.syncServerTs()
 
         val mLoadSir = LoadSir.Builder()
                 .addCallback(RelayEmptyRoomCallback())
                 .build()
         mLoadService = mLoadSir.register(speedRecyclerView, Callback.OnReloadListener {
-            getRecommendRoomList(0, true)
+            startTimerRoom(0)
         })
+    }
+
+    // 定时自动刷新房间列表
+    private fun startTimerRoom(delayTime: Long) {
+        roomJob?.cancel()
+        roomJob = launch {
+            delay(delayTime)
+            repeat(Int.MAX_VALUE) {
+                getRecommendRoomList()
+                delay(roomInterval)
+            }
+        }
+    }
+
+    private fun cancelTimeRoom() {
+        roomJob?.cancel()
     }
 
     // 开始匹配
@@ -180,17 +203,17 @@ class RelayMatchActivity : BaseActivity() {
         }
     }
 
-    fun getRecommendRoomList(off: Int, clean: Boolean) {
+    private fun getRecommendRoomList() {
         launch {
             val result = subscribe(RequestControl("getRecommendRoomList", ControlType.CancelThis)) {
-                relayMatchServerApi.getMatchRoomList(off, cnt, MyUserInfoManager.uid.toInt())
+                relayMatchServerApi.getMatchRoomList(0, cnt, MyUserInfoManager.uid.toInt())
             }
             loadMore = false
             if (result.errno == 0) {
                 hasMore = result.data.getBooleanValue("hasMore")
                 offset = result.data.getIntValue("offset")
                 val list = JSON.parseArray(result.data.getString("items"), RelayRecommendRoomInfo::class.java)
-                addRoomList(list, clean)
+                addRoomList(list, true)
             }
         }
     }
@@ -292,6 +315,7 @@ class RelayMatchActivity : BaseActivity() {
 
     override fun destroy() {
         super.destroy()
+        roomJob?.cancel()
         matchJob?.cancel()
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }

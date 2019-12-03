@@ -10,8 +10,10 @@ import android.view.ViewStub
 import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
@@ -136,7 +138,7 @@ class RoomInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
             resultGroup?.visibility = View.GONE
             inviteGroup?.visibility = View.VISIBLE
 
-            val model = H.micRoomData?.getPlayerOrWaiterInfo(micUserMusicModel?.userID)
+            val model = getUserInfo(micUserMusicModel?.userID)
             nameTv?.text = model?.nicknameRemark
             when {
                 micUserMusicModel?.music?.playType == StandPlayType.PT_CHO_TYPE.value -> descTv?.text = "邀请合唱"
@@ -172,8 +174,9 @@ class RoomInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 } else {
                     resultGroup?.visibility = View.VISIBLE
                     inviteGroup?.visibility = View.GONE
-                    val model = H.micRoomData?.getPlayerOrWaiterInfo(micUserMusicModel?.userID)  // 发起人
-                    val peerModel = H.micRoomData?.getPlayerOrWaiterInfo(micUserMusicModel?.peerID)  // 接收人
+
+                    val model = getUserInfo(micUserMusicModel?.userID)// 发起人
+                    var peerModel = getUserInfo(micUserMusicModel?.peerID)  // 接收人
 
                     resultAvatar?.bindData(peerModel)
                     resultName?.text = peerModel?.nicknameRemark
@@ -203,6 +206,20 @@ class RoomInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     }
                 }
             }
+        }
+    }
+
+    private fun getUserInfo(uid: Int?): UserInfoModel? {
+        return if (gameType == GameModeType.GAME_MODE_MIC) {
+            H.micRoomData?.getPlayerOrWaiterInfo(uid)
+        } else if (gameType == GameModeType.GAME_MODE_RELAY) {
+            if (uid == MyUserInfoManager.uid.toInt()) {
+                MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo)
+            } else {
+                H.relayRoomData?.peerUser?.userInfo
+            }
+        } else {
+            null
         }
     }
 
@@ -261,7 +278,7 @@ class RoomInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     U.getToastUtil().showShort(result.errmsg)
                 }
             }
-        } else if (gameType == GameModeType.GAME_MODE_RELAY){
+        } else if (gameType == GameModeType.GAME_MODE_RELAY) {
             launch {
                 val result = subscribe(RequestControl("syncInviteResult", ControlType.CancelLast)) {
                     relayRoomServerApi.getAgreeSingResult(H.relayRoomData?.gameId
