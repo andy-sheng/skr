@@ -711,9 +711,10 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             //DebugLogView.println(TAG, "伴奏播放进度")
             val timeInfo = event.getObj() as EngineEvent.MixMusicTimeInfo
             //这个是唱的时间，先在按长度算时间
-            val shift = mRoomData.getSingCurPosition()-timeInfo.current
+            var progress = mRoomData.getSingCurPosition()
+            val shift = progress -timeInfo.current
             //DebugLogView.println(TAG, "当前伴奏与预定时间的偏移为${shift}")
-            if (abs(shift) >1000) {
+            if (abs(shift) >1000 && progress>=0) {
                 DebugLogView.println(TAG, "当前伴奏与预定时间的偏移过大 为${shift}")
                 // 伴奏对齐，重新发送轮次切换
                 ZqEngineKit.getInstance().setAudioMixingPosition(mRoomData.getSingCurPosition().toInt())

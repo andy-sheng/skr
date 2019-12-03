@@ -215,7 +215,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     public void onUserJoined(int uid, int elapsed) {
         MyLog.i(TAG, "onUserJoined" + " uid=" + uid + " elapsed=" + elapsed);
         // 主播加入了，自己不会回调，自己回到角色变化接口
-        UserStatus userStatus = ensureJoin(uid);
+        UserStatus userStatus = ensureJoin(uid,"onUserMuteAudio");
         userStatus.setAnchor(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_JOIN, userStatus));
         tryStartRecordForFeedback("onUserJoined");
@@ -232,7 +232,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onUserMuteVideo(int uid, boolean muted) {
-        UserStatus status = ensureJoin(uid);
+        UserStatus status = ensureJoin(uid,"onUserMuteAudio");
         status.setVideoMute(muted);
         status.setAnchor(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_MUTE_VIDEO, status));
@@ -240,7 +240,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onUserMuteAudio(int uid, boolean muted) {
-        UserStatus status = ensureJoin(uid);
+        UserStatus status = ensureJoin(uid,"onUserMuteAudio");
         status.setAudioMute(muted);
         status.setAnchor(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_MUTE_AUDIO, status));
@@ -248,7 +248,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onUserEnableVideo(int uid, boolean enabled) {
-        UserStatus status = ensureJoin(uid);
+        UserStatus status = ensureJoin(uid,"onUserEnableVideo");
         status.setEnableVideo(enabled);
         status.setAnchor(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_VIDEO_ENABLE, status));
@@ -256,7 +256,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onFirstRemoteVideoDecoded(int uid, int width, int height, int elapsed) {
-        UserStatus status = ensureJoin(uid);
+        UserStatus status = ensureJoin(uid,"onFirstRemoteVideoDecoded");
         status.setEnableVideo(true);
         status.setFirstVideoDecoded(true);
         status.setFirstVideoWidth(width);
@@ -268,7 +268,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     @Override
     public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
         MyLog.d(TAG,"onJoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
-        UserStatus userStatus = ensureJoin(uid);
+        UserStatus userStatus = ensureJoin(uid,"onJoinChannelSuccess");
         userStatus.setIsSelf(true);
         mConfig.setSelfUid(uid);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_JOIN, userStatus));
@@ -284,7 +284,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     @Override
     public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
         MyLog.d(TAG,"onRejoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
-        UserStatus userStatus = ensureJoin(uid);
+        UserStatus userStatus = ensureJoin(uid,"onRejoinChannelSuccess");
         userStatus.setIsSelf(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_REJOIN, userStatus));
         mInChannel = true;
@@ -298,7 +298,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     @Override
     public void onClientRoleChanged(int oldRole, int newRole) {
         if (mConfig.getSelfUid() > 0) {
-            UserStatus userStatus = ensureJoin(mConfig.getSelfUid());
+            UserStatus userStatus = ensureJoin(mConfig.getSelfUid(),"onClientRoleChanged");
             if (newRole == Constants.CLIENT_ROLE_BROADCASTER) {
                 userStatus.setAnchor(true);
                 tryStartRecordForFeedback("onClientRoleChanged");
@@ -439,14 +439,15 @@ public class ZqEngineKit implements AgoraOutCallback {
      */
     @Override
     public void onAudioMixingStateChanged(int state, int errorCode) {
-        MyLog.d(TAG,"onAudioMixingStateChanged" + " state=" + state + " errorCode=" + errorCode);
+        MyLog.i(TAG,"onAudioMixingStateChanged" + " state=" + state + " errorCode=" + errorCode);
         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STATE_CHANGE, null);
         engineEvent.obj = new EngineEvent.MusicStateChange(state,errorCode);
         EventBus.getDefault().post(engineEvent);
     }
 
-    private UserStatus ensureJoin(int uid) {
+    private UserStatus ensureJoin(int uid,String from) {
         if (!mUserStatusMap.containsKey(uid)) {
+            MyLog.d(TAG,"ensureJoin" + " uid=" + uid + " from=" + from);
             UserStatus userStatus = new UserStatus(uid);
             userStatus.setEnterTs(System.currentTimeMillis());
             mUserStatusMap.put(uid, userStatus);

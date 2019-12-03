@@ -37,7 +37,7 @@ public class NoLeakEditText extends AppCompatEditText {
 
     @Override
     public void addTextChangedListener(TextWatcher watcher) {
-        com.common.log.MyLog.d(TAG, "addTextChangedListener" + " watcher=" + watcher);
+        //com.common.log.MyLog.d(TAG, "addTextChangedListener" + " watcher=" + watcher);
         if (!mAddedList.contains(watcher)) {
             mAddedList.add(watcher);
             super.addTextChangedListener(watcher);
@@ -49,7 +49,7 @@ public class NoLeakEditText extends AppCompatEditText {
 
     @Override
     public void removeTextChangedListener(TextWatcher watcher) {
-        com.common.log.MyLog.d(TAG, "removeTextChangedListener" + " watcher=" + watcher);
+        //com.common.log.MyLog.d(TAG, "removeTextChangedListener" + " watcher=" + watcher);
         if (mRemovedList.contains(watcher)) {
             mRemovedList.remove(watcher);
         } else {
@@ -62,7 +62,7 @@ public class NoLeakEditText extends AppCompatEditText {
 
     @Override
     protected void onAttachedToWindow() {
-        com.common.log.MyLog.d(TAG, "onAttachedToWindow mAddedList.size:" + mAddedList.size() + ",mRemovedList.size:" + mRemovedList.size());
+        //com.common.log.MyLog.d(TAG, "onAttachedToWindow mAddedList.size:" + mAddedList.size() + ",mRemovedList.size:" + mRemovedList.size());
         super.onAttachedToWindow();
         for (TextWatcher watcher : mRemovedList) {
             super.addTextChangedListener(watcher);
@@ -75,7 +75,7 @@ public class NoLeakEditText extends AppCompatEditText {
 
     @Override
     protected void onDetachedFromWindow() {
-        com.common.log.MyLog.d(TAG, "onDetachedFromWindow mAddedList.size:" + mAddedList.size() + ",mRemovedList.size:" + mRemovedList.size());
+        //com.common.log.MyLog.d(TAG, "onDetachedFromWindow mAddedList.size:" + mAddedList.size() + ",mRemovedList.size:" + mRemovedList.size());
         for (TextWatcher watcher : mAddedList) {
             super.removeTextChangedListener(watcher);
             mRemovedList.add(watcher);
