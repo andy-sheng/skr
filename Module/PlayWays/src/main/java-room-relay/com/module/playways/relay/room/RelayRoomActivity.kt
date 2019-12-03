@@ -455,7 +455,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     private fun initTopView() {
         mExitIv = findViewById(R.id.exit_iv)
         mExitIv.setDebounceViewClickListener {
-            gameOver()
+            quitGame()
         }
         mTopOpView = findViewById(R.id.top_op_view)
         mTopOpView.listener = object : RelayTopOpView.Listener {
@@ -679,6 +679,12 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 //            return true
 //        }
 
+        quitGame()
+        return true
+    }
+
+
+    private fun quitGame() {
         dismissDialog()
         mTipsDialogView = TipsDialogView.Builder(this)
                 .setMessageTip("确定要退出合唱吗")
@@ -686,19 +692,13 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
                 .setCancelTip("取消")
                 .setConfirmBtnClickListener {
                     mTipsDialogView?.dismiss(false)
-                    quitGame()
+                    gameOver()
                 }
                 .setCancelBtnClickListener {
                     mTipsDialogView?.dismiss()
                 }
                 .build()
         mTipsDialogView?.showByDialog()
-        return true
-    }
-
-
-    private fun quitGame() {
-        gameOver()
     }
 
     private fun dismissDialog() {
@@ -745,7 +745,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     }
 
     override fun gameOver() {
-        if(!mRoomData.isHasExitGame){
+        if (!mRoomData.isHasExitGame) {
             ensureActivtyTop()
             mCorePresenter.exitRoom("gameOver")
             ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_RESULT)
