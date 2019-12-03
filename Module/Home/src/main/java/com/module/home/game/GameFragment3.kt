@@ -38,7 +38,8 @@ import org.greenrobot.eventbus.ThreadMode
 
 // 主页
 class GameFragment3 : BaseFragment(), IGameView3 {
-    val PREF_KEY_BALLTLE_DIALOG = "battle_dialog"
+
+    val PREF_KEY_RELAY_DIALOG = "pref_key_relay_flag"
 
     lateinit var mTitle: CommonTitleBar
     lateinit var mNavigationBgIv: ImageView
@@ -181,12 +182,12 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mInviteFriendDialog?.show()
     }
 
-    private fun showSongListBattleDialog() {
-        if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_BALLTLE_DIALOG, false)) {
+    private fun showRelayTipsDialog() {
+        if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_RELAY_DIALOG, false)) {
             if (mWaitingDialogPlus == null) {
                 activity?.let {
                     mWaitingDialogPlus = DialogPlus.newDialog(it)
-                            .setContentHolder(ViewHolder(R.layout.battle_first_tip_layout))
+                            .setContentHolder(ViewHolder(R.layout.relay_first_tip_layout))
                             .setContentBackgroundResource(R.color.transparent)
                             .setOverlayBackgroundResource(R.color.black_trans_50)
                             .setExpanded(false)
@@ -201,7 +202,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             }
 
             mWaitingDialogPlus?.show()
-            U.getPreferenceUtils().setSettingBoolean(PREF_KEY_BALLTLE_DIALOG, true)
+            U.getPreferenceUtils().setSettingBoolean(PREF_KEY_RELAY_DIALOG, true)
         }
     }
 
@@ -223,7 +224,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     override fun onFragmentVisible() {
         super.onFragmentVisible()
         mPresenter.initGameKConfig()
-//        showSongListBattleDialog()
+        showRelayTipsDialog()
         viewSelected(mGameVp.currentItem)
         when {
             mGameVp.currentItem == 0 -> {

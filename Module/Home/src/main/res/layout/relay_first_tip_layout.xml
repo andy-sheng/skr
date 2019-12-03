@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_8_dp"
         android:adjustViewBounds="true"
-        android:background="@drawable/battle_first_tip"
+        android:background="@drawable/relay_first_tip_icon"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
