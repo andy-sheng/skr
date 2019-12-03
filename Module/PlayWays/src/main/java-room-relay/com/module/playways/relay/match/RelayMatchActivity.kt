@@ -15,8 +15,12 @@ import com.common.rxretrofit.*
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.callback.EmptyCallback
 import com.component.busilib.view.recyclercardview.CardScaleHelper
 import com.component.busilib.view.recyclercardview.SpeedRecyclerView
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.ModuleServiceManager
 import com.module.RouterConstants
 import com.module.common.ICallback
@@ -25,6 +29,7 @@ import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.relay.match.adapter.RelayRoomAdapter
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.match.model.RelayRecommendRoomInfo
+import com.module.playways.relay.match.view.RelayEmptyRoomCallback
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.room.prepare.presenter.GrabMatchPresenter
 import com.module.playways.room.song.model.SongModel
@@ -58,6 +63,8 @@ class RelayMatchActivity : BaseActivity() {
 
     var model: SongModel? = null
     var matchJob: Job? = null
+
+    var mLoadService: LoadService<*>? = null
 
     /**
      * 存起该房间一些状态信息
@@ -116,6 +123,13 @@ class RelayMatchActivity : BaseActivity() {
         getRecommendRoomList(0, true)
         startMatch()
         RelayRoomData.syncServerTs()
+
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(RelayEmptyRoomCallback())
+                .build()
+        mLoadService = mLoadSir.register(speedRecyclerView, Callback.OnReloadListener {
+            getRecommendRoomList(0, true)
+        })
     }
 
     // 开始匹配
@@ -192,6 +206,12 @@ class RelayMatchActivity : BaseActivity() {
             if (!list.isNullOrEmpty()) {
                 adapter.addData(list)
             }
+        }
+
+        if (adapter.mDataList.isNullOrEmpty()) {
+            mLoadService?.showCallback(RelayEmptyRoomCallback::class.java)
+        } else {
+            mLoadService?.showSuccess()
         }
     }
 

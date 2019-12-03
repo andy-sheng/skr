@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,65 +21,68 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/join_tips_tv"
-        android:layout_width="@dimen/view_0_dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/view_100_dp"
+        android:layout_below="@id/titlebar"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/view_30_dp"
-        android:layout_marginRight="@dimen/view_30_dp"
         android:layout_marginTop="@dimen/view_25_dp"
+        android:layout_marginRight="@dimen/view_30_dp"
         android:gravity="center"
         android:text="Ta正在赶来的路上..."
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_16_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="@color/black_trans_50"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titlebar" />
+        app:bl_solid_color="@color/black_trans_50" />
 
     <TextView
         android:id="@+id/quick_tips_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/join_tips_tv"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_42_dp"
+        android:layout_marginBottom="@dimen/view_20_dp"
         android:text="快速加入合唱"
         android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/join_tips_tv" />
+        android:textSize="@dimen/textsize_12_dp" />
 
     <View
         android:id="@+id/left"
-        android:layout_width="@dimen/view_0_dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
+        android:layout_alignTop="@id/quick_tips_tv"
         android:layout_marginLeft="@dimen/view_30_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
         android:layout_marginRight="@dimen/view_12_dp"
-        android:background="@color/white_trans_20"
-        app:layout_constraintBottom_toBottomOf="@id/quick_tips_tv"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/quick_tips_tv"
-        app:layout_constraintTop_toTopOf="@id/quick_tips_tv" />
+        android:layout_toLeftOf="@id/quick_tips_tv"
+        android:background="@color/white_trans_20" />
 
     <View
         android:id="@+id/right"
-        android:layout_width="@dimen/view_0_dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
+        android:layout_alignTop="@id/quick_tips_tv"
         android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
         android:layout_marginRight="@dimen/view_30_dp"
-        android:background="@color/white_trans_20"
-        app:layout_constraintBottom_toBottomOf="@id/quick_tips_tv"
-        app:layout_constraintLeft_toRightOf="@id/quick_tips_tv"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/quick_tips_tv" />
+        android:layout_toRightOf="@id/quick_tips_tv"
+        android:background="@color/white_trans_20" />
+
+    <View
+        android:id="@+id/bottom_place"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_50_dp"
+        android:layout_alignParentBottom="true"/>
 
     <com.component.busilib.view.recyclercardview.SpeedRecyclerView
         android:id="@+id/speed_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_0_dp"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:layout_marginBottom="@dimen/view_50_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/quick_tips_tv" />
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_place"
+        android:layout_below="@id/quick_tips_tv" />
 
-</android.support.constraint.ConstraintLayout>
+
+
+</RelativeLayout>
