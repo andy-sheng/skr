@@ -257,4 +257,9 @@ class RelaySongManageFragment : BaseFragment() {
     override fun useEventBus(): Boolean {
         return true
     }
+
+    override fun destroy() {
+        super.destroy()
+        relaySongManageView?.destory()
+    }
 }
