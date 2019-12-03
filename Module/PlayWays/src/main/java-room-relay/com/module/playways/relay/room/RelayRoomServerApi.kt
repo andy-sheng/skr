@@ -35,31 +35,6 @@ interface RelayRoomServerApi {
     @GET("http://dev.game.inframe.mobi/v1/relaygame/timestamp")
     fun timestamp(@Query("roomID") roomID: Int): Call<ApiResult>
 
-//    /**
-//     * 创建房间
-//     * {
-//     *      "levelLimit": "RLL_All",
-//     *      "roomName": "string"
-//     * }
-//     */
-//    @PUT("http://dev.game.inframe.mobi/v1/microom/create-room")
-//    fun createRoom(@Body body: RequestBody): Call<ApiResult>
-//
-//    /**
-//     * 取消匹配
-//     */
-//    @PUT("http://dev.game.inframe.mobi/v1/microom/cancel-match")
-//    fun cancelMatch(@Body body: RequestBody): Call<ApiResult>
-
-    /**
-     * 进入房价
-     */
-    @PUT("http://dev.game.inframe.mobi/v1/microom/join-room")
-    fun joinRoom(@Body body: RequestBody): Call<ApiResult>
-
-    @PUT("http://dev.game.inframe.mobi/v1/micgame/pk-commit-segment-result")
-    fun sendPkPerSegmentResult(@Body body: RequestBody): Call<ApiResult>
-
     /**
      *  同意合唱/PK的结果 {"roomID": 0,"uniqTag": "string"}
      */
