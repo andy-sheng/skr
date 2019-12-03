@@ -6,6 +6,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.model.EffectModel
+import com.component.busilib.model.GameBackgroundEffectModel
 import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
@@ -73,8 +74,8 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         }
     var leftSeat = true   // 我的未知是否在左边
     var isHasExitGame = false
-    var myEffectModel:EffectModel?=null
-    var peerEffectModel:EffectModel?=null
+    var myEffectModel:GameBackgroundEffectModel?=null
+    var peerEffectModel:GameBackgroundEffectModel?=null
 
     override val gameType: Int
         get() = GameModeType.GAME_MODE_RELAY
@@ -209,16 +210,19 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         this.configModel = rsp.config ?: RelayConfigModel()
         this.peerUser = ReplayPlayerInfoModel()
         rsp.users?.forEachIndexed { index, userInfoModel ->
+            var a = rsp.showInfos.getOrNull(index)
+            MyLog.w("chengsimin","peerEffectModel1=${a} index=${index}")
             if (userInfoModel.userId != MyUserInfoManager.uid.toInt()) {
                 this.peerUser?.userInfo = userInfoModel
-                this.peerEffectModel = rsp.showInfos.getOrNull(index)
+                this.peerEffectModel = a
                 this.leftSeat = index != 0
             }else{
-                this.myEffectModel = rsp.showInfos.getOrNull(index)
+                this.myEffectModel = a
             }
         }
         this.peerUser?.isOnline = true
         this.expectRoundInfo = rsp.currentRound
+        MyLog.w("chengsimin","peerEffectModel2=${this.peerEffectModel}")
     }
 
     override fun toString(): String {

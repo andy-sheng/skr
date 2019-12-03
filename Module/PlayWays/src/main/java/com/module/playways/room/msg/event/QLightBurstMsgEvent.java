@@ -3,6 +3,7 @@
 package com.module.playways.room.msg.event;
 
 import com.component.busilib.model.EffectModel;
+import com.component.busilib.model.GameBackgroundEffectModel;
 import com.module.playways.room.msg.BasePushInfo;
 import com.zq.live.proto.GrabRoom.QBLightMsg;
 
@@ -18,14 +19,14 @@ public final class QLightBurstMsgEvent {
      */
     public Integer roundSeq;
 
-    public EffectModel bLightEffectModel;
+    public GameBackgroundEffectModel bLightEffectModel;
 
 
     public QLightBurstMsgEvent(BasePushInfo info, QBLightMsg msg) {
         this.info = info;
         this.userID = msg.getUserID();
         this.roundSeq = msg.getRoundSeq();
-        this.bLightEffectModel = EffectModel.Companion.parseBLightEffectModelFromPb(msg.getShowInfo());
+        this.bLightEffectModel = GameBackgroundEffectModel.Companion.parseBLightEffectModelFromPb(msg.getShowInfo());
     }
 
 }

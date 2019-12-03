@@ -1291,7 +1291,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: GrabSomeOneLightBurstEvent) {
         // 爆灯
-        mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid, event?.bLightEffectModel?.sourceURL)
+        mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid, event?.bLightEffectModel?.effectModel?.sourceURL)
     }
 
     private fun removeAllEnsureMsg() {

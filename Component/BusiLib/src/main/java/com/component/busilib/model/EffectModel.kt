@@ -31,34 +31,6 @@ class EffectModel : Serializable {
 
     constructor()
 
-    companion object {
-        fun parseBackgroundEffectModelListFromPb(list: List<BackgroundShowInfo>): List<EffectModel> {
-            val backgroundEffectModelList = ArrayList<EffectModel>()
-            list?.forEach {
-                if (it.hasSourcesJson()) {
-                    backgroundEffectModelList.add(parseBackgroundEffectModelFromPb(it))
-                } else {
-                    backgroundEffectModelList.add(EffectModel())
-                }
-            }
-
-            return backgroundEffectModelList
-        }
-
-        fun parseBackgroundEffectModelFromPb(backgroundEffectModel: BackgroundShowInfo): EffectModel {
-            return JSON.parseObject(backgroundEffectModel.sourcesJson, EffectModel::class.java)
-        }
-
-        fun parseBLightEffectModelFromPb(bLightShowInfo: BLightShowInfo?): EffectModel? {
-            if (bLightShowInfo == null || !bLightShowInfo?.hasSourcesJson()) {
-                return null
-            }
-
-            return JSON.parseObject(bLightShowInfo.sourcesJson, EffectModel::class.java)
-        }
-    }
-
-
     //每一个需要播的动画都是一个Obg
     class EffectObg : Serializable {
         //分背景和动态图片，1为背景，2为动态图

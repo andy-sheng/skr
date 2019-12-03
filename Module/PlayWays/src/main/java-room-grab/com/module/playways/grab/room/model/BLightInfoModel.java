@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.model;
 
 import com.component.busilib.model.EffectModel;
+import com.component.busilib.model.GameBackgroundEffectModel;
 import com.zq.live.proto.GrabRoom.QBLightMsg;
 
 import java.io.Serializable;
@@ -10,7 +11,7 @@ import java.io.Serializable;
  */
 public class BLightInfoModel implements Serializable {
     int userID;
-    EffectModel bLightEffectModel;
+    GameBackgroundEffectModel bLightEffectModel;
 
     public int getUserID() {
         return userID;
@@ -20,11 +21,11 @@ public class BLightInfoModel implements Serializable {
         this.userID = userID;
     }
 
-    public EffectModel getbLightEffectModel() {
+    public GameBackgroundEffectModel getbLightEffectModel() {
         return bLightEffectModel;
     }
 
-    public void setbLightEffectModel(EffectModel bLightEffectModel) {
+    public void setbLightEffectModel(GameBackgroundEffectModel bLightEffectModel) {
         this.bLightEffectModel = bLightEffectModel;
     }
 
@@ -51,7 +52,7 @@ public class BLightInfoModel implements Serializable {
     public static BLightInfoModel parse(QBLightMsg pb) {
         BLightInfoModel noPassingInfo = new BLightInfoModel();
         noPassingInfo.setUserID(pb.getUserID());
-        noPassingInfo.setbLightEffectModel(EffectModel.Companion.parseBLightEffectModelFromPb(pb.getShowInfo()));
+        noPassingInfo.setbLightEffectModel(GameBackgroundEffectModel.Companion.parseBLightEffectModelFromPb(pb.getShowInfo()));
         return noPassingInfo;
     }
 }

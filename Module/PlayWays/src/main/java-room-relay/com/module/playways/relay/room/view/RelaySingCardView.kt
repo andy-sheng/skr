@@ -3,6 +3,7 @@ package com.module.playways.relay.room.view
 import android.view.View
 import android.view.ViewStub
 import android.widget.TextView
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.ExViewStub
 import com.common.view.ex.ExView
@@ -145,8 +146,8 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg2)
             otherSingTipsTv.visibility = View.GONE
             voiceScaleView.setHide(false)
-            if (roomData?.myEffectModel?.sourceURL?.isNotEmpty() == true) {
-                effectBgView?.showBgEffect(roomData?.myEffectModel)
+            if (roomData?.myEffectModel?.sourcesJson?.isNotEmpty() == true) {
+                effectBgView?.showBgEffect(roomData?.myEffectModel?.effectModel)
             } else {
                 effectBgView?.hideBg()
             }
@@ -154,8 +155,8 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg1)
             otherSingTipsTv.visibility = View.VISIBLE
             voiceScaleView.setHide(true)
-            if (roomData?.peerEffectModel?.sourceURL?.isNotEmpty() == true) {
-                effectBgView?.showBgEffect(roomData?.peerEffectModel)
+            if (roomData?.peerEffectModel?.sourcesJson?.isNotEmpty() == true) {
+                effectBgView?.showBgEffect(roomData?.peerEffectModel?.effectModel)
             } else {
                 effectBgView?.hideBg()
             }
