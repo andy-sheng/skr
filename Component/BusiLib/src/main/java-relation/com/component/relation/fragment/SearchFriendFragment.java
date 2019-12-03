@@ -1,5 +1,6 @@
 package com.component.relation.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,11 +34,13 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.component.relation.adapter.RelationAdapter;
+import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
+import com.module.home.IHomeService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.component.relation.adapter.RelationAdapter;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -65,6 +68,10 @@ public class SearchFriendFragment extends BaseFragment {
     PublishSubject<String> mPublishSubject;
 
     RelationAdapter mRelationAdapter;
+
+    TipsDialogView tipsDialogView;
+
+    int mFrom = 0;  //默认为0，1为从赠送礼物来的
 
     @Override
     public int initView() {
@@ -107,9 +114,12 @@ public class SearchFriendFragment extends BaseFragment {
                             UserInfoManager.getInstance().mateRelation(userInfoModel.getUserId(), UserInfoManager.RA_BUILD, userInfoModel.isFriend());
                         }
                     }
+                } else if (view.getId() == R.id.send_tv) {
+                    showGiveDialog(userInfoModel);
                 }
             }
         });
+        mRelationAdapter.mFrom = mFrom;
         mRecyclerView.setAdapter(mRelationAdapter);
 
         if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
@@ -251,6 +261,43 @@ public class SearchFriendFragment extends BaseFragment {
                     showUserInfoList(list);
                 }
             }, this);
+        }
+    }
+
+    private void showGiveDialog(UserInfoModel userInfoModel) {
+        if (tipsDialogView != null) {
+            tipsDialogView.dismiss(false);
+        }
+
+        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+
+        tipsDialogView = new TipsDialogView.Builder((Activity) getContext())
+                .setMessageTip("是否赠送给" + userInfoModel.getNickname() + channelService.getSelectedMallName() + "?")
+                .setCancelBtnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (tipsDialogView != null) {
+                            tipsDialogView.dismiss(false);
+                        }
+                    }
+                })
+                .setCancelTip("取消")
+                .setConfirmBtnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        channelService.selectGiveMallUserFinish(userInfoModel.getUserId());
+                        ((Activity) getContext()).finish();
+                    }
+                })
+                .setConfirmTip("赠送")
+                .build();
+        tipsDialogView.showByDialog();
+    }
+
+    @Override
+    public void setData(int type, @org.jetbrains.annotations.Nullable Object data) {
+        if (type == 1) {
+            mFrom = (Integer) data;
         }
     }
 

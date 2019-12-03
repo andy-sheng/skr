@@ -101,6 +101,7 @@ public class RelationView extends RelativeLayout {
                         .newAddParamsBuilder((BaseActivity) getContext(), SearchFriendFragment.class)
                         .setUseOldFragmentIfExist(false)
                         .setBundle(bundle)
+                        .addDataBeforeAdd(1, mFrom)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
