@@ -20,6 +20,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.callback.EmptyCallback
 import com.component.busilib.view.recyclercardview.CardScaleHelper
 import com.component.busilib.view.recyclercardview.SpeedRecyclerView
+import com.component.lyrics.utils.SongResUtils
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -140,6 +141,12 @@ class RelayMatchActivity : BaseActivity() {
         mLoadService = mLoadSir.register(speedRecyclerView, Callback.OnReloadListener {
             startTimerRoom(0)
         })
+
+        val accFile = SongResUtils.getAccFileByUrl(model?.acc)
+        if(!accFile.exists()){
+            // 先下载这个伴奏备用
+            U.getHttpUtils().downloadFileAsync(model?.acc,accFile,true,null)
+        }
     }
 
     // 定时自动刷新房间列表

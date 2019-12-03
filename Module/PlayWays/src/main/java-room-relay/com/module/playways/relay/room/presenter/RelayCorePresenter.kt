@@ -19,6 +19,7 @@ import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.U
+import com.component.lyrics.utils.SongResUtils
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
@@ -233,8 +234,15 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         }
         ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
         ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
-        // 等待回调
-        ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), mRoomData?.realRoundInfo?.music?.acc, null, 0, false, false, 1)
+
+        val accFile = SongResUtils.getAccFileByUrl(mRoomData?.realRoundInfo?.music?.acc)
+        if(accFile?.exists() == true){
+            DebugLogView.println(TAG, "preOpWhenSelfRound 伴奏文件本地存在${accFile.path}")
+            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile?.path, null, 0, false, false, 1)
+        }else{
+            DebugLogView.println(TAG, "preOpWhenSelfRound 伴奏文件本地不存在${accFile.path}")
+            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), mRoomData?.realRoundInfo?.music?.acc, null, 0, false, false, 1)
+        }
     }
 
     private fun realSingBegin() {
