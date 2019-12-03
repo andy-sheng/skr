@@ -12,6 +12,7 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
+import com.component.person.event.ShowPersonCardEvent
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.relay.room.RelayRoomData
@@ -73,6 +74,22 @@ class RelayTopContentView : ExConstraintLayout {
         }
         leftMuteIv.visibility = View.GONE
         rightMuteIv.visibility = View.GONE
+
+        leftAvatarSdv.setDebounceViewClickListener {
+            if(roomData?.leftSeat == true){
+                EventBus.getDefault().post(ShowPersonCardEvent(MyUserInfoManager.uid.toInt()))
+            }else{
+                EventBus.getDefault().post(ShowPersonCardEvent(roomData?.peerUser?.userID?:0))
+            }
+        }
+
+        rightAvatarSdv.setDebounceViewClickListener {
+            if(roomData?.leftSeat == true){
+                EventBus.getDefault().post(ShowPersonCardEvent(roomData?.peerUser?.userID?:0))
+            }else{
+                EventBus.getDefault().post(ShowPersonCardEvent(MyUserInfoManager.uid.toInt()))
+            }
+        }
     }
 
     fun setArrowIcon(open: Boolean) {
