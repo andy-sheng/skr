@@ -73,8 +73,6 @@ class RelayResultActivity : BaseActivity() {
         }
 
         backTv.setDebounceViewClickListener {
-//            ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
-//                    .navigation()
             finish()
         }
 
@@ -93,13 +91,6 @@ class RelayResultActivity : BaseActivity() {
         }
 
         getGameResult()
-    }
-
-    override fun onBackPressedForActivity(): Boolean {
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
-                .navigation()
-        finish()
-        return true
     }
 
     private fun getGameResult() {
