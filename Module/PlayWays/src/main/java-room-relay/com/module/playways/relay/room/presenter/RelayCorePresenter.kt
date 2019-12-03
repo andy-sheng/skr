@@ -883,11 +883,11 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
         MyLog.w(TAG, if (event.foreground) "切换到前台" else "切换到后台")
-        if (event.foreground) {
-            muteAllRemoteAudioStreams(mRoomData.isMute, false)
-        } else {
-            muteAllRemoteAudioStreams(true, false)
-        }
+//        if (event.foreground) {
+//            muteAllRemoteAudioStreams(mRoomData.isMute, false)
+//        } else {
+//            muteAllRemoteAudioStreams(true, false)
+//        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

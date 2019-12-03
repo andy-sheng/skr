@@ -10,7 +10,6 @@ public class UserStatus {
     private boolean isFirstVideoDecoded; // 首帧视频是否decode
     private int mFirstVideoWidth;// 第一帧视频的宽高，一般就是视频流的宽高
     private int mFirstVideoHeight;
-    private boolean isSelf = false;// 是否是本人，因为有可能用的引擎的账号系统
     private View mView; // 绑定的视图view
     private boolean enableVideo; // 视频是否可用
     private boolean isAnchor; // 是主播么
@@ -49,18 +48,6 @@ public class UserStatus {
 
     public void setFirstVideoDecoded(boolean firstVideoDecoded) {
         isFirstVideoDecoded = firstVideoDecoded;
-    }
-
-    public void setIsSelf(boolean self) {
-        isSelf = self;
-    }
-
-    public boolean isSelf() {
-        return isSelf;
-    }
-
-    public void setSelf(boolean self) {
-        isSelf = self;
     }
 
     public View getView() {

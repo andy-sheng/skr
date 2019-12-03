@@ -136,7 +136,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private boolean mTokenEnable = false; // 是否开启token校验
     private String mLastJoinChannelToken; // 上一次加入房间用的token
     private String mRoomId = ""; // 房间id
-    private boolean mInChannel = false; // 是否已经在频道中
+//    private boolean mInChannel = false; // 是否已经在频道中
 
     private GLRender mGLRender;
     private CameraCapture mCameraCapture;
@@ -268,8 +268,9 @@ public class ZqEngineKit implements AgoraOutCallback {
     @Override
     public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
         MyLog.d(TAG,"onJoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
+        mConfig.setJoinChannelSuccess(true);
         UserStatus userStatus = ensureJoin(uid,"onJoinChannelSuccess");
-        userStatus.setIsSelf(true);
+//        userStatus.setIsSelf(true);
         mConfig.setSelfUid(uid);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_JOIN, userStatus));
         StatisticsAdapter.recordCalculateEvent("agora", "join_duration", System.currentTimeMillis() - mConfig.getJoinRoomBeginTs(), null);
@@ -277,22 +278,21 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_TIMEOUT);
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
         }
-        mInChannel = true;
         onSelfJoinChannelSuccess();
     }
 
     @Override
     public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
         MyLog.d(TAG,"onRejoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
+        mConfig.setJoinChannelSuccess(true);
         UserStatus userStatus = ensureJoin(uid,"onRejoinChannelSuccess");
-        userStatus.setIsSelf(true);
+//        userStatus.setIsSelf(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_REJOIN, userStatus));
-        mInChannel = true;
     }
 
     @Override
     public void onLeaveChannel(IRtcEngineEventHandler.RtcStats stats) {
-        mInChannel = false;
+        mConfig.setJoinChannelSuccess(false);
     }
 
     @Override
@@ -808,7 +808,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             if (mMusicTimePlayTimeListener != null && !mMusicTimePlayTimeListener.isDisposed()) {
                 mMusicTimePlayTimeListener.dispose();
             }
-            mInChannel = false;
+            mConfig.setJoinChannelSuccess(false);
             if (mConfig.isUseExternalAudio()) {
                 // 如果有连接Mixer, 主idx的AudioSource需要最后release
                 mAudioPlayerCapture.release();
@@ -1290,7 +1290,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         canGo = true;
                     } else {
                         UserStatus userStatus = mUserStatusMap.get(uid);
-                        if (userStatus == null && !mConfig.isUseExternalAudio()) {
+                        if ((userStatus == null || !mConfig.isJoinChannelSuccess()) && !mConfig.isUseExternalAudio()) {
                             MyLog.w(TAG, "该用户还未在频道中,且用得是声网的混音，播伴奏挂起");
                             canGo = false;
                         } else {
@@ -1712,7 +1712,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      */
     private void startAudioRecordingInner(final String path, final boolean recordHumanVoice, final int sampleRate, final int channels, final int bitrate) {
         mCustomHandlerThread.post(new LogRunnable("startAudioRecording" + " path=" + path +
-                " recordHumanVoice=" + recordHumanVoice + " mInChannel=" + mInChannel +
+                " recordHumanVoice=" + recordHumanVoice + " mInChannel=" + mConfig.isJoinChannelSuccess() +
                 " mConfig.isUseExternalAudioRecord()=" + mConfig.isUseExternalAudioRecord() +
                 " " + sampleRate + "Hz channels: " + channels + " " + bitrate / 1000 + "kbps") {
             @Override
@@ -1748,7 +1748,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                     if (mConfig.isUseExternalAudioRecord() || recordHumanVoice) {
                         // 未加入房间时需要先开启音频采集
                         if (mConfig.isUseExternalAudioRecord()) {
-                            if (!mInChannel && mAudioCapture != null) {
+                            if (!mConfig.isJoinChannelSuccess() && mAudioCapture != null) {
                                 mAudioCapture.start();
                             }
                         }
@@ -1815,7 +1815,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         mHumanVoiceAudioEncoder.stop();
                         mAudioEncoder.stop();
                         // 未加入房间时需要停止音频采集
-                        if (!mInChannel && mAudioCapture != null) {
+                        if (!mConfig.isJoinChannelSuccess() && mAudioCapture != null) {
                             mAudioCapture.stop();
                         }
                     } else {

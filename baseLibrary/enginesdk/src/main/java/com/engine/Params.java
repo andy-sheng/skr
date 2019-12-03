@@ -142,6 +142,8 @@ public class Params implements Serializable {
     private int mAudioSampleRate = 44100; // 输出的音频采样率
     @JSONField(serialize = false)
     private int mAudioChannels = 2; // 输出的音频声道数
+    @JSONField(serialize = false)
+    private boolean mJoinChannelSuccess = true; // 加入频道成功
 
     private int mNoSticker = -1;//  贴纸文件名
     private int mNoFilter = -1;// 滤镜文件名
@@ -675,6 +677,14 @@ public class Params implements Serializable {
 
     public void setAudioMixingPublishVolume(int audioMixingPublishVolume) {
         this.audioMixingPublishVolume = audioMixingPublishVolume;
+    }
+
+    public boolean isJoinChannelSuccess() {
+        return mJoinChannelSuccess;
+    }
+
+    public void setJoinChannelSuccess(boolean joinChannelSuccess) {
+        this.mJoinChannelSuccess = joinChannelSuccess;
     }
 
     public static class Builder {
