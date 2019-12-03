@@ -107,7 +107,7 @@ class RelaySongManageFragment : BaseFragment() {
                                 if (requestCode == 0 && resultCode == 0 && obj != null) {
                                     val model = obj as SongModel
                                     MyLog.d(TAG, "onFragmentResult model=$model")
-                                    EventBus.getDefault().post(AddSongEvent(model))
+                                    EventBus.getDefault().post(AddSongEvent(model, SongManagerActivity.TYPE_FROM_RELAY_ROOM))
                                 }
                             }
                         })

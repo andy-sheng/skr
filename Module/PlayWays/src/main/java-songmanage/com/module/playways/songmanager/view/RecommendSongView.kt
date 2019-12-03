@@ -85,22 +85,22 @@ class RecommendSongView(context: Context, internal var mType: Int,
                     mMakeGamePanelView = MakeGamePanelView(context)
                     mMakeGamePanelView!!.showByDialog(mGameID)
                 } else {
-                    EventBus.getDefault().post(AddSongEvent(model!!))
+                    EventBus.getDefault().post(AddSongEvent(model, mType))
                 }
             })
         } else if (mType == SongManagerActivity.TYPE_FROM_MIC) {
             // 排麦房
             mContainer.background = mMicDrawableBg
-            mRecommendSongAdapter = RecommendSongAdapter(true, mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model)) })
+            mRecommendSongAdapter = RecommendSongAdapter(true, mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model, mType)) })
         } else if (mType == SongManagerActivity.TYPE_FROM_RELAY_ROOM) {
             mContainer.background = mMicDrawableBg
-            mRecommendSongAdapter = RecommendSongAdapter(true, mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model)) })
+            mRecommendSongAdapter = RecommendSongAdapter(true, mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model, mType)) })
         } else {
             /**
              * 双人房默认是直接 点唱
              */
             mContainer.background = mDrawableBg
-            mRecommendSongAdapter = RecommendSongAdapter(true, mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model)) })
+            mRecommendSongAdapter = RecommendSongAdapter(true, mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model, mType)) })
         }
 
         mRecyclerView.adapter = mRecommendSongAdapter

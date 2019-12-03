@@ -109,7 +109,7 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
                                 if (requestCode == 0 && resultCode == 0 && obj != null) {
                                     val model = obj as SongModel
                                     MyLog.d(TAG, "onFragmentResult model=$model")
-                                    EventBus.getDefault().post(AddSongEvent(model))
+                                    EventBus.getDefault().post(AddSongEvent(model, SongManagerActivity.TYPE_FROM_GRAB))
                                 }
                             }
                         })
@@ -216,7 +216,7 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
         }
     }
 
-    private fun loadPageData(position:Int){
+    private fun loadPageData(position: Int) {
         val view = mViewpager.findViewWithTag<View>(position)
         if (view != null) {
             when (view) {
@@ -226,6 +226,7 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
             }
         }
     }
+
     fun instantiateItemGrab(container: ViewGroup, position: Int, recommendTagModelList: List<RecommendTagModel>): Any {
         MyLog.d(TAG, "instantiateItem container=$container position=$position")
         var view: View
