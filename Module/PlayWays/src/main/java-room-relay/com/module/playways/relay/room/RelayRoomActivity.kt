@@ -516,7 +516,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     private fun showGameRuleDialog() {
         dismissDialog()
         mGameRuleDialog = DialogPlus.newDialog(this)
-                .setContentHolder(ViewHolder(R.layout.mic_game_rule_view_layout))
+                .setContentHolder(ViewHolder(R.layout.relay_game_rule_view_layout))
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
                 .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
@@ -579,7 +579,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         }
         dismissDialog()
         mInputContainerView.hideSoftInput()
-        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_MIC_ROOM, userID, false, false)
+        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_RELAY_ROOM, userID, false, false)
                 .setRoomID(mRoomData.gameId)
                 .build()
         mPersonInfoDialog?.show()

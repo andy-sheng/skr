@@ -1,5 +1,6 @@
 package com.module.playways.relay.room
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.widget.TextView
@@ -140,14 +141,17 @@ class RelayResultActivity : BaseActivity() {
         when {
             isFriend == true -> {
                 followTv.text = "已互关"
+                followTv.setTextColor(Color.parseColor("#EBAC44"))
                 followTv.background = U.getDrawable(R.drawable.common_hollow_yellow_icon)
             }
             isFollow == true -> {
                 followTv.text = "已关注"
+                followTv.setTextColor(Color.parseColor("#EBAC44"))
                 followTv.background = U.getDrawable(R.drawable.common_hollow_yellow_icon)
             }
             else -> {
                 followTv.text = "关注Ta"
+                followTv.setTextColor(Color.parseColor("#8B572A"))
                 followTv.background = U.getDrawable(R.drawable.common_yellow_button_icon)
             }
         }
