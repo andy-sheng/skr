@@ -739,13 +739,13 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     }
 
     override fun gameOver() {
-        mCorePresenter.exitRoom("gameOver")
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_RESULT)
-                .withSerializable("roomData", mRoomData)
-                .navigation()
-        finish()
-
+        if(!mRoomData.isHasExitGame){
+            mCorePresenter.exitRoom("gameOver")
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_RESULT)
+                    .withSerializable("roomData", mRoomData)
+                    .navigation()
+            finish()
+        }
     }
-
 
 }
