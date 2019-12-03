@@ -104,7 +104,7 @@ class RelayMatchActivity : BaseActivity() {
         adapter.listener = object : RelayRoomAdapter.RelayRoomListener {
             override fun selectRoom(position: Int, model: RelayRecommendRoomInfo?) {
                 model?.let {
-                    choiceRoom(it)
+                    choiceRoom(position, it)
                 }
             }
 
@@ -223,7 +223,7 @@ class RelayMatchActivity : BaseActivity() {
         tryGoRelayRoom(JoinRelayRoomRspModel.parseFromPB(event))
     }
 
-    private fun choiceRoom(model: RelayRecommendRoomInfo) {
+    private fun choiceRoom(position: Int, model: RelayRecommendRoomInfo) {
         launch {
             val map = mutableMapOf(
                     "itemID" to (model.item?.itemID ?: 0),
@@ -233,11 +233,18 @@ class RelayMatchActivity : BaseActivity() {
                 relayMatchServerApi.choiceRoom(body)
             }
             if (result.errno == 0) {
+                // 选择成功，即取消匹配
+                cancelMatch()
                 val joinRelayRoomRspModel = JSON.parseObject(result.data.toJSONString(), JoinRelayRoomRspModel::class.java)
                 tryGoRelayRoom(joinRelayRoomRspModel)
             } else {
                 U.getToastUtil().showShort(result.errmsg)
-                // todo 补充一个UI更新的逻辑
+                adapter.mDataList.remove(model)
+                adapter.notifyItemRemoved(position)//注意这里
+                if (position != adapter.mDataList.size) {
+                    adapter.notifyItemRangeChanged(position, adapter.mDataList.size - position)
+                }
+
             }
         }
     }
