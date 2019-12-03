@@ -71,10 +71,10 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
         processTurnChange()
         if (roomData?.isSingByMeNow() == true) {
-            dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg1)
+            dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg2)
             otherSingTipsTv.visibility = View.GONE
         } else {
-            dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg2)
+            dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg1)
             otherSingTipsTv.visibility = View.VISIBLE
         }
 
@@ -142,7 +142,7 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     private fun processTurnChange() {
         if (roomData?.isSingByMeNow() == true) {
-            dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg1)
+            dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg2)
             otherSingTipsTv.visibility = View.GONE
             voiceScaleView.setHide(false)
             if (roomData?.myEffectModel?.sourceURL?.isNotEmpty() == true) {
@@ -151,7 +151,7 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 effectBgView?.hideBg()
             }
         } else {
-            dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg2)
+            dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg1)
             otherSingTipsTv.visibility = View.VISIBLE
             voiceScaleView.setHide(true)
             if (roomData?.peerEffectModel?.sourceURL?.isNotEmpty() == true) {

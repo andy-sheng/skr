@@ -7,6 +7,7 @@ import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.common.image.debug.ImageDebugActivity;
@@ -242,6 +243,10 @@ public class FrescoWorker {
         if (baseImage.isTipsWhenLarge() && baseImage.getWidth() == 0 && baseImage.getHeight() == 0 && vw>0 && vh>0) {
             imageRequestBuilder.setResizeOptions(new ResizeOptions((int)vw,(int)vh));
         }
+        String stack = null;
+        if(baseImage.isTipsWhenLarge() && MyLog.isDebugLogOpen()){
+            stack = Log.getStackTraceString(new Exception());
+        }
 
         ImageRequest lowResRequest = null;
         if (null != baseImage.getLowImageUri()) {
@@ -257,6 +262,7 @@ public class FrescoWorker {
                     .build();
         }
 
+        String finalStack = stack;
         PipelineDraweeControllerBuilder builder = Fresco.newDraweeControllerBuilder()
                 .setLowResImageRequest(lowResRequest)
                 .setImageRequest(imageRequestBuilder.build())
@@ -300,7 +306,7 @@ public class FrescoWorker {
                         if (MyLog.isDebugLogOpen() && baseImage.isTipsWhenLarge()) {
                             if (vw > 0 && vh > 0) {
                                 if (bw > vw * 2 && bh > vh * 2) {
-                                    ImageDebugModel imageDebugModel = new ImageDebugModel((int) vw, (int) vh, (int) bw, (int) bh, baseImage.getUri().toString());
+                                    ImageDebugModel imageDebugModel = new ImageDebugModel((int) vw, (int) vh, (int) bw, (int) bh, baseImage.getUri().toString(),finalStack);
                                     showImageLargeTips(imageDebugModel);
                                 }
                             }

@@ -72,11 +72,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:ly_enable_scroll="false"
         app:ly_enable_verbatim="false"
-        app:ly_high_light_paint_color_from="#4DA5DB"
-        app:ly_high_light_paint_color_from2="#DB4D84"
+        app:ly_high_light_paint_color_from="#DB4D84"
+        app:ly_high_light_paint_color_from2="#4DA5DB"
 
-        app:ly_high_light_paint_color_to="#4DA5DB"
-        app:ly_high_light_paint_color_to2="#DB4D84"
+        app:ly_high_light_paint_color_to="#DB4D84"
+        app:ly_high_light_paint_color_to2="#4DA5DB"
 
         app:ly_high_light_paint_text_size="18.0"
 
