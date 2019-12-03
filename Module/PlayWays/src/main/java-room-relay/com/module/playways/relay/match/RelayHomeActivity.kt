@@ -96,7 +96,10 @@ class RelayHomeActivity : BaseActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AddSongEvent) {
-        goMatch(event.songModel)
+        // 过滤一下点歌的来源
+        if (event.from == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+            goMatch(event.songModel)
+        }
     }
 
     fun goMatch(model: SongModel?) {

@@ -95,12 +95,12 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
                         .setHasAnimation(true)
                         .addDataBeforeAdd(0, SongManagerActivity.TYPE_FROM_DOUBLE)
                         .addDataBeforeAdd(1, false)
-                        .setFragmentDataListener(object :FragmentDataListener{
+                        .setFragmentDataListener(object : FragmentDataListener {
                             override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
                                 if (requestCode == 0 && resultCode == 0 && obj != null) {
                                     val model = obj as SongModel
                                     MyLog.d(TAG, "onFragmentResult model=$model")
-                                    EventBus.getDefault().post(AddSongEvent(model))
+                                    EventBus.getDefault().post(AddSongEvent(model, SongManagerActivity.TYPE_FROM_DOUBLE))
                                 }
                             }
                         })
