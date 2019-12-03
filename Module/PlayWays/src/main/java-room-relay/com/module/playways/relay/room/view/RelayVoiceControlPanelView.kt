@@ -39,6 +39,23 @@ class RelayVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) 
 
     override fun init(context: Context?) {
         super.init(context)
+        mPeopleVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                if(roomData?.isMute ==true){
+                    ZqEngineKit.getInstance().params.recordingSignalVolume = progress
+                }else{
+                    ZqEngineKit.getInstance().adjustRecordingSignalVolume(progress)
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+            }
+        })
         mMusicVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(progress)
