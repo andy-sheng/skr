@@ -1,5 +1,6 @@
 package com.module.playways.relay.match
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -12,6 +13,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.rxretrofit.*
+import com.common.utils.ActivityUtils
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
@@ -30,6 +32,7 @@ import com.module.playways.relay.match.adapter.RelayRoomAdapter
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.match.model.RelayRecommendRoomInfo
 import com.module.playways.relay.match.view.RelayEmptyRoomCallback
+import com.module.playways.relay.room.RelayRoomActivity
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.room.prepare.presenter.GrabMatchPresenter
 import com.module.playways.room.song.model.SongModel
@@ -272,14 +275,19 @@ class RelayMatchActivity : BaseActivity() {
         }
     }
 
-    var hasMatched = false
+    private var hasMatched = false
 
     private fun tryGoRelayRoom(model: JoinRelayRoomRspModel) {
+        MyLog.d(TAG, "tryGoRelayRoom model = $model hasMatched=$hasMatched")
         if (!hasMatched) {
             hasMatched = true
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_ROOM)
-                    .withSerializable("JoinRelayRoomRspModel", model)
-                    .navigation()
+            val intent = Intent(this,RelayRoomActivity::class.java)
+            intent.putExtra("JoinRelayRoomRspModel",model)
+            this.startActivity(intent)
+            finish()
+//            ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_ROOM)
+//                    .withSerializable("JoinRelayRoomRspModel", model)
+//                    .navigation()
         }
 //        ModuleServiceManager.getInstance().msgService.joinChatRoom(model.roomID.toString(), 10, object : ICallback {
 //            override fun onSucess(obj: Any?) {
@@ -328,6 +336,15 @@ class RelayMatchActivity : BaseActivity() {
         cancelMatch()
         return super.onBackPressedForActivity()
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
+        if(!event.foreground){
+            cancelMatch()
+            finish()
+        }
+    }
+
 
     override fun canSlide(): Boolean {
         return false
