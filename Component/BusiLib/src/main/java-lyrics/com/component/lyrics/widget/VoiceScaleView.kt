@@ -56,8 +56,8 @@ class VoiceScaleView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
     var durationProvider: (() -> Long)? = null
 
     fun setHide(hide: Boolean) {
-        this.hide = hide
-        if (!this.hide) {
+        if(this.hide!=hide){
+            this.hide = hide
             postInvalidate()
         }
     }

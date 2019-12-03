@@ -272,11 +272,15 @@ class RelayMatchActivity : BaseActivity() {
         }
     }
 
-    private fun tryGoRelayRoom(model: JoinRelayRoomRspModel) {
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_ROOM)
-                .withSerializable("JoinRelayRoomRspModel", model)
-                .navigation()
+    var hasMatched = false
 
+    private fun tryGoRelayRoom(model: JoinRelayRoomRspModel) {
+        if (!hasMatched) {
+            hasMatched = true
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_ROOM)
+                    .withSerializable("JoinRelayRoomRspModel", model)
+                    .navigation()
+        }
 //        ModuleServiceManager.getInstance().msgService.joinChatRoom(model.roomID.toString(), 10, object : ICallback {
 //            override fun onSucess(obj: Any?) {
 //                // todo 补全加融云成功直接

@@ -35,8 +35,10 @@ import com.module.playways.grab.room.view.control.OthersSingCardView
 import com.module.playways.grab.room.view.normal.NormalOthersSingCardView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
+import com.module.playways.mic.home.MicHomeActivity
 import com.module.playways.mic.room.model.RoomInviteMusicModel
 import com.module.playways.mic.room.top.RoomInviteView
+import com.module.playways.relay.match.RelayHomeActivity
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.room.bottom.RelayBottomContainerView
 import com.module.playways.relay.room.event.RelayLockChangeEvent
@@ -79,11 +81,12 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     fun ensureActivtyTop() {
         // 销毁其他的除排麦房页面所有界面
-        for (activity in U.getActivityUtils().activityList) {
+        for (i in U.getActivityUtils().activityList.size - 1 downTo 0) {
+            val activity = U.getActivityUtils().activityList[i]
             if (activity === this) {
                 continue
             }
-            if (activity is RelayRoomActivity) {
+            if (activity is RelayHomeActivity) {
                 continue
             }
             if (U.getActivityUtils().isHomeActivity(activity)) {

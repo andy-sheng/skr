@@ -29,6 +29,7 @@ import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.ConfirmDialog
 import com.component.dialog.PersonInfoDialog
+import com.component.person.OtherPersonActivity
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
 import com.component.toast.CommonToastView
@@ -106,7 +107,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     override fun ensureActivtyTop() {
         // 销毁其他的除排麦房页面所有界面
-        for (activity in U.getActivityUtils().activityList) {
+        for (i in U.getActivityUtils().activityList.size - 1 downTo 0) {
+            val activity = U.getActivityUtils().activityList[i]
             if (activity === this) {
                 continue
             }
