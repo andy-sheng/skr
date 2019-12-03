@@ -38,6 +38,7 @@ import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.room.prepare.presenter.GrabMatchPresenter
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RelayRoom.RUserEnterMsg
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -202,10 +203,10 @@ class RelayMatchActivity : BaseActivity() {
     // 取消匹配
     private fun cancelMatch() {
         matchJob?.cancel()
-        launch {
+        GlobalScope.launch {
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(null))
             val result = subscribe(RequestControl("cancelMatch", ControlType.CancelThis)) {
-                relayMatchServerApi.cancelMatch(body)
+                ApiManager.getInstance().createService(RelayMatchServerApi::class.java).cancelMatch(body)
             }
             if (result.errno == 0) {
 
