@@ -213,7 +213,6 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
                 this.peerUser?.userInfo = userInfoModel
                 this.peerEffectModel = rsp.showInfos.getOrNull(index)
                 this.leftSeat = index != 0
-                return@forEachIndexed
             }else{
                 this.myEffectModel = rsp.showInfos.getOrNull(index)
             }
