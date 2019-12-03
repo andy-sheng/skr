@@ -85,6 +85,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         mGameAdapter = GameAdapter(fragment, object : ClickGameListener {
             override fun onRelayRoomListener() {
                 // 进入双人接唱
+                StatisticsAdapter.recordCountEvent("game_express", "chorus", null)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
                         .navigation()
             }

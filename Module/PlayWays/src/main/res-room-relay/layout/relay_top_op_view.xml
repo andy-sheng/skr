@@ -30,6 +30,6 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_10_dp"
         android:layout_toLeftOf="@id/game_rule_iv"
-        android:background="@drawable/xkf_yinyue" />
+        android:background="@drawable/grab_yinyue_audio" />
 
 </merge>
