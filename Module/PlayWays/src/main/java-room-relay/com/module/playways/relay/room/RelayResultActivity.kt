@@ -73,8 +73,8 @@ class RelayResultActivity : BaseActivity() {
         }
 
         backTv.setDebounceViewClickListener {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
-                    .navigation()
+//            ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
+//                    .navigation()
             finish()
         }
 
