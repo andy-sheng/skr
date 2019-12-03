@@ -25,7 +25,25 @@
         android:gravity="center"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/textsize_14_dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/send_tv"
+        android:layout_width="@dimen/view_65_dp"
+        android:layout_height="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center"
+        android:text="赠送"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold"
         android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#FFC15B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

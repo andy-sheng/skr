@@ -19,4 +19,8 @@ public interface IHomeService extends IProvider {
     void goEditAgeActivity(Runnable runnable);
 
     void goRaceMatchByAudience();
+
+    void selectGiveMallUserFinish(int userID);
+
+    String getSelectedMallName();
 }

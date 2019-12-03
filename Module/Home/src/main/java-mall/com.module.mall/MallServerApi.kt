@@ -56,4 +56,16 @@ interface MallServerApi {
      */
     @PUT("http://sandbox.api.inframe.mobi/v1/mall/cancel-use-goods")
     fun cancelUseGoods(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+    {
+    "buyType": "BT_UNKNOWN",
+    "count": 0,
+    "goodsID": 0,
+    "priceType": "PT_UNKNOWN",
+    "receiveUserID": 0
+    }
+     */
+    @PUT("http://sandbox.api.inframe.mobi/v1/mall/present-goods")
+    fun presentGoods(@Body body: RequestBody): Call<ApiResult>
 }

@@ -22,6 +22,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
     AvatarView mAvatarIv;
     NickNameView mNickNameTv;
     ExTextView mFollowTv;
+    ExTextView mSendTv;
     ExTextView mStatusTv;
     ExTextView mIntimacyTv;
 
@@ -29,14 +30,18 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
     int position;
     UserInfoModel userInfoModel;
 
-    public RelationHolderView(View itemView, int mode, final RecyclerOnItemClickListener recyclerOnItemClickListener) {
+    public int mFrom = 0;  //默认为0，1为从赠送礼物来的
+
+    public RelationHolderView(View itemView, int mode, final RecyclerOnItemClickListener recyclerOnItemClickListener, int from) {
         super(itemView);
 
         this.mMode = mode;
+        this.mFrom = from;
         mContent = itemView.findViewById(R.id.content);
         mAvatarIv = itemView.findViewById(R.id.avatar_iv);
         mNickNameTv = itemView.findViewById(R.id.nickname_tv);
         mFollowTv = itemView.findViewById(R.id.follow_tv);
+        mSendTv = itemView.findViewById(R.id.send_tv);
         mStatusTv = itemView.findViewById(R.id.status_tv);
         mIntimacyTv = itemView.findViewById(R.id.intimacy_tv);
 
@@ -57,6 +62,27 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                 }
             }
         });
+
+        if (mFrom == 1) {
+            mSendTv.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    if (recyclerOnItemClickListener != null) {
+                        recyclerOnItemClickListener.onItemClicked(mSendTv, position, userInfoModel);
+                    }
+                }
+            });
+            mSendTv.setVisibility(View.VISIBLE);
+
+            mContent.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    if (recyclerOnItemClickListener != null) {
+                        recyclerOnItemClickListener.onItemClicked(mSendTv, position, userInfoModel);
+                    }
+                }
+            });
+        }
     }
 
     public void bind(int position, UserInfoModel userInfoModel) {
@@ -101,6 +127,10 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                     mFollowTv.setVisibility(View.GONE);
                 }
             }
+        }
+
+        if (mFrom == 1) {
+            mFollowTv.setVisibility(View.GONE);
         }
 
         // 只是关心在线和离线

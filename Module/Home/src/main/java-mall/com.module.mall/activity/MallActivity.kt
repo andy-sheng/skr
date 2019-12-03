@@ -26,9 +26,7 @@ import com.module.home.R
 import com.module.home.WalletServerApi
 import com.module.home.fragment.HalfRechargeFragment
 import com.module.mall.MallServerApi
-import com.module.mall.event.BuyMallEvent
-import com.module.mall.event.BuyMallSuccessEvent
-import com.module.mall.event.ShowEffectEvent
+import com.module.mall.event.*
 import com.module.mall.model.MallTag
 import com.module.mall.view.EffectView
 import com.module.mall.view.ProductView
@@ -51,6 +49,7 @@ class MallActivity : BaseActivity() {
     lateinit var tagTab: SlidingTabLayout
     lateinit var viewpager: ViewPager
     lateinit var diamondTv: ExTextView
+    var diamondCount: Float = 0.0f
 
     var pagerAdapter: PagerAdapter? = null
     var viewList: ArrayList<ProductView>? = null
@@ -58,6 +57,8 @@ class MallActivity : BaseActivity() {
     var callWhenResume: (() -> Unit)? = null
 
     var tipsDialogView: TipsDialogView? = null
+
+    var giveMallEvent: GiveMallEvent? = null
 
     val rankedServerApi = ApiManager.getInstance().createService(MallServerApi::class.java)
     val mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi::class.java)
@@ -198,6 +199,66 @@ class MallActivity : BaseActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: GiveMallEvent) {
+        if (event.price.realPrice / 1000 > diamondCount!!) {
+            showRechargeDialog()
+            return
+        }
+
+        giveMallEvent = event
+
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_RELATION)
+                .withInt("from", 1)
+                .navigation()
+
+        EventBus.getDefault().postSticky(SelectMallStickyEvent(event.productModel, event.price))
+    }
+
+    fun giveMall(userID: Int) {
+        giveMallEvent?.let {
+            launch {
+                val map = HashMap<String, Any>()
+                map["buyType"] = it.price.buyType
+                map["count"] = 1
+                map["goodsID"] = it.productModel.goodsID
+                map["priceType"] = it.price.priceType
+                map["receiveUserID"] = userID
+
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val obj = subscribe {
+                    rankedServerApi.presentGoods(body)
+                }
+
+                if (obj.errno == 0) {
+                    getZSBalance()
+
+                    tipsDialogView?.dismiss(false)
+                    tipsDialogView = TipsDialogView.Builder(this@MallActivity)
+                            .setMessageTip("商品已成功赠送给好友，提醒ta查收哦～")
+                            .setOkBtnTip("确定")
+                            .setOkBtnClickListener {
+                                tipsDialogView?.dismiss()
+                            }
+                            .build()
+                    tipsDialogView?.showByDialog()
+                } else {
+                    if (8428101 == obj.errno) {
+                        showRechargeDialog()
+                    }
+                    U.getToastUtil().showShort(obj.errmsg)
+                }
+            }
+        }
+    }
+
+    //选完用户了
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: SelectReceiveUserFinishEvent) {
+        giveMall(event.userID)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BuyMallEvent) {
         launch {
             val map = HashMap<String, Any>()
@@ -217,16 +278,14 @@ class MallActivity : BaseActivity() {
                 getZSBalance()
 
                 tipsDialogView?.dismiss(false)
-                if (tipsDialogView == null) {
-                    tipsDialogView = TipsDialogView.Builder(this@MallActivity)
-                            .setMessageTip("商品已购买成功，加入你的背包啦～")
+                tipsDialogView = TipsDialogView.Builder(this@MallActivity)
+                        .setMessageTip("商品已购买成功，加入你的背包啦～")
 
-                            .setOkBtnTip("确定")
-                            .setOkBtnClickListener {
-                                tipsDialogView?.dismiss()
-                            }
-                            .build()
-                }
+                        .setOkBtnTip("确定")
+                        .setOkBtnClickListener {
+                            tipsDialogView?.dismiss()
+                        }
+                        .build()
                 tipsDialogView?.showByDialog()
             } else {
                 if (8428101 == obj.errno) {
@@ -262,6 +321,7 @@ class MallActivity : BaseActivity() {
                 if (obj.errno == 0) {
                     val amount = obj.data!!.getString("totalAmountStr")
                     diamondTv.text = "$amount"
+                    diamondCount = amount.toFloat()
                 }
             }
         }, this)

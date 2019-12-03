@@ -14,6 +14,8 @@ import com.module.home.fragment.PersonFragment5
 import com.module.home.game.view.openRaceActivity
 import com.module.home.updateinfo.UploadAccountInfoActivity
 import com.module.home.updateinfo.activity.EditAgeTagActivity
+import com.module.mall.event.SelectMallStickyEvent
+import com.module.mall.event.SelectReceiveUserFinishEvent
 
 import org.greenrobot.eventbus.EventBus
 
@@ -65,6 +67,20 @@ class HomeServiceImpl : IHomeService {
     }
 
     override fun goRaceMatchByAudience() {
-        openRaceActivity(U.getActivityUtils().homeActivity,true)
+        openRaceActivity(U.getActivityUtils().homeActivity, true)
+    }
+
+    override fun selectGiveMallUserFinish(userID: Int) {
+        EventBus.getDefault().post(SelectReceiveUserFinishEvent(userID))
+    }
+
+    override fun getSelectedMallName(): String {
+        val selectMallStickyEvent = EventBus.getDefault().getStickyEvent(SelectMallStickyEvent::class.java)
+        if (selectMallStickyEvent != null) {
+            EventBus.getDefault().removeStickyEvent(SelectMallStickyEvent::class.java)
+            return selectMallStickyEvent.productModel.goodsName
+        }
+
+        return ""
     }
 }

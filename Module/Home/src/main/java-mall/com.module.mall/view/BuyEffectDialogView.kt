@@ -13,6 +13,7 @@ import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.module.home.R
 import com.module.mall.event.BuyMallEvent
+import com.module.mall.event.GiveMallEvent
 import com.module.mall.model.ProductModel
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
@@ -27,6 +28,7 @@ class BuyEffectDialogView : ConstraintLayout {
     var firstDes: ExTextView
     var secondDes: ExTextView
     var buyTv: ExTextView
+    var buyGive: ExTextView
     var model: ProductModel? = null
 
     constructor(context: Context?) : super(context)
@@ -42,6 +44,7 @@ class BuyEffectDialogView : ConstraintLayout {
         firstDes = rootView.findViewById(R.id.first_des)
         secondDes = rootView.findViewById(R.id.second_des)
         buyTv = rootView.findViewById(R.id.buy_tv)
+        buyGive = rootView.findViewById(R.id.buy_give)
 
         firstDes.setDebounceViewClickListener {
             firstDes.isSelected = true
@@ -56,6 +59,11 @@ class BuyEffectDialogView : ConstraintLayout {
         buyTv.setDebounceViewClickListener {
             dismiss(false)
             EventBus.getDefault().post(BuyMallEvent(model!!, if (firstDes.isSelected) model!!.price[0] else model!!.price[1]))
+        }
+
+        buyGive.setDebounceViewClickListener {
+            dismiss(false)
+            EventBus.getDefault().post(GiveMallEvent(model!!, if (firstDes.isSelected) model!!.price[0] else model!!.price[1]))
         }
     }
 

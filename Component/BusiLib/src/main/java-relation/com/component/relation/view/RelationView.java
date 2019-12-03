@@ -1,5 +1,6 @@
 package com.component.relation.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +35,7 @@ import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.module.RouterConstants;
+import com.module.home.IHomeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -69,14 +71,19 @@ public class RelationView extends RelativeLayout {
 
     boolean hasInitData = false;
 
-    public RelationView(Context context, int mode) {
+    int mFrom = 0;  //默认为0，1为从赠送礼物来的
+
+    TipsDialogView tipsDialogView;
+
+    public RelationView(Context context, int mode, int from) {
         super(context);
-        init(context, mode);
+        init(context, mode, from);
     }
 
-    private void init(Context context, int mode) {
+    private void init(Context context, int mode, int from) {
         inflate(context, R.layout.relation_view, this);
         this.mMode = mode;
+        this.mFrom = from;
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -125,9 +132,12 @@ public class RelationView extends RelativeLayout {
                         unFollow(userInfoModel);
                     }
 
+                } else if (view.getId() == R.id.send_tv) {
+                    showGiveDialog(userInfoModel);
                 }
             }
         });
+        mRelationAdapter.mFrom = mFrom;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mRelationAdapter);
 
@@ -159,6 +169,36 @@ public class RelationView extends RelativeLayout {
                 loadData(0);
             }
         });
+    }
+
+    private void showGiveDialog(UserInfoModel userInfoModel) {
+        if (tipsDialogView != null) {
+            tipsDialogView.dismiss(false);
+        }
+
+        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+
+        tipsDialogView = new TipsDialogView.Builder((Activity) getContext())
+                .setMessageTip("是否赠送给" + userInfoModel.getNickname() + channelService.getSelectedMallName() + "?")
+                .setCancelBtnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (tipsDialogView != null) {
+                            tipsDialogView.dismiss(false);
+                        }
+                    }
+                })
+                .setCancelTip("取消")
+                .setConfirmBtnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        channelService.selectGiveMallUserFinish(userInfoModel.getUserId());
+                        ((Activity) getContext()).finish();
+                    }
+                })
+                .setConfirmTip("赠送")
+                .build();
+        tipsDialogView.showByDialog();
     }
 
     private void unFollow(final UserInfoModel userInfoModel) {

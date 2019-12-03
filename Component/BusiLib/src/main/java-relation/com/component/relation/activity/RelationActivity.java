@@ -26,10 +26,12 @@ public class RelationActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         Bundle bundle = getIntent().getExtras();
+        int from = getIntent().getIntExtra("from", 0);
         U.getFragmentUtils().addFragment(
                 FragmentUtils.newAddParamsBuilder(this, RelationFragment.class)
                         .setBundle(bundle)
                         .setAddToBackStack(false)
+                        .addDataBeforeAdd(1, from)
                         .setHasAnimation(false)
                         .build());
     }
