@@ -740,6 +740,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     override fun gameOver() {
         if(!mRoomData.isHasExitGame){
+            ensureActivtyTop()
             mCorePresenter.exitRoom("gameOver")
             ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_RESULT)
                     .withSerializable("roomData", mRoomData)
