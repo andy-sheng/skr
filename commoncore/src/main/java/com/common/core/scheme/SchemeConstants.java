@@ -32,6 +32,7 @@ public class SchemeConstants {
     public static final String HOST_POSTS = "posts";
     public static final String HOST_USER = "user";
     public static final String HOST_PAYMENT = "payment";
+    public static final String HOST_MALL = "mall";
 
     //path
     public static final String PATH_JOIN = "/join";
@@ -42,6 +43,7 @@ public class SchemeConstants {
     public static final String PATH_POSTS_DETAIL = "/detail";
     public static final String PATH_OTHER_USER_DETAIL = "/otherProfile";
     public static final String PATH_RECHARGE = "/recharge";
+    public static final String PATH_PACKAGE = "/package";
 
     //param
     public static final String PARAM_LIST_ID = "id";
