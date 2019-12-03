@@ -14,6 +14,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
+import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
@@ -111,6 +112,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     internal lateinit var mContinueSendView: ContinueSendView
     internal lateinit var mTopOpView: RelayTopOpView
     internal lateinit var mTopContentView: RelayTopContentView
+    internal lateinit var mExitIv: ImageView
 
     internal lateinit var mGameEffectBgView: GameEffectBgView
 
@@ -451,6 +453,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     }
 
     private fun initTopView() {
+        mExitIv = findViewById(R.id.exit_iv)
+        mExitIv.setDebounceViewClickListener {
+            gameOver()
+        }
         mTopOpView = findViewById(R.id.top_op_view)
         mTopOpView.listener = object : RelayTopOpView.Listener {
             override fun onClickGameRule() {
