@@ -434,14 +434,14 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 MyLog.w(TAG, "演唱结束上报失败 traceid is " + result.traceId)
             }
         }
-        if (MyLog.isDebugLogOpen()) {
-            //TODO 只为调试
-            var relayRoundInfoModel = RelayRoundInfoModel()
-            relayRoundInfoModel.status = ERRoundStatus.RRS_INTRO.value
-            relayRoundInfoModel.roundSeq = 3
-            mRoomData.expectRoundInfo = relayRoundInfoModel
-            mRoomData.checkRoundInEachMode()
-        }
+//        if (MyLog.isDebugLogOpen()) {
+//            //TODO 只为调试
+//            var relayRoundInfoModel = RelayRoundInfoModel()
+//            relayRoundInfoModel.status = ERRoundStatus.RRS_INTRO.value
+//            relayRoundInfoModel.roundSeq = 3
+//            mRoomData.expectRoundInfo = relayRoundInfoModel
+//            mRoomData.checkRoundInEachMode()
+//        }
     }
 
 
