@@ -688,9 +688,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     }
 
 
-    fun quitGame() {
-//        mCorePresenter.exitRoom("quitGame")
-        finish()
+    private fun quitGame() {
+        gameOver()
     }
 
     private fun dismissDialog() {
