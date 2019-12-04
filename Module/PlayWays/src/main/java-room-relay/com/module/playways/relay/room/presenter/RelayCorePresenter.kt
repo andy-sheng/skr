@@ -121,7 +121,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             if (reInit) {
                 val params = Params.getFromPref()
                 //            params.setStyleEnum(Params.AudioEffect.none);
-                params.scene = Params.Scene.grab
+                params.scene = Params.Scene.doubleChat
                 params.isEnableAudio = true
                 ZqEngineKit.getInstance().init("relayroom", params)
             }
