@@ -54,8 +54,8 @@ class AvatarLevelView : ConstraintLayout {
     }
 
     fun bindData(avatarUrl: String, mainRanking: Int) {
-        if (LevelConfigUtils.getImageResoucesLevel(mainRanking) != 0) {
-            levelBg.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(mainRanking))
+        if (LevelConfigUtils.getRaceCenterAvatarBg(mainRanking) != 0) {
+            levelBg.background = U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(mainRanking))
         }
 
         val layoutParams = avatar.layoutParams

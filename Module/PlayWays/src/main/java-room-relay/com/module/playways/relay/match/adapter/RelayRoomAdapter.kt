@@ -12,6 +12,7 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
 import com.common.utils.U
+import com.component.busilib.view.AvatarLevelView
 import com.component.busilib.view.NickNameView
 import com.component.busilib.view.recyclercardview.CardAdapterHelper
 import com.component.level.utils.LevelConfigUtils
@@ -52,8 +53,7 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
 
     inner class RelayRoomViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
-        private val avatarIv: SimpleDraweeView = item.findViewById(R.id.avatar_iv)
-        private val levelBg: ImageView = item.findViewById(R.id.level_bg)
+        private val avatarLevel: AvatarLevelView = item.findViewById(R.id.avatar_level)
         private val nicknameView: NickNameView = item.findViewById(R.id.nickname_view)
         private val songNameTv: TextView = item.findViewById(R.id.song_name_tv)
         private val recommendTagSdv: SimpleDraweeView = item.findViewById(R.id.recommend_tag_sdv)
@@ -72,15 +72,7 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
             this.mPos = position
             this.mModel = model
 
-            AvatarUtils.loadAvatarByUrl(avatarIv,
-                    AvatarUtils.newParamsBuilder(model.user?.avatar)
-                            .setCircle(true)
-                            .build())
-            if (LevelConfigUtils.getImageResoucesLevel(model.user?.ranking?.mainRanking
-                            ?: 0) != 0) {
-                levelBg.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(model.user?.ranking?.mainRanking
-                        ?: 0))
-            }
+            avatarLevel.bindData(model.user)
             nicknameView.setAllStateText(model.user)
             songNameTv.text = model.item?.itemName
 
