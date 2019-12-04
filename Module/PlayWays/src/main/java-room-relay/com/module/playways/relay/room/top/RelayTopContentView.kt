@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.U
 import com.common.utils.dp
@@ -65,7 +66,8 @@ class RelayTopContentView : ExConstraintLayout {
         countTimeTv = this.findViewById(R.id.count_time_tv)
         tipsIv = this.findViewById(R.id.tips_iv)
         unlimitIv = this.findViewById(R.id.unlimit_iv)
-        loveBg.setDebounceViewClickListener {
+
+        loveBg.setAnimateDebounceViewClickListener {
             listener?.clickLove()
         }
 
@@ -76,17 +78,17 @@ class RelayTopContentView : ExConstraintLayout {
         rightMuteIv.visibility = View.GONE
 
         leftAvatarSdv.setDebounceViewClickListener {
-            if(roomData?.leftSeat == true){
+            if (roomData?.leftSeat == true) {
                 EventBus.getDefault().post(ShowPersonCardEvent(MyUserInfoManager.uid.toInt()))
-            }else{
-                EventBus.getDefault().post(ShowPersonCardEvent(roomData?.peerUser?.userID?:0))
+            } else {
+                EventBus.getDefault().post(ShowPersonCardEvent(roomData?.peerUser?.userID ?: 0))
             }
         }
 
         rightAvatarSdv.setDebounceViewClickListener {
-            if(roomData?.leftSeat == true){
-                EventBus.getDefault().post(ShowPersonCardEvent(roomData?.peerUser?.userID?:0))
-            }else{
+            if (roomData?.leftSeat == true) {
+                EventBus.getDefault().post(ShowPersonCardEvent(roomData?.peerUser?.userID ?: 0))
+            } else {
                 EventBus.getDefault().post(ShowPersonCardEvent(MyUserInfoManager.uid.toInt()))
             }
         }
@@ -157,14 +159,17 @@ class RelayTopContentView : ExConstraintLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelayLockChangeEvent) {
         if (roomData?.unLockMe == true && roomData?.unLockPeer == true) {
+            loveBg.isClickable = false
             loveBg.setImageResource(R.drawable.light_love_icon)
             unlimitIv.visibility = View.VISIBLE
             tipsIv.visibility = View.GONE
             countTimeTv.visibility = View.GONE
             countDownJob?.cancel()
         } else if (roomData?.unLockMe == false && roomData?.unLockPeer == false) {
+            loveBg.isClickable = true
             loveBg.setImageResource(R.drawable.normal_love_icon)
         } else if (roomData?.unLockMe == true) {
+            loveBg.isClickable = false
             tipsIv.visibility = View.GONE
             if (roomData?.leftSeat == true) {
                 loveBg.setImageResource(R.drawable.light_left_love_icon)
@@ -172,6 +177,7 @@ class RelayTopContentView : ExConstraintLayout {
                 loveBg.setImageResource(R.drawable.light_right_love_icon)
             }
         } else if (roomData?.unLockPeer == true) {
+            loveBg.isClickable = true
             tipsIv.visibility = View.VISIBLE
             if (roomData?.leftSeat == true) {
                 loveBg.setImageResource(R.drawable.light_right_love_icon)
