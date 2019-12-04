@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.UserInfo;
 import java.io.IOException;
 import java.lang.Integer;
 import java.lang.Object;
@@ -31,6 +32,10 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
   public static final Integer DEFAULT_GIFTID = 0;
 
   public static final Integer DEFAULT_AMOUNT = 0;
+
+  public static final EGiftSource DEFAULT_GIFTSOURCE = EGiftSource.EGS_Invalid;
+
+  public static final String DEFAULT_MSGDESC = "";
 
   @WireField(
       tag = 1,
@@ -65,19 +70,47 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
   )
   private final Integer amount;
 
+  @WireField(
+      tag = 6,
+      adapter = "com.zq.live.proto.Notification.EGiftSource#ADAPTER"
+  )
+  private final EGiftSource giftSource;
+
+  /**
+   * 哇塞,你收到xx送你的yy礼物
+   */
+  @WireField(
+      tag = 7,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String msgDesc;
+
+  /**
+   * 用户详情
+   */
+  @WireField(
+      tag = 8,
+      adapter = "com.zq.live.proto.Common.UserInfo#ADAPTER"
+  )
+  private final UserInfo senderInfo;
+
   public GiftReceivesMsg(Integer sender, Integer receiver, Integer platform, Integer giftID,
-      Integer amount) {
-    this(sender, receiver, platform, giftID, amount, ByteString.EMPTY);
+      Integer amount, EGiftSource giftSource, String msgDesc, UserInfo senderInfo) {
+    this(sender, receiver, platform, giftID, amount, giftSource, msgDesc, senderInfo, ByteString.EMPTY);
   }
 
   public GiftReceivesMsg(Integer sender, Integer receiver, Integer platform, Integer giftID,
-      Integer amount, ByteString unknownFields) {
+      Integer amount, EGiftSource giftSource, String msgDesc, UserInfo senderInfo,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.sender = sender;
     this.receiver = receiver;
     this.platform = platform;
     this.giftID = giftID;
     this.amount = amount;
+    this.giftSource = giftSource;
+    this.msgDesc = msgDesc;
+    this.senderInfo = senderInfo;
   }
 
   @Override
@@ -88,6 +121,9 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
     builder.platform = platform;
     builder.giftID = giftID;
     builder.amount = amount;
+    builder.giftSource = giftSource;
+    builder.msgDesc = msgDesc;
+    builder.senderInfo = senderInfo;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -102,7 +138,10 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
         && Internal.equals(receiver, o.receiver)
         && Internal.equals(platform, o.platform)
         && Internal.equals(giftID, o.giftID)
-        && Internal.equals(amount, o.amount);
+        && Internal.equals(amount, o.amount)
+        && Internal.equals(giftSource, o.giftSource)
+        && Internal.equals(msgDesc, o.msgDesc)
+        && Internal.equals(senderInfo, o.senderInfo);
   }
 
   @Override
@@ -115,6 +154,9 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
       result = result * 37 + (platform != null ? platform.hashCode() : 0);
       result = result * 37 + (giftID != null ? giftID.hashCode() : 0);
       result = result * 37 + (amount != null ? amount.hashCode() : 0);
+      result = result * 37 + (giftSource != null ? giftSource.hashCode() : 0);
+      result = result * 37 + (msgDesc != null ? msgDesc.hashCode() : 0);
+      result = result * 37 + (senderInfo != null ? senderInfo.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -128,6 +170,9 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
     if (platform != null) builder.append(", platform=").append(platform);
     if (giftID != null) builder.append(", giftID=").append(giftID);
     if (amount != null) builder.append(", amount=").append(amount);
+    if (giftSource != null) builder.append(", giftSource=").append(giftSource);
+    if (msgDesc != null) builder.append(", msgDesc=").append(msgDesc);
+    if (senderInfo != null) builder.append(", senderInfo=").append(senderInfo);
     return builder.replace(0, 2, "GiftReceivesMsg{").append('}').toString();
   }
 
@@ -179,6 +224,33 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
     return amount;
   }
 
+  public EGiftSource getGiftSource() {
+    if(giftSource==null){
+        return new EGiftSource.Builder().build();
+    }
+    return giftSource;
+  }
+
+  /**
+   * 哇塞,你收到xx送你的yy礼物
+   */
+  public String getMsgDesc() {
+    if(msgDesc==null){
+        return DEFAULT_MSGDESC;
+    }
+    return msgDesc;
+  }
+
+  /**
+   * 用户详情
+   */
+  public UserInfo getSenderInfo() {
+    if(senderInfo==null){
+        return new UserInfo.Builder().build();
+    }
+    return senderInfo;
+  }
+
   public boolean hasSender() {
     return sender!=null;
   }
@@ -202,6 +274,24 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
     return amount!=null;
   }
 
+  public boolean hasGiftSource() {
+    return giftSource!=null;
+  }
+
+  /**
+   * 哇塞,你收到xx送你的yy礼物
+   */
+  public boolean hasMsgDesc() {
+    return msgDesc!=null;
+  }
+
+  /**
+   * 用户详情
+   */
+  public boolean hasSenderInfo() {
+    return senderInfo!=null;
+  }
+
   public static final class Builder extends Message.Builder<GiftReceivesMsg, Builder> {
     private Integer sender;
 
@@ -212,6 +302,12 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
     private Integer giftID;
 
     private Integer amount;
+
+    private EGiftSource giftSource;
+
+    private String msgDesc;
+
+    private UserInfo senderInfo;
 
     public Builder() {
     }
@@ -244,9 +340,30 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
       return this;
     }
 
+    public Builder setGiftSource(EGiftSource giftSource) {
+      this.giftSource = giftSource;
+      return this;
+    }
+
+    /**
+     * 哇塞,你收到xx送你的yy礼物
+     */
+    public Builder setMsgDesc(String msgDesc) {
+      this.msgDesc = msgDesc;
+      return this;
+    }
+
+    /**
+     * 用户详情
+     */
+    public Builder setSenderInfo(UserInfo senderInfo) {
+      this.senderInfo = senderInfo;
+      return this;
+    }
+
     @Override
     public GiftReceivesMsg build() {
-      return new GiftReceivesMsg(sender, receiver, platform, giftID, amount, super.buildUnknownFields());
+      return new GiftReceivesMsg(sender, receiver, platform, giftID, amount, giftSource, msgDesc, senderInfo, super.buildUnknownFields());
     }
   }
 
@@ -262,6 +379,9 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.platform)
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.giftID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.amount)
+          + EGiftSource.ADAPTER.encodedSizeWithTag(6, value.giftSource)
+          + ProtoAdapter.STRING.encodedSizeWithTag(7, value.msgDesc)
+          + UserInfo.ADAPTER.encodedSizeWithTag(8, value.senderInfo)
           + value.unknownFields().size();
     }
 
@@ -272,6 +392,9 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.platform);
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.giftID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.amount);
+      EGiftSource.ADAPTER.encodeWithTag(writer, 6, value.giftSource);
+      ProtoAdapter.STRING.encodeWithTag(writer, 7, value.msgDesc);
+      UserInfo.ADAPTER.encodeWithTag(writer, 8, value.senderInfo);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -286,6 +409,16 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
           case 3: builder.setPlatform(ProtoAdapter.UINT32.decode(reader)); break;
           case 4: builder.setGiftID(ProtoAdapter.UINT32.decode(reader)); break;
           case 5: builder.setAmount(ProtoAdapter.UINT32.decode(reader)); break;
+          case 6: {
+            try {
+              builder.setGiftSource(EGiftSource.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 7: builder.setMsgDesc(ProtoAdapter.STRING.decode(reader)); break;
+          case 8: builder.setSenderInfo(UserInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -300,6 +433,7 @@ public final class GiftReceivesMsg extends Message<GiftReceivesMsg, GiftReceives
     @Override
     public GiftReceivesMsg redact(GiftReceivesMsg value) {
       Builder builder = value.newBuilder();
+      if (builder.senderInfo != null) builder.senderInfo = UserInfo.ADAPTER.redact(builder.senderInfo);
       builder.clearUnknownFields();
       return builder.build();
     }

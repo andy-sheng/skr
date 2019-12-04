@@ -61,6 +61,9 @@ message GiftReceivesMsg {
     uint32 platform = 3; //收礼者平台
     uint32 giftID = 4;
     uint32 amount = 5;
+    EGiftSource giftSource = 6;
+    string msgDesc         = 7; //哇塞,你收到xx送你的yy礼物
+    Common.UserInfo senderInfo    = 8; //用户详情
 }
 
 message InviteMicMsg {
@@ -109,6 +112,13 @@ message FeedCommentLikeMsg {
     uint32 commentID = 3; //评论id
     bool isLike = 4; //点赞 or 取消点赞
     uint32 likeCnt = 5; //点赞数
+}
+
+// 礼物来源
+enum EGiftSource {
+    EGS_Invalid  = 0; //无效来源
+    EGS_RoomGift = 1; //房间礼物
+    EGS_MallGift = 2; //商城礼物
 }
 
 //神曲评论

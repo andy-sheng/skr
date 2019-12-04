@@ -51,10 +51,7 @@ import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
-import com.zq.live.proto.Notification.GiftReceivesMsg
-import com.zq.live.proto.Notification.PostsCommentLikeMsg
-import com.zq.live.proto.Notification.SpFollowNewPostMsg
-import com.zq.live.proto.Notification.SpFollowUpdateAlbumMsg
+import com.zq.live.proto.Notification.*
 import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -87,6 +84,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW -> FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW, 2)
                 MSG_DISMISS_STAND_FULL_STAR -> FloatWindow.destroy(TAG_STAND_FULL_STAR_FOALT_WINDOW, 2)
                 MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW -> FloatWindow.destroy(TAG_MIC_ROOM_INVITE_FOALT_WINDOW, 2)
+                MSG_DISMISS_GIFT_MALL_FOALT_WINDOW -> FloatWindow.destroy(TAG_GIFT_MALL_FOALT_WINDOW, 2)
             }
         }
     }
@@ -116,6 +114,8 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 showStandFullStarFloatWindow(floatWindowData)
             } else if (floatWindowData.mType == FloatWindowData.Type.MIC_INVITE) {
                 showMicInviteFromRoomFloatWindow(floatWindowData)
+            } else if (floatWindowData.mType == FloatWindowData.Type.MALL_GIFT) {
+                showGiftMallFloatWindow(floatWindowData)
             }
         }
 
@@ -347,6 +347,13 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: GiftReceivesMsg) {
         WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_GIFT_TYPE, 2, true)
+        if (event.giftSource == EGiftSource.EGS_MallGift) {
+            //特效赠送的礼物
+            val floatWindowData = FloatWindowData(FloatWindowData.Type.MALL_GIFT)
+            floatWindowData.extra = event.msgDesc
+            floatWindowData.userInfoModel = UserInfoModel.parseFromPB(event.senderInfo)
+            mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
+        }
     }
 
 
@@ -677,6 +684,36 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 .build()
     }
 
+    internal fun showGiftMallFloatWindow(floatWindowData: FloatWindowData) {
+        val userInfoModel = floatWindowData.userInfoModel
+        mUiHandler.removeMessages(MSG_DISMISS_GIFT_MALL_FOALT_WINDOW)
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_GIFT_MALL_FOALT_WINDOW, 5000)
+        val giftMallNotifyView = GiftMallNotifyView(U.app())
+        giftMallNotifyView.bindData(floatWindowData.extra, userInfoModel);
+
+        FloatWindow.with(U.app())
+                .setView(giftMallNotifyView)
+                .setMoveType(MoveType.canRemove)
+                .setWidth(Screen.width, 1f)                               //设置控件宽高
+                .setHeight(Screen.height, 0.2f)
+                .setViewStateListener(object : ViewStateListenerAdapter() {
+                    override fun onDismiss(dismissReason: Int) {
+                        mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.endCurrent(floatWindowData)
+                    }
+
+                    override fun onPositionUpdate(x: Int, y: Int) {
+                        super.onPositionUpdate(x, y)
+                        mUiHandler.removeMessages(MSG_DISMISS_GIFT_MALL_FOALT_WINDOW)
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_GIFT_MALL_FOALT_WINDOW, 5000)
+                    }
+                })
+                .setDesktopShow(false)                        //桌面显示
+                .setCancelIfExist(false)
+                .setReqPermissionIfNeed(false)
+                .setTag(TAG_GIFT_MALL_FOALT_WINDOW)
+                .build()
+    }
+
     internal fun showMicInviteFromRoomFloatWindow(floatWindowData: FloatWindowData) {
         val userInfoModel = floatWindowData.userInfoModel
 
@@ -798,7 +835,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
          * STAND_FULL_STAR 歌单战5星好评
          */
         enum class Type {
-            FOLLOW, GRABINVITE, DOUBLE_GRAB_INVITE, DOUBLE_ROOM_INVITE, STAND_FULL_STAR, MIC_INVITE
+            FOLLOW, GRABINVITE, DOUBLE_GRAB_INVITE, DOUBLE_ROOM_INVITE, STAND_FULL_STAR, MIC_INVITE, MALL_GIFT
         }
     }
 
@@ -810,6 +847,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         internal val TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW = "TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW"
         internal val TAG_STAND_FULL_STAR_FOALT_WINDOW = "TAG_STAND_FULL_STAR_FOALT_WINDOW"
         internal val TAG_MIC_ROOM_INVITE_FOALT_WINDOW = "TAG_MIC_ROOM_INVITE_FOALT_WINDOW"
+        internal val TAG_GIFT_MALL_FOALT_WINDOW = "TAG_GIFT_MALL_FOALT_WINDOW"
 
         internal val MSG_DISMISS_INVITE_FLOAT_WINDOW = 2
         internal val MSG_DISMISS_RELATION_FLOAT_WINDOW = 3
@@ -817,5 +855,6 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         internal val MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW = 5 // 邀请好友，在双人房中的邀请
         internal val MSG_DISMISS_STAND_FULL_STAR = 6
         internal val MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW = 7 // 邀请好友，在双人房中的邀请
+        internal val MSG_DISMISS_GIFT_MALL_FOALT_WINDOW = 8 // 邀请好友，在双人房中的邀请
     }
 }
