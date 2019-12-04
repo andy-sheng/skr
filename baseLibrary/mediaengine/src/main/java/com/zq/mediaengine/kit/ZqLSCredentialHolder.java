@@ -52,24 +52,19 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
 //    private final static int xxx = -1;
     private final static int ERR_CUT_OFF = ERR_NONE + 106; //106 是以个与服务器约定的错误代码，表示熔断
 
-
-
-
     ZqLSCredentialHolder() {
         reset();
         mSS = new ServiceStatus();
     }
 
-
     private final static String DEFAULT_STRING_FOR_CREDENTIAL = "STRING_TO_AVOID_ALI_CRASH"; //绕开阿里云的bug: 如果key是零长度的 "" 会crash，且无法catch........
+
     private void reset() {
         mAK = DEFAULT_STRING_FOR_CREDENTIAL;
         mSK = DEFAULT_STRING_FOR_CREDENTIAL;
         mToken = DEFAULT_STRING_FOR_CREDENTIAL;
         mDate = null;
     }
-
-
 
     @Override
     public ServiceStatus getStatus() {
@@ -102,10 +97,6 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
         return mSS;
     }
 
-    private final static String KEY_STATUS_CODE = "statusCode";
-    private final static String KEY_ERRNO = "errno";
-    private final static int STATUS_OK_FROM_ALIYUN = 200;
-
     public int performAuthentication_byString() {
         int res = 0;
         SLogServiceSTSApi stsAPI = ApiManager.getInstance().createService(SLogServiceSTSApi.class);
@@ -130,7 +121,7 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
         if (null == jsObj) return ERR_6;
 
         String expirationStr = null;
-        if (jsObj.containsKey(KEY_STATUS_CODE) && STATUS_OK_FROM_ALIYUN == jsObj.getIntValue(KEY_STATUS_CODE)) {
+        if (jsObj.containsKey("statusCode") && 200 == jsObj.getIntValue("statusCode")) {
             mAK = jsObj.getString("accessKeyId");
             mSK = jsObj.getString("accessKeySecret");
             mToken = jsObj.getString("securityToken");
@@ -144,7 +135,7 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
                 return ERR_8;
             }
         }
-        else if (jsObj.containsKey(KEY_ERRNO) && ERR_CUT_OFF == jsObj.getIntValue(KEY_ERRNO)){
+        else if (jsObj.containsKey("errno") && ERR_CUT_OFF == jsObj.getIntValue("errno")){
             MyLog.e(TAG, "performAuthentication_byString() server cut off the services!");
             return ERR_CUT_OFF;
         }
@@ -289,6 +280,7 @@ public class ZqLSCredentialHolder implements SSTSCredentialHolder
 
 
     private final static String EXIRATION_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+
     private Date trans2ClientExpiredDate(String serverExpiration) {
         if (!mIsReleaseVersion) {//test mode缩短有效期(需服务器配合)，阿里STS最短900秒; 测试用的log-store
             CREDENTIAL_PERSISTENT_MS = 900 * 1000;
