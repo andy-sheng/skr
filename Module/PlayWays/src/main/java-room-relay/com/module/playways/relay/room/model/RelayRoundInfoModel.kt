@@ -14,6 +14,7 @@ import kotlin.collections.ArrayList
 
 class RelayRoundInfoModel : BaseRoundInfoModel() {
 
+    var hasSendRoundOverInfo = false // 是否已经发送轮次结束
     var accLoadingOk = false
     /* 一唱到底使用 */
     var status = ERRoundStatus.RRS_UNKNOWN.value

@@ -26,14 +26,14 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
     companion object {
         var MUSIC_PUBLISH_VOLUME = 85
         var shiftTsForRelay = 0
-        fun syncServerTs(){
+        fun syncServerTs() {
             var serverApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
             GlobalScope.launch {
                 var t1 = System.currentTimeMillis()
                 val result = subscribe { serverApi.timestamp(0) }
                 var t2 = System.currentTimeMillis()
                 var serverTs = result.data.getIntValue("timestamp")
-                shiftTsForRelay = (t1+(t2-t1)/2-serverTs).toInt()
+                shiftTsForRelay = (t1 + (t2 - t1) / 2 - serverTs).toInt()
             }
         }
     }
@@ -46,7 +46,7 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         return listOf(peerUser) as List<PlayerInfoModel>
     }
 
-    var lastSingerID:Int?=null
+    var lastSingerID: Int? = null
 
     /**
      * 本地时间比服务器时间快多少，使用专门的校时接口校对 t1+(t2-t1)/2 - s1
@@ -74,8 +74,8 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         }
     var leftSeat = true   // 我的未知是否在左边
     var isHasExitGame = false
-    var myEffectModel:GameBackgroundEffectModel?=null
-    var peerEffectModel:GameBackgroundEffectModel?=null
+    var myEffectModel: GameBackgroundEffectModel? = null
+    var peerEffectModel: GameBackgroundEffectModel? = null
 
     override val gameType: Int
         get() = GameModeType.GAME_MODE_RELAY
@@ -99,6 +99,19 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
             }
         }
         return Long.MAX_VALUE
+    }
+
+    fun hasOverThisRound(): Boolean {
+        var d = (realRoundInfo?.singEndMs ?: 0) - (realRoundInfo?.singBeginMs ?: 0)
+        if (d > 0) {
+            var t = getSingCurPosition()
+            if (t != Long.MAX_VALUE) {
+                if (t > d) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     /**
@@ -211,18 +224,18 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         this.peerUser = ReplayPlayerInfoModel()
         rsp.users?.forEachIndexed { index, userInfoModel ->
             var a = rsp.showInfos.getOrNull(index)
-            MyLog.w("chengsimin","peerEffectModel1=${a} index=${index}")
+            MyLog.w("chengsimin", "peerEffectModel1=${a} index=${index}")
             if (userInfoModel.userId != MyUserInfoManager.uid.toInt()) {
                 this.peerUser?.userInfo = userInfoModel
                 this.peerEffectModel = a
                 this.leftSeat = index != 0
-            }else{
+            } else {
                 this.myEffectModel = a
             }
         }
         this.peerUser?.isOnline = true
         this.expectRoundInfo = rsp.currentRound
-        MyLog.w("chengsimin","peerEffectModel2=${this.peerEffectModel}")
+        MyLog.w("chengsimin", "peerEffectModel2=${this.peerEffectModel}")
     }
 
     override fun toString(): String {

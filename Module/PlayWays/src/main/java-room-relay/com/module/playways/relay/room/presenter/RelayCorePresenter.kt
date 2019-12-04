@@ -225,7 +225,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     /**
      * 如果确定是自己唱了,预先可以做的操作
      */
-    fun preOpWhenSelfRound() {
+    private fun preOpWhenSelfRound() {
         var progress = mRoomData.getSingCurPosition()
         DebugLogView.println(TAG, "preOpWhenSelfRound progress=$progress")
         if (progress == Long.MAX_VALUE) {
@@ -428,28 +428,25 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
      * 上报轮次结束信息
      */
     fun sendRoundOverInfo() {
-        MyLog.w(TAG, "上报我的演唱结束")
-        val map = HashMap<String, Any>()
-        map["roomID"] = mRoomData.gameId
-        map["roundSeq"] = mRoomData.realRoundInfo?.roundSeq ?: 0
+        if(mRoomData?.realRoundInfo?.hasSendRoundOverInfo == false){
+            MyLog.w(TAG, "上报我的演唱结束")
+            mRoomData?.realRoundInfo?.hasSendRoundOverInfo = true
+            val map = HashMap<String, Any>()
+            map["roomID"] = mRoomData.gameId
+            map["roundSeq"] = mRoomData.realRoundInfo?.roundSeq ?: 0
 
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-        launch {
-            var result = subscribe { mRoomServerApi.sendRoundOver(body) }
-            if (result.errno == 0) {
-                MyLog.w(TAG, "演唱结束上报成功 traceid is " + result.traceId)
-            } else {
-                MyLog.w(TAG, "演唱结束上报失败 traceid is " + result.traceId)
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            launch {
+                var result = subscribe { mRoomServerApi.sendRoundOver(body) }
+                if (result.errno == 0) {
+                    MyLog.w(TAG, "演唱结束上报成功 traceid is " + result.traceId)
+                } else {
+                    MyLog.w(TAG, "演唱结束上报失败 traceid is " + result.traceId)
+                }
             }
+        }else{
+            MyLog.w(TAG, "已经上报过演唱结束")
         }
-//        if (MyLog.isDebugLogOpen()) {
-//            //TODO 只为调试
-//            var relayRoundInfoModel = RelayRoundInfoModel()
-//            relayRoundInfoModel.status = ERRoundStatus.RRS_INTRO.value
-//            relayRoundInfoModel.roundSeq = 3
-//            mRoomData.expectRoundInfo = relayRoundInfoModel
-//            mRoomData.checkRoundInEachMode()
-//        }
     }
 
 
@@ -467,7 +464,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 mRoomServerApi.giveUpSing(body)
             }
             if (result.errno == 0) {
-                closeEngine()
+                //closeEngine()
                 okCallback?.invoke()
                 MyLog.w(TAG, "放弃演唱上报成功 traceid is " + result.traceId)
             } else {
@@ -727,6 +724,9 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 // 伴奏对齐，重新发送轮次切换
                 ZqEngineKit.getInstance().setAudioMixingPosition(mRoomData.getSingCurPosition().toInt())
                 launcherNextTurn()
+            }
+            if(mRoomData.hasOverThisRound()){
+                sendRoundOverInfo()
             }
         } else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
 //            val roleChangeInfo = event.getObj<EngineEvent.RoleChangeInfo>()

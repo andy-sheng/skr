@@ -1,9 +1,12 @@
 package com.common.core.account
 
 
+import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.os.Message
 import android.text.TextUtils
+import com.alibaba.android.arouter.launcher.ARouter
 
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
@@ -35,6 +38,7 @@ import com.common.statistics.umeng.UmengStatistics
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.module.ModuleServiceManager
+import com.module.RouterConstants
 import com.module.common.ICallback
 import com.tendcloud.tenddata.TDAccount
 import com.zq.live.proto.Common.UserInfo
@@ -45,6 +49,7 @@ import java.util.HashMap
 
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 
@@ -440,6 +445,14 @@ object UserAccountManager {
         MyLog.d(TAG, "融云被KICK了  rcKickedByOthers times=$times")
         if (times > 5) {
             MyLog.d(TAG, "rcKickedByOthers times=$times,超过重试次数了")
+            return
+        }
+        if(Looper.getMainLooper() == Looper.myLooper()){
+            Observable.create<Boolean> {
+                rcKickedByOthers(times)
+                it.onComplete()
+            }.subscribeOn(Schedulers.io())
+                    .subscribe()
             return
         }
         if (hasAccount()) {
