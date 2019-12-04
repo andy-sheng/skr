@@ -205,5 +205,6 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         lyricAndAccMatchManager.stop()
         countDownJob?.cancel()
         effectBgView?.hideBg()
+        manyLyricsView?.release()
     }
 }
