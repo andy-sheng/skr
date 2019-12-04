@@ -29,7 +29,6 @@ import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.ConfirmDialog
 import com.component.dialog.PersonInfoDialog
-import com.component.person.OtherPersonActivity
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
 import com.component.toast.CommonToastView
@@ -365,6 +364,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mGiveUpView.mGiveUpListener = { _ ->
             mCorePresenter.giveUpSing {
                 mGiveUpView.hideWithAnimation(true)
+                if (mRoomData.realRoundInfo?.isChorusRound == true) {
+                    mSelfSingCardView.setVisibility(View.GONE)
+                    hideFlyCommentView()
+                }
             }
         }
         mAddSongIv = findViewById(R.id.select_song_tv)

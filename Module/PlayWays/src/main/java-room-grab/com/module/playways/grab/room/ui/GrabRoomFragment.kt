@@ -1218,6 +1218,10 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mGrabGiveupView.mGiveUpListener = { ownerControl ->
             mCorePresenter?.giveUpSing(ownerControl) { _ ->
                 mGrabGiveupView.hideWithAnimation(true)
+                if (mRoomData?.realRoundInfo?.isChorusRound == true) {
+                    mSelfSingCardView?.setVisibility(GONE)
+                    hideFlyCommentView()
+                }
             }
         }
         mGrabGiveupView.hideWithAnimation(false)
