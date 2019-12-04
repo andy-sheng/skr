@@ -90,21 +90,21 @@ class RelayHomeSongAdapter : RecyclerView.Adapter<RelayHomeSongAdapter.RelaySong
                                     var firstNum = 0
                                     var secondNum = 0
                                     for (l in it.lyricsLineInfoList) {
-                                        if (l.startTime < split && firstNum < 3) {
+                                        if (l.startTime < split && firstNum < 4) {
                                             firstSingLyric.append(l.lineLyrics).append("\n")
                                             firstNum++
-                                            if (firstNum == 3) {
+                                            if (firstNum == 4) {
                                                 firstSingLyric.append("...").append("\n")
                                             }
                                         }
-                                        if (l.startTime > split && secondNum < 3) {
+                                        if (l.startTime > split && secondNum < 2) {
                                             secondSingLyric.append(l.lineLyrics).append("\n")
                                             secondNum++
-                                            if (secondNum == 3) {
+                                            if (secondNum == 2) {
                                                 secondSingLyric.append("...").append("\n")
                                             }
                                         }
-                                        if (secondNum > 3) {
+                                        if (secondNum > 2) {
                                             break
                                         }
                                     }
