@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.permission.SkrAudioPermission
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.*
 import com.common.utils.U
@@ -44,7 +45,7 @@ class RelayHomeActivity : BaseActivity() {
     //在滑动到最后的时候自动加载更多
     var loadMore: Boolean = false
     var currentPosition = -1
-
+    var skrAudioPermission = SkrAudioPermission()
     /**
      * 存起该房间一些状态信息
      */
@@ -107,9 +108,11 @@ class RelayHomeActivity : BaseActivity() {
     fun goMatch(model: SongModel?) {
         // 先跳到匹配页面发起匹配
         model?.let {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_MATCH)
-                    .withSerializable("songModel", model)
-                    .navigation()
+            skrAudioPermission.ensurePermission({
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_MATCH)
+                        .withSerializable("songModel", model)
+                        .navigation()
+            },true)
         }
     }
 
@@ -149,6 +152,7 @@ class RelayHomeActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        skrAudioPermission.onBackFromPermisionManagerMaybe(this)
     }
 
 
