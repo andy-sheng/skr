@@ -54,7 +54,7 @@ public class DyEffectResManager {
     private void step1() {
         // 判断证书文件是否快过期,留一天buffer
         long expireTs = U.getPreferenceUtils().getSettingLong(U.getPreferenceUtils().longlySp(), "license_expire_ts", 0);
-        if (expireTs - 24 * 60 * 60 * 1000 < System.currentTimeMillis()) {
+        if (expireTs > 0 && (expireTs - 24 * 60 * 60 * 1000 < System.currentTimeMillis())) {
             MyLog.e(TAG, "证书快过期了，请求服务器最新证书地址，下载");
             downloadLicense();
         } else {

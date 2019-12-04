@@ -111,6 +111,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     static final int STATUS_UNINITING = 3;
     static final int MSG_JOIN_ROOM_TIMEOUT = 11;
     static final int MSG_JOIN_ROOM_AGAIN = 12;
+    static final int MSG_ROLE_CHANGE_TIMEOUT = 13;
 
     private static final boolean SCORE_DEBUG = false;
     private static final String SCORE_DEBUG_PATH = "/sdcard/tongzhuodeni.pcm";
@@ -126,7 +127,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      */
     public HashMap<Integer, UserStatus> mUserStatusMap = new HashMap<>();
     private HashSet<View> mRemoteViewCache = new HashSet<>();
-    private Handler mUiHandler = new Handler();
+//    private Handler mUiHandler = new Handler();
     private Disposable mMusicTimePlayTimeListener;
 
     private String mInitFrom;
@@ -215,7 +216,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     public void onUserJoined(int uid, int elapsed) {
         MyLog.i(TAG, "onUserJoined" + " uid=" + uid + " elapsed=" + elapsed);
         // 主播加入了，自己不会回调，自己回到角色变化接口
-        UserStatus userStatus = ensureJoin(uid,"onUserMuteAudio");
+        UserStatus userStatus = ensureJoin(uid, "onUserMuteAudio");
         userStatus.setAnchor(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_JOIN, userStatus));
         tryStartRecordForFeedback("onUserJoined");
@@ -232,7 +233,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onUserMuteVideo(int uid, boolean muted) {
-        UserStatus status = ensureJoin(uid,"onUserMuteAudio");
+        UserStatus status = ensureJoin(uid, "onUserMuteAudio");
         status.setVideoMute(muted);
         status.setAnchor(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_MUTE_VIDEO, status));
@@ -240,7 +241,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onUserMuteAudio(int uid, boolean muted) {
-        UserStatus status = ensureJoin(uid,"onUserMuteAudio");
+        UserStatus status = ensureJoin(uid, "onUserMuteAudio");
         status.setAudioMute(muted);
         status.setAnchor(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_MUTE_AUDIO, status));
@@ -248,7 +249,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onUserEnableVideo(int uid, boolean enabled) {
-        UserStatus status = ensureJoin(uid,"onUserEnableVideo");
+        UserStatus status = ensureJoin(uid, "onUserEnableVideo");
         status.setEnableVideo(enabled);
         status.setAnchor(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_VIDEO_ENABLE, status));
@@ -256,7 +257,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onFirstRemoteVideoDecoded(int uid, int width, int height, int elapsed) {
-        UserStatus status = ensureJoin(uid,"onFirstRemoteVideoDecoded");
+        UserStatus status = ensureJoin(uid, "onFirstRemoteVideoDecoded");
         status.setEnableVideo(true);
         status.setFirstVideoDecoded(true);
         status.setFirstVideoWidth(width);
@@ -267,9 +268,9 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
-        MyLog.d(TAG,"onJoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
+        MyLog.d(TAG, "onJoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
         mConfig.setJoinChannelSuccess(true);
-        UserStatus userStatus = ensureJoin(uid,"onJoinChannelSuccess");
+        UserStatus userStatus = ensureJoin(uid, "onJoinChannelSuccess");
 //        userStatus.setIsSelf(true);
         mConfig.setSelfUid(uid);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_JOIN, userStatus));
@@ -278,14 +279,16 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_TIMEOUT);
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
         }
-        onSelfJoinChannelSuccess();
+        tryPlayPengdingMixingMusic();
+        mAgoraRTCAdapter.muteLocalAudioStream(mConfig.isLocalAudioStreamMute());
+        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_SELF_JOIN_SUCCESS));
     }
 
     @Override
     public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
-        MyLog.d(TAG,"onRejoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
+        MyLog.d(TAG, "onRejoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
         mConfig.setJoinChannelSuccess(true);
-        UserStatus userStatus = ensureJoin(uid,"onRejoinChannelSuccess");
+        UserStatus userStatus = ensureJoin(uid, "onRejoinChannelSuccess");
 //        userStatus.setIsSelf(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_REJOIN, userStatus));
     }
@@ -297,11 +300,13 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onClientRoleChanged(int oldRole, int newRole) {
+        mCustomHandlerThread.removeMessage(MSG_ROLE_CHANGE_TIMEOUT);
         if (mConfig.getSelfUid() > 0) {
-            UserStatus userStatus = ensureJoin(mConfig.getSelfUid(),"onClientRoleChanged");
+            UserStatus userStatus = ensureJoin(mConfig.getSelfUid(), "onClientRoleChanged");
             if (newRole == Constants.CLIENT_ROLE_BROADCASTER) {
                 userStatus.setAnchor(true);
                 tryStartRecordForFeedback("onClientRoleChanged");
+                tryPlayPengdingMixingMusic();
             } else {
                 userStatus.setAnchor(false);
                 tryStopRecordForFeedback("onClientRoleChanged");
@@ -321,7 +326,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onAudioMixingFinished() {
-        MyLog.d(TAG,"onAudioMixingFinished" );
+        MyLog.d(TAG, "onAudioMixingFinished");
         mConfig.setMixMusicPlaying(false);
         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_FINISH, null);
         EventBus.getDefault().post(engineEvent);
@@ -384,7 +389,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onError(int error) {
-        MyLog.d(TAG,"onError" + " error=" + error);
+        MyLog.d(TAG, "onError" + " error=" + error);
         if (error == Constants.ERR_JOIN_CHANNEL_REJECTED) {
             // 加入 channel 失败，在不要token时，传入token也会触发这个
             if (mCustomHandlerThread != null) {
@@ -434,20 +439,21 @@ public class ZqEngineKit implements AgoraOutCallback {
      * MEDIA_ENGINE_AUDIO_ERROR_MIXING_OPEN(701)：音乐文件打开出错
      * MEDIA_ENGINE_AUDIO_ERROR_MIXING_TOO_FREQUENT(702)：音乐文件打开太频繁
      * MEDIA_ENGINE_AUDIO_EVENT_MIXING_INTERRUPTED_EOF(703)：音乐文件播放异常中断
+     *
      * @param state
      * @param errorCode
      */
     @Override
     public void onAudioMixingStateChanged(int state, int errorCode) {
-        MyLog.i(TAG,"onAudioMixingStateChanged" + " state=" + state + " errorCode=" + errorCode);
+        MyLog.i(TAG, "onAudioMixingStateChanged" + " state=" + state + " errorCode=" + errorCode);
         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STATE_CHANGE, null);
-        engineEvent.obj = new EngineEvent.MusicStateChange(state,errorCode);
+        engineEvent.obj = new EngineEvent.MusicStateChange(state, errorCode);
         EventBus.getDefault().post(engineEvent);
     }
 
-    private UserStatus ensureJoin(int uid,String from) {
+    private UserStatus ensureJoin(int uid, String from) {
         if (!mUserStatusMap.containsKey(uid)) {
-            MyLog.d(TAG,"ensureJoin" + " uid=" + uid + " from=" + from);
+            MyLog.d(TAG, "ensureJoin" + " uid=" + uid + " from=" + from);
             UserStatus userStatus = new UserStatus(uid);
             userStatus.setEnterTs(System.currentTimeMillis());
             mUserStatusMap.put(uid, userStatus);
@@ -485,6 +491,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                     StatisticsAdapter.recordCountEvent("agora", "join_timeout", null);
                     JoinParams joinParams = (JoinParams) msg.obj;
                     joinRoomInner2(joinParams.roomID, joinParams.userId, joinParams.token);
+                } else if (msg.what == MSG_ROLE_CHANGE_TIMEOUT) {
+                    MyLog.i(TAG, "handleMessage 身份切换超时");
+                    mAgoraRTCAdapter.setClientRole(mConfig.isAnchor());
                 }
             }
         };
@@ -799,10 +808,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private void destroyInner() {
         MyLog.i(TAG, "destroyInner1");
-        if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
-        }
-        mUiHandler.removeMessages(MSG_JOIN_ROOM_TIMEOUT);
+        mCustomHandlerThread.removeCallbacksAndMessages(null);
         if (mStatus == STATUS_INITED) {
             mStatus = STATUS_UNINITING;
             if (mMusicTimePlayTimeListener != null && !mMusicTimePlayTimeListener.isDisposed()) {
@@ -825,7 +831,6 @@ public class ZqEngineKit implements AgoraOutCallback {
             mRemoteViewCache.clear();
             mRemoteUserPinMap.clear();
             MyLog.i(TAG, "destroyInner4");
-            mUiHandler.removeCallbacksAndMessages(null);
             mConfig = new Params();
             mPendingStartMixAudioParams = null;
             mIsCaptureStarted = false;
@@ -979,7 +984,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
             //告诉我成功
             mConfig.setJoinRoomBeginTs(System.currentTimeMillis());
-            Message msg = mUiHandler.obtainMessage();
+            Message msg = mCustomHandlerThread.obtainMessage();
             msg.what = MSG_JOIN_ROOM_TIMEOUT;
             JoinParams joinParams = new JoinParams();
             joinParams.roomID = roomid;
@@ -993,13 +998,19 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public void setClientRole(final boolean isAnchor) {
         if (mCustomHandlerThread != null) {
-            mConfig.setAnchor(isAnchor);
-            mCustomHandlerThread.post(new LogRunnable("setClientRole" + " isAnchor=" + isAnchor) {
-                @Override
-                public void realRun() {
-                    mAgoraRTCAdapter.setClientRole(isAnchor);
-                }
-            });
+            if(isAnchor != mConfig.isAnchor()){
+                mConfig.setAnchor(isAnchor);
+                mCustomHandlerThread.post(new LogRunnable("setClientRole" + " isAnchor=" + isAnchor) {
+                    @Override
+                    public void realRun() {
+                        mAgoraRTCAdapter.setClientRole(isAnchor);
+                        mCustomHandlerThread.removeMessage(MSG_ROLE_CHANGE_TIMEOUT);
+                        Message msg = mCustomHandlerThread.obtainMessage();
+                        msg.what = MSG_ROLE_CHANGE_TIMEOUT;
+                        mCustomHandlerThread.sendMessageDelayed(msg, 3000);
+                    }
+                });
+            }
         }
     }
 
@@ -1279,7 +1290,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle) {
                 @Override
                 public void realRun() {
-                    SDataManager.getInstance().getDataHolder().addPlayerInfo(uid, filePath,midiPath,mixMusicBeginOffset,loopback,replace,cycle);
+                    SDataManager.getInstance().getDataHolder().addPlayerInfo(uid, filePath, midiPath, mixMusicBeginOffset, loopback, replace, cycle);
 
                     if (TextUtils.isEmpty(filePath)) {
                         MyLog.i(TAG, "伴奏路径非法");
@@ -1290,7 +1301,8 @@ public class ZqEngineKit implements AgoraOutCallback {
                         canGo = true;
                     } else {
                         UserStatus userStatus = mUserStatusMap.get(uid);
-                        if ((userStatus == null || !mConfig.isJoinChannelSuccess()) && !mConfig.isUseExternalAudio()) {
+                        MyLog.i(TAG, "startAudioMixing userStatus=" + userStatus);
+                        if ((userStatus == null || !mConfig.isJoinChannelSuccess() || !userStatus.isAnchor()) && !mConfig.isUseExternalAudio()) {
                             MyLog.w(TAG, "该用户还未在频道中,且用得是声网的混音，播伴奏挂起");
                             canGo = false;
                         } else {
@@ -1342,7 +1354,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         int cycle;
     }
 
-    private void onSelfJoinChannelSuccess() {
+    private void tryPlayPengdingMixingMusic() {
         if (mPendingStartMixAudioParams != null) {
             MyLog.w(TAG, "播放之前挂起的伴奏 uid=" + mPendingStartMixAudioParams.uid);
             startAudioMixing(mPendingStartMixAudioParams.uid,
@@ -1352,9 +1364,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                     mPendingStartMixAudioParams.loopback,
                     mPendingStartMixAudioParams.replace,
                     mPendingStartMixAudioParams.cycle);
+            mPendingStartMixAudioParams = null;
         }
-        mAgoraRTCAdapter.muteLocalAudioStream(mConfig.isLocalAudioStreamMute());
-        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_SELF_JOIN_SUCCESS));
+
     }
 
     /**
@@ -1454,7 +1466,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                     @Override
                     public void accept(Long aLong) throws Exception {
                         int currentPosition = getAudioMixingCurrentPosition();
-                        MyLog.i(TAG, "PlayTimeListener accept timerTs=" + aLong +" currentPosition="+currentPosition);
+                        MyLog.i(TAG, "PlayTimeListener accept timerTs=" + aLong + " currentPosition=" + currentPosition);
                         mConfig.setCurrentMusicTs(currentPosition);
                         mConfig.setRecordCurrentMusicTsTs(System.currentTimeMillis());
                         if (duration < 0) {

@@ -125,7 +125,8 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 params.isEnableAudio = true
                 ZqEngineKit.getInstance().init("relayroom", params)
             }
-            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), true, mRoomData.agoraToken)
+            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), false, mRoomData.agoraToken)
+            ZqEngineKit.getInstance().setClientRole(true)
             // 不发送本地音频, 会造成第一次抢没声音
             //ZqEngineKit.getInstance().muteLocalAudioStream(true)
         } else {
