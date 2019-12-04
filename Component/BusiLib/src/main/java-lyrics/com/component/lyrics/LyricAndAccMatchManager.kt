@@ -307,7 +307,7 @@ class LyricAndAccMatchManager {
         mLastLineNum = -1
         val params = ZqEngineKit.getInstance().params
         if (params != null) {
-            params.lrcHasStart = true
+            params.isLrcHasStart = true
         }
     }
 

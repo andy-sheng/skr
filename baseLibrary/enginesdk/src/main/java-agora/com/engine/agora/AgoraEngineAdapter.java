@@ -1092,7 +1092,7 @@ public class AgoraEngineAdapter {
                     MyLog.d(TAG, "step0:" + testIn(samples));
                 }
                 long accTs = 0;
-                if (mConfig != null && mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
+                if (mConfig != null && mConfig.isMixMusicPlaying() && mConfig.isLrcHasStart()) {
                     accTs = mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs());
                 }
                 if (DEBUG) {
@@ -1135,7 +1135,7 @@ public class AgoraEngineAdapter {
                     mICbScoreProcessor.process(samples, samples.length, channels, samplesPerSec, accTs, mConfig.getMidiPath());
                     if (mArcCloudManager != null) {
                         if (mConfig != null) {
-                            if (mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
+                            if (mConfig.isMixMusicPlaying() && mConfig.isLrcHasStart()) {
                                 mArcCloudManager.putPool(samples, samplesPerSec, channels);
                             } else if (mConfig.isGrabSingNoAcc()) {
                                 // 一唱到底清唱模式，acr打分

@@ -127,7 +127,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      */
     public HashMap<Integer, UserStatus> mUserStatusMap = new HashMap<>();
     private HashSet<View> mRemoteViewCache = new HashSet<>();
-//    private Handler mUiHandler = new Handler();
+    //    private Handler mUiHandler = new Handler();
     private Disposable mMusicTimePlayTimeListener;
 
     private String mInitFrom;
@@ -279,14 +279,14 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_TIMEOUT);
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
         }
-        tryPlayPengdingMixingMusic();
+        tryPlayPendingMixingMusic("onJoinChannelSuccess");
         mAgoraRTCAdapter.muteLocalAudioStream(mConfig.isLocalAudioStreamMute());
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_SELF_JOIN_SUCCESS));
     }
 
     @Override
     public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
-        MyLog.d(TAG, "onRejoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
+        MyLog.i(TAG, "onRejoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
         mConfig.setJoinChannelSuccess(true);
         UserStatus userStatus = ensureJoin(uid, "onRejoinChannelSuccess");
 //        userStatus.setIsSelf(true);
@@ -300,13 +300,14 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onClientRoleChanged(int oldRole, int newRole) {
+        MyLog.i(TAG, "onClientRoleChanged" + " oldRole=" + oldRole + " newRole=" + newRole);
         mCustomHandlerThread.removeMessage(MSG_ROLE_CHANGE_TIMEOUT);
         if (mConfig.getSelfUid() > 0) {
             UserStatus userStatus = ensureJoin(mConfig.getSelfUid(), "onClientRoleChanged");
             if (newRole == Constants.CLIENT_ROLE_BROADCASTER) {
                 userStatus.setAnchor(true);
                 tryStartRecordForFeedback("onClientRoleChanged");
-                tryPlayPengdingMixingMusic();
+                tryPlayPendingMixingMusic("onClientRoleChanged");
             } else {
                 userStatus.setAnchor(false);
                 tryStopRecordForFeedback("onClientRoleChanged");
@@ -326,7 +327,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onAudioMixingFinished() {
-        MyLog.d(TAG, "onAudioMixingFinished");
+        MyLog.i(TAG, "onAudioMixingFinished");
         mConfig.setMixMusicPlaying(false);
         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_FINISH, null);
         EventBus.getDefault().post(engineEvent);
@@ -389,7 +390,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onError(int error) {
-        MyLog.d(TAG, "onError" + " error=" + error);
+        MyLog.i(TAG, "onError" + " error=" + error);
         if (error == Constants.ERR_JOIN_CHANNEL_REJECTED) {
             // 加入 channel 失败，在不要token时，传入token也会触发这个
             if (mCustomHandlerThread != null) {
@@ -453,7 +454,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private UserStatus ensureJoin(int uid, String from) {
         if (!mUserStatusMap.containsKey(uid)) {
-            MyLog.d(TAG, "ensureJoin" + " uid=" + uid + " from=" + from);
+            MyLog.i(TAG, "ensureJoin" + " uid=" + uid + " from=" + from);
             UserStatus userStatus = new UserStatus(uid);
             userStatus.setEnterTs(System.currentTimeMillis());
             mUserStatusMap.put(uid, userStatus);
@@ -508,6 +509,9 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new LogRunnable("init" + " from=" + from + " params=" + params) {
             @Override
             public void realRun() {
+                /**
+                 * 注意这里 如果 init 后立马 执行其他 runnable 会被remove掉
+                 */
                 destroyInner();
                 initInner(from, params);
             }
@@ -808,7 +812,10 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private void destroyInner() {
         MyLog.i(TAG, "destroyInner1");
-        mCustomHandlerThread.removeCallbacksAndMessages(null);
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
+        }
+        mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_TIMEOUT);
         if (mStatus == STATUS_INITED) {
             mStatus = STATUS_UNINITING;
             if (mMusicTimePlayTimeListener != null && !mMusicTimePlayTimeListener.isDisposed()) {
@@ -998,19 +1005,19 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public void setClientRole(final boolean isAnchor) {
         if (mCustomHandlerThread != null) {
-            if(isAnchor != mConfig.isAnchor()){
-                mConfig.setAnchor(isAnchor);
-                mCustomHandlerThread.post(new LogRunnable("setClientRole" + " isAnchor=" + isAnchor) {
-                    @Override
-                    public void realRun() {
-                        mAgoraRTCAdapter.setClientRole(isAnchor);
+            mConfig.setAnchor(isAnchor);
+            mCustomHandlerThread.post(new LogRunnable("setClientRole" + " isAnchor=" + isAnchor) {
+                @Override
+                public void realRun() {
+                    mAgoraRTCAdapter.setClientRole(isAnchor);
+                    if (isAnchor != mConfig.isAnchor()) {
                         mCustomHandlerThread.removeMessage(MSG_ROLE_CHANGE_TIMEOUT);
                         Message msg = mCustomHandlerThread.obtainMessage();
                         msg.what = MSG_ROLE_CHANGE_TIMEOUT;
                         mCustomHandlerThread.sendMessageDelayed(msg, 3000);
                     }
-                });
-            }
+                }
+            });
         }
     }
 
@@ -1354,9 +1361,10 @@ public class ZqEngineKit implements AgoraOutCallback {
         int cycle;
     }
 
-    private void tryPlayPengdingMixingMusic() {
+    private void tryPlayPendingMixingMusic(String from) {
+        MyLog.i(TAG, "tryPlayPengdingMixingMusic" + " from=" + from);
         if (mPendingStartMixAudioParams != null) {
-            MyLog.w(TAG, "播放之前挂起的伴奏 uid=" + mPendingStartMixAudioParams.uid);
+            MyLog.i(TAG, "播放之前挂起的伴奏 uid=" + mPendingStartMixAudioParams.uid);
             startAudioMixing(mPendingStartMixAudioParams.uid,
                     mPendingStartMixAudioParams.filePath,
                     mPendingStartMixAudioParams.midiPath,
@@ -1365,8 +1373,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                     mPendingStartMixAudioParams.replace,
                     mPendingStartMixAudioParams.cycle);
             mPendingStartMixAudioParams = null;
+        } else {
+            MyLog.i(TAG, "没有伴奏挂起");
         }
-
     }
 
     /**

@@ -115,50 +115,54 @@ public class Params implements Serializable {
     @JSONField(serialize = false)
     private boolean allRemoteVideoStreamsMute = false;// 拒接所有其他视频流
     @JSONField(serialize = false)
-    private String mMixMusicFilePath;// 伴奏路径
+    private String mixMusicFilePath;// 伴奏路径
     @JSONField(serialize = false)
-    private String mMidiPath;// midi打分文件路径
+    private String midiPath;// midi打分文件路径
     @JSONField(serialize = false)
-    private long mMixMusicBeginOffset;// midi文件起始偏移量
+    private long mixMusicBeginOffset;// midi文件起始偏移量
     @JSONField(serialize = false)
-    private int mCurrentMusicTs;// 当前伴奏的偏移
+    private int currentMusicTs;// 当前伴奏的偏移
     @JSONField(serialize = false)
-    private long mRecordCurrentMusicTsTs;// 记录当前伴奏偏移的物理时间戳，在什么时间记录了这次偏移
+    private long recordCurrentMusicTsTs;// 记录当前伴奏偏移的物理时间戳，在什么时间记录了这次偏移
     @JSONField(serialize = false)
-    private boolean mLrcHasStart; // 歌词是否开始
+    private boolean lrcHasStart; // 歌词是否开始
     @JSONField(serialize = false)
-    private long mJoinRoomBeginTs; // 开始加入房间的时间
+    private long joinRoomBeginTs; // 开始加入房间的时间
     @JSONField(serialize = false)
-    private String mRecordingForDebugSavePath;// 保存录音的路径
+    private String recordingForDebugSavePath;// 保存录音的路径
     @JSONField(serialize = false)
-    private boolean mIsAnchor; // 是否是主播
+    private boolean isAnchor; // 是否是主播
     @JSONField(serialize = false)
-    private boolean mGrabSingNoAcc; // 一唱到底清唱模式
+    private boolean grabSingNoAcc; // 一唱到底清唱模式
     @JSONField(serialize = false)
-    private boolean mRecordingForBusi; // 是否在录制
+    private boolean recordingForBusi; // 是否在录制
     @JSONField(serialize = false)
-    private boolean mRecordingForFeedback; // 是否在录制 用与用户反馈
+    private boolean recordingForFeedback; // 是否在录制 用与用户反馈
     @JSONField(serialize = false)
-    private int mAudioSampleRate = 44100; // 输出的音频采样率
+    private int audioSampleRate = 44100; // 输出的音频采样率
     @JSONField(serialize = false)
-    private int mAudioChannels = 2; // 输出的音频声道数
+    private int audioChannels = 2; // 输出的音频声道数
     @JSONField(serialize = false)
-    private boolean mJoinChannelSuccess = true; // 加入频道成功
+    private boolean joinChannelSuccess = true; // 加入频道成功
 
-    private int mNoSticker = -1;//  贴纸文件名
-    private int mNoFilter = -1;// 滤镜文件名
-    private float mIntensityFilter = 0.7f;// 滤镜强度
-    private float mIntensityThinFace = 0.36f;// 瘦脸强度
-    private float mIntensityBigEye = 0.40f;// 大眼强度
+    private int noSticker = -1;//  贴纸文件名
+    private int noFilter = -1;// 滤镜文件名
+    private float intensityFilter = 0.7f;// 滤镜强度
+    private float intensityThinFace = 0.36f;// 瘦脸强度
+    private float intensityBigEye = 0.40f;// 大眼强度
 
-    private float mIntensityMeibai = 0.63f;// 美白强度
-    private float mIntensityMopi = 0.64f;// 磨皮强度
-    private float mIntensityRuihua = 0.26f;// 锐化强度
-    private float mIntensityChunse = 0.2f;// 唇色强度
-    private float mIntensitySaihong = 0.2f;// 腮红强度
+    private float intensityMeibai = 0.63f;// 美白强度
+    private float intensityMopi = 0.64f;// 磨皮强度
+    private float intensityRuihua = 0.26f;// 锐化强度
+    private float intensityChunse = 0.2f;// 唇色强度
+    private float intensitySaihong = 0.2f;// 腮红强度
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
+    }
+
+    public int getAudioBitrate() {
+        return audioChannels == 1 ? 64 * 1000 : 128 * 1000;
     }
 
     public int getChannelProfile() {
@@ -430,11 +434,11 @@ public class Params implements Serializable {
     }
 
     public void setMixMusicFilePath(String mixMusicFilePath) {
-        mMixMusicFilePath = mixMusicFilePath;
+        this.mixMusicFilePath = mixMusicFilePath;
     }
 
     public String getMixMusicFilePath() {
-        return mMixMusicFilePath;
+        return this.mixMusicFilePath;
     }
 
     public int getEarMonitoringVolume() {
@@ -466,59 +470,23 @@ public class Params implements Serializable {
     }
 
     public void setMidiPath(String midiPath) {
-        mMidiPath = midiPath;
+        this.midiPath = midiPath;
     }
 
     public String getMidiPath() {
-        return mMidiPath;
+        return this.midiPath;
     }
 
     public void setMixMusicBeginOffset(long mixMusicBeginOffset) {
-        mMixMusicBeginOffset = mixMusicBeginOffset;
+        this.mixMusicBeginOffset = mixMusicBeginOffset;
     }
 
     public long getMixMusicBeginOffset() {
-        return mMixMusicBeginOffset;
+        return this.mixMusicBeginOffset;
     }
 
     public void setCurrentMusicTs(int currentMusicTs) {
-        mCurrentMusicTs = currentMusicTs;
-    }
-
-    public int getCurrentMusicTs() {
-        return mCurrentMusicTs;
-    }
-
-    public void setRecordCurrentMusicTsTs(long recordCurrentMusicTsTs) {
-        mRecordCurrentMusicTsTs = recordCurrentMusicTsTs;
-    }
-
-    public long getRecordCurrentMusicTsTs() {
-        return mRecordCurrentMusicTsTs;
-    }
-
-    public void setLrcHasStart(boolean lrcHasStart) {
-        mLrcHasStart = lrcHasStart;
-    }
-
-    public boolean getLrcHasStart() {
-        return mLrcHasStart;
-    }
-
-    public void setJoinRoomBeginTs(long joinRoomBeginTs) {
-        mJoinRoomBeginTs = joinRoomBeginTs;
-    }
-
-    public long getJoinRoomBeginTs() {
-        return mJoinRoomBeginTs;
-    }
-
-    public void setRecordingForDebugSavePath(String recordingForDebugSavePath) {
-        mRecordingForDebugSavePath = recordingForDebugSavePath;
-    }
-
-    public String getRecordingForDebugSavePath() {
-        return mRecordingForDebugSavePath;
+        currentMusicTs = currentMusicTs;
     }
 
     public Scene getScene() {
@@ -529,142 +497,183 @@ public class Params implements Serializable {
         this.scene = scene;
     }
 
-    public void setAnchor(boolean anchor) {
-        mIsAnchor = anchor;
+
+    public int getCurrentMusicTs() {
+        return currentMusicTs;
+    }
+
+    public long getRecordCurrentMusicTsTs() {
+        return recordCurrentMusicTsTs;
+    }
+
+    public void setRecordCurrentMusicTsTs(long recordCurrentMusicTsTs) {
+        this.recordCurrentMusicTsTs = recordCurrentMusicTsTs;
+    }
+
+    public boolean isLrcHasStart() {
+        return lrcHasStart;
+    }
+
+    public void setLrcHasStart(boolean lrcHasStart) {
+        this.lrcHasStart = lrcHasStart;
+    }
+
+    public long getJoinRoomBeginTs() {
+        return joinRoomBeginTs;
+    }
+
+    public void setJoinRoomBeginTs(long joinRoomBeginTs) {
+        this.joinRoomBeginTs = joinRoomBeginTs;
+    }
+
+    public String getRecordingForDebugSavePath() {
+        return recordingForDebugSavePath;
+    }
+
+    public void setRecordingForDebugSavePath(String recordingForDebugSavePath) {
+        this.recordingForDebugSavePath = recordingForDebugSavePath;
     }
 
     public boolean isAnchor() {
-        return mIsAnchor;
+        return isAnchor;
     }
 
-    public void setGrabSingNoAcc(boolean grabSingNoAcc) {
-        mGrabSingNoAcc = grabSingNoAcc;
+    public void setAnchor(boolean anchor) {
+        isAnchor = anchor;
     }
 
     public boolean isGrabSingNoAcc() {
-        return mGrabSingNoAcc;
+        return grabSingNoAcc;
+    }
+
+    public void setGrabSingNoAcc(boolean grabSingNoAcc) {
+        this.grabSingNoAcc = grabSingNoAcc;
     }
 
     public boolean isRecordingForBusi() {
-        return mRecordingForBusi;
+        return recordingForBusi;
     }
 
-    public void setRecordingForBusi(boolean recording) {
-        mRecordingForBusi = recording;
+    public void setRecordingForBusi(boolean recordingForBusi) {
+        this.recordingForBusi = recordingForBusi;
     }
 
     public boolean isRecordingForFeedback() {
-        return mRecordingForFeedback;
+        return recordingForFeedback;
     }
 
-    public void setRecordingForFeedback(boolean mRecordingForFeedback) {
-        this.mRecordingForFeedback = mRecordingForFeedback;
+    public void setRecordingForFeedback(boolean recordingForFeedback) {
+        this.recordingForFeedback = recordingForFeedback;
     }
 
     public int getAudioSampleRate() {
-        return mAudioSampleRate;
+        return audioSampleRate;
     }
 
-    public void setAudioSampleRate(int sampleRate) {
-        mAudioSampleRate = sampleRate;
+    public void setAudioSampleRate(int audioSampleRate) {
+        this.audioSampleRate = audioSampleRate;
     }
 
     public int getAudioChannels() {
-        return mAudioChannels;
+        return audioChannels;
     }
 
-    public void setAudioChannels(int channels) {
-        mAudioChannels = channels;
+    public void setAudioChannels(int audioChannels) {
+        this.audioChannels = audioChannels;
     }
 
-    public int getAudioBitrate() {
-        return mAudioChannels == 1 ? 64 * 1000 : 128 * 1000;
+    public boolean isJoinChannelSuccess() {
+        return joinChannelSuccess;
+    }
+
+    public void setJoinChannelSuccess(boolean joinChannelSuccess) {
+        this.joinChannelSuccess = joinChannelSuccess;
     }
 
     public int getNoSticker() {
-        return mNoSticker;
-    }
-
-    public int getNoFilter() {
-        return mNoFilter;
-    }
-
-    public float getIntensityFilter() {
-        return mIntensityFilter;
-    }
-
-    public float getIntensityThinFace() {
-        return mIntensityThinFace;
-    }
-
-    public float getIntensityBigEye() {
-        return mIntensityBigEye;
-    }
-
-    public float getIntensityMeibai() {
-        return mIntensityMeibai;
-    }
-
-    public float getIntensityMopi() {
-        return mIntensityMopi;
-    }
-
-    public float getIntensityRuihua() {
-        return mIntensityRuihua;
-    }
-
-    public float getIntensityChunse() {
-        return mIntensityChunse;
-    }
-
-    public float getIntensitySaihong() {
-        return mIntensitySaihong;
-    }
-
-    public void setIntensityFilter(float intensityFilter) {
-        mIntensityFilter = intensityFilter;
-    }
-
-    public void setIntensityThinFace(float intensityThinFace) {
-        mIntensityThinFace = intensityThinFace;
-    }
-
-    public void setIntensityBigEye(float intensityBigEye) {
-        mIntensityBigEye = intensityBigEye;
-    }
-
-    public void setIntensityMeibai(float intensityMeibai) {
-        mIntensityMeibai = intensityMeibai;
-    }
-
-    public void setIntensityMopi(float intensityMopi) {
-        mIntensityMopi = intensityMopi;
-    }
-
-    public void setIntensityRuihua(float intensityRuihua) {
-        mIntensityRuihua = intensityRuihua;
-    }
-
-    public void setIntensityChunse(float intensityChunse) {
-        mIntensityChunse = intensityChunse;
-    }
-
-    public void setIntensitySaihong(float intensitySaihong) {
-        mIntensitySaihong = intensitySaihong;
+        return noSticker;
     }
 
     public void setNoSticker(int noSticker) {
-        mNoSticker = noSticker;
+        this.noSticker = noSticker;
+    }
+
+    public int getNoFilter() {
+        return noFilter;
     }
 
     public void setNoFilter(int noFilter) {
-        mNoFilter = noFilter;
+        this.noFilter = noFilter;
+    }
+
+    public float getIntensityFilter() {
+        return intensityFilter;
+    }
+
+    public void setIntensityFilter(float intensityFilter) {
+        this.intensityFilter = intensityFilter;
+    }
+
+    public float getIntensityThinFace() {
+        return intensityThinFace;
+    }
+
+    public void setIntensityThinFace(float intensityThinFace) {
+        this.intensityThinFace = intensityThinFace;
+    }
+
+    public float getIntensityBigEye() {
+        return intensityBigEye;
+    }
+
+    public void setIntensityBigEye(float intensityBigEye) {
+        this.intensityBigEye = intensityBigEye;
+    }
+
+    public float getIntensityMeibai() {
+        return intensityMeibai;
+    }
+
+    public void setIntensityMeibai(float intensityMeibai) {
+        this.intensityMeibai = intensityMeibai;
+    }
+
+    public float getIntensityMopi() {
+        return intensityMopi;
+    }
+
+    public void setIntensityMopi(float intensityMopi) {
+        this.intensityMopi = intensityMopi;
+    }
+
+    public float getIntensityRuihua() {
+        return intensityRuihua;
+    }
+
+    public void setIntensityRuihua(float intensityRuihua) {
+        this.intensityRuihua = intensityRuihua;
+    }
+
+    public float getIntensityChunse() {
+        return intensityChunse;
+    }
+
+    public void setIntensityChunse(float intensityChunse) {
+        this.intensityChunse = intensityChunse;
+    }
+
+    public float getIntensitySaihong() {
+        return intensitySaihong;
+    }
+
+    public void setIntensitySaihong(float intensitySaihong) {
+        this.intensitySaihong = intensitySaihong;
     }
 
     // 工具方法，获取歌曲播放的实际时间戳
     public long getAccTs() {
         long accTs = 0;
-        if (isMixMusicPlaying() && getLrcHasStart()) {
+        if (isMixMusicPlaying() && isLrcHasStart()) {
             accTs = getCurrentMusicTs() + getMixMusicBeginOffset() +
                     (System.currentTimeMillis() - getRecordCurrentMusicTsTs());
         }
@@ -677,14 +686,6 @@ public class Params implements Serializable {
 
     public void setAudioMixingPublishVolume(int audioMixingPublishVolume) {
         this.audioMixingPublishVolume = audioMixingPublishVolume;
-    }
-
-    public boolean isJoinChannelSuccess() {
-        return mJoinChannelSuccess;
-    }
-
-    public void setJoinChannelSuccess(boolean joinChannelSuccess) {
-        this.mJoinChannelSuccess = joinChannelSuccess;
     }
 
     public static class Builder {
@@ -892,7 +893,7 @@ public class Params implements Serializable {
     }
 
     public enum Scene {
-        rank, grab, voice, audiotest,doubleChat
+        rank, grab, voice, audiotest, doubleChat
     }
 
     public enum AudioEffect {
