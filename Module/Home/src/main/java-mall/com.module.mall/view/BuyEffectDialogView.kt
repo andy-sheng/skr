@@ -105,6 +105,16 @@ class BuyEffectDialogView : ConstraintLayout {
                 secondDes.visibility = View.VISIBLE
             }
         }
+
+        if (model.buyStatus == 2) {
+            buyTv.isEnabled = false
+            buyTv.text = "已永久获得"
+            buyTv.alpha = 0.7f
+        } else {
+            buyTv.isEnabled = true
+            buyTv.text = "购买"
+            buyTv.alpha = 1.0f
+        }
     }
 
     fun dismiss() {

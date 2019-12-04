@@ -27,6 +27,10 @@ class ProductModel : Serializable {
     @JSONField(name = "sortID")
     var sortID: Int = 0
 
+    //[ BS_Unknown(0), BS_Buyed(1), BS_Buyed_Forever(2) ]
+    @JSONField(name = "buyStatus")
+    var buyStatus: Int = 0
+
     @JSONField(name = "sourcesJson")
     var sourcesJson: String? = null
 

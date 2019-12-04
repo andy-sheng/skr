@@ -273,6 +273,12 @@ class MallActivity : BaseActivity() {
             }
 
             if (obj.errno == 0) {
+                if (event.price.buyType == 1) {
+                    event.productModel.buyStatus = 1
+                } else if (event.price.buyType == 2) {
+                    event.productModel.buyStatus = 2
+                }
+
                 EventBus.getDefault().post(BuyMallSuccessEvent(event.productModel))
 //                U.getToastUtil().showShort("购买成功")
                 getZSBalance()
