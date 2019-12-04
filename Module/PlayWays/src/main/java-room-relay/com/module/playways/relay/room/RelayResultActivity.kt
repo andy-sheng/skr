@@ -53,7 +53,11 @@ class RelayResultActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         roomData = intent.getSerializableExtra("roomData") as RelayRoomData?
+        if (roomData == null) {
+            finish()
+        }
 
+        U.getStatusBarUtil().setTransparentBar(this, false)
         reportTv = findViewById(R.id.report_tv)
         contentArea = findViewById(R.id.content_area)
         avatarLevel = findViewById(R.id.avatar_level)

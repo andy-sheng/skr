@@ -87,6 +87,7 @@ class RelayMatchActivity : BaseActivity() {
             finish()
         }
 
+        U.getStatusBarUtil().setTransparentBar(this, false)
         titlebar = findViewById(R.id.titlebar)
         joinTipsTv = findViewById(R.id.join_tips_tv)
         speedRecyclerView = findViewById(R.id.speed_recyclerView)
@@ -144,9 +145,9 @@ class RelayMatchActivity : BaseActivity() {
         })
 
         val accFile = SongResUtils.getAccFileByUrl(model?.acc)
-        if(!accFile.exists()){
+        if (!accFile.exists()) {
             // 先下载这个伴奏备用
-            U.getHttpUtils().downloadFileAsync(model?.acc,accFile,true,null)
+            U.getHttpUtils().downloadFileAsync(model?.acc, accFile, true, null)
         }
     }
 
@@ -242,6 +243,10 @@ class RelayMatchActivity : BaseActivity() {
             }
         }
 
+        checkIsEmpty()
+    }
+
+    private fun checkIsEmpty() {
         if (adapter.mDataList.isNullOrEmpty()) {
             mLoadService?.showCallback(RelayEmptyRoomCallback::class.java)
         } else {
@@ -279,6 +284,7 @@ class RelayMatchActivity : BaseActivity() {
                     adapter.notifyItemRangeChanged(position, adapter.mDataList.size - position)
                 }
 
+                checkIsEmpty()
             }
         }
     }
@@ -289,8 +295,8 @@ class RelayMatchActivity : BaseActivity() {
         MyLog.d(TAG, "tryGoRelayRoom model = $model hasMatched=$hasMatched")
         if (!hasMatched) {
             hasMatched = true
-            val intent = Intent(this,RelayRoomActivity::class.java)
-            intent.putExtra("JoinRelayRoomRspModel",model)
+            val intent = Intent(this, RelayRoomActivity::class.java)
+            intent.putExtra("JoinRelayRoomRspModel", model)
             this.startActivity(intent)
             finish()
 //            ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_ROOM)
@@ -347,7 +353,7 @@ class RelayMatchActivity : BaseActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
-        if(!event.foreground){
+        if (!event.foreground) {
             cancelMatch()
             finish()
         }

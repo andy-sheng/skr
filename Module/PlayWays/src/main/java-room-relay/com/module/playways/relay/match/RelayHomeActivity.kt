@@ -53,6 +53,8 @@ class RelayHomeActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+
+        U.getStatusBarUtil().setTransparentBar(this, false)
         titlebar = findViewById(R.id.titlebar)
         speedRecyclerView = findViewById(R.id.speed_recyclerView)
 

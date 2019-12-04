@@ -298,7 +298,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     }
 
     override fun isBlackStatusBarText(): Boolean {
-        return true
+        return false
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
