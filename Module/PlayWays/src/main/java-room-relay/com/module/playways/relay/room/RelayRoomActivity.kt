@@ -604,6 +604,11 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         // 请求接唱
         val micUserMusicModel = RoomInviteMusicModel.parseFromInfoPB(event.detail)
         if (micUserMusicModel.userID != MyUserInfoManager.uid.toInt()) {
+            if (U.getActivityUtils().topActivity is RelayRoomActivity) {
+                // 顶部是接唱放的activity
+            } else {
+                U.getToastUtil().showShort("对方正在向你发起一首合唱，返回查看")
+            }
             mRoomInviteView?.showInvite(micUserMusicModel, mTopContentView.getViewLeft(micUserMusicModel.userID), true, GameModeType.GAME_MODE_RELAY)
         } else {
             // 启一个任务去同步
@@ -613,7 +618,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RAddMusicMsg) {
-        // 接唱发起请求
+        // 接唱发起请求的结果
         val userMusicModel = RoomInviteMusicModel.parseFromInfoPB(event.detail)
         mRoomInviteView?.showInvite(userMusicModel, mTopContentView.getViewLeft(userMusicModel.userID), false, GameModeType.GAME_MODE_RELAY)
     }
