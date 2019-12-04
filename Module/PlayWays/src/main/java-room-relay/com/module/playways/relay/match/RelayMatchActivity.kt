@@ -177,25 +177,37 @@ class RelayMatchActivity : BaseActivity() {
                         "platform" to 20)
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                 repeat(Int.MAX_VALUE) {
-                    if (it % 2 == 0) {
-                        joinTipsTv?.text = "ta正在赶来的路上..."
-                    } else {
-                        joinTipsTv?.text = "等太久，试试加入别人等合唱吧～"
-                    }
-                    val result = subscribe(RequestControl("startMatch", ControlType.CancelThis)) {
-                        relayMatchServerApi.queryMatch(body)
-                    }
-                    if (result.errno == 0) {
-                        val hasMatchedRoom = result.data.getBoolean("hasMatchedRoom")
-                        if (hasMatchedRoom) {
-                            val joinRelayRoomRspModel = JSON.parseObject(result.data.toJSONString(), JoinRelayRoomRspModel::class.java)
-                            matchJob?.cancel()
-                            tryGoRelayRoom(joinRelayRoomRspModel)
-                        } else {
-                            // 没匹配到 donothing
+                    when (it % 10) {
+                        0 -> {
+                            joinTipsTv?.text = "正在为你匹配合拍好声音.  "
+                            val result = subscribe(RequestControl("startMatch", ControlType.CancelThis)) {
+                                relayMatchServerApi.queryMatch(body)
+                            }
+                            if (result.errno == 0) {
+                                val hasMatchedRoom = result.data.getBoolean("hasMatchedRoom")
+                                if (hasMatchedRoom) {
+                                    val joinRelayRoomRspModel = JSON.parseObject(result.data.toJSONString(), JoinRelayRoomRspModel::class.java)
+                                    matchJob?.cancel()
+                                    tryGoRelayRoom(joinRelayRoomRspModel)
+                                } else {
+                                    // 没匹配到 donothing
+                                }
+                            }
+                        }
+                        1, 4, 7 -> {
+                            joinTipsTv?.text = "正在为你匹配合拍好声音.. "
+                        }
+                        2, 5, 8 -> {
+                            joinTipsTv?.text = "正在为你匹配合拍好声音..."
+                        }
+                        3, 6 -> {
+                            joinTipsTv?.text = "正在为你匹配合拍好声音.  "
+                        }
+                        9 -> {
+                            joinTipsTv?.text = "等太久，试试加入别人等合唱吧～"
                         }
                     }
-                    delay(10 * 1000)
+                    delay(1000)
                 }
             }
         }
