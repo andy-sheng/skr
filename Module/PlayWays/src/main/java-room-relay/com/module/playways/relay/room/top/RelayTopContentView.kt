@@ -1,5 +1,8 @@
 package com.module.playways.relay.room.top
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
@@ -45,6 +48,7 @@ class RelayTopContentView : ExConstraintLayout {
     private val rightAvatarSdv: SimpleDraweeView
     private val countTimeTv: TextView
     private val tipsIv: ImageView
+    private var anim: ObjectAnimator? = null
 
     var listener: Listener? = null
     var mIsOpen = true
@@ -67,7 +71,7 @@ class RelayTopContentView : ExConstraintLayout {
         tipsIv = this.findViewById(R.id.tips_iv)
         unlimitIv = this.findViewById(R.id.unlimit_iv)
 
-        loveBg.setAnimateDebounceViewClickListener {
+        loveBg.setDebounceViewClickListener {
             listener?.clickLove()
         }
 
@@ -185,7 +189,28 @@ class RelayTopContentView : ExConstraintLayout {
                 loveBg.setImageResource(R.drawable.light_left_love_icon)
             }
         }
+        anim = ObjectAnimator.ofPropertyValuesHolder(loveBg,
+                PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 1.3f, 1f),
+                PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1.3f, 1f))
+        anim?.duration = 500
+        anim?.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animator: Animator) {
+
+            }
+
+            override fun onAnimationEnd(animator: Animator) {
+            }
+
+            override fun onAnimationCancel(animator: Animator) {
+            }
+
+            override fun onAnimationRepeat(animator: Animator) {
+
+            }
+        })
+        anim?.start()
     }
+
 
     fun getViewLeft(userID: Int): Int {
         var userSeatLeft = true  // 默认这个id在左边的位置上
@@ -249,6 +274,7 @@ class RelayTopContentView : ExConstraintLayout {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
+        anim?.cancel()
     }
 
     interface Listener {
