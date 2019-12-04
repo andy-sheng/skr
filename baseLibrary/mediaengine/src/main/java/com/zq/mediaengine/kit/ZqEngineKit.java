@@ -903,6 +903,12 @@ public class ZqEngineKit implements AgoraOutCallback {
                 if (mConfig.getChannelProfile() == Params.CHANNEL_TYPE_LIVE_BROADCASTING) {
                     mConfig.setAnchor(isAnchor);
                     mAgoraRTCAdapter.setClientRole(isAnchor);
+                    if(isAnchor){
+                        mCustomHandlerThread.removeMessage(MSG_ROLE_CHANGE_TIMEOUT);
+                        Message msg = mCustomHandlerThread.obtainMessage();
+                        msg.what = MSG_ROLE_CHANGE_TIMEOUT;
+                        mCustomHandlerThread.sendMessageDelayed(msg,3000);
+                    }
                 }
                 joinRoomInner(roomid, userId, token);
                 //TODO 临时关闭耳返
@@ -1293,12 +1299,10 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public void startAudioMixing(final int uid, final String filePath, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
         if (mCustomHandlerThread != null) {
-
             mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle) {
                 @Override
                 public void realRun() {
                     SDataManager.getInstance().getDataHolder().addPlayerInfo(uid, filePath, midiPath, mixMusicBeginOffset, loopback, replace, cycle);
-
                     if (TextUtils.isEmpty(filePath)) {
                         MyLog.i(TAG, "伴奏路径非法");
                         return;
@@ -1309,7 +1313,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                     } else {
                         UserStatus userStatus = mUserStatusMap.get(uid);
                         MyLog.i(TAG, "startAudioMixing userStatus=" + userStatus);
-                        if ((userStatus == null || !mConfig.isJoinChannelSuccess() || !userStatus.isAnchor()) && !mConfig.isUseExternalAudio()) {
+                        if ((userStatus == null || !mConfig.isJoinChannelSuccess()) && !mConfig.isUseExternalAudio()) {
                             MyLog.w(TAG, "该用户还未在频道中,且用得是声网的混音，播伴奏挂起");
                             canGo = false;
                         } else {
@@ -1363,18 +1367,25 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private void tryPlayPendingMixingMusic(String from) {
         MyLog.i(TAG, "tryPlayPengdingMixingMusic" + " from=" + from);
-        if (mPendingStartMixAudioParams != null) {
-            MyLog.i(TAG, "播放之前挂起的伴奏 uid=" + mPendingStartMixAudioParams.uid);
-            startAudioMixing(mPendingStartMixAudioParams.uid,
-                    mPendingStartMixAudioParams.filePath,
-                    mPendingStartMixAudioParams.midiPath,
-                    mPendingStartMixAudioParams.mixMusicBeginOffset,
-                    mPendingStartMixAudioParams.loopback,
-                    mPendingStartMixAudioParams.replace,
-                    mPendingStartMixAudioParams.cycle);
-            mPendingStartMixAudioParams = null;
-        } else {
-            MyLog.i(TAG, "没有伴奏挂起");
+        if(mCustomHandlerThread!=null){
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (mPendingStartMixAudioParams != null) {
+                        MyLog.i(TAG, "播放之前挂起的伴奏 uid=" + mPendingStartMixAudioParams.uid);
+                        startAudioMixing(mPendingStartMixAudioParams.uid,
+                                mPendingStartMixAudioParams.filePath,
+                                mPendingStartMixAudioParams.midiPath,
+                                mPendingStartMixAudioParams.mixMusicBeginOffset,
+                                mPendingStartMixAudioParams.loopback,
+                                mPendingStartMixAudioParams.replace,
+                                mPendingStartMixAudioParams.cycle);
+                        mPendingStartMixAudioParams = null;
+                    } else {
+                        MyLog.i(TAG, "没有伴奏挂起");
+                    }
+                }
+            });
         }
     }
 
