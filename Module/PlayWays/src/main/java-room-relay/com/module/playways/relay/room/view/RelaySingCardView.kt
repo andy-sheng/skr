@@ -82,8 +82,8 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         val music = roomData?.realRoundInfo?.music
         songNameTv.text = "《${music?.displaySongName}》"
         countDownJob = launch {
-            while (true) {
-//                var t = music?.endMs!! - music?.beginMs
+            var t = music?.endMs!! - music?.beginMs
+            repeat(t / 1000) {
                 var leftTs = (roomData?.getSingCurPosition() ?: 0)
                 if (leftTs < 0) {
                     leftTs = 0
