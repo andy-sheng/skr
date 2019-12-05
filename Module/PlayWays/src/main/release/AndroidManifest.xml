@@ -205,6 +205,10 @@
             android:windowSoftInputMode="adjustResize"></activity>
 
 <!--        <activity android:name=".demo.DoubleDemoTestActivity"/>-->
+        <activity
+            android:name="com.module.playways.party.room.PartyRoomActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
 
         <meta-data
             android:name="com.module.playways.PlayWaysConfiguration"

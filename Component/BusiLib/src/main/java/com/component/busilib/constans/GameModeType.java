@@ -20,4 +20,6 @@ public class GameModeType {
     public static final int GAME_MODE_DOUBLE = 9; //双人畅聊模式
 
     public static final int GAME_MODE_RELAY = 10; //合唱模式
+
+    public static final int GAME_MODE_PARTY = 11; // 剧场模式
 }

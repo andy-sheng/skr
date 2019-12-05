@@ -5,7 +5,6 @@ import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.component.busilib.constans.GameModeType
-import com.component.busilib.model.EffectModel
 import com.component.busilib.model.GameBackgroundEffectModel
 import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
@@ -14,7 +13,7 @@ import com.module.playways.relay.room.event.RelayLockChangeEvent
 import com.module.playways.relay.room.event.RelayRoundChangeEvent
 import com.module.playways.relay.room.model.RelayConfigModel
 import com.module.playways.relay.room.model.RelayRoundInfoModel
-import com.module.playways.relay.room.model.ReplayPlayerInfoModel
+import com.module.playways.relay.room.model.RelayPlayerInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.RelayRoom.ERRoundStatus
 import kotlinx.coroutines.GlobalScope
@@ -56,7 +55,7 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
      * System.currentTimeMillis() - shiftTsForRelay 与 createTs + beginTs 进行比较能得到演唱应该的进度
      */
     var configModel = RelayConfigModel()// 一唱到底配置
-    var peerUser: ReplayPlayerInfoModel? = null
+    var peerUser: RelayPlayerInfoModel? = null
 
     var unLockMe = false // 我是否解锁
         set(value) {
@@ -221,7 +220,7 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
             }
         }
         this.configModel = rsp.config ?: RelayConfigModel()
-        this.peerUser = ReplayPlayerInfoModel()
+        this.peerUser = RelayPlayerInfoModel()
         rsp.users?.forEachIndexed { index, userInfoModel ->
             var a = rsp.showInfos.getOrNull(index)
             MyLog.w("chengsimin", "peerEffectModel1=${a} index=${index}")

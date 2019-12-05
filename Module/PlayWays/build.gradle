@@ -121,6 +121,10 @@ android {
             java.srcDirs += 'src/main/java-room-relay'
             res.srcDirs += 'src/main/res-room-relay'
 
+            // 剧场房
+            java.srcDirs += 'src/main/java-room-party'
+            res.srcDirs += 'src/main/res-room-party'
+
             // demo Test
 //            java.srcDirs += 'src/main/java-demo-test'
 //            res.srcDirs += 'src/main/res-demo-test'
