@@ -34,11 +34,28 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/avatar_level" />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/age_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_10_dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/view_4_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#A6CDE5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nickname_view" />
+
     <TextView
         android:id="@+id/song_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_28_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
@@ -47,7 +64,7 @@
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nickname_view" />
+        app:layout_constraintTop_toBottomOf="@id/age_tv" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/recommend_tag_sdv"

@@ -12,6 +12,7 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
 import com.common.utils.U
+import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarLevelView
 import com.component.busilib.view.NickNameView
 import com.component.busilib.view.recyclercardview.CardAdapterHelper
@@ -55,6 +56,7 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
 
         private val avatarLevel: AvatarLevelView = item.findViewById(R.id.avatar_level)
         private val nicknameView: NickNameView = item.findViewById(R.id.nickname_view)
+        private val ageTv: ExTextView = item.findViewById(R.id.age_tv)
         private val songNameTv: TextView = item.findViewById(R.id.song_name_tv)
         private val recommendTagSdv: SimpleDraweeView = item.findViewById(R.id.recommend_tag_sdv)
         private val joinTv: TextView = item.findViewById(R.id.join_tv)
@@ -74,8 +76,13 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
 
             avatarLevel.bindData(model.user)
             nicknameView.setAllStateText(model.user)
-            songNameTv.text = model.item?.itemName
-
+            songNameTv.text = "《${model.item?.itemName}》"
+            if (!TextUtils.isEmpty(model.user?.ageStageString)) {
+                ageTv.visibility = View.VISIBLE
+                ageTv.text = model.user?.ageStageString
+            } else {
+                ageTv.visibility = View.INVISIBLE
+            }
             if (!TextUtils.isEmpty(model.recommendTag?.url)) {
                 recommendTagSdv.visibility = View.VISIBLE
                 FrescoWorker.loadImage(recommendTagSdv, ImageFactory.newPathImage(model.recommendTag?.url)
