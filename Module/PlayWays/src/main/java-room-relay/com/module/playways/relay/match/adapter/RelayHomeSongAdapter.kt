@@ -1,6 +1,9 @@
 package com.module.playways.relay.match.adapter
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
+import com.common.utils.SpanUtils
+import com.common.utils.U
 import com.component.busilib.view.recyclercardview.CardAdapterHelper
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.LyricsReader
@@ -55,10 +60,7 @@ class RelayHomeSongAdapter : RecyclerView.Adapter<RelayHomeSongAdapter.RelaySong
 
         val songNameTv: TextView = item.findViewById(R.id.song_name_tv)
         val songAuthorTv: TextView = item.findViewById(R.id.song_author_tv)
-        val singSelf: TextView = item.findViewById(R.id.sing_self)
-        val singSelfContent: TextView = item.findViewById(R.id.sing_self_content)
-        val singOther: TextView = item.findViewById(R.id.sing_other)
-        val singOtherContent: TextView = item.findViewById(R.id.sing_other_content)
+        val contentTv: TextView = item.findViewById(R.id.content_tv)
         val startTv: TextView = item.findViewById(R.id.start_tv)
 
         var mPos = -1
@@ -70,48 +72,63 @@ class RelayHomeSongAdapter : RecyclerView.Adapter<RelayHomeSongAdapter.RelaySong
             }
         }
 
+        @SuppressLint("CheckResult")
         fun bindData(position: Int, model: ExSongModel) {
             this.mPos = position
             this.mModel = model
 
             songNameTv.text = model.songModel?.itemName
             songAuthorTv.text = model.songModel?.songDesc
-            if (!TextUtils.isEmpty(model.firstSingLyric)) {
-                singSelfContent.text = model.firstSingLyric
-                singOtherContent.text = model.secondSingLyric
+            if (!TextUtils.isEmpty(model.content)) {
+                contentTv.text = model.content
+                contentTv.requestLayout()
             } else {
                 LyricsManager.loadStandardLyric(model.songModel?.lyric)
                         .subscribe({
                             it?.let {
                                 if ((model.songModel?.relaySegments?.size ?: 0) > 0) {
-                                    var split = model.songModel?.relaySegments?.get(0) ?: 0
-                                    var firstSingLyric = StringBuilder()
-                                    var secondSingLyric = StringBuilder()
-                                    var firstNum = 0
-                                    var secondNum = 0
-                                    for (l in it.lyricsLineInfoList) {
-                                        if (l.startTime < split && firstNum < 4) {
-                                            firstSingLyric.append(l.lineLyrics).append("\n")
-                                            firstNum++
-                                            if (firstNum == 4) {
-                                                firstSingLyric.append("...").append("\n")
+                                    val span = SpanUtils()
+                                    var lyricsLine = 0   // 时间片内歌词多少句
+                                    val maxLines = 3     // 一个时间片最多3句歌词
+                                    // 第一句分割
+                                    var timeIndex = 0
+                                    var timeEnd = model.songModel?.relaySegments?.get(timeIndex)
+                                            ?: 0
+                                    span.append("【你唱】").setForegroundColor(Color.parseColor("#4DA5DB")).setFontSize(12, true).append("\n")
+                                    it.lyricsLineInfoList.forEachIndexed { index, lyricsLineInfo ->
+                                        if (lyricsLineInfo.startTime < timeEnd) {
+                                            when {
+                                                lyricsLine < maxLines -> span.append(lyricsLineInfo.lineLyrics).setForegroundColor(U.getColor(R.color.black_trans_80)).setFontSize(14, true).append("\n")
+                                                lyricsLine == maxLines -> span.append("...")
+                                                else -> {
+                                                    // 不用处理
+                                                    if (timeEnd == Int.MAX_VALUE) {
+                                                        return@forEachIndexed
+                                                    }
+                                                }
                                             }
-                                        }
-                                        if (l.startTime > split && secondNum < 2) {
-                                            secondSingLyric.append(l.lineLyrics).append("\n")
-                                            secondNum++
-                                            if (secondNum == 2) {
-                                                secondSingLyric.append("...").append("\n")
+                                            lyricsLine += 1
+                                        } else {
+                                            lyricsLine = 0   // 时间片内歌词句数清零
+                                            timeIndex += 1
+                                            if (timeIndex % 2 == 0) {
+                                                span.append("\n").append("【你唱】").setForegroundColor(Color.parseColor("#4DA5DB")).setFontSize(12, true).append("\n")
+                                            } else {
+                                                span.append("\n").append("【Ta唱】").setForegroundColor(Color.parseColor("#DB4D84")).setFontSize(12, true).append("\n")
                                             }
-                                        }
-                                        if (secondNum > 2) {
-                                            break
+                                            timeEnd = if (timeIndex < model.songModel?.relaySegments?.size ?: 0) {
+                                                model.songModel?.relaySegments?.get(timeIndex) ?: 0
+                                            } else {
+                                                // 最后一句了
+                                                Int.MAX_VALUE
+                                            }
+                                            span.append(lyricsLineInfo.lineLyrics).append("\n")
+                                            lyricsLine += 1
                                         }
                                     }
-                                    model.firstSingLyric = firstSingLyric.toString()
-                                    model.secondSingLyric = secondSingLyric.toString()
-                                    singSelfContent.text = model.firstSingLyric
-                                    singOtherContent.text = model.secondSingLyric
+                                    model.content = span.create()
+                                    contentTv.text = model.content
+                                    contentTv.requestLayout()
                                 } else {
 
                                 }
@@ -128,8 +145,7 @@ class RelayHomeSongAdapter : RecyclerView.Adapter<RelayHomeSongAdapter.RelaySong
     }
 
     class ExSongModel {
-        var firstSingLyric = ""
-        var secondSingLyric = ""
+        var content: SpannableStringBuilder? = null
         var songModel: SongModel? = null
 
         constructor(songModel: SongModel?) {
