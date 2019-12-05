@@ -112,6 +112,9 @@ public class InframeProcessor implements ISchemeProcessor {
                     case SchemeConstants.HOST_MALL:
                         processMallUrl(uri);
                         return ProcessResult.AcceptedAndContinue;
+                    case SchemeConstants.HOST_RELAY:
+                        processRelayUrl(uri);
+                        return ProcessResult.AcceptedAndContinue;
                 }
             }
         } else if ("rong".equals(scheme)) {
@@ -133,6 +136,18 @@ public class InframeProcessor implements ISchemeProcessor {
             }
         }
         return ProcessResult.NotAccepted;
+    }
+
+    private void processRelayUrl(Uri uri) {
+        String path = uri.getPath();
+        if (SchemeConstants.PATH_HOME.equals(path)) {
+            try {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
+                        .navigation();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void processMallUrl(Uri uri) {

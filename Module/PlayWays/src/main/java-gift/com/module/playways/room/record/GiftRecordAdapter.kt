@@ -63,7 +63,8 @@ class GiftRecordAdapter : RecyclerView.Adapter<GiftRecordAdapter.GiftRecordViewH
 
             FrescoWorker.loadImage(giftSdv, ImageFactory.newPathImage(model.gift?.giftPic)
                     .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
-                    .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_640)
+                    .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
+                    .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                     .build<BaseImage>())
         }
     }
