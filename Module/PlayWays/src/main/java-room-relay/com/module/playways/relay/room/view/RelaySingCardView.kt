@@ -83,8 +83,8 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         songNameTv.text = "《${music?.displaySongName}》"
         countDownJob = launch {
             while (true) {
-                var t = music?.endMs!! - music?.beginMs
-                var leftTs = t - (roomData?.getSingCurPosition() ?: 0)
+//                var t = music?.endMs!! - music?.beginMs
+                var leftTs = (roomData?.getSingCurPosition() ?: 0)
                 if (leftTs < 0) {
                     leftTs = 0
                 }
