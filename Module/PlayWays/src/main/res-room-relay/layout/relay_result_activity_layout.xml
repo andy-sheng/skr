@@ -54,7 +54,7 @@
 
         <TextView
             android:id="@+id/game_status_tv"
-            android:layout_width="@dimen/view_100_dp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/view_30_dp"
             android:layout_marginTop="@dimen/view_144_dp"
             android:text="合唱结束了"

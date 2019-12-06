@@ -17,6 +17,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -26,6 +27,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
+import com.common.core.global.event.ShowDialogInHomeEvent;
 import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrSdcardPermission;
@@ -58,6 +60,8 @@ import com.module.home.persenter.VipReceiveCoinPresenter;
 import com.module.home.view.IHomeActivity;
 import com.module.home.view.INotifyView;
 import com.module.msg.IMsgService;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -66,6 +70,7 @@ import org.greenrobot.eventbus.ThreadMode;
 @Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener, INotifyView {
 
+    public final static String PREF_KEY_RELAY_DIALOG = "pref_key_relay_flag";
     public final String TAG = "HomeActivity";
     public final static String NOTIFY_CHANNEL_ID = "invite_notify";
 
@@ -108,6 +113,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     //SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
 
     HomeDialogManager mHomeDialogManager = new HomeDialogManager();
+
+    private DialogPlus mWaitingDialogPlus;   // 新版本上新的提示
 
     public static void open(Activity activity) {
         Intent intent = new Intent(activity, HomeActivity.class);
@@ -317,6 +324,35 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         if (U.getChannelUtils().getChannel().startsWith("FEED")) {
             mPostBtn.callOnClick();
+        }
+
+        showRelayTipsDialog();
+    }
+
+    private void showRelayTipsDialog() {
+        if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_RELAY_DIALOG, false)) {
+            if (mWaitingDialogPlus == null) {
+                mWaitingDialogPlus = DialogPlus.newDialog(this)
+                        .setContentHolder(new ViewHolder(R.layout.relay_first_tip_layout))
+                        .setContentBackgroundResource(R.color.transparent)
+                        .setOverlayBackgroundResource(R.color.black_trans_50)
+                        .setExpanded(false)
+                        .setCancelable(true)
+                        .setGravity(Gravity.CENTER)
+                        .create();
+                mWaitingDialogPlus.findViewById(R.id.bg_iv).setOnClickListener(new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        if (mWaitingDialogPlus != null) {
+                            mWaitingDialogPlus.dismiss();
+                        }
+                    }
+                });
+
+            }
+
+            EventBus.getDefault().post(new ShowDialogInHomeEvent(mWaitingDialogPlus, 8));
+            U.getPreferenceUtils().setSettingBoolean(PREF_KEY_RELAY_DIALOG, true);
         }
     }
 

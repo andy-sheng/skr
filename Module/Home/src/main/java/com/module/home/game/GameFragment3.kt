@@ -39,8 +39,6 @@ import org.greenrobot.eventbus.ThreadMode
 // 主页
 class GameFragment3 : BaseFragment(), IGameView3 {
 
-    val PREF_KEY_RELAY_DIALOG = "pref_key_relay_flag"
-
     lateinit var mTitle: CommonTitleBar
     lateinit var mNavigationBgIv: ImageView
     lateinit var mGameTab: SlidingTabLayout
@@ -60,8 +58,6 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
     private var alphaAnimation: AlphaAnimation? = null
     private var mInviteFriendDialog: InviteFriendDialog? = null
-
-    var mWaitingDialogPlus: DialogPlus? = null
 
     override fun initView(): Int {
         return R.layout.game3_fragment_layout
@@ -182,30 +178,6 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mInviteFriendDialog?.show()
     }
 
-    private fun showRelayTipsDialog() {
-        if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_RELAY_DIALOG, false)) {
-            if (mWaitingDialogPlus == null) {
-                activity?.let {
-                    mWaitingDialogPlus = DialogPlus.newDialog(it)
-                            .setContentHolder(ViewHolder(R.layout.relay_first_tip_layout))
-                            .setContentBackgroundResource(R.color.transparent)
-                            .setOverlayBackgroundResource(R.color.black_trans_50)
-                            .setExpanded(false)
-                            .setCancelable(true)
-                            .setGravity(Gravity.CENTER)
-                            .create()
-
-                    mWaitingDialogPlus?.findViewById(R.id.bg_iv)?.setDebounceViewClickListener {
-                        mWaitingDialogPlus?.dismiss()
-                    }
-                }
-            }
-
-            mWaitingDialogPlus?.show()
-            U.getPreferenceUtils().setSettingBoolean(PREF_KEY_RELAY_DIALOG, true)
-        }
-    }
-
     fun animation(startColor: Int, endColor: Int) {
         if (startColor == endColor) {
             return
@@ -224,7 +196,6 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     override fun onFragmentVisible() {
         super.onFragmentVisible()
         mPresenter.initGameKConfig()
-        showRelayTipsDialog()
         viewSelected(mGameVp.currentItem)
         when {
             mGameVp.currentItem == 0 -> {
