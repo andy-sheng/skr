@@ -18,6 +18,7 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.component.lyrics.utils.SongResUtils
 import com.engine.EngineEvent
@@ -37,6 +38,7 @@ import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.GiftPresentEvent
 import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.RelayRoomMsgManager
+import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.zq.live.proto.RelayRoom.*
@@ -102,6 +104,15 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         RelayRoomMsgManager.addFilter(mPushMsgFilter)
         joinRoomAndInit(true)
         startSyncGameStatus()
+        pretendHeadSetSystemMsg()
+    }
+
+    private fun pretendHeadSetSystemMsg() {
+        val stringBuilder = SpanUtils()
+                .append("温馨提示：佩戴耳机能有效减少噪音、杂音等情况，显著提高音质和演唱效果哦～").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
+                .create()
+        val commentSysModel = CommentSysModel(mRoomData.gameType, stringBuilder)
+        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
 
     /**
@@ -236,10 +247,10 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
 
         val accFile = SongResUtils.getAccFileByUrl(mRoomData?.realRoundInfo?.music?.acc)
-        if(accFile?.exists() == true){
+        if (accFile?.exists() == true) {
             DebugLogView.println(TAG, "preOpWhenSelfRound 伴奏文件本地存在${accFile.path}")
             ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile?.path, null, 0, false, false, 1)
-        }else{
+        } else {
             DebugLogView.println(TAG, "preOpWhenSelfRound 伴奏文件本地不存在${accFile.path}")
             ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), mRoomData?.realRoundInfo?.music?.acc, null, 0, false, false, 1)
         }
@@ -428,7 +439,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
      * 上报轮次结束信息
      */
     fun sendRoundOverInfo() {
-        if(mRoomData?.realRoundInfo?.hasSendRoundOverInfo == false){
+        if (mRoomData?.realRoundInfo?.hasSendRoundOverInfo == false) {
             MyLog.w(TAG, "上报我的演唱结束")
             mRoomData?.realRoundInfo?.hasSendRoundOverInfo = true
             val map = HashMap<String, Any>()
@@ -444,7 +455,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                     MyLog.w(TAG, "演唱结束上报失败 traceid is " + result.traceId)
                 }
             }
-        }else{
+        } else {
             MyLog.w(TAG, "已经上报过演唱结束")
         }
     }
@@ -717,15 +728,15 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             val timeInfo = event.getObj() as EngineEvent.MixMusicTimeInfo
             //这个是唱的时间，先在按长度算时间
             var progress = mRoomData.getSingCurPosition()
-            val shift = progress -timeInfo.current
+            val shift = progress - timeInfo.current
             //DebugLogView.println(TAG, "当前伴奏与预定时间的偏移为${shift}")
-            if (abs(shift) >1000 && progress>=0) {
+            if (abs(shift) > 1000 && progress >= 0) {
                 DebugLogView.println(TAG, "当前伴奏与预定时间的偏移过大 为${shift}")
                 // 伴奏对齐，重新发送轮次切换
                 ZqEngineKit.getInstance().setAudioMixingPosition(mRoomData.getSingCurPosition().toInt())
                 launcherNextTurn()
             }
-            if(mRoomData.hasOverThisRound()){
+            if (mRoomData.hasOverThisRound()) {
                 sendRoundOverInfo()
             }
         } else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
@@ -909,7 +920,6 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         ensureInRcRoom()
         roomView.gameOver()
     }
-
 
 
 //    /**

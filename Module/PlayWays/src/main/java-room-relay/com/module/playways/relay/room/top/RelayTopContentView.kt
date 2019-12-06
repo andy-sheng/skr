@@ -38,6 +38,8 @@ class RelayTopContentView : ExConstraintLayout {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+    private val mTag = "RelayTopContentView"
+
     private val arrowIv: ImageView
     private val unlimitIv: ImageView
     private val leftAvatarSdv: SimpleDraweeView
@@ -49,6 +51,7 @@ class RelayTopContentView : ExConstraintLayout {
     private val countTimeTv: TextView
     private val tipsIv: ImageView
     private var anim: ObjectAnimator? = null
+    private var countTimeScaleAnimator: ObjectAnimator? = null
 
     var listener: Listener? = null
     var mIsOpen = true
@@ -56,9 +59,11 @@ class RelayTopContentView : ExConstraintLayout {
 
     var roomData: RelayRoomData? = null
 
+
     init {
         View.inflate(context, R.layout.relay_top_content_view_layout, this)
 
+        U.getSoundUtils().preLoad(mTag, R.raw.double_chat_cd)
         arrowIv = this.findViewById(R.id.arrow_iv)
         leftAvatarSdv = this.findViewById(R.id.left_avatar_sdv)
         leftMuteIv = this.findViewById(R.id.left_mute_iv)
@@ -149,8 +154,21 @@ class RelayTopContentView : ExConstraintLayout {
                     if (leftTs < 0) {
                         leftTs = 0
                     }
-                    countTimeTv.text = U.getDateTimeUtils().formatVideoTime(leftTs);
+                    countTimeTv.text = U.getDateTimeUtils().formatVideoTime(leftTs)
+                    if (leftTs <= 10 * 1000L) {
+                        U.getSoundUtils().play(mTag, R.raw.double_chat_cd)
+                        countTimeTv?.setTextColor(Color.parseColor("#FFC15B"))
+                        countTimeScaleAnimator?.cancel()
+                        if (countTimeScaleAnimator == null) {
+                            countTimeScaleAnimator = ObjectAnimator.ofPropertyValuesHolder(countTimeTv,
+                                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.5f, 1.0f),
+                                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.5f, 1.0f))
+                            countTimeScaleAnimator?.duration = 1000
+                        }
+                        countTimeScaleAnimator?.start()
+                    }
                     if (leftTs == 0L) {
+                        countTimeScaleAnimator?.cancel()
                         break
                     }
                     delay(1000)
@@ -274,6 +292,8 @@ class RelayTopContentView : ExConstraintLayout {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
+        U.getSoundUtils().release(mTag)
+        countTimeScaleAnimator?.cancel()
         anim?.cancel()
     }
 

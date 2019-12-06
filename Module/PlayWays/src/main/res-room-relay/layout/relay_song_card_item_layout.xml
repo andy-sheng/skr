@@ -35,66 +35,24 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/song_name_tv" />
 
-
     <TextView
-        android:id="@+id/sing_self"
+        android:id="@+id/content_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="【你唱】"
-        android:textColor="#4DA5DB"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintBottom_toTopOf="@id/sing_self_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/song_author_tv"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <TextView
-        android:id="@+id/sing_self_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_6_dp"
-        android:ellipsize="end"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginBottom="@dimen/view_20_dp"
         android:gravity="center"
+        android:ellipsize="end"
+        android:maxLines="17"
         android:lineSpacingExtra="@dimen/view_10_dp"
-        android:maxLines="4"
-        android:text="古巴比伦王颁布了汉谟拉比法典\n刻在黑色的玄武岩\n距今已经三千七百多年\n凝视碑文的字眼\n你在橱窗前\n凝视碑文的字眼"
         android:textColor="@color/black_trans_80"
         android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintBottom_toTopOf="@id/sing_other"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sing_self" />
-
-    <TextView
-        android:id="@+id/sing_other"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_24_dp"
-        android:text="【Ta唱】"
-        android:textColor="#DB4D84"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintBottom_toTopOf="@id/sing_other_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sing_self_content" />
-
-    <TextView
-        android:id="@+id/sing_other_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_6_dp"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:lineSpacingExtra="@dimen/view_10_dp"
-        android:maxLines="2"
-        android:text="古巴比伦王颁布了汉谟拉比法典\n刻在黑色的玄武岩\n距今已经三千七百多年\n凝视碑文的字眼\n你在橱窗前\n凝视碑文的字眼"
-        android:textColor="@color/black_trans_80"
-        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@id/start_tv"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sing_other" />
+        app:layout_constraintTop_toBottomOf="@id/song_author_tv" />
+
 
     <TextView
         android:id="@+id/start_tv"
