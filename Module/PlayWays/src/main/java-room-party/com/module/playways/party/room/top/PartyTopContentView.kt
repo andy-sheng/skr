@@ -1,31 +1,18 @@
 package com.module.playways.party.room.top
 
-import android.animation.Animator
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.common.core.avatar.AvatarUtils
-import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
-import com.common.utils.U
-import com.common.utils.dp
+import com.common.image.fresco.BaseImageView
 import com.common.view.ex.ExConstraintLayout
-import com.component.person.event.ShowPersonCardEvent
-import com.facebook.drawee.view.SimpleDraweeView
+import com.common.view.ex.ExImageView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
-import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.relay.room.event.RelayLockChangeEvent
 import com.zq.live.proto.RelayRoom.RMuteMsg
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -39,64 +26,34 @@ class PartyTopContentView : ExConstraintLayout {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    private val arrowIv: ImageView
-    private val unlimitIv: ImageView
-    private val leftAvatarSdv: SimpleDraweeView
-    private val leftMuteIv: ImageView
-    private val rightMuteIv: ImageView
-    private val loveBg: ImageView
-    private val loveStatusIv: ImageView
-    private val rightAvatarSdv: SimpleDraweeView
-    private val countTimeTv: TextView
-    private val tipsIv: ImageView
-    private var anim: ObjectAnimator? = null
+    val arrowIv: ImageView
+    val avatarIv: BaseImageView
+    val nameTv: TextView
+    val compereTv: TextView
+    val moreArrow: ExImageView
+    val onlineNum: TextView
+    val audienceIv: ImageView
 
     var listener: Listener? = null
     var mIsOpen = true
-    var countDownJob: Job? = null
 
     var roomData: PartyRoomData? = null
 
     init {
-        View.inflate(context, R.layout.relay_top_content_view_layout, this)
+        View.inflate(context, R.layout.party_top_content_view_layout, this)
 
         arrowIv = this.findViewById(R.id.arrow_iv)
-        leftAvatarSdv = this.findViewById(R.id.left_avatar_sdv)
-        leftMuteIv = this.findViewById(R.id.left_mute_iv)
-        rightMuteIv = this.findViewById(R.id.right_mute_iv)
+        avatarIv = this.findViewById(R.id.avatar_iv)
+        nameTv = this.findViewById(R.id.name_tv)
+        compereTv = this.findViewById(R.id.compere_tv)
+        moreArrow = this.findViewById(R.id.more_arrow)
+        onlineNum = this.findViewById(R.id.online_num)
+        audienceIv = this.findViewById(R.id.audience_iv)
 
-        loveBg = this.findViewById(R.id.love_bg)
-        loveStatusIv = this.findViewById(R.id.love_status_iv)
-        rightAvatarSdv = this.findViewById(R.id.right_avatar_sdv)
-        countTimeTv = this.findViewById(R.id.count_time_tv)
-        tipsIv = this.findViewById(R.id.tips_iv)
-        unlimitIv = this.findViewById(R.id.unlimit_iv)
-
-        loveBg.setDebounceViewClickListener {
-            listener?.clickLove()
-        }
-
-        arrowIv.setDebounceViewClickListener {
-            listener?.clickArrow(!mIsOpen)
-        }
-        leftMuteIv.visibility = View.GONE
-        rightMuteIv.visibility = View.GONE
-
-//        leftAvatarSdv.setDebounceViewClickListener {
-//            if (roomData?.leftSeat == true) {
-//                EventBus.getDefault().post(ShowPersonCardEvent(MyUserInfoManager.uid.toInt()))
-//            } else {
-//                EventBus.getDefault().post(ShowPersonCardEvent(roomData?.peerUser?.userID ?: 0))
-//            }
-//        }
-//
-//        rightAvatarSdv.setDebounceViewClickListener {
-//            if (roomData?.leftSeat == true) {
-//                EventBus.getDefault().post(ShowPersonCardEvent(roomData?.peerUser?.userID ?: 0))
-//            } else {
-//                EventBus.getDefault().post(ShowPersonCardEvent(MyUserInfoManager.uid.toInt()))
-//            }
-//        }
+        arrowIv.setDebounceViewClickListener { listener?.clickArrow(!mIsOpen) }
+        moreArrow.setDebounceViewClickListener { listener?.clickMore() }
+        onlineNum.setDebounceViewClickListener { listener?.clickMore() }
+        audienceIv.setDebounceViewClickListener { listener?.clickMore() }
     }
 
     fun setArrowIcon(open: Boolean) {
@@ -112,156 +69,17 @@ class PartyTopContentView : ExConstraintLayout {
     }
 
     fun bindData() {
-//        if (roomData?.leftSeat == true) {
-//            AvatarUtils.loadAvatarByUrl(leftAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
-//                    .setCircle(true)
-//                    .setBorderColor(Color.parseColor("#ffd8d8d8"))
-//                    .setBorderWidth(1.dp().toFloat())
-//                    .build())
-//            AvatarUtils.loadAvatarByUrl(rightAvatarSdv, AvatarUtils.newParamsBuilder(roomData?.peerUser?.userInfo?.avatar)
-//                    .setCircle(true)
-//                    .setBorderColor(Color.parseColor("#ffd8d8d8"))
-//                    .setBorderWidth(1.dp().toFloat())
-//                    .build())
-//        } else {
-//            AvatarUtils.loadAvatarByUrl(rightAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
-//                    .setCircle(true)
-//                    .setBorderColor(Color.parseColor("#ffd8d8d8"))
-//                    .setBorderWidth(1.dp().toFloat())
-//                    .build())
-//            AvatarUtils.loadAvatarByUrl(leftAvatarSdv, AvatarUtils.newParamsBuilder(roomData?.peerUser?.userInfo?.avatar)
-//                    .setCircle(true)
-//                    .setBorderColor(Color.parseColor("#ffd8d8d8"))
-//                    .setBorderWidth(1.dp().toFloat())
-//                    .build())
-//        }
-//        loveBg.setImageResource(R.drawable.normal_love_icon)
-//        countTimeTv.text = U.getDateTimeUtils().formatVideoTime(5 * 60 * 1000)
-//        tipsIv.visibility = View.VISIBLE
-    }
 
-    fun launchCountDown() {
-//        if (countTimeTv.visibility == View.VISIBLE) {
-//            var music = roomData?.realRoundInfo?.music
-//            countDownJob = launch {
-//                while (true) {
-//                    var t = music?.endMs!! - music?.beginMs + 3000
-//                    var leftTs = t - (roomData?.getSingCurPosition() ?: 0)
-//                    if (leftTs < 0) {
-//                        leftTs = 0
-//                    }
-//                    countTimeTv.text = U.getDateTimeUtils().formatVideoTime(leftTs);
-//                    if (leftTs == 0L) {
-//                        break
-//                    }
-//                    delay(1000)
-//                }
-//                listener?.countDownOver()
-//            }
-//        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelayLockChangeEvent) {
-//        if (roomData?.unLockMe == true && roomData?.unLockPeer == true) {
-//            loveBg.isClickable = false
-//            loveBg.setImageResource(R.drawable.light_love_icon)
-//            unlimitIv.visibility = View.VISIBLE
-//            tipsIv.visibility = View.GONE
-//            countTimeTv.visibility = View.GONE
-//            countDownJob?.cancel()
-//        } else if (roomData?.unLockMe == false && roomData?.unLockPeer == false) {
-//            loveBg.isClickable = true
-//            loveBg.setImageResource(R.drawable.normal_love_icon)
-//        } else if (roomData?.unLockMe == true) {
-//            loveBg.isClickable = false
-//            tipsIv.visibility = View.GONE
-//            if (roomData?.leftSeat == true) {
-//                loveBg.setImageResource(R.drawable.light_left_love_icon)
-//            } else {
-//                loveBg.setImageResource(R.drawable.light_right_love_icon)
-//            }
-//        } else if (roomData?.unLockPeer == true) {
-//            loveBg.isClickable = true
-//            tipsIv.visibility = View.VISIBLE
-//            if (roomData?.leftSeat == true) {
-//                loveBg.setImageResource(R.drawable.light_right_love_icon)
-//            } else {
-//                loveBg.setImageResource(R.drawable.light_left_love_icon)
-//            }
-//        }
-//        anim = ObjectAnimator.ofPropertyValuesHolder(loveBg,
-//                PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 1.3f, 1f),
-//                PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1.3f, 1f))
-//        anim?.duration = 500
-//        anim?.addListener(object : Animator.AnimatorListener {
-//            override fun onAnimationStart(animator: Animator) {
-//
-//            }
-//
-//            override fun onAnimationEnd(animator: Animator) {
-//            }
-//
-//            override fun onAnimationCancel(animator: Animator) {
-//            }
-//
-//            override fun onAnimationRepeat(animator: Animator) {
-//
-//            }
-//        })
-//        anim?.start()
-    }
 
-
-    fun getViewLeft(userID: Int): Int {
-//        var userSeatLeft = true  // 默认这个id在左边的位置上
-//        userSeatLeft = if (userID == MyUserInfoManager.uid.toInt()) {
-//            roomData?.leftSeat ?: true
-//        } else {
-//            !(roomData?.leftSeat ?: true)
-//        }
-//
-//        return if (userSeatLeft) {
-//            // 左边的位置
-//            U.getDisplayUtils().screenWidth / 2 - 85.dp() + 21.dp() - 8.dp()
-//        } else {
-//            // 右边的位置
-//            U.getDisplayUtils().screenWidth / 2 + 85.dp() - 21.dp() - 8.dp()
-//        }
-        return 0
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RMuteMsg) {
-//        if (event.userID == MyUserInfoManager.uid.toInt()) {
-//            if (roomData?.leftSeat == true) {
-//                if (event.isMute) {
-//                    leftMuteIv.visibility = View.VISIBLE
-//                } else {
-//                    leftMuteIv.visibility = View.GONE
-//                }
-//            } else {
-//                if (event.isMute) {
-//                    rightMuteIv.visibility = View.VISIBLE
-//                } else {
-//                    rightMuteIv.visibility = View.GONE
-//                }
-//            }
-//        } else if (event.userID == roomData?.peerUser?.userID) {
-//            if (roomData?.leftSeat == true) {
-//                if (event.isMute) {
-//                    rightMuteIv.visibility = View.VISIBLE
-//                } else {
-//                    rightMuteIv.visibility = View.GONE
-//                }
-//            } else {
-//                if (event.isMute) {
-//                    leftMuteIv.visibility = View.VISIBLE
-//                } else {
-//                    leftMuteIv.visibility = View.GONE
-//                }
-//            }
-//        }
+
     }
 
     override fun onAttachedToWindow() {
@@ -276,12 +94,10 @@ class PartyTopContentView : ExConstraintLayout {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
-        anim?.cancel()
     }
 
     interface Listener {
         fun clickArrow(open: Boolean)
-        fun clickLove()
-        fun countDownOver()
+        fun clickMore()
     }
 }
