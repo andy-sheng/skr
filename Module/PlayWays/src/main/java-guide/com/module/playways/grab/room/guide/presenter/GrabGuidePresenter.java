@@ -1333,11 +1333,15 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         int acrScore = event.acrScore;
         int melpScore = event.melpScore;
         String from = event.from;
-        if (acrScore > melpScore) {
-            processScore(acrScore, line);
-        } else {
-            processScore(melpScore, line);
+        int score = melpScore;
+        if (melpScore < 68 && acrScore > melpScore) {
+            if (melpScore > 0) {
+                score = 0.68 * acrScore + 0.32 * melpScore;
+            } else {
+                score = acrScore;
+            }
         }
+        processScore(score, line);
     }
 
     void processScore(int score, int line) {
