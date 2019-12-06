@@ -351,7 +351,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
             }
 
-            EventBus.getDefault().post(new ShowDialogInHomeEvent(mWaitingDialogPlus, 8));
+            EventBus.getDefault().post(new ShowDialogInHomeEvent(mWaitingDialogPlus, 11));
             U.getPreferenceUtils().setSettingBoolean(PREF_KEY_RELAY_DIALOG, true);
         }
     }
