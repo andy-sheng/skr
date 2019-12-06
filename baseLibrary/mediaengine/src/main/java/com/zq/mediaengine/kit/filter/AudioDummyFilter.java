@@ -46,7 +46,7 @@ public class AudioDummyFilter extends AudioFilterBase {
 
     @Override
     protected AudioBufFrame doFilter(AudioBufFrame frame) {
-        if (mFileChannel == null || mConfig == null || mConfig.getAccTs() <= 0) {
+        if (mFileChannel == null || mConfig == null || !mConfig.isMixMusicPlaying()) {
             return frame;
         }
         frame.buf.clear();

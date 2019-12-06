@@ -99,7 +99,7 @@ public class LyricEventLauncher {
                         hasSendLast = true;
                     }
                 } else {
-                    int t = entry.getValue().getEndTime() - accBeginTs;
+                    int t = entry.getValue().getEndTime() - accBeginTs + 250;
                     if (t > 0) {
                         mUiHandler.sendMessageDelayed(msg, t);
                     } else {

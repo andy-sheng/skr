@@ -1,5 +1,7 @@
 package com.zq.mediaengine.kit.filter;
 
+import android.util.Log;
+
 import com.engine.Params;
 import com.engine.score.ICbScoreProcessor;
 import com.engine.score.Score2Callback;
@@ -42,7 +44,7 @@ public class CbAudioScorer extends AudioFilterBase {
         frame.buf.get(mAudioData, 0, len);
         frame.buf.rewind();
 
-        long ts = mConfig.getAccTs() - 40;
+        long ts = mConfig.getAccTs() - 120;
         ts = ts > 0 ? ts : 0;
 
         mProcessor.process(mAudioData, len, frame.format.channels, frame.format.sampleRate,
@@ -61,6 +63,7 @@ public class CbAudioScorer extends AudioFilterBase {
     }
 
     public void getScoreV2(int lineNum, Score2Callback score2Callback) {
+        Log.d(TAG, "getScoreV2: " + mConfig.getAccTs());
         mProcessor.getScoreV2(lineNum, score2Callback);
     }
 }
