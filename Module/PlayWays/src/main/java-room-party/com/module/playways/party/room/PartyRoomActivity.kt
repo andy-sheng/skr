@@ -39,8 +39,9 @@ import com.module.playways.party.room.presenter.PartyCorePresenter
 import com.module.playways.party.room.top.PartyTopContentView
 import com.module.playways.party.room.top.PartyTopOpView
 import com.module.playways.party.room.ui.IPartyRoomView
-import com.module.playways.party.room.view.PartyVoiceControlPanelView
 import com.module.playways.party.room.ui.PartyWidgetAnimationController
+import com.module.playways.party.room.view.PartyGameMainView
+import com.module.playways.party.room.view.PartyVoiceControlPanelView
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.view.ContinueSendView
@@ -130,6 +131,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mWidgetAnimationController = PartyWidgetAnimationController(this)
     internal var mSkrAudioPermission = SkrAudioPermission()
+
+    private var mPartyGameEffectBgView: PartyGameMainView? = null
 //    lateinit var relaySingCardView: RelaySingCardView
 
 //    var mFlyCommentView: FlyCommentView? = null
@@ -209,6 +212,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
         initVipEnterView()
         initMicSeatView()
+        initGameMainView()
 
         mCorePresenter.onOpeningAnimationOver()
 
@@ -307,6 +311,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 //        }
     }
 
+    private fun initGameMainView() {
+        mPartyGameEffectBgView = PartyGameMainView(findViewById(R.id.party_game_main_view_layout_viewStub), mRoomData)
+        mPartyGameEffectBgView?.updateGameContent()
+    }
+
     private fun initVipEnterView() {
         mVIPEnterView = VIPEnterView(findViewById(R.id.vip_enter_view_stub))
     }
@@ -368,7 +377,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mAddSongIv = findViewById(R.id.select_song_tv)
         mAddSongIv.setAnimateDebounceViewClickListener {
             mSkrAudioPermission.ensurePermission({
-//                SongManagerActivity.open(this, mRoomData)
+                //                SongManagerActivity.open(this, mRoomData)
             }, true)
         }
 
