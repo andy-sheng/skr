@@ -393,6 +393,7 @@ class AgentWebActivity extends CameraAdapWebActivity {
         mBridgeWebView.getSettings().setUserAgentString(userAgentString
                 + " pid/" + U.getDeviceUtils().getDeviceID()
                 + " NetType/" + getNet()
+                + " appVersion/" + U.getAppInfoUtils().getVersionCode()
                 + " Pixel/" + U.getDisplayUtils().getPhoneWidth());
 
         mJsRegister = new JsRegister(mBridgeWebView, this);
