@@ -5,6 +5,7 @@ package com.module;
  * 请按module来分
  */
 public interface RouterConstants {
+    String ACTIVITY_FLUTTER = "/flutter/FlutterActivity";
     String ACTIVITY_HOME = "/home/HomeActivity";
     String ACTIVITY_UPLOAD = "/home/UploadAccountInfoActivity";
     String ACTIVITY_UPLOAD_AGE = "/home/UploadAgeTagActivity";
@@ -136,7 +137,6 @@ public interface RouterConstants {
     String ACTIVITY_RELAY_MATCH = "/relay/RelayMatchActivity";
     String ACTIVITY_RELAY_ROOM = "/relay/RelayRoomActivity";
     String ACTIVITY_RELAY_RESULT = "/relay/RelayResultActivity";
-
 
 
     String ACTIVITY_PARTY_ROOM = "/party/PartyRoomActivity";

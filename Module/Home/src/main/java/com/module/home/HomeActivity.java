@@ -48,6 +48,7 @@ import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.event.SkipGuideHomepageEvent;
+import com.module.home.flutter.MyFlutterActivity;
 import com.module.home.fragment.PersonFragment5;
 import com.module.home.game.GameFragment3;
 import com.module.home.persenter.CheckInPresenter;
@@ -233,7 +234,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mPostsArea.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_ROOM)
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FLUTTER)
                             .navigation();
                     return false;
                 }

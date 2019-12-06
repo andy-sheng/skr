@@ -32,6 +32,11 @@ if (repluginPluginEnable.toBoolean()) {
     include ':baseLibrary:replugin-plugin-gradle', ':baseLibrary:replugin-plugin-library'
 }
 
-
+if(flutterEnable.toBoolean()){
+    setBinding(new Binding([gradle: this]))
+    evaluate(new File(
+            'skr_flutter/.android/include_flutter.groovy'
+    ))
+}
 
 

@@ -10,3 +10,9 @@
 [submodule "pm"]
 	path = pm
 	url = git@git.inframe.club:skrer/pm.git
+[submodule "flutter"]
+	path = flutter
+	url = git@git.inframe.club:chengsimin/flutter.git
+[submodule "skr_flutter"]
+	path = skr_flutter
+	url = git@git.inframe.club:chengsimin/skr_flutter.git
