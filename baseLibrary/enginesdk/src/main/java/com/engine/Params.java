@@ -486,7 +486,7 @@ public class Params implements Serializable {
     }
 
     public void setCurrentMusicTs(int currentMusicTs) {
-        currentMusicTs = currentMusicTs;
+        this.currentMusicTs = currentMusicTs;
     }
 
     public Scene getScene() {
