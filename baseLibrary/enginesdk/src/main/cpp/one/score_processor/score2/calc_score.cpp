@@ -448,7 +448,7 @@ float CalcScore::_DTWDistance(vector<float>& pitchNoteVec, vector<float>& melNot
         for (i = istart; i <= imax; i++) {
             distTmp = _NoteDiff(A[i], B[j]);
             g1 = distArray[i-1][j] + 2 * distTmp;
-            g2 = distArray[i-1][j-1] + distTmp - 0.2;
+            g2 = distArray[i-1][j-1] + distTmp - 0.1;
             g3 = distArray[i][j-1] + distTmp;
             g2 = min(g1, g2);
             g3 = min(g2, g3);
