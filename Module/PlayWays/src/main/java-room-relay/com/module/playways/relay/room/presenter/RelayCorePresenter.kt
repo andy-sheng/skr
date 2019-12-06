@@ -109,7 +109,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
 
     private fun pretendHeadSetSystemMsg() {
         val stringBuilder = SpanUtils()
-                .append("温馨提示：佩戴耳机能有效减少噪音、杂音等情况，显著提高音质和演唱效果哦～").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
+                .append(" 温馨提示：佩戴耳机能获得最佳演唱效果").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
                 .create()
         val commentSysModel = CommentSysModel(mRoomData.gameType, stringBuilder)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
