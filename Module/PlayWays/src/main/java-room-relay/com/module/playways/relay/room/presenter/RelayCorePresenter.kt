@@ -65,6 +65,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
 
         internal val MSG_TURN_CHANGE = 22 // 到时间了 轮次切换
 
+        internal val MSG_TURN_CHANGE_PREPARE = 23 // 快到时间了 准备切换
     }
 
     internal var mAbsenTimes = 0
@@ -88,6 +89,9 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 }
                 MSG_TURN_CHANGE -> {
                     turnChange()
+                }
+                MSG_TURN_CHANGE_PREPARE -> {
+                    turnChangePrepare()
                 }
             }
         }
@@ -274,6 +278,10 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         roomView.singBegin()
     }
 
+    private fun turnChangePrepare() {
+        roomView.turnMyChangePrepare()
+    }
+
     private fun turnChange() {
         DebugLogView.println(TAG, "turnChange 开始轮换 progress=${mRoomData?.getSingCurPosition()}")
         if (mRoomData.isSingByMeNow()) {
@@ -368,6 +376,10 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         var nextTs = mRoomData.getNextTurnChangeTs()
         if (nextTs > 0) {
             DebugLogView.println(TAG, "${nextTs}ms 后进行轮次切换")
+            if(mRoomData.getSingerIdNow() == mRoomData.peerUser?.userID){
+                mUiHandler.removeMessages(MSG_TURN_CHANGE_PREPARE)
+                mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE_PREPARE, nextTs-3000)
+            }
             mUiHandler.removeMessages(MSG_TURN_CHANGE)
             mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE, nextTs)
         } else {
@@ -682,6 +694,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         if (mRoomData.gameId > 0) {
             ZqEngineKit.getInstance().stopAudioMixing()
             mUiHandler.removeMessages(MSG_TURN_CHANGE)
+            mUiHandler.removeMessages(MSG_TURN_CHANGE_PREPARE)
             mUiHandler.removeMessages(MSG_LAUNER_MUSIC)
 //            ZqEngineKit.getInstance().stopAudioRecording()
 //            if (ZqEngineKit.getInstance().params.isAnchor) {

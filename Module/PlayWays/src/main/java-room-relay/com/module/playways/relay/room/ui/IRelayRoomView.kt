@@ -11,6 +11,7 @@ interface IRelayRoomView {
     fun gameOver()
     fun showWaiting()
     fun turnChange()
+    fun turnMyChangePrepare()
 
 //
 //    fun singByOthers(lastRoundInfo:MicRoundInfoModel?)

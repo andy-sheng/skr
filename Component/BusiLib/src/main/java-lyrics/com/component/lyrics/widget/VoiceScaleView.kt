@@ -23,7 +23,7 @@ import java.util.ArrayList
  */
 class VoiceScaleView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : View(context, attrs, defStyleAttr) {
     val TAG = "VoiceScaleView"
-    internal var hide = false // 隐藏
+    internal var status = 3 // 1 隐藏 2 准备 3 正式
 
     private var mReadLineX = 0.2f// 红线大约在距离左边 20% 的位置
     private var mShowReadDot = true
@@ -55,9 +55,9 @@ class VoiceScaleView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
 
     var durationProvider: (() -> Long)? = null
 
-    fun setHide(hide: Boolean) {
-        if(this.hide!=hide){
-            this.hide = hide
+    fun setStatus(status: Int) {
+        if(this.status!=status){
+            this.status = status
             postInvalidate()
         }
     }
@@ -150,7 +150,7 @@ class VoiceScaleView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         if (mLocalBeginTs < 0) {
             mLocalBeginTs = System.currentTimeMillis()
         }
-        if (hide) {
+        if (status == 1) {
             return
         }
         val divideLineTX = mReadLineX * mWidth
@@ -168,49 +168,50 @@ class VoiceScaleView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         }
 //        MyLog.d(TAG,"a=${(System.currentTimeMillis() - mLocalBeginTs)} mTranslateTX=$mTranslateTX")
 //        MyLog.d(TAG, "b=$duration")
+        if(status==3) {
+            for (lyricsLineInfo in mLyricsLineInfoList) {
+                val left = divideLineTX + (lyricsLineInfo.startTime.toLong() - mTranslateTX - duration) * SPEED / 1000
+                val right = divideLineTX + (lyricsLineInfo.endTime.toLong() - mTranslateTX - duration) * SPEED / 1000
+                val h = U.getDisplayUtils().dip2px(7f).toFloat()
+                val top = if (isLowStart) height * 2 / 3 - h / 2 else height * 1 / 3 - h / 2
+                val bottom = top + h
+                if (right < left) {
+                    MyLog.w(TAG, "right<left? error")
+                    continue
+                }
 
-        for (lyricsLineInfo in mLyricsLineInfoList) {
-            val left = divideLineTX + (lyricsLineInfo.startTime.toLong() - mTranslateTX - duration) * SPEED / 1000
-            val right = divideLineTX + (lyricsLineInfo.endTime.toLong() - mTranslateTX - duration) * SPEED / 1000
-            val h = U.getDisplayUtils().dip2px(7f).toFloat()
-            val top = if (isLowStart) height * 2 / 3 - h / 2 else height * 1 / 3 - h / 2
-            val bottom = top + h
-            if (right < left) {
-                MyLog.w(TAG, "right<left? error")
-                continue
+                if (right <= divideLineTX) {
+                    val rectF = RectF()
+                    rectF.left = left
+                    rectF.right = right
+                    rectF.top = top
+                    rectF.bottom = bottom
+                    canvas.drawRoundRect(rectF, U.getDisplayUtils().dip2px(10f).toFloat(), U.getDisplayUtils().dip2px(10f).toFloat(), mLeftPaint)
+                } else if (left < divideLineTX && right > divideLineTX) {
+                    val rectLeftF = RectF()
+                    rectLeftF.left = left
+                    rectLeftF.right = divideLineTX
+                    rectLeftF.top = top
+                    rectLeftF.bottom = bottom
+                    canvas.drawRoundRect(rectLeftF, U.getDisplayUtils().dip2px(10f).toFloat(), U.getDisplayUtils().dip2px(10f).toFloat(), mLeftPaint)
+                    val rectRightF = RectF()
+                    rectRightF.left = divideLineTX
+                    rectRightF.right = right
+                    rectRightF.top = top
+                    rectRightF.bottom = bottom
+                    canvas.drawRoundRect(rectRightF, U.getDisplayUtils().dip2px(10f).toFloat(), U.getDisplayUtils().dip2px(10f).toFloat(), mRightPaint)
+                    isRedFlag = true
+                    mRedCy = (top + bottom) / 2
+                } else if (left >= divideLineTX) {
+                    val rectF = RectF()
+                    rectF.left = left
+                    rectF.right = right
+                    rectF.top = top
+                    rectF.bottom = bottom
+                    canvas.drawRoundRect(rectF, U.getDisplayUtils().dip2px(10f).toFloat(), U.getDisplayUtils().dip2px(10f).toFloat(), mRightPaint)
+                }
+                isLowStart = !isLowStart
             }
-
-            if (right <= divideLineTX) {
-                val rectF = RectF()
-                rectF.left = left
-                rectF.right = right
-                rectF.top = top
-                rectF.bottom = bottom
-                canvas.drawRoundRect(rectF, U.getDisplayUtils().dip2px(10f).toFloat(), U.getDisplayUtils().dip2px(10f).toFloat(), mLeftPaint)
-            } else if (left < divideLineTX && right > divideLineTX) {
-                val rectLeftF = RectF()
-                rectLeftF.left = left
-                rectLeftF.right = divideLineTX
-                rectLeftF.top = top
-                rectLeftF.bottom = bottom
-                canvas.drawRoundRect(rectLeftF, U.getDisplayUtils().dip2px(10f).toFloat(), U.getDisplayUtils().dip2px(10f).toFloat(), mLeftPaint)
-                val rectRightF = RectF()
-                rectRightF.left = divideLineTX
-                rectRightF.right = right
-                rectRightF.top = top
-                rectRightF.bottom = bottom
-                canvas.drawRoundRect(rectRightF, U.getDisplayUtils().dip2px(10f).toFloat(), U.getDisplayUtils().dip2px(10f).toFloat(), mRightPaint)
-                isRedFlag = true
-                mRedCy = (top + bottom) / 2
-            } else if (left >= divideLineTX) {
-                val rectF = RectF()
-                rectF.left = left
-                rectF.right = right
-                rectF.top = top
-                rectF.bottom = bottom
-                canvas.drawRoundRect(rectF, U.getDisplayUtils().dip2px(10f).toFloat(), U.getDisplayUtils().dip2px(10f).toFloat(), mRightPaint)
-            }
-            isLowStart = !isLowStart
         }
 
         if (!isRedFlag) {

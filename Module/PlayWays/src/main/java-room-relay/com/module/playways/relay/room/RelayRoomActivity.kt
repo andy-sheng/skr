@@ -79,7 +79,6 @@ import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_RELAY_ROOM)
 class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
-
     fun ensureActivtyTop() {
         // 销毁其他的除排麦房页面所有界面
         for (i in U.getActivityUtils().activityList.size - 1 downTo 0) {
@@ -758,6 +757,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
                     .navigation()
             finish()
         }
+    }
+
+    override fun turnMyChangePrepare() {
+        relaySingCardView.turnMyChangePrepare()
     }
 
 }

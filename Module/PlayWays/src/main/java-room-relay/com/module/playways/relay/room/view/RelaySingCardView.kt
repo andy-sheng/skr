@@ -145,7 +145,7 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         if (roomData?.isSingByMeNow() == true) {
             dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg2)
             otherSingTipsTv.visibility = View.GONE
-            voiceScaleView.setHide(false)
+            voiceScaleView.setStatus(3)
             if (roomData?.myEffectModel?.sourcesJson?.isNotEmpty() == true) {
                 effectBgView?.showBgEffect(roomData?.myEffectModel?.effectModel)
             } else {
@@ -154,7 +154,7 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         } else {
             dotView.setBackgroundResource(R.drawable.relay_sing_card_dot_view_bg1)
             otherSingTipsTv.visibility = View.VISIBLE
-            voiceScaleView.setHide(true)
+            voiceScaleView.setStatus(1)
             if (roomData?.peerEffectModel?.sourcesJson?.isNotEmpty() == true) {
                 effectBgView?.showBgEffect(roomData?.peerEffectModel?.effectModel)
             } else {
@@ -201,10 +201,16 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         othersSingCardView?.setVisibility(View.GONE)
     }
 
+    fun turnMyChangePrepare() {
+        otherSingTipsTv.visibility = View.GONE
+        voiceScaleView.setStatus(2)
+    }
+
     fun destroy() {
         lyricAndAccMatchManager.stop()
         countDownJob?.cancel()
         effectBgView?.hideBg()
         manyLyricsView?.release()
     }
+
 }
