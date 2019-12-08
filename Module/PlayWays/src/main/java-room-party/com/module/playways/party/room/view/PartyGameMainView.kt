@@ -86,6 +86,9 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
                 gamePicImg.visibility = View.GONE
             }
         }
+
+        bottomLeftOpTv.visibility = View.VISIBLE
+        bottomRightOpTv.visibility = View.VISIBLE
     }
 
     private fun getGameTagTitle(): String {
@@ -168,6 +171,8 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         ruleTv.isSelected = false
         attentionTv.isSelected = false
         gamePicImg.visibility = View.GONE
+        bottomLeftOpTv.visibility = View.GONE
+        bottomRightOpTv.visibility = View.GONE
     }
 
     override fun layoutDesc(): Int {
