@@ -35,6 +35,7 @@ import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.mic.room.top.RoomInviteView
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.bottom.PartyBottomContainerView
+import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.presenter.PartyCorePresenter
 import com.module.playways.party.room.seat.PartySeatView
 import com.module.playways.party.room.top.PartyTopContentView
@@ -715,7 +716,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun quitGame() {
         dismissDialog()
         mTipsDialogView = TipsDialogView.Builder(this)
-                .setMessageTip("确定要退出合唱吗")
+                .setMessageTip("确定要退出小剧场吗")
                 .setConfirmTip("确定")
                 .setCancelTip("取消")
                 .setConfirmBtnClickListener {
@@ -739,49 +740,23 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 //        mGrabKickDialog?.dismiss(false)
     }
 
-//    override fun showWaiting() {
-//        hideAllSceneView(null)
-////        relaySingCardView.turnNoSong()
-//        mChangeSongIv.visibility = View.GONE
-//    }
-//
-//    override fun singPrepare(lastRoundInfo: RelayRoundInfoModel?, singCardShowListener: () -> Unit) {
-//        hideAllSceneView(null)
-//        relaySingCardView.turnSingPrepare()
-//        mTopContentView.launchCountDown()
-//        singCardShowListener.invoke()
-//        if (mRoomData?.unLockMe && mRoomData?.unLockPeer) {
-//            mChangeSongIv.visibility = View.VISIBLE
-//        }
-//    }
-//
-//    override fun singBegin() {
-//        hideAllSceneView(null)
-//        relaySingCardView.turnSingBegin()
-//        if (mRoomData?.unLockMe && mRoomData?.unLockPeer) {
-//            mChangeSongIv.visibility = View.VISIBLE
-//        }
-//    }
-//
-//    override fun turnChange() {
-//        hideAllSceneView(null)
-//        relaySingCardView.turnSingTurnChange()
-//    }
-//
-//    override fun showRoundOver(lastRoundInfo: RelayRoundInfoModel?, continueOp: (() -> Unit)?) {
-//        hideAllSceneView(null)
-//        continueOp?.invoke()
-//    }
-//
-//    override fun gameOver() {
-//        if (!mRoomData.isHasExitGame) {
-//            ensureActivtyTop()
-//            mCorePresenter.exitRoom("gameOver")
-//            ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_RESULT)
-//                    .withSerializable("roomData", mRoomData)
-//                    .navigation()
-//            finish()
-//        }
-//    }
+    /**
+     * 某个轮次结束了
+     */
+    override fun showRoundOver(lastRoundInfo: PartyRoundInfoModel?, continueOp: (() -> Unit)?) {
+    }
+
+    /**
+     * 某个游戏开始了 信息在 realRoundInfo里取
+     */
+    override fun gameBegin() {
+    }
+
+    /**
+     * 没有游戏了
+     */
+    override fun showWaiting() {
+
+    }
 
 }

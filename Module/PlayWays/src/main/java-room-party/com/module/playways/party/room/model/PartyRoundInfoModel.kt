@@ -1,22 +1,16 @@
 package com.module.playways.party.room.model
 
 import com.common.log.MyLog
-import com.component.busilib.model.EffectModel
-import com.module.playways.relay.room.event.RelayRoundStatusChangeEvent
+import com.module.playways.party.room.event.PartyRoundStatusChangeEvent
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
-import com.module.playways.room.song.model.SongModel
-import com.zq.live.proto.Common.BackgroundShowInfo
+import com.zq.live.proto.PartyRoom.EPRoundStatus
 import com.zq.live.proto.PartyRoom.PRoundInfo
-import com.zq.live.proto.RelayRoom.ERRoundStatus
-import com.zq.live.proto.RelayRoom.RRoundInfo
 import org.greenrobot.eventbus.EventBus
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class PartyRoundInfoModel : BaseRoundInfoModel() {
 
-    var status = 0
+    var status = EPRoundStatus.PRS_UNKNOWN.value
     var beginMs: Int = 0 //开始相对时间（相对于createdTimeMs时间）
     var endMs: Int = 0 //结束相对时间（相对于createdTimeMs时间）
     var itemInfo: PartyGameInfoModel? = null
@@ -26,28 +20,28 @@ class PartyRoundInfoModel : BaseRoundInfoModel() {
         return TYPE_PARTY
     }
 
-    //
-//    fun updateStatus(notify: Boolean, statusGrab: Int) {
-//        if (getStatusPriority(status) < getStatusPriority(statusGrab)) {
-//            val old = status
-//            status = statusGrab
-//            if (notify) {
-//                EventBus.getDefault().post(RelayRoundStatusChangeEvent(this, old))
-//            }
-//        }
-//    }
-//
-//    /**
-//     * 重排一下状态机的优先级
-//     *
-//     * @param status
-//     * @return
-//     */
-//    internal fun getStatusPriority(status: Int): Int {
-//        return status
-//    }
-//
-//    /**
+
+    fun updateStatus(notify: Boolean, statusGrab: Int) {
+        if (getStatusPriority(status) < getStatusPriority(statusGrab)) {
+            val old = status
+            status = statusGrab
+            if (notify) {
+                EventBus.getDefault().post(PartyRoundStatusChangeEvent(this, old))
+            }
+        }
+    }
+
+    /**
+     * 重排一下状态机的优先级
+     *
+     * @param status
+     * @return
+     */
+    internal fun getStatusPriority(status: Int): Int {
+        return status
+    }
+
+    //    /**
 //     * 一唱到底使用
 //     */
     override fun tryUpdateRoundInfoModel(round: BaseRoundInfoModel?, notify: Boolean) {
@@ -70,15 +64,16 @@ class PartyRoundInfoModel : BaseRoundInfoModel() {
         if (roundInfo.itemInfo != null) {
             this.itemInfo = roundInfo.itemInfo
         }
-//        updateStatus(notify, roundInfo.status)
+        updateStatus(notify, roundInfo.status)
         return
     }
-//
+
+    //
 //
     override fun toString(): String {
         return "PartyRoundInfoModel{" +
                 "roundSeq=" + roundSeq +
-//                ", status=" + status +
+                ", status=" + status +
 //                ", songModel=" + (if (music == null) "" else music!!.toSimpleString()) +
 //                ", singBeginMs=" + singBeginMs +
                 ", itemInfo=" + itemInfo +
@@ -86,7 +81,8 @@ class PartyRoundInfoModel : BaseRoundInfoModel() {
 //                ", overReason=" + overReason +
                 '}'.toString()
     }
-//
+
+    //
     companion object {
 
         fun parseFromRoundInfo(roundInfo: PRoundInfo): PartyRoundInfoModel {
@@ -95,6 +91,7 @@ class PartyRoundInfoModel : BaseRoundInfoModel() {
             roundInfoModel.beginMs = roundInfo.beginMs
             roundInfoModel.endMs = roundInfo.endMs
             roundInfoModel.itemInfo = PartyGameInfoModel.parseFromItemInfo(roundInfo.itemInfo)
+            roundInfoModel.status = roundInfo.status.value
             roundInfoModel.hasNextItem = roundInfo.hasNextItem
             return roundInfoModel
         }

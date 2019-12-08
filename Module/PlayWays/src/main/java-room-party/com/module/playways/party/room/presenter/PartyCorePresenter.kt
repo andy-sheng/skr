@@ -29,6 +29,7 @@ import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.PartyRoomMsgManager
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
+import com.zq.live.proto.PartyRoom.EPRoundStatus
 import com.zq.live.proto.PartyRoom.PartyRoomMsg
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.Job
@@ -476,16 +477,16 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             return
         }
 
-//        if (thisRound.status == ERRoundStatus.RRS_INTRO.value) {
-//            // 等待阶段
-//            roomView.showRoundOver(lastRound) {
-//                roomView.showWaiting()
-//            }
-//
-//        } else if (thisRound.isSingStatus) {
-//
-//            roomView.showRoundOver(lastRound) {
-//                // 演唱阶段
+        if (thisRound.status == EPRoundStatus.PRS_WAITING.value) {
+            // 等待阶段
+            roomView.showRoundOver(lastRound) {
+                roomView.showWaiting()
+            }
+
+        } else if (thisRound.status == EPRoundStatus.PRS_PLAY_GAME.value) {
+
+            roomView.showRoundOver(lastRound) {
+                // 演唱阶段
 //                val size = U.getActivityUtils().activityList.size
 //                var needTips = false
 //                for (i in size - 1 downTo 0) {
@@ -500,13 +501,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //                if (needTips) {
 //                    U.getToastUtil().showLong("你的演唱开始了")
 //                }
-//                roomView.singPrepare(lastRound) {
-//                    preOpWhenSelfRound()
-//                }
-//            }
-//        } else if (thisRound.status == ERRoundStatus.RRS_END.value) {
-//
-//        }
+                roomView.gameBegin()
+            }
+        } else if (thisRound.status == EPRoundStatus.PRS_END.value) {
+
+        }
     }
 
     private fun closeEngine() {

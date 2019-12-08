@@ -1,15 +1,14 @@
 package com.module.playways.party.room.ui
 
-import com.module.playways.mic.room.model.MicPlayerInfoModel
-import com.module.playways.mic.room.model.MicRoundInfoModel
-import com.module.playways.relay.room.model.RelayRoundInfoModel
+import com.module.playways.party.room.model.PartyRoundInfoModel
 
 interface IPartyRoomView {
-//    fun showRoundOver(lastRoundInfo:RelayRoundInfoModel?,continueOp:(()->Unit)?)
+
+    fun showRoundOver(lastRoundInfo: PartyRoundInfoModel?, continueOp:(()->Unit)?)
 //    fun singPrepare(lastRoundInfo:RelayRoundInfoModel?,singCardShowListener:()->Unit)
-//    fun singBegin()
+    fun gameBegin()
 //    fun gameOver()
-//    fun showWaiting()
+    fun showWaiting()
 //    fun turnChange()
 
 //
