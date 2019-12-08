@@ -18,4 +18,6 @@ public interface CustomMsgType {
     int MSG_TYPE_MIC_ROOM = 9;
 
     int MSG_TYPE_RELAY_ROOM = 10;
+
+    int MSG_TYPE_PARTY_ROOM = 11;
 }

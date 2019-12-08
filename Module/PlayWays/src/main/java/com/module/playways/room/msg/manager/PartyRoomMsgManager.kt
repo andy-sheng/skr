@@ -1,21 +1,21 @@
 package com.module.playways.room.msg.manager
 
 import com.common.log.MyLog
-import com.zq.live.proto.RelayRoom.ERelayRoomMsgType
-import com.zq.live.proto.RelayRoom.RelayRoomMsg
+import com.zq.live.proto.PartyRoom.EPartyRoomMsgType
+import com.zq.live.proto.PartyRoom.PartyRoomMsg
 import org.greenrobot.eventbus.EventBus
 
 /**
  * 处理所有的RaceRoomMsg
  */
-object PartyRoomMsgManager : BaseMsgManager<ERelayRoomMsgType, RelayRoomMsg>() {
+object PartyRoomMsgManager : BaseMsgManager<EPartyRoomMsgType, PartyRoomMsg>() {
 
     /**
      * 处理消息分发
      *
      * @param msg
      */
-    override fun processRoomMsg(msg: RelayRoomMsg) {
+    override fun processRoomMsg(msg: PartyRoomMsg) {
         var canGo = true  //是否放行的flag
         for (filter in mPushMsgFilterList) {
             canGo = filter.doFilter(msg)
@@ -27,7 +27,7 @@ object PartyRoomMsgManager : BaseMsgManager<ERelayRoomMsgType, RelayRoomMsg>() {
         processRoomMsg(msg.msgType, msg)
     }
 
-    private fun processRoomMsg(messageType: ERelayRoomMsgType, msg: RelayRoomMsg?) {
+    private fun processRoomMsg(messageType: EPartyRoomMsgType, msg: PartyRoomMsg?) {
         if (msg == null) {
             return
         }
@@ -35,16 +35,22 @@ object PartyRoomMsgManager : BaseMsgManager<ERelayRoomMsgType, RelayRoomMsg>() {
             MyLog.d(TAG, "processRoomMsg" + " messageType=" + messageType + " 信令 msg.ts=" + msg.timeMs)
         }
         when {
-            msg.msgType == ERelayRoomMsgType.RRT_USER_ENTER -> EventBus.getDefault().post(msg.rUserEnterMsg)
-            msg.msgType == ERelayRoomMsgType.RRT_GAME_OVER -> EventBus.getDefault().post(msg.rGameOverMsg)
-            msg.msgType == ERelayRoomMsgType.RRT_NEXT_ROUND -> EventBus.getDefault().post(msg.rNextRoundMsg)
-            msg.msgType == ERelayRoomMsgType.RRT_UNLOCK -> EventBus.getDefault().post(msg.rUnlockMsg)
-            msg.msgType == ERelayRoomMsgType.RRT_SYNC -> EventBus.getDefault().post(msg.rSyncMsg)
-            msg.msgType == ERelayRoomMsgType.RRT_REQ_ADD_MUSIC -> EventBus.getDefault().post(msg.rReqAddMusicMsg)
-            msg.msgType == ERelayRoomMsgType.RRT_ADD_MUSIC -> EventBus.getDefault().post(msg.rAddMusicMsg)
-            msg.msgType == ERelayRoomMsgType.RRT_DEL_MUSIC -> EventBus.getDefault().post(msg.rDelMusicMsg)
-            msg.msgType == ERelayRoomMsgType.RRT_UP_MUSIC -> EventBus.getDefault().post(msg.rUpMusicMsg)
-            msg.msgType == ERelayRoomMsgType.RRT_MUTE -> EventBus.getDefault().post(msg.rMuteMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_JOIN_NOTICE -> EventBus.getDefault().post(msg.pJoinNoticeMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_FIX_ROOM_NOTICE -> EventBus.getDefault().post(msg.pFixRoomNoticeMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_SET_ROOM_ADMIN -> EventBus.getDefault().post(msg.pSetRoomAdminMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_SET_ALL_MEMBER_MIC -> EventBus.getDefault().post(msg.pSetAllMemberMicMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_SET_USER_MIC -> EventBus.getDefault().post(msg.pSetUserMicMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_SET_SEAT_STATUS -> EventBus.getDefault().post(msg.pSetSeatStatusMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_APPLY_FOR_GUEST -> EventBus.getDefault().post(msg.pApplyForGuest)
+            msg.msgType == EPartyRoomMsgType.PRT_GET_SEAT -> EventBus.getDefault().post(msg.pGetSeatMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_BACK_SEAT -> EventBus.getDefault().post(msg.pBackSeatMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_INVITE_USER -> EventBus.getDefault().post(msg.pInviteUserMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_CHANGE_SEAT -> EventBus.getDefault().post(msg.pChangeSeatMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_KICK_OUT_USER -> EventBus.getDefault().post(msg.pKickoutUserMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_NEXT_ROUND -> EventBus.getDefault().post(msg.pNextRoundMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_EXIT_GAME -> EventBus.getDefault().post(msg.ppExitGameMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_SYNC -> EventBus.getDefault().post(msg.pSyncMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_DYNAMIC_EMOJI -> EventBus.getDefault().post(msg.pDynamicEmojiMsg)
         }
     }
 }

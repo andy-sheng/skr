@@ -7,6 +7,7 @@ import com.module.playways.room.msg.manager.*
 import com.zq.live.proto.CombineRoom.CombineRoomMsg
 import com.zq.live.proto.GrabRoom.RoomMsg
 import com.zq.live.proto.MicRoom.MicRoomMsg
+import com.zq.live.proto.PartyRoom.PartyRoomMsg
 import com.zq.live.proto.RaceRoom.RaceRoomMsg
 import com.zq.live.proto.RelayRoom.RelayRoomMsg
 
@@ -58,6 +59,14 @@ object RoomMsgDispater : IPushMsgProcess {
                     return
                 }
                 RelayRoomMsgManager.processRoomMsg(msg)
+            }
+            CustomMsgType.MSG_TYPE_PARTY_ROOM -> {
+                val msg = PartyRoomMsg.parseFrom(data)
+                if (msg == null) {
+                    MyLog.e(TAG, "processRoomMsg" + " msg == null ")
+                    return
+                }
+                PartyRoomMsgManager.processRoomMsg(msg)
             }
         }
     }
