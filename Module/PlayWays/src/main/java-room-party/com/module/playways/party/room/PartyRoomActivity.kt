@@ -42,10 +42,7 @@ import com.module.playways.party.room.top.PartyTopOpView
 import com.module.playways.party.room.ui.IPartyRoomView
 import com.module.playways.party.room.ui.PartyBottomWidgetAnimationController
 import com.module.playways.party.room.ui.PartyWidgetAnimationController
-import com.module.playways.party.room.view.PartyEmojiView
-import com.module.playways.party.room.view.PartyGameMainView
-import com.module.playways.party.room.view.PartySettingView
-import com.module.playways.party.room.view.PartyVoiceControlPanelView
+import com.module.playways.party.room.view.*
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.view.ContinueSendView
@@ -59,6 +56,7 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.room.view.InputContainerView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import kotlinx.android.synthetic.main.party_manage_dialog_view_layout.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -144,6 +142,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 //    lateinit var relaySingCardView: RelaySingCardView
 
 //    var mFlyCommentView: FlyCommentView? = null
+
+    private var mPartyManageDialogView: PartyManageDialogView? = null
 
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
@@ -609,45 +609,50 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mPersonInfoDialog?.show()
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: RelayLockChangeEvent) {
-//        if (mRoomData?.unLockMe && mRoomData?.unLockPeer) {
-//            mChangeSongIv.visibility = View.VISIBLE
-//            mAddSongIv.visibility = View.VISIBLE
-//        }
-//    }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: RReqAddMusicMsg) {
-//        // 请求接唱
-//        val micUserMusicModel = RoomInviteMusicModel.parseFromInfoPB(event.detail)
-//        if (micUserMusicModel.userID != MyUserInfoManager.uid.toInt()) {
-//            if (U.getActivityUtils().topActivity is PartyRoomActivity) {
-//                // 顶部是接唱放的activity
-//            } else {
-//                U.getToastUtil().showShort("对方正在向你发起一首合唱，返回查看")
-//            }
-//            mRoomInviteView?.showInvite(micUserMusicModel, mTopContentView.getViewLeft(micUserMusicModel.userID), true, GameModeType.GAME_MODE_RELAY)
-//        } else {
-//            // 启一个任务去同步
-//            mRoomInviteView?.startCheckSelfJob(micUserMusicModel)
-//        }
-//    }
-
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: RAddMusicMsg) {
-//        // 接唱发起请求的结果
-//        val userMusicModel = RoomInviteMusicModel.parseFromInfoPB(event.detail)
-//        mRoomInviteView?.showInvite(userMusicModel, mTopContentView.getViewLeft(userMusicModel.userID), false, GameModeType.GAME_MODE_RELAY)
-//    }
-
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: MicWantInviteEvent) {
-//        ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
-//                .withInt("from", InviteFriendFragment2.FROM_MIC_ROOM)
-//                .withInt("roomId", mRoomData!!.gameId)
-//                .navigation()
-//    }
+    private fun showPartyManageView() {
+        dismissDialog()
+        mInputContainerView.hideSoftInput()
+        mPartyManageDialogView = PartyManageDialogView(this)
+        if (true) {
+            // 麦上有人
+            mPartyManageDialogView?.apply {
+                function1.visibility = View.VISIBLE
+                function1.text = "下麦"
+                function1.setDebounceViewClickListener { }
+                function2.visibility = View.VISIBLE
+                function2.text = "关麦"
+                function2.setDebounceViewClickListener { }
+                function3.visibility = View.VISIBLE
+                function3.text = "查看信息"
+                function3.setDebounceViewClickListener { }
+            }
+        } else {
+            // 麦上无人
+            if (true) {
+                //空席位
+                mPartyManageDialogView?.apply {
+                    function1.visibility = View.VISIBLE
+                    function1.text = "关闭座位"
+                    function1.setDebounceViewClickListener { }
+                    function2.visibility = View.VISIBLE
+                    function2.text = "邀请上麦"
+                    function2.setDebounceViewClickListener { }
+                    function3.visibility = View.GONE
+                }
+            } else {
+                // 已关闭的席位
+                mPartyManageDialogView?.apply {
+                    function1.visibility = View.VISIBLE
+                    function1.text = "打开座位"
+                    function1.setDebounceViewClickListener { }
+                    function2.visibility = View.GONE
+                    function3.visibility = View.GONE
+                }
+            }
+        }
+        mPartyManageDialogView?.showByDialog()
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
@@ -730,6 +735,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 //        mRaceVoiceControlPanelView?.dismiss(false)
         mGameRuleDialog?.dismiss(false)
         mTipsDialogView?.dismiss(false)
+        mPartyManageDialogView?.dismiss(false)
 //        mGrabKickDialog?.dismiss(false)
     }
 
