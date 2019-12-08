@@ -2,7 +2,7 @@ package com.module.playways.party.room.model
 
 import java.io.Serializable
 
-// 竟演者
+// 嘉宾席
 class PartyActorInfoModel : Serializable {
 
     var player: PartyPlayerInfoModel? = null

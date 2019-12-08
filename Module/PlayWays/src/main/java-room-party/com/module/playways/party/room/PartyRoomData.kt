@@ -5,6 +5,7 @@ import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.event.PartyRoundChangeEvent
+import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.model.PartySeatInfoModel
@@ -22,17 +23,19 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     var users = ArrayList<PartyPlayerInfoModel>() // 当前的用户信息 包括 主持人管理员 以及 嘉宾
     var seats = ArrayList<PartySeatInfoModel>() // 座位信息
 
+//    var seatsMap = HashMap<Int, PartyActorInfoModel>() // 座位信息 key为座位序号  value 的座位状态 和该位置上的嘉宾信息
+
     // 题目信息在轮次信息里 轮次信息在父类的 realRoundInfo 中
 
     companion object {
     }
 
     override fun getPlayerAndWaiterInfoList(): List<PlayerInfoModel> {
-        return null!!
+        return users
     }
 
     override fun getInSeatPlayerInfoList(): List<PlayerInfoModel> {
-        return null!!
+        return users
     }
 
     override val gameType: Int
@@ -41,6 +44,31 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
     init {
 
+    }
+
+    fun getPlayerInfoById(userId: Int): PartyPlayerInfoModel? {
+        for (info in getPlayerAndWaiterInfoList()) {
+            if (info.userID == userId) {
+                return info as PartyPlayerInfoModel
+            }
+        }
+        return null
+    }
+
+
+    fun getSeatInfoMap(): HashMap<Int, PartyActorInfoModel> {
+        var seatsMap = HashMap<Int, PartyActorInfoModel>()
+        this.seats?.let {
+            for (info in it) {
+                var partyActorInfoModel = PartyActorInfoModel()
+                partyActorInfoModel.seat = info
+                if (info.userID > 0) {
+                    partyActorInfoModel.player = getPlayerInfoById(info.userID)
+                }
+                seatsMap[info.seatSeq] = partyActorInfoModel
+            }
+        }
+        return seatsMap;
     }
 
     /**
@@ -83,8 +111,8 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         this.roomName = rsp.roomName ?: ""
         this.topicName = rsp.topicName ?: ""
         this.users = rsp.users ?: ArrayList()
-        this.seats = rsp.seats ?: ArrayList()
         this.expectRoundInfo = rsp.currentRound
+        this.seats = rsp.seats ?: ArrayList()
     }
 
 
