@@ -4,22 +4,57 @@ import com.common.log.MyLog
 import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
-import com.module.playways.party.room.event.PartyRoundChangeEvent
+import com.module.playways.party.room.event.*
 import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.model.PartySeatInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
+import com.zq.live.proto.PartyRoom.EPRoundStatus
 import org.greenrobot.eventbus.EventBus
 
 
 class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
-    var roomName = ""//房间名称
-    var topicName = ""//房间主题
-    var notice = ""// 房间公告
-    var syncStatusTimeMs = 0L
+
+    var roomName = ""
+        //房间名称
+        set(value) {
+            if (value != field) {
+                field = value
+                EventBus.getDefault().post(PartyRoomNameChangeEvent())
+            }
+        }
+    var topicName = ""
+        //房间主题
+        set(value) {
+            if (value != field) {
+                field = value
+                EventBus.getDefault().post(PartyTopicNameChangeEvent())
+            }
+        }
+    var notice = ""
+        // 房间公告
+        set(value) {
+            if (value != field) {
+                field = value
+                EventBus.getDefault().post(PartyNoticeChangeEvent())
+            }
+        }
     var onlineUserCnt = 0 //在线人数
+        set(value) {
+            if (value != field) {
+                field = value
+                EventBus.getDefault().post(PartyOnlineUserCntChangeEvent())
+            }
+        }
     var applyUserCnt = 0 //申请人数
+        set(value) {
+            if (value != field) {
+                field = value
+                EventBus.getDefault().post(PartyApplyUserCntChangeEvent())
+            }
+        }
+
     var users = ArrayList<PartyPlayerInfoModel>() // 当前的用户信息 包括 主持人管理员 以及 嘉宾
     var seats = ArrayList<PartySeatInfoModel>() // 座位信息
 
@@ -86,7 +121,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             // 结束状态了
             if (realRoundInfo != null) {
                 val lastRoundInfoModel = realRoundInfo
-//                lastRoundInfoModel?.updateStatus(false, ERRoundStatus.RRS_END.value)
+                lastRoundInfoModel?.updateStatus(false, EPRoundStatus.PRS_END.value)
                 realRoundInfo = null
                 EventBus.getDefault().post(PartyRoundChangeEvent(lastRoundInfoModel, null))
             }
@@ -97,7 +132,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                         ?: 0) || realRoundInfo == null) {
             // 轮次大于，才切换
             val lastRoundInfoModel = realRoundInfo
-//            lastRoundInfoModel?.updateStatus(false, ERRoundStatus.RRS_END.value)
+            lastRoundInfoModel?.updateStatus(false, EPRoundStatus.PRS_END.value)
             realRoundInfo = expectRoundInfo
             EventBus.getDefault().post(PartyRoundChangeEvent(lastRoundInfoModel, realRoundInfo))
         }
