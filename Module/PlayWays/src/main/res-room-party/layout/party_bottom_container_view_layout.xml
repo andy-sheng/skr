@@ -50,7 +50,7 @@
             android:layout_marginRight="@dimen/view_10_dp"
             android:layout_toRightOf="@id/emoji_btn"
             android:scaleType="centerInside"
-            app:src_unPressed_drawable="@drawable/person_card_more_icon" />
+            app:src_unPressed_drawable="@drawable/party_more_icon" />
 
     </RelativeLayout>
 

@@ -8,14 +8,14 @@
         android:id="@+id/content_bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_160_dp"
-        android:layout_marginTop="@dimen/view_39_dp"
+        android:layout_marginTop="@dimen/view_34_dp"
         android:background="@drawable/party_game_content_bg"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/game_tv"
         android:layout_width="@dimen/view_75_dp"
-        android:layout_height="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_35_dp"
         android:drawableLeft="@drawable/party_game_tag_icon"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/view_12_dp"
@@ -31,7 +31,7 @@
     <com.common.view.ex.ExTextView
         android:id="@+id/hand_card_tv"
         android:layout_width="@dimen/view_75_dp"
-        android:layout_height="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_35_dp"
         android:layout_marginLeft="@dimen/view_74_dp"
         android:drawableLeft="@drawable/party_handcard_icon"
         android:drawablePadding="@dimen/textsize_4_dp"
@@ -49,7 +49,7 @@
     <com.common.view.ex.ExTextView
         android:id="@+id/rule_tv"
         android:layout_width="@dimen/view_75_dp"
-        android:layout_height="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_35_dp"
         android:layout_marginLeft="@dimen/view_74_dp"
         android:drawableLeft="@drawable/party_rule_icon"
         android:drawablePadding="@dimen/textsize_4_dp"
@@ -68,7 +68,7 @@
     <com.common.view.ex.ExTextView
         android:id="@+id/attention_tv"
         android:layout_width="@dimen/view_75_dp"
-        android:layout_height="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_35_dp"
         android:layout_marginLeft="@dimen/view_74_dp"
         android:drawableLeft="@drawable/party_gonggao_icon"
         android:drawablePadding="@dimen/textsize_4_dp"
