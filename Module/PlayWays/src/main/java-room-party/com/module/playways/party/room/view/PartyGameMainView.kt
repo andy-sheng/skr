@@ -1,8 +1,11 @@
 package com.module.playways.party.room.view
 
+import android.graphics.Color
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
+import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
 import com.common.utils.SpanUtils
@@ -12,6 +15,8 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
+import com.module.playways.party.room.model.PartyGameInfoModel
+import com.zq.live.proto.PartyRoom.EPGameType
 
 class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomData?) : ExViewStub(viewStub) {
     lateinit var contentBg: ExImageView
@@ -24,6 +29,10 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     lateinit var textGameTv: ExTextView
     lateinit var bottomLeftOpTv: ExTextView
     lateinit var bottomRightOpTv: ExTextView
+
+    var seq: Int = 0
+    var tagType: TagType = TagType.GAME
+    var partyGameInfoModel: PartyGameInfoModel? = null
 
     override fun init(parentView: View) {
         contentBg = parentView.findViewById(R.id.content_bg)
@@ -57,37 +66,108 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     }
 
     private fun toGameTab() {
-        unSelectAllTab()
+        resetMainView()
         gameTv.isSelected = true
+        tagType = TagType.GAME
 
+        setMainText(getGameTagTitle(), getGameTagContent())
+
+        partyGameInfoModel?.let {
+            if (it.gameType == EPGameType.PGT_Question.value && (it.question?.questionPic?.size
+                            ?: 0) > 0) {
+                gamePicImg.visibility = View.VISIBLE
+
+                AvatarUtils.loadAvatarByUrl(gamePicImg, AvatarUtils.newParamsBuilder(it.question?.questionPic?.get(0))
+                        .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                        .setBorderColor(Color.WHITE)
+                        .build())
+            } else {
+                gamePicImg.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun getGameTagTitle(): String {
+        var gameTagTitle = ""
+        partyGameInfoModel?.let {
+            if (it.gameType == EPGameType.PGT_Play.value) {
+                gameTagTitle = it.play?.playName ?: ""
+            } else if (it.gameType == EPGameType.PGT_Question.value) {
+                gameTagTitle = ""
+            }
+        }
+
+        return if (TextUtils.isEmpty(gameTagTitle)) "" else "$gameTagTitle\n"
+    }
+
+    private fun getGameTagContent(): String {
+        partyGameInfoModel?.let {
+            if (it.gameType == EPGameType.PGT_Play.value) {
+                return it.play?.playContent ?: ""
+            } else if (it.gameType == EPGameType.PGT_Question.value) {
+                return it.question?.answerContent ?: ""
+            } else {
+                return ""
+            }
+        }
+
+        return ""
+    }
+
+    private fun toHandCardTab() {
+        resetMainView()
+        handCardTv.isSelected = true
+        tagType = TagType.CARD
+
+        partyGameInfoModel?.let {
+            if (it.gameType == EPGameType.PGT_Play.value) {
+                setMainText(it.play?.playCard, it.play?.playCard)
+                handCardTv.text = "手卡"
+            } else if (it.gameType == EPGameType.PGT_Question.value) {
+                setMainText(it.question?.questionContent, it.question?.questionContent)
+                handCardTv.text = "答案"
+            }
+        }
+    }
+
+    private fun toRuleTab() {
+        resetMainView()
+        ruleTv.isSelected = true
+        tagType = TagType.RULE
+
+        partyGameInfoModel?.let {
+            setMainText(it.gameRule?.ruleName, it.gameRule?.ruleDesc)
+        }
+    }
+
+    private fun toAttentionTab() {
+        resetMainView()
+        attentionTv.isSelected = true
+        tagType = TagType.ATTENTION
+
+        partyGameInfoModel?.let {
+            //setMainText(it.question.)
+        }
+    }
+
+    private fun setMainText(title: String?, content: String?) {
         val stringBuilder = SpanUtils()
-                .append("中华小曲库").setForegroundColor(U.getColor(R.color.white_trans_80)).setFontSize(U.getDisplayUtils().dip2px(14f)).setBold()
-                .append("\n演唱一首带“爱”字的歌曲").setForegroundColor(U.getColor(R.color.white_trans_50)).setFontSize(U.getDisplayUtils().dip2px(14f))
+                .append(title
+                        ?: "").setForegroundColor(U.getColor(R.color.white_trans_80)).setFontSize(U.getDisplayUtils().dip2px(14f)).setBold()
+                .append(content
+                        ?: "").setForegroundColor(U.getColor(R.color.white_trans_50)).setFontSize(U.getDisplayUtils().dip2px(14f))
                 .create()
 
         textGameTv.text = stringBuilder
     }
 
-    private fun toHandCardTab() {
-        unSelectAllTab()
-        handCardTv.isSelected = true
-    }
-
-    private fun toRuleTab() {
-        unSelectAllTab()
-        ruleTv.isSelected = true
-    }
-
-    private fun toAttentionTab() {
-        unSelectAllTab()
-        attentionTv.isSelected = true
-    }
-
-    private fun unSelectAllTab() {
+    private fun resetMainView() {
         gameTv.isSelected = false
         handCardTv.isSelected = false
         ruleTv.isSelected = false
         attentionTv.isSelected = false
+        gamePicImg.visibility = View.GONE
     }
 
     override fun layoutDesc(): Int {
@@ -95,7 +175,37 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     }
 
     //更新
-    fun updateGameContent() {
+    fun updateGameContent(partyGameInfoModel: PartyGameInfoModel?) {
+        if (partyGameInfoModel == null) {
+            return
+        }
+
         tryInflate()
+
+        this.partyGameInfoModel = partyGameInfoModel
+        if ((mRoomData?.realRoundSeq ?: 0) != seq) {
+            seq = (mRoomData?.realRoundSeq ?: 0)
+            toGameTab()
+        } else {
+            if (tagType == TagType.GAME) {
+                toGameTab()
+            } else if (tagType == TagType.CARD) {
+                toHandCardTab()
+            } else if (tagType == TagType.RULE) {
+                toRuleTab()
+            } else if (tagType == TagType.ATTENTION) {
+                toAttentionTab()
+            }
+        }
+
+        if (partyGameInfoModel.gameType == EPGameType.PGT_Play.value) {
+            handCardTv.text = "手卡"
+        } else if (partyGameInfoModel.gameType == EPGameType.PGT_Question.value) {
+            handCardTv.text = "答案"
+        }
+    }
+
+    enum class TagType {
+        GAME, CARD, RULE, ATTENTION
     }
 }

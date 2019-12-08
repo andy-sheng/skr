@@ -321,7 +321,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     private fun initGameMainView() {
         mPartyGameMainView = PartyGameMainView(findViewById(R.id.party_game_main_view_layout_viewStub), mRoomData)
-        mPartyGameMainView?.updateGameContent()
+        mPartyGameMainView?.updateGameContent(null)
     }
 
     private fun initVipEnterView() {
