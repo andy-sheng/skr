@@ -5,6 +5,7 @@ import android.os.Message
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.jiguang.JiGuangPush
+import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
@@ -28,7 +29,7 @@ import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.PartyRoomMsgManager
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
-import com.zq.live.proto.RelayRoom.RelayRoomMsg
+import com.zq.live.proto.PartyRoom.PartyRoomMsg
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -66,7 +67,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     }
 
 
-    internal var mPushMsgFilter: PushMsgFilter<*> = PushMsgFilter<RelayRoomMsg> { msg ->
+    internal var mPushMsgFilter: PushMsgFilter<*> = PushMsgFilter<PartyRoomMsg> { msg ->
         msg != null && msg.roomID == mRoomData.gameId
     }
 
@@ -464,16 +465,17 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     }
 
     private fun processStatusChange(from: Int, lastRound: PartyRoundInfoModel?, thisRound: PartyRoundInfoModel?) {
-//        DebugLogView.println(TAG, "processStatusChange from=$from roundSeq=${thisRound?.roundSeq} statusNow=${thisRound?.status}")
+        DebugLogView.println(TAG, "processStatusChange from=$from roundSeq=${thisRound?.roundSeq} statusNow=${thisRound?.status}")
         // 轮次变化尝试更新头像
 //        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
-        closeEngine()
-        ZqEngineKit.getInstance().stopRecognize()
+//        closeEngine()
+//        ZqEngineKit.getInstance().stopRecognize()
         if (thisRound == null) {
             // 游戏结束了
 //            roomView.gameOver()
             return
         }
+
 //        if (thisRound.status == ERRoundStatus.RRS_INTRO.value) {
 //            // 等待阶段
 //            roomView.showRoundOver(lastRound) {

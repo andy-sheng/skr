@@ -1,13 +1,27 @@
 package com.module.playways.party.room
 
+import com.common.log.MyLog
 import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
+import com.module.playways.party.room.event.PartyRoundChangeEvent
+import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
+import com.module.playways.party.room.model.PartySeatInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
+import org.greenrobot.eventbus.EventBus
 
 
 class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
+
+    var syncStatusTimeMs = 0L
+    var onlineUserCnt = 0 //在线人数
+    var applyUserCnt = 0 //申请人数
+    var users = ArrayList<PartyPlayerInfoModel>() // 当前的用户信息 包括 主持人管理员 以及 嘉宾
+    var seats = ArrayList<PartySeatInfoModel>() // 座位信息
+
+    // 题目信息在轮次信息里 轮次信息在父类的 realRoundInfo 中
+
     companion object {
     }
 
@@ -31,29 +45,29 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
      * 检查轮次信息是否需要更新
      */
     override fun checkRoundInEachMode() {
-//        if (isIsGameFinish) {
-//            MyLog.d(TAG, "游戏结束了，不需要再checkRoundInEachMode")
-//            return
-//        }
-//        if (expectRoundInfo == null) {
-//            MyLog.d(TAG, "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo == null")
-//            // 结束状态了
-//            if (realRoundInfo != null) {
-//                val lastRoundInfoModel = realRoundInfo
+        if (isIsGameFinish) {
+            MyLog.d(TAG, "游戏结束了，不需要再checkRoundInEachMode")
+            return
+        }
+        if (expectRoundInfo == null) {
+            MyLog.d(TAG, "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo == null")
+            // 结束状态了
+            if (realRoundInfo != null) {
+                val lastRoundInfoModel = realRoundInfo
 //                lastRoundInfoModel?.updateStatus(false, ERRoundStatus.RRS_END.value)
-//                realRoundInfo = null
-//                EventBus.getDefault().post(RelayRoundChangeEvent(lastRoundInfoModel, null))
-//            }
-//            return
-//        }
-//        MyLog.d(TAG, "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo.roundSeq=" + expectRoundInfo!!.roundSeq)
-//        if (RoomDataUtils.roundSeqLarger<RelayRoundInfoModel>(expectRoundInfo, realRoundInfo) || realRoundInfo == null) {
-//            // 轮次大于，才切换
-//            val lastRoundInfoModel = realRoundInfo
+                realRoundInfo = null
+                EventBus.getDefault().post(PartyRoundChangeEvent(lastRoundInfoModel, null))
+            }
+            return
+        }
+        MyLog.d(TAG, "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo.roundSeq=" + expectRoundInfo!!.roundSeq)
+        if ((expectRoundInfo?.roundSeq?:0) > (realRoundInfo?.roundSeq?:0) || realRoundInfo==null) {
+            // 轮次大于，才切换
+            val lastRoundInfoModel = realRoundInfo
 //            lastRoundInfoModel?.updateStatus(false, ERRoundStatus.RRS_END.value)
-//            realRoundInfo = expectRoundInfo
-//            EventBus.getDefault().post(RelayRoundChangeEvent(lastRoundInfoModel, realRoundInfo))
-//        }
+            realRoundInfo = expectRoundInfo
+            EventBus.getDefault().post(PartyRoundChangeEvent(lastRoundInfoModel, realRoundInfo))
+        }
     }
 
     fun loadFromRsp(rsp: JoinPartyRoomRspModel) {

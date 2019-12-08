@@ -16,6 +16,7 @@ import kotlin.collections.ArrayList
 
 class PartyRoundInfoModel : BaseRoundInfoModel() {
 
+    var status = 0
     var beginMs: Int = 0 //开始相对时间（相对于createdTimeMs时间）
     var endMs: Int = 0 //结束相对时间（相对于createdTimeMs时间）
     var itemInfo: PartyGameInfoModel? = null
