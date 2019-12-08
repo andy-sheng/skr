@@ -101,6 +101,7 @@ class PartyWidgetAnimationController(internal var mF: PartyRoomActivity) {
     internal fun fillView(viewList: MutableList<View?>) {
         viewList.add(mF.mTopContentView)
         viewList.add(mF.mRoomInviteView?.realView)
+        viewList.add(mF.mPartyGameMainView?.realView)
 //        viewList.add(mF.mHasSelectSongNumTv)
 //        viewList.add(mF.mTopVsView)
 //        viewList.add(mF.mPracticeFlagIv)

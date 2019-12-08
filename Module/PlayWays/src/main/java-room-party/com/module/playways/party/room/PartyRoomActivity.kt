@@ -132,7 +132,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     val mWidgetAnimationController = PartyWidgetAnimationController(this)
     internal var mSkrAudioPermission = SkrAudioPermission()
 
-    private var mPartyGameEffectBgView: PartyGameMainView? = null
+    var mPartyGameMainView: PartyGameMainView? = null
 //    lateinit var relaySingCardView: RelaySingCardView
 
 //    var mFlyCommentView: FlyCommentView? = null
@@ -312,8 +312,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     }
 
     private fun initGameMainView() {
-        mPartyGameEffectBgView = PartyGameMainView(findViewById(R.id.party_game_main_view_layout_viewStub), mRoomData)
-        mPartyGameEffectBgView?.updateGameContent()
+        mPartyGameMainView = PartyGameMainView(findViewById(R.id.party_game_main_view_layout_viewStub), mRoomData)
+        mPartyGameMainView?.updateGameContent()
     }
 
     private fun initVipEnterView() {
@@ -481,9 +481,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mTopContentView.roomData = mRoomData
         mTopContentView.bindData()
         mTopContentView.listener = object : PartyTopContentView.Listener {
-            override fun countDownOver() {
-                // 时间到了 调退出
-//                gameOver()
+            override fun clickMore() {
+               // 点击更多
             }
 
             override fun clickArrow(open: Boolean) {
@@ -492,10 +491,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 } else {
                     mWidgetAnimationController.close()
                 }
-            }
-
-            override fun clickLove() {
-//                mCorePresenter.sendUnlock()
             }
         }
 
