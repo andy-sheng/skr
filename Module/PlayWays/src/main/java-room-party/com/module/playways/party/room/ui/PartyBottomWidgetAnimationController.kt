@@ -69,6 +69,7 @@ class PartyBottomWidgetAnimationController(internal var mF: PartyRoomActivity) {
     }
 
     private fun showBottomView() {
+        mF.mBottomContainerView.showBackground(true)
         if (openType == OPEN_TYPE_EMOJI) {
             mF.mBottomContainerView.emojiOpen = true
             mF.mBottomContainerView.settingOpen = false
@@ -111,6 +112,7 @@ class PartyBottomWidgetAnimationController(internal var mF: PartyRoomActivity) {
             mMainAnimatorSet?.addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationStart(animation: Animator) {
                     super.onAnimationStart(animation)
+                    mF.mBottomContainerView.showBackground(false)
                     mF.mPartySettingView?.setVisibility(View.GONE)
                     mF.mPartyEmojiView?.setVisibility(View.GONE)
                 }

@@ -1,40 +1,26 @@
 package com.module.playways.party.room.bottom
 
 import android.content.Context
-import android.graphics.drawable.BitmapDrawable
+import android.graphics.Color
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.View
-import android.widget.PopupWindow
-import android.widget.RelativeLayout
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.*
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
-import com.common.view.ex.ExTextView
-import com.component.busilib.constans.GrabRoomType
+import com.common.view.ex.drawable.DrawableCreator
 import com.module.playways.BaseRoomData
 import com.module.playways.R
-import com.module.playways.grab.room.GrabRoomData
-import com.module.playways.grab.room.dynamicmsg.DynamicMsgView
-import com.module.playways.grab.room.event.GrabRoundChangeEvent
-import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent
-import com.module.playways.grab.room.voicemsg.VoiceRecordTextView
 import com.module.playways.party.room.PartyRoomData
-import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.relay.room.RelayRoomServerApi
 import com.module.playways.room.room.view.BottomContainerView
 import com.zq.mediaengine.kit.ZqEngineKit
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 
 class PartyBottomContainerView : BottomContainerView {
@@ -54,8 +40,24 @@ class PartyBottomContainerView : BottomContainerView {
 
     internal var mRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
 
+    private val drawable = DrawableCreator.Builder()
+            .setShape(DrawableCreator.Shape.Rectangle)
+            .setCornersRadius(0f, 0f, 16.dp().toFloat(), 16.dp().toFloat())
+            .setSolidColor(Color.parseColor("#1F1C48"))
+            .setStrokeColor(U.getColor(R.color.white_trans_20))
+            .setStrokeWidth(1.dp().toFloat())
+            .build()
+
     override fun getLayout(): Int {
         return R.layout.party_bottom_container_view_layout
+    }
+
+    fun showBackground(isShow: Boolean) {
+        if (isShow) {
+            background = drawable
+        } else {
+            background = null
+        }
     }
 
     override fun init() {
