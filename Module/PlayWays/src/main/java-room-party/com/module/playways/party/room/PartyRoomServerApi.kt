@@ -20,17 +20,22 @@ interface PartyRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partyroom/create-room")
     fun createRoom(@Body body: RequestBody): Call<ApiResult>
+
+        @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.game.inframe.mobi/v1/partyroom/exit-room")
+    fun exitRoom(@Body body: RequestBody): Call<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/heartbeat")
+    fun heartbeat(@Body body: RequestBody): Call<ApiResult>
+
 //
 //    @Headers(ApiManager.ALWAYS_LOG_TAG)
 //    @PUT("http://dev.game.inframe.mobi/v1/relaygame/give-up")
 //    fun giveUpSing(@Body body: RequestBody): Call<ApiResult>
 //
-//    @Headers(ApiManager.ALWAYS_LOG_TAG)
-//    @PUT("http://dev.game.inframe.mobi/v1/relaygame/exit")
-//    fun exitRoom(@Body body: RequestBody): Call<ApiResult>
+
 //
-//    @PUT("http://dev.game.inframe.mobi/v1/relaygame/heartbeat")
-//    fun heartbeat(@Body body: RequestBody): Call<ApiResult>
+
 //
 //    @GET("http://dev.game.inframe.mobi/v1/relaygame/sync-status")
 //    fun syncStatus(@Query("roomID") roomID: Long): Call<ApiResult>

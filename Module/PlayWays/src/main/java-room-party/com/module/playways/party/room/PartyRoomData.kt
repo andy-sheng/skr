@@ -153,6 +153,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             usersMap.clear()
             for (info in users) {
                 usersMap[info.userID] = info
+                //TODO 如果是自己的角色变化了 得发事件告知
             }
         }
     }
@@ -207,8 +208,8 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         this.onlineUserCnt = rsp.onlineUserCnt ?: 0
         this.roomName = rsp.roomName ?: ""
         this.topicName = rsp.topicName ?: ""
-        updateUsers(rsp.users)
         updateSeats(rsp.seats)
+        updateUsers(rsp.users)
         this.expectRoundInfo = rsp.currentRound
     }
 

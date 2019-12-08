@@ -2,6 +2,7 @@ package com.module.playways.party.room.presenter
 
 import android.os.Handler
 import android.os.Message
+import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.jiguang.JiGuangPush
@@ -9,6 +10,7 @@ import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.engine.EngineEvent
@@ -29,11 +31,14 @@ import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.PartyRoomMsgManager
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
-import com.zq.live.proto.PartyRoom.EPRoundStatus
-import com.zq.live.proto.PartyRoom.PartyRoomMsg
+import com.zq.live.proto.PartyRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -102,7 +107,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                 params.isEnableAudio = true
                 ZqEngineKit.getInstance().init("partyroom", params)
             }
-            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), true, mRoomData.agoraToken)
+            var isAnchor = mRoomData?.getMyInfoInParty()?.isRole(EPUserRole.EPUR_HOST.value,EPUserRole.EPUR_GUEST.value)
+            DebugLogView.println(TAG,"isAnchor=$isAnchor")
+            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), isAnchor, mRoomData.agoraToken)
             // 不发送本地音频, 会造成第一次抢没声音
             //ZqEngineKit.getInstance().muteLocalAudioStream(true)
         } else {
@@ -322,37 +329,42 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         MyLog.w(TAG, "exitRoom from=$from")
         val map = HashMap<String, Any>()
         map["roomID"] = mRoomData.gameId
-//        mRoomData.isHasExitGame = true
-//        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-//        // 不想 destroy 时被取消
-//        GlobalScope.launch {
-//            var result = subscribe { mRoomServerApi.exitRoom(body) }
-//            if (result.errno == 0) {
-//
-//            }
-//        }
+        mRoomData.isHasExitGame = true
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        // 不想 destroy 时被取消
+        GlobalScope.launch {
+            var result = subscribe { mRoomServerApi.exitRoom(body) }
+            if (result.errno == 0) {
+
+            }
+        }
     }
 
     var heartbeatJob: Job? = null
 
+    /**
+     * 主持人心跳
+     */
     private fun startHeartbeat() {
-//        heartbeatJob?.cancel()
-//        heartbeatJob = launch {
-//            while (true) {
-//                val map = mutableMapOf(
-//                        "roomID" to mRoomData.gameId,
-//                        "userID" to MyUserInfoManager.uid
-//                )
-//                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-//                val result = subscribe { mRoomServerApi.heartbeat(body) }
-//                if (result.errno == 0) {
-//
-//                } else {
-//
-//                }
-//                delay(60 * 1000)
-//            }
-//        }
+        if(mRoomData?.getMyInfoInParty()?.isHost()){
+            heartbeatJob?.cancel()
+            heartbeatJob = launch {
+                while (true) {
+                    val map = mutableMapOf(
+                            "roomID" to mRoomData.gameId,
+                            "hostUserID" to MyUserInfoManager.uid
+                    )
+                    val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                    val result = subscribe { mRoomServerApi.heartbeat(body) }
+                    if (result.errno == 0) {
+
+                    } else {
+
+                    }
+                    delay(60 * 1000)
+                }
+            }
+        }
     }
 
     private fun cancelSyncGameStatus() {
@@ -667,51 +679,59 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //        roomView.showSongCount(event.musicCnt)
 //    }
 
-//    /**
-//     * 轮次变化
-//     *
-//     * @param event
-//     */
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: RNextRoundMsg) {
-//        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push currentRound:${event.currentRound}")
-//        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push nextRound:${event.nextRound}")
-//        ensureInRcRoom()
-////        roomView.showSongCount(event.musicCnt)
-//        var currentRound = RelayRoundInfoModel.parseFromRoundInfo(event.currentRound)
-//        var nextRound = RelayRoundInfoModel.parseFromRoundInfo(event.nextRound)
-//        if (nextRound.roundSeq > (mRoomData.expectRoundInfo?.roundSeq ?: 0)) {
-//            // 游戏轮次结束
-//            // 轮次确实比当前的高，可以切换
-//            MyLog.w(TAG, "nextRound.roundSeq=${nextRound.roundSeq} 轮次确实比当前的高，可以切换")
-//            mRoomData.expectRoundInfo = nextRound
-//            mRoomData.checkRoundInEachMode()
-//        } else {
-//            MyLog.w(TAG, "轮次比当前轮次还小,直接忽略 当前轮次:" + mRoomData.expectRoundInfo?.roundSeq
-//                    + " push轮次:" + event.currentRound.roundSeq)
-//        }
-//    }
+    /**
+     * 轮次变化
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PNextRoundMsg) {
+        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push currentRound:${event.currentRound}")
+        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push nextRound:${event.nextRound}")
+        ensureInRcRoom()
+//        roomView.showSongCount(event.musicCnt)
+        var currentRound = PartyRoundInfoModel.parseFromRoundInfo(event.currentRound)
+        var nextRound = PartyRoundInfoModel.parseFromRoundInfo(event.nextRound)
+        if (nextRound.roundSeq > (mRoomData.expectRoundInfo?.roundSeq ?: 0)) {
+            // 游戏轮次结束
+            // 轮次确实比当前的高，可以切换
+            MyLog.w(TAG, "nextRound.roundSeq=${nextRound.roundSeq} 轮次确实比当前的高，可以切换")
+            mRoomData.expectRoundInfo = nextRound
+            mRoomData.checkRoundInEachMode()
+        } else {
+            MyLog.w(TAG, "轮次比当前轮次还小,直接忽略 当前轮次:" + mRoomData.expectRoundInfo?.roundSeq
+                    + " push轮次:" + event.currentRound.roundSeq)
+        }
+    }
 
 
-//    // TODO sync
-//    /**
-//     * 同步
-//     *
-//     * @param event
-//     */
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: RSyncMsg) {
-//        ensureInRcRoom()
-//        MyLog.w(TAG, "收到服务器 sync push更新状态 ,event=$event")
-//        var thisRound = RelayRoundInfoModel.parseFromRoundInfo(event.currentRound)
-//        if (event.enableNoLimitDuration) {
-//            mRoomData.unLockMe = true
-//            mRoomData.unLockPeer = true
-//        }
-//        // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
-//        startSyncGameStatus()
-//        processSyncResult(thisRound)
-//    }
+    // TODO sync
+    /**
+     * 同步
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PSyncMsg) {
+        ensureInRcRoom()
+        MyLog.w(TAG, "收到服务器 sync push更新状态 ,event=$event")
+        if(event.syncStatusTimeMs > mRoomData.lastSyncTs){
+            mRoomData.lastSyncTs = event.syncStatusTimeMs
+            var onlineUserCnt = event.onlineUserCnt
+            var applyUserCnt = event.applyUserCnt
+            var seats = Party
+            var thisRound = PartyRoundInfoModel.parseFromRoundInfo(event.currentRound)
+
+            if (event.enableNoLimitDuration) {
+                mRoomData.unLockMe = true
+                mRoomData.unLockPeer = true
+            }
+            // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
+            startSyncGameStatus()
+            processSyncResult(thisRound)
+        }
+
+    }
 
 //    @Subscribe
 //    fun onEvent(event: QChangeRoomNameEvent) {

@@ -4,7 +4,7 @@ import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.PartyRoom.EPUserRole
 
 class PartyPlayerInfoModel : PlayerInfoModel() {
-//    enum EPUserRole {
+    //    enum EPUserRole {
 //        EPUR_UNKNOWN  = 0; //未知角色
 //        EPUR_HOST     = 1; //主持人
 //        EPUR_ADMIN    = 2; //管理员
@@ -15,11 +15,25 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
     var popularity = 0 // 人气
 
     /**
+     * 是否是指定的某些角色
+     */
+    fun isRole(vararg roles: Int): Boolean {
+        for (r in role) {
+            for (r2 in roles) {
+                if (r == r2) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    /**
      * 是不是管理员
      */
-    fun isAdmin():Boolean{
-        for(r in role){
-            if(r == EPUserRole.EPUR_ADMIN.value){
+    fun isAdmin(): Boolean {
+        for (r in role) {
+            if (r == EPUserRole.EPUR_ADMIN.value) {
                 return true
             }
         }
@@ -29,9 +43,9 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
     /**
      * 是不是主持人
      */
-    fun isHost():Boolean{
-        for(r in role){
-            if(r == EPUserRole.EPUR_HOST.value){
+    fun isHost(): Boolean {
+        for (r in role) {
+            if (r == EPUserRole.EPUR_HOST.value) {
                 return true
             }
         }
@@ -41,9 +55,9 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
     /**
      * 是不是嘉宾
      */
-    fun isGuest():Boolean{
-        for(r in role){
-            if(r == EPUserRole.EPUR_GUEST.value){
+    fun isGuest(): Boolean {
+        for (r in role) {
+            if (r == EPUserRole.EPUR_GUEST.value) {
                 return true
             }
         }

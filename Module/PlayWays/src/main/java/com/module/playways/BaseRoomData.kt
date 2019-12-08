@@ -53,11 +53,14 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
     var agoraToken: String? = null // 声网token
 
+    var isHasExitGame = false //是否退出了房间
+
     abstract val gameType: Int
 
     private var lastHzTs: Long = -1 // 红钻更新的时间戳
 
     protected var mCoin: Int = 0// 金币数
+
     protected var mHzCount: Float = 0.toFloat()// 金币数
 
     val realRoundSeq: Int
