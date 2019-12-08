@@ -119,10 +119,10 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
 
         partyGameInfoModel?.let {
             if (it.gameType == EPGameType.PGT_Play.value) {
-                setMainText(it.play?.playCard, it.play?.playCard)
+                setMainText("", it.play?.playCard)
                 handCardTv.text = "手卡"
             } else if (it.gameType == EPGameType.PGT_Question.value) {
-                setMainText(it.question?.questionContent, it.question?.questionContent)
+                setMainText("", it.question?.questionContent)
                 handCardTv.text = "答案"
             }
         }
@@ -134,7 +134,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         tagType = TagType.RULE
 
         partyGameInfoModel?.let {
-            setMainText(it.gameRule?.ruleName, it.gameRule?.ruleDesc)
+            setMainText("游戏规则\n", it.gameRule?.ruleDesc)
         }
     }
 
@@ -144,7 +144,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         tagType = TagType.ATTENTION
 
         partyGameInfoModel?.let {
-            //setMainText(it.question.)
+            setMainText("房间公告\n", mRoomData?.notice)
         }
     }
 
@@ -202,6 +202,12 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         } else if (partyGameInfoModel.gameType == EPGameType.PGT_Question.value) {
             handCardTv.text = "答案"
         }
+    }
+
+    fun toWaitingState() {
+        resetMainView()
+        gameTv.isSelected = true
+        textGameTv.text = "等待中"
     }
 
     enum class TagType {

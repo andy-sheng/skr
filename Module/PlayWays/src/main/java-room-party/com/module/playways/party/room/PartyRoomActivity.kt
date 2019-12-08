@@ -35,8 +35,8 @@ import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.mic.room.top.RoomInviteView
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.bottom.PartyBottomContainerView
-import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
+import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.presenter.PartyCorePresenter
 import com.module.playways.party.room.seat.PartySeatView
 import com.module.playways.party.room.top.PartyTopContentView
@@ -763,7 +763,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
      * 没有游戏了
      */
     override fun showWaiting() {
-
+        mPartyGameMainView?.toWaitingState()
     }
 
 }
