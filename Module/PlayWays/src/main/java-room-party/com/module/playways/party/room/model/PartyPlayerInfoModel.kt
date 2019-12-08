@@ -1,7 +1,10 @@
 package com.module.playways.party.room.model
 
+import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.PartyRoom.EPUserRole
+import com.zq.live.proto.PartyRoom.POnlineInfo
+import com.zq.live.proto.PartyRoom.SeatInfo
 
 class PartyPlayerInfoModel : PlayerInfoModel() {
     //    enum EPUserRole {
@@ -68,5 +71,23 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
         return "PartyPlayerInfoModel(userInfo=${userInfo.toSimpleString()}, role=$role)"
     }
 
+    companion object{
+        fun parseFromPb(pb: POnlineInfo):PartyPlayerInfoModel{
+            var info = PartyPlayerInfoModel()
+            info.popularity = pb.popularity
+            for(r in pb.roleList){
+                info.role.add(r.value)
+            }
+            info.userInfo = UserInfoModel.parseFromPB(pb.userInfo)
+            return info
+        }
 
+        fun parseFromPb(pbs:List<POnlineInfo>):List<PartyPlayerInfoModel>{
+            var infos = ArrayList<PartyPlayerInfoModel>()
+            for(pb in pbs){
+                infos.add(parseFromPb(pb))
+            }
+            return infos
+        }
+    }
 }

@@ -3,6 +3,7 @@ package com.module.playways.party.room.model
 import com.alibaba.fastjson.annotation.JSONField
 import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.ESeatStatus
+import com.zq.live.proto.PartyRoom.SeatInfo
 import java.io.Serializable
 
 // 座位信息
@@ -19,5 +20,23 @@ class PartySeatInfoModel : Serializable {
 
     override fun toString(): String {
         return "PartySeatInfoModel(seatSeq=$seatSeq, seatStatus=$seatStatus, userID=$userID, micStatus=$micStatus)"
+    }
+    companion object{
+        fun parseFromPb(pb:SeatInfo):PartySeatInfoModel{
+            var info = PartySeatInfoModel()
+            info.seatSeq = pb.seatSeq
+            info.seatStatus = pb.seatStatus.value
+            info.userID = pb.userID
+            info.micStatus = pb.micStatus.value
+            return info
+        }
+
+        fun parseFromPb(pbs:List<SeatInfo>):List<PartySeatInfoModel>{
+            var infos = ArrayList<PartySeatInfoModel>()
+            for(pb in pbs){
+                infos.add(parseFromPb(pb))
+            }
+            return infos
+        }
     }
 }

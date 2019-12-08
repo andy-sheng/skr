@@ -21,7 +21,9 @@ import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.PartyRoundChangeEvent
 import com.module.playways.party.room.event.PartyRoundStatusChangeEvent
+import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
+import com.module.playways.party.room.model.PartySeatInfoModel
 import com.module.playways.party.room.ui.IPartyRoomView
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
@@ -719,13 +721,10 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             mRoomData.lastSyncTs = event.syncStatusTimeMs
             var onlineUserCnt = event.onlineUserCnt
             var applyUserCnt = event.applyUserCnt
-            var seats = Party
-            var thisRound = PartyRoundInfoModel.parseFromRoundInfo(event.currentRound)
 
-            if (event.enableNoLimitDuration) {
-                mRoomData.unLockMe = true
-                mRoomData.unLockPeer = true
-            }
+            var seats = PartySeatInfoModel.parseFromPb(event.seatsList)
+            var thisRound = PartyRoundInfoModel.parseFromRoundInfo(event.currentRound)
+            var users = PartyPlayerInfoModel.parseFromPb(event.usersList)
             // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
             startSyncGameStatus()
             processSyncResult(thisRound)
