@@ -140,4 +140,5 @@ public interface RouterConstants {
 
     String ACTIVITY_CREATE_PARTY_ROOM = "/party/PartyRoomCreateActivity";
     String ACTIVITY_PARTY_ROOM = "/party/PartyRoomActivity";
+    String ACTIVITY_PARTY_SELECT_GAME = "/party/PartySelectGameActivity";
 }
