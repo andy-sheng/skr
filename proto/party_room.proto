@@ -115,8 +115,16 @@ message PRoundInfo
     uint32 roundSeq        = 1; //轮次序号
     uint32 beginMs         = 2; //开始相对时间（相对于createdTimeMs时间）
     uint32 endMs           = 3; //结束相对时间（相对于createdTimeMs时间）
-    PGameItemInfo itemInfo = 4; //游戏信息
-    bool hasNextItem       = 5; //是否存在下一个游戏
+    EPRoundStatus status   = 4; //轮次状态
+    PGameItemInfo itemInfo = 5; //游戏信息
+    bool hasNextItem       = 6; //是否存在下一个游戏
+}
+
+enum EPRoundStatus {
+    PRS_UNKNOWN   = 0; //轮次状态未知
+    PRS_WAITING   = 1; //等待阶段
+    PRS_PLAY_GAME = 2; //剧本游戏、题目游戏阶段
+    PRS_END       = 3; //轮次已结束
 }
 
 message PGameItemInfo
@@ -203,12 +211,14 @@ message PJoinNoticeMsg
 {
     POnlineInfo user  = 1; //加入用户
     sint64 joinTimeMs = 2; //加入时间
+    SeatInfo seat     = 3; //以嘉宾身份进入时，占用席位信息;其他身份加入，此字段为空
 }
 
 message PSetAllMemberMicMsg
 {
-    EMicStatus micStatus = 1; //麦状态
-    POnlineInfo opUser   = 3; //执行者
+    EMicStatus micStatus    = 1; //麦状态
+    POnlineInfo opUser      = 2; //执行者
+    repeated SeatInfo seats = 3; //座位最新信息
 }
 
 message PFixRoomNoticeMsg
@@ -218,7 +228,9 @@ message PFixRoomNoticeMsg
 
 message PSetRoomAdminMsg
 {
-    POnlineInfo user = 1; //用户信息
+    POnlineInfo user      = 1; //管理员信息
+    POnlineInfo opUser    = 2; //执行者信息
+    ESetAdminType setType = 3; //设置类型
 }
 
 message PSetUserMicMsg
@@ -234,6 +246,12 @@ message PSetSeatStatusMsg
     uint32 seatSeq         = 1; //座位序号
     ESeatStatus seatStatus = 2; //座位状态
     POnlineInfo opUser     = 3; //执行者
+}
+
+enum ESetAdminType {
+    SAT_UNKNOWN = 0; //未知
+    SAT_ADD     = 1; //添加管理员
+    SAT_DEL     = 2; //删除管理员
 }
 
 enum ESeatStatus {

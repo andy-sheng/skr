@@ -21,8 +21,10 @@ public final class PSetRoomAdminMsg extends Message<PSetRoomAdminMsg, PSetRoomAd
 
   private static final long serialVersionUID = 0L;
 
+  public static final ESetAdminType DEFAULT_SETTYPE = ESetAdminType.SAT_UNKNOWN;
+
   /**
-   * 用户信息
+   * 管理员信息
    */
   @WireField(
       tag = 1,
@@ -30,19 +32,42 @@ public final class PSetRoomAdminMsg extends Message<PSetRoomAdminMsg, PSetRoomAd
   )
   private final POnlineInfo user;
 
-  public PSetRoomAdminMsg(POnlineInfo user) {
-    this(user, ByteString.EMPTY);
+  /**
+   * 执行者信息
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.zq.live.proto.PartyRoom.POnlineInfo#ADAPTER"
+  )
+  private final POnlineInfo opUser;
+
+  /**
+   * 设置类型
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.PartyRoom.ESetAdminType#ADAPTER"
+  )
+  private final ESetAdminType setType;
+
+  public PSetRoomAdminMsg(POnlineInfo user, POnlineInfo opUser, ESetAdminType setType) {
+    this(user, opUser, setType, ByteString.EMPTY);
   }
 
-  public PSetRoomAdminMsg(POnlineInfo user, ByteString unknownFields) {
+  public PSetRoomAdminMsg(POnlineInfo user, POnlineInfo opUser, ESetAdminType setType,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.user = user;
+    this.opUser = opUser;
+    this.setType = setType;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.user = user;
+    builder.opUser = opUser;
+    builder.setType = setType;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -53,7 +78,9 @@ public final class PSetRoomAdminMsg extends Message<PSetRoomAdminMsg, PSetRoomAd
     if (!(other instanceof PSetRoomAdminMsg)) return false;
     PSetRoomAdminMsg o = (PSetRoomAdminMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(user, o.user);
+        && Internal.equals(user, o.user)
+        && Internal.equals(opUser, o.opUser)
+        && Internal.equals(setType, o.setType);
   }
 
   @Override
@@ -62,6 +89,8 @@ public final class PSetRoomAdminMsg extends Message<PSetRoomAdminMsg, PSetRoomAd
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (user != null ? user.hashCode() : 0);
+      result = result * 37 + (opUser != null ? opUser.hashCode() : 0);
+      result = result * 37 + (setType != null ? setType.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -71,6 +100,8 @@ public final class PSetRoomAdminMsg extends Message<PSetRoomAdminMsg, PSetRoomAd
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (user != null) builder.append(", user=").append(user);
+    if (opUser != null) builder.append(", opUser=").append(opUser);
+    if (setType != null) builder.append(", setType=").append(setType);
     return builder.replace(0, 2, "PSetRoomAdminMsg{").append('}').toString();
   }
 
@@ -85,7 +116,7 @@ public final class PSetRoomAdminMsg extends Message<PSetRoomAdminMsg, PSetRoomAd
   }
 
   /**
-   * 用户信息
+   * 管理员信息
    */
   public POnlineInfo getUser() {
     if(user==null){
@@ -95,29 +126,83 @@ public final class PSetRoomAdminMsg extends Message<PSetRoomAdminMsg, PSetRoomAd
   }
 
   /**
-   * 用户信息
+   * 执行者信息
+   */
+  public POnlineInfo getOpUser() {
+    if(opUser==null){
+        return new POnlineInfo.Builder().build();
+    }
+    return opUser;
+  }
+
+  /**
+   * 设置类型
+   */
+  public ESetAdminType getSetType() {
+    if(setType==null){
+        return new ESetAdminType.Builder().build();
+    }
+    return setType;
+  }
+
+  /**
+   * 管理员信息
    */
   public boolean hasUser() {
     return user!=null;
   }
 
+  /**
+   * 执行者信息
+   */
+  public boolean hasOpUser() {
+    return opUser!=null;
+  }
+
+  /**
+   * 设置类型
+   */
+  public boolean hasSetType() {
+    return setType!=null;
+  }
+
   public static final class Builder extends Message.Builder<PSetRoomAdminMsg, Builder> {
     private POnlineInfo user;
+
+    private POnlineInfo opUser;
+
+    private ESetAdminType setType;
 
     public Builder() {
     }
 
     /**
-     * 用户信息
+     * 管理员信息
      */
     public Builder setUser(POnlineInfo user) {
       this.user = user;
       return this;
     }
 
+    /**
+     * 执行者信息
+     */
+    public Builder setOpUser(POnlineInfo opUser) {
+      this.opUser = opUser;
+      return this;
+    }
+
+    /**
+     * 设置类型
+     */
+    public Builder setSetType(ESetAdminType setType) {
+      this.setType = setType;
+      return this;
+    }
+
     @Override
     public PSetRoomAdminMsg build() {
-      return new PSetRoomAdminMsg(user, super.buildUnknownFields());
+      return new PSetRoomAdminMsg(user, opUser, setType, super.buildUnknownFields());
     }
   }
 
@@ -129,12 +214,16 @@ public final class PSetRoomAdminMsg extends Message<PSetRoomAdminMsg, PSetRoomAd
     @Override
     public int encodedSize(PSetRoomAdminMsg value) {
       return POnlineInfo.ADAPTER.encodedSizeWithTag(1, value.user)
+          + POnlineInfo.ADAPTER.encodedSizeWithTag(2, value.opUser)
+          + ESetAdminType.ADAPTER.encodedSizeWithTag(3, value.setType)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, PSetRoomAdminMsg value) throws IOException {
       POnlineInfo.ADAPTER.encodeWithTag(writer, 1, value.user);
+      POnlineInfo.ADAPTER.encodeWithTag(writer, 2, value.opUser);
+      ESetAdminType.ADAPTER.encodeWithTag(writer, 3, value.setType);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -145,6 +234,15 @@ public final class PSetRoomAdminMsg extends Message<PSetRoomAdminMsg, PSetRoomAd
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setUser(POnlineInfo.ADAPTER.decode(reader)); break;
+          case 2: builder.setOpUser(POnlineInfo.ADAPTER.decode(reader)); break;
+          case 3: {
+            try {
+              builder.setSetType(ESetAdminType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -160,6 +258,7 @@ public final class PSetRoomAdminMsg extends Message<PSetRoomAdminMsg, PSetRoomAd
     public PSetRoomAdminMsg redact(PSetRoomAdminMsg value) {
       Builder builder = value.newBuilder();
       if (builder.user != null) builder.user = POnlineInfo.ADAPTER.redact(builder.user);
+      if (builder.opUser != null) builder.opUser = POnlineInfo.ADAPTER.redact(builder.opUser);
       builder.clearUnknownFields();
       return builder.build();
     }

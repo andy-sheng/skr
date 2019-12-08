@@ -42,14 +42,25 @@ public final class PJoinNoticeMsg extends Message<PJoinNoticeMsg, PJoinNoticeMsg
   )
   private final Long joinTimeMs;
 
-  public PJoinNoticeMsg(POnlineInfo user, Long joinTimeMs) {
-    this(user, joinTimeMs, ByteString.EMPTY);
+  /**
+   * 以嘉宾身份进入时，占用席位信息;其他身份加入，此字段为空
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.PartyRoom.SeatInfo#ADAPTER"
+  )
+  private final SeatInfo seat;
+
+  public PJoinNoticeMsg(POnlineInfo user, Long joinTimeMs, SeatInfo seat) {
+    this(user, joinTimeMs, seat, ByteString.EMPTY);
   }
 
-  public PJoinNoticeMsg(POnlineInfo user, Long joinTimeMs, ByteString unknownFields) {
+  public PJoinNoticeMsg(POnlineInfo user, Long joinTimeMs, SeatInfo seat,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.user = user;
     this.joinTimeMs = joinTimeMs;
+    this.seat = seat;
   }
 
   @Override
@@ -57,6 +68,7 @@ public final class PJoinNoticeMsg extends Message<PJoinNoticeMsg, PJoinNoticeMsg
     Builder builder = new Builder();
     builder.user = user;
     builder.joinTimeMs = joinTimeMs;
+    builder.seat = seat;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -68,7 +80,8 @@ public final class PJoinNoticeMsg extends Message<PJoinNoticeMsg, PJoinNoticeMsg
     PJoinNoticeMsg o = (PJoinNoticeMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(user, o.user)
-        && Internal.equals(joinTimeMs, o.joinTimeMs);
+        && Internal.equals(joinTimeMs, o.joinTimeMs)
+        && Internal.equals(seat, o.seat);
   }
 
   @Override
@@ -78,6 +91,7 @@ public final class PJoinNoticeMsg extends Message<PJoinNoticeMsg, PJoinNoticeMsg
       result = unknownFields().hashCode();
       result = result * 37 + (user != null ? user.hashCode() : 0);
       result = result * 37 + (joinTimeMs != null ? joinTimeMs.hashCode() : 0);
+      result = result * 37 + (seat != null ? seat.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -88,6 +102,7 @@ public final class PJoinNoticeMsg extends Message<PJoinNoticeMsg, PJoinNoticeMsg
     StringBuilder builder = new StringBuilder();
     if (user != null) builder.append(", user=").append(user);
     if (joinTimeMs != null) builder.append(", joinTimeMs=").append(joinTimeMs);
+    if (seat != null) builder.append(", seat=").append(seat);
     return builder.replace(0, 2, "PJoinNoticeMsg{").append('}').toString();
   }
 
@@ -122,6 +137,16 @@ public final class PJoinNoticeMsg extends Message<PJoinNoticeMsg, PJoinNoticeMsg
   }
 
   /**
+   * 以嘉宾身份进入时，占用席位信息;其他身份加入，此字段为空
+   */
+  public SeatInfo getSeat() {
+    if(seat==null){
+        return new SeatInfo.Builder().build();
+    }
+    return seat;
+  }
+
+  /**
    * 加入用户
    */
   public boolean hasUser() {
@@ -135,10 +160,19 @@ public final class PJoinNoticeMsg extends Message<PJoinNoticeMsg, PJoinNoticeMsg
     return joinTimeMs!=null;
   }
 
+  /**
+   * 以嘉宾身份进入时，占用席位信息;其他身份加入，此字段为空
+   */
+  public boolean hasSeat() {
+    return seat!=null;
+  }
+
   public static final class Builder extends Message.Builder<PJoinNoticeMsg, Builder> {
     private POnlineInfo user;
 
     private Long joinTimeMs;
+
+    private SeatInfo seat;
 
     public Builder() {
     }
@@ -159,9 +193,17 @@ public final class PJoinNoticeMsg extends Message<PJoinNoticeMsg, PJoinNoticeMsg
       return this;
     }
 
+    /**
+     * 以嘉宾身份进入时，占用席位信息;其他身份加入，此字段为空
+     */
+    public Builder setSeat(SeatInfo seat) {
+      this.seat = seat;
+      return this;
+    }
+
     @Override
     public PJoinNoticeMsg build() {
-      return new PJoinNoticeMsg(user, joinTimeMs, super.buildUnknownFields());
+      return new PJoinNoticeMsg(user, joinTimeMs, seat, super.buildUnknownFields());
     }
   }
 
@@ -174,6 +216,7 @@ public final class PJoinNoticeMsg extends Message<PJoinNoticeMsg, PJoinNoticeMsg
     public int encodedSize(PJoinNoticeMsg value) {
       return POnlineInfo.ADAPTER.encodedSizeWithTag(1, value.user)
           + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.joinTimeMs)
+          + SeatInfo.ADAPTER.encodedSizeWithTag(3, value.seat)
           + value.unknownFields().size();
     }
 
@@ -181,6 +224,7 @@ public final class PJoinNoticeMsg extends Message<PJoinNoticeMsg, PJoinNoticeMsg
     public void encode(ProtoWriter writer, PJoinNoticeMsg value) throws IOException {
       POnlineInfo.ADAPTER.encodeWithTag(writer, 1, value.user);
       ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.joinTimeMs);
+      SeatInfo.ADAPTER.encodeWithTag(writer, 3, value.seat);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -192,6 +236,7 @@ public final class PJoinNoticeMsg extends Message<PJoinNoticeMsg, PJoinNoticeMsg
         switch (tag) {
           case 1: builder.setUser(POnlineInfo.ADAPTER.decode(reader)); break;
           case 2: builder.setJoinTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
+          case 3: builder.setSeat(SeatInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -207,6 +252,7 @@ public final class PJoinNoticeMsg extends Message<PJoinNoticeMsg, PJoinNoticeMsg
     public PJoinNoticeMsg redact(PJoinNoticeMsg value) {
       Builder builder = value.newBuilder();
       if (builder.user != null) builder.user = POnlineInfo.ADAPTER.redact(builder.user);
+      if (builder.seat != null) builder.seat = SeatInfo.ADAPTER.redact(builder.seat);
       builder.clearUnknownFields();
       return builder.build();
     }

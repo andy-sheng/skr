@@ -29,6 +29,8 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
 
   public static final Integer DEFAULT_ENDMS = 0;
 
+  public static final EPRoundStatus DEFAULT_STATUS = EPRoundStatus.PRS_UNKNOWN;
+
   public static final Boolean DEFAULT_HASNEXTITEM = false;
 
   /**
@@ -59,10 +61,19 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
   private final Integer endMs;
 
   /**
-   * 游戏信息
+   * 轮次状态
    */
   @WireField(
       tag = 4,
+      adapter = "com.zq.live.proto.PartyRoom.EPRoundStatus#ADAPTER"
+  )
+  private final EPRoundStatus status;
+
+  /**
+   * 游戏信息
+   */
+  @WireField(
+      tag = 5,
       adapter = "com.zq.live.proto.PartyRoom.PGameItemInfo#ADAPTER"
   )
   private final PGameItemInfo itemInfo;
@@ -71,22 +82,23 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
    * 是否存在下一个游戏
    */
   @WireField(
-      tag = 5,
+      tag = 6,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
   private final Boolean hasNextItem;
 
-  public PRoundInfo(Integer roundSeq, Integer beginMs, Integer endMs, PGameItemInfo itemInfo,
-      Boolean hasNextItem) {
-    this(roundSeq, beginMs, endMs, itemInfo, hasNextItem, ByteString.EMPTY);
+  public PRoundInfo(Integer roundSeq, Integer beginMs, Integer endMs, EPRoundStatus status,
+      PGameItemInfo itemInfo, Boolean hasNextItem) {
+    this(roundSeq, beginMs, endMs, status, itemInfo, hasNextItem, ByteString.EMPTY);
   }
 
-  public PRoundInfo(Integer roundSeq, Integer beginMs, Integer endMs, PGameItemInfo itemInfo,
-      Boolean hasNextItem, ByteString unknownFields) {
+  public PRoundInfo(Integer roundSeq, Integer beginMs, Integer endMs, EPRoundStatus status,
+      PGameItemInfo itemInfo, Boolean hasNextItem, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundSeq = roundSeq;
     this.beginMs = beginMs;
     this.endMs = endMs;
+    this.status = status;
     this.itemInfo = itemInfo;
     this.hasNextItem = hasNextItem;
   }
@@ -97,6 +109,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
     builder.roundSeq = roundSeq;
     builder.beginMs = beginMs;
     builder.endMs = endMs;
+    builder.status = status;
     builder.itemInfo = itemInfo;
     builder.hasNextItem = hasNextItem;
     builder.addUnknownFields(unknownFields());
@@ -112,6 +125,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
         && Internal.equals(roundSeq, o.roundSeq)
         && Internal.equals(beginMs, o.beginMs)
         && Internal.equals(endMs, o.endMs)
+        && Internal.equals(status, o.status)
         && Internal.equals(itemInfo, o.itemInfo)
         && Internal.equals(hasNextItem, o.hasNextItem);
   }
@@ -124,6 +138,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
       result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
       result = result * 37 + (beginMs != null ? beginMs.hashCode() : 0);
       result = result * 37 + (endMs != null ? endMs.hashCode() : 0);
+      result = result * 37 + (status != null ? status.hashCode() : 0);
       result = result * 37 + (itemInfo != null ? itemInfo.hashCode() : 0);
       result = result * 37 + (hasNextItem != null ? hasNextItem.hashCode() : 0);
       super.hashCode = result;
@@ -137,6 +152,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
     if (beginMs != null) builder.append(", beginMs=").append(beginMs);
     if (endMs != null) builder.append(", endMs=").append(endMs);
+    if (status != null) builder.append(", status=").append(status);
     if (itemInfo != null) builder.append(", itemInfo=").append(itemInfo);
     if (hasNextItem != null) builder.append(", hasNextItem=").append(hasNextItem);
     return builder.replace(0, 2, "PRoundInfo{").append('}').toString();
@@ -183,6 +199,16 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
   }
 
   /**
+   * 轮次状态
+   */
+  public EPRoundStatus getStatus() {
+    if(status==null){
+        return new EPRoundStatus.Builder().build();
+    }
+    return status;
+  }
+
+  /**
    * 游戏信息
    */
   public PGameItemInfo getItemInfo() {
@@ -224,6 +250,13 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
   }
 
   /**
+   * 轮次状态
+   */
+  public boolean hasStatus() {
+    return status!=null;
+  }
+
+  /**
    * 游戏信息
    */
   public boolean hasItemInfo() {
@@ -243,6 +276,8 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
     private Integer beginMs;
 
     private Integer endMs;
+
+    private EPRoundStatus status;
 
     private PGameItemInfo itemInfo;
 
@@ -276,6 +311,14 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
     }
 
     /**
+     * 轮次状态
+     */
+    public Builder setStatus(EPRoundStatus status) {
+      this.status = status;
+      return this;
+    }
+
+    /**
      * 游戏信息
      */
     public Builder setItemInfo(PGameItemInfo itemInfo) {
@@ -293,7 +336,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
 
     @Override
     public PRoundInfo build() {
-      return new PRoundInfo(roundSeq, beginMs, endMs, itemInfo, hasNextItem, super.buildUnknownFields());
+      return new PRoundInfo(roundSeq, beginMs, endMs, status, itemInfo, hasNextItem, super.buildUnknownFields());
     }
   }
 
@@ -307,8 +350,9 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.roundSeq)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.beginMs)
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.endMs)
-          + PGameItemInfo.ADAPTER.encodedSizeWithTag(4, value.itemInfo)
-          + ProtoAdapter.BOOL.encodedSizeWithTag(5, value.hasNextItem)
+          + EPRoundStatus.ADAPTER.encodedSizeWithTag(4, value.status)
+          + PGameItemInfo.ADAPTER.encodedSizeWithTag(5, value.itemInfo)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(6, value.hasNextItem)
           + value.unknownFields().size();
     }
 
@@ -317,8 +361,9 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.roundSeq);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.beginMs);
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.endMs);
-      PGameItemInfo.ADAPTER.encodeWithTag(writer, 4, value.itemInfo);
-      ProtoAdapter.BOOL.encodeWithTag(writer, 5, value.hasNextItem);
+      EPRoundStatus.ADAPTER.encodeWithTag(writer, 4, value.status);
+      PGameItemInfo.ADAPTER.encodeWithTag(writer, 5, value.itemInfo);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 6, value.hasNextItem);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -331,8 +376,16 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
           case 1: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setEndMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 4: builder.setItemInfo(PGameItemInfo.ADAPTER.decode(reader)); break;
-          case 5: builder.setHasNextItem(ProtoAdapter.BOOL.decode(reader)); break;
+          case 4: {
+            try {
+              builder.setStatus(EPRoundStatus.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 5: builder.setItemInfo(PGameItemInfo.ADAPTER.decode(reader)); break;
+          case 6: builder.setHasNextItem(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

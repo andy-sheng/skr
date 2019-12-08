@@ -23,7 +23,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     var users = ArrayList<PartyPlayerInfoModel>() // 当前的用户信息 包括 主持人管理员 以及 嘉宾
     var seats = ArrayList<PartySeatInfoModel>() // 座位信息
 
-//    var seatsMap = HashMap<Int, PartyActorInfoModel>() // 座位信息 key为座位序号  value 的座位状态 和该位置上的嘉宾信息
+    //  var seatsMap = HashMap<Int, PartyActorInfoModel>() // 座位信息 key为座位序号  value 的座位状态 和该位置上的嘉宾信息
 
     // 题目信息在轮次信息里 轮次信息在父类的 realRoundInfo 中
 
@@ -55,7 +55,9 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         return null
     }
 
-
+    /**
+     *  座位信息 key为座位序号  value 的座位状态 和该位置上的嘉宾信息
+     */
     fun getSeatInfoMap(): HashMap<Int, PartyActorInfoModel> {
         var seatsMap = HashMap<Int, PartyActorInfoModel>()
         this.seats?.let {
