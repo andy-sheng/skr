@@ -13,7 +13,9 @@ import org.greenrobot.eventbus.EventBus
 
 
 class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
-
+    var roomName = ""//房间名称
+    var topicName = ""//房间主题
+    var notice = ""// 房间公告
     var syncStatusTimeMs = 0L
     var onlineUserCnt = 0 //在线人数
     var applyUserCnt = 0 //申请人数
@@ -61,7 +63,8 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             return
         }
         MyLog.d(TAG, "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo.roundSeq=" + expectRoundInfo!!.roundSeq)
-        if ((expectRoundInfo?.roundSeq?:0) > (realRoundInfo?.roundSeq?:0) || realRoundInfo==null) {
+        if ((expectRoundInfo?.roundSeq ?: 0) > (realRoundInfo?.roundSeq
+                        ?: 0) || realRoundInfo == null) {
             // 轮次大于，才切换
             val lastRoundInfoModel = realRoundInfo
 //            lastRoundInfoModel?.updateStatus(false, ERRoundStatus.RRS_END.value)
@@ -71,33 +74,18 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     }
 
     fun loadFromRsp(rsp: JoinPartyRoomRspModel) {
-//        this.gameId = rsp.roomID
-//        this.gameCreateTs = rsp.createTimeMs
-//        rsp.tokens?.forEach {
-//            if (it.userID == MyUserInfoManager.uid.toInt()) {
-//                this.agoraToken = it.token
-//                return@forEach
-//            }
-//        }
-//        this.configModel = rsp.config ?: RelayConfigModel()
-//        this.peerUser = RelayPlayerInfoModel()
-//        rsp.users?.forEachIndexed { index, userInfoModel ->
-//            var a = rsp.showInfos.getOrNull(index)
-//            if (userInfoModel.userId != MyUserInfoManager.uid.toInt()) {
-//                this.peerUser?.userInfo = userInfoModel
-//                this.peerEffectModel = a
-//                this.leftSeat = index != 0
-//            } else {
-//                this.myEffectModel = a
-//            }
-//        }
-//        this.peerUser?.isOnline = true
-//        this.expectRoundInfo = rsp.currentRound
+        this.gameId = rsp.roomID
+        this.agoraToken = rsp.agoraToken
+        this.applyUserCnt = rsp.applyUserCnt ?: 0
+        this.gameStartTs = (rsp.gameStartTimeMs?.toLong() ?: 0L)
+        this.notice = rsp.notice ?: ""
+        this.onlineUserCnt = rsp.onlineUserCnt ?: 0
+        this.roomName = rsp.roomName ?: ""
+        this.topicName = rsp.topicName ?: ""
+        this.users = rsp.users ?: ArrayList()
+        this.seats = rsp.seats ?: ArrayList()
+        this.expectRoundInfo = rsp.currentRound
     }
-
-//    override fun toString(): String {
-//        return "RelayRoomData(shiftTsForRelay=$shiftTsForRelay, configModel=$configModel, peerUser=$peerUser, unLockMe=$unLockMe, unLockPeer=$unLockPeer, leftSeat=$leftSeat, isHasExitGame=$isHasExitGame)"
-//    }
 
 
 }

@@ -5,6 +5,9 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.component.busilib.model.EffectModel
 import com.component.busilib.model.GameBackgroundEffectModel
 import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
+import com.module.playways.party.room.model.PartyPlayerInfoModel
+import com.module.playways.party.room.model.PartyRoundInfoModel
+import com.module.playways.party.room.model.PartySeatInfoModel
 import com.module.playways.relay.room.model.RelayConfigModel
 import com.module.playways.relay.room.model.RelayRoundInfoModel
 import com.module.playways.relay.room.model.RelayUserLockModel
@@ -13,44 +16,39 @@ import com.zq.live.proto.RelayRoom.RUserEnterMsg
 import java.io.Serializable
 
 class JoinPartyRoomRspModel : Serializable {
+    @JSONField(name = "roomID")
+    var roomID = 0
 
-//    @JSONField(name = "roomID")
-//    var roomID: Int = 0// 房间id
-//    @JSONField(name = "createdTimeMs")
-//    var createTimeMs: Long = 0// 房间创建时间，绝对时间
-//    @JSONField(name = "config")
-//    var config: RelayConfigModel? = null
-//    @JSONField(name = "currentRound")
-//    var currentRound: RelayRoundInfoModel? = null // 目前轮次
-//    @JSONField(name = "enableNoLimitDuration")
-//    var enableNoLimitDuration: Boolean? = null    // 开启没有限制的持续时间
-//    @JSONField(name = "tokens")
-//    var tokens: List<LocalAgoraTokenInfo>? = null    // 声网
-//    @JSONField(name = "userLockInfo")
-//    var userLockInfo: List<RelayUserLockModel>? = null  // 解锁信息
-//    @JSONField(name = "users")
-//    var users: List<UserInfoModel>? = null  // 用户信息
-//    @JSONField(name = "showInfos")
-//    var showInfos = ArrayList<GameBackgroundEffectModel>()
-//
-//    override fun toString(): String {
-//        return "JoinRelayRoomRspModel(roomID=$roomID, createTimeMs=$createTimeMs, currentRound=$currentRound, enableNoLimitDuration=$enableNoLimitDuration, tokens=$tokens, userLockInfo=$userLockInfo, users=$users)"
-//    }
-//
-//    companion object {
-//        fun parseFromPB(msg: RUserEnterMsg): JoinPartyRoomRspModel {
-//            val result = JoinPartyRoomRspModel()
-//            result.roomID = msg.roomID
-//            result.createTimeMs = msg.createdTimeMs
-//            result.config = RelayConfigModel.parseFromPB(msg.config)
-//            result.currentRound = RelayRoundInfoModel.parseFromRoundInfo(msg.currentRound)
-//            result.enableNoLimitDuration = msg.enableNoLimitDuration
-//            result.tokens = LocalAgoraTokenInfo.toLocalAgoraTokenInfo(msg.tokensList)
-//            result.users = UserInfoModel.parseFromPB(msg.usersList)
-//            result.showInfos.addAll(GameBackgroundEffectModel.parseToList(msg.showInfosList))
-//
-//            return result
-//        }
-//    }
+    @JSONField(name = "agoraToken")
+    var agoraToken: String? = null
+
+    @JSONField(name = "applyUserCnt")
+    var applyUserCnt: Int? = null
+
+    @JSONField(name = "currentRound")
+    var currentRound: PartyRoundInfoModel? = null
+
+    @JSONField(name = "gameStartTimeMs")
+    var gameStartTimeMs: Int? = null
+
+    @JSONField(name = "notice")
+    var notice: String? = null
+
+    @JSONField(name = "onlineUserCnt")
+    var onlineUserCnt: Int? = null
+
+    @JSONField(name = "roomName")
+    var roomName: String? = null
+
+    @JSONField(name = "seats")
+    var seats: ArrayList<PartySeatInfoModel>? = null
+
+    @JSONField(name = "topicName")
+    var topicName: String? = null
+
+    @JSONField(name = "users")
+    var users: ArrayList<PartyPlayerInfoModel>? = null
+
+
 
 }
