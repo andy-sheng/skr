@@ -14,7 +14,6 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
-import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
@@ -37,6 +36,7 @@ import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.bottom.PartyBottomContainerView
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
 import com.module.playways.party.room.model.PartyRoundInfoModel
+import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.party.room.presenter.PartyCorePresenter
 import com.module.playways.party.room.seat.PartySeatView
 import com.module.playways.party.room.top.PartyTopContentView
@@ -545,6 +545,22 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
 
         mSeatView = findViewById(R.id.seat_view)
+        mSeatView.bindData(mRoomData)
+        mSeatView.listener = object : PartySeatView.Listener {
+            override fun onClikAvatar(position: Int, model: PartyActorInfoModel?) {
+                if (mRoomData.getMyInfoInParty().isAdmin() || mRoomData.getMyInfoInParty().isHost()) {
+                    // 我是管理人员
+                    showPartyManageView(model)
+                } else {
+                    // 非管理人员
+                    if (model?.player?.userID != null) {
+                        showPersonInfoView(model?.player?.userID ?: 0)
+                    } else {
+                        // 点了个空座位
+                    }
+                }
+            }
+        }
     }
 
     private fun showGameRuleDialog() {
@@ -618,47 +634,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     }
 
 
-    private fun showPartyManageView() {
+    private fun showPartyManageView(model: PartyActorInfoModel?) {
         dismissDialog()
         mInputContainerView.hideSoftInput()
-        mPartyManageDialogView = PartyManageDialogView(this)
-        if (true) {
-            // 麦上有人
-            mPartyManageDialogView?.apply {
-                function1.visibility = View.VISIBLE
-                function1.text = "下麦"
-                function1.setDebounceViewClickListener { }
-                function2.visibility = View.VISIBLE
-                function2.text = "关麦"
-                function2.setDebounceViewClickListener { }
-                function3.visibility = View.VISIBLE
-                function3.text = "查看信息"
-                function3.setDebounceViewClickListener { }
-            }
-        } else {
-            // 麦上无人
-            if (true) {
-                //空席位
-                mPartyManageDialogView?.apply {
-                    function1.visibility = View.VISIBLE
-                    function1.text = "关闭座位"
-                    function1.setDebounceViewClickListener { }
-                    function2.visibility = View.VISIBLE
-                    function2.text = "邀请上麦"
-                    function2.setDebounceViewClickListener { }
-                    function3.visibility = View.GONE
-                }
-            } else {
-                // 已关闭的席位
-                mPartyManageDialogView?.apply {
-                    function1.visibility = View.VISIBLE
-                    function1.text = "打开座位"
-                    function1.setDebounceViewClickListener { }
-                    function2.visibility = View.GONE
-                    function3.visibility = View.GONE
-                }
-            }
-        }
+        mPartyManageDialogView = PartyManageDialogView(this, model)
         mPartyManageDialogView?.showByDialog()
     }
 
