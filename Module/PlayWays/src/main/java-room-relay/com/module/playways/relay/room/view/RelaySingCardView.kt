@@ -5,12 +5,14 @@ import android.view.ViewStub
 import android.widget.TextView
 import com.common.log.MyLog
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.ExViewStub
 import com.common.view.ex.ExView
 import com.component.busilib.model.EffectModel
 import com.component.busilib.view.GameEffectBgView
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.LyricsReader
+import com.component.lyrics.model.LyricsLineInfo
 import com.component.lyrics.widget.ManyLyricsView
 import com.component.lyrics.widget.VoiceScaleView
 import com.module.playways.R
@@ -19,6 +21,7 @@ import com.module.playways.relay.room.RelayRoomData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.*
 
 class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     val TAG = "RelaySingCardView"
@@ -94,9 +97,12 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
 //        voiceScaleView?.durationProvider = {
 //            roomData?.getSingCurPosition() ?: 0L
-//        }0L
-        manyLyricsView?.setSplitChorusArray(music?.relaySegments)
-        manyLyricsView?.setFirstSingByMe(roomData?.isFirstSingByMe() == true)
+//        }
+        manyLyricsView?.setDownLineNum(2)
+        manyLyricsView?.setUpLineNum(1)
+        manyLyricsView?.shiftY = 0.4f
+//        manyLyricsView?.setSplitChorusArray(music?.relaySegments)
+//        manyLyricsView?.setFirstSingByMe(roomData?.isFirstSingByMe() == true)
 
         val configParams = LyricAndAccMatchManager.ConfigParams()
         configParams.manyLyricsView = manyLyricsView
@@ -112,6 +118,55 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         lyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener {
 
             override fun onLyricParseSuccess(reader: LyricsReader) {
+                var lineNum = 0
+                var fisrtLine: LyricsLineInfo? = null
+                // 判断歌词归属
+                music?.relaySegments?.let {
+                    for ((index, sp) in it.withIndex()) {
+                        var singByMe = true
+                        if (roomData?.isFirstSingByMe() == true) {
+                            singByMe = (index % 2 == 0)
+                        } else {
+                            singByMe = (index % 2 != 0)
+                        }
+                        while (lineNum < reader.lrcLineInfos.size + 10) {
+                            var lineInfo = reader.lrcLineInfos[lineNum++]
+                            var jixu = true
+                            lineInfo?.let { l ->
+                                if (l.startTime < sp) {
+                                    l.singByMe = singByMe
+                                } else {
+                                    l.spilit = true
+                                    lineNum--
+                                    jixu = false
+                                }
+                                if (fisrtLine == null) {
+                                    fisrtLine = l
+                                }
+                            }
+                            if (!jixu) {
+                                break
+                            }
+                        }
+                    }
+                    var singByMe = true
+                    if (roomData?.isFirstSingByMe() == true) {
+                        singByMe = (it.size % 2 == 0)
+                    } else {
+                        singByMe = (it.size % 2 != 0)
+                    }
+                    // 余下的
+                    while (lineNum < reader.lrcLineInfos.size + 10) {
+                        var lineInfo = reader.lrcLineInfos[lineNum++]
+                        lineInfo?.let { l ->
+                            l.singByMe = singByMe
+                            if (fisrtLine == null) {
+                                fisrtLine = l
+                            }
+                        }
+                    }
+                    fisrtLine?.spilit = true
+                }
 //                mSvlyric?.visibility = View.GONE
             }
 

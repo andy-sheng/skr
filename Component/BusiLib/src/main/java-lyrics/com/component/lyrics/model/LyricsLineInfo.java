@@ -1,5 +1,7 @@
 package com.component.lyrics.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,7 +11,8 @@ import java.util.List;
  * @author zhangliangming
  */
 public class LyricsLineInfo {
-
+    public static final String MY_TURN = "[轮到你唱了]";
+    public static final String OTHER_TURN = "[轮到对方唱了]";
     /**
      * 歌词开始时间
      */
@@ -36,6 +39,10 @@ public class LyricsLineInfo {
      * 分割歌词行歌词
      */
     private List<LyricsLineInfo> mSplitDynamicLrcLineInfos;
+
+    public boolean spilit = false;// 是否是分割
+
+    public boolean singByMe = true; // 是否是我唱
 
     public List<LyricsLineInfo> getSplitLyricsLineInfos() {
         return mSplitDynamicLrcLineInfos;
@@ -107,6 +114,8 @@ public class LyricsLineInfo {
             dist.setLyricsWords(orig.getLyricsWords());
         }
         dist.setLineLyrics(orig.getLineLyrics());
+        dist.spilit = orig.spilit;
+        dist.singByMe = orig.singByMe;
     }
 
     @Override
@@ -119,5 +128,9 @@ public class LyricsLineInfo {
                 ", mWordsDisInterval=" + Arrays.toString(mWordsDisInterval) +
                 ", mSplitDynamicLrcLineInfos=" + mSplitDynamicLrcLineInfos +
                 '}';
+    }
+
+    public String toSimpleString() {
+        return "spilit=" + spilit + ", singByMe=" + singByMe;
     }
 }
