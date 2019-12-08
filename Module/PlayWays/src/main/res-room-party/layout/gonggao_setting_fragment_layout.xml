@@ -9,7 +9,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:centerText="房间设置"
+        app:centerText="公告设置"
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
@@ -40,6 +40,18 @@
         app:layout_constraintTop_toBottomOf="@+id/titlebar" />
 
     <com.common.view.ex.ExImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="#04000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bg_iv" />
+
+    <com.common.view.ex.ExImageView
         android:id="@+id/edit_bg"
         android:layout_width="0dp"
         android:layout_height="@dimen/view_160_dp"
@@ -48,6 +60,8 @@
         android:layout_marginRight="@dimen/view_25_dp"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_solid_color="@color/white"
+        app:bl_stroke_color="@color/black_trans_10"
+        app:bl_stroke_width="@dimen/view_1_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bg_iv" />
@@ -60,7 +74,10 @@
         android:layout_marginTop="@dimen/view_8_dp"
         android:layout_marginRight="@dimen/view_8_dp"
         android:layout_marginBottom="@dimen/view_8_dp"
+        android:background="@null"
+        android:gravity="left|top"
         android:hint="请输入公告内容"
+        android:textSize="@dimen/view_14_dp"
         app:layout_constraintBottom_toBottomOf="@+id/edit_bg"
         app:layout_constraintLeft_toLeftOf="@+id/edit_bg"
         app:layout_constraintRight_toRightOf="@+id/edit_bg"
