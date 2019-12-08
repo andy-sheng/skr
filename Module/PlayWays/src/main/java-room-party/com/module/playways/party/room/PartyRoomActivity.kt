@@ -18,6 +18,7 @@ import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
@@ -45,6 +46,7 @@ import com.module.playways.party.room.ui.IPartyRoomView
 import com.module.playways.party.room.ui.PartyBottomWidgetAnimationController
 import com.module.playways.party.room.ui.PartyWidgetAnimationController
 import com.module.playways.party.room.view.*
+import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.view.ContinueSendView
@@ -193,8 +195,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             mRoomData.loadFromRsp(it)
             MyLog.d(TAG, "initData mRoomData=$mRoomData")
         }
-//        H.micRoomData = mRoomData
-//        H.setType(GameModeType.GAME_MODE_MIC, "MicRoomActivity")
+        H.partyRoomData = mRoomData
+        H.setType(GameModeType.GAME_MODE_PARTY, "PartyRoomActivity")
 
         mCorePresenter = PartyCorePresenter(mRoomData, this)
         addPresent(mCorePresenter)
@@ -271,7 +273,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mGiftPanelView?.destroy()
 //        relaySingCardView?.destroy()
 //        mSelfSingCardView?.destroy()
-//        H.reset("RelayRoomActivity")
+        H.reset("PartyRoomActivity")
     }
 
     override fun finish() {
