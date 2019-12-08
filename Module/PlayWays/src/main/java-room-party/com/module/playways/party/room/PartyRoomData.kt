@@ -1,5 +1,7 @@
 package com.module.playways.party.room
 
+import com.common.core.myinfo.MyUserInfo
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
@@ -11,6 +13,7 @@ import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.model.PartySeatInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.PartyRoom.EPRoundStatus
+import com.zq.live.proto.PartyRoom.EPUserRole
 import org.greenrobot.eventbus.EventBus
 
 
@@ -56,9 +59,10 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         }
 
     var users = ArrayList<PartyPlayerInfoModel>() // 当前的用户信息 包括 主持人管理员 以及 嘉宾
-    var seats = ArrayList<PartySeatInfoModel>() // 座位信息
+    var usersMap = HashMap<Int, PartyPlayerInfoModel>()  // 根据id找人
 
-    //  var seatsMap = HashMap<Int, PartyActorInfoModel>() // 座位信息 key为座位序号  value 的座位状态 和该位置上的嘉宾信息
+    var seats = ArrayList<PartySeatInfoModel>() // 座位信息
+    var seatsMap = HashMap<Int, PartySeatInfoModel>() // 根据座位id找座位
 
     // 题目信息在轮次信息里 轮次信息在父类的 realRoundInfo 中
 
@@ -81,11 +85,27 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
     }
 
+    /**
+     * 根据id找用户信息，找不到观众的
+     */
     fun getPlayerInfoById(userId: Int): PartyPlayerInfoModel? {
-        for (info in getPlayerAndWaiterInfoList()) {
-            if (info.userID == userId) {
-                return info as PartyPlayerInfoModel
-            }
+        return usersMap[userId]
+    }
+
+    /**
+     * 根据座位编号找座位信息
+     */
+    fun getSeatInfoBySeq(seatSeq: Int): PartySeatInfoModel? {
+        return seatsMap[seatSeq]
+    }
+
+    /**
+     * 根据座位编号找用户信息
+     */
+    fun getPlayerInfoBySeq(seatSeq: Int): PartyPlayerInfoModel? {
+        var seatInfo = seatsMap[seatSeq]
+        seatInfo?.userID?.let {
+            return getPlayerInfoById(it)
         }
         return null
     }
@@ -106,6 +126,46 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             }
         }
         return seatsMap;
+    }
+
+    /**
+     * 得到自己在Party中的角色等信息
+     */
+    fun getMyInfoInParty(): PartyPlayerInfoModel {
+        var myinfo = usersMap[MyUserInfoManager.uid.toInt()]
+        if (myinfo == null) {
+            // 如果找不到，则说明自己是观众
+            var myinfo = PartyPlayerInfoModel()
+            myinfo?.role.add(EPUserRole.EPUR_GUEST.value)
+            myinfo.popularity = 0
+            myinfo.isOnline = true
+            myinfo.userInfo = MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo)
+            return myinfo
+        } else {
+            return myinfo
+        }
+    }
+
+    fun updateUsers(list: ArrayList<PartyPlayerInfoModel>?) {
+        if (list?.isNotEmpty() == true) {
+            users.clear()
+            users.addAll(list)
+            usersMap.clear()
+            for (info in users) {
+                usersMap[info.userID] = info
+            }
+        }
+    }
+
+    fun updateSeats(list: ArrayList<PartySeatInfoModel>?) {
+        if (list?.isNotEmpty() == true) {
+            seats.clear()
+            seats.addAll(list)
+            seatsMap.clear()
+            for (info in seats) {
+                seatsMap[info.seatSeq] = info
+            }
+        }
     }
 
     /**
@@ -147,9 +207,9 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         this.onlineUserCnt = rsp.onlineUserCnt ?: 0
         this.roomName = rsp.roomName ?: ""
         this.topicName = rsp.topicName ?: ""
-        this.users = rsp.users ?: ArrayList()
+        updateUsers(rsp.users)
+        updateSeats(rsp.seats)
         this.expectRoundInfo = rsp.currentRound
-        this.seats = rsp.seats ?: ArrayList()
     }
 
 
