@@ -42,6 +42,7 @@ import com.module.playways.party.room.top.PartyTopOpView
 import com.module.playways.party.room.ui.IPartyRoomView
 import com.module.playways.party.room.ui.PartyWidgetAnimationController
 import com.module.playways.party.room.view.PartyGameMainView
+import com.module.playways.party.room.view.PartySettingView
 import com.module.playways.party.room.view.PartyVoiceControlPanelView
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
@@ -135,6 +136,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     internal var mSkrAudioPermission = SkrAudioPermission()
 
     var mPartyGameMainView: PartyGameMainView? = null
+    var mPartySettingView: PartySettingView? = null
 //    lateinit var relaySingCardView: RelaySingCardView
 
 //    var mFlyCommentView: FlyCommentView? = null
@@ -423,6 +425,22 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 buyFlowerFromOuter()
             }
         })
+
+        mPartySettingView = PartySettingView(findViewById(R.id.party_bottom_setting_viewStub))
+        mPartySettingView?.listener = object : PartySettingView.Listener {
+            override fun onClickGameSetting() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onClickGameSound() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onClickAllMute(isMute: Boolean) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        }
+//        mPartySettingView?.bindData()
     }
 
     private fun showPanelView() {
