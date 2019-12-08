@@ -12,7 +12,6 @@ class PartyRoomSettingFragment : BaseFragment() {
     lateinit var titlebar: CommonTitleBar
     lateinit var roomInfoSettingTv: ExTextView
     lateinit var roomGonggaoTv: ExTextView
-    lateinit var roomHostChangeTv: ExTextView
     lateinit var roomAdministratorTv: ExTextView
 
     override fun initView(): Int {
@@ -23,7 +22,6 @@ class PartyRoomSettingFragment : BaseFragment() {
         titlebar = rootView.findViewById(R.id.titlebar)
         roomInfoSettingTv = rootView.findViewById(R.id.room_info_setting_tv)
         roomGonggaoTv = rootView.findViewById(R.id.room_gonggao_tv)
-        roomHostChangeTv = rootView.findViewById(R.id.room_host_change_tv)
         roomAdministratorTv = rootView.findViewById(R.id.room_administrator_tv)
 
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
@@ -32,10 +30,6 @@ class PartyRoomSettingFragment : BaseFragment() {
         }
 
         roomGonggaoTv.setDebounceViewClickListener {
-
-        }
-
-        roomHostChangeTv.setDebounceViewClickListener {
 
         }
 

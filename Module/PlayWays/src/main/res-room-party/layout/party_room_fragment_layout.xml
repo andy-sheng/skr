@@ -87,17 +87,6 @@
         android:layout="@layout/party_game_main_view_layout"
         app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
-    <!--退出-->
-    <ImageView
-        android:id="@+id/exit_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/view_20_dp"
-        android:paddingTop="@dimen/view_10_dp"
-        android:src="@drawable/back_close_white"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_bar" />
-
     <!--座位席-->
     <com.module.playways.party.room.seat.PartySeatView
         android:id="@+id/seat_view"

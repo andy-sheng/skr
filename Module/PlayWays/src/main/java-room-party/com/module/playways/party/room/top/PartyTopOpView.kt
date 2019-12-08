@@ -6,41 +6,89 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.common.core.view.setDebounceViewClickListener
+import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExTextView
 import com.module.playways.R
+import com.module.playways.mic.room.MicRoomData
 
-// 顶部操作栏
 class PartyTopOpView : RelativeLayout {
+    private val mIvSetting: ImageView
+    private val mIvVoiceSetting: ImageView
+    private val mGameRuleIv: ImageView
+    private val mFeedBackIv: ImageView
+    private val mExitTv: ExTextView
 
-    constructor(context: Context) : super(context)
+    private var mListener: Listener? = null
+    private var mRoomData: MicRoomData? = null
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context) : super(context) {}
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
 
-    private val feedBackIv: ImageView
-    private val gameRuleIv: ImageView
-    private val ivVoiceSetting: ImageView
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
-    var listener: Listener? = null
+    fun setListener(listener: Listener) {
+        mListener = listener
+    }
 
     init {
-        View.inflate(context, R.layout.relay_top_op_view, this)
+        View.inflate(context, R.layout.party_top_op_view, this)
+        mGameRuleIv = findViewById(R.id.game_rule_iv)
+        mIvSetting = findViewById(R.id.game_setting)
+        mFeedBackIv = findViewById(R.id.feed_back_iv)
+        mExitTv = findViewById(R.id.exit_tv)
+        mIvVoiceSetting = findViewById<View>(R.id.iv_voice_setting) as ImageView
 
-        feedBackIv = this.findViewById(R.id.feed_back_iv)
-        gameRuleIv = this.findViewById(R.id.game_rule_iv)
-        ivVoiceSetting = this.findViewById(R.id.iv_voice_setting)
+        mIvSetting.setDebounceViewClickListener {
+            mListener?.onClickSetting()
+        }
 
-        feedBackIv.setDebounceViewClickListener { listener?.onClickFeedBack() }
-        gameRuleIv.setDebounceViewClickListener { listener?.onClickGameRule() }
-        ivVoiceSetting.setDebounceViewClickListener { listener?.onClickVoiceAudition() }
+        mIvVoiceSetting.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View) {
+                mListener?.onClickVoiceAudition()
+            }
+        })
+
+        mGameRuleIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View) {
+                mListener?.onClickGameRule()
+            }
+        })
+
+        mFeedBackIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View) {
+                mListener?.onClickFeedBack()
+            }
+        })
+
+        mExitTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View) {
+                mListener?.closeBtnClick()
+            }
+        })
+    }
+
+    fun setRoomData(roomData: MicRoomData) {
+        mRoomData = roomData
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
     }
 
     interface Listener {
+        fun closeBtnClick()
 
         fun onClickGameRule()
 
         fun onClickFeedBack()
 
         fun onClickVoiceAudition()
+
+        fun onClickSetting();
     }
 }

@@ -36,6 +36,7 @@ import com.module.playways.mic.room.top.RoomInviteView
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.bottom.PartyBottomContainerView
 import com.module.playways.party.room.model.PartyRoundInfoModel
+import com.module.playways.party.room.fragment.PartyRoomSettingFragment
 import com.module.playways.party.room.presenter.PartyCorePresenter
 import com.module.playways.party.room.seat.PartySeatView
 import com.module.playways.party.room.top.PartyTopContentView
@@ -57,7 +58,6 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.room.view.InputContainerView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import kotlinx.android.synthetic.main.party_manage_dialog_view_layout.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -97,7 +97,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     internal lateinit var mContinueSendView: ContinueSendView
     internal lateinit var mTopOpView: PartyTopOpView
     internal lateinit var mTopContentView: PartyTopContentView
-    internal lateinit var mExitIv: ImageView
     internal lateinit var mSeatView: PartySeatView
 
     internal lateinit var mGameEffectBgView: GameEffectBgView
@@ -322,6 +321,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     private fun initGameMainView() {
         mPartyGameMainView = PartyGameMainView(findViewById(R.id.party_game_main_view_layout_viewStub), mRoomData)
+        mPartyGameMainView?.tryInflate()
         mPartyGameMainView?.updateGameContent(null)
     }
 
@@ -477,12 +477,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     }
 
     private fun initTopView() {
-        mExitIv = findViewById(R.id.exit_iv)
-        mExitIv.setDebounceViewClickListener {
-            quitGame()
-        }
         mTopOpView = findViewById(R.id.top_op_view)
-        mTopOpView.listener = object : PartyTopOpView.Listener {
+        mTopOpView.setListener(object : PartyTopOpView.Listener {
             override fun onClickGameRule() {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PartyRoomActivity)
                 showGameRuleDialog()
@@ -512,7 +508,18 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 mVoiceControlPanelView?.showByDialog()
             }
 
-        }
+            override fun onClickSetting() {
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(this@PartyRoomActivity, PartyRoomSettingFragment::class.java)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build())
+            }
+
+            override fun closeBtnClick() {
+                quitGame()
+            }
+        })
         mTopContentView = findViewById(R.id.top_content_view)
         mTopContentView.roomData = mRoomData
         mTopContentView.bindData()
