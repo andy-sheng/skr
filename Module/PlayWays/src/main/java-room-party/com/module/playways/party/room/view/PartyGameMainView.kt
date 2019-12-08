@@ -93,13 +93,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
 
     private fun getGameTagTitle(): String {
         var gameTagTitle = ""
-        partyGameInfoModel?.let {
-            if (it.gameType == EPGameType.PGT_Play.value) {
-                gameTagTitle = it.play?.playName ?: ""
-            } else if (it.gameType == EPGameType.PGT_Question.value) {
-                gameTagTitle = ""
-            }
-        }
+        gameTagTitle = partyGameInfoModel?.gameRule?.ruleName ?: ""
 
         return if (TextUtils.isEmpty(gameTagTitle)) "" else "$gameTagTitle\n"
     }
