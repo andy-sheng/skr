@@ -1,8 +1,10 @@
 package com.module.playways.party.room.fragment
 
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import com.common.base.BaseFragment
 import com.common.core.view.setDebounceViewClickListener
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
@@ -30,11 +32,19 @@ class PartyRoomSettingFragment : BaseFragment() {
         }
 
         roomGonggaoTv.setDebounceViewClickListener {
-
+            U.getFragmentUtils().addFragment(
+                    FragmentUtils.newAddParamsBuilder(context as FragmentActivity, GonggaoSettingFragment::class.java)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .build())
         }
 
         roomAdministratorTv.setDebounceViewClickListener {
-
+            U.getFragmentUtils().addFragment(
+                    FragmentUtils.newAddParamsBuilder(context as FragmentActivity, AdministratorSelectFragment::class.java)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .build())
         }
     }
 

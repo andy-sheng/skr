@@ -16,7 +16,7 @@ class AdministratorSelectFragment : BaseFragment() {
     lateinit var recyclerView: RecyclerView
 
     override fun initView(): Int {
-        return R.layout.host_change_fragment_layout
+        return R.layout.administrator_select_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
