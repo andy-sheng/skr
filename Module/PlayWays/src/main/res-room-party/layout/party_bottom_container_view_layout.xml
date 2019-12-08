@@ -13,15 +13,6 @@
         android:layout_alignParentBottom="true"
         android:gravity="right">
 
-        <!--        <com.common.view.ex.ExImageView-->
-        <!--            android:id="@+id/emoji_btn"-->
-        <!--            android:layout_width="@dimen/view_39_dp"-->
-        <!--            android:layout_height="@dimen/view_35_dp"-->
-        <!--            android:layout_centerVertical="true"-->
-        <!--            android:layout_marginRight="@dimen/view_10_dp"-->
-        <!--            android:scaleType="centerInside"-->
-        <!--            app:src_unPressed_drawable="@drawable/biaoqing" />-->
-
         <com.common.view.ex.ExImageView
             android:id="@+id/gift_mall_btn"
             android:layout_width="@dimen/view_36_dp"
@@ -32,14 +23,35 @@
             app:src_unPressed_drawable="@drawable/outer_gift" />
 
         <com.common.view.ex.ExImageView
-            android:id="@+id/meigui_iv"
-            android:layout_width="@dimen/view_36_dp"
+            android:id="@+id/emoji_btn"
+            android:layout_width="@dimen/view_39_dp"
             android:layout_height="@dimen/view_35_dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_10_dp"
             android:layout_toRightOf="@id/gift_mall_btn"
-            android:background="@drawable/outer_flower"
-            android:scaleType="fitXY" />
+            android:scaleType="centerInside"
+            app:src_unPressed_drawable="@drawable/party_emoji_icon" />
+
+        <!--        <com.common.view.ex.ExImageView-->
+        <!--            android:id="@+id/meigui_iv"-->
+        <!--            android:layout_width="@dimen/view_36_dp"-->
+        <!--            android:layout_height="@dimen/view_35_dp"-->
+        <!--            android:layout_centerVertical="true"-->
+        <!--            android:layout_marginRight="@dimen/view_10_dp"-->
+        <!--            android:layout_toRightOf="@id/emoji_btn"-->
+        <!--            android:background="@drawable/outer_flower"-->
+        <!--            android:scaleType="fitXY" />-->
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/more_btn"
+            android:layout_width="@dimen/view_39_dp"
+            android:layout_height="@dimen/view_35_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:layout_toRightOf="@id/emoji_btn"
+            android:scaleType="centerInside"
+            app:src_unPressed_drawable="@drawable/person_card_more_icon" />
+
     </RelativeLayout>
 
     <com.module.playways.grab.room.bottom.SpeakingDotAnimationView

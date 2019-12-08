@@ -36,6 +36,7 @@ import com.module.playways.mic.room.top.RoomInviteView
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.bottom.PartyBottomContainerView
 import com.module.playways.party.room.presenter.PartyCorePresenter
+import com.module.playways.party.room.seat.PartySeatView
 import com.module.playways.party.room.top.PartyTopContentView
 import com.module.playways.party.room.top.PartyTopOpView
 import com.module.playways.party.room.ui.IPartyRoomView
@@ -95,6 +96,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     internal lateinit var mTopOpView: PartyTopOpView
     internal lateinit var mTopContentView: PartyTopContentView
     internal lateinit var mExitIv: ImageView
+    internal lateinit var mSeatView: PartySeatView
 
     internal lateinit var mGameEffectBgView: GameEffectBgView
 
@@ -482,7 +484,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mTopContentView.bindData()
         mTopContentView.listener = object : PartyTopContentView.Listener {
             override fun clickMore() {
-               // 点击更多
+                // 点击更多
             }
 
             override fun clickArrow(open: Boolean) {
@@ -500,6 +502,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 mRoomInviteView?.agreeInvite()
             }, true)
         }
+
+        mSeatView = findViewById(R.id.seat_view)
     }
 
     private fun showGameRuleDialog() {
