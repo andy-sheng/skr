@@ -40,7 +40,9 @@ import com.module.playways.party.room.seat.PartySeatView
 import com.module.playways.party.room.top.PartyTopContentView
 import com.module.playways.party.room.top.PartyTopOpView
 import com.module.playways.party.room.ui.IPartyRoomView
+import com.module.playways.party.room.ui.PartyBottomWidgetAnimationController
 import com.module.playways.party.room.ui.PartyWidgetAnimationController
+import com.module.playways.party.room.view.PartyEmojiView
 import com.module.playways.party.room.view.PartyGameMainView
 import com.module.playways.party.room.view.PartySettingView
 import com.module.playways.party.room.view.PartyVoiceControlPanelView
@@ -133,10 +135,12 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mWidgetAnimationController = PartyWidgetAnimationController(this)
+    val mBottomWidgetAnimationController = PartyBottomWidgetAnimationController(this)
     internal var mSkrAudioPermission = SkrAudioPermission()
 
     var mPartyGameMainView: PartyGameMainView? = null
     var mPartySettingView: PartySettingView? = null
+    var mPartyEmojiView: PartyEmojiView? = null
 //    lateinit var relaySingCardView: RelaySingCardView
 
 //    var mFlyCommentView: FlyCommentView? = null
@@ -398,6 +402,23 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
         mBottomContainerView = findViewById(R.id.bottom_container_view)
         mBottomContainerView.setRoomData(mRoomData)
+        mBottomContainerView.listener = object : PartyBottomContainerView.Listener {
+            override fun onClickEmoji(open: Boolean) {
+                if (open) {
+                    mBottomWidgetAnimationController.open(PartyBottomWidgetAnimationController.OPEN_TYPE_EMOJI)
+                } else {
+                    mBottomWidgetAnimationController.close(PartyBottomWidgetAnimationController.OPEN_TYPE_EMOJI)
+                }
+            }
+
+            override fun onClickMore(open: Boolean) {
+                if (open) {
+                    mBottomWidgetAnimationController.open(PartyBottomWidgetAnimationController.OPEN_TYPE_SETTING)
+                } else {
+                    mBottomWidgetAnimationController.close(PartyBottomWidgetAnimationController.OPEN_TYPE_SETTING)
+                }
+            }
+        }
         mBottomContainerView.setListener(object : BottomContainerView.Listener() {
             override fun showInputBtnClick() {
                 dismissDialog()
@@ -405,19 +426,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             }
 
             override fun clickRoomManagerBtn() {
-                //                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(GrabRoomFragment.this.getActivity(), OwnerManageFragment.class)
-                //                        .setAddToBackStack(true)
-                //                        .setHasAnimation(true)
-                //                        .setEnterAnim(R.anim.slide_right_in)
-                //                        .setExitAnim(R.anim.slide_right_out)
-                //                        .addDataBeforeAdd(0, mRoomData)
-                //                        .build());
-//                SongManagerActivity.open(activity, mRoomData)
-//                removeManageSongTipView()
+
             }
 
             override fun showGiftPanel() {
-                mContinueSendView.setVisibility(View.GONE)
+                mContinueSendView.visibility = View.GONE
                 showPanelView()
             }
 
@@ -440,7 +453,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         }
-//        mPartySettingView?.bindData()
+
+        mPartyEmojiView = PartyEmojiView(findViewById(R.id.party_bottom_emoji_viewStub))
+
     }
 
     private fun showPanelView() {

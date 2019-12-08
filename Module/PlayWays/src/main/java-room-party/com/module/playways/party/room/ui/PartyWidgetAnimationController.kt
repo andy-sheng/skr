@@ -172,9 +172,7 @@ class PartyWidgetAnimationController(internal var mF: PartyRoomActivity) {
     }
 
     fun destroy() {
-        if (mMainAnimatorSet != null) {
-            mMainAnimatorSet!!.cancel()
-        }
+        mMainAnimatorSet?.cancel()
     }
 
     companion object {

@@ -38,14 +38,21 @@ import org.greenrobot.eventbus.ThreadMode
 
 
 class PartyBottomContainerView : BottomContainerView {
-//    var mBottomMuteListener: ((mute:Boolean)->Unit)? = null
-    var roomData:PartyRoomData? = null
+
+    constructor(context: Context) : super(context)
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+
+    private var moreBtn: ExImageView? = null
+
+    var roomData: PartyRoomData? = null
+    var settingOpen = false
+    var emojiOpen = false
+    var listener: Listener? = null
 
     internal var mRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
-
-    constructor(context: Context) : super(context) {}
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
 
     override fun getLayout(): Int {
         return R.layout.party_bottom_container_view_layout
@@ -53,16 +60,18 @@ class PartyBottomContainerView : BottomContainerView {
 
     override fun init() {
         super.init()
+        moreBtn = this.findViewById(R.id.more_btn)
+
         mInputBtn?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                if(roomData?.isMute == true){
+                if (roomData?.isMute == true) {
                     roomData?.isMute = false
                     mInputBtn?.setBackgroundResource(R.drawable.relay_unmute)
-                    ZqEngineKit.getInstance().adjustRecordingSignalVolume(ZqEngineKit.getInstance().params.recordingSignalVolume,false)
-                }else{
+                    ZqEngineKit.getInstance().adjustRecordingSignalVolume(ZqEngineKit.getInstance().params.recordingSignalVolume, false)
+                } else {
                     roomData?.isMute = true
                     mInputBtn?.setBackgroundResource(R.drawable.relay_mute)
-                    ZqEngineKit.getInstance().adjustRecordingSignalVolume(0,false)
+                    ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
                 }
 
                 val map = mutableMapOf(
@@ -71,15 +80,18 @@ class PartyBottomContainerView : BottomContainerView {
                         "isMute" to (roomData?.isMute == true)
                 )
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                ApiMethods.subscribe(mRoomServerApi.mute(body),object:ApiObserver<ApiResult>(){
+                ApiMethods.subscribe(mRoomServerApi.mute(body), object : ApiObserver<ApiResult>() {
                     override fun process(obj: ApiResult?) {
-                        if(obj?.errno==0){
+                        if (obj?.errno == 0) {
 
                         }
                     }
                 })
             }
         })
+
+        moreBtn?.setDebounceViewClickListener { listener?.onClickMore(!settingOpen) }
+        mEmojiBtn?.setDebounceViewClickListener { listener?.onClickEmoji(!emojiOpen) }
 
     }
 
@@ -88,9 +100,14 @@ class PartyBottomContainerView : BottomContainerView {
         this.roomData = roomData as PartyRoomData
 
     }
+
     override fun dismissPopWindow() {
         super.dismissPopWindow()
     }
 
+    interface Listener {
+        fun onClickMore(open: Boolean)
+        fun onClickEmoji(open: Boolean)
+    }
 
 }

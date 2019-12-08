@@ -99,6 +99,10 @@ open class BottomContainerView : RelativeLayout {
         init()
     }
 
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr){
+        init()
+    }
+
     protected fun onQuickMsgDialogShow(show: Boolean) {
 
     }
