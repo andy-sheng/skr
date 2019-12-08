@@ -3,6 +3,7 @@ package com.module.playways.room.data
 import com.component.busilib.constans.GameModeType
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.mic.room.MicRoomData
+import com.module.playways.party.room.PartyRoomData
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.room.song.model.SongModel
@@ -15,12 +16,13 @@ object H {
         /**
          * 当前数据类型
          */
-        if (from.equals(mFrom)) {
+        if (from == mFrom) {
             curType = GameModeType.GAME_MODE_UNKNOW
             micRoomData = null
             grabRoomData = null
             raceRoomData = null
             relayRoomData = null
+            partyRoomData = null
         }
     }
 
@@ -36,6 +38,10 @@ object H {
 
     fun isRelayRoom():Boolean{
         return curType == GameModeType.GAME_MODE_RELAY
+    }
+
+    fun isPartyRoom():Boolean{
+        return curType == GameModeType.GAME_MODE_PARTY
     }
 
     public fun getSongModel(): SongModel? {
@@ -67,5 +73,6 @@ object H {
     var grabRoomData: GrabRoomData? = null
     var raceRoomData: RaceRoomData? = null
     var relayRoomData: RelayRoomData? = null
+    var partyRoomData: PartyRoomData? = null
 
 }

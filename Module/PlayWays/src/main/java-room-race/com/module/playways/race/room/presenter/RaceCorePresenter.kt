@@ -332,7 +332,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
     fun exitRoom(from: String) {
         MyLog.d("RaceCorePresenter", "exitRoom from = $from")
-        mRoomData.hasExitGame = true
+        mRoomData.isHasExitGame = true
         GlobalScope.launch {
             val map = mutableMapOf(
                     "roomID" to mRoomData.gameId
@@ -1257,7 +1257,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     @CallSuper
     override fun destroy() {
         super.destroy()
-        if (!mRoomData.hasExitGame) {
+        if (!mRoomData.isHasExitGame) {
             exitRoom("destroy")
         }
         mUiHandler.removeCallbacksAndMessages(null)

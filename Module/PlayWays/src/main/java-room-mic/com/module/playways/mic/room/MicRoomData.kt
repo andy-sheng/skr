@@ -25,7 +25,6 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
     var matchStatusOpen: Boolean = true // 是否允许匹配 默认开启
     var configModel = MicConfigModel()// 一唱到底配置
     var roomType: Int = GrabRoomType.ROOM_TYPE_COMMON// 一唱到底房间类型，公开，好友，私密，普通 5为歌单房间
-    var isHasExitGame = false// 是否已经正常退出房间
 
     var isAccEnable = true // 是否开启伴奏,只代表设置里伴奏开关
         set(value) {

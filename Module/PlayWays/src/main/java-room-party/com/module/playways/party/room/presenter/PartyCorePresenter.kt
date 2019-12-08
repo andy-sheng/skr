@@ -408,20 +408,6 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //        }
     }
 
-
-    private fun processSyncResult(roundInfo: PartyRoundInfoModel) {
-        if (roundInfo.roundSeq == mRoomData.realRoundSeq) {
-            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(roundInfo, true)
-        } else if (roundInfo.roundSeq > mRoomData.realRoundSeq) {
-            MyLog.w(TAG, "sync 回来的轮次大，要替换 roundInfo 了")
-            // 主轮次结束
-            launch {
-                mRoomData.expectRoundInfo = roundInfo
-                mRoomData.checkRoundInEachMode()
-            }
-        }
-    }
-
     /**
      * 为了方便服务器亲密度结算
      */
@@ -723,13 +709,32 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             var applyUserCnt = event.applyUserCnt
 
             var seats = PartySeatInfoModel.parseFromPb(event.seatsList)
-            var thisRound = PartyRoundInfoModel.parseFromRoundInfo(event.currentRound)
             var users = PartyPlayerInfoModel.parseFromPb(event.usersList)
+            var thisRound = PartyRoundInfoModel.parseFromRoundInfo(event.currentRound)
             // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
             startSyncGameStatus()
-            processSyncResult(thisRound)
+            processSyncResult(onlineUserCnt,applyUserCnt,seats,users,thisRound)
         }
+    }
 
+    /**
+     * 明确数据可以刷新
+     */
+    private fun processSyncResult(onlineUserCnt: Int, applyUserCnt: Int, seats: List<PartySeatInfoModel>, users: List<PartyPlayerInfoModel>, thisRound: PartyRoundInfoModel) {
+        mRoomData.onlineUserCnt = onlineUserCnt
+        mRoomData.applyUserCnt = applyUserCnt
+//        mRoomData.updateSeats(seats)
+//        mRoomData
+        if (thisRound.roundSeq == mRoomData.realRoundSeq) {
+            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(thisRound, true)
+        } else if (thisRound.roundSeq > mRoomData.realRoundSeq) {
+            MyLog.w(TAG, "sync 回来的轮次大，要替换 roundInfo 了")
+            // 主轮次结束
+            launch {
+                mRoomData.expectRoundInfo = thisRound
+                mRoomData.checkRoundInEachMode()
+            }
+        }
     }
 
 //    @Subscribe

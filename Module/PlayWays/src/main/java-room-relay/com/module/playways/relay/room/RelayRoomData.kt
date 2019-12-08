@@ -72,7 +72,6 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
             }
         }
     var leftSeat = true   // 我的未知是否在左边
-    var isHasExitGame = false
     var myEffectModel: GameBackgroundEffectModel? = null
     var peerEffectModel: GameBackgroundEffectModel? = null
 

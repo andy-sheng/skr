@@ -26,7 +26,6 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
     //    public static final int ACC_OFFSET_BY_LYRIC = 5000;// 伴奏是比歌词提前 5 秒的
     var tagId: Int = 0//一场到底歌曲分类
     var grabConfigModel = GrabConfigModel()// 一唱到底配置
-    var isHasExitGame = false// 是否已经正常退出房间
     var isAccEnable = true// 是否开启伴奏,只代表设置里伴奏开关
     set(value) {
         field = value

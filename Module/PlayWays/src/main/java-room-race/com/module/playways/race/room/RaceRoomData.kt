@@ -18,7 +18,6 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
     override val gameType: Int
         get() = GameModeType.GAME_MODE_RACE
-    var hasExitGame = false
     var isAccEnable = true // 排位默认有伴奏
         // 是否开启伴奏,只代表设置里伴奏开关
         set(value) {
@@ -158,7 +157,6 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 //        }
         this.realRoundInfo = null
         this.isIsGameFinish = false
-        this.hasExitGame = false
         this.agoraToken = rsp.agoraToken
         this.gameCreateTs = rsp.gameCreateTimeMs
         this.gameStartTs = rsp.gameStartTimeMs
