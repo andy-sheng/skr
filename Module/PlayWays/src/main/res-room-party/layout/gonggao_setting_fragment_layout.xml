@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#7187FF">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="房间设置"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightText=""
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_14_dp"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#7187FF"
+        app:titleBarColor="#7187FF" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/bg_iv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_18_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_enabled_drawable="@drawable/party_common_gradient_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titlebar" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/edit_bg"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_160_dp"
+        android:layout_marginLeft="@dimen/view_25_dp"
+        android:layout_marginTop="@dimen/view_15_dp"
+        android:layout_marginRight="@dimen/view_25_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bg_iv" />
+
+    <com.common.view.ex.NoLeakEditText
+        android:id="@+id/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:layout_marginRight="@dimen/view_8_dp"
+        android:layout_marginBottom="@dimen/view_8_dp"
+        android:hint="请输入公告内容"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_bg"
+        app:layout_constraintLeft_toLeftOf="@+id/edit_bg"
+        app:layout_constraintRight_toRightOf="@+id/edit_bg"
+        app:layout_constraintTop_toTopOf="@+id/edit_bg" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/save_tv"
+        android:layout_width="@dimen/view_136_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginBottom="@dimen/textsize_14_dp"
+        android:background="@drawable/common_yellow_button_icon"
+        android:gravity="center_horizontal"
+        android:paddingTop="@dimen/view_6_dp"
+        android:text="保存"
+        android:textColor="#8B572A"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_bg" />
+
+</android.support.constraint.ConstraintLayout>
