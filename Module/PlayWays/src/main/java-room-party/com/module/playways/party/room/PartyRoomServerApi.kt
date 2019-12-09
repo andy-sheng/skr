@@ -49,6 +49,53 @@ interface PartyRoomServerApi {
     fun setNotice(@Body body: RequestBody): Call<ApiResult>
 
     /**
+     * 申请或取消申请成为嘉宾 {"roomID": 0 , "cancel" : true}
+     *  cancel为true，取消申请 cancel为false，为申请嘉宾
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/apply-for-guest")
+    fun applyForGuest(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 获取申请列表 {"roomID": 0}
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partygame/apply-for-list")
+    fun getApplyList(@Query("roomID") roomID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
+
+    /**
+     * 响应申请嘉宾，上麦 {"applyUserID":0，"roomID": 0}
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/get-seat")
+    fun allowGetSeat(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 还回席位，下麦 {"roomID": 0, "seatSeq": 0,"seatUserID":0}
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/back-seat")
+    fun backSeat(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 设置席位状态：关闭席位、打开席位
+     *   {"roomID": 0, "micStatus": 0, "seatSeq": 0}
+     *   MS_OPEN = 1 : 开麦 - MS_CLOSE = 2 : 闭麦
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/set-seat-status")
+    fun setSeatStatus(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 全员禁麦，开麦 {"roomID": 0, "micStatus": 0}
+     * MS_OPEN = 1 : 开麦 - MS_CLOSE = 2 : 闭麦
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/set-all-meber-mic")
+    fun setAllMicStatus(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 对指定用户禁麦，开麦 {"roomID": 0, "micStatus": 0, "seatSeq": 0, "seatUserID",0}
+     * MS_OPEN = 1 : 开麦 - MS_CLOSE = 2 : 闭麦
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/set-user-mic")
+    fun setUserMicStatus(@Body body: RequestBody): Call<ApiResult>
+
+    /**
      * 获取表情列表
      */
     @GET("http://dev.game.inframe.mobi/v1/partygame/list-emoji")

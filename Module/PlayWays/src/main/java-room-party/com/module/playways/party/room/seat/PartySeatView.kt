@@ -11,7 +11,9 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.event.PartySendEmojiEvent
 import com.module.playways.party.room.model.PartyActorInfoModel
+import com.module.playways.party.room.model.PartyEmojiInfoModel
 import com.module.playways.party.room.model.PartyPlayerInfoModel
+import com.module.playways.room.data.H
 import com.zq.live.proto.PartyRoom.PDynamicEmojiMsg
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -55,13 +57,20 @@ class PartySeatView : ConstraintLayout {
         if (user.userID == MyUserInfoManager.uid.toInt()) {
             // 把自己的过滤掉 donothing
         } else {
-
+            val seatInfo = H.partyRoomData?.getSeatInfoByUserId(user.userID)
+            seatInfo?.let {
+                adapter.showUserEmoji(it, PartyEmojiInfoModel.parseFromPB(event.emoji))
+            }
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartySendEmojiEvent) {
         // 自己发的 直接先更新
+        val seatInfo = H.partyRoomData?.getSeatInfoByUserId(MyUserInfoManager.uid.toInt())
+        seatInfo?.let {
+            adapter.showUserEmoji(it, event.model)
+        }
     }
 
     override fun onAttachedToWindow() {
