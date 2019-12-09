@@ -21,13 +21,18 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.grab.room.dynamicmsg.DynamicModel
 import com.module.playways.party.room.PartyRoomServerApi
+import com.module.playways.party.room.event.PartySendEmojiEvent
 import com.module.playways.party.room.model.PartyEmojiInfoModel
+import com.module.playways.room.data.H
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 class PartyEmojiView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     private var recyclerView: RecyclerView? = null
-    private val adapter = PartyEmojiAdapter()
+    private var adapter: PartyEmojiAdapter? = null
 
     private val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
     var hasLoadData = false
@@ -36,7 +41,31 @@ class PartyEmojiView(viewStub: ViewStub) : ExViewStub(viewStub) {
         recyclerView = parentView.findViewById(R.id.recycler_view)
 
         recyclerView?.layoutManager = LinearLayoutManager(parentView.context, LinearLayoutManager.HORIZONTAL, false)
+        adapter = PartyEmojiAdapter(object : Listener {
+            override fun onClickEmojiItem(position: Int, model: PartyEmojiInfoModel?) {
+                // 发送表情
+                model?.let { sendEmoji(it) }
+            }
+        })
         recyclerView?.adapter = adapter
+    }
+
+    private fun sendEmoji(model: PartyEmojiInfoModel) {
+        launch {
+            val map = mutableMapOf(
+                    "id" to model.id,
+                    "roomID" to H.partyRoomData?.gameId
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("sendEmoji", ControlType.CancelThis)) {
+                roomServerApi.sendEmoji(body)
+            }
+            if (result.errno == 0) {
+                EventBus.getDefault().post(PartySendEmojiEvent(model))
+            } else {
+
+            }
+        }
     }
 
     fun bindData() {
@@ -77,19 +106,19 @@ class PartyEmojiView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     private fun showEmojiModels(list: List<PartyEmojiInfoModel>?) {
-        adapter.mDataList.clear()
+        adapter?.mDataList?.clear()
         if (!list.isNullOrEmpty()) {
             hasLoadData = true
-            adapter.mDataList.addAll(list)
+            adapter?.mDataList?.addAll(list)
         }
-        adapter.notifyDataSetChanged()
+        adapter?.notifyDataSetChanged()
     }
 
     override fun layoutDesc(): Int {
         return R.layout.party_emoji_view_layout
     }
 
-    class PartyEmojiAdapter : RecyclerView.Adapter<PartyEmojiAdapter.PartyEmojiViewHolder>() {
+    class PartyEmojiAdapter(var listener: Listener?) : RecyclerView.Adapter<PartyEmojiAdapter.PartyEmojiViewHolder>() {
 
         var mDataList = ArrayList<PartyEmojiInfoModel>()
 
@@ -109,14 +138,14 @@ class PartyEmojiView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
         inner class PartyEmojiViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
-            val emojiIv: SimpleDraweeView = item.findViewById(R.id.emoji_iv)
-            val emojiDesc: TextView = item.findViewById(R.id.emoji_desc)
+            private val emojiIv: SimpleDraweeView = item.findViewById(R.id.emoji_iv)
+            private val emojiDesc: TextView = item.findViewById(R.id.emoji_desc)
 
             var mPos = -1
             var mModel: PartyEmojiInfoModel? = null
 
             init {
-                item.setDebounceViewClickListener { }
+                item.setDebounceViewClickListener { listener?.onClickEmojiItem(mPos, mModel) }
             }
 
             fun bindData(position: Int, model: PartyEmojiInfoModel) {
@@ -125,10 +154,13 @@ class PartyEmojiView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
                 FrescoWorker.loadImage(emojiIv, ImageFactory.newPathImage(model.smallEmojiURL)
                         .build())
-                // todo  缺少描述信息
-                emojiDesc.text = "缺少描述信息"
+                emojiDesc.text = model.desc
             }
         }
-
     }
+
+    interface Listener {
+        fun onClickEmojiItem(position: Int, model: PartyEmojiInfoModel?)
+    }
+
 }
