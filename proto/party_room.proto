@@ -22,10 +22,9 @@ message PartyRoomMsg {
     PFixRoomNoticeMsg pFixRoomNoticeMsg = 11; //修改公告
     PSetRoomAdminMsg pSetRoomAdminMsg = 12; //设置管理员
     PSetAllMemberMicMsg pSetAllMemberMicMsg = 13; //全员禁麦、全员解除禁麦
-
     PSetUserMicMsg pSetUserMicMsg = 14; //用户开闭麦
-
     PSetSeatStatusMsg pSetSeatStatusMsg = 15; //设置席位状态：关闭席位、打开席位
+
     PApplyForGuest pApplyForGuest = 16; //申请嘉宾
     PGetSeatMsg pGetSeatMsg = 17; //获得席位:上麦
     PBackSeatMsg pBackSeatMsg = 18; //还回席位:下麦

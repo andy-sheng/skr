@@ -67,7 +67,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     var seatsSeatIdMap = HashMap<Int, PartySeatInfoModel>() // 根据座位id找座位
     var seatsUserIdMap = HashMap<Int, PartySeatInfoModel>() // 根据用户id找座位
     // 题目信息在轮次信息里 轮次信息在父类的 realRoundInfo 中
-
+    var hostId = 0 //主持人id
     /**
      * 本人的用户信息
      */
@@ -200,6 +200,9 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                     myUserInfo = info
                     hasMy = true
                 }
+                if (info.isHost()) {
+                    hostId = info.userID
+                }
             }
             if (!hasMy) {
                 myUserInfo = null
@@ -231,25 +234,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         }
     }
 
-    fun addUsers(playerInfoModel: PartyPlayerInfoModel, seatInfoModel: PartySeatInfoModel?) {
-        // 判断是否要更新用户
-        var hasUserChange = false
-        if (playerInfoModel.isNotOnlyAudience()) {
-            var uu = usersMap[playerInfoModel.userID]
-            if (uu != null) {
-                if (uu.same(playerInfoModel)) {
-                } else {
-                    users.remove(uu)
-                    users.add(playerInfoModel)
-                    usersMap[playerInfoModel.userID] = playerInfoModel
-                    hasUserChange = true
-                }
-            } else {
-                users.add(playerInfoModel)
-                usersMap[playerInfoModel.userID] = playerInfoModel
-                hasUserChange = true
-            }
-        }
+    fun updateSeat(seatInfoModel: PartySeatInfoModel?) {
         var hasSeatChange = false
         if (seatInfoModel != null) {
             var ss = seatsSeatIdMap[seatInfoModel.seatSeq]
@@ -273,7 +258,32 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         if (hasSeatChange) {
             // 座位信息有变化
             EventBus.getDefault().post(PartySeatInfoChangeEvent(seatInfoModel!!.seatSeq))
+            if (seatInfoModel.userID == MyUserInfoManager.uid.toInt()) {
+                mySeatInfo = seatInfoModel
+            }
         }
+    }
+
+    fun addUsers(playerInfoModel: PartyPlayerInfoModel, seatInfoModel: PartySeatInfoModel?) {
+        // 判断是否要更新用户
+        var hasUserChange = false
+        if (playerInfoModel.isNotOnlyAudience()) {
+            var uu = usersMap[playerInfoModel.userID]
+            if (uu != null) {
+                if (uu.same(playerInfoModel)) {
+                } else {
+                    users.remove(uu)
+                    users.add(playerInfoModel)
+                    usersMap[playerInfoModel.userID] = playerInfoModel
+                    hasUserChange = true
+                }
+            } else {
+                users.add(playerInfoModel)
+                usersMap[playerInfoModel.userID] = playerInfoModel
+                hasUserChange = true
+            }
+        }
+        updateSeat(seatInfoModel)
     }
 
     /**

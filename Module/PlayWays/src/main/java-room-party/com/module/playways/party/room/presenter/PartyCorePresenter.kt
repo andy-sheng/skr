@@ -453,7 +453,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyMySeatInfoChangeEvent) {
-        DebugLogView.println(TAG, "onEvent event = $event")
+        DebugLogView.println(TAG, "PartyMySeatInfoChangeEvent 我是${mRoomData.myUserInfo?.role} 座位 ${mRoomData.mySeatInfo}")
         if (mRoomData.mySeatInfo?.seatStatus == ESeatStatus.SS_OPEN.value) {
             // 我至少是个主播
             if (!ZqEngineKit.getInstance().params.isAnchor) {
@@ -466,8 +466,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                 ZqEngineKit.getInstance().muteLocalAudioStream(true)
             }
         } else {
-            // 我不是主播
-            ZqEngineKit.getInstance().setClientRole(false)
+            if (mRoomData.myUserInfo?.isHost() == true) {
+
+            } else {
+                // 我不是主播
+                ZqEngineKit.getInstance().setClientRole(false)
+            }
         }
     }
 
@@ -477,8 +481,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyMyUserInfoChangeEvent) {
-        DebugLogView.println(TAG, "onEvent event = $event")
-        if (mRoomData.myUserInfo?.isAdmin() == true) {
+        DebugLogView.println(TAG, "PartyMyUserInfoChangeEvent 我是${mRoomData.myUserInfo?.role} 座位 ${mRoomData.mySeatInfo}")
+        if (mRoomData.myUserInfo?.isHost() == true) {
+            if (!ZqEngineKit.getInstance().params.isAnchor) {
+                ZqEngineKit.getInstance().setClientRole(true)
+            }
+        } else if (mRoomData.myUserInfo?.isAdmin() == true) {
             //我是管理员了
         } else if (mRoomData.myUserInfo?.isGuest() == true) {
             // 我是嘉宾了
@@ -752,6 +760,27 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         mRoomData.updateSeats(PartySeatInfoModel.parseFromPb(event.seatsList))
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PSetUserMicMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        var partySeatInfoModel = PartySeatInfoModel()
+        partySeatInfoModel.micStatus = event.micStatus.value
+        partySeatInfoModel.seatSeq = event.seatSeq
+        partySeatInfoModel.userID = event.userID
+        partySeatInfoModel.seatStatus = ESeatStatus.SS_OPEN.value
+        mRoomData.updateSeat(partySeatInfoModel)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PSetSeatStatusMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        var partySeatInfoModel = PartySeatInfoModel()
+        partySeatInfoModel.seatSeq = event.seatSeq
+        partySeatInfoModel.seatStatus = event.seatStatus.value
+        partySeatInfoModel.micStatus = mRoomData.getSeatInfoBySeq(event.seatSeq)?.micStatus ?:0
+        partySeatInfoModel.userID = mRoomData.getSeatInfoBySeq(event.seatSeq)?.userID ?:0
+        mRoomData.updateSeat(partySeatInfoModel)
+    }
 
     /**
      * 轮次变化
