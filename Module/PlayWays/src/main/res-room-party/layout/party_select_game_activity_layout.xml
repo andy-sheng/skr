@@ -27,7 +27,7 @@
     <com.common.view.viewpager.SlidingTabLayout
         android:id="@+id/sliding_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_52_dp"
+        android:layout_height="@dimen/view_24_dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/view_50_dp"

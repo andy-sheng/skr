@@ -112,6 +112,10 @@ class PartySelectGameActivity : BaseActivity() {
         viewPager.currentItem = 0
     }
 
+    override fun canSlide(): Boolean {
+        return false
+    }
+
     override fun useEventBus(): Boolean {
         return false
     }
