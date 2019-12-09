@@ -39,4 +39,13 @@ interface PartyRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partygame/set-admin")
     fun setAdmin(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * {
+    "notice": "string",
+    "roomID": 0
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partyroom/set-notice")
+    fun setNotice(@Body body: RequestBody): Call<ApiResult>
 }
