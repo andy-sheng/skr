@@ -1,6 +1,7 @@
 package com.module.playways.party.room.view
 
 import android.content.Context
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
@@ -10,11 +11,13 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.adapter.PartyGameListRecyclerAdapter
+import com.module.playways.party.room.fragment.PartyGamePlayListFragment
 import com.module.playways.party.room.model.PartyRule
 import com.module.playways.room.data.H
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -52,7 +55,12 @@ class PartyGameListView : ExConstraintLayout {
         recyclerView.adapter = partyGameListRecyclerAdapter
 
         partyGameListRecyclerAdapter?.mMoreMethod = { model ->
-
+            U.getFragmentUtils().addFragment(
+                    FragmentUtils.newAddParamsBuilder(context as FragmentActivity, PartyGamePlayListFragment::class.java)
+                            .setAddToBackStack(true)
+                            .addDataBeforeAdd(1, model)
+                            .setHasAnimation(true)
+                            .build())
         }
 
         partyGameListRecyclerAdapter?.mAddMethod = { model ->
