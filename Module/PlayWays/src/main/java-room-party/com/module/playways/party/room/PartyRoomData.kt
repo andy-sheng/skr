@@ -68,6 +68,16 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     var seatsUserIdMap = HashMap<Int, PartySeatInfoModel>() // 根据用户id找座位
     // 题目信息在轮次信息里 轮次信息在父类的 realRoundInfo 中
 
+    /**
+     * 本人的用户信息
+     */
+    var myUserInfo:PartyPlayerInfoModel? = null
+
+    /**
+     * 本人的座位信息
+     */
+    var mySeatInfo:PartySeatInfoModel? = null
+
     companion object {
     }
 
@@ -135,25 +145,32 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                 seatsMap[info.seatSeq] = partyActorInfoModel
             }
         }
-        return seatsMap;
+        return seatsMap
     }
 
     /**
      * 得到自己在Party中的角色等信息
      */
-    fun getMyInfoInParty(): PartyPlayerInfoModel {
-        var myinfo = usersMap[MyUserInfoManager.uid.toInt()]
-        if (myinfo == null) {
+    fun getMyUserInfoInParty(): PartyPlayerInfoModel {
+        if (myUserInfo == null) {
             // 如果找不到，则说明自己是观众
             var myinfo = PartyPlayerInfoModel()
-            myinfo?.role.add(EPUserRole.EPUR_GUEST.value)
+            myinfo?.role.add(EPUserRole.EPUR_AUDIENCE.value)
             myinfo.popularity = 0
             myinfo.isOnline = true
             myinfo.userInfo = MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo)
             return myinfo
         } else {
-            return myinfo
+            return myUserInfo!!
         }
+    }
+
+    /**
+     * 得到自己在Party中的座位等信息
+     */
+    fun getMySeatInfoInParty(): PartySeatInfoModel? {
+        var mySeatinfo = seatsUserIdMap[MyUserInfoManager.uid.toInt()]
+        return mySeatinfo
     }
 
     fun updateUsers(list: ArrayList<PartyPlayerInfoModel>?) {
@@ -180,6 +197,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                     seatsUserIdMap[info.userID] = info
                 }
             }
+            EventBus.getDefault().post(PartySeatInfoChangeEvent(-1))
         }
     }
 

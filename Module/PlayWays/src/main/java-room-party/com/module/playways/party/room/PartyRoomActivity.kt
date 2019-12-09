@@ -300,7 +300,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mSeatView?.bindData(mRoomData)
         mSeatView?.listener = object : PartySeatView.Listener {
             override fun onClikAvatar(position: Int, model: PartyActorInfoModel?) {
-                if (mRoomData.getMyInfoInParty().isAdmin() || mRoomData.getMyInfoInParty().isHost()) {
+                if (mRoomData.getMyUserInfoInParty().isAdmin() || mRoomData.getMyUserInfoInParty().isHost()) {
                     // 我是管理人员
                     showPartyManageView(model)
                 } else {

@@ -17,9 +17,9 @@ import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
-import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
+import com.module.playways.party.room.event.PartyNoticeChangeEvent
 import com.module.playways.party.room.event.PartyRoundChangeEvent
 import com.module.playways.party.room.event.PartyRoundStatusChangeEvent
 import com.module.playways.party.room.model.PartyPlayerInfoModel
@@ -110,7 +110,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                 params.isEnableAudio = true
                 ZqEngineKit.getInstance().init("partyroom", params)
             }
-            var isAnchor = mRoomData?.getMyInfoInParty()?.isRole(EPUserRole.EPUR_HOST.value, EPUserRole.EPUR_GUEST.value)
+            var isAnchor = mRoomData?.getMyUserInfoInParty()?.isRole(EPUserRole.EPUR_HOST.value, EPUserRole.EPUR_GUEST.value)
             DebugLogView.println(TAG, "isAnchor=$isAnchor")
             ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), isAnchor, mRoomData.agoraToken)
             // 不发送本地音频, 会造成第一次抢没声音
@@ -349,7 +349,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
      * 主持人心跳
      */
     private fun startHeartbeat() {
-        if (mRoomData?.getMyInfoInParty()?.isHost()) {
+        if (mRoomData?.getMyUserInfoInParty()?.isHost()) {
             heartbeatJob?.cancel()
             heartbeatJob = launch {
                 while (true) {
@@ -684,6 +684,40 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         roomView.joinNotice(playerInfoModel)
         mRoomData.addUsers(playerInfoModel,seatInfoModel)
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PFixRoomNoticeMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        mRoomData.notice = event.newRoomNotice
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyNoticeChangeEvent) {
+        pretendSystemMsg("房主将公告修改为 ${mRoomData.notice}")
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PSetRoomAdminMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        if(event.setType == ESetAdminType.SAT_ADD){
+            pretendSystemMsg("${event.user.userInfo.nickName} 被 ${event.opUser.userInfo.nickName} 设置为管理员")
+        }else{
+            pretendSystemMsg("${event.user.userInfo.nickName} 被 ${event.opUser.userInfo.nickName} 删除了管理员")
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PSetAllMemberMicMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        if(event.micStatus.value == EMicStatus.MS_CLOSE.value){
+            pretendSystemMsg("${event.opUser.userInfo.nickName} 设置为 全员禁麦")
+        }else if(event.micStatus.value == EMicStatus.MS_OPEN.value){
+            pretendSystemMsg("${event.opUser.userInfo.nickName} 设置为 解除全员禁麦")
+        }
+        mRoomData.updateSeats(PartySeatInfoModel.parseFromPb(event.seatsList))
+        //TODO 如果自己不是管理员 还要关闭引擎
+    }
+
 
     /**
      * 轮次变化

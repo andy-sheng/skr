@@ -55,7 +55,7 @@ class PartyRightOpView : ConstraintLayout {
 
     // 身份改变需要重置
     fun bindData() {
-        val myInfo = H.partyRoomData?.getMyInfoInParty()
+        val myInfo = H.partyRoomData?.getMyUserInfoInParty()
         when {
             myInfo?.isHost() == true -> {
                 applyList.visibility = View.VISIBLE
