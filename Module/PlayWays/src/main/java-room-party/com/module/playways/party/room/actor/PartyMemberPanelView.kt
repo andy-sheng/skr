@@ -4,20 +4,23 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.*
+import android.text.TextUtils
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
+import com.module.playways.party.room.event.PartySendEmojiEvent
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.room.data.H
 import com.orhanobut.dialogplus.DialogPlus
@@ -33,16 +36,18 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 
-// 申请列表
-class PartyApplyPanelView(context: Context) : ConstraintLayout(context), CoroutineScope by MainScope() {
+// 房间内的人
+class PartyMemberPanelView(context: Context) : ConstraintLayout(context), CoroutineScope by MainScope() {
 
-    private var divider: View? = null
-    private var titleTv: TextView? = null
-    private val smartRefresh: SmartRefreshLayout
-    private var recyclerView: RecyclerView? = null
-
-    var adapter: PartyApplyAdapter? = null
     var mDialogPlus: DialogPlus? = null
+
+    private val divider: View
+    private val titleTv: TextView
+    private val numTv: TextView
+    private val smartRefresh: SmartRefreshLayout
+    private val recyclerView: RecyclerView
+
+    private val adapter = PartyMemberAdapter()
 
     private val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
     var offset = 0
@@ -50,19 +55,16 @@ class PartyApplyPanelView(context: Context) : ConstraintLayout(context), Corouti
     var hasMore = true
 
     init {
-        View.inflate(context, R.layout.party_apply_panel_view_layout, this)
+        View.inflate(context, R.layout.party_member_panel_view_layout, this)
+
         divider = this.findViewById(R.id.divider)
         titleTv = this.findViewById(R.id.title_tv)
+        numTv = this.findViewById(R.id.num_tv)
         smartRefresh = this.findViewById(R.id.smart_refresh)
         recyclerView = this.findViewById(R.id.recycler_view)
 
-        recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        adapter = PartyApplyAdapter(object : Listener {
-            override fun onClickAgree(position: Int, model: PartyPlayerInfoModel?) {
-                model?.userInfo?.userId?.let { allowGetSeat(it) }
-            }
-        })
-        recyclerView?.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = adapter
 
         smartRefresh.apply {
             setEnableLoadMore(true)
@@ -72,7 +74,7 @@ class PartyApplyPanelView(context: Context) : ConstraintLayout(context), Corouti
 
             setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
-                    loadApplyListData(offset, false)
+                    loadMemberListData(offset, false)
                 }
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
@@ -82,55 +84,22 @@ class PartyApplyPanelView(context: Context) : ConstraintLayout(context), Corouti
             })
         }
 
-        loadApplyListData(0, true)
+        loadMemberListData(0, true)
     }
 
-    private fun allowGetSeat(applyUserID: Int) {
+    private fun loadMemberListData(off: Int, isClean: Boolean) {
         launch {
-            val map = mutableMapOf(
-                    "applyUserID" to applyUserID,
-                    "roomID" to H.partyRoomData?.gameId
-            )
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe(RequestControl("allowGetSeat", ControlType.CancelThis)) {
-                roomServerApi.allowGetSeat(body)
-            }
-            if (result.errno == 0) {
-                // 只用同意即可，不用操作
-            }
-        }
-    }
-
-    private fun loadApplyListData(off: Int, isClean: Boolean) {
-        launch {
-            val result = subscribe(RequestControl("loadApplyListData", ControlType.CancelThis)) {
-                roomServerApi.getApplyList(H.partyRoomData?.gameId ?: 0, off, cnt)
+            val result = subscribe(RequestControl("loadMemberListData", ControlType.CancelThis)) {
+                roomServerApi.getOnlineUserList(H.partyRoomData?.gameId ?: 0, off, cnt)
             }
             if (result.errno == 0) {
                 hasMore = result.data.getBooleanValue("hasMore")
                 offset = result.data.getIntValue("offset")
-                H.partyRoomData?.applyUserCnt = result.data.getIntValue("total")
+                H.partyRoomData?.onlineUserCnt = result.data.getIntValue("total")
                 val list = JSON.parseArray(result.data.getString("users"), PartyPlayerInfoModel::class.java)
                 addList(list, isClean)
             }
             finishRefreshOrLoadMore()
-        }
-    }
-
-    private fun addList(list: List<PartyPlayerInfoModel>?, isClean: Boolean) {
-        if (isClean) {
-            adapter?.mDataList?.clear()
-            if (!list.isNullOrEmpty()) {
-                adapter?.mDataList?.addAll(list)
-            }
-            adapter?.notifyDataSetChanged()
-        } else {
-            if (!list.isNullOrEmpty()) {
-                val size = adapter?.mDataList?.size ?: 0
-                adapter?.mDataList?.addAll(list)
-                val newSize = adapter?.mDataList?.size ?: 0
-                adapter?.notifyItemRangeInserted(size, newSize - size)
-            }
         }
     }
 
@@ -140,6 +109,22 @@ class PartyApplyPanelView(context: Context) : ConstraintLayout(context), Corouti
         smartRefresh.setEnableLoadMore(hasMore)
     }
 
+    private fun addList(list: List<PartyPlayerInfoModel>?, isClean: Boolean) {
+        if (isClean) {
+            adapter.mDataList.clear()
+            if (!list.isNullOrEmpty()) {
+                adapter.mDataList.addAll(list)
+            }
+            adapter.notifyDataSetChanged()
+        } else {
+            if (!list.isNullOrEmpty()) {
+                val size = adapter.mDataList.size
+                adapter.mDataList.addAll(list)
+                val newSize = adapter.mDataList.size
+                adapter.notifyItemRangeInserted(size, newSize - size)
+            }
+        }
+    }
 
     fun showByDialog() {
         showByDialog(true)
@@ -170,39 +155,35 @@ class PartyApplyPanelView(context: Context) : ConstraintLayout(context), Corouti
         cancel()
     }
 
+    inner class PartyMemberAdapter : RecyclerView.Adapter<PartyMemberAdapter.PartyMemberViewHolder>() {
 
-    inner class PartyApplyAdapter(var listener: Listener) : RecyclerView.Adapter<PartyApplyAdapter.PartyApplyViewHolder>() {
         var mDataList = ArrayList<PartyPlayerInfoModel>()
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartyApplyViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.party_apply_item_view_layout, parent, false)
-            return PartyApplyViewHolder(view)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartyMemberViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.party_member_item_view_layout, parent, false)
+            return PartyMemberViewHolder(view)
         }
 
         override fun getItemCount(): Int {
             return mDataList.size
         }
 
-        override fun onBindViewHolder(holder: PartyApplyViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: PartyMemberViewHolder, position: Int) {
             holder.bindData(position, mDataList[position])
         }
 
-        inner class PartyApplyViewHolder(item: View) : RecyclerView.ViewHolder(item) {
+        inner class PartyMemberViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
-            val avatarSdv: AvatarView = item.findViewById(R.id.avatar_sdv)
-            val agreeTv: ExTextView = item.findViewById(R.id.agree_tv)
-            val nameTv: TextView = item.findViewById(R.id.name_tv)
+            private val avatarSdv: AvatarView = item.findViewById(R.id.avatar_sdv)
+            private val nameTv: TextView = item.findViewById(R.id.name_tv)
+            private val roleDescTv: TextView = item.findViewById(R.id.role_desc_tv)
 
             var mPos = -1
             var mModel: PartyPlayerInfoModel? = null
 
             init {
-                agreeTv.setDebounceViewClickListener {
-                    listener?.onClickAgree(mPos, mModel)
-                }
-
-                avatarSdv.setDebounceViewClickListener {
-                    mModel?.userInfo?.userId?.let {
+                item.setDebounceViewClickListener {
+                    mModel?.userID?.let {
                         EventBus.getDefault().post(ShowPersonCardEvent(it))
                     }
                 }
@@ -212,12 +193,16 @@ class PartyApplyPanelView(context: Context) : ConstraintLayout(context), Corouti
                 this.mPos = position
                 this.mModel = model
 
+                avatarSdv.bindData(model.userInfo)
+                nameTv.text = model.userInfo.nicknameRemark
+                if (!TextUtils.isEmpty(model.getRoleDesc())) {
+                    roleDescTv.text = model.getRoleDesc()
+                } else {
+                    roleDescTv.text = "观众"
+                }
+
             }
         }
     }
 
-    interface Listener {
-        fun onClickAgree(position: Int, model: PartyPlayerInfoModel?)
-    }
 }
-

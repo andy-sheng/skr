@@ -4,9 +4,9 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.PartyRoom.EPUserRole
 import com.zq.live.proto.PartyRoom.POnlineInfo
-import com.zq.live.proto.PartyRoom.SeatInfo
 import java.util.*
 import kotlin.collections.ArrayList
+import java.lang.StringBuilder
 
 class PartyPlayerInfoModel : PlayerInfoModel() {
     //    enum EPUserRole {
@@ -18,6 +18,26 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
 //    }
     var role = ArrayList<Int>() // 角色
     var popularity = 0 // 人气
+
+    fun getRoleDesc(): String? {
+        var stringBuilder = StringBuilder()
+        if (isHost()) {
+            stringBuilder.append("主持人")
+        }
+        if (isAdmin()) {
+            if (isHost()) {
+                stringBuilder.append("/")
+            }
+            stringBuilder.append("管理员")
+        }
+        if (isGuest()) {
+            if (isHost() || isAdmin()) {
+                stringBuilder.append("/")
+            }
+            stringBuilder.append("嘉宾")
+        }
+        return stringBuilder.toString()
+    }
 
     /**
      * 是否是指定的某些角色
@@ -79,7 +99,6 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
     override fun toString(): String {
         return "PartyPlayerInfoModel(userInfo=${userInfo.toSimpleString()}, role=$role)"
     }
-
 
     /**
      * 判断两个model信息是否相同

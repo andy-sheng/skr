@@ -34,6 +34,7 @@ import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.actor.PartyApplyPanelView
+import com.module.playways.party.room.actor.PartyMemberPanelView
 import com.module.playways.party.room.bottom.PartyBottomContainerView
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
 import com.module.playways.party.room.model.PartyActorInfoModel
@@ -122,6 +123,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private var mVoiceControlPanelView: PartyVoiceControlPanelView? = null
     private var mPartyManageDialogView: PartyManageDialogView? = null
     private var mPartyApplyPanelView: PartyApplyPanelView? = null
+    private var mPartyMemberPanelView: PartyMemberPanelView? = null
 
     private var mVipEnterPresenter: VipEnterPresenter? = null
 
@@ -254,6 +256,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
         super.destroy()
         dismissDialog()
+        mPartyApplyPanelView?.destory()
+        mPartyMemberPanelView?.destory()
         mWidgetAnimationController.destroy()
         mBottomWidgetAnimationController.destroy()
         mGiftPanelView?.destroy()
@@ -490,8 +494,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mTopContentView.roomData = mRoomData
         mTopContentView.bindData()
         mTopContentView.listener = object : PartyTopContentView.Listener {
-            override fun clickMore() {
-                // 点击更多
+            override fun showRoomMember() {
+                // 查看房间所有人
+                dismissDialog()
+                mPartyMemberPanelView = PartyMemberPanelView(this@PartyRoomActivity)
+                mPartyMemberPanelView?.showByDialog()
             }
 
             override fun clickArrow(open: Boolean) {
@@ -661,6 +668,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mVoiceControlPanelView?.dismiss(false)
         mPartyManageDialogView?.dismiss(false)
         mPartyApplyPanelView?.dismiss(false)
+        mPartyMemberPanelView?.dismiss(false)
     }
 
     /**

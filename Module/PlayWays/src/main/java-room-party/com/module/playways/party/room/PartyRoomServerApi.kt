@@ -49,17 +49,17 @@ interface PartyRoomServerApi {
     fun setNotice(@Body body: RequestBody): Call<ApiResult>
 
     /**
+     * 获取申请列表 {"roomID": 0}
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partygame/apply-for-list")
+    fun getApplyList(@Query("roomID") roomID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
+
+    /**
      * 申请或取消申请成为嘉宾 {"roomID": 0 , "cancel" : true}
      *  cancel为true，取消申请 cancel为false，为申请嘉宾
      */
     @PUT("http://dev.game.inframe.mobi/v1/partygame/apply-for-guest")
     fun applyForGuest(@Body body: RequestBody): Call<ApiResult>
-
-    /**
-     * 获取申请列表 {"roomID": 0}
-     */
-    @GET("http://dev.game.inframe.mobi/v1/partygame/apply-for-list")
-    fun getApplyList(@Query("roomID") roomID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 
     /**
      * 响应申请嘉宾，上麦 {"applyUserID":0，"roomID": 0}

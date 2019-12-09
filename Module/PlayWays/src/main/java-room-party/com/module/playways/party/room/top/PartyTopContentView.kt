@@ -51,9 +51,9 @@ class PartyTopContentView : ExConstraintLayout {
         audienceIv = this.findViewById(R.id.audience_iv)
 
         arrowIv.setDebounceViewClickListener { listener?.clickArrow(!mIsOpen) }
-        moreArrow.setDebounceViewClickListener { listener?.clickMore() }
-        onlineNum.setDebounceViewClickListener { listener?.clickMore() }
-        audienceIv.setDebounceViewClickListener { listener?.clickMore() }
+        moreArrow.setDebounceViewClickListener { listener?.showRoomMember() }
+        onlineNum.setDebounceViewClickListener { listener?.showRoomMember() }
+        audienceIv.setDebounceViewClickListener { listener?.showRoomMember() }
     }
 
     fun setArrowIcon(open: Boolean) {
@@ -98,6 +98,6 @@ class PartyTopContentView : ExConstraintLayout {
 
     interface Listener {
         fun clickArrow(open: Boolean)
-        fun clickMore()
+        fun showRoomMember()
     }
 }
