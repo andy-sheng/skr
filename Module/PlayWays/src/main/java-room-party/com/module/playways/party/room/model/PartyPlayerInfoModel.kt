@@ -80,6 +80,7 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
         return "PartyPlayerInfoModel(userInfo=${userInfo.toSimpleString()}, role=$role)"
     }
 
+
     /**
      * 判断两个model信息是否相同
      */
@@ -96,6 +97,31 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
             }
         }
         return true
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        if (!super.equals(other)) return false
+
+        other as PartyPlayerInfoModel
+
+        if (this.role.size != other.role.size) {
+            return false
+        }
+        for ((index, r) in this.role.withIndex()) {
+            if (r != other.role[index]) {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + role.hashCode()
+        return result
     }
 
     companion object {

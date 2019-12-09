@@ -19,9 +19,7 @@ import com.module.ModuleServiceManager
 import com.module.common.ICallback
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
-import com.module.playways.party.room.event.PartyNoticeChangeEvent
-import com.module.playways.party.room.event.PartyRoundChangeEvent
-import com.module.playways.party.room.event.PartyRoundStatusChangeEvent
+import com.module.playways.party.room.event.*
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.model.PartySeatInfoModel
@@ -450,6 +448,38 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //        }
     }
 
+    /**
+     * 我的位置信息变化了，主要处理开闭麦下麦等
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyMySeatInfoChangeEvent) {
+        DebugLogView.println(TAG, "onEvent event = $event")
+        if (mRoomData.mySeatInfo?.seatStatus == ESeatStatus.SS_OPEN.value) {
+            // 我至少是个主播
+            if (!ZqEngineKit.getInstance().params.isAnchor) {
+                ZqEngineKit.getInstance().setClientRole(true)
+            }
+            if (mRoomData.mySeatInfo?.micStatus == EMicStatus.MS_OPEN.value) {
+                // 我得开着麦
+                ZqEngineKit.getInstance().muteLocalAudioStream(false)
+            } else {
+                ZqEngineKit.getInstance().muteLocalAudioStream(true)
+            }
+        } else {
+            // 我不是主播
+            ZqEngineKit.getInstance().setClientRole(false)
+        }
+    }
+
+    /**
+     * 我的角色变化了
+     * 判断我的最新角色 然后做相应逻辑
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyMyUserInfoChangeEvent) {
+        DebugLogView.println(TAG, "onEvent event = $event")
+
+    }
 
     /**
      * 轮次切换事件
@@ -513,6 +543,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
         }
     }
+
 
     private fun closeEngine() {
         if (mRoomData.gameId > 0) {
@@ -677,12 +708,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     fun onEvent(event: PJoinNoticeMsg) {
         MyLog.d(TAG, "onEvent event = $event")
         var playerInfoModel = PartyPlayerInfoModel.parseFromPb(event.user)
-        var seatInfoModel:PartySeatInfoModel? = null
-        if(event.hasSeat()){
-             seatInfoModel = PartySeatInfoModel.parseFromPb(event.seat)
+        var seatInfoModel: PartySeatInfoModel? = null
+        if (event.hasSeat()) {
+            seatInfoModel = PartySeatInfoModel.parseFromPb(event.seat)
         }
         roomView.joinNotice(playerInfoModel)
-        mRoomData.addUsers(playerInfoModel,seatInfoModel)
+        mRoomData.addUsers(playerInfoModel, seatInfoModel)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -699,9 +730,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PSetRoomAdminMsg) {
         MyLog.d(TAG, "onEvent event = $event")
-        if(event.setType == ESetAdminType.SAT_ADD){
+        if (event.setType == ESetAdminType.SAT_ADD) {
             pretendSystemMsg("${event.user.userInfo.nickName} 被 ${event.opUser.userInfo.nickName} 设置为管理员")
-        }else{
+        } else {
             pretendSystemMsg("${event.user.userInfo.nickName} 被 ${event.opUser.userInfo.nickName} 删除了管理员")
         }
     }
@@ -709,9 +740,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PSetAllMemberMicMsg) {
         MyLog.d(TAG, "onEvent event = $event")
-        if(event.micStatus.value == EMicStatus.MS_CLOSE.value){
+        if (event.micStatus.value == EMicStatus.MS_CLOSE.value) {
             pretendSystemMsg("${event.opUser.userInfo.nickName} 设置为 全员禁麦")
-        }else if(event.micStatus.value == EMicStatus.MS_OPEN.value){
+        } else if (event.micStatus.value == EMicStatus.MS_OPEN.value) {
             pretendSystemMsg("${event.opUser.userInfo.nickName} 设置为 解除全员禁麦")
         }
         mRoomData.updateSeats(PartySeatInfoModel.parseFromPb(event.seatsList))

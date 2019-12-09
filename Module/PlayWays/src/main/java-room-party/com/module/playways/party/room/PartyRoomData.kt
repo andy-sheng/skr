@@ -71,12 +71,28 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     /**
      * 本人的用户信息
      */
-    var myUserInfo:PartyPlayerInfoModel? = null
+    var myUserInfo: PartyPlayerInfoModel? = null
+        set(value) {
+            if (value == field) {
+
+            } else {
+                field = value
+                EventBus.getDefault().post(PartyMyUserInfoChangeEvent())
+            }
+        }
 
     /**
      * 本人的座位信息
      */
-    var mySeatInfo:PartySeatInfoModel? = null
+    var mySeatInfo: PartySeatInfoModel? = null
+        set(value) {
+            if (value == field) {
+
+            } else {
+                field = value
+                EventBus.getDefault().post(PartyMySeatInfoChangeEvent())
+            }
+        }
 
     companion object {
     }
@@ -169,18 +185,24 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
      * 得到自己在Party中的座位等信息
      */
     fun getMySeatInfoInParty(): PartySeatInfoModel? {
-        var mySeatinfo = seatsUserIdMap[MyUserInfoManager.uid.toInt()]
-        return mySeatinfo
+        return mySeatInfo
     }
 
     fun updateUsers(list: ArrayList<PartyPlayerInfoModel>?) {
         if (list?.isNotEmpty() == true) {
+            var hasMy = false
             users.clear()
             users.addAll(list)
             usersMap.clear()
             for (info in users) {
                 usersMap[info.userID] = info
-                //TODO 如果是自己的角色变化了 得发事件告知
+                if (info.userID == MyUserInfoManager.uid.toInt()) {
+                    myUserInfo = info
+                    hasMy = true
+                }
+            }
+            if (!hasMy) {
+                myUserInfo = null
             }
         }
     }
@@ -191,11 +213,19 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             seats.addAll(list)
             seatsSeatIdMap.clear()
             seatsUserIdMap.clear()
+            var hasMy = false
             for (info in seats) {
                 seatsSeatIdMap[info.seatSeq] = info
                 if (info.userID > 0) {
                     seatsUserIdMap[info.userID] = info
                 }
+                if (info.userID == MyUserInfoManager.uid.toInt()) {
+                    mySeatInfo = info
+                    hasMy = true
+                }
+            }
+            if (!hasMy) {
+                mySeatInfo = null
             }
             EventBus.getDefault().post(PartySeatInfoChangeEvent(-1))
         }
