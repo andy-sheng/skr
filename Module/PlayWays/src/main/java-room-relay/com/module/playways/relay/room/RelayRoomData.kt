@@ -30,9 +30,11 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
             GlobalScope.launch {
                 var t1 = System.currentTimeMillis()
                 val result = subscribe { serverApi.timestamp(0) }
-                var t2 = System.currentTimeMillis()
-                var serverTs = result.data.getIntValue("timestamp")
-                shiftTsForRelay = (t1 + (t2 - t1) / 2 - serverTs).toInt()
+                if (result.errno == 0) {
+                    var t2 = System.currentTimeMillis()
+                    var serverTs = result.data.getIntValue("timestamp")
+                    shiftTsForRelay = (t1 + (t2 - t1) / 2 - serverTs).toInt()
+                }
             }
         }
     }

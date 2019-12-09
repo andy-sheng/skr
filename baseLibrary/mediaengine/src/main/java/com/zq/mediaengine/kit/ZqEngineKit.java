@@ -1222,12 +1222,12 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new LogRunnable("setAudioEffectStyle") {
                 @Override
                 public void realRun() {
-                    if (MyLog.isDebugLogOpen()) {
+//                    if (MyLog.isDebugLogOpen()) {
+//                        doSetAudioEffect(styleEnum, false);
+//                    } else {
+//                        Params.AudioEffect styleEnum = Params.AudioEffect.none;//TODO 产品讨论结构线上先把混响都关了
                         doSetAudioEffect(styleEnum, false);
-                    } else {
-                        Params.AudioEffect styleEnum = Params.AudioEffect.none;//TODO 产品讨论结构线上先把混响都关了
-                        doSetAudioEffect(styleEnum, false);
-                    }
+//                    }
                 }
             });
         }

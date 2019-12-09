@@ -3,6 +3,7 @@ package com.module.playways.relay.room.view
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.view.Gravity
+import android.view.View
 import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.SeekBar
@@ -70,6 +71,7 @@ class RelayVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) 
 
             }
         })
+        mScenesBtnGroup?.visibility = View.INVISIBLE
     }
 
     override fun bindData() {
