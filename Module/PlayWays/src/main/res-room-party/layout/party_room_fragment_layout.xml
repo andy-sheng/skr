@@ -96,6 +96,18 @@
         android:layout="@layout/party_game_main_view_layout"
         app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
+    <ViewStub
+        android:id="@+id/party_self_sing_lyric_view_stub"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_54_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout="@layout/party_self_sing_lyric_layout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
     <!--座位席-->
     <com.module.playways.party.room.seat.PartySeatView
         android:id="@+id/seat_view"
