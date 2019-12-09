@@ -57,7 +57,13 @@ interface PartyRoomServerApi {
     /**
      * 发送表情 {"id": 0, "roomID": 0 }
      */
+
     @PUT("http://dev.game.inframe.mobi/v1/partygame/send-emoji")
     fun sendEmoji(@Body body: RequestBody): Call<ApiResult>
 
+    /**
+     * 拉取房间可邀请的段位
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partygame/online-user-list")
+    fun getOnlineUserList(@Query("roomID") roomID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 }
