@@ -58,6 +58,8 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             }
         }
 
+    var enterPermission = 2 // 2都可以进入  1 只有邀请能进
+
     var users = ArrayList<PartyPlayerInfoModel>() // 当前的用户信息 包括 主持人管理员 以及 嘉宾
     var usersMap = HashMap<Int, PartyPlayerInfoModel>()  // 根据id找人
 
@@ -203,7 +205,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         this.gameId = rsp.roomID
         this.agoraToken = rsp.agoraToken
         this.applyUserCnt = rsp.applyUserCnt ?: 0
-        this.gameStartTs = (rsp.gameStartTimeMs?.toLong() ?: 0L)
+        this.gameStartTs = (rsp.gameStartTimeMs ?: 0L)
         this.notice = rsp.notice ?: ""
         this.onlineUserCnt = rsp.onlineUserCnt ?: 0
         this.roomName = rsp.roomName ?: ""
@@ -211,6 +213,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         updateSeats(rsp.seats)
         updateUsers(rsp.users)
         this.expectRoundInfo = rsp.currentRound
+        this.enterPermission = rsp.enterPermission
     }
 
 

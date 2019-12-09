@@ -29,7 +29,7 @@ class JoinPartyRoomRspModel : Serializable {
     var currentRound: PartyRoundInfoModel? = null
 
     @JSONField(name = "gameStartTimeMs")
-    var gameStartTimeMs: Int? = null
+    var gameStartTimeMs: Long? = null
 
     @JSONField(name = "notice")
     var notice: String? = null
@@ -49,6 +49,8 @@ class JoinPartyRoomRspModel : Serializable {
     @JSONField(name = "users")
     var users: ArrayList<PartyPlayerInfoModel>? = null
 
+    @JSONField(name = "enterPermission")
+    var enterPermission = 2
 
 
 }
