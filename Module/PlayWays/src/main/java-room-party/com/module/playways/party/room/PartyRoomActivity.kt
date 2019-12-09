@@ -305,14 +305,13 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mSeatView?.listener = object : PartySeatView.Listener {
             override fun onClikAvatar(position: Int, model: PartyActorInfoModel?) {
                 if (mRoomData.getMyUserInfoInParty().isAdmin() || mRoomData.getMyUserInfoInParty().isHost()) {
-                    // 我是管理人员
                     showPartyManageView(model)
                 } else {
                     // 非管理人员
                     if (model?.player?.userID != null) {
                         showPersonInfoView(model?.player?.userID ?: 0)
                     } else {
-                        // 点了个空座位
+                        // 点了个空座位 没反应
                     }
                 }
             }

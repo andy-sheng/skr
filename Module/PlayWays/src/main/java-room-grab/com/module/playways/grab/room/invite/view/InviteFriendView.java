@@ -70,12 +70,14 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
 
             @Override
             public void onClick(UserInfoModel model, ExTextView view) {
-                if (mFrom == InviteFriendFragment2.FROM_GRAB_ROOM) {
+                if (mFrom == GameModeType.GAME_MODE_GRAB) {
                     mGrabInvitePresenter.inviteGrabFriend(mRoomID, mTagID, model, view);
-                } else if (mFrom == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
+                } else if (mFrom == GameModeType.GAME_MODE_DOUBLE) {
                     mGrabInvitePresenter.inviteDoubleFriend(mRoomID, model, view);
-                } else if (mFrom == InviteFriendFragment2.FROM_MIC_ROOM) {
+                } else if (mFrom == GameModeType.GAME_MODE_MIC) {
                     mGrabInvitePresenter.inviteMicFriend(mRoomID, model, view);
+                }else if(mFrom == GameModeType.GAME_MODE_PARTY){
+                    mGrabInvitePresenter.invitePartyFriend(mRoomID, model, view);
                 }
             }
 
@@ -98,13 +100,7 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mInviteFirendAdapter);
 
-        if (mFrom == InviteFriendFragment2.FROM_MIC_ROOM) {
-            mGrabInvitePresenter = new GrabInvitePresenter(mBaseFragment, this, mRoomID, GameModeType.GAME_MODE_MIC);
-        } else if (mFrom == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
-            mGrabInvitePresenter = new GrabInvitePresenter(mBaseFragment, this, mRoomID, GameModeType.GAME_MODE_DOUBLE);
-        } else {
-            mGrabInvitePresenter = new GrabInvitePresenter(mBaseFragment, this, mRoomID, GameModeType.GAME_MODE_GRAB);
-        }
+            mGrabInvitePresenter = new GrabInvitePresenter(mBaseFragment, this, mRoomID, mFrom);
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);

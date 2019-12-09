@@ -2,6 +2,7 @@ package com.module.playways.party.room
 
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiResult
+import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -119,4 +120,7 @@ interface PartyRoomServerApi {
 
     @GET("http://dev.game.inframe.mobi/v1/partygame/game-play-list")
     fun getPartyGamePlayList(@Query("roomID") roomID: Int, @Query("ruleID") ruleID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/invite")
+    fun invite(@Body body: RequestBody): Observable<ApiResult>
 }

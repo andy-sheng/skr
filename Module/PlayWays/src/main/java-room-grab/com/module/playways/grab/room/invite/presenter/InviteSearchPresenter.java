@@ -14,6 +14,7 @@ import com.common.view.ex.ExTextView;
 import com.module.playways.doubleplay.DoubleRoomServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.invite.view.IInviteSearchView;
+import com.module.playways.party.room.PartyRoomServerApi;
 
 import java.util.HashMap;
 import java.util.List;
@@ -111,6 +112,33 @@ public class InviteSearchPresenter extends RxLifeCyclePresenter {
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mDoubleRoomServerApi.micRoomSendInvite(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                MyLog.d(TAG, "process" + " result=" + result.getErrno());
+                if (result.getErrno() == 0) {
+                    // 更新视图
+                    mView.updateInvited(view);
+                } else {
+                    MyLog.w(TAG, "inviteMicFriend failed, " + " traceid is " + result.getTraceId());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, e);
+            }
+        }, this);
+    }
+
+    public void invitePartyriend(int roomID, UserInfoModel model, ExTextView view) {
+        MyLog.d(TAG, "inviteMicFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("roomID", roomID);
+        map.put("userID", model.getUserId());
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        ApiMethods.subscribe(ApiManager.getInstance().createService(PartyRoomServerApi.class).invite(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());
