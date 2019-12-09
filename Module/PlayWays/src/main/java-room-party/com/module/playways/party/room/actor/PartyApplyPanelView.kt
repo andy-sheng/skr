@@ -35,7 +35,7 @@ class PartyApplyPanelView(context: Context) : ConstraintLayout(context) {
         recyclerView?.adapter = adapter
         recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        //todo 补上拉申请列表的接口，通知下申请人数改变
+
     }
 
     /**

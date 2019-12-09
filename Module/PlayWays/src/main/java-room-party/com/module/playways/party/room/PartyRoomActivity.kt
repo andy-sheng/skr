@@ -32,15 +32,13 @@ import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
-import com.module.playways.mic.room.model.MicPlayerInfoModel
-import com.module.playways.mic.room.top.RoomInviteView
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.actor.PartyApplyPanelView
 import com.module.playways.party.room.bottom.PartyBottomContainerView
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
-import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.party.room.model.PartyPlayerInfoModel
+import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.presenter.PartyCorePresenter
 import com.module.playways.party.room.seat.PartySeatView
 import com.module.playways.party.room.top.PartyTopContentView
@@ -409,7 +407,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mPartySettingView = PartySettingView(findViewById(R.id.party_bottom_setting_viewStub))
         mPartySettingView?.listener = object : PartySettingView.Listener {
             override fun onClickGameSetting() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_SELECT_GAME)
+                        .navigation()
             }
 
             override fun onClickGameSound() {

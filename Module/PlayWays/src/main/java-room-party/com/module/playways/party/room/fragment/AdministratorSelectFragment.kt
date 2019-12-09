@@ -48,6 +48,7 @@ class AdministratorSelectFragment : BaseFragment() {
         bgIv = rootView.findViewById(R.id.bg_iv)
         recyclerView = rootView.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
+        smartRefresh = rootView.findViewById(R.id.smart_refresh)
 
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
 
