@@ -21,6 +21,30 @@ class PartySeatInfoModel : Serializable {
     override fun toString(): String {
         return "PartySeatInfoModel(seatSeq=$seatSeq, seatStatus=$seatStatus, userID=$userID, micStatus=$micStatus)"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as PartySeatInfoModel
+
+        if (seatSeq != other.seatSeq) return false
+        if (seatStatus != other.seatStatus) return false
+        if (userID != other.userID) return false
+        if (micStatus != other.micStatus) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = seatSeq
+        result = 31 * result + seatStatus
+        result = 31 * result + userID
+        result = 31 * result + micStatus
+        return result
+    }
+
+
     companion object{
         fun parseFromPb(pb:SeatInfo):PartySeatInfoModel{
             var info = PartySeatInfoModel()

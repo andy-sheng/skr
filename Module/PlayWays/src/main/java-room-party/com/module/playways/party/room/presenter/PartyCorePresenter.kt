@@ -17,6 +17,7 @@ import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
+import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.PartyRoundChangeEvent
@@ -109,8 +110,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                 params.isEnableAudio = true
                 ZqEngineKit.getInstance().init("partyroom", params)
             }
-            var isAnchor = mRoomData?.getMyInfoInParty()?.isRole(EPUserRole.EPUR_HOST.value,EPUserRole.EPUR_GUEST.value)
-            DebugLogView.println(TAG,"isAnchor=$isAnchor")
+            var isAnchor = mRoomData?.getMyInfoInParty()?.isRole(EPUserRole.EPUR_HOST.value, EPUserRole.EPUR_GUEST.value)
+            DebugLogView.println(TAG, "isAnchor=$isAnchor")
             ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), isAnchor, mRoomData.agoraToken)
             // 不发送本地音频, 会造成第一次抢没声音
             //ZqEngineKit.getInstance().muteLocalAudioStream(true)
@@ -348,7 +349,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
      * 主持人心跳
      */
     private fun startHeartbeat() {
-        if(mRoomData?.getMyInfoInParty()?.isHost()){
+        if (mRoomData?.getMyInfoInParty()?.isHost()) {
             heartbeatJob?.cancel()
             heartbeatJob = launch {
                 while (true) {
@@ -400,10 +401,10 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                             val thisRound = JSON.parseObject(result.data.getString("currentRound"), PartyRoundInfoModel::class.java)
                             val onlineUserCnt = result.data.getIntValue("onlineUserCnt")
                             val applyUserCnt = result.data.getIntValue("applyUserCnt")
-                            val seats = JSON.parseArray(result.data.getString("seats"),PartySeatInfoModel::class.java)
-                            var users = JSON.parseArray(result.data.getString("users"),PartyPlayerInfoModel::class.java)
+                            val seats = JSON.parseArray(result.data.getString("seats"), PartySeatInfoModel::class.java)
+                            var users = JSON.parseArray(result.data.getString("users"), PartyPlayerInfoModel::class.java)
                             // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
-                            processSyncResult(onlineUserCnt,applyUserCnt, seats, users,thisRound)
+                            processSyncResult(onlineUserCnt, applyUserCnt, seats, users, thisRound)
                         }
                     }
                 } else {
@@ -672,6 +673,18 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //        roomView.showSongCount(event.musicCnt)
 //    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PJoinNoticeMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        var playerInfoModel = PartyPlayerInfoModel.parseFromPb(event.user)
+        var seatInfoModel:PartySeatInfoModel? = null
+        if(event.hasSeat()){
+             seatInfoModel = PartySeatInfoModel.parseFromPb(event.seat)
+        }
+        roomView.joinNotice(playerInfoModel)
+        mRoomData.addUsers(playerInfoModel,seatInfoModel)
+    }
+
     /**
      * 轮次变化
      *
@@ -708,7 +721,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     fun onEvent(event: PSyncMsg) {
         ensureInRcRoom()
         MyLog.w(TAG, "收到服务器 sync push更新状态 ,event=$event")
-        if(event.syncStatusTimeMs > mRoomData.lastSyncTs){
+        if (event.syncStatusTimeMs > mRoomData.lastSyncTs) {
             mRoomData.lastSyncTs = event.syncStatusTimeMs
             var onlineUserCnt = event.onlineUserCnt
             var applyUserCnt = event.applyUserCnt
@@ -718,7 +731,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             var thisRound = PartyRoundInfoModel.parseFromRoundInfo(event.currentRound)
             // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
             startSyncGameStatus()
-            processSyncResult(onlineUserCnt,applyUserCnt,seats,users,thisRound)
+            processSyncResult(onlineUserCnt, applyUserCnt, seats, users, thisRound)
         }
     }
 
@@ -779,7 +792,6 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //        ensureInRcRoom()
 //        roomView.gameOver()
 //    }
-
 
 
 //    /**

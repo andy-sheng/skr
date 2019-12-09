@@ -5,6 +5,8 @@ import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.PartyRoom.EPUserRole
 import com.zq.live.proto.PartyRoom.POnlineInfo
 import com.zq.live.proto.PartyRoom.SeatInfo
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PartyPlayerInfoModel : PlayerInfoModel() {
     //    enum EPUserRole {
@@ -29,6 +31,13 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
             }
         }
         return false
+    }
+
+    /**
+     * 不仅仅是观众
+     */
+    fun isNotOnlyAudience():Boolean{
+        return isRole(EPUserRole.EPUR_ADMIN.value,EPUserRole.EPUR_HOST.value,EPUserRole.EPUR_GUEST.value)
     }
 
     /**
@@ -71,20 +80,41 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
         return "PartyPlayerInfoModel(userInfo=${userInfo.toSimpleString()}, role=$role)"
     }
 
-    companion object{
-        fun parseFromPb(pb: POnlineInfo):PartyPlayerInfoModel{
+    /**
+     * 判断两个model信息是否相同
+     */
+    fun same(playerInfoModel: PartyPlayerInfoModel): Boolean {
+        if (this.popularity != playerInfoModel.popularity) {
+            return false
+        }
+        if (this.role.size != playerInfoModel.role.size) {
+            return false
+        }
+        for ((index, r) in this.role.withIndex()) {
+            if (r != playerInfoModel.role[index]) {
+                return false
+            }
+        }
+        return true
+    }
+
+    companion object {
+        fun parseFromPb(pb: POnlineInfo): PartyPlayerInfoModel {
             var info = PartyPlayerInfoModel()
             info.popularity = pb.popularity
-            for(r in pb.roleList){
+            for (r in pb.roleList) {
                 info.role.add(r.value)
             }
+            info.role.sortWith(Comparator { o1, o2 ->
+                o1 - o2
+            })
             info.userInfo = UserInfoModel.parseFromPB(pb.userInfo)
             return info
         }
 
-        fun parseFromPb(pbs:List<POnlineInfo>):ArrayList<PartyPlayerInfoModel>{
+        fun parseFromPb(pbs: List<POnlineInfo>): ArrayList<PartyPlayerInfoModel> {
             var infos = ArrayList<PartyPlayerInfoModel>()
-            for(pb in pbs){
+            for (pb in pbs) {
                 infos.add(parseFromPb(pb))
             }
             return infos

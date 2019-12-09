@@ -32,6 +32,7 @@ import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
+import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.top.RoomInviteView
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.actor.PartyApplyPanelView
@@ -39,6 +40,7 @@ import com.module.playways.party.room.bottom.PartyBottomContainerView
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.model.PartyActorInfoModel
+import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.presenter.PartyCorePresenter
 import com.module.playways.party.room.seat.PartySeatView
 import com.module.playways.party.room.top.PartyTopContentView
@@ -681,4 +683,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mPartyGameMainView?.toWaitingState()
     }
 
+    override fun joinNotice(model: PartyPlayerInfoModel?) {
+        model?.let {
+            if (it.userID != MyUserInfoManager.myUserInfo?.userId?.toInt()) {
+                mVipEnterPresenter?.addNotice(it.userInfo)
+            }
+        }
+    }
 }

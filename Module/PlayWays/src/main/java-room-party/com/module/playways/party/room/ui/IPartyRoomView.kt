@@ -1,5 +1,6 @@
 package com.module.playways.party.room.ui
 
+import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
 
 interface IPartyRoomView {
@@ -9,6 +10,9 @@ interface IPartyRoomView {
     fun gameBegin()
 //    fun gameOver()
     fun showWaiting()
+
+    fun joinNotice(model: PartyPlayerInfoModel?)
+
 //    fun turnChange()
 
 //

@@ -183,6 +183,51 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         }
     }
 
+    fun addUsers(playerInfoModel: PartyPlayerInfoModel, seatInfoModel: PartySeatInfoModel?) {
+        // 判断是否要更新用户
+        var hasUserChange = false
+        if (playerInfoModel.isNotOnlyAudience()) {
+            var uu = usersMap[playerInfoModel.userID]
+            if (uu != null) {
+                if (uu.same(playerInfoModel)) {
+                } else {
+                    users.remove(uu)
+                    users.add(playerInfoModel)
+                    usersMap[playerInfoModel.userID] = playerInfoModel
+                    hasUserChange = true
+                }
+            } else {
+                users.add(playerInfoModel)
+                usersMap[playerInfoModel.userID] = playerInfoModel
+                hasUserChange = true
+            }
+        }
+        var hasSeatChange = false
+        if (seatInfoModel != null) {
+            var ss = seatsSeatIdMap[seatInfoModel.seatSeq]
+            if (ss != null) {
+                if (ss == seatInfoModel) {
+
+                } else {
+                    seats.remove(ss)
+                    seats.add(seatInfoModel)
+                    seatsSeatIdMap[seatInfoModel.seatSeq] = seatInfoModel
+                    seatsUserIdMap[seatInfoModel.userID] = seatInfoModel
+                    hasSeatChange = true
+                }
+            } else {
+                seats.add(seatInfoModel)
+                seatsSeatIdMap[seatInfoModel.seatSeq] = seatInfoModel
+                seatsUserIdMap[seatInfoModel.userID] = seatInfoModel
+                hasSeatChange = true
+            }
+        }
+        if (hasSeatChange) {
+            // 座位信息有变化
+            EventBus.getDefault().post(PartySeatInfoChangeEvent(seatInfoModel!!.seatSeq))
+        }
+    }
+
     /**
      * 检查轮次信息是否需要更新
      */
@@ -227,6 +272,5 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         this.expectRoundInfo = rsp.currentRound
         this.enterPermission = rsp.enterPermission
     }
-
 
 }

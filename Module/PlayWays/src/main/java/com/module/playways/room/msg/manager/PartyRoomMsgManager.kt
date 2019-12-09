@@ -51,6 +51,9 @@ object PartyRoomMsgManager : BaseMsgManager<EPartyRoomMsgType, PartyRoomMsg>() {
             msg.msgType == EPartyRoomMsgType.PRT_EXIT_GAME -> EventBus.getDefault().post(msg.ppExitGameMsg)
             msg.msgType == EPartyRoomMsgType.PRT_SYNC -> EventBus.getDefault().post(msg.pSyncMsg)
             msg.msgType == EPartyRoomMsgType.PRT_DYNAMIC_EMOJI -> EventBus.getDefault().post(msg.pDynamicEmojiMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_GAME_OVER -> EventBus.getDefault().post(msg.pGameOverMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_CHANGE_ROOM_TOPIC -> EventBus.getDefault().post(msg.pChangeRoomTopicMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_CHANGE_ROOM_ENTER_PERMISSION -> EventBus.getDefault().post(msg.pChangeRoomEnterPermissionMsg)
         }
     }
 }
