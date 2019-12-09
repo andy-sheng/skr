@@ -3,6 +3,7 @@ package com.module.playways.party.create
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -15,7 +16,6 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.ex.NoLeakEditText
@@ -23,8 +23,6 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
 import com.module.playways.R
-import com.module.playways.mic.match.model.JoinMicRoomRspModel
-import com.module.playways.mic.room.MicRoomServerApi
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.PartyRoomServerApi
 import kotlinx.coroutines.delay
@@ -43,6 +41,8 @@ class PartyRoomCreateActivity : BaseActivity() {
     lateinit var whiteGoldTv: ExTextView
     lateinit var yellowGoldTv: ExTextView
     lateinit var boGoldTv: ExTextView
+
+    var from: String = "create"
 
     var levelList: ArrayList<Level> = ArrayList()
 
@@ -75,8 +75,16 @@ class PartyRoomCreateActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        levelList.add(Level.RLL_All)
         titlebar = this.findViewById(R.id.titlebar)
+        val from = intent.getStringExtra("from")
+        if (!TextUtils.isEmpty(from)) {
+            this.from = from
+            if (("change").equals(from)) {
+                titlebar.rightTextView.text = "更改"
+            }
+        }
+
+        levelList.add(Level.RLL_All)
         nameEdittext = this.findViewById(R.id.name_edittext)
         divider = this.findViewById(R.id.divider)
         enterRoomTip = this.findViewById(R.id.enter_room_tip)

@@ -204,7 +204,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"></activity>
 
-<!--        <activity android:name=".demo.DoubleDemoTestActivity"/>-->
+        <!--        <activity android:name=".demo.DoubleDemoTestActivity"/>-->
         <activity
             android:name="com.module.playways.party.room.PartyRoomActivity"
             android:screenOrientation="portrait"
@@ -212,6 +212,11 @@
 
         <activity
             android:name="com.module.playways.party.room.activity.PartySelectGameActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
+
+        <activity
+            android:name="com.module.playways.party.create.PartyRoomCreateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"></activity>
 
