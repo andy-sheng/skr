@@ -903,11 +903,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                 if (mConfig.getChannelProfile() == Params.CHANNEL_TYPE_LIVE_BROADCASTING) {
                     mConfig.setAnchor(isAnchor);
                     mAgoraRTCAdapter.setClientRole(isAnchor);
-                    if(isAnchor){
+                    if (isAnchor) {
                         mCustomHandlerThread.removeMessage(MSG_ROLE_CHANGE_TIMEOUT);
                         Message msg = mCustomHandlerThread.obtainMessage();
                         msg.what = MSG_ROLE_CHANGE_TIMEOUT;
-                        mCustomHandlerThread.sendMessageDelayed(msg,3000);
+                        mCustomHandlerThread.sendMessageDelayed(msg, 3000);
                     }
                 }
                 joinRoomInner(roomid, userId, token);
@@ -1212,9 +1212,12 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new LogRunnable("setAudioEffectStyle") {
                 @Override
                 public void realRun() {
-                    Params.AudioEffect styleEnum = Params.AudioEffect.none;//TODO 产品讨论结构先把混响都关了
-
-                    doSetAudioEffect(styleEnum, false);
+                    if (MyLog.isDebugLogOpen()) {
+                        doSetAudioEffect(styleEnum, false);
+                    } else {
+                        Params.AudioEffect styleEnum = Params.AudioEffect.none;//TODO 产品讨论结构线上先把混响都关了
+                        doSetAudioEffect(styleEnum, false);
+                    }
                 }
             });
         }
@@ -1369,7 +1372,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private void tryPlayPendingMixingMusic(String from) {
         MyLog.i(TAG, "tryPlayPengdingMixingMusic" + " from=" + from);
-        if(mCustomHandlerThread!=null){
+        if (mCustomHandlerThread != null) {
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {
