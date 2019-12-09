@@ -449,7 +449,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     }
 
     /**
-     * 我的位置信息变化了，主要处理开闭麦下麦等
+     * 我的座位信息变化了，主要处理开闭麦下麦等
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyMySeatInfoChangeEvent) {
@@ -478,7 +478,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyMyUserInfoChangeEvent) {
         DebugLogView.println(TAG, "onEvent event = $event")
-
+        if (mRoomData.myUserInfo?.isAdmin() == true) {
+            //我是管理员了
+        } else if (mRoomData.myUserInfo?.isGuest() == true) {
+            // 我是嘉宾了
+        }
     }
 
     /**
@@ -746,7 +750,6 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             pretendSystemMsg("${event.opUser.userInfo.nickName} 设置为 解除全员禁麦")
         }
         mRoomData.updateSeats(PartySeatInfoModel.parseFromPb(event.seatsList))
-        //TODO 如果自己不是管理员 还要关闭引擎
     }
 
 
