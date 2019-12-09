@@ -1,17 +1,25 @@
 package com.module.playways.party.room.top
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
+import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
+import com.component.busilib.view.AvatarView
+import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
+import com.module.playways.party.room.event.PartyOnlineUserCntChangeEvent
 import com.module.playways.relay.room.event.RelayLockChangeEvent
+import com.module.playways.room.data.H
 import com.zq.live.proto.RelayRoom.RMuteMsg
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -50,6 +58,11 @@ class PartyTopContentView : ExConstraintLayout {
         onlineNum = this.findViewById(R.id.online_num)
         audienceIv = this.findViewById(R.id.audience_iv)
 
+        avatarIv.setDebounceViewClickListener {
+            H.partyRoomData?.hostId?.let {
+                EventBus.getDefault().post(ShowPersonCardEvent(it))
+            }
+        }
         arrowIv.setDebounceViewClickListener { listener?.clickArrow(!mIsOpen) }
         moreArrow.setDebounceViewClickListener { listener?.showRoomMember() }
         onlineNum.setDebounceViewClickListener { listener?.showRoomMember() }
@@ -69,17 +82,21 @@ class PartyTopContentView : ExConstraintLayout {
     }
 
     fun bindData() {
-
+        val hostUser = H.partyRoomData?.getPlayerInfoById(H.partyRoomData?.hostId ?: 0)
+        AvatarUtils.loadAvatarByUrl(avatarIv,
+                AvatarUtils.newParamsBuilder(hostUser?.userInfo?.avatar)
+                        .setBorderColor(Color.WHITE)
+                        .setBorderWidth(1.dp().toFloat())
+                        .setCircle(true)
+                        .build())
+        nameTv.text = hostUser?.userInfo?.nicknameRemark
+        compereTv.text = "房间号:${H.partyRoomData?.gameId}"
+        onlineNum.text = "在线${H.partyRoomData?.applyUserCnt}人"
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RelayLockChangeEvent) {
-
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RMuteMsg) {
-
+    fun onEvent(event: PartyOnlineUserCntChangeEvent) {
+        onlineNum.text = "在线${H.partyRoomData?.applyUserCnt}人"
     }
 
     override fun onAttachedToWindow() {
