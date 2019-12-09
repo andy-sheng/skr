@@ -55,20 +55,10 @@ class PartyWidgetAnimationController(internal var mF: PartyRoomActivity) {
         val animators = ArrayList<Animator>()
         for (view in viewList) {
             if (view != null) {
-                var objectAnimator: ObjectAnimator? = null
-//                if (view === mF.mGrabVideoDisplayView.getRealView()) {
-//                    // 要多下移一个顶部状态栏的高度，才能和 ContentView对齐
-//                    objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.translationY, translateByOpenType + mF.mGrabVideoDisplayView.getExtraTranslateYWhenOpen(openType))
-//                } else {
-                objectAnimator = ObjectAnimator.ofFloat<View>(view, View.TRANSLATION_Y, view.translationY, translateByOpenType.toFloat())
-//                }
+                var objectAnimator = ObjectAnimator.ofFloat<View>(view, View.TRANSLATION_Y, view.translationY, translateByOpenType.toFloat())
                 animators.add(objectAnimator)
             }
         }
-//        val animators2 = mF.mGrabVideoDisplayView.getInnerAnimator(true, mF.mGrabTopContentView.getVisibility() === View.VISIBLE)
-//        if (animators2 != null) {
-//            animators.addAll(animators2)
-//        }
         mMainAnimatorSet = AnimatorSet()
         mMainAnimatorSet!!.playTogether(animators)
         mMainAnimatorSet!!.duration = 300
@@ -86,43 +76,19 @@ class PartyWidgetAnimationController(internal var mF: PartyRoomActivity) {
                 mF.mTopContentView.setArrowIcon(true)
                 if (openType == OPEN_TYPE_FOR_NORMAL) {
                     mF.mTopOpView.visibility = View.VISIBLE
-//                    mF.mRaceVideoSelfSingCardView.setVisibility(View.GONE)
                 } else if (openType == OPEN_TYPE_FOR_LYRIC) {
                     mF.mTopOpView.visibility = View.GONE
-//                    mF.mRaceVideoSelfSingCardView.setVisibility(View.VISIBLE)
                 }
                 isOpen = true
             }
         })
         mMainAnimatorSet!!.start()
-//        mF.mGameTipsManager.setBaseTranslateY(mF.TAG_INVITE_TIP_VIEW, translateByOpenType)
     }
 
-    internal fun fillView(viewList: MutableList<View?>) {
+    private fun fillView(viewList: MutableList<View?>) {
         viewList.add(mF.mTopContentView)
-        viewList.add(mF.mRoomInviteView?.realView)
         viewList.add(mF.mPartyGameMainView?.realView)
         viewList.add(mF.mSeatView)
-//        viewList.add(mF.mHasSelectSongNumTv)
-//        viewList.add(mF.mTopVsView)
-//        viewList.add(mF.mPracticeFlagIv)
-//        viewList.add(mF.mGameTipsManager.getViewByKey(mF.TAG_SELF_SING_TIP_VIEW))
-//        viewList.add(mF.mRaceOpBtn)
-//        viewList.add(mF.mRaceGiveupView)
-//        viewList.add(mF.mTurnInfoCardView)
-//        viewList.add(mF.mSongInfoCardView)
-//        viewList.addAll(mF.mRoundOverCardView.getRealViews())
-//        viewList.add(mF.mGiftContinueViewGroup)
-//
-//        if (mF.mRoomData.isVideoRoom()) {
-//            viewList.add(mF.mRaceVideoDisplayView.getRealView())
-//        } else {
-//            viewList.addAll(mF.mOthersSingCardView.getRealViews())
-//        }
-//        viewList.addAll(mF.mSelfSingCardView.realViews)
-//        viewList.addAll(mF.mOthersSingCardView.realViews)
-//        viewList.add(mF.mAddSongIvSongIv)
-//        viewList.add(mF.mHasSelectSongNumTv)
     }
 
     /**
@@ -142,18 +108,13 @@ class PartyWidgetAnimationController(internal var mF: PartyRoomActivity) {
                 animators.add(objectAnimator)
             }
         }
-//        val animators2 = mF.mRaceVideoDisplayView.getInnerAnimator(false, mF.mRaceTopContentView.getVisibility() === View.VISIBLE)
-//        if (animators2 != null) {
-//            animators.addAll(animators2)
-//        }
         mMainAnimatorSet = AnimatorSet()
         mMainAnimatorSet!!.playTogether(animators)
         mMainAnimatorSet!!.duration = 300
         mMainAnimatorSet!!.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator) {
                 super.onAnimationStart(animation)
-                mF.mTopOpView.setVisibility(View.GONE)
-//                mF.mRaceVideoSelfSingCardView.setVisibility(View.GONE)
+                mF.mTopOpView.visibility = View.GONE
             }
 
             override fun onAnimationCancel(animation: Animator) {
@@ -167,8 +128,6 @@ class PartyWidgetAnimationController(internal var mF: PartyRoomActivity) {
             }
         })
         mMainAnimatorSet!!.start()
-//        mF.mGameTipsManager.setBaseTranslateY(mF.TAG_INVITE_TIP_VIEW, 0)
-
     }
 
     fun destroy() {

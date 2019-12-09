@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <!--申请列表(主持人)-->
+    <com.common.view.ex.ExTextView
+        android:id="@+id/apply_list"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_24_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_10_dp"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_gradient_endColor="#6047D3"
+        app:bl_gradient_startColor="#835DFD"
+        app:bl_shape="rectangle" />
+
+    <!--申请上麦 取消申请 下麦-->
+    <com.common.view.ex.ExTextView
+        android:id="@+id/op_mic_tv"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:gravity="center"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_gradient_endColor="#6047D3"
+        app:bl_gradient_startColor="#835DFD"
+        app:bl_shape="rectangle"
+        app:layout_constraintTop_toBottomOf="@id/apply_list" />
+
+</merge>
