@@ -4,10 +4,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiResult
 import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 interface PartyRoomServerApi {
     /**
@@ -15,7 +12,6 @@ interface PartyRoomServerApi {
      */
     @GET("http://dev.game.inframe.mobi/v1/microom/roomtype-permission-list")
     fun getRoomPermmissionList(): Call<ApiResult>
-
 
     /**
      * 创建房间
@@ -29,6 +25,9 @@ interface PartyRoomServerApi {
 
     @PUT("http://dev.game.inframe.mobi/v1/partygame/heartbeat")
     fun heartbeat(@Body body: RequestBody): Call<ApiResult>
+
+    @GET("http://dev.game.inframe.mobi/v1/partygame/sync-status")
+    fun syncStatus(@Query("roomID") roomID: Long): Call<ApiResult>
 
     /**
      * {

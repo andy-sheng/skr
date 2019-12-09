@@ -31,7 +31,7 @@ class PartySeatInfoModel : Serializable {
             return info
         }
 
-        fun parseFromPb(pbs:List<SeatInfo>):List<PartySeatInfoModel>{
+        fun parseFromPb(pbs:List<SeatInfo>):ArrayList<PartySeatInfoModel>{
             var infos = ArrayList<PartySeatInfoModel>()
             for(pb in pbs){
                 infos.add(parseFromPb(pb))

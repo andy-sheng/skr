@@ -82,7 +82,7 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
             return info
         }
 
-        fun parseFromPb(pbs:List<POnlineInfo>):List<PartyPlayerInfoModel>{
+        fun parseFromPb(pbs:List<POnlineInfo>):ArrayList<PartyPlayerInfoModel>{
             var infos = ArrayList<PartyPlayerInfoModel>()
             for(pb in pbs){
                 infos.add(parseFromPb(pb))

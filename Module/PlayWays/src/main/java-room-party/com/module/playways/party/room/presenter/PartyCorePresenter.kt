@@ -381,31 +381,36 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             return
         }
         syncJob?.cancel()
-//        syncJob = launch {
-//            while (true) {
-//                delay(10 * 1000)
-//                val result = subscribe { mRoomServerApi.syncStatus(mRoomData.gameId.toLong()) }
-//                if (result.errno == 0) {
-//                    val gameOverTimeMs = result.data.getLongValue("gameOverTimeMs")
-//                    if (gameOverTimeMs > 0) {
-//                        mRoomData.gameOverTs = gameOverTimeMs
-//                        DebugLogView.println(TAG, "gameOverTimeMs=${gameOverTimeMs} 游戏结束时间>0 ，游戏结束，退出房间")
-//                        // 游戏结束了，停服了
-//                        mRoomData.expectRoundInfo = null
-//                        mRoomData.checkRoundInEachMode()
-//                    } else {
-////                        val syncStatusTimeMs = result.data.getLongValue("syncStatusTimeMs")
-////                        if (syncStatusTimeMs > mRoomData.lastSyncTs) {
-////                            mRoomData.lastSyncTs = syncStatusTimeMs
-//                        val roundInfo = JSON.parseObject(result.data.getString("currentRound"), RelayRoundInfoModel::class.java)
-//                        processSyncResult(roundInfo)
-////                        }
-//                    }
-//                } else {
-//
-//                }
-//            }
-//        }
+        syncJob = launch {
+            while (true) {
+                delay(10 * 1000)
+                val result = subscribe { mRoomServerApi.syncStatus(mRoomData.gameId.toLong()) }
+                if (result.errno == 0) {
+                    val gameOverTimeMs = result.data.getLongValue("gameOverTimeMs")
+                    if (gameOverTimeMs > 0) {
+                        mRoomData.gameOverTs = gameOverTimeMs
+                        DebugLogView.println(TAG, "gameOverTimeMs=${gameOverTimeMs} 游戏结束时间>0 ，游戏结束，退出房间")
+                        // 游戏结束了，停服了
+                        mRoomData.expectRoundInfo = null
+                        mRoomData.checkRoundInEachMode()
+                    } else {
+                        val syncStatusTimeMs = result.data.getLongValue("syncStatusTimeMs")
+                        if (syncStatusTimeMs > mRoomData.lastSyncTs) {
+                            mRoomData.lastSyncTs = syncStatusTimeMs
+                            val thisRound = JSON.parseObject(result.data.getString("currentRound"), PartyRoundInfoModel::class.java)
+                            val onlineUserCnt = result.data.getIntValue("onlineUserCnt")
+                            val applyUserCnt = result.data.getIntValue("applyUserCnt")
+                            val seats = JSON.parseArray(result.data.getString("seats"),PartySeatInfoModel::class.java)
+                            var users = JSON.parseArray(result.data.getString("users"),PartyPlayerInfoModel::class.java)
+                            // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
+                            processSyncResult(onlineUserCnt,applyUserCnt, seats, users,thisRound)
+                        }
+                    }
+                } else {
+
+                }
+            }
+        }
     }
 
     /**
@@ -723,8 +728,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     private fun processSyncResult(onlineUserCnt: Int, applyUserCnt: Int, seats: List<PartySeatInfoModel>, users: List<PartyPlayerInfoModel>, thisRound: PartyRoundInfoModel) {
         mRoomData.onlineUserCnt = onlineUserCnt
         mRoomData.applyUserCnt = applyUserCnt
-//        mRoomData.updateSeats(seats)
-//        mRoomData
+        mRoomData.updateSeats(seats as ArrayList<PartySeatInfoModel>)
+        mRoomData.updateUsers(users as ArrayList<PartyPlayerInfoModel>)
         if (thisRound.roundSeq == mRoomData.realRoundSeq) {
             mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(thisRound, true)
         } else if (thisRound.roundSeq > mRoomData.realRoundSeq) {
