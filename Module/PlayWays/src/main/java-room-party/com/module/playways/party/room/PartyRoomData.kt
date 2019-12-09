@@ -59,6 +59,12 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         }
 
     var enterPermission = 2 // 2都可以进入  1 只有邀请能进
+    set(value) {
+        if (value != field) {
+            field = value
+            EventBus.getDefault().post(PartyEnterPermissionEvent())
+        }
+    }
 
     var users = ArrayList<PartyPlayerInfoModel>() // 当前的用户信息 包括 主持人管理员 以及 嘉宾
     var usersMap = HashMap<Int, PartyPlayerInfoModel>()  // 根据id找人
@@ -239,7 +245,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         if (seatInfoModel != null) {
             var ss = seatsSeatIdMap[seatInfoModel.seatSeq]
             if (ss != null) {
-                if (ss == seatInfoModel) {
+                if (ss.same(seatInfoModel)) {
 
                 } else {
                     seats.remove(ss)
@@ -264,7 +270,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         }
     }
 
-    fun addUsers(playerInfoModel: PartyPlayerInfoModel, seatInfoModel: PartySeatInfoModel?) {
+    fun updateUser(playerInfoModel: PartyPlayerInfoModel, seatInfoModel: PartySeatInfoModel?) {
         // 判断是否要更新用户
         var hasUserChange = false
         if (playerInfoModel.isNotOnlyAudience()) {
@@ -282,8 +288,26 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                 usersMap[playerInfoModel.userID] = playerInfoModel
                 hasUserChange = true
             }
+        }else{
+            // 是观众了 去除信息
+            usersMap.remove(playerInfoModel.userID)
+            if(playerInfoModel.userID == MyUserInfoManager.uid.toInt()){
+                myUserInfo = null
+            }
         }
         updateSeat(seatInfoModel)
+    }
+
+    fun removeUser(playerInfoModel: PartyPlayerInfoModel) {
+        usersMap.remove(playerInfoModel.userID)
+        if(playerInfoModel.userID == MyUserInfoManager.uid.toInt()){
+            myUserInfo = null
+        }
+        if(seatsUserIdMap.containsKey(playerInfoModel.userID)){
+            var seat = seatsUserIdMap[playerInfoModel.userID]
+            seat?.userID = 0
+            EventBus.getDefault().post(PartySeatInfoChangeEvent(seat?.seatSeq ?:-1))
+        }
     }
 
     /**
@@ -330,5 +354,4 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         this.expectRoundInfo = rsp.currentRound
         this.enterPermission = rsp.enterPermission
     }
-
 }

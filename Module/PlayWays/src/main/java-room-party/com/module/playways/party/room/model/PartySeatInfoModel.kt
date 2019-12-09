@@ -29,6 +29,13 @@ class PartySeatInfoModel : Serializable {
         other as PartySeatInfoModel
 
         if (seatSeq != other.seatSeq) return false
+
+        return true
+    }
+
+
+    fun same(other: PartySeatInfoModel): Boolean {
+        if (seatSeq != other.seatSeq) return false
         if (seatStatus != other.seatStatus) return false
         if (userID != other.userID) return false
         if (micStatus != other.micStatus) return false
@@ -45,8 +52,8 @@ class PartySeatInfoModel : Serializable {
     }
 
 
-    companion object{
-        fun parseFromPb(pb:SeatInfo):PartySeatInfoModel{
+    companion object {
+        fun parseFromPb(pb: SeatInfo): PartySeatInfoModel {
             var info = PartySeatInfoModel()
             info.seatSeq = pb.seatSeq
             info.seatStatus = pb.seatStatus.value
@@ -55,9 +62,9 @@ class PartySeatInfoModel : Serializable {
             return info
         }
 
-        fun parseFromPb(pbs:List<SeatInfo>):ArrayList<PartySeatInfoModel>{
+        fun parseFromPb(pbs: List<SeatInfo>): ArrayList<PartySeatInfoModel> {
             var infos = ArrayList<PartySeatInfoModel>()
-            for(pb in pbs){
+            for (pb in pbs) {
                 infos.add(parseFromPb(pb))
             }
             return infos

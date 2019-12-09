@@ -24,12 +24,16 @@ message PartyRoomMsg {
     PSetAllMemberMicMsg pSetAllMemberMicMsg = 13; //全员禁麦、全员解除禁麦
     PSetUserMicMsg pSetUserMicMsg = 14; //用户开闭麦
     PSetSeatStatusMsg pSetSeatStatusMsg = 15; //设置席位状态：关闭席位、打开席位
-
     PApplyForGuest pApplyForGuest = 16; //申请嘉宾
+
     PGetSeatMsg pGetSeatMsg = 17; //获得席位:上麦
     PBackSeatMsg pBackSeatMsg = 18; //还回席位:下麦
+
+
     PInviteUserMsg pInviteUserMsg = 19; //邀请用户
     PChangeSeatMsg pChangeSeatMsg = 20; //换座位
+
+
     PKickoutUserMsg pKickoutUserMsg = 21; //踢人
     PNextRoundMsg pNextRoundMsg = 22; //加载下个轮次
     PExitGameMsg pPExitGameMsg = 23; //用户退出房间

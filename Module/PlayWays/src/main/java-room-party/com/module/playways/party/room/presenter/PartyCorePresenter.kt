@@ -725,7 +725,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             seatInfoModel = PartySeatInfoModel.parseFromPb(event.seat)
         }
         roomView.joinNotice(playerInfoModel)
-        mRoomData.addUsers(playerInfoModel, seatInfoModel)
+        mRoomData.updateUser(playerInfoModel, seatInfoModel)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -737,6 +737,26 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyNoticeChangeEvent) {
         pretendSystemMsg("房主将公告修改为 ${mRoomData.notice}")
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PChangeRoomTopicMsg) {
+        mRoomData.topicName = event.newTopic
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyTopicNameChangeEvent) {
+        pretendSystemMsg("房主将主题修改为 ${mRoomData.topicName}")
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PChangeRoomEnterPermissionMsg) {
+        mRoomData.enterPermission = event.permission.value
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyEnterPermissionEvent) {
+        pretendSystemMsg("房主将进房间权限修改为 ${mRoomData.enterPermission}")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -781,6 +801,56 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         partySeatInfoModel.userID = mRoomData.getSeatInfoBySeq(event.seatSeq)?.userID ?:0
         mRoomData.updateSeat(partySeatInfoModel)
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PApplyForGuest) {
+        MyLog.d(TAG, "onEvent event = $event")
+//        if(mRoomData.myUserInfo?.isHost() == true || mRoomData.){
+//        }
+        pretendSystemMsg("${event.user.userInfo.nickName} 申请上麦")
+        mRoomData.applyUserCnt = event.applyUserCnt
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PGetSeatMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.user),PartySeatInfoModel.parseFromPb(event.seatInfo))
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PBackSeatMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        var partySeatInfoModel = PartySeatInfoModel()
+        var n = mRoomData.getSeatInfoBySeq(event.seatSeq)
+        partySeatInfoModel.seatSeq = event.seatSeq
+        partySeatInfoModel.userID = 0
+        partySeatInfoModel.micStatus = n?.micStatus ?:0
+        partySeatInfoModel.seatStatus = n?.seatStatus ?:0
+        mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.user),partySeatInfoModel)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PKickoutUserMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        pretendSystemMsg("${event.kickResultContent}")
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PExitGameMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        mRoomData.applyUserCnt = event.applyUserCnt
+        mRoomData.onlineUserCnt = event.onlineUserCnt
+        var u = PartyPlayerInfoModel.parseFromPb(event.user)
+        mRoomData.removeUser(u)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PGameOverMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        mRoomData.expectRoundInfo = null
+        mRoomData.checkRoundInEachMode()
+    }
+
 
     /**
      * 轮次变化
