@@ -99,4 +99,8 @@ class PartySelectGameActivity : BaseActivity() {
 
         viewPager.currentItem = 1
     }
+
+    override fun useEventBus(): Boolean {
+        return false
+    }
 }
