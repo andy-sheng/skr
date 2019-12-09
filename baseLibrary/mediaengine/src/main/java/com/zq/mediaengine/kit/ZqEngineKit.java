@@ -1181,9 +1181,19 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     /*音频高级扩展开始*/
 
+    private boolean isTBEffect(Params.AudioEffect styleEnum) {
+        return (styleEnum == Params.AudioEffect.ktv || styleEnum == Params.AudioEffect.rock);
+    }
+
     private void doSetAudioEffect(Params.AudioEffect styleEnum, boolean fromInit) {
         if (styleEnum == mConfig.getStyleEnum() && !fromInit) {
             return;
+        }
+
+        if (isTBEffect(mConfig.getStyleEnum()) && isTBEffect(styleEnum)) {
+            if (mAudioFilterMgt != null) {
+                mAudioFilterMgt.setFilter((AudioFilterBase[]) null);
+            }
         }
 
         mConfig.setStyleEnum(styleEnum);

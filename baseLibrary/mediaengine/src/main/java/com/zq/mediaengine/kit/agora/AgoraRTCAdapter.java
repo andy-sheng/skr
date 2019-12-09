@@ -640,10 +640,12 @@ public class AgoraRTCAdapter {
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
 
             // 设置onRecordFrame回调的数据
+            int samplesPerCall = mConfig.getAudioSampleRate() * mConfig.getAudioChannels() * 20 / 1000;
+            MyLog.i(TAG, "setRecordingAudioFrameParameters samplesPerCall: " + samplesPerCall);
             setRecordingAudioFrameParameters(mConfig.getAudioSampleRate(), mConfig.getAudioChannels(),
-                    Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
+                    Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, samplesPerCall);
             setPlaybackAudioFrameParameters(mConfig.getAudioSampleRate(), mConfig.getAudioChannels(),
-                    Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
+                    Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, samplesPerCall);
         } else {
             mRtcEngine.disableAudio();
         }
@@ -754,9 +756,12 @@ public class AgoraRTCAdapter {
                         SDataManager.getInstance().getDataHolder().addSAudioSamplingInfoGroup(ASIGroup);
                     }
 
-
+                    //long tm = System.nanoTime() / 1000;
+                    //Log.d(TAG, "audio effect start " + numOfSamples * 1000 / samplesPerSec);
                     AudioBufFrame frame = new AudioBufFrame(mLocalAudioFormat, byteBuffer, pts);
                     mLocalAudioSrcPin.onFrameAvailable(frame);
+                    //long tm1 = System.nanoTime() / 1000;
+                    //Log.d(TAG, "audio effect end " + ((tm1 - tm) / 1000) + "ms");
                     return true;
                 }
 
