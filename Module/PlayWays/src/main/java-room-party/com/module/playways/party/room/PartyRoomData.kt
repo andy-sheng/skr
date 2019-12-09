@@ -64,8 +64,8 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     var usersMap = HashMap<Int, PartyPlayerInfoModel>()  // 根据id找人
 
     var seats = ArrayList<PartySeatInfoModel>() // 座位信息
-    var seatsMap = HashMap<Int, PartySeatInfoModel>() // 根据座位id找座位
-
+    var seatsSeatIdMap = HashMap<Int, PartySeatInfoModel>() // 根据座位id找座位
+    var seatsUserIdMap = HashMap<Int, PartySeatInfoModel>() // 根据用户id找座位
     // 题目信息在轮次信息里 轮次信息在父类的 realRoundInfo 中
 
     companion object {
@@ -88,24 +88,32 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     }
 
     /**
-     * 根据id找用户信息，找不到观众的
+     * 根据 userId 找 用户信息
+     * 找不到观众的
      */
     fun getPlayerInfoById(userId: Int): PartyPlayerInfoModel? {
         return usersMap[userId]
     }
 
     /**
-     * 根据座位编号找座位信息
+     * 根据 座位编号 找 座位信息
      */
     fun getSeatInfoBySeq(seatSeq: Int): PartySeatInfoModel? {
-        return seatsMap[seatSeq]
+        return seatsSeatIdMap[seatSeq]
     }
 
     /**
-     * 根据座位编号找用户信息
+     * 根据 userId 找 座位信息
+     */
+    fun getSeatInfoByUserId(userId: Int): PartySeatInfoModel? {
+        return seatsUserIdMap[userId]
+    }
+
+    /**
+     * 根据 座位编号 找 用户信息
      */
     fun getPlayerInfoBySeq(seatSeq: Int): PartyPlayerInfoModel? {
-        var seatInfo = seatsMap[seatSeq]
+        var seatInfo = seatsSeatIdMap[seatSeq]
         seatInfo?.userID?.let {
             return getPlayerInfoById(it)
         }
@@ -164,9 +172,13 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         if (list?.isNotEmpty() == true) {
             seats.clear()
             seats.addAll(list)
-            seatsMap.clear()
+            seatsSeatIdMap.clear()
+            seatsUserIdMap.clear()
             for (info in seats) {
-                seatsMap[info.seatSeq] = info
+                seatsSeatIdMap[info.seatSeq] = info
+                if (info.userID > 0) {
+                    seatsUserIdMap[info.userID] = info
+                }
             }
         }
     }
