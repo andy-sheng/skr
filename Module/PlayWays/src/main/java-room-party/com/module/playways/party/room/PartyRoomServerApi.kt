@@ -113,4 +113,10 @@ interface PartyRoomServerApi {
      */
     @GET("http://dev.game.inframe.mobi/v1/partygame/online-user-list")
     fun getOnlineUserList(@Query("roomID") roomID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
+
+    @GET("http://dev.game.inframe.mobi/v1/partygame/game-rule-list")
+    fun getPartyGameRuleList(@Query("roomID") roomID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
+
+    @GET("http://dev.game.inframe.mobi/v1/partygame/game-play-list")
+    fun getPartyGamePlayList(@Query("roomID") roomID: Int, @Query("ruleID") ruleID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 }

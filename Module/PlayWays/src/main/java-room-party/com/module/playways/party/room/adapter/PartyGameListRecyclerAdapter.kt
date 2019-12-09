@@ -4,14 +4,16 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
-import com.module.playways.party.room.model.PartyPlayerInfoModel
+import com.module.playways.party.room.model.PartyRule
 
 class PartyGameListRecyclerAdapter : RecyclerView.Adapter<PartyGameListRecyclerAdapter.PartyGameListHolder>() {
-    val mRaceGamePlayInfoList = ArrayList<PartyPlayerInfoModel>()
-    var mOpMethod: ((Int, PartyPlayerInfoModel) -> Unit)? = null
+    val mPartyRuleList = ArrayList<PartyRule>()
+    var mMoreMethod: ((PartyRule) -> Unit)? = null
+    var mAddMethod: ((PartyRule) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartyGameListHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.party_game_list_item_layout, parent, false)
@@ -19,28 +21,19 @@ class PartyGameListRecyclerAdapter : RecyclerView.Adapter<PartyGameListRecyclerA
     }
 
     override fun getItemCount(): Int {
-        return mRaceGamePlayInfoList.size
+        return mPartyRuleList.size
     }
 
     override fun onBindViewHolder(holder: PartyGameListHolder, position: Int) {
-        holder.bindData(position, mRaceGamePlayInfoList.get(position))
+        holder.bindData(position, mPartyRuleList.get(position))
     }
 
-    override fun onBindViewHolder(holder: PartyGameListHolder, position: Int, payloads: MutableList<Any>) {
-        if (payloads.isEmpty()) {
-            holder.bindData(position, mRaceGamePlayInfoList.get(position))
-        } else {
-            // 局部刷新
-            holder.updateText(position, mRaceGamePlayInfoList.get(position))
-        }
-    }
-
-    fun addData(list: List<PartyPlayerInfoModel>) {
+    fun addData(list: List<PartyRule>) {
         list?.let {
             if (it.size > 0) {
-                val startNotifyIndex = if (mRaceGamePlayInfoList.size > 0) mRaceGamePlayInfoList.size - 1 else 0
-                mRaceGamePlayInfoList.addAll(list)
-                notifyItemRangeChanged(startNotifyIndex, mRaceGamePlayInfoList.size - startNotifyIndex)
+                val startNotifyIndex = if (mPartyRuleList.size > 0) mPartyRuleList.size - 1 else 0
+                mPartyRuleList.addAll(list)
+                notifyItemRangeChanged(startNotifyIndex, mPartyRuleList.size - startNotifyIndex)
             }
         }
     }
@@ -51,6 +44,8 @@ class PartyGameListRecyclerAdapter : RecyclerView.Adapter<PartyGameListRecyclerA
         var detailIv: ExImageView
         var addTv: ExTextView
         var moreTv: ExImageView
+        var pos = -1
+        var model: PartyRule? = null
 
         constructor(itemView: View) : super(itemView) {
             gameNameTv = itemView.findViewById(R.id.game_name_tv)
@@ -58,16 +53,27 @@ class PartyGameListRecyclerAdapter : RecyclerView.Adapter<PartyGameListRecyclerA
             addTv = itemView.findViewById(R.id.add_tv)
             moreTv = itemView.findViewById(R.id.more_tv)
 
+            addTv.setDebounceViewClickListener {
+                mAddMethod?.invoke(model!!)
+            }
 
+            itemView.setDebounceViewClickListener {
+                mMoreMethod?.invoke(model!!)
+            }
         }
 
-        fun bindData(position: Int, model: PartyPlayerInfoModel) {
+        fun bindData(position: Int, model: PartyRule) {
+            pos = position
+            this.model = model
 
-        }
-
-        //会变化的内容
-        fun updateText(position: Int, model: PartyPlayerInfoModel) {
-
+            gameNameTv.text = model.ruleName
+            if (model.ruleType == PartyRule.RULE_TYPE.PGT_Play.ordinal) {
+                detailIv.visibility = View.VISIBLE
+                addTv.visibility = View.GONE
+            } else {
+                detailIv.visibility = View.GONE
+                addTv.visibility = View.VISIBLE
+            }
         }
     }
 }

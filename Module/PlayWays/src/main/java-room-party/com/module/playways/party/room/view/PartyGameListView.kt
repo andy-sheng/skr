@@ -1,26 +1,40 @@
 package com.module.playways.party.room.view
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
+import com.alibaba.fastjson.JSON
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
+import com.common.utils.U
+import com.common.view.ex.ExConstraintLayout
 import com.module.playways.R
+import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.adapter.PartyGameListRecyclerAdapter
+import com.module.playways.party.room.model.PartyRule
+import com.module.playways.room.data.H
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
+import kotlinx.coroutines.launch
 
-class PartyGameListView : ConstraintLayout {
-    lateinit var recyclerView: RecyclerView
-    lateinit var smartRefresh: SmartRefreshLayout
+class PartyGameListView : ExConstraintLayout {
+    val mTag = "PartyGameListView"
+
+    var recyclerView: RecyclerView
+    var smartRefresh: SmartRefreshLayout
 
     var partyGameListRecyclerAdapter: PartyGameListRecyclerAdapter? = null
 
     var offset = 0
     val cnt = 30
     var hasMore = true
+
+    val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
 
     constructor(context: Context) : super(context)
 
@@ -37,6 +51,14 @@ class PartyGameListView : ConstraintLayout {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = partyGameListRecyclerAdapter
 
+        partyGameListRecyclerAdapter?.mMoreMethod = { model ->
+
+        }
+
+        partyGameListRecyclerAdapter?.mAddMethod = { model ->
+
+        }
+
         smartRefresh.apply {
             setEnableRefresh(false)
             setEnableLoadMore(true)
@@ -50,6 +72,8 @@ class PartyGameListView : ConstraintLayout {
                 }
             })
         }
+
+        getGameList()
     }
 
     fun selected() {
@@ -57,7 +81,27 @@ class PartyGameListView : ConstraintLayout {
     }
 
     fun getGameList() {
+        launch {
+            val result = subscribe(RequestControl("${mTag} getGameList", ControlType.CancelThis)) {
+                roomServerApi.getPartyGameRuleList(H.partyRoomData?.gameId ?: 0, offset, cnt)
+            }
 
+            if (result.errno == 0) {
+                hasMore = result.data.getBooleanValue("hasMore")
+                offset = result.data.getIntValue("offset")
+
+                val list = JSON.parseArray(result.data.getString("rules"), PartyRule::class.java)
+                list?.let {
+                    partyGameListRecyclerAdapter?.addData(list)
+                }
+
+                smartRefresh.setEnableLoadMore(hasMore)
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+
+            smartRefresh.finishLoadMore()
+        }
     }
 
     interface Listener {
