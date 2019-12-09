@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
+import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
@@ -33,8 +34,12 @@ class PartySelectGameActivity : BaseActivity() {
         tagTab = findViewById(R.id.sliding_tab_layout)
         viewPager = findViewById(R.id.viewPager)
 
+        titlebar.leftTextView.setDebounceViewClickListener {
+            finish()
+        }
+
         tagTab.setCustomTabView(R.layout.manage_song_tab, R.id.tab_tv)
-        tagTab.setSelectedIndicatorColors(U.getColor(R.color.white_trans_20))
+        tagTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
         tagTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
         tagTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
         tagTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(24f).toFloat())
@@ -48,11 +53,18 @@ class PartySelectGameActivity : BaseActivity() {
 
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 MyLog.d(TAG, "instantiateItem container=$container position=$position")
-                return when (position) {
+
+                var view: View? = when (position) {
                     0 -> PartyGameListView(this@PartySelectGameActivity)
                     1 -> PartyHasSelectedGameListView(this@PartySelectGameActivity)
-                    else -> PartyGameListView(this@PartySelectGameActivity)
+                    else -> null
                 }
+
+                if (container.indexOfChild(view) == -1) {
+                    container.addView(view)
+                }
+
+                return view!!
             }
 
             override fun getCount(): Int {
@@ -97,7 +109,7 @@ class PartySelectGameActivity : BaseActivity() {
         tagTab.setViewPager(viewPager)
         mPagerAdapter.notifyDataSetChanged()
 
-        viewPager.currentItem = 1
+        viewPager.currentItem = 0
     }
 
     override fun useEventBus(): Boolean {
