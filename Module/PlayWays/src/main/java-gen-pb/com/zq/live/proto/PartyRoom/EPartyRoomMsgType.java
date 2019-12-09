@@ -91,7 +91,22 @@ public enum EPartyRoomMsgType implements WireEnum {
   /**
    * 发送表情
    */
-  PRT_DYNAMIC_EMOJI(25);
+  PRT_DYNAMIC_EMOJI(25),
+
+  /**
+   * 游戏结束
+   */
+  PRT_GAME_OVER(26),
+
+  /**
+   * 修改房间主题
+   */
+  PRT_CHANGE_ROOM_TOPIC(27),
+
+  /**
+   * 修改房间进入权限
+   */
+  PRT_CHANGE_ROOM_ENTER_PERMISSION(28);
 
   public static final ProtoAdapter<EPartyRoomMsgType> ADAPTER = new ProtoAdapter_EPartyRoomMsgType();
 
@@ -123,6 +138,9 @@ public enum EPartyRoomMsgType implements WireEnum {
       case 23: return PRT_EXIT_GAME;
       case 24: return PRT_SYNC;
       case 25: return PRT_DYNAMIC_EMOJI;
+      case 26: return PRT_GAME_OVER;
+      case 27: return PRT_CHANGE_ROOM_TOPIC;
+      case 28: return PRT_CHANGE_ROOM_ENTER_PERMISSION;
       default: return null;
     }
   }

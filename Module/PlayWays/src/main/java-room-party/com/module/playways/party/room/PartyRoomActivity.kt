@@ -317,6 +317,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     private fun initRightOpView() {
         mRightOpView = findViewById(R.id.right_op_view)
+        mRightOpView?.bindData()
         mRightOpView?.listener = object : PartyRightOpView.Listener {
             override fun onClickApplyList() {
                 dismissDialog()

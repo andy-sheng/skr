@@ -74,6 +74,7 @@ class PartyBottomWidgetAnimationController(internal var mF: PartyRoomActivity) {
             mF.mBottomContainerView.emojiOpen = true
             mF.mBottomContainerView.settingOpen = false
             mF.mPartySettingView?.setVisibility(View.GONE)
+            mF.mPartyEmojiView?.bindData()
             mF.mPartyEmojiView?.setVisibility(View.VISIBLE)
         } else if (openType == OPEN_TYPE_SETTING) {
             mF.mBottomContainerView.settingOpen = true
@@ -85,6 +86,7 @@ class PartyBottomWidgetAnimationController(internal var mF: PartyRoomActivity) {
 
     private fun fillView(viewList: MutableList<View?>) {
         viewList.add(mF.mBottomContainerView)
+        viewList.add(mF.mRightOpView)
     }
 
     /**

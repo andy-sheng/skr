@@ -47,4 +47,17 @@ interface PartyRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partyroom/set-notice")
     fun setNotice(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 获取表情列表
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partygame/list-emoji")
+    fun getEmojiList(): Call<ApiResult>
+
+    /**
+     * 发送表情 {"id": 0, "roomID": 0 }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/send-emoji")
+    fun sendEmoji(@Body body: RequestBody): Call<ApiResult>
+
 }

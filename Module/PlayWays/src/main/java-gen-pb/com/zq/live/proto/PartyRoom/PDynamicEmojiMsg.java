@@ -10,7 +10,6 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
-import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -22,67 +21,38 @@ public final class PDynamicEmojiMsg extends Message<PDynamicEmojiMsg, PDynamicEm
 
   private static final long serialVersionUID = 0L;
 
-  public static final Integer DEFAULT_ID = 0;
-
-  public static final String DEFAULT_SMALLEMOJIURL = "";
-
-  public static final String DEFAULT_BIGEMOJIURL = "";
-
   /**
-   * 表情包id
+   * 表情
    */
   @WireField(
       tag = 1,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+      adapter = "com.zq.live.proto.PartyRoom.PDynamicEmoji#ADAPTER"
   )
-  private final Integer id;
-
-  /**
-   * 小图
-   */
-  @WireField(
-      tag = 2,
-      adapter = "com.squareup.wire.ProtoAdapter#STRING"
-  )
-  private final String smallEmojiURL;
-
-  /**
-   * 大图
-   */
-  @WireField(
-      tag = 3,
-      adapter = "com.squareup.wire.ProtoAdapter#STRING"
-  )
-  private final String bigEmojiURL;
+  private final PDynamicEmoji emoji;
 
   /**
    * 发送用户信息
    */
   @WireField(
-      tag = 4,
+      tag = 2,
       adapter = "com.zq.live.proto.PartyRoom.POnlineInfo#ADAPTER"
   )
   private final POnlineInfo user;
 
-  public PDynamicEmojiMsg(Integer id, String smallEmojiURL, String bigEmojiURL, POnlineInfo user) {
-    this(id, smallEmojiURL, bigEmojiURL, user, ByteString.EMPTY);
+  public PDynamicEmojiMsg(PDynamicEmoji emoji, POnlineInfo user) {
+    this(emoji, user, ByteString.EMPTY);
   }
 
-  public PDynamicEmojiMsg(Integer id, String smallEmojiURL, String bigEmojiURL, POnlineInfo user,
-      ByteString unknownFields) {
+  public PDynamicEmojiMsg(PDynamicEmoji emoji, POnlineInfo user, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
-    this.id = id;
-    this.smallEmojiURL = smallEmojiURL;
-    this.bigEmojiURL = bigEmojiURL;
+    this.emoji = emoji;
     this.user = user;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
-    builder.id = id;
-    builder.smallEmojiURL = smallEmojiURL;
-    builder.bigEmojiURL = bigEmojiURL;
+    builder.emoji = emoji;
     builder.user = user;
     builder.addUnknownFields(unknownFields());
     return builder;
@@ -94,9 +64,7 @@ public final class PDynamicEmojiMsg extends Message<PDynamicEmojiMsg, PDynamicEm
     if (!(other instanceof PDynamicEmojiMsg)) return false;
     PDynamicEmojiMsg o = (PDynamicEmojiMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(id, o.id)
-        && Internal.equals(smallEmojiURL, o.smallEmojiURL)
-        && Internal.equals(bigEmojiURL, o.bigEmojiURL)
+        && Internal.equals(emoji, o.emoji)
         && Internal.equals(user, o.user);
   }
 
@@ -105,9 +73,7 @@ public final class PDynamicEmojiMsg extends Message<PDynamicEmojiMsg, PDynamicEm
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
-      result = result * 37 + (id != null ? id.hashCode() : 0);
-      result = result * 37 + (smallEmojiURL != null ? smallEmojiURL.hashCode() : 0);
-      result = result * 37 + (bigEmojiURL != null ? bigEmojiURL.hashCode() : 0);
+      result = result * 37 + (emoji != null ? emoji.hashCode() : 0);
       result = result * 37 + (user != null ? user.hashCode() : 0);
       super.hashCode = result;
     }
@@ -117,9 +83,7 @@ public final class PDynamicEmojiMsg extends Message<PDynamicEmojiMsg, PDynamicEm
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (id != null) builder.append(", id=").append(id);
-    if (smallEmojiURL != null) builder.append(", smallEmojiURL=").append(smallEmojiURL);
-    if (bigEmojiURL != null) builder.append(", bigEmojiURL=").append(bigEmojiURL);
+    if (emoji != null) builder.append(", emoji=").append(emoji);
     if (user != null) builder.append(", user=").append(user);
     return builder.replace(0, 2, "PDynamicEmojiMsg{").append('}').toString();
   }
@@ -135,33 +99,13 @@ public final class PDynamicEmojiMsg extends Message<PDynamicEmojiMsg, PDynamicEm
   }
 
   /**
-   * 表情包id
+   * 表情
    */
-  public Integer getId() {
-    if(id==null){
-        return DEFAULT_ID;
+  public PDynamicEmoji getEmoji() {
+    if(emoji==null){
+        return new PDynamicEmoji.Builder().build();
     }
-    return id;
-  }
-
-  /**
-   * 小图
-   */
-  public String getSmallEmojiURL() {
-    if(smallEmojiURL==null){
-        return DEFAULT_SMALLEMOJIURL;
-    }
-    return smallEmojiURL;
-  }
-
-  /**
-   * 大图
-   */
-  public String getBigEmojiURL() {
-    if(bigEmojiURL==null){
-        return DEFAULT_BIGEMOJIURL;
-    }
-    return bigEmojiURL;
+    return emoji;
   }
 
   /**
@@ -175,24 +119,10 @@ public final class PDynamicEmojiMsg extends Message<PDynamicEmojiMsg, PDynamicEm
   }
 
   /**
-   * 表情包id
+   * 表情
    */
-  public boolean hasId() {
-    return id!=null;
-  }
-
-  /**
-   * 小图
-   */
-  public boolean hasSmallEmojiURL() {
-    return smallEmojiURL!=null;
-  }
-
-  /**
-   * 大图
-   */
-  public boolean hasBigEmojiURL() {
-    return bigEmojiURL!=null;
+  public boolean hasEmoji() {
+    return emoji!=null;
   }
 
   /**
@@ -203,11 +133,7 @@ public final class PDynamicEmojiMsg extends Message<PDynamicEmojiMsg, PDynamicEm
   }
 
   public static final class Builder extends Message.Builder<PDynamicEmojiMsg, Builder> {
-    private Integer id;
-
-    private String smallEmojiURL;
-
-    private String bigEmojiURL;
+    private PDynamicEmoji emoji;
 
     private POnlineInfo user;
 
@@ -215,26 +141,10 @@ public final class PDynamicEmojiMsg extends Message<PDynamicEmojiMsg, PDynamicEm
     }
 
     /**
-     * 表情包id
+     * 表情
      */
-    public Builder setId(Integer id) {
-      this.id = id;
-      return this;
-    }
-
-    /**
-     * 小图
-     */
-    public Builder setSmallEmojiURL(String smallEmojiURL) {
-      this.smallEmojiURL = smallEmojiURL;
-      return this;
-    }
-
-    /**
-     * 大图
-     */
-    public Builder setBigEmojiURL(String bigEmojiURL) {
-      this.bigEmojiURL = bigEmojiURL;
+    public Builder setEmoji(PDynamicEmoji emoji) {
+      this.emoji = emoji;
       return this;
     }
 
@@ -248,7 +158,7 @@ public final class PDynamicEmojiMsg extends Message<PDynamicEmojiMsg, PDynamicEm
 
     @Override
     public PDynamicEmojiMsg build() {
-      return new PDynamicEmojiMsg(id, smallEmojiURL, bigEmojiURL, user, super.buildUnknownFields());
+      return new PDynamicEmojiMsg(emoji, user, super.buildUnknownFields());
     }
   }
 
@@ -259,19 +169,15 @@ public final class PDynamicEmojiMsg extends Message<PDynamicEmojiMsg, PDynamicEm
 
     @Override
     public int encodedSize(PDynamicEmojiMsg value) {
-      return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.id)
-          + ProtoAdapter.STRING.encodedSizeWithTag(2, value.smallEmojiURL)
-          + ProtoAdapter.STRING.encodedSizeWithTag(3, value.bigEmojiURL)
-          + POnlineInfo.ADAPTER.encodedSizeWithTag(4, value.user)
+      return PDynamicEmoji.ADAPTER.encodedSizeWithTag(1, value.emoji)
+          + POnlineInfo.ADAPTER.encodedSizeWithTag(2, value.user)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, PDynamicEmojiMsg value) throws IOException {
-      ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.id);
-      ProtoAdapter.STRING.encodeWithTag(writer, 2, value.smallEmojiURL);
-      ProtoAdapter.STRING.encodeWithTag(writer, 3, value.bigEmojiURL);
-      POnlineInfo.ADAPTER.encodeWithTag(writer, 4, value.user);
+      PDynamicEmoji.ADAPTER.encodeWithTag(writer, 1, value.emoji);
+      POnlineInfo.ADAPTER.encodeWithTag(writer, 2, value.user);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -281,10 +187,8 @@ public final class PDynamicEmojiMsg extends Message<PDynamicEmojiMsg, PDynamicEm
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setId(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.setSmallEmojiURL(ProtoAdapter.STRING.decode(reader)); break;
-          case 3: builder.setBigEmojiURL(ProtoAdapter.STRING.decode(reader)); break;
-          case 4: builder.setUser(POnlineInfo.ADAPTER.decode(reader)); break;
+          case 1: builder.setEmoji(PDynamicEmoji.ADAPTER.decode(reader)); break;
+          case 2: builder.setUser(POnlineInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -299,6 +203,7 @@ public final class PDynamicEmojiMsg extends Message<PDynamicEmojiMsg, PDynamicEm
     @Override
     public PDynamicEmojiMsg redact(PDynamicEmojiMsg value) {
       Builder builder = value.newBuilder();
+      if (builder.emoji != null) builder.emoji = PDynamicEmoji.ADAPTER.redact(builder.emoji);
       if (builder.user != null) builder.user = POnlineInfo.ADAPTER.redact(builder.user);
       builder.clearUnknownFields();
       return builder.build();

@@ -205,6 +205,33 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
   )
   private final PDynamicEmojiMsg pDynamicEmojiMsg;
 
+  /**
+   * 游戏结束
+   */
+  @WireField(
+      tag = 26,
+      adapter = "com.zq.live.proto.PartyRoom.PGameOverMsg#ADAPTER"
+  )
+  private final PGameOverMsg pGameOverMsg;
+
+  /**
+   * 修改房间主题
+   */
+  @WireField(
+      tag = 27,
+      adapter = "com.zq.live.proto.PartyRoom.PChangeRoomTopicMsg#ADAPTER"
+  )
+  private final PChangeRoomTopicMsg pChangeRoomTopicMsg;
+
+  /**
+   * 修改房间进入权限
+   */
+  @WireField(
+      tag = 28,
+      adapter = "com.zq.live.proto.PartyRoom.PChangeRoomEnterPermissionMsg#ADAPTER"
+  )
+  private final PChangeRoomEnterPermissionMsg pChangeRoomEnterPermissionMsg;
+
   public PartyRoomMsg(Long timeMs, EPartyRoomMsgType msgType, Integer roomID,
       PJoinNoticeMsg pJoinNoticeMsg, PFixRoomNoticeMsg pFixRoomNoticeMsg,
       PSetRoomAdminMsg pSetRoomAdminMsg, PSetAllMemberMicMsg pSetAllMemberMicMsg,
@@ -212,8 +239,10 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PApplyForGuest pApplyForGuest, PGetSeatMsg pGetSeatMsg, PBackSeatMsg pBackSeatMsg,
       PInviteUserMsg pInviteUserMsg, PChangeSeatMsg pChangeSeatMsg, PKickoutUserMsg pKickoutUserMsg,
       PNextRoundMsg pNextRoundMsg, PExitGameMsg pPExitGameMsg, PSyncMsg pSyncMsg,
-      PDynamicEmojiMsg pDynamicEmojiMsg) {
-    this(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, ByteString.EMPTY);
+      PDynamicEmojiMsg pDynamicEmojiMsg, PGameOverMsg pGameOverMsg,
+      PChangeRoomTopicMsg pChangeRoomTopicMsg,
+      PChangeRoomEnterPermissionMsg pChangeRoomEnterPermissionMsg) {
+    this(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, ByteString.EMPTY);
   }
 
   public PartyRoomMsg(Long timeMs, EPartyRoomMsgType msgType, Integer roomID,
@@ -223,7 +252,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PApplyForGuest pApplyForGuest, PGetSeatMsg pGetSeatMsg, PBackSeatMsg pBackSeatMsg,
       PInviteUserMsg pInviteUserMsg, PChangeSeatMsg pChangeSeatMsg, PKickoutUserMsg pKickoutUserMsg,
       PNextRoundMsg pNextRoundMsg, PExitGameMsg pPExitGameMsg, PSyncMsg pSyncMsg,
-      PDynamicEmojiMsg pDynamicEmojiMsg, ByteString unknownFields) {
+      PDynamicEmojiMsg pDynamicEmojiMsg, PGameOverMsg pGameOverMsg,
+      PChangeRoomTopicMsg pChangeRoomTopicMsg,
+      PChangeRoomEnterPermissionMsg pChangeRoomEnterPermissionMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -244,6 +275,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     this.pPExitGameMsg = pPExitGameMsg;
     this.pSyncMsg = pSyncMsg;
     this.pDynamicEmojiMsg = pDynamicEmojiMsg;
+    this.pGameOverMsg = pGameOverMsg;
+    this.pChangeRoomTopicMsg = pChangeRoomTopicMsg;
+    this.pChangeRoomEnterPermissionMsg = pChangeRoomEnterPermissionMsg;
   }
 
   @Override
@@ -268,6 +302,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     builder.pPExitGameMsg = pPExitGameMsg;
     builder.pSyncMsg = pSyncMsg;
     builder.pDynamicEmojiMsg = pDynamicEmojiMsg;
+    builder.pGameOverMsg = pGameOverMsg;
+    builder.pChangeRoomTopicMsg = pChangeRoomTopicMsg;
+    builder.pChangeRoomEnterPermissionMsg = pChangeRoomEnterPermissionMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -296,7 +333,10 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
         && Internal.equals(pNextRoundMsg, o.pNextRoundMsg)
         && Internal.equals(pPExitGameMsg, o.pPExitGameMsg)
         && Internal.equals(pSyncMsg, o.pSyncMsg)
-        && Internal.equals(pDynamicEmojiMsg, o.pDynamicEmojiMsg);
+        && Internal.equals(pDynamicEmojiMsg, o.pDynamicEmojiMsg)
+        && Internal.equals(pGameOverMsg, o.pGameOverMsg)
+        && Internal.equals(pChangeRoomTopicMsg, o.pChangeRoomTopicMsg)
+        && Internal.equals(pChangeRoomEnterPermissionMsg, o.pChangeRoomEnterPermissionMsg);
   }
 
   @Override
@@ -323,6 +363,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       result = result * 37 + (pPExitGameMsg != null ? pPExitGameMsg.hashCode() : 0);
       result = result * 37 + (pSyncMsg != null ? pSyncMsg.hashCode() : 0);
       result = result * 37 + (pDynamicEmojiMsg != null ? pDynamicEmojiMsg.hashCode() : 0);
+      result = result * 37 + (pGameOverMsg != null ? pGameOverMsg.hashCode() : 0);
+      result = result * 37 + (pChangeRoomTopicMsg != null ? pChangeRoomTopicMsg.hashCode() : 0);
+      result = result * 37 + (pChangeRoomEnterPermissionMsg != null ? pChangeRoomEnterPermissionMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -350,6 +393,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     if (pPExitGameMsg != null) builder.append(", pPExitGameMsg=").append(pPExitGameMsg);
     if (pSyncMsg != null) builder.append(", pSyncMsg=").append(pSyncMsg);
     if (pDynamicEmojiMsg != null) builder.append(", pDynamicEmojiMsg=").append(pDynamicEmojiMsg);
+    if (pGameOverMsg != null) builder.append(", pGameOverMsg=").append(pGameOverMsg);
+    if (pChangeRoomTopicMsg != null) builder.append(", pChangeRoomTopicMsg=").append(pChangeRoomTopicMsg);
+    if (pChangeRoomEnterPermissionMsg != null) builder.append(", pChangeRoomEnterPermissionMsg=").append(pChangeRoomEnterPermissionMsg);
     return builder.replace(0, 2, "PartyRoomMsg{").append('}').toString();
   }
 
@@ -554,6 +600,36 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
   }
 
   /**
+   * 游戏结束
+   */
+  public PGameOverMsg getPGameOverMsg() {
+    if(pGameOverMsg==null){
+        return new PGameOverMsg.Builder().build();
+    }
+    return pGameOverMsg;
+  }
+
+  /**
+   * 修改房间主题
+   */
+  public PChangeRoomTopicMsg getPChangeRoomTopicMsg() {
+    if(pChangeRoomTopicMsg==null){
+        return new PChangeRoomTopicMsg.Builder().build();
+    }
+    return pChangeRoomTopicMsg;
+  }
+
+  /**
+   * 修改房间进入权限
+   */
+  public PChangeRoomEnterPermissionMsg getPChangeRoomEnterPermissionMsg() {
+    if(pChangeRoomEnterPermissionMsg==null){
+        return new PChangeRoomEnterPermissionMsg.Builder().build();
+    }
+    return pChangeRoomEnterPermissionMsg;
+  }
+
+  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -686,6 +762,27 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     return pDynamicEmojiMsg!=null;
   }
 
+  /**
+   * 游戏结束
+   */
+  public boolean hasPGameOverMsg() {
+    return pGameOverMsg!=null;
+  }
+
+  /**
+   * 修改房间主题
+   */
+  public boolean hasPChangeRoomTopicMsg() {
+    return pChangeRoomTopicMsg!=null;
+  }
+
+  /**
+   * 修改房间进入权限
+   */
+  public boolean hasPChangeRoomEnterPermissionMsg() {
+    return pChangeRoomEnterPermissionMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<PartyRoomMsg, Builder> {
     private Long timeMs;
 
@@ -724,6 +821,12 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     private PSyncMsg pSyncMsg;
 
     private PDynamicEmojiMsg pDynamicEmojiMsg;
+
+    private PGameOverMsg pGameOverMsg;
+
+    private PChangeRoomTopicMsg pChangeRoomTopicMsg;
+
+    private PChangeRoomEnterPermissionMsg pChangeRoomEnterPermissionMsg;
 
     public Builder() {
     }
@@ -880,9 +983,34 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       return this;
     }
 
+    /**
+     * 游戏结束
+     */
+    public Builder setPGameOverMsg(PGameOverMsg pGameOverMsg) {
+      this.pGameOverMsg = pGameOverMsg;
+      return this;
+    }
+
+    /**
+     * 修改房间主题
+     */
+    public Builder setPChangeRoomTopicMsg(PChangeRoomTopicMsg pChangeRoomTopicMsg) {
+      this.pChangeRoomTopicMsg = pChangeRoomTopicMsg;
+      return this;
+    }
+
+    /**
+     * 修改房间进入权限
+     */
+    public Builder setPChangeRoomEnterPermissionMsg(
+        PChangeRoomEnterPermissionMsg pChangeRoomEnterPermissionMsg) {
+      this.pChangeRoomEnterPermissionMsg = pChangeRoomEnterPermissionMsg;
+      return this;
+    }
+
     @Override
     public PartyRoomMsg build() {
-      return new PartyRoomMsg(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, super.buildUnknownFields());
+      return new PartyRoomMsg(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, super.buildUnknownFields());
     }
   }
 
@@ -912,6 +1040,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
           + PExitGameMsg.ADAPTER.encodedSizeWithTag(23, value.pPExitGameMsg)
           + PSyncMsg.ADAPTER.encodedSizeWithTag(24, value.pSyncMsg)
           + PDynamicEmojiMsg.ADAPTER.encodedSizeWithTag(25, value.pDynamicEmojiMsg)
+          + PGameOverMsg.ADAPTER.encodedSizeWithTag(26, value.pGameOverMsg)
+          + PChangeRoomTopicMsg.ADAPTER.encodedSizeWithTag(27, value.pChangeRoomTopicMsg)
+          + PChangeRoomEnterPermissionMsg.ADAPTER.encodedSizeWithTag(28, value.pChangeRoomEnterPermissionMsg)
           + value.unknownFields().size();
     }
 
@@ -936,6 +1067,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PExitGameMsg.ADAPTER.encodeWithTag(writer, 23, value.pPExitGameMsg);
       PSyncMsg.ADAPTER.encodeWithTag(writer, 24, value.pSyncMsg);
       PDynamicEmojiMsg.ADAPTER.encodeWithTag(writer, 25, value.pDynamicEmojiMsg);
+      PGameOverMsg.ADAPTER.encodeWithTag(writer, 26, value.pGameOverMsg);
+      PChangeRoomTopicMsg.ADAPTER.encodeWithTag(writer, 27, value.pChangeRoomTopicMsg);
+      PChangeRoomEnterPermissionMsg.ADAPTER.encodeWithTag(writer, 28, value.pChangeRoomEnterPermissionMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -971,6 +1105,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
           case 23: builder.setPPExitGameMsg(PExitGameMsg.ADAPTER.decode(reader)); break;
           case 24: builder.setPSyncMsg(PSyncMsg.ADAPTER.decode(reader)); break;
           case 25: builder.setPDynamicEmojiMsg(PDynamicEmojiMsg.ADAPTER.decode(reader)); break;
+          case 26: builder.setPGameOverMsg(PGameOverMsg.ADAPTER.decode(reader)); break;
+          case 27: builder.setPChangeRoomTopicMsg(PChangeRoomTopicMsg.ADAPTER.decode(reader)); break;
+          case 28: builder.setPChangeRoomEnterPermissionMsg(PChangeRoomEnterPermissionMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1001,6 +1138,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       if (builder.pPExitGameMsg != null) builder.pPExitGameMsg = PExitGameMsg.ADAPTER.redact(builder.pPExitGameMsg);
       if (builder.pSyncMsg != null) builder.pSyncMsg = PSyncMsg.ADAPTER.redact(builder.pSyncMsg);
       if (builder.pDynamicEmojiMsg != null) builder.pDynamicEmojiMsg = PDynamicEmojiMsg.ADAPTER.redact(builder.pDynamicEmojiMsg);
+      if (builder.pGameOverMsg != null) builder.pGameOverMsg = PGameOverMsg.ADAPTER.redact(builder.pGameOverMsg);
+      if (builder.pChangeRoomTopicMsg != null) builder.pChangeRoomTopicMsg = PChangeRoomTopicMsg.ADAPTER.redact(builder.pChangeRoomTopicMsg);
+      if (builder.pChangeRoomEnterPermissionMsg != null) builder.pChangeRoomEnterPermissionMsg = PChangeRoomEnterPermissionMsg.ADAPTER.redact(builder.pChangeRoomEnterPermissionMsg);
       builder.clearUnknownFields();
       return builder.build();
     }
