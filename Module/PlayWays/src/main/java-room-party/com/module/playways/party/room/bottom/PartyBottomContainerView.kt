@@ -40,13 +40,13 @@ class PartyBottomContainerView : BottomContainerView {
 
     internal var mRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
 
-    private val drawable = DrawableCreator.Builder()
-            .setShape(DrawableCreator.Shape.Rectangle)
-            .setCornersRadius(0f, 0f, 16.dp().toFloat(), 16.dp().toFloat())
-            .setSolidColor(Color.parseColor("#1F1C48"))
-            .setStrokeColor(U.getColor(R.color.white_trans_20))
-            .setStrokeWidth(1.dp().toFloat())
-            .build()
+//    private val drawable = DrawableCreator.Builder()
+//            .setShape(DrawableCreator.Shape.Rectangle)
+//            .setCornersRadius(0f, 0f, 16.dp().toFloat(), 16.dp().toFloat())
+//            .setSolidColor(Color.parseColor("#1F1C48"))
+//            .setStrokeColor(U.getColor(R.color.white_trans_20))
+//            .setStrokeWidth(1.dp().toFloat())
+//            .build()
 
     override fun getLayout(): Int {
         return R.layout.party_bottom_container_view_layout
@@ -54,7 +54,7 @@ class PartyBottomContainerView : BottomContainerView {
 
     fun showBackground(isShow: Boolean) {
         if (isShow) {
-            background = drawable
+            background = U.getDrawable(R.drawable.party_common_top_bg)
         } else {
             background = null
         }
