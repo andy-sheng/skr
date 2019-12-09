@@ -245,7 +245,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                     return false;
                 }
             });
-
         }
 
         mPostsArea.setOnClickListener(new DebounceViewClickListener(100) {
