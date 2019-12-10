@@ -8,11 +8,19 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface PartyRoomServerApi {
+
     /**
-     * 拉取房间可邀请的段位
+     * 首页Party房间列表
      */
-    @GET("http://dev.game.inframe.mobi/v1/microom/roomtype-permission-list")
-    fun getRoomPermmissionList(): Call<ApiResult>
+    @GET("http://dev.game.inframe.mobi/v1/partyroom/roomlist")
+    fun getPartyRoomList(@Query("offset") offset: Int, @Query("limit") limit: Int): Call<ApiResult>
+
+
+    /**
+     * 进入房间 {"joinSrc": "JRS_UNKNOWN","platform": "PF_UNKNOWN","roomID": 0}
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partyroom/join-room")
+    fun joinRoom(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 创建房间
@@ -123,7 +131,4 @@ interface PartyRoomServerApi {
 
     @PUT("http://dev.game.inframe.mobi/v1/partygame/invite")
     fun invite(@Body body: RequestBody): Observable<ApiResult>
-
-    @PUT("http://dev.game.inframe.mobi/v1/partyroom/join-room")
-    fun joinRoom2(@Body body: RequestBody): Observable<ApiResult>
 }

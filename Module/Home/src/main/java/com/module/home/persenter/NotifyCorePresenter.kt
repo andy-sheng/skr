@@ -116,7 +116,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 showMicInviteFromRoomFloatWindow(floatWindowData)
             } else if (floatWindowData.mType == FloatWindowData.Type.MALL_GIFT) {
                 showGiftMallFloatWindow(floatWindowData)
-            }else if (floatWindowData.mType == FloatWindowData.Type.PARTY_INVITE) {
+            } else if (floatWindowData.mType == FloatWindowData.Type.PARTY_INVITE) {
                 showPartyInviteFromRoomFloatWindow(floatWindowData)
             }
         }
@@ -472,7 +472,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     internal fun tryGoPartyRoom(ownerId: Int, roomID: Int) {
         mSkrAudioPermission!!.ensurePermission({
             val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-            iRankingModeService.jumpPartyRoom(roomID)
+            iRankingModeService.tryGoPartyRoom(roomID, 2)
         }, true)
     }
 
@@ -886,7 +886,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
          * STAND_FULL_STAR 歌单战5星好评
          */
         enum class Type {
-            FOLLOW, GRABINVITE, DOUBLE_GRAB_INVITE, DOUBLE_ROOM_INVITE, STAND_FULL_STAR, MIC_INVITE, MALL_GIFT,PARTY_INVITE
+            FOLLOW, GRABINVITE, DOUBLE_GRAB_INVITE, DOUBLE_ROOM_INVITE, STAND_FULL_STAR, MIC_INVITE, MALL_GIFT, PARTY_INVITE
         }
     }
 
