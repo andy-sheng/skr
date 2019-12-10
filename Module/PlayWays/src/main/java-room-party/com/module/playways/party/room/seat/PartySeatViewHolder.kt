@@ -1,5 +1,8 @@
 package com.module.playways.party.room.seat
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.support.constraint.Group
 import android.support.v7.widget.RecyclerView
@@ -17,6 +20,7 @@ import com.component.busilib.view.SpeakingTipsAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.party.room.model.PartyActorInfoModel
+import com.module.playways.party.room.model.PartyEmojiInfoModel
 import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.ESeatStatus
 
@@ -33,6 +37,7 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
 
     private val emojiSdv: SimpleDraweeView = item.findViewById(R.id.emoji_sdv)
 
+    var animation: ObjectAnimator? = null
     var mModel: PartyActorInfoModel? = null
     var mPos: Int = -1
 
@@ -78,6 +83,23 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
 
     fun stopSpeakAnimation() {
         speakerAnimationIv.hide()
+    }
+
+    fun playEmojiAnimation(model: PartyEmojiInfoModel) {
+        emojiSdv.visibility = View.VISIBLE
+        AvatarUtils.loadAvatarByUrl(emojiSdv, AvatarUtils.newParamsBuilder(model.bigEmojiURL)
+                .build())
+        animation?.removeAllListeners()
+        animation?.cancel()
+        animation = ObjectAnimator.ofFloat(emojiSdv, View.TRANSLATION_Y, 12.dp().toFloat(), 0f, 12.dp().toFloat(), 0f, 12.dp().toFloat(), 0f)
+        animation?.duration = 2000
+        animation?.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?) {
+                super.onAnimationEnd(animation)
+                emojiSdv.visibility = View.GONE
+            }
+        })
+        animation?.start()
     }
 }
 

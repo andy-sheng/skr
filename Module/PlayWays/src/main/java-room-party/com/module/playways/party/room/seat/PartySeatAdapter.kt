@@ -59,6 +59,7 @@ class PartySeatAdapter(var listener: Listener?) : RecyclerView.Adapter<RecyclerV
                         }
                     } else if (refreshType is PartyEmojiInfoModel) {
                         // 刷个表情
+                        holder.playEmojiAnimation(refreshType)
                     }
                 }
             }
