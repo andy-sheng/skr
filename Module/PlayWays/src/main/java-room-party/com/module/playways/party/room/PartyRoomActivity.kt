@@ -303,7 +303,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mSeatView = findViewById(R.id.seat_view)
         mSeatView?.bindData(mRoomData)
         mSeatView?.listener = object : PartySeatView.Listener {
-            override fun onClikAvatar(position: Int, model: PartyActorInfoModel?) {
+            override fun onClickAvatar(position: Int, model: PartyActorInfoModel?) {
                 if (mRoomData.getMyUserInfoInParty().isAdmin() || mRoomData.getMyUserInfoInParty().isHost()) {
                     showPartyManageView(model)
                 } else {
@@ -577,7 +577,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mPersonInfoDialog?.show()
     }
 
-
     private fun showPartyManageView(model: PartyActorInfoModel?) {
         dismissDialog()
         mInputContainerView.hideSoftInput()
@@ -651,7 +650,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 .setCancelTip("取消")
                 .setConfirmBtnClickListener {
                     mTipsDialogView?.dismiss(false)
-//                    gameOver()
+                    gameOver()
                 }
                 .setCancelBtnClickListener {
                     mTipsDialogView?.dismiss()
@@ -696,4 +695,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             }
         }
     }
+
+    override fun gameOver() {
+        finish()
+    }
+
 }

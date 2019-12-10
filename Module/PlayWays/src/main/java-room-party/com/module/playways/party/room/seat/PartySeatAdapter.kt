@@ -30,10 +30,12 @@ class PartySeatAdapter(var listener: Listener?) : RecyclerView.Adapter<RecyclerV
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when {
-            mDataList[position] == null -> VIEW_TYPE_EMPTY  // 位置啥都没
-            mDataList[position]?.seat?.seatStatus == ESeatStatus.SS_CLOSE.value -> VIEW_TYPE_EMPTY   // 位置被关闭
-            else -> VIEW_TYPE_NORMAL
+        var d = mDataList[position]
+        if(d==null || (d.seat?.userID?:0)<=0){
+            // 位置为空 或者为 关闭状态
+            return VIEW_TYPE_EMPTY
+        }else{
+            return VIEW_TYPE_NORMAL
         }
     }
 

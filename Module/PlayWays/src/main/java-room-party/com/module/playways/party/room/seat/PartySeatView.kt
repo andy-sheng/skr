@@ -9,6 +9,7 @@ import com.module.playways.R
 import android.support.v7.widget.RecyclerView
 import com.common.core.myinfo.MyUserInfoManager
 import com.module.playways.party.room.PartyRoomData
+import com.module.playways.party.room.event.PartySeatInfoChangeEvent
 import com.module.playways.party.room.event.PartySendEmojiEvent
 import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.party.room.model.PartyEmojiInfoModel
@@ -38,7 +39,7 @@ class PartySeatView : ConstraintLayout {
         recyclerView.layoutManager = GridLayoutManager(context, 3)
         adapter = PartySeatAdapter(object : PartySeatAdapter.Listener {
             override fun onClickItem(position: Int, model: PartyActorInfoModel?) {
-                listener?.onClikAvatar(position, model)
+                listener?.onClickAvatar(position, model)
             }
         })
         recyclerView.adapter = adapter
@@ -73,6 +74,22 @@ class PartySeatView : ConstraintLayout {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartySeatInfoChangeEvent) {
+        if(event.seatSeq<=0){
+            // 全部刷新
+            adapter.mDataList = H.partyRoomData?.getSeatInfoMap() ?: hashMapOf()
+            adapter.notifyDataSetChanged()
+        }else{
+            // 单个刷新
+            var p = PartyActorInfoModel()
+            p.player = H.partyRoomData?.getPlayerInfoBySeq(event.seatSeq)
+            p.seat = H.partyRoomData?.getSeatInfoBySeq(event.seatSeq)
+            adapter.mDataList[event.seatSeq] = p
+            adapter.notifyItemChanged(event.seatSeq-1,null)
+        }
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -90,6 +107,6 @@ class PartySeatView : ConstraintLayout {
     //接收麦 和 表情 换位置 上下席位 的信息
 
     interface Listener {
-        fun onClikAvatar(position: Int, model: PartyActorInfoModel?)
+        fun onClickAvatar(position: Int, model: PartyActorInfoModel?)
     }
 }

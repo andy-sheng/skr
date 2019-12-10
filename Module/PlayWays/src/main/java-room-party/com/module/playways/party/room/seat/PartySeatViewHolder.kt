@@ -43,7 +43,6 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
         this.mModel = model
         this.mPos = position
 
-
         AvatarUtils.loadAvatarByUrl(avatarSdv,
                 AvatarUtils.newParamsBuilder(model?.player?.userInfo?.avatar)
                         .setCircle(true)
@@ -64,7 +63,7 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
     }
 
     fun refreshHot() {
-        hotTv.text = "{mModel?.player?.popularity?:0}"
+        hotTv.text = "${mModel?.player?.popularity?:0}"
     }
 }
 

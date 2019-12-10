@@ -124,7 +124,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //                }
 //                pretendEnterRoom(playerInfoModel)
 //            }
-//            pretendRoomNameSystemMsg("双人接唱", CommentSysModel.TYPE_ENTER_ROOM)
+            pretendRoomNameSystemMsg("${mRoomData.roomName}", CommentSysModel.TYPE_ENTER_ROOM)
         }
         startHeartbeat()
         startSyncGameStatus()
