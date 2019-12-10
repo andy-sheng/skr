@@ -12,6 +12,35 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <android.support.constraint.Group
+        android:id="@+id/mute_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="mute_bg,mute_iv" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/mute_bg"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_0_dp"
+        app:bl_shape="oval"
+        app:bl_solid_color="@color/black_trans_50"
+        app:layout_constraintBottom_toBottomOf="@id/avatar_sdv"
+        app:layout_constraintLeft_toLeftOf="@id/avatar_sdv"
+        app:layout_constraintRight_toRightOf="@id/avatar_sdv"
+        app:layout_constraintTop_toTopOf="@id/avatar_sdv" />
+
+    <ImageView
+        android:id="@+id/mute_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/seat_mute_icon"
+        app:layout_constraintBottom_toBottomOf="@id/mute_bg"
+        app:layout_constraintLeft_toLeftOf="@id/mute_bg"
+        app:layout_constraintRight_toRightOf="@id/mute_bg"
+        app:layout_constraintTop_toTopOf="@id/mute_bg" />
+
     <com.common.view.ex.ExTextView
         android:id="@+id/hot_tv"
         android:layout_width="wrap_content"
@@ -19,6 +48,7 @@
         android:drawableLeft="@drawable/party_hot_icon"
         android:gravity="center"
         android:paddingLeft="@dimen/view_12_dp"
+        android:layout_margin="@dimen/view_1_dp"
         android:paddingRight="@dimen/view_12_dp"
         android:drawablePadding="@dimen/view_3_dp"
         android:textColor="@color/white_trans_50"
@@ -48,32 +78,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/hot_tv" />
 
-    <android.support.constraint.Group
-        android:id="@+id/mute_area"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="mute_bg,mute_iv" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/mute_bg"
-        android:layout_width="@dimen/view_0_dp"
-        android:layout_height="@dimen/view_0_dp"
-        app:bl_shape="oval"
-        app:bl_solid_color="@color/black_trans_50"
-        app:layout_constraintBottom_toBottomOf="@id/avatar_sdv"
-        app:layout_constraintLeft_toLeftOf="@id/avatar_sdv"
-        app:layout_constraintRight_toRightOf="@id/avatar_sdv"
-        app:layout_constraintTop_toTopOf="@id/avatar_sdv" />
-
-    <ImageView
-        android:id="@+id/mute_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/mute_bg"
-        app:layout_constraintLeft_toLeftOf="@id/mute_bg"
-        app:layout_constraintRight_toRightOf="@id/mute_bg"
-        app:layout_constraintTop_toTopOf="@id/mute_bg" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/emoji_sdv"

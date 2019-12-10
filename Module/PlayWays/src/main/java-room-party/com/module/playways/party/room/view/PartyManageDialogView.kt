@@ -111,7 +111,7 @@ class PartyManageDialogView(context: Context, model: PartyActorInfoModel?) : ExC
             function3.visibility = View.VISIBLE
             function3.text = "查看信息"
             function3.setDebounceViewClickListener {
-                mDialogPlus?.dismiss()
+                mDialogPlus?.dismiss(false) // 2个对话框
                 EventBus.getDefault().post(ShowPersonCardEvent(model?.player?.userID ?: 0))
             }
         } else {
