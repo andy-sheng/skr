@@ -449,6 +449,16 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     }
 
     /**
+     * 换房间 或者 接受邀请时 你已经在派对房了
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyChangeRoomEvent) {
+        mRoomData.loadFromRsp(event.mJoinGrabRoomRspModel)
+        joinRoomAndInit(true)
+        onOpeningAnimationOver()
+    }
+
+    /**
      * 我的座位信息变化了，主要处理开闭麦下麦等
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -489,7 +499,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         } else if (mRoomData.myUserInfo?.isAdmin() == true) {
             //我是管理员了
         } else if (mRoomData.myUserInfo?.isGuest() == true) {
-            // 我是嘉宾了
+            // 我是嘉宾了 开麦闭麦交给座位事件处理
         }
     }
 

@@ -17,6 +17,7 @@ import com.component.busilib.view.AvatarView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
+import com.module.playways.party.room.event.PartyHostChangeEvent
 import com.module.playways.party.room.event.PartyOnlineUserCntChangeEvent
 import com.module.playways.relay.room.event.RelayLockChangeEvent
 import com.module.playways.room.data.H
@@ -97,6 +98,11 @@ class PartyTopContentView : ExConstraintLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyOnlineUserCntChangeEvent) {
         onlineNum.text = "在线${H.partyRoomData?.applyUserCnt}人"
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyHostChangeEvent) {
+        bindData()
     }
 
     override fun onAttachedToWindow() {

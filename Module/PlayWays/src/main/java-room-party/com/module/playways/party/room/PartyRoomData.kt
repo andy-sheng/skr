@@ -59,12 +59,12 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         }
 
     var enterPermission = 2 // 2都可以进入  1 只有邀请能进
-    set(value) {
-        if (value != field) {
-            field = value
-            EventBus.getDefault().post(PartyEnterPermissionEvent())
+        set(value) {
+            if (value != field) {
+                field = value
+                EventBus.getDefault().post(PartyEnterPermissionEvent())
+            }
         }
-    }
 
     var users = ArrayList<PartyPlayerInfoModel>() // 当前的用户信息 包括 主持人管理员 以及 嘉宾
     var usersMap = HashMap<Int, PartyPlayerInfoModel>()  // 根据id找人
@@ -72,8 +72,15 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     var seats = ArrayList<PartySeatInfoModel>() // 座位信息
     var seatsSeatIdMap = HashMap<Int, PartySeatInfoModel>() // 根据座位id找座位
     var seatsUserIdMap = HashMap<Int, PartySeatInfoModel>() // 根据用户id找座位
+
     // 题目信息在轮次信息里 轮次信息在父类的 realRoundInfo 中
     var hostId = 0 //主持人id
+        set(value) {
+            if (field != value) {
+                field = value
+                EventBus.getDefault().post(PartyHostChangeEvent(field))
+            }
+        }
     /**
      * 本人的用户信息
      */
@@ -288,10 +295,10 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                 usersMap[playerInfoModel.userID] = playerInfoModel
                 hasUserChange = true
             }
-        }else{
+        } else {
             // 是观众了 去除信息
             usersMap.remove(playerInfoModel.userID)
-            if(playerInfoModel.userID == MyUserInfoManager.uid.toInt()){
+            if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {
                 myUserInfo = null
             }
         }
@@ -300,13 +307,13 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
     fun removeUser(playerInfoModel: PartyPlayerInfoModel) {
         usersMap.remove(playerInfoModel.userID)
-        if(playerInfoModel.userID == MyUserInfoManager.uid.toInt()){
+        if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {
             myUserInfo = null
         }
-        if(seatsUserIdMap.containsKey(playerInfoModel.userID)){
+        if (seatsUserIdMap.containsKey(playerInfoModel.userID)) {
             var seat = seatsUserIdMap[playerInfoModel.userID]
             seat?.userID = 0
-            EventBus.getDefault().post(PartySeatInfoChangeEvent(seat?.seatSeq ?:-1))
+            EventBus.getDefault().post(PartySeatInfoChangeEvent(seat?.seatSeq ?: -1))
         }
     }
 
