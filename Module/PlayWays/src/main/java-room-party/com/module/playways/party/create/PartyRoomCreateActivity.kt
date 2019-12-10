@@ -10,7 +10,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
@@ -26,7 +25,7 @@ import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.PartyRoomServerApi
-import kotlinx.coroutines.delay
+import com.module.playways.room.data.H
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -82,9 +81,9 @@ class PartyRoomCreateActivity : BaseActivity() {
         }
 
         titlebar.rightTextView.setDebounceViewClickListener {
-            if(this.from == "create"){
+            if (this.from == "create") {
                 createRoom()
-            }else{
+            } else if (this.from == "change") {
                 changeRoomSetting()
             }
         }
@@ -165,7 +164,26 @@ class PartyRoomCreateActivity : BaseActivity() {
     }
 
     private fun changeRoomSetting() {
-
+        launch {
+            var topicName = nameEdittext.text.toString()
+//            if(TextUtils.isEmpty(topicName)){
+//                topicName = "${MyUserInfoManager.nickName}的派对"
+//            }
+            val map = mutableMapOf(
+                    "enterPermission" to enterType,
+                    "roomID" to H.partyRoomData?.gameId,
+                    "topicName" to topicName
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("changeRoom", ControlType.CancelThis)) {
+                roomServerApi.changeRoomInfo(body)
+            }
+            if (result.errno == 0) {
+                finish()
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
     }
 
     override fun useEventBus(): Boolean {

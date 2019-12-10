@@ -57,7 +57,8 @@ class GonggaoSettingFragment : BaseFragment() {
             }
 
             if (result.errno == 0) {
-
+                U.getToastUtil().showShort("公告设置成功")
+                finish()
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }

@@ -173,4 +173,14 @@ interface PartyRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partygame/up-game")
     fun upGame(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * {
+    "enterPermission": "EPT_UNKNOWNS",
+    "roomID": 0,
+    "topicName": "string"
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partyroom/change-roominfo")
+    fun changeRoomInfo(@Body body: RequestBody): Call<ApiResult>
 }
