@@ -92,12 +92,12 @@ class PartyTopContentView : ExConstraintLayout {
                         .build())
         nameTv.text = hostUser?.userInfo?.nicknameRemark
         compereTv.text = "房间号:${H.partyRoomData?.gameId}"
-        onlineNum.text = "在线${H.partyRoomData?.applyUserCnt}人"
+        onlineNum.text = "在线${H.partyRoomData?.onlineUserCnt}人"
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyOnlineUserCntChangeEvent) {
-        onlineNum.text = "在线${H.partyRoomData?.applyUserCnt}人"
+        onlineNum.text = "在线${H.partyRoomData?.onlineUserCnt}人"
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

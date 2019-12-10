@@ -258,15 +258,15 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         super.destroy()
         mDestroyed = true
         Params.save2Pref(ZqEngineKit.getInstance().params)
-//        if (!mRoomData.) {
-//            exitRoom("destroy")
-//        }
+        if (!mRoomData.isHasExitGame) {
+            exitRoom("destroy")
+        }
         cancelSyncGameStatus()
         heartbeatJob?.cancel()
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
-        ZqEngineKit.getInstance().destroy("relayroom")
+        ZqEngineKit.getInstance().destroy("partyroom")
         mUiHandler.removeCallbacksAndMessages(null)
         PartyRoomMsgManager.removeFilter(mPushMsgFilter)
         ModuleServiceManager.getInstance().msgService.leaveChatRoom(mRoomData.gameId.toString())
