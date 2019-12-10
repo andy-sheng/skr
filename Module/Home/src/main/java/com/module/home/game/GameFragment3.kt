@@ -29,6 +29,7 @@ import com.module.home.game.presenter.GamePresenter3
 import com.module.home.game.view.*
 import com.module.home.model.GameKConfigModel
 import com.module.playways.IFriendRoomView
+import com.module.playways.IPartyRoomView
 import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
@@ -51,10 +52,11 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
         iRankingModeService.getFriendRoomView(context!!)
     }
-    //    val mGrabGameView: GrabGameView by lazy { GrabGameView(context!!) }
     val mQuickGameView: QuickGameView by lazy { QuickGameView(this) }
-//    val mDoubleRoomGameView: DoubleRoomGameView by lazy { DoubleRoomGameView(context!!) }
-//    val mPkGameView: PKGameView by lazy { PKGameView(this) }
+    val mPartyRoomView: IPartyRoomView by lazy {
+        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+        iRankingModeService.getPartyRoomView(context!!)
+    }
 
     private var alphaAnimation: AlphaAnimation? = null
     private var mInviteFriendDialog: InviteFriendDialog? = null
@@ -71,7 +73,12 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mInviteFriendIv = rootView.findViewById(R.id.invite_friend_iv)
 
         mInviteFriendIv.setAnimateDebounceViewClickListener {
-            showShareDialog()
+            if (mGameVp.currentItem == 2) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_PARTY_ROOM)
+                        .navigation()
+            } else {
+                showShareDialog()
+            }
         }
 
         mGameTab.setCustomTabView(R.layout.game_tab_view_layout, R.id.tab_tv)
@@ -96,8 +103,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 var view: View? = when (position) {
                     0 -> mFriendRoomGameView as View
                     1 -> mQuickGameView
-//                    2 -> mPkGameView
-//                    3 -> mDoubleRoomGameView
+                    2 -> mPartyRoomView as View
                     else -> null
                 }
                 if (container.indexOfChild(view) == -1) {
@@ -111,15 +117,14 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             }
 
             override fun getCount(): Int {
-                return 2
+                return 3
             }
 
             override fun getPageTitle(position: Int): CharSequence? {
                 return when (position) {
                     0 -> "好友"
                     1 -> "游戏"
-//                    2 -> "排位"
-//                    3 -> "唱聊"
+                    2 -> "剧场"
                     else -> super.getPageTitle(position)
                 }
             }
@@ -136,8 +141,6 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
             override fun onPageSelected(position: Int) {
                 mGameTab.notifyDataChange()
-                val drawable = mNavigationBgIv.getBackground() as ColorDrawable
-                val color: Int = drawable.color
                 viewSelected(position)
                 when (position) {
                     0 -> {
@@ -146,13 +149,6 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                     1 -> {
                         StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
                     }
-//                    2 -> {
-//                        animation(color, Color.parseColor("#7088FF"))
-//                    }
-//                    3 -> {
-//                        animation(color, Color.parseColor("#122042"))
-//                        StatisticsAdapter.recordCountEvent("grab", "1.3expose", null)
-//                    }
                 }
             }
 
@@ -162,7 +158,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         })
 
         mGameVp.offscreenPageLimit = 3
-        mGameVp.setAdapter(mTabPagerAdapter)
+        mGameVp.adapter = mTabPagerAdapter
         mGameTab.setViewPager(mGameVp)
         mTabPagerAdapter.notifyDataSetChanged()
         mGameVp.setCurrentItem(1, false)
@@ -204,13 +200,6 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             mGameVp.currentItem == 1 -> {
                 StatisticsAdapter.recordCountEvent("game", "express_expose", null)
             }
-//            mGameVp.currentItem == 2 -> {
-//
-//                StatisticsAdapter.recordCountEvent("game", "rank_expose", null)
-//            }
-//            mGameVp.currentItem == 3 -> {
-//                StatisticsAdapter.recordCountEvent("game", "cp_expose", null)
-//            }
         }
         StatisticsAdapter.recordCountEvent("game", "all_expose", null)
     }
@@ -218,25 +207,25 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     private fun viewSelected(position: Int) {
         when (position) {
             0 -> {
-//                mGrabGameView.initData(false)
-                mQuickGameView.stopTimer()
+                mInviteFriendIv.background = U.getDrawable(R.drawable.game_home_invite_icon)
                 mFriendRoomGameView.initData(false)
+                mQuickGameView.stopTimer()
+                mPartyRoomView.stopTimer()
             }
             1 -> {
+                mInviteFriendIv.background = U.getDrawable(R.drawable.game_home_invite_icon)
                 mFriendRoomGameView.stopPlay()
                 mFriendRoomGameView.stopTimer()
+                mPartyRoomView.stopTimer()
                 mQuickGameView.initData(false)
             }
-//            2 -> {
-//                mFriendRoomGameView.stopTimer()
-//                mQuickGameView.stopTimer()
-//                mPkGameView.initData(false)
-//            }
-//            3 -> {
-//                mQuickGameView.stopTimer()
-//                mFriendRoomGameView.stopTimer()
-//                mDoubleRoomGameView.initData()
-//            }
+            2 -> {
+                mInviteFriendIv.background = U.getDrawable(R.drawable.create_party_icon)
+                mFriendRoomGameView.stopPlay()
+                mFriendRoomGameView.stopTimer()
+                mQuickGameView.stopTimer()
+                mPartyRoomView.initData(false)
+            }
         }
     }
 
@@ -245,13 +234,10 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mFriendRoomGameView.stopPlay()
         mFriendRoomGameView.stopTimer()
         mQuickGameView.stopTimer()
+        mPartyRoomView.stopTimer()
     }
 
     override fun setGameConfig(gameKConfigModel: GameKConfigModel) {
-//        mFriendRoomGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
-//        if (mGameVp.currentItem == 0) {
-//            mFriendRoomGameView.initData(true)
-//        }
         // 存一下刷新间隔
         U.getPreferenceUtils().setSettingInt("homepage_ticker_interval", gameKConfigModel.homepagetickerinterval)
         mQuickGameView.mRecommendInterval = gameKConfigModel.homepagetickerinterval
@@ -277,10 +263,10 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mPresenter.initGameKConfig()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: JumpHomeDoubleChatPageEvent) {
-        mGameVp.setCurrentItem(3, false)
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onEvent(event: JumpHomeDoubleChatPageEvent) {
+//        mGameVp.setCurrentItem(3, false)
+//    }
 
     override fun useEventBus(): Boolean {
         return true
@@ -292,11 +278,9 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
     override fun destroy() {
         super.destroy()
-//        mGrabGameView.destory()
         mQuickGameView.destory()
         mFriendRoomGameView.destory()
-//        mDoubleRoomGameView.destory()
-//        mPkGameView.destory()
+        mPartyRoomView.destory()
         alphaAnimation?.cancel()
         mInviteFriendDialog?.dismiss(false)
     }

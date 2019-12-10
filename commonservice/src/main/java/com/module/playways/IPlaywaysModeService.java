@@ -38,5 +38,8 @@ public interface IPlaywaysModeService extends IProvider {
 
     IFriendRoomView getFriendRoomView(Context context);
 
-    void jumpPartyRoom(int roomID);
+    IPartyRoomView getPartyRoomView(Context context);
+
+    void tryGoPartyRoom(int roomID, int joinSrc);
+
 }
