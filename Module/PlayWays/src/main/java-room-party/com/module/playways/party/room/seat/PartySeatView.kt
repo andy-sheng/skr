@@ -8,6 +8,7 @@ import android.view.View
 import com.module.playways.R
 import android.support.v7.widget.RecyclerView
 import com.common.core.myinfo.MyUserInfoManager
+import com.engine.EngineEvent
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.event.PartySeatInfoChangeEvent
 import com.module.playways.party.room.event.PartySendEmojiEvent
@@ -87,6 +88,25 @@ class PartySeatView : ConstraintLayout {
             p.seat = H.partyRoomData?.getSeatInfoBySeq(event.seatSeq)
             adapter.mDataList[event.seatSeq] = p
             adapter.notifyItemChanged(event.seatSeq - 1, null)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: EngineEvent) {
+        if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
+            var list = event.getObj<List<EngineEvent.UserVolumeInfo>>()
+            for (uv in list) {
+                //    MyLog.d(TAG, "UserVolumeInfo uv=" + uv);
+                if (uv != null) {
+                    var uid = uv.uid
+                    if (uid == 0) {
+                        uid =  MyUserInfoManager.uid.toInt()
+                    }
+                    var volume = uv.volume
+                    //TODO 谁在说话 音量是多少
+
+                }
+            }
         }
     }
 

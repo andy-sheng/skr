@@ -111,6 +111,7 @@ class PartyManageDialogView(context: Context, model: PartyActorInfoModel?) : ExC
             function3.visibility = View.VISIBLE
             function3.text = "查看信息"
             function3.setDebounceViewClickListener {
+                mDialogPlus?.dismiss()
                 EventBus.getDefault().post(ShowPersonCardEvent(model?.player?.userID ?: 0))
             }
         } else {
@@ -128,6 +129,7 @@ class PartyManageDialogView(context: Context, model: PartyActorInfoModel?) : ExC
                 function2.visibility = View.VISIBLE
                 function2.text = "邀请上麦"
                 function2.setDebounceViewClickListener {
+                    mDialogPlus?.dismiss()
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
                             .withInt("from", GameModeType.GAME_MODE_PARTY)
                             .withInt("roomId",H.partyRoomData?.gameId ?:0)
