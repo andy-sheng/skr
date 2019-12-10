@@ -17,6 +17,13 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
 //        EPUR_AUDIENCE = 4; //观众
 //    }
     var role = ArrayList<Int>() // 角色
+        set(value) {
+            field = value
+            field.sortWith(Comparator { o1, o2 ->
+                o1 - o2
+            })
+        }
+    
     var popularity = 0 // 人气
 
     fun getRoleDesc(): String? {
@@ -56,8 +63,8 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
     /**
      * 不仅仅是观众
      */
-    fun isNotOnlyAudience():Boolean{
-        return isRole(EPUserRole.EPUR_ADMIN.value,EPUserRole.EPUR_HOST.value,EPUserRole.EPUR_GUEST.value)
+    fun isNotOnlyAudience(): Boolean {
+        return isRole(EPUserRole.EPUR_ADMIN.value, EPUserRole.EPUR_HOST.value, EPUserRole.EPUR_GUEST.value)
     }
 
     /**
