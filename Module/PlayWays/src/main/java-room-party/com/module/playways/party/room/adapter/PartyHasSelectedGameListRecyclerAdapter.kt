@@ -49,7 +49,7 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
         var gameNameTv: ExTextView
         var detailIv: ExImageView
         var upIv: ExImageView
-        var addTv: ExTextView
+        var delTv: ExTextView
         var pos = -1
         var model: PartySelectedGameModel? = null
 
@@ -57,9 +57,9 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
             gameNameTv = itemView.findViewById(R.id.game_name_tv)
             detailIv = itemView.findViewById(R.id.detail_iv)
             upIv = itemView.findViewById(R.id.up_iv)
-            addTv = itemView.findViewById(R.id.add_tv)
+            delTv = itemView.findViewById(R.id.del_tv)
 
-            detailIv.setDebounceViewClickListener {
+            delTv.setDebounceViewClickListener {
                 mDelMethod?.invoke(pos, model!!)
             }
 

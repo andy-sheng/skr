@@ -116,7 +116,7 @@ class PartyHasSelectedGameListView : ExConstraintLayout {
                 hasMore = result.data.getBooleanValue("hasMore")
                 offset = result.data.getIntValue("offset")
 
-                val list = JSON.parseArray(result.data.getString("rules"), PartySelectedGameModel::class.java)
+                val list = JSON.parseArray(result.data.getString("details"), PartySelectedGameModel::class.java)
                 list?.let {
                     partyHasSelectedGameListRecyclerAdapter?.addData(list)
                 }
@@ -148,6 +148,8 @@ class PartyHasSelectedGameListView : ExConstraintLayout {
                 if (offset > 0) {
                     offset--
                 }
+
+                U.getToastUtil().showShort("删除成功")
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }

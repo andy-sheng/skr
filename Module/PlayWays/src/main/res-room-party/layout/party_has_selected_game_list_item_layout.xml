@@ -30,11 +30,11 @@
         android:layout_marginRight="@dimen/view_10_dp"
         android:background="@drawable/triangle_up_icon"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/add_tv"
+        app:layout_constraintRight_toLeftOf="@+id/del_tv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/add_tv"
+        android:id="@+id/del_tv"
         android:layout_width="@dimen/view_60_dp"
         android:layout_height="@dimen/view_32_dp"
         android:layout_marginRight="@dimen/view_11_dp"

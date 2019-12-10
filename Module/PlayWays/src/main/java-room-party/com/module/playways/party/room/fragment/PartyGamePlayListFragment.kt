@@ -119,6 +119,7 @@ class PartyGamePlayListFragment : BaseFragment() {
 
             if (result.errno == 0) {
                 EventBus.getDefault().post(PartyAddGameEvent())
+                U.getToastUtil().showShort("添加成功")
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }

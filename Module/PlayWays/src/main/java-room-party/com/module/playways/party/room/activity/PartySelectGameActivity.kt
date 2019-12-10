@@ -55,8 +55,8 @@ class PartySelectGameActivity : BaseActivity() {
                 MyLog.d(TAG, "instantiateItem container=$container position=$position")
 
                 var view: View? = when (position) {
-                    0 -> PartyGameListView(this@PartySelectGameActivity)
-                    1 -> PartyHasSelectedGameListView(this@PartySelectGameActivity)
+                    0 -> PartyGameListView(this@PartySelectGameActivity).apply { tag = position }
+                    1 -> PartyHasSelectedGameListView(this@PartySelectGameActivity).apply { tag = position }
                     else -> null
                 }
 
