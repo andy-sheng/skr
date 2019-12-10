@@ -78,7 +78,7 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
     }
 
     // 申请或取消申请上麦 cancel为true，取消申请 cancel为false，为申请嘉宾
-    private fun applyForGuest(cancel: Boolean) {
+     fun applyForGuest(cancel: Boolean) {
         launch {
             val map = mutableMapOf(
                     "cancel" to cancel,

@@ -311,7 +311,25 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                     if (model?.player?.userID != null) {
                         showPersonInfoView(model?.player?.userID ?: 0)
                     } else {
-                        // 点了个空座位 没反应
+                        if (mRoomData.myUserInfo?.isGuest() == true) {
+                            // 嘉宾 点了个空座位 没反应
+                        } else {
+                            // 观众
+                            dismissDialog()
+                            mTipsDialogView = TipsDialogView.Builder(this@PartyRoomActivity)
+                                    .setMessageTip("是否申请上麦")
+                                    .setConfirmTip("是")
+                                    .setCancelTip("取消")
+                                    .setConfirmBtnClickListener {
+                                        mTipsDialogView?.dismiss(false)
+                                        mRightOpView?.applyForGuest(false)
+                                    }
+                                    .setCancelBtnClickListener {
+                                        mTipsDialogView?.dismiss()
+                                    }
+                                    .build()
+                            mTipsDialogView?.showByDialog()
+                        }
                     }
                 }
             }
