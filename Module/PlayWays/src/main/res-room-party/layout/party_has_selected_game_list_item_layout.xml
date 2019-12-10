@@ -5,6 +5,8 @@
     android:layout_height="@dimen/view_70_dp">
 
     <com.common.view.ex.ExTextView
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_16_dp"
         android:id="@+id/game_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
