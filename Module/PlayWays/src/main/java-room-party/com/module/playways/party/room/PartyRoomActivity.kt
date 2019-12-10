@@ -417,10 +417,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             override fun onClickGameSound() {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
-
-            override fun onClickAllMute(isMute: Boolean) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
         }
 
         mPartyEmojiView = PartyEmojiView(findViewById(R.id.party_bottom_emoji_viewStub))

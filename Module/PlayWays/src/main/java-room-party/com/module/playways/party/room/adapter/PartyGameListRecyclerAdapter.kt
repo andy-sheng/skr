@@ -68,10 +68,10 @@ class PartyGameListRecyclerAdapter : RecyclerView.Adapter<PartyGameListRecyclerA
 
             gameNameTv.text = model.ruleName
             if (model.ruleType == PartyRule.RULE_TYPE.PGT_Play.ordinal) {
-                detailIv.visibility = View.VISIBLE
+                moreTv.visibility = View.VISIBLE
                 addTv.visibility = View.GONE
             } else {
-                detailIv.visibility = View.GONE
+                moreTv.visibility = View.GONE
                 addTv.visibility = View.VISIBLE
             }
         }
