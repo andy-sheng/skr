@@ -9,6 +9,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.model.PartyRule
+import com.zq.live.proto.PartyRoom.EPGameType
 
 class PartyGameListRecyclerAdapter : RecyclerView.Adapter<PartyGameListRecyclerAdapter.PartyGameListHolder>() {
     val mPartyRuleList = ArrayList<PartyRule>()
@@ -67,7 +68,7 @@ class PartyGameListRecyclerAdapter : RecyclerView.Adapter<PartyGameListRecyclerA
             this.model = model
 
             gameNameTv.text = model.ruleName
-            if (model.ruleType == PartyRule.RULE_TYPE.PGT_Play.ordinal) {
+            if (model.ruleType == EPGameType.PGT_Play.ordinal) {
                 moreTv.visibility = View.VISIBLE
                 addTv.visibility = View.GONE
             } else {

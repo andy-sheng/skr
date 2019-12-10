@@ -1,13 +1,9 @@
 package com.module.playways.party.room.view
 
-import android.graphics.Color
-import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
-import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
-import com.common.image.fresco.BaseImageView
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.ExViewStub
@@ -18,17 +14,15 @@ import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.model.PartyGameInfoModel
 import com.zq.live.proto.PartyRoom.EPGameType
 
-class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomData?) : ExViewStub(viewStub) {
+class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomData) : ExViewStub(viewStub) {
     lateinit var contentBg: ExImageView
     lateinit var gameTv: ExTextView
     lateinit var handCardTv: ExTextView
     lateinit var ruleTv: ExTextView
     lateinit var attentionTv: ExTextView
-    lateinit var gamePicImg: BaseImageView
     lateinit var textScrollView: ScrollView
-    lateinit var textGameTv: ExTextView
-    lateinit var bottomLeftOpTv: ExTextView
-    lateinit var bottomRightOpTv: ExTextView
+    lateinit var commonTextView: ExTextView
+    lateinit var partyGameTabView: PartyGameTabView
 
     var seq: Int = 0
     var tagType: TagType = TagType.GAME
@@ -39,12 +33,11 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         gameTv = parentView.findViewById(R.id.game_tv)
         handCardTv = parentView.findViewById(R.id.hand_card_tv)
         ruleTv = parentView.findViewById(R.id.rule_tv)
-        attentionTv = parentView.findViewById(R.id.attention_tv)
-        gamePicImg = parentView.findViewById(R.id.game_pic_img)
         textScrollView = parentView.findViewById(R.id.text_scrollView)
-        textGameTv = parentView.findViewById(R.id.text_game_tv)
-        bottomLeftOpTv = parentView.findViewById(R.id.bottom_left_op_tv)
-        bottomRightOpTv = parentView.findViewById(R.id.bottom_right_op_tv)
+        attentionTv = parentView.findViewById(R.id.attention_tv)
+        commonTextView = parentView.findViewById(R.id.text_game_tv)
+        partyGameTabView = parentView.findViewById(R.id.party_game_tab_view)
+        partyGameTabView.roomData = mRoomData
 
         gameTv.setDebounceViewClickListener {
             toGameTab()
@@ -66,61 +59,27 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     }
 
     private fun toGameTab() {
-        resetMainView()
+        hideAllView()
         gameTv.isSelected = true
         tagType = TagType.GAME
 
-        setMainText(getGameTagTitle(), getGameTagContent())
-
-        partyGameInfoModel?.let {
-            if (it.gameType == EPGameType.PGT_Question.value && (it.question?.questionPic?.size
-                            ?: 0) > 0) {
-                gamePicImg.visibility = View.VISIBLE
-
-                AvatarUtils.loadAvatarByUrl(gamePicImg, AvatarUtils.newParamsBuilder(it.question?.questionPic?.get(0))
-                        .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                        .setBorderColor(Color.WHITE)
-                        .build())
-            } else {
-                gamePicImg.visibility = View.GONE
-            }
-        }
-
-        bottomLeftOpTv.visibility = View.VISIBLE
-        bottomRightOpTv.visibility = View.VISIBLE
-    }
-
-    private fun getGameTagTitle(): String {
-        var gameTagTitle = ""
-        gameTagTitle = partyGameInfoModel?.gameRule?.ruleName ?: ""
-
-        return if (TextUtils.isEmpty(gameTagTitle)) "" else "$gameTagTitle\n"
-    }
-
-    private fun getGameTagContent(): String {
-        partyGameInfoModel?.let {
-            if (it.gameType == EPGameType.PGT_Play.value) {
-                return it.play?.playContent ?: ""
-            } else if (it.gameType == EPGameType.PGT_Question.value) {
-                return it.question?.answerContent ?: ""
-            } else {
-                return ""
-            }
-        }
-
-        return ""
+        partyGameTabView.visibility = View.VISIBLE
+        setGameTabText()
     }
 
     private fun toHandCardTab() {
-        resetMainView()
+        hideAllView()
         handCardTv.isSelected = true
         tagType = TagType.CARD
 
+        setHandCardText()
+    }
+
+    private fun setHandCardText() {
         partyGameInfoModel?.let {
             if (it.gameType == EPGameType.PGT_Play.value) {
-                setMainText("", it.play?.playCard)
                 handCardTv.text = "手卡"
+                setMainText("", it.play?.playCard)
             } else if (it.gameType == EPGameType.PGT_Question.value) {
                 setMainText("", it.question?.questionContent)
                 handCardTv.text = "答案"
@@ -128,8 +87,18 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         }
     }
 
+    private fun setGameTabText() {
+        partyGameInfoModel?.let {
+            if (it.gameType == EPGameType.PGT_Free.value) {
+                gameTv.text = "聊天"
+            } else {
+                gameTv.text = "游戏"
+            }
+        }
+    }
+
     private fun toRuleTab() {
-        resetMainView()
+        hideAllView()
         ruleTv.isSelected = true
         tagType = TagType.RULE
 
@@ -139,7 +108,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     }
 
     private fun toAttentionTab() {
-        resetMainView()
+        hideAllView()
         attentionTv.isSelected = true
         tagType = TagType.ATTENTION
 
@@ -156,25 +125,28 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
                         ?: "").setForegroundColor(U.getColor(R.color.white_trans_50)).setFontSize(U.getDisplayUtils().dip2px(14f))
                 .create()
 
-        textGameTv.text = stringBuilder
+        commonTextView.text = stringBuilder
     }
 
-    private fun resetMainView() {
+    private fun hideAllView() {
         gameTv.isSelected = false
         handCardTv.isSelected = false
         ruleTv.isSelected = false
         attentionTv.isSelected = false
-        gamePicImg.visibility = View.GONE
-        bottomLeftOpTv.visibility = View.GONE
-        bottomRightOpTv.visibility = View.GONE
+        textScrollView.visibility = View.GONE
+        partyGameTabView.visibility = View.GONE
     }
 
     override fun layoutDesc(): Int {
         return R.layout.party_game_main_view_layout
     }
 
-    //更新
-    fun updateGameContent(partyGameInfoModel: PartyGameInfoModel?) {
+    fun updateIdentify() {
+        partyGameTabView.updateIdentity()
+    }
+
+    //轮次切换的时候调用
+    fun updateRound(partyGameInfoModel: PartyGameInfoModel?) {
         if (partyGameInfoModel == null) {
             return
         }
@@ -182,32 +154,16 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         tryInflate()
 
         this.partyGameInfoModel = partyGameInfoModel
-        if ((mRoomData?.realRoundSeq ?: 0) != seq) {
-            seq = (mRoomData?.realRoundSeq ?: 0)
-            toGameTab()
-        } else {
-            if (tagType == TagType.GAME) {
-                toGameTab()
-            } else if (tagType == TagType.CARD) {
-                toHandCardTab()
-            } else if (tagType == TagType.RULE) {
-                toRuleTab()
-            } else if (tagType == TagType.ATTENTION) {
-                toAttentionTab()
-            }
-        }
+        partyGameTabView.bindData()
+        toGameTab()
 
-        if (partyGameInfoModel.gameType == EPGameType.PGT_Play.value) {
-            handCardTv.text = "手卡"
-        } else if (partyGameInfoModel.gameType == EPGameType.PGT_Question.value) {
-            handCardTv.text = "答案"
-        }
+        setGameTabText()
+        setHandCardText()
     }
 
     fun toWaitingState() {
-        resetMainView()
         gameTv.isSelected = true
-        textGameTv.text = "等待中"
+        partyGameTabView.toWaitingState()
     }
 
     enum class TagType {

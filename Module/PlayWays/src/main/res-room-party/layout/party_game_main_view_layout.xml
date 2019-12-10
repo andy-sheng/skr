@@ -112,28 +112,12 @@
             android:lineSpacingExtra="@dimen/view_5_dp" />
     </ScrollView>
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/bottom_left_op_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/textsize_31_dp"
-        android:layout_marginBottom="@dimen/textsize_13_dp"
-        android:text="结束"
-        android:textColor="#DEA243"
-        android:textSize="@dimen/textsize_14_dp"
+    <com.module.playways.party.room.view.PartyGameTabView
+        android:id="@+id/party_game_tab_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/content_bg"
-        app:layout_constraintLeft_toLeftOf="@+id/content_bg" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/bottom_right_op_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/textsize_31_dp"
-        android:layout_marginBottom="@dimen/textsize_13_dp"
-        android:text="下一个"
-        android:textColor="#DEA243"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintBottom_toBottomOf="@+id/content_bg"
-        app:layout_constraintRight_toRightOf="@+id/content_bg" />
+        app:layout_constraintTop_toTopOf="@+id/content_bg" />
 
 </android.support.constraint.ConstraintLayout>

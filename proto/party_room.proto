@@ -174,10 +174,13 @@ message PGameRule {
 }
 
 enum EPGameType {
-    PGT_Unknown = 0; //未知场景
-    PGT_Play = 1; //剧本类游戏
+    PGT_Unknown  = 0; //未知场景
+    PGT_Play     = 1; //剧本类游戏
     PGT_Question = 2; //题库类游戏
+    PGT_Free     = 3; //自由主持类游戏
+    PGT_KTV      = 4; //ktv唱歌类游戏
 }
+
 
 message PGameQuestion {
     uint32 questionID = 1; //问题标识
