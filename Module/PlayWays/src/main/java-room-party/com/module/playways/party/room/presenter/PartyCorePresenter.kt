@@ -777,6 +777,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         } else {
             pretendSystemMsg("${event.user.userInfo.nickName} 被 ${event.opUser.userInfo.nickName} 删除了管理员")
         }
+        val p = PartyPlayerInfoModel.parseFromPb(event.user)
+        mRoomData.updateUser(p,null)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
