@@ -4,18 +4,15 @@ import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.component.busilib.view.AvatarView;
 import com.component.busilib.view.NickNameView;
-import com.zq.live.proto.Common.ESex;
 
-public class MicInviteNotifyView extends ConstraintLayout {
+public class NormalInviteNotifyView extends ConstraintLayout {
 
     AvatarView mAvatarIv;
     NickNameView mNameView;
@@ -26,23 +23,23 @@ public class MicInviteNotifyView extends ConstraintLayout {
 
     Listener mListener;
 
-    public MicInviteNotifyView(Context context) {
+    public NormalInviteNotifyView(Context context) {
         super(context);
         init();
     }
 
-    public MicInviteNotifyView(Context context, AttributeSet attrs) {
+    public NormalInviteNotifyView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public MicInviteNotifyView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NormalInviteNotifyView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
     private void init() {
-        inflate(getContext(), R.layout.mic_invite_notification_view_layout, this);
+        inflate(getContext(), R.layout.normal_invite_notification_view_layout, this);
 
         mAvatarIv = findViewById(R.id.avatar_iv);
         mNameView = findViewById(R.id.name_view);
@@ -59,9 +56,9 @@ public class MicInviteNotifyView extends ConstraintLayout {
         });
     }
 
-    public void bindData(UserInfoModel userInfoModel) {
+    public void bindData(UserInfoModel userInfoModel,String  text) {
         this.mUserInfoModel = userInfoModel;
-
+        mHintTv.setText(text);
         mAvatarIv.bindData(userInfoModel);
         mNameView.setAllStateText(userInfoModel);
     }

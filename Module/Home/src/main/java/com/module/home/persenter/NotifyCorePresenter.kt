@@ -734,16 +734,16 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
 
         mUiHandler.removeMessages(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW)
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW, 5000)
-        val micInviteNotifyView = MicInviteNotifyView(U.app())
-        micInviteNotifyView.bindData(userInfoModel);
-        micInviteNotifyView.setListener {
+        val notifyView = NormalInviteNotifyView(U.app())
+        notifyView.bindData(userInfoModel,"邀请你加入小K房")
+        notifyView.setListener {
             mUiHandler.removeMessages(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW)
             FloatWindow.destroy(TAG_MIC_ROOM_INVITE_FOALT_WINDOW)
             tryGoMicRoom(userInfoModel!!.userId, floatWindowData.roomID)
         }
 
         FloatWindow.with(U.app())
-                .setView(micInviteNotifyView)
+                .setView(notifyView)
                 .setMoveType(MoveType.canRemove)
                 .setWidth(Screen.width, 1f)                               //设置控件宽高
                 .setHeight(Screen.height, 0.2f)
@@ -770,16 +770,16 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
 
         mUiHandler.removeMessages(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW)
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW, 5000)
-        val micInviteNotifyView = MicInviteNotifyView(U.app())
-        micInviteNotifyView.bindData(userInfoModel);
-        micInviteNotifyView.setListener {
+        val notifyView = NormalInviteNotifyView(U.app())
+        notifyView.bindData(userInfoModel,"邀请你加入派对房")
+        notifyView.setListener {
             mUiHandler.removeMessages(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW)
             FloatWindow.destroy(TAG_PARTY_ROOM_INVITE_FOALT_WINDOW)
             tryGoPartyRoom(userInfoModel!!.userId, floatWindowData.roomID)
         }
 
         FloatWindow.with(U.app())
-                .setView(micInviteNotifyView)
+                .setView(notifyView)
                 .setMoveType(MoveType.canRemove)
                 .setWidth(Screen.width, 1f)                               //设置控件宽高
                 .setHeight(Screen.height, 0.2f)
