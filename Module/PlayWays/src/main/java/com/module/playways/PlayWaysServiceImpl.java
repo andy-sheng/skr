@@ -37,6 +37,10 @@ import com.module.playways.mic.match.model.JoinMicRoomRspModel;
 import com.module.playways.mic.room.MicRoomActivity;
 import com.module.playways.mic.room.MicRoomServerApi;
 import com.module.playways.mic.room.event.MicChangeRoomEvent;
+import com.module.playways.party.match.model.JoinPartyRoomRspModel;
+import com.module.playways.party.room.PartyRoomActivity;
+import com.module.playways.party.room.PartyRoomServerApi;
+import com.module.playways.party.room.event.PartyChangeRoomEvent;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
@@ -280,7 +284,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                                 if (activity instanceof MicRoomActivity) {
                                     MyLog.d(TAG, " 存在排麦房页面了，发event刷新view");
                                     EventBus.getDefault().post(new MicChangeRoomEvent(rsp));
-                                    return ;
+                                    return;
                                 }
                             }
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_ROOM)
@@ -328,6 +332,52 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                     doubleRoomData.setInviterId(MyUserInfoManager.INSTANCE.getUid());
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                             .withSerializable("roomData", doubleRoomData)
+                            .navigation();
+                } else {
+                    U.getToastUtil().showShort(result.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                U.getToastUtil().showShort("网络错误");
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                U.getToastUtil().showShort("网络延迟");
+            }
+        });
+    }
+
+    @Override
+    public void jumpPartyRoom(int roomID) {
+        HashMap map = new HashMap();
+        map.put("platform", 20);
+        map.put("roomID", roomID);
+        //TODO 如何成为嘉宾
+        map.put("src", 2); // 2 邀请入房 1 list进房
+
+        goPartyRoom(map);
+    }
+
+    private void goPartyRoom(HashMap map) {
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        ApiMethods.subscribe(ApiManager.getInstance().createService(PartyRoomServerApi.class).joinRoom2(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    //先跳转
+                    JoinPartyRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinPartyRoomRspModel.class);
+                    for (Activity activity : U.getActivityUtils().getActivityList()) {
+                        if (activity instanceof PartyRoomActivity) {
+                            MyLog.d(TAG, " 存在派对房页面了，发event刷新view");
+                            EventBus.getDefault().post(new PartyChangeRoomEvent(rsp));
+                            return;
+                        }
+                    }
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_ROOM)
+                            .withSerializable("JoinPartyRoomRspModel", rsp)
                             .navigation();
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg());

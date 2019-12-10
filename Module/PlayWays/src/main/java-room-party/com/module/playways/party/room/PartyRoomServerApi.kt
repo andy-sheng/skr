@@ -123,4 +123,7 @@ interface PartyRoomServerApi {
 
     @PUT("http://dev.game.inframe.mobi/v1/partygame/invite")
     fun invite(@Body body: RequestBody): Observable<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/partyroom/join-room")
+    fun joinRoom2(@Body body: RequestBody): Observable<ApiResult>
 }
