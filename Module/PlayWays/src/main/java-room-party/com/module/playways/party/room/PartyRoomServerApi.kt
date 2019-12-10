@@ -131,4 +131,46 @@ interface PartyRoomServerApi {
 
     @PUT("http://dev.game.inframe.mobi/v1/partygame/invite")
     fun invite(@Body body: RequestBody): Observable<ApiResult>
+
+    /**
+     * {
+    "roomID": 0,
+    "ruleID": "string"
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/add-game")
+    fun addGame(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * {
+    "playID": "string",
+    "roomID": 0
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/add-play")
+    fun addPlay(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * {
+    "roomID": 0,
+    "sceneTag": "string"
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/del-game")
+    fun delGame(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 已点游戏
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partygame/list-game")
+    fun getListGame(@Query("roomID") roomID: Int, @Query("offset") offset: Int, @Query("limit") limit: Int): Call<ApiResult>
+
+    /**
+     * {
+    "roomID": 0,
+    "sceneTag": "string"
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/up-game")
+    fun upGame(@Body body: RequestBody): Call<ApiResult>
 }

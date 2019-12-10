@@ -17,6 +17,7 @@ import com.common.view.ex.ExConstraintLayout
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.adapter.PartyGameListRecyclerAdapter
+import com.module.playways.party.room.event.PartyAddGameEvent
 import com.module.playways.party.room.fragment.PartyGamePlayListFragment
 import com.module.playways.party.room.model.PartyRule
 import com.module.playways.room.data.H
@@ -24,6 +25,9 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 class PartyGameListView : ExConstraintLayout {
     val mTag = "PartyGameListView"
@@ -64,7 +68,7 @@ class PartyGameListView : ExConstraintLayout {
         }
 
         partyGameListRecyclerAdapter?.mAddMethod = { model ->
-
+            addGame(model)
         }
 
         smartRefresh.apply {
@@ -112,7 +116,23 @@ class PartyGameListView : ExConstraintLayout {
         }
     }
 
-    interface Listener {
-        fun onClickApplyList()
+    fun addGame(partyRule: PartyRule) {
+        launch {
+            val map = mutableMapOf(
+                    "roomID" to H.partyRoomData?.gameId,
+                    "ruleID" to partyRule.ruleID
+            )
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("${mTag} addGame", ControlType.CancelThis)) {
+                roomServerApi.addGame(body)
+            }
+
+            if (result.errno == 0) {
+                EventBus.getDefault().post(PartyAddGameEvent())
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
     }
 }

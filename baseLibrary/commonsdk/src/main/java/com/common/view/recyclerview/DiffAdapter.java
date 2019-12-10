@@ -1,6 +1,5 @@
 package com.common.view.recyclerview;
 
-import android.support.v4.view.ViewPager;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.util.ListUpdateCallback;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,7 @@ import java.util.List;
  * 如果是Adapter中有许多类型的 viewHolder 呢
  */
 public abstract class DiffAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
-        public static final int  REFRESH_POS = 99;
+    public static final int REFRESH_POS = 99;
     public final String TAG = "DiffAdapter";
 
     protected List<T> mDataList = new ArrayList<>();
@@ -24,12 +23,12 @@ public abstract class DiffAdapter<T, VH extends RecyclerView.ViewHolder> extends
         return mDataList;
     }
 
-    public void setDataList(List<T> dataList){
-        setDataList(dataList,false);
+    public void setDataList(List<T> dataList) {
+        setDataList(dataList, false);
     }
 
     public void setDataList(List<T> dataList, boolean useDiffUtils) {
-        if(dataList==null){
+        if (dataList == null) {
             mDataList.clear();
             notifyDataSetChanged();
             return;
@@ -76,7 +75,7 @@ public abstract class DiffAdapter<T, VH extends RecyclerView.ViewHolder> extends
                     DiffAdapter.this.notifyItemRangeChanged(position, count, payload);
                 }
             });
-        }else{
+        } else {
             mDataList.clear();
             mDataList.addAll(dataList);
             notifyDataSetChanged();
@@ -85,6 +84,7 @@ public abstract class DiffAdapter<T, VH extends RecyclerView.ViewHolder> extends
 
     /**
      * 删除某条数据
+     *
      * @param model
      */
     public void delete(T model) {
@@ -95,6 +95,18 @@ public abstract class DiffAdapter<T, VH extends RecyclerView.ViewHolder> extends
                 notifyItemRemoved(i);
                 return;
             }
+        }
+    }
+
+    /**
+     * 删除某个位置数据
+     *
+     * @param pos
+     */
+    public void deleteAt(int pos) {
+        if (mDataList.size() > pos) {
+            mDataList.remove(pos);
+            notifyItemRemoved(pos);
         }
     }
 

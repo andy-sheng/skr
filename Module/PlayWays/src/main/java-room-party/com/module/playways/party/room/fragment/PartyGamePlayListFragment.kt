@@ -15,6 +15,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.adapter.PartyGamePlayListRecyclerAdapter
+import com.module.playways.party.room.event.PartyAddGameEvent
 import com.module.playways.party.room.model.PartyPlayRule
 import com.module.playways.party.room.model.PartyRule
 import com.module.playways.room.data.H
@@ -22,6 +23,9 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 class PartyGamePlayListFragment : BaseFragment() {
     val mTag = "PartyGamePlayListFragment"
@@ -52,10 +56,12 @@ class PartyGamePlayListFragment : BaseFragment() {
         recyclerView.adapter = partyGamePlayListRecyclerAdapter
 
         partyGamePlayListRecyclerAdapter?.mAddMethod = {
-
+            addPlay(it)
         }
 
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
+
+        titlebar.centerTextView.text = partyRule?.ruleName
 
         smartRefresh.apply {
             setEnableRefresh(false)
@@ -96,6 +102,26 @@ class PartyGamePlayListFragment : BaseFragment() {
             }
 
             smartRefresh.finishLoadMore()
+        }
+    }
+
+    fun addPlay(partyRule: PartyPlayRule) {
+        launch {
+            val map = mutableMapOf(
+                    "roomID" to H.partyRoomData?.gameId,
+                    "playID" to partyRule.playID
+            )
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("${mTag} addPlay", ControlType.CancelThis)) {
+                roomServerApi.addPlay(body)
+            }
+
+            if (result.errno == 0) {
+                EventBus.getDefault().post(PartyAddGameEvent())
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
         }
     }
 

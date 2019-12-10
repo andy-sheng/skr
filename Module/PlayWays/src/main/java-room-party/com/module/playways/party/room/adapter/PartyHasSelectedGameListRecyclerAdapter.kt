@@ -4,70 +4,74 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.common.view.recyclerview.DiffAdapter
 import com.module.playways.R
-import com.module.playways.party.room.model.PartyPlayerInfoModel
+import com.module.playways.party.room.model.PartySelectedGameModel
 
-class PartyHasSelectedGameListRecyclerAdapter : RecyclerView.Adapter<PartyHasSelectedGameListRecyclerAdapter.PartyGameListHolder>() {
-    val mRaceGamePlayInfoList = ArrayList<PartyPlayerInfoModel>()
-    var mOpMethod: ((Int, PartyPlayerInfoModel) -> Unit)? = null
+class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameModel, PartyHasSelectedGameListRecyclerAdapter.ModelHolder>() {
+    var mDelMethod: ((Int, PartySelectedGameModel) -> Unit)? = null
+    var mUpMethod: ((Int, PartySelectedGameModel) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartyGameListHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModelHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.party_has_selected_game_list_item_layout, parent, false)
-        return PartyGameListHolder(view)
+        return ModelHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return mRaceGamePlayInfoList.size
+        return dataList.size
     }
 
-    override fun onBindViewHolder(holder: PartyGameListHolder, position: Int) {
-        holder.bindData(position, mRaceGamePlayInfoList.get(position))
+    override fun onBindViewHolder(holder: ModelHolder, position: Int) {
+        holder.bindData(position, dataList.get(position))
     }
 
-    override fun onBindViewHolder(holder: PartyGameListHolder, position: Int, payloads: MutableList<Any>) {
-        if (payloads.isEmpty()) {
-            holder.bindData(position, mRaceGamePlayInfoList.get(position))
-        } else {
-            // 局部刷新
-            holder.updateText(position, mRaceGamePlayInfoList.get(position))
-        }
-    }
-
-    fun addData(list: List<PartyPlayerInfoModel>) {
+    fun addData(list: List<PartySelectedGameModel>) {
         list?.let {
             if (it.size > 0) {
-                val startNotifyIndex = if (mRaceGamePlayInfoList.size > 0) mRaceGamePlayInfoList.size - 1 else 0
-                mRaceGamePlayInfoList.addAll(list)
-                notifyItemRangeChanged(startNotifyIndex, mRaceGamePlayInfoList.size - startNotifyIndex)
+                val startNotifyIndex = if (dataList.size > 0) dataList.size - 1 else 0
+                dataList.addAll(list)
+                notifyItemRangeChanged(startNotifyIndex, dataList.size - startNotifyIndex)
             }
         }
     }
 
-    inner class PartyGameListHolder : RecyclerView.ViewHolder {
-        val TAG = "PartyGameListHolder"
+    fun upModel(pos: Int) {
+        val model = dataList.removeAt(pos)
+        dataList.add(0, model)
+        notifyDataSetChanged()
+    }
+
+    inner class ModelHolder : RecyclerView.ViewHolder {
+        val TAG = "ModelHolder"
         var gameNameTv: ExTextView
         var detailIv: ExImageView
+        var upIv: ExImageView
         var addTv: ExTextView
-        var moreTv: ExImageView
+        var pos = -1
+        var model: PartySelectedGameModel? = null
 
         constructor(itemView: View) : super(itemView) {
             gameNameTv = itemView.findViewById(R.id.game_name_tv)
             detailIv = itemView.findViewById(R.id.detail_iv)
+            upIv = itemView.findViewById(R.id.up_iv)
             addTv = itemView.findViewById(R.id.add_tv)
-            moreTv = itemView.findViewById(R.id.more_tv)
 
+            detailIv.setDebounceViewClickListener {
+                mDelMethod?.invoke(pos, model!!)
+            }
 
+            upIv.setDebounceViewClickListener {
+                mUpMethod?.invoke(pos, model!!)
+            }
         }
 
-        fun bindData(position: Int, model: PartyPlayerInfoModel) {
-
-        }
-
-        //会变化的内容
-        fun updateText(position: Int, model: PartyPlayerInfoModel) {
-
+        fun bindData(position: Int, model: PartySelectedGameModel) {
+            pos = position
+            this.model = model
+            gameNameTv.text = model.name
         }
     }
 }
