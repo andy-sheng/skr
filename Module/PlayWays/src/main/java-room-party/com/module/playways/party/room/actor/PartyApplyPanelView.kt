@@ -59,7 +59,7 @@ class PartyApplyPanelView(context: Context) : ConstraintLayout(context), Corouti
         recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         adapter = PartyApplyAdapter(object : Listener {
             override fun onClickAgree(position: Int, model: PartyPlayerInfoModel?) {
-                model?.userInfo?.userId?.let { allowGetSeat(it) }
+                allowGetSeat(position, model)
             }
         })
         recyclerView?.adapter = adapter
@@ -85,20 +85,29 @@ class PartyApplyPanelView(context: Context) : ConstraintLayout(context), Corouti
         loadApplyListData(0, true)
     }
 
-    private fun allowGetSeat(applyUserID: Int) {
-        launch {
-            val map = mutableMapOf(
-                    "applyUserID" to applyUserID,
-                    "roomID" to H.partyRoomData?.gameId
-            )
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe(RequestControl("allowGetSeat", ControlType.CancelThis)) {
-                roomServerApi.allowGetSeat(body)
-            }
-            if (result.errno == 0) {
-                // 只用同意即可，不用操作
+    private fun allowGetSeat(position: Int, model: PartyPlayerInfoModel?) {
+        model?.userID?.let {
+            launch {
+                val map = mutableMapOf(
+                        "applyUserID" to it,
+                        "roomID" to H.partyRoomData?.gameId
+                )
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val result = subscribe(RequestControl("allowGetSeat", ControlType.CancelThis)) {
+                    roomServerApi.allowGetSeat(body)
+                }
+                if (result.errno == 0) {
+                    // 只用同意即可，不用操作
+                    // UI需要删除这个view 更新UI
+                    adapter?.mDataList?.remove(model)
+                    adapter?.notifyItemRemoved(position)//注意这里
+                    if (position != adapter?.mDataList?.size) {
+                        adapter?.notifyItemRangeChanged(position, (adapter?.mDataList?.size ?: 0) - position)
+                    }
+                }
             }
         }
+
     }
 
     private fun loadApplyListData(off: Int, isClean: Boolean) {
@@ -212,6 +221,8 @@ class PartyApplyPanelView(context: Context) : ConstraintLayout(context), Corouti
                 this.mPos = position
                 this.mModel = model
 
+                avatarSdv.bindData(model.userInfo)
+                nameTv.text = model.userInfo.nicknameRemark
             }
         }
     }

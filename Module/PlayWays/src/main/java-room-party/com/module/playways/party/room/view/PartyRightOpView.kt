@@ -14,7 +14,9 @@ import com.common.rxretrofit.subscribe
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
+import com.module.playways.party.room.event.PartyApplyUserCntChangeEvent
 import com.module.playways.party.room.event.PartyMySeatInfoChangeEvent
+import com.module.playways.party.room.event.PartyMyUserInfoChangeEvent
 import com.module.playways.room.data.H
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -165,8 +167,13 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PartyMySeatInfoChangeEvent) {
+    fun onEvent(event: PartyMyUserInfoChangeEvent) {
         bindData()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyApplyUserCntChangeEvent) {
+        applyList.text = "申请${H.partyRoomData?.applyUserCnt}人"
     }
 
     override fun onAttachedToWindow() {
