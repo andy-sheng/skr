@@ -129,7 +129,7 @@ interface PartyRoomServerApi {
     @GET("http://dev.game.inframe.mobi/v1/partygame/game-play-list")
     fun getPartyGamePlayList(@Query("roomID") roomID: Int, @Query("ruleID") ruleID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 
-    @PUT("http://dev.game.inframe.mobi/v1/partygame/invite")
+    @PUT("http://dev.game.inframe.mobi/v1/partyroom/invite")
     fun invite(@Body body: RequestBody): Observable<ApiResult>
 
     /**
