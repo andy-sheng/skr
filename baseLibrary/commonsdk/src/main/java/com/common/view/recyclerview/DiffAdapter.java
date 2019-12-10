@@ -92,7 +92,7 @@ public abstract class DiffAdapter<T, VH extends RecyclerView.ViewHolder> extends
             T m = mDataList.get(i);
             if (m.equals(model)) {
                 mDataList.remove(i);
-                notifyItemRemoved(i);
+                notifyItemRangeRemoved(i, 1);
                 return;
             }
         }
@@ -106,7 +106,7 @@ public abstract class DiffAdapter<T, VH extends RecyclerView.ViewHolder> extends
     public void deleteAt(int pos) {
         if (mDataList.size() > pos) {
             mDataList.remove(pos);
-            notifyItemRemoved(pos);
+            notifyItemRangeRemoved(pos, 1);
         }
     }
 
