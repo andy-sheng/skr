@@ -473,6 +473,12 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             }
 
             override fun onClickSetting() {
+                if (mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt()) == null
+                        || mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == false) {
+                    U.getToastUtil().showShort("只有主持人才能进行房间设置哦～")
+                    return
+                }
+
                 U.getFragmentUtils().addFragment(
                         FragmentUtils.newAddParamsBuilder(this@PartyRoomActivity, PartyRoomSettingFragment::class.java)
                                 .setAddToBackStack(true)
