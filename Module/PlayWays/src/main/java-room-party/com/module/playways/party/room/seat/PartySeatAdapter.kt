@@ -52,12 +52,10 @@ class PartySeatAdapter(var listener: Listener?) : RecyclerView.Adapter<RecyclerV
                 payloads.forEach { refreshType ->
                     if (refreshType is Int) {
                         when (refreshType) {
-                            REFRESH_MUTE -> {
-                                holder.refreshMute()
-                            }
-                            REFRESH_HOT -> {
-                                holder.refreshHot()
-                            }
+                            REFRESH_MUTE -> { holder.refreshMute() }
+                            REFRESH_HOT -> { holder.refreshHot() }
+                            REFRESH_PLAY_VOLUME -> { holder.playSpeakAnimation() }
+                            REFRESH_STOP_VOLUME -> { holder.stopSpeakAnimation() }
                         }
                     } else if (refreshType is PartyEmojiInfoModel) {
                         // 刷个表情
@@ -85,8 +83,10 @@ class PartySeatAdapter(var listener: Listener?) : RecyclerView.Adapter<RecyclerV
 
     companion object {
         // 表情可以直接用表情的model来局部刷新
-        const val REFRESH_MUTE = 1   // 局部刷新，静音
-        const val REFRESH_HOT = 2     // 局部刷新，热度
+        const val REFRESH_MUTE = 1      // 局部刷新，静音
+        const val REFRESH_HOT = 2       // 局部刷新，热度
+        const val REFRESH_PLAY_VOLUME = 3    // 局部刷新，播放声纹
+        const val REFRESH_STOP_VOLUME = 4    // 局部刷新，停止声纹
     }
 
     interface Listener {

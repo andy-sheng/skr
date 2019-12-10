@@ -628,7 +628,7 @@ class GrabTopContentView : ConstraintLayout {
                     uid = MyUserInfoManager.uid.toInt()
                 }
                 val vp = mInfoMap[uid]
-                if (vp != null && vp.grabTopItemView != null && vp.grabTopItemView?.isShown == true) {
+                if (vp?.grabTopItemView != null && vp.grabTopItemView?.isShown == true) {
                     vp.grabTopItemView?.showSpeakingAnimation()
                 }
             }

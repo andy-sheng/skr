@@ -16,6 +16,7 @@ import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.party.room.model.PartyEmojiInfoModel
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.room.data.H
+import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.PDynamicEmojiMsg
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -100,11 +101,18 @@ class PartySeatView : ConstraintLayout {
                 if (uv != null) {
                     var uid = uv.uid
                     if (uid == 0) {
-                        uid =  MyUserInfoManager.uid.toInt()
+                        uid = MyUserInfoManager.uid.toInt()
                     }
                     var volume = uv.volume
-                    //TODO 谁在说话 音量是多少
-
+                    if (volume > 20) {
+                        val seatInfo = H.partyRoomData?.getSeatInfoByUserId(uid)
+                        if (seatInfo?.micStatus == EMicStatus.MS_OPEN.value) {
+                            // 麦是开着的
+                            seatInfo?.seatSeq?.let {
+                                adapter.notifyItemChanged(it - 1, PartySeatAdapter.REFRESH_PLAY_VOLUME)
+                            }
+                        }
+                    }
                 }
             }
         }

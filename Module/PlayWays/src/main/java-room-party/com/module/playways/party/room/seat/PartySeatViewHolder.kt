@@ -13,6 +13,7 @@ import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.component.busilib.view.SpeakingTipsAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.party.room.model.PartyActorInfoModel
@@ -28,6 +29,8 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
     private val muteArea: Group = item.findViewById(R.id.mute_area)
     private val muteBg: ExImageView = item.findViewById(R.id.mute_bg)
     private val muteIv: ImageView = item.findViewById(R.id.mute_iv)
+    private val speakerAnimationIv: SpeakingTipsAnimationView = item.findViewById(R.id.speaker_animation_iv)
+
     private val emojiSdv: SimpleDraweeView = item.findViewById(R.id.emoji_sdv)
 
     var mModel: PartyActorInfoModel? = null
@@ -52,18 +55,29 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
         nameTv.text = "${model?.player?.userInfo?.nicknameRemark}"
         refreshHot()
         refreshMute()
+        stopSpeakAnimation()
     }
 
     fun refreshMute() {
         if (mModel?.seat?.micStatus == EMicStatus.MS_CLOSE.value) {
             muteArea.visibility = View.VISIBLE
         } else {
+            stopSpeakAnimation()
             muteArea.visibility = View.GONE
         }
     }
 
     fun refreshHot() {
-        hotTv.text = "${mModel?.player?.popularity?:0}"
+        hotTv.text = "${mModel?.player?.popularity ?: 0}"
+    }
+
+    fun playSpeakAnimation() {
+        stopSpeakAnimation()
+        speakerAnimationIv.show(1000)
+    }
+
+    fun stopSpeakAnimation() {
+        speakerAnimationIv.hide()
     }
 }
 
