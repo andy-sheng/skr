@@ -297,8 +297,8 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
     fun updateUser(playerInfoModel: PartyPlayerInfoModel, seatInfoModel: PartySeatInfoModel?) {
         // 判断是否要更新用户
+        var hasUserChange = false
         if (playerInfoModel.isNotOnlyAudience()) {
-            var hasUserChange = false
             var uu = usersMap[playerInfoModel.userID]
             if (uu != null) {
                 if (uu.same(playerInfoModel)) {
@@ -313,20 +313,24 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                 usersMap[playerInfoModel.userID] = playerInfoModel
                 hasUserChange = true
             }
-            if (hasUserChange) {
-                // 座位信息有变化
-                if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {
-                    myUserInfo = playerInfoModel
-                }
-            }
+
         } else {
             // 是观众了 去除信息
             usersMap.remove(playerInfoModel.userID)
+
+        }
+        updateSeat(seatInfoModel)
+        if (hasUserChange) {
+            // 座位信息有变化
+            if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {
+                myUserInfo = playerInfoModel
+            }
+        }
+        if (!playerInfoModel.isNotOnlyAudience()) {
             if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {
                 myUserInfo = null
             }
         }
-        updateSeat(seatInfoModel)
     }
 
     fun removeUser(playerInfoModel: PartyPlayerInfoModel) {
