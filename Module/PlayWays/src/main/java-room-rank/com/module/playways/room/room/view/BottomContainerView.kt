@@ -320,8 +320,6 @@ open class BottomContainerView : RelativeLayout {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
-//        mHandler.removeCallbacksAndMessages(null)
-        //dismissPopWindow();
     }
 
 

@@ -49,7 +49,7 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
     var isIsGameFinish = false // 游戏开始了
 
-    var isMute = false//是否mute
+    var isMute = false  //是否mute
 
     var agoraToken: String? = null // 声网token
 

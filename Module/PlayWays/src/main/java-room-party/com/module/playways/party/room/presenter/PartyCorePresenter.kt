@@ -461,7 +461,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     /**
      * 我的座位信息变化了，主要处理开闭麦下麦等
      */
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, priority = Int.MAX_VALUE)
     fun onEvent(event: PartyMySeatInfoChangeEvent) {
         DebugLogView.println(TAG, "PartyMySeatInfoChangeEvent 我是${mRoomData.myUserInfo?.role} 座位 ${mRoomData.mySeatInfo}")
         if (mRoomData.mySeatInfo?.seatStatus == ESeatStatus.SS_OPEN.value) {
@@ -491,7 +491,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
      * 我的角色变化了
      * 判断我的最新角色 然后做相应逻辑
      */
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, priority = Int.MAX_VALUE)
     fun onEvent(event: PartyMyUserInfoChangeEvent) {
         DebugLogView.println(TAG, "PartyMyUserInfoChangeEvent 我是${mRoomData.myUserInfo?.role} 座位 ${mRoomData.mySeatInfo}")
         if (mRoomData.myUserInfo?.isHost() == true) {
@@ -781,7 +781,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             pretendSystemMsg("${event.user.userInfo.nickName} 被 ${event.opUser.userInfo.nickName} 删除了管理员")
         }
         val p = PartyPlayerInfoModel.parseFromPb(event.user)
-        mRoomData.updateUser(p,null)
+        mRoomData.updateUser(p, null)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -812,8 +812,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         var partySeatInfoModel = PartySeatInfoModel()
         partySeatInfoModel.seatSeq = event.seatSeq
         partySeatInfoModel.seatStatus = event.seatStatus.value
-        partySeatInfoModel.micStatus = mRoomData.getSeatInfoBySeq(event.seatSeq)?.micStatus ?:0
-        partySeatInfoModel.userID = mRoomData.getSeatInfoBySeq(event.seatSeq)?.userID ?:0
+        partySeatInfoModel.micStatus = mRoomData.getSeatInfoBySeq(event.seatSeq)?.micStatus ?: 0
+        partySeatInfoModel.userID = mRoomData.getSeatInfoBySeq(event.seatSeq)?.userID ?: 0
         mRoomData.updateSeat(partySeatInfoModel)
     }
 
@@ -829,7 +829,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PGetSeatMsg) {
         MyLog.d(TAG, "onEvent event = $event")
-        mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.user),PartySeatInfoModel.parseFromPb(event.seatInfo))
+        mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.user), PartySeatInfoModel.parseFromPb(event.seatInfo))
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -839,9 +839,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         var n = mRoomData.getSeatInfoBySeq(event.seatSeq)
         partySeatInfoModel.seatSeq = event.seatSeq
         partySeatInfoModel.userID = 0
-        partySeatInfoModel.micStatus = n?.micStatus ?:0
-        partySeatInfoModel.seatStatus = n?.seatStatus ?:0
-        mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.user),partySeatInfoModel)
+        partySeatInfoModel.micStatus = n?.micStatus ?: 0
+        partySeatInfoModel.seatStatus = n?.seatStatus ?: 0
+        mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.user), partySeatInfoModel)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
