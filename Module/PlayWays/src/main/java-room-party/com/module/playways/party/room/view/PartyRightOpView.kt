@@ -14,6 +14,7 @@ import com.common.rxretrofit.subscribe
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
+import com.module.playways.party.room.event.PartyMySeatInfoChangeEvent
 import com.module.playways.room.data.H
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -21,6 +22,9 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : ConstraintLayout(context, attrs, defStyleAttr), CoroutineScope by MainScope() {
 
@@ -47,9 +51,14 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
         applyList = this.findViewById(R.id.apply_list)
         opMicTv = this.findViewById(R.id.op_mic_tv)
 
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+
         applyList.setDebounceViewClickListener {
             listener?.onClickApplyList()
         }
+
         opMicTv.setDebounceViewClickListener {
             // 申请 取消 下麦
             when (micStatus) {
@@ -66,7 +75,7 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
         }
     }
 
-    // 申请或取消申请上麦
+    // 申请或取消申请上麦 cancel为true，取消申请 cancel为false，为申请嘉宾
     private fun applyForGuest(cancel: Boolean) {
         launch {
             val map = mutableMapOf(
@@ -115,22 +124,29 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
         val myInfo = H.partyRoomData?.getMyUserInfoInParty()
         when {
             myInfo?.isHost() == true -> {
+                // 主持人
+                micStatus = mic_status_unapply
                 applyList.visibility = View.VISIBLE
                 opMicTv.visibility = View.GONE
-                applyList.text = "申请${H.partyRoomData?.applyUserCnt}人"
-                micStatus = mic_status_online
             }
-            myInfo?.isGuest() == true -> {
+            myInfo?.isNotOnlyAudience() == false -> {
+                // 只是观众
+                micStatus = mic_status_unapply
                 applyList.visibility = View.GONE
                 opMicTv.visibility = View.VISIBLE
-                micStatus = mic_status_online
             }
             else -> {
-                applyList.visibility = View.GONE
+                // 都是嘉宾
+                micStatus = mic_status_online
                 opMicTv.visibility = View.VISIBLE
-                micStatus = mic_status_unapply
+                if (myInfo?.isAdmin() == true) {
+                    applyList.visibility = View.VISIBLE
+                } else {
+                    applyList.visibility = View.GONE
+                }
             }
         }
+        applyList.text = "申请${H.partyRoomData?.applyUserCnt}人"
         refreshMicStatus()
     }
 
@@ -148,10 +164,23 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
         }
     }
 
-    // todo 还需要接一个成功上麦的事件，改变此时的状态
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyMySeatInfoChangeEvent) {
+        bindData()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+    }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
         cancel()
     }
 
