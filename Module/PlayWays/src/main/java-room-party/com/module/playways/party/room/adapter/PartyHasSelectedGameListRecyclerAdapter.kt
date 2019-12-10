@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.common.core.view.setDebounceViewClickListener
+import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
@@ -25,7 +26,7 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
     }
 
     override fun onBindViewHolder(holder: ModelHolder, position: Int) {
-        holder.bindData(position, dataList.get(position))
+        holder.bindData(dataList.get(position))
     }
 
     fun addData(list: List<PartySelectedGameModel>) {
@@ -50,7 +51,6 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
         var detailIv: ExImageView
         var upIv: ExImageView
         var delTv: ExTextView
-        var pos = -1
         var model: PartySelectedGameModel? = null
 
         constructor(itemView: View) : super(itemView) {
@@ -60,16 +60,15 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
             delTv = itemView.findViewById(R.id.del_tv)
 
             delTv.setDebounceViewClickListener {
-                mDelMethod?.invoke(pos, model!!)
+                mDelMethod?.invoke(dataList.indexOf(model!!), model!!)
             }
 
             upIv.setDebounceViewClickListener {
-                mUpMethod?.invoke(pos, model!!)
+                mUpMethod?.invoke(dataList.indexOf(model!!), model!!)
             }
         }
 
-        fun bindData(position: Int, model: PartySelectedGameModel) {
-            pos = position
+        fun bindData(model: PartySelectedGameModel) {
             this.model = model
             gameNameTv.text = model.name
         }
