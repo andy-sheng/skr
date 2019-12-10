@@ -19,13 +19,15 @@
         app:bl_corners_radius="@dimen/view_12_dp"
         app:bl_gradient_endColor="#6047D3"
         app:bl_gradient_startColor="#835DFD"
-        app:bl_shape="rectangle" />
+        app:bl_shape="rectangle"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <!--申请上麦 取消申请 下麦-->
     <com.common.view.ex.ExTextView
         android:id="@+id/op_mic_tv"
         android:layout_width="@dimen/view_60_dp"
         android:layout_height="@dimen/view_24_dp"
+        android:layout_marginTop="@dimen/view_5_dp"
         android:gravity="center"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_12_dp"
@@ -33,6 +35,7 @@
         app:bl_gradient_endColor="#6047D3"
         app:bl_gradient_startColor="#835DFD"
         app:bl_shape="rectangle"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/apply_list" />
 
 </merge>

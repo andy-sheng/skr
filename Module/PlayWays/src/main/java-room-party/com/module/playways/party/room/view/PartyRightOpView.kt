@@ -131,15 +131,19 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
                 applyList.visibility = View.VISIBLE
                 opMicTv.visibility = View.GONE
             }
-            myInfo?.isNotOnlyAudience() == false -> {
-                // 只是观众
-                micStatus = mic_status_unapply
-                applyList.visibility = View.GONE
+            myInfo?.isGuest() == true -> {
+                // 嘉宾
+                micStatus = mic_status_online
                 opMicTv.visibility = View.VISIBLE
+                if (myInfo?.isAdmin()) {
+                    applyList.visibility = View.VISIBLE
+                } else {
+                    applyList.visibility = View.GONE
+                }
             }
             else -> {
-                // 都是嘉宾
-                micStatus = mic_status_online
+                // 观众
+                micStatus = mic_status_unapply
                 opMicTv.visibility = View.VISIBLE
                 if (myInfo?.isAdmin() == true) {
                     applyList.visibility = View.VISIBLE
