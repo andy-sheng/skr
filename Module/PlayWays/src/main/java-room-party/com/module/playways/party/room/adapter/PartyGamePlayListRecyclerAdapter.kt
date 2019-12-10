@@ -56,7 +56,7 @@ class PartyGamePlayListRecyclerAdapter : RecyclerView.Adapter<PartyGamePlayListR
                 mAddMethod?.invoke(model!!)
             }
 
-            detailIv.visibility = View.GONE
+            moreTv.visibility = View.GONE
             addTv.visibility = View.VISIBLE
         }
 
