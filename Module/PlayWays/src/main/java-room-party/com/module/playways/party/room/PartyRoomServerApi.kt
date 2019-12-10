@@ -94,7 +94,7 @@ interface PartyRoomServerApi {
      * 全员禁麦，开麦 {"roomID": 0, "micStatus": 0}
      * MS_OPEN = 1 : 开麦 - MS_CLOSE = 2 : 闭麦
      */
-    @PUT("http://dev.game.inframe.mobi/v1/partygame/set-all-meber-mic")
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/set-all-member-mic")
     fun setAllMicStatus(@Body body: RequestBody): Call<ApiResult>
 
     /**

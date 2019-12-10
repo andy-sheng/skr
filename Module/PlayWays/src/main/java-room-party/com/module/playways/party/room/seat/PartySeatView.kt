@@ -76,17 +76,17 @@ class PartySeatView : ConstraintLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartySeatInfoChangeEvent) {
-        if(event.seatSeq<=0){
+        if (event.seatSeq <= 0) {
             // 全部刷新
             adapter.mDataList = H.partyRoomData?.getSeatInfoMap() ?: hashMapOf()
             adapter.notifyDataSetChanged()
-        }else{
+        } else {
             // 单个刷新
             var p = PartyActorInfoModel()
             p.player = H.partyRoomData?.getPlayerInfoBySeq(event.seatSeq)
             p.seat = H.partyRoomData?.getSeatInfoBySeq(event.seatSeq)
             adapter.mDataList[event.seatSeq] = p
-            adapter.notifyItemChanged(event.seatSeq-1,null)
+            adapter.notifyItemChanged(event.seatSeq - 1, null)
         }
     }
 
