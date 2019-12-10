@@ -99,8 +99,10 @@ class ChangeHostRecyclerAdapter : RecyclerView.Adapter<ChangeHostRecyclerAdapter
             this.model = model
             if (model.isAdmin()) {
                 opTv.background = mSelectedDrawable
+                opTv.text = "已设管理员"
             } else {
                 opTv.background = mUnSelectedDrawable
+                opTv.text = "设为管理员"
             }
         }
     }

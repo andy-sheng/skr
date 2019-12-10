@@ -78,7 +78,7 @@ class AdministratorSelectFragment : BaseFragment() {
 
     private fun getOnlineUserList() {
         launch {
-            val result = subscribe(RequestControl("${mTag} setAdmin", ControlType.CancelThis)) {
+            val result = subscribe(RequestControl("${mTag} getOnlineUserList", ControlType.CancelThis)) {
                 roomServerApi.getOnlineUserList(H.partyRoomData?.gameId ?: 0, offset, cnt)
             }
 
