@@ -471,8 +471,10 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             }
             if (mRoomData.mySeatInfo?.micStatus == EMicStatus.MS_OPEN.value) {
                 // 我得开着麦
+                mRoomData.isMute = false
                 ZqEngineKit.getInstance().muteLocalAudioStream(false)
             } else {
+                mRoomData.isMute = true
                 ZqEngineKit.getInstance().muteLocalAudioStream(true)
             }
         } else {
@@ -495,6 +497,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         if (mRoomData.myUserInfo?.isHost() == true) {
             if (!ZqEngineKit.getInstance().params.isAnchor) {
                 ZqEngineKit.getInstance().setClientRole(true)
+                mRoomData.isMute = false
             }
         } else if (mRoomData.myUserInfo?.isAdmin() == true) {
             //我是管理员了
