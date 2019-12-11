@@ -83,6 +83,7 @@ class RelayHomeSongAdapter : RecyclerView.Adapter<RelayHomeSongAdapter.RelaySong
                 contentTv.text = model.content
                 contentTv.requestLayout()
             } else {
+                contentTv.text = "歌词加载中..."
                 LyricsManager.loadStandardLyric(model.songModel?.lyric)
                         .subscribe({
                             it?.let {
