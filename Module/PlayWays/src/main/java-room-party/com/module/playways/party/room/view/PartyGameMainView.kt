@@ -18,6 +18,8 @@ import com.module.playways.party.room.model.PartyGameInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.zq.live.proto.PartyRoom.EPGameType
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomData) : ExViewStub(viewStub) {
     lateinit var contentBg: ExImageView
@@ -34,6 +36,9 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     var partyGameInfoModel: PartyGameInfoModel? = null
 
     override fun init(parentView: View) {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
         contentBg = parentView.findViewById(R.id.content_bg)
         gameTv = parentView.findViewById(R.id.game_tv)
         handCardTv = parentView.findViewById(R.id.hand_card_tv)
@@ -65,12 +70,16 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
 
     override fun onViewAttachedToWindow(v: View) {
         super.onViewAttachedToWindow(v)
-        EventBus.getDefault().register(this)
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
     }
 
     override fun onViewDetachedFromWindow(v: View) {
         super.onViewDetachedFromWindow(v)
-        EventBus.getDefault().unregister(this)
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
     }
 
     private fun toGameTab() {
@@ -132,6 +141,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyNoticeChangeEvent) {
         if (tagType == TagType.ATTENTION) {
             setMainText("房间公告\n", mRoomData?.notice)

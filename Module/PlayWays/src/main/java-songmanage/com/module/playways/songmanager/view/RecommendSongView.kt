@@ -95,6 +95,9 @@ class RecommendSongView(context: Context, internal var mType: Int,
         } else if (mType == SongManagerActivity.TYPE_FROM_RELAY_ROOM) {
             mContainer.background = mMicDrawableBg
             mRecommendSongAdapter = RecommendSongAdapter(true, mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model, mType)) })
+        } else if (mType == SongManagerActivity.TYPE_FROM_PARTY) {
+            mContainer.background = mMicDrawableBg
+            mRecommendSongAdapter = RecommendSongAdapter(true, mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model, mType)) })
         } else {
             /**
              * 双人房默认是直接 点唱
@@ -142,7 +145,8 @@ class RecommendSongView(context: Context, internal var mType: Int,
                 mRefreshLayout.finishLoadMore()
 
                 if (result.errno == 0) {
-                    val recommendTagModelArrayList = if (mType == SongManagerActivity.TYPE_FROM_MIC || mType == SongManagerActivity.TYPE_FROM_RELAY_ROOM) {
+                    val recommendTagModelArrayList = if (mType == SongManagerActivity.TYPE_FROM_MIC
+                            || mType == SongManagerActivity.TYPE_FROM_RELAY_ROOM || mType == SongManagerActivity.TYPE_FROM_PARTY) {
                         JSONObject.parseArray(result.data!!.getString("details"), SongModel::class.java)
                     } else {
                         JSONObject.parseArray(result.data!!.getString("items"), SongModel::class.java)
@@ -191,6 +195,7 @@ class RecommendSongView(context: Context, internal var mType: Int,
             SongManagerActivity.TYPE_FROM_GRAB -> mSongManageServerApi.getListStandBoards(tab, offset, mLimit)
             SongManagerActivity.TYPE_FROM_MIC -> mSongManageServerApi.getMicSongList(offset, mLimit, MyUserInfoManager.uid.toInt(), tab)
             SongManagerActivity.TYPE_FROM_RELAY_ROOM -> mSongManageServerApi.getRelaySongList(offset, mLimit, MyUserInfoManager.uid.toInt(), tab)
+            SongManagerActivity.TYPE_FROM_PARTY -> mSongManageServerApi.getPartySongList(offset, mLimit, MyUserInfoManager.uid.toInt(), tab)
             else -> mSongManageServerApi.getDoubleListStandBoards(tab, offset, mLimit)
         }
     }

@@ -265,4 +265,55 @@ interface SongManagerServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/relaygame/up-music")
     fun stickRelaySong(@Body body: RequestBody): Call<ApiResult>
 
+
+    /**
+     * 获取推荐tag列表(剧场)
+     *
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partygame/music-tabs")
+    fun getPartySongTagList(): Call<ApiResult>
+
+    /**
+     * 获取推荐歌曲列表(剧场)
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partygame/list-music")
+    fun getPartySongList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int, @Query("tab") tab: Int): Observable<ApiResult>
+
+    /**
+     * 获取已点歌曲列表(剧场)
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partygame/list-add-music")
+    fun getPartyExistSongList(@Query("roomID") roomID: Int, @Query("userID") userID: Int, @Query("offset") offset: Int, @Query("limit") limit: Int): Call<ApiResult>
+
+
+
+    /**
+     * 点歌(剧场)
+     * {"itemID": 0,"roomID": 0,"wantSingType": 0}
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/add-music")
+    fun addPartySong(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 删除已点歌曲(剧场)
+     *    {
+     *       "roomID": 0,
+     *       "uniqTag": "string"
+     *     }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/del-music")
+    fun deletePartySong(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 置顶已点歌曲(剧场)
+     *    {
+     *       "roomID": 0,
+     *       "uniqTag": "string"
+     *     }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/up-music")
+    fun stickPartySong(@Body body: RequestBody): Call<ApiResult>
+
+
+
 }

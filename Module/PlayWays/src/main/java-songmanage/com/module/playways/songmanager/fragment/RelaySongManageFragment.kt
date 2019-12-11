@@ -22,7 +22,6 @@ import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.constans.GameModeType
 import com.module.playways.R
-import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.relay.room.event.RelayRoundChangeEvent
 import com.module.playways.room.song.fragment.GrabSearchSongFragment
@@ -31,10 +30,8 @@ import com.module.playways.songmanager.SongManagerActivity
 import com.module.playways.songmanager.SongManagerServerApi
 import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.model.RecommendTagModel
-import com.module.playways.songmanager.view.MicRelayExistSongManageView
+import com.module.playways.songmanager.view.ExistSongManageView
 import com.module.playways.songmanager.view.RecommendSongView
-import com.zq.live.proto.Common.StandPlayType
-import com.zq.live.proto.MicRoom.EMWantSingType
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -54,7 +51,7 @@ class RelaySongManageFragment : BaseFragment() {
     lateinit var mPagerAdapter: PagerAdapter
 
     private var mRoomData: RelayRoomData? = null
-    private var relaySongManageView: MicRelayExistSongManageView? = null
+    private var relaySongManageView: ExistSongManageView? = null
     private val mSongManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
     private var mTagModelList: List<RecommendTagModel>? = null
 
@@ -183,7 +180,7 @@ class RelaySongManageFragment : BaseFragment() {
                 if (view != null) {
                     if (view is RecommendSongView) {
                         view.tryLoad()
-                    } else if (view is MicRelayExistSongManageView) {
+                    } else if (view is ExistSongManageView) {
                         view.tryLoad()
                     }
                 }
@@ -205,7 +202,7 @@ class RelaySongManageFragment : BaseFragment() {
 
         if (position == 0) {
             if (relaySongManageView == null) {
-                relaySongManageView = MicRelayExistSongManageView(context!!, mRoomData?.gameId
+                relaySongManageView = ExistSongManageView(context!!, mRoomData?.gameId
                         ?: 0, GameModeType.GAME_MODE_RELAY)
             }
             relaySongManageView?.tag = position

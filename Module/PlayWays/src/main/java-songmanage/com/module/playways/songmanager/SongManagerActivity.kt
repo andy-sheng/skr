@@ -14,15 +14,13 @@ import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.mic.room.MicRoomData
+import com.module.playways.party.room.PartyRoomData
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.room.song.fragment.GrabSearchSongFragment
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.event.AddSongEvent
-import com.module.playways.songmanager.fragment.DoubleSongManageFragment
-import com.module.playways.songmanager.fragment.GrabSongManageFragment
-import com.module.playways.songmanager.fragment.MicSongManageFragment
-import com.module.playways.songmanager.fragment.RelaySongManageFragment
+import com.module.playways.songmanager.fragment.*
 import org.greenrobot.eventbus.EventBus
 
 class SongManagerActivity : BaseActivity() {
@@ -103,6 +101,15 @@ class SongManagerActivity : BaseActivity() {
                     .setExitAnim(R.anim.slide_right_out)
                     .addDataBeforeAdd(0, mRoomData)
                     .build())
+        } else if (from == TYPE_FROM_PARTY) {
+            val mRoomData = intent.getSerializableExtra("room_data") as PartyRoomData
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, PartySongManageFragment::class.java)
+                    .setAddToBackStack(false)
+                    .setHasAnimation(false)
+                    .setEnterAnim(R.anim.slide_right_in)
+                    .setExitAnim(R.anim.slide_right_out)
+                    .addDataBeforeAdd(0, mRoomData)
+                    .build())
         }
     }
 
@@ -126,6 +133,7 @@ class SongManagerActivity : BaseActivity() {
         const val TYPE_FROM_RACE = 4      //排位赛
         const val TYPE_FROM_RELAY_HOME = 5   //接唱首页
         const val TYPE_FROM_RELAY_ROOM = 6   //接唱房间
+        const val TYPE_FROM_PARTY = 7        //剧场房间
 
         fun open(activity: FragmentActivity?, roomData: GrabRoomData) {
             val intent = Intent(activity, SongManagerActivity::class.java)
@@ -164,6 +172,13 @@ class SongManagerActivity : BaseActivity() {
         fun open(activity: FragmentActivity?, roomData: RelayRoomData) {
             val intent = Intent(activity, SongManagerActivity::class.java)
             intent.putExtra("from", TYPE_FROM_RELAY_ROOM)
+            intent.putExtra("room_data", roomData)
+            activity?.startActivity(intent)
+        }
+
+        fun open(activity: FragmentActivity?, roomData: PartyRoomData) {
+            val intent = Intent(activity, SongManagerActivity::class.java)
+            intent.putExtra("from", TYPE_FROM_PARTY)
             intent.putExtra("room_data", roomData)
             activity?.startActivity(intent)
         }

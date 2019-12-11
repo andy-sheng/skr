@@ -35,8 +35,8 @@ import org.greenrobot.eventbus.ThreadMode
 import java.util.HashMap
 import com.module.playways.songmanager.adapter.MicExistListener as MicExistListener
 
-// 排麦房和接唱的已点
-class MicRelayExistSongManageView(context: Context, var roomID: Int, var gameType: Int) : FrameLayout(context), CoroutineScope by MainScope() {
+// 排麦房和接唱 剧场 的已点
+class ExistSongManageView(context: Context, var roomID: Int, var gameType: Int) : FrameLayout(context), CoroutineScope by MainScope() {
     private val mTag = "MicExistSongManageView"
 
     private val songManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
@@ -127,10 +127,10 @@ class MicRelayExistSongManageView(context: Context, var roomID: Int, var gameTyp
     private fun getMicExistSongList(off: Int, isClear: Boolean) {
         launch {
             var result = subscribe {
-                if (gameType == GameModeType.GAME_MODE_MIC) {
-                    songManagerServerApi.getMicExistSongList(roomID, MyUserInfoManager.uid.toInt(), off, mCnt)
-                } else {
-                    songManagerServerApi.getRelayExistSongList(roomID, MyUserInfoManager.uid.toInt(), off, mCnt)
+                when (gameType) {
+                    GameModeType.GAME_MODE_MIC -> songManagerServerApi.getMicExistSongList(roomID, MyUserInfoManager.uid.toInt(), off, mCnt)
+                    GameModeType.GAME_MODE_PARTY -> songManagerServerApi.getPartyExistSongList(roomID, MyUserInfoManager.uid.toInt(), off, mCnt)
+                    else -> songManagerServerApi.getRelayExistSongList(roomID, MyUserInfoManager.uid.toInt(), off, mCnt)
                 }
             }
             if (result.errno == 0) {
@@ -154,10 +154,10 @@ class MicRelayExistSongManageView(context: Context, var roomID: Int, var gameTyp
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         launch {
             var result = subscribe {
-                if (gameType == GameModeType.GAME_MODE_MIC) {
-                    songManagerServerApi.deleteMicSong(body)
-                } else {
-                    songManagerServerApi.deleteRelaySong(body)
+                when (gameType) {
+                    GameModeType.GAME_MODE_MIC -> songManagerServerApi.deleteMicSong(body)
+                    GameModeType.GAME_MODE_PARTY -> songManagerServerApi.deletePartySong(body)
+                    else -> songManagerServerApi.deleteRelaySong(body)
                 }
             }
             if (result.errno == 0) {
@@ -178,10 +178,10 @@ class MicRelayExistSongManageView(context: Context, var roomID: Int, var gameTyp
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         launch {
             var result = subscribe {
-                if (gameType == GameModeType.GAME_MODE_MIC) {
-                    songManagerServerApi.stickMicSong(body)
-                } else {
-                    songManagerServerApi.stickRelaySong(body)
+                when (gameType) {
+                    GameModeType.GAME_MODE_MIC -> songManagerServerApi.stickMicSong(body)
+                    GameModeType.GAME_MODE_PARTY -> songManagerServerApi.stickPartySong(body)
+                    else -> songManagerServerApi.stickRelaySong(body)
                 }
             }
             if (result.errno == 0) {

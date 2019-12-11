@@ -63,6 +63,7 @@ import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.room.view.InputContainerView
+import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import org.greenrobot.eventbus.Subscribe
@@ -612,7 +613,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartySelectSongEvent) {
-        TODO("跳转到歌曲选择页面")
+        SongManagerActivity.open(this@PartyRoomActivity, mRoomData)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
