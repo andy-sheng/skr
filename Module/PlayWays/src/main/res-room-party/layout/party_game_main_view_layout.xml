@@ -99,8 +99,8 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/view_130_dp"
         android:layout_marginTop="@dimen/view_15_dp"
-        android:paddingLeft="@dimen/view_18_dp"
-        android:paddingRight="@dimen/view_18_dp"
+        android:paddingLeft="@dimen/view_22_dp"
+        android:paddingRight="@dimen/view_22_dp"
         app:layout_constraintLeft_toRightOf="@+id/game_pic_img"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/content_bg">
