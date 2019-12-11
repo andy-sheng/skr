@@ -634,6 +634,7 @@ public class AgoraRTCAdapter {
             mRtcEngine.setAudioProfile(profile, scenario);
 
 //            mRtcEngine.setParameters("{\"che.audio.opensl\": true}");
+//            mRtcEngine.setParameters("{\"che.audio.bypass.apm\": true}");
             mRtcEngine.setParameters("{\"che.audio.gamestreaming.volume\": 100}");
             mRtcEngine.setParameters("{\"che.audio.specify.codec\": \"OPUSFB\"}");
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
@@ -756,12 +757,12 @@ public class AgoraRTCAdapter {
                         SDataManager.getInstance().getDataHolder().addSAudioSamplingInfoGroup(ASIGroup);
                     }
 
-                    //long tm = System.nanoTime() / 1000;
-                    //Log.d(TAG, "audio effect start " + numOfSamples * 1000 / samplesPerSec);
+//                    long tm = System.nanoTime() / 1000;
+//                    Log.d(TAG, "audio effect start " + numOfSamples * 1000 / samplesPerSec);
                     AudioBufFrame frame = new AudioBufFrame(mLocalAudioFormat, byteBuffer, pts);
                     mLocalAudioSrcPin.onFrameAvailable(frame);
-                    //long tm1 = System.nanoTime() / 1000;
-                    //Log.d(TAG, "audio effect end " + ((tm1 - tm) / 1000) + "ms");
+//                    long tm1 = System.nanoTime() / 1000;
+//                    Log.d(TAG, "audio effect end " + ((tm1 - tm) / 1000) + "ms");
                     return true;
                 }
 

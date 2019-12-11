@@ -1181,19 +1181,9 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     /*音频高级扩展开始*/
 
-    private boolean isTBEffect(Params.AudioEffect styleEnum) {
-        return (styleEnum == Params.AudioEffect.ktv || styleEnum == Params.AudioEffect.rock);
-    }
-
     private void doSetAudioEffect(Params.AudioEffect styleEnum, boolean fromInit) {
         if (styleEnum == mConfig.getStyleEnum() && !fromInit) {
             return;
-        }
-
-        if (isTBEffect(mConfig.getStyleEnum()) && isTBEffect(styleEnum)) {
-            if (mAudioFilterMgt != null) {
-                mAudioFilterMgt.setFilter((AudioFilterBase[]) null);
-            }
         }
 
         mConfig.setStyleEnum(styleEnum);
@@ -1201,11 +1191,11 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         // 添加音效
         if (styleEnum == Params.AudioEffect.ktv) {
-            filters.add(new TbAudioEffectFilter(2));
+            filters.add(new CbAudioEffectFilter(5));
         } else if (styleEnum == Params.AudioEffect.rock) {
-            filters.add(new TbAudioEffectFilter(1));
+            filters.add(new CbAudioEffectFilter(2));
         } else if (styleEnum == Params.AudioEffect.liuxing) {
-            filters.add(new CbAudioEffectFilter(8));
+            filters.add(new CbAudioEffectFilter(3));
         } else if (styleEnum == Params.AudioEffect.kongling) {
             filters.add(new CbAudioEffectFilter(1));
         }
