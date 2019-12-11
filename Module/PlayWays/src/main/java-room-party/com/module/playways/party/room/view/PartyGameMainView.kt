@@ -12,9 +12,11 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
+import com.module.playways.party.room.event.PartyNoticeChangeEvent
 import com.module.playways.party.room.model.PartyGameInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.zq.live.proto.PartyRoom.EPGameType
+import org.greenrobot.eventbus.EventBus
 
 class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomData) : ExViewStub(viewStub) {
     lateinit var contentBg: ExImageView
@@ -58,6 +60,16 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         }
 
         toGameTab()
+    }
+
+    override fun onViewAttachedToWindow(v: View) {
+        super.onViewAttachedToWindow(v)
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onViewDetachedFromWindow(v: View) {
+        super.onViewDetachedFromWindow(v)
+        EventBus.getDefault().unregister(this)
     }
 
     private fun toGameTab() {
@@ -115,6 +127,12 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         tagType = TagType.ATTENTION
 
         partyGameInfoModel?.let {
+            setMainText("房间公告\n", mRoomData?.notice)
+        }
+    }
+
+    fun onEvent(event: PartyNoticeChangeEvent) {
+        if (tagType == TagType.ATTENTION) {
             setMainText("房间公告\n", mRoomData?.notice)
         }
     }
