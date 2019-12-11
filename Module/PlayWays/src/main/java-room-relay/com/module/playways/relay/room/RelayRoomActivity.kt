@@ -25,18 +25,15 @@ import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
 import com.dialog.view.TipsDialogView
-import com.facebook.drawee.drawable.RoundedColorDrawable
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.R
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.VIPEnterView
-import com.module.playways.grab.room.view.control.OthersSingCardView
 import com.module.playways.grab.room.view.normal.NormalOthersSingCardView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
-import com.module.playways.mic.home.MicHomeActivity
 import com.module.playways.mic.room.model.RoomInviteMusicModel
 import com.module.playways.mic.room.top.RoomInviteView
 import com.module.playways.relay.match.RelayHomeActivity
@@ -546,7 +543,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         mGiftPanelView = findViewById<View>(R.id.gift_panel_view) as GiftPanelView
         mGiftPanelView.setRoomData(mRoomData)
         mContinueSendView = findViewById<View>(R.id.continue_send_view) as ContinueSendView
-        mContinueSendView.mScene = ContinueSendView.EGameScene.GS_Race
+        mContinueSendView.mScene = ContinueSendView.EGameScene.GS_Relay
         mContinueSendView.setRoomData(mRoomData)
         mContinueSendView.setObserver(object : ContinueSendView.OnVisibleStateListener {
             override fun onVisible(isVisible: Boolean) {

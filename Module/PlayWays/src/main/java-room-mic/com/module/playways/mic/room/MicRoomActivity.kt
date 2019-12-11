@@ -614,7 +614,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mGiftPanelView = findViewById<View>(R.id.gift_panel_view) as GiftPanelView
         mGiftPanelView.setRoomData(mRoomData)
         mContinueSendView = findViewById<View>(R.id.continue_send_view) as ContinueSendView
-        mContinueSendView.mScene = ContinueSendView.EGameScene.GS_Race
+        mContinueSendView.mScene = ContinueSendView.EGameScene.GS_Mic
         mContinueSendView.setRoomData(mRoomData)
         mContinueSendView.setObserver(object : ContinueSendView.OnVisibleStateListener {
             override fun onVisible(isVisible: Boolean) {
