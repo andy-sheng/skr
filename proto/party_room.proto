@@ -145,12 +145,11 @@ message PNextRoundMsg {
 }
 
 message PRoundInfo {
-    uint32 roundSeq = 1; //轮次序号
-    uint32 beginMs = 2; //开始相对时间（相对于createdTimeMs时间）
-    uint32 endMs = 3; //结束相对时间（相对于createdTimeMs时间）
-    EPRoundStatus status = 4; //轮次状态
-    PGameItemInfo itemInfo = 5; //游戏信息
-    bool hasNextItem = 6; //是否存在下一个游戏
+    uint32 roundSeq          = 1; //轮次序号
+    uint32 beginMs           = 2; //开始相对时间（相对于createdTimeMs时间）
+    uint32 endMs             = 3; //结束相对时间（相对于createdTimeMs时间）
+    EPRoundStatus status     = 4; //轮次状态
+    PGameSceneInfo sceneInfo = 5; //场景信息
 }
 
 enum EPRoundStatus {
@@ -160,14 +159,29 @@ enum EPRoundStatus {
     PRS_END = 3; //轮次已结束
 }
 
-message PGameItemInfo {
-    PGameRule gameRule = 1; //游戏规则
-    EPGameType gameType = 2; //游戏类型
-    PGamePlay play = 3; //剧本类游戏数据
-    PGameQuestion question = 4; //问答类游戏数据
+message PGameSceneInfo
+{
+    string sceneTag         = 1; //场景标识
+    PGameRule rule          = 2; //游戏规则
+    PPlayScene play         = 3; //剧本类游戏数据
+    PQuestionScene question = 4; //问答类游戏数据
     PFreeScene free         = 5; //自由主持类游戏
     PKTVScene ktv           = 6; //ktv唱歌类游戏
 }
+
+
+message PPlayScene
+{
+    PGamePlay palyInfo = 1;
+}
+
+message PQuestionScene
+{
+    PGameQuestion questionInfo = 1;
+    bool hasNextquestion       = 2; //是否存在下一个游戏
+    uint32 questionSeq         = 3; //题目序号
+}
+
 
 message PFreeScene
 {
@@ -181,13 +195,13 @@ message PKTVScene
     uint32 userID     = 4; //演唱者id
 }
 
-
-
-message PGameRule {
-    uint32 ruleID = 1; //游戏规则标识
-    string ruleName = 2; //游戏规则名称
-    string ruleDesc = 3; //游戏规则描述
-}
+    message PGameRule
+    {
+        uint32 ruleID       = 1; //游戏规则标识
+        string ruleName     = 2; //游戏规则名称
+        string ruleDesc     = 3; //游戏规则描述
+        EPGameType ruleType = 4; //游戏类型
+    }
 
 enum EPGameType {
     PGT_Unknown  = 0; //未知场景

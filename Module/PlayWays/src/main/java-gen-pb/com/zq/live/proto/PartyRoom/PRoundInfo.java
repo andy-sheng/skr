@@ -10,7 +10,6 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
-import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
@@ -30,8 +29,6 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
   public static final Integer DEFAULT_ENDMS = 0;
 
   public static final EPRoundStatus DEFAULT_STATUS = EPRoundStatus.PRS_UNKNOWN;
-
-  public static final Boolean DEFAULT_HASNEXTITEM = false;
 
   /**
    * 轮次序号
@@ -70,37 +67,27 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
   private final EPRoundStatus status;
 
   /**
-   * 游戏信息
+   * 场景信息
    */
   @WireField(
       tag = 5,
-      adapter = "com.zq.live.proto.PartyRoom.PGameItemInfo#ADAPTER"
+      adapter = "com.zq.live.proto.PartyRoom.PGameSceneInfo#ADAPTER"
   )
-  private final PGameItemInfo itemInfo;
-
-  /**
-   * 是否存在下一个游戏
-   */
-  @WireField(
-      tag = 6,
-      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
-  )
-  private final Boolean hasNextItem;
+  private final PGameSceneInfo sceneInfo;
 
   public PRoundInfo(Integer roundSeq, Integer beginMs, Integer endMs, EPRoundStatus status,
-      PGameItemInfo itemInfo, Boolean hasNextItem) {
-    this(roundSeq, beginMs, endMs, status, itemInfo, hasNextItem, ByteString.EMPTY);
+      PGameSceneInfo sceneInfo) {
+    this(roundSeq, beginMs, endMs, status, sceneInfo, ByteString.EMPTY);
   }
 
   public PRoundInfo(Integer roundSeq, Integer beginMs, Integer endMs, EPRoundStatus status,
-      PGameItemInfo itemInfo, Boolean hasNextItem, ByteString unknownFields) {
+      PGameSceneInfo sceneInfo, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundSeq = roundSeq;
     this.beginMs = beginMs;
     this.endMs = endMs;
     this.status = status;
-    this.itemInfo = itemInfo;
-    this.hasNextItem = hasNextItem;
+    this.sceneInfo = sceneInfo;
   }
 
   @Override
@@ -110,8 +97,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
     builder.beginMs = beginMs;
     builder.endMs = endMs;
     builder.status = status;
-    builder.itemInfo = itemInfo;
-    builder.hasNextItem = hasNextItem;
+    builder.sceneInfo = sceneInfo;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -126,8 +112,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
         && Internal.equals(beginMs, o.beginMs)
         && Internal.equals(endMs, o.endMs)
         && Internal.equals(status, o.status)
-        && Internal.equals(itemInfo, o.itemInfo)
-        && Internal.equals(hasNextItem, o.hasNextItem);
+        && Internal.equals(sceneInfo, o.sceneInfo);
   }
 
   @Override
@@ -139,8 +124,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
       result = result * 37 + (beginMs != null ? beginMs.hashCode() : 0);
       result = result * 37 + (endMs != null ? endMs.hashCode() : 0);
       result = result * 37 + (status != null ? status.hashCode() : 0);
-      result = result * 37 + (itemInfo != null ? itemInfo.hashCode() : 0);
-      result = result * 37 + (hasNextItem != null ? hasNextItem.hashCode() : 0);
+      result = result * 37 + (sceneInfo != null ? sceneInfo.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -153,8 +137,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
     if (beginMs != null) builder.append(", beginMs=").append(beginMs);
     if (endMs != null) builder.append(", endMs=").append(endMs);
     if (status != null) builder.append(", status=").append(status);
-    if (itemInfo != null) builder.append(", itemInfo=").append(itemInfo);
-    if (hasNextItem != null) builder.append(", hasNextItem=").append(hasNextItem);
+    if (sceneInfo != null) builder.append(", sceneInfo=").append(sceneInfo);
     return builder.replace(0, 2, "PRoundInfo{").append('}').toString();
   }
 
@@ -209,23 +192,13 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
   }
 
   /**
-   * 游戏信息
+   * 场景信息
    */
-  public PGameItemInfo getItemInfo() {
-    if(itemInfo==null){
-        return new PGameItemInfo.Builder().build();
+  public PGameSceneInfo getSceneInfo() {
+    if(sceneInfo==null){
+        return new PGameSceneInfo.Builder().build();
     }
-    return itemInfo;
-  }
-
-  /**
-   * 是否存在下一个游戏
-   */
-  public Boolean getHasNextItem() {
-    if(hasNextItem==null){
-        return DEFAULT_HASNEXTITEM;
-    }
-    return hasNextItem;
+    return sceneInfo;
   }
 
   /**
@@ -257,17 +230,10 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
   }
 
   /**
-   * 游戏信息
+   * 场景信息
    */
-  public boolean hasItemInfo() {
-    return itemInfo!=null;
-  }
-
-  /**
-   * 是否存在下一个游戏
-   */
-  public boolean hasHasNextItem() {
-    return hasNextItem!=null;
+  public boolean hasSceneInfo() {
+    return sceneInfo!=null;
   }
 
   public static final class Builder extends Message.Builder<PRoundInfo, Builder> {
@@ -279,9 +245,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
 
     private EPRoundStatus status;
 
-    private PGameItemInfo itemInfo;
-
-    private Boolean hasNextItem;
+    private PGameSceneInfo sceneInfo;
 
     public Builder() {
     }
@@ -319,24 +283,16 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
     }
 
     /**
-     * 游戏信息
+     * 场景信息
      */
-    public Builder setItemInfo(PGameItemInfo itemInfo) {
-      this.itemInfo = itemInfo;
-      return this;
-    }
-
-    /**
-     * 是否存在下一个游戏
-     */
-    public Builder setHasNextItem(Boolean hasNextItem) {
-      this.hasNextItem = hasNextItem;
+    public Builder setSceneInfo(PGameSceneInfo sceneInfo) {
+      this.sceneInfo = sceneInfo;
       return this;
     }
 
     @Override
     public PRoundInfo build() {
-      return new PRoundInfo(roundSeq, beginMs, endMs, status, itemInfo, hasNextItem, super.buildUnknownFields());
+      return new PRoundInfo(roundSeq, beginMs, endMs, status, sceneInfo, super.buildUnknownFields());
     }
   }
 
@@ -351,8 +307,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.beginMs)
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.endMs)
           + EPRoundStatus.ADAPTER.encodedSizeWithTag(4, value.status)
-          + PGameItemInfo.ADAPTER.encodedSizeWithTag(5, value.itemInfo)
-          + ProtoAdapter.BOOL.encodedSizeWithTag(6, value.hasNextItem)
+          + PGameSceneInfo.ADAPTER.encodedSizeWithTag(5, value.sceneInfo)
           + value.unknownFields().size();
     }
 
@@ -362,8 +317,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.beginMs);
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.endMs);
       EPRoundStatus.ADAPTER.encodeWithTag(writer, 4, value.status);
-      PGameItemInfo.ADAPTER.encodeWithTag(writer, 5, value.itemInfo);
-      ProtoAdapter.BOOL.encodeWithTag(writer, 6, value.hasNextItem);
+      PGameSceneInfo.ADAPTER.encodeWithTag(writer, 5, value.sceneInfo);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -384,8 +338,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
             }
             break;
           }
-          case 5: builder.setItemInfo(PGameItemInfo.ADAPTER.decode(reader)); break;
-          case 6: builder.setHasNextItem(ProtoAdapter.BOOL.decode(reader)); break;
+          case 5: builder.setSceneInfo(PGameSceneInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -400,7 +353,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
     @Override
     public PRoundInfo redact(PRoundInfo value) {
       Builder builder = value.newBuilder();
-      if (builder.itemInfo != null) builder.itemInfo = PGameItemInfo.ADAPTER.redact(builder.itemInfo);
+      if (builder.sceneInfo != null) builder.sceneInfo = PGameSceneInfo.ADAPTER.redact(builder.sceneInfo);
       builder.clearUnknownFields();
       return builder.build();
     }

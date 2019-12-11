@@ -63,8 +63,7 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
         }
 
         initLyric()
-        TODO("这里需要设置mSongModel")
-//        mSongModel = infoModel.getSongModelNow()
+        mSongModel = infoModel.itemInfo?.ktv?.music
         var curSong = mSongModel
         if (curSong == null) {
             MyLog.w(TAG, "playWithAcc curSong = null totalTs=$totalTs")

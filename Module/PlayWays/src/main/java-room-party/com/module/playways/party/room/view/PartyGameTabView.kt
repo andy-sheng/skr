@@ -129,19 +129,38 @@ class PartyGameTabView : ExConstraintLayout {
         if (roomData?.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == true) {
             //主持人
             bottomLeftOpTv.visibility = View.VISIBLE
-            bottomRightOpTv.visibility = View.VISIBLE
 
             partyGameInfoModel?.let {
-                if (it.gameType == EPGameType.PGT_KTV.ordinal) {
-                    bottomRightOpTv.text = "切割"
-                } else {
-                    bottomRightOpTv.text = "下一题"
+                if (it.rule?.ruleType == EPGameType.PGT_Play.ordinal) {
+                    bottomRightOpTv.visibility = View.GONE
+                } else if (it.rule?.ruleType == EPGameType.PGT_Question.ordinal) {
+                    if (it.question?.hasNextquestion == true) {
+                        bottomRightOpTv.visibility = View.VISIBLE
+                        bottomRightOpTv.text = "下一题"
+                    } else {
+                        bottomRightOpTv.visibility = View.GONE
+                    }
+                } else if (it.rule?.ruleType == EPGameType.PGT_Free.ordinal) {
+                    bottomRightOpTv.visibility = View.GONE
+                } else if (it.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
+                    if (it.ktv?.hasNextMusic == true) {
+                        bottomRightOpTv.text = "切歌"
+                        bottomRightOpTv.visibility = View.VISIBLE
+                    } else {
+                        bottomRightOpTv.visibility = View.GONE
+                    }
                 }
             }
         } else {
             //其他
             bottomLeftOpTv.visibility = View.GONE
             bottomRightOpTv.visibility = View.GONE
+
+            partyGameInfoModel?.let {
+                if (it.rule?.ruleType == EPGameType.PGT_KTV.ordinal && it.ktv?.userID == MyUserInfoManager.uid.toInt()) {
+                    bottomRightOpTv.visibility = View.VISIBLE
+                }
+            }
         }
     }
 
@@ -151,18 +170,18 @@ class PartyGameTabView : ExConstraintLayout {
 
         updateIdentity()
 
-        partyGameInfoModel = roomData?.realRoundInfo?.itemInfo
-        if (partyGameInfoModel?.gameType == EPGameType.PGT_Play.ordinal
-                || partyGameInfoModel?.gameType == EPGameType.PGT_Question.ordinal) {
+        partyGameInfoModel = roomData?.realRoundInfo?.sceneInfo
+        if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Play.ordinal
+                || partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Question.ordinal) {
             textScrollView.visibility = View.VISIBLE
 
             setMainText(getGameTagTitle(), getGameTagContent())
             partyGameInfoModel?.let {
-                if (it.gameType == EPGameType.PGT_Question.value && (it.question?.questionPic?.size
+                if (it.rule?.ruleType == EPGameType.PGT_Question.value && (it.question?.questionInfo?.questionPic?.size
                                 ?: 0) > 0) {
                     gamePicImg.visibility = View.VISIBLE
 
-                    AvatarUtils.loadAvatarByUrl(gamePicImg, AvatarUtils.newParamsBuilder(it.question?.questionPic?.get(0))
+                    AvatarUtils.loadAvatarByUrl(gamePicImg, AvatarUtils.newParamsBuilder(it.question?.questionInfo?.questionPic?.get(0))
                             .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                             .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                             .setBorderColor(Color.WHITE)
@@ -171,10 +190,10 @@ class PartyGameTabView : ExConstraintLayout {
                     gamePicImg.visibility = View.GONE
                 }
             }
-        } else if (partyGameInfoModel?.gameType == EPGameType.PGT_Free.ordinal) {
+        } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Free.ordinal) {
             textScrollView.visibility = View.VISIBLE
             setMainText("", "自由麦模式，大家畅所欲言吧～")
-        } else if (partyGameInfoModel?.gameType == EPGameType.PGT_KTV.ordinal) {
+        } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
             partySelfSingLyricView?.setVisibility(View.VISIBLE)
 
             partySelfSingLyricView?.startFly {
@@ -197,17 +216,17 @@ class PartyGameTabView : ExConstraintLayout {
 
     private fun getGameTagTitle(): String {
         var gameTagTitle = ""
-        gameTagTitle = partyGameInfoModel?.gameRule?.ruleName ?: ""
+        gameTagTitle = partyGameInfoModel?.rule?.ruleName ?: ""
 
         return if (TextUtils.isEmpty(gameTagTitle)) "" else "$gameTagTitle\n"
     }
 
     private fun getGameTagContent(): String {
         partyGameInfoModel?.let {
-            if (it.gameType == EPGameType.PGT_Play.value) {
-                return it.play?.playContent ?: ""
-            } else if (it.gameType == EPGameType.PGT_Question.value) {
-                return it.question?.answerContent ?: ""
+            if (it.rule?.ruleType == EPGameType.PGT_Play.value) {
+                return it.play?.palyInfo?.playContent ?: ""
+            } else if (it.rule?.ruleType == EPGameType.PGT_Question.value) {
+                return it.question?.questionInfo?.answerContent ?: ""
             }
         }
 

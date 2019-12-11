@@ -28,6 +28,8 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
 
   public static final String DEFAULT_RULEDESC = "";
 
+  public static final EPGameType DEFAULT_RULETYPE = EPGameType.PGT_Unknown;
+
   /**
    * 游戏规则标识
    */
@@ -55,15 +57,26 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
   )
   private final String ruleDesc;
 
-  public PGameRule(Integer ruleID, String ruleName, String ruleDesc) {
-    this(ruleID, ruleName, ruleDesc, ByteString.EMPTY);
+  /**
+   * 游戏类型
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.zq.live.proto.PartyRoom.EPGameType#ADAPTER"
+  )
+  private final EPGameType ruleType;
+
+  public PGameRule(Integer ruleID, String ruleName, String ruleDesc, EPGameType ruleType) {
+    this(ruleID, ruleName, ruleDesc, ruleType, ByteString.EMPTY);
   }
 
-  public PGameRule(Integer ruleID, String ruleName, String ruleDesc, ByteString unknownFields) {
+  public PGameRule(Integer ruleID, String ruleName, String ruleDesc, EPGameType ruleType,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.ruleID = ruleID;
     this.ruleName = ruleName;
     this.ruleDesc = ruleDesc;
+    this.ruleType = ruleType;
   }
 
   @Override
@@ -72,6 +85,7 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
     builder.ruleID = ruleID;
     builder.ruleName = ruleName;
     builder.ruleDesc = ruleDesc;
+    builder.ruleType = ruleType;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -84,7 +98,8 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(ruleID, o.ruleID)
         && Internal.equals(ruleName, o.ruleName)
-        && Internal.equals(ruleDesc, o.ruleDesc);
+        && Internal.equals(ruleDesc, o.ruleDesc)
+        && Internal.equals(ruleType, o.ruleType);
   }
 
   @Override
@@ -95,6 +110,7 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
       result = result * 37 + (ruleID != null ? ruleID.hashCode() : 0);
       result = result * 37 + (ruleName != null ? ruleName.hashCode() : 0);
       result = result * 37 + (ruleDesc != null ? ruleDesc.hashCode() : 0);
+      result = result * 37 + (ruleType != null ? ruleType.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -106,6 +122,7 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
     if (ruleID != null) builder.append(", ruleID=").append(ruleID);
     if (ruleName != null) builder.append(", ruleName=").append(ruleName);
     if (ruleDesc != null) builder.append(", ruleDesc=").append(ruleDesc);
+    if (ruleType != null) builder.append(", ruleType=").append(ruleType);
     return builder.replace(0, 2, "PGameRule{").append('}').toString();
   }
 
@@ -150,6 +167,16 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
   }
 
   /**
+   * 游戏类型
+   */
+  public EPGameType getRuleType() {
+    if(ruleType==null){
+        return new EPGameType.Builder().build();
+    }
+    return ruleType;
+  }
+
+  /**
    * 游戏规则标识
    */
   public boolean hasRuleID() {
@@ -170,12 +197,21 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
     return ruleDesc!=null;
   }
 
+  /**
+   * 游戏类型
+   */
+  public boolean hasRuleType() {
+    return ruleType!=null;
+  }
+
   public static final class Builder extends Message.Builder<PGameRule, Builder> {
     private Integer ruleID;
 
     private String ruleName;
 
     private String ruleDesc;
+
+    private EPGameType ruleType;
 
     public Builder() {
     }
@@ -204,9 +240,17 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
       return this;
     }
 
+    /**
+     * 游戏类型
+     */
+    public Builder setRuleType(EPGameType ruleType) {
+      this.ruleType = ruleType;
+      return this;
+    }
+
     @Override
     public PGameRule build() {
-      return new PGameRule(ruleID, ruleName, ruleDesc, super.buildUnknownFields());
+      return new PGameRule(ruleID, ruleName, ruleDesc, ruleType, super.buildUnknownFields());
     }
   }
 
@@ -220,6 +264,7 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.ruleID)
           + ProtoAdapter.STRING.encodedSizeWithTag(2, value.ruleName)
           + ProtoAdapter.STRING.encodedSizeWithTag(3, value.ruleDesc)
+          + EPGameType.ADAPTER.encodedSizeWithTag(4, value.ruleType)
           + value.unknownFields().size();
     }
 
@@ -228,6 +273,7 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.ruleID);
       ProtoAdapter.STRING.encodeWithTag(writer, 2, value.ruleName);
       ProtoAdapter.STRING.encodeWithTag(writer, 3, value.ruleDesc);
+      EPGameType.ADAPTER.encodeWithTag(writer, 4, value.ruleType);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -240,6 +286,14 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
           case 1: builder.setRuleID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setRuleName(ProtoAdapter.STRING.decode(reader)); break;
           case 3: builder.setRuleDesc(ProtoAdapter.STRING.decode(reader)); break;
+          case 4: {
+            try {
+              builder.setRuleType(EPGameType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
