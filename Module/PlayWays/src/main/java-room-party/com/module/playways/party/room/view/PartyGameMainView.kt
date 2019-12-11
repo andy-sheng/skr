@@ -12,6 +12,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
+import com.module.playways.party.room.event.PartyMyUserInfoChangeEvent
 import com.module.playways.party.room.event.PartyNoticeChangeEvent
 import com.module.playways.party.room.model.PartyGameInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
@@ -137,6 +138,11 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         }
     }
 
+    fun onEvent(event: PartyMyUserInfoChangeEvent) {
+        partyGameTabView.updateIdentity()
+        tagChange()
+    }
+
     private fun setMainText(title: String?, content: String?) {
         val stringBuilder = SpanUtils()
                 .append(title
@@ -161,10 +167,6 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         return R.layout.party_game_main_view_layout
     }
 
-    fun updateIdentify() {
-        partyGameTabView.updateIdentity()
-    }
-
     //轮次切换的时候调用
     fun updateRound(lastRoundInfo: PartyRoundInfoModel?) {
         if (lastRoundInfo == null || lastRoundInfo?.sceneInfo == null) {
@@ -180,6 +182,11 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         setGameTabText()
         setHandCardText()
 
+        tagChange()
+    }
+
+    //根据身份调整tag显示和关闭
+    private fun tagChange() {
         if (mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == true) {
             //主持人
             if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Play.ordinal
