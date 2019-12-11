@@ -198,11 +198,16 @@ class PartyGameTabView : ExConstraintLayout {
 
     //题目更新，只有换轮次的时候调用
     fun bindData() {
+        if(roomData?.realRoundInfo?.sceneInfo == null){
+            return
+        }
+
+        partyGameInfoModel = roomData?.realRoundInfo?.sceneInfo
+
         hideAllTypeView()
 
         updateIdentity()
 
-        partyGameInfoModel = roomData?.realRoundInfo?.sceneInfo
         if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Play.ordinal
                 || partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Question.ordinal) {
             textScrollView.visibility = View.VISIBLE
