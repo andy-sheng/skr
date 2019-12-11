@@ -58,6 +58,7 @@ class GameRuleModel : Serializable {
             p.ruleID = pb.ruleID
             p.ruleName = pb.ruleName
             p.ruleDesc = pb.ruleDesc
+            p.ruleType = pb.ruleType.value
             return p
         }
     }

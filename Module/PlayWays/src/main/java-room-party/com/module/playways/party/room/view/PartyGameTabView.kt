@@ -255,7 +255,13 @@ class PartyGameTabView : ExConstraintLayout {
 
     private fun getGameTagTitle(): String {
         var gameTagTitle = ""
-        gameTagTitle = partyGameInfoModel?.rule?.ruleName ?: ""
+        partyGameInfoModel?.let {
+            if (it.rule?.ruleType == EPGameType.PGT_Play.value) {
+                gameTagTitle = it.play?.palyInfo?.playName ?: ""
+            } else if (it.rule?.ruleType == EPGameType.PGT_Question.value) {
+                gameTagTitle = ""
+            }
+        }
 
         return if (TextUtils.isEmpty(gameTagTitle)) "" else "$gameTagTitle\n"
     }

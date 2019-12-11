@@ -739,6 +739,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
      * 某个轮次结束了
      */
     override fun showRoundOver(lastRoundInfo: PartyRoundInfoModel?, continueOp: (() -> Unit)?) {
+        continueOp?.invoke()
     }
 
     /**
