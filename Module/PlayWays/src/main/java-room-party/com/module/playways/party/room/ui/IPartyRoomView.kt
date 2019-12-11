@@ -7,7 +7,7 @@ interface IPartyRoomView {
 
     fun showRoundOver(lastRoundInfo: PartyRoundInfoModel?, continueOp:(()->Unit)?)
 //    fun singPrepare(lastRoundInfo:RelayRoundInfoModel?,singCardShowListener:()->Unit)
-    fun gameBegin()
+    fun gameBegin(lastRoundInfo: PartyRoundInfoModel?)
 //    fun gameOver()
     fun showWaiting()
 

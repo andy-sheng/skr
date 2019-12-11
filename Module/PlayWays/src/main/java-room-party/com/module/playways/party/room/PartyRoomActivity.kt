@@ -351,7 +351,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun initGameMainView() {
         mPartyGameMainView = PartyGameMainView(findViewById(R.id.party_game_main_view_layout_viewStub), mRoomData)
         mPartyGameMainView?.tryInflate()
-        mPartyGameMainView?.updateRound(mRoomData.realRoundInfo?.itemInfo)
+        mPartyGameMainView?.toWaitingState()
     }
 
     private fun initVipEnterView() {
@@ -698,7 +698,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     /**
      * 某个游戏开始了 信息在 realRoundInfo里取
      */
-    override fun gameBegin() {
+    override fun gameBegin(lastRoundInfo: PartyRoundInfoModel?) {
+        mPartyGameMainView?.updateRound(lastRoundInfo)
     }
 
     /**

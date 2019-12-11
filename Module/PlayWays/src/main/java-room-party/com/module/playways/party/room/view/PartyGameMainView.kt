@@ -13,6 +13,7 @@ import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.model.PartyGameInfoModel
+import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.zq.live.proto.PartyRoom.EPGameType
 
 class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomData) : ExViewStub(viewStub) {
@@ -147,14 +148,14 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     }
 
     //轮次切换的时候调用
-    fun updateRound(partyGameInfoModel: PartyGameInfoModel?) {
-        if (partyGameInfoModel == null) {
+    fun updateRound(lastRoundInfo: PartyRoundInfoModel?) {
+        if (lastRoundInfo == null || lastRoundInfo?.itemInfo == null) {
             return
         }
 
         tryInflate()
 
-        this.partyGameInfoModel = partyGameInfoModel
+        this.partyGameInfoModel = lastRoundInfo?.itemInfo!!
         partyGameTabView.bindData()
         toGameTab()
 

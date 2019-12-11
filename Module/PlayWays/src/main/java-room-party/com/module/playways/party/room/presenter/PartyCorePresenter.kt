@@ -562,7 +562,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //                if (needTips) {
 //                    U.getToastUtil().showLong("你的演唱开始了")
 //                }
-                roomView.gameBegin()
+                roomView.gameBegin(thisRound)
             }
         } else if (thisRound.status == EPRoundStatus.PRS_END.value) {
 
