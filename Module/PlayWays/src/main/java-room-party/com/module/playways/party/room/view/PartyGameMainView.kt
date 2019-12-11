@@ -96,6 +96,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         handCardTv.isSelected = true
         tagType = TagType.CARD
 
+        textScrollView.visibility = View.VISIBLE
         setHandCardText()
     }
 
@@ -125,6 +126,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         hideAllView()
         ruleTv.isSelected = true
         tagType = TagType.RULE
+        textScrollView.visibility = View.VISIBLE
 
         partyGameInfoModel?.let {
             setMainText("游戏规则\n", it.rule?.ruleDesc)
@@ -135,10 +137,9 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         hideAllView()
         attentionTv.isSelected = true
         tagType = TagType.ATTENTION
+        textScrollView.visibility = View.VISIBLE
 
-        partyGameInfoModel?.let {
-            setMainText("房间公告\n", mRoomData?.notice)
-        }
+        setMainText("房间公告\n", mRoomData?.notice)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
