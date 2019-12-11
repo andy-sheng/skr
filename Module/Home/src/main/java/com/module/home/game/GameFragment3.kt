@@ -117,7 +117,11 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             }
 
             override fun getCount(): Int {
-                return 3
+                if(MyLog.isDebugLogOpen()){
+                    return 3
+                }else{
+                    return 2
+                }
             }
 
             override fun getPageTitle(position: Int): CharSequence? {
