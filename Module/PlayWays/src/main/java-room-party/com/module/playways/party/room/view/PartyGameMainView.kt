@@ -148,6 +148,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyMyUserInfoChangeEvent) {
         partyGameTabView.updateIdentity()
         tagChange()
@@ -227,6 +228,30 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
                 ruleTv.visibility = View.GONE
                 attentionTv.visibility = View.VISIBLE
             }
+        }
+
+        if (getCurrentSelectedView().visibility == View.GONE) {
+            changeTabByType(TagType.GAME)
+        }
+    }
+
+    private fun getCurrentSelectedView(): View {
+        return when (tagType) {
+            TagType.GAME -> gameTv
+            TagType.CARD -> handCardTv
+            TagType.RULE -> ruleTv
+            TagType.ATTENTION -> attentionTv
+            else -> gameTv
+        }
+    }
+
+    private fun changeTabByType(tagType: TagType) {
+        when (tagType) {
+            TagType.GAME -> toGameTab()
+            TagType.CARD -> toHandCardTab()
+            TagType.RULE -> toRuleTab()
+            TagType.ATTENTION -> toAttentionTab()
+            else -> toGameTab()
         }
     }
 
