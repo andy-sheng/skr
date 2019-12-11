@@ -106,7 +106,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
                 handCardTv.text = "手卡"
                 setMainText("", it.play?.palyInfo?.playCard)
             } else if (it.rule?.ruleType == EPGameType.PGT_Question.value) {
-                setMainText("", it.question?.questionInfo?.questionContent)
+                setMainText("", it.question?.questionInfo?.answerContent)
                 handCardTv.text = "答案"
             }
         }

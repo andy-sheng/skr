@@ -272,7 +272,7 @@ class PartyGameTabView : ExConstraintLayout {
             if (it.rule?.ruleType == EPGameType.PGT_Play.value) {
                 return it.play?.palyInfo?.playContent ?: ""
             } else if (it.rule?.ruleType == EPGameType.PGT_Question.value) {
-                return it.question?.questionInfo?.answerContent ?: ""
+                return it.question?.questionInfo?.questionContent ?: ""
             }
         }
 

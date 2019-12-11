@@ -74,6 +74,10 @@ class GamePlayScene : Serializable {
             return p
         }
     }
+
+    override fun toString(): String {
+        return "GamePlayScene(palyInfo=$palyInfo)"
+    }
 }
 
 class GamePlayModel : Serializable {
@@ -111,6 +115,12 @@ class GameQuestionSceneModel : Serializable {
             return p
         }
     }
+
+    override fun toString(): String {
+        return "GameQuestionSceneModel(questionInfo=$questionInfo, hasNextquestion=$hasNextquestion, questionSeq=$questionSeq)"
+    }
+
+
 }
 
 class GameQuestionModel : Serializable {
@@ -166,4 +176,10 @@ class GameKTVSceneModel : Serializable {
             return p
         }
     }
+
+    override fun toString(): String {
+        return "GameKTVSceneModel(music=$music, hasNextMusic=$hasNextMusic, musicCnt=$musicCnt, userID=$userID)"
+    }
+
+
 }
