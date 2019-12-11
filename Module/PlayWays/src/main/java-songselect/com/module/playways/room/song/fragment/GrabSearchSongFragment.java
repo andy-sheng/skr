@@ -100,7 +100,9 @@ public class GrabSearchSongFragment extends BaseFragment {
         } else if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
             selectMode = SongSelectAdapter.RACE_MODE;
         } else if (mFrom == SongManagerActivity.TYPE_FROM_RELAY_ROOM || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
-
+            selectMode = SongSelectAdapter.RELAY_MODE;
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_PARTY){
+            selectMode = SongSelectAdapter.PARTY_MODE;
         }
         mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
@@ -340,6 +342,8 @@ public class GrabSearchSongFragment extends BaseFragment {
             return songSelectServerApi.searchRaceMusicItems(content).subscribeOn(Schedulers.io());
         } else if (mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME || mFrom == SongManagerActivity.TYPE_FROM_RELAY_ROOM) {
             return songSelectServerApi.searchRelayMusicItems(content).subscribeOn(Schedulers.io());
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_PARTY) {
+            return songSelectServerApi.searchPartyMusicItems(content).subscribeOn(Schedulers.io());
         } else {
             return songSelectServerApi.searchDoubleMusicItems(content).subscribeOn(Schedulers.io());
         }
