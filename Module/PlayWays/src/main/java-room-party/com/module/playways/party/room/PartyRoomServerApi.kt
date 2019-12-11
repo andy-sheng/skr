@@ -190,4 +190,22 @@ interface PartyRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partyroom/change-roominfo")
     fun changeRoomInfo(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * {
+    "roomID": 0,
+    "roundSeq": 0
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/end-question")
+    fun endQuestion(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * {
+    "roomID": 0,
+    "roundSeq": 0
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/end-round")
+    fun endRound(@Body body: RequestBody): Call<ApiResult>
 }

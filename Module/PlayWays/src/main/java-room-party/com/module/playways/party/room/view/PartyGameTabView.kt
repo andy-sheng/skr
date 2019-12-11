@@ -2,25 +2,37 @@ package com.module.playways.party.room.view
 
 import android.content.Context
 import android.graphics.Color
-import android.support.constraint.ConstraintLayout
 import android.support.constraint.Group
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
+import com.alibaba.fastjson.JSON
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
+import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.model.PartyGameInfoModel
+import com.module.playways.room.data.H
 import com.zq.live.proto.PartyRoom.EPGameType
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 
-class PartyGameTabView : ConstraintLayout {
+class PartyGameTabView : ExConstraintLayout {
+    val mTag = "PartyGameTabView"
     var partySelfSingLyricLayoutViewStub: ViewStub
     var gamePicImg: BaseImageView
     var textScrollView: ScrollView
@@ -33,6 +45,8 @@ class PartyGameTabView : ConstraintLayout {
 
     var partySelfSingLyricView: PartySelfSingLyricView? = null
 
+    val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
+
     var roomData: PartyRoomData? = null
         set(value) {
             field = value
@@ -41,9 +55,10 @@ class PartyGameTabView : ConstraintLayout {
 
     var partyGameInfoModel: PartyGameInfoModel? = null
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+
 
     init {
         View.inflate(context, R.layout.party_game_tab_view_layout, this)
@@ -59,6 +74,54 @@ class PartyGameTabView : ConstraintLayout {
         singingGroup = rootView.findViewById(R.id.singing_group)
         bottomLeftOpTv.text = "切游戏"
         bottomRightOpTv.text = "下一题"
+
+        bottomLeftOpTv.setDebounceViewClickListener {
+            endRound()
+        }
+
+        bottomRightOpTv.setDebounceViewClickListener {
+            endQuestion()
+        }
+    }
+
+    fun endQuestion() {
+        launch {
+            val map = mutableMapOf(
+                    "roomID" to H.partyRoomData?.gameId,
+                    "roundSeq" to H.partyRoomData?.realRoundSeq
+            )
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("${mTag} endQuestion", ControlType.CancelThis)) {
+                roomServerApi.endQuestion(body)
+            }
+
+            if (result.errno == 0) {
+
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
+    }
+
+    fun endRound() {
+        launch {
+            val map = mutableMapOf(
+                    "roomID" to H.partyRoomData?.gameId,
+                    "roundSeq" to H.partyRoomData?.realRoundSeq
+            )
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("${mTag} endRound", ControlType.CancelThis)) {
+                roomServerApi.endRound(body)
+            }
+
+            if (result.errno == 0) {
+
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
     }
 
     //身份更新
@@ -67,6 +130,14 @@ class PartyGameTabView : ConstraintLayout {
             //主持人
             bottomLeftOpTv.visibility = View.VISIBLE
             bottomRightOpTv.visibility = View.VISIBLE
+
+            partyGameInfoModel?.let {
+                if (it.gameType == EPGameType.PGT_KTV.ordinal) {
+                    bottomRightOpTv.text = "切割"
+                } else {
+                    bottomRightOpTv.text = "下一题"
+                }
+            }
         } else {
             //其他
             bottomLeftOpTv.visibility = View.GONE
