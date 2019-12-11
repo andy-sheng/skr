@@ -246,6 +246,7 @@ class PartyGameTabView : ExConstraintLayout {
         bottomLeftOpTv.visibility = View.GONE
         gamePicImg.visibility = View.GONE
         textScrollView.visibility = View.GONE
+        selectSongTv.visibility = View.GONE
         bottomRightOpTv.visibility = View.GONE
         avatarIv.visibility = View.GONE
         singingGroup.visibility = View.GONE

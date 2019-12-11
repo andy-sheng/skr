@@ -92,6 +92,7 @@
         app:constraint_referenced_ids="avatar_iv, singing_tv" />
 
     <com.common.view.ex.ExTextView
+        android:visibility="gone"
         android:id="@+id/select_song_tv"
         android:layout_width="@dimen/view_60_dp"
         android:layout_height="@dimen/view_20_dp"
