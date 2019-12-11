@@ -739,7 +739,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioResampleFilter.getSrcPin().connect(mAudioRecordResampleFilter.getSinkPin());
             mAudioRemoteSrcPin.connect(mAudioRecordRemoteResampleFilter.getSinkPin());
             // TODO: 非主播模式下, 需要用远端音频驱动录制
-            mRecordAudioMixer.setMainSinkPinIndex(mConfig.isAnchor() ? 0 : 1);
+            mRecordAudioMixer.setMainSinkPinIndex((mConfig.isAnchor() || !mConfig.isJoinChannelSuccess()) ? 0 : 1);
             mAudioRecordResampleFilter.getSrcPin().connect(mRecordAudioMixer.getSinkPin(0));
             mAudioRecordRemoteResampleFilter.getSrcPin().connect(mRecordAudioMixer.getSinkPin(1));
         }
@@ -1792,9 +1792,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                 } else {
                     EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_RECORD_START);
                     EventBus.getDefault().post(engineEvent);
-                    if (mConfig.isUseExternalAudioRecord() || recordHumanVoice) {
+                    if (mConfig.isUseExternalAudioRecord() || mConfig.isUseExternalAudio() || recordHumanVoice) {
                         // 未加入房间时需要先开启音频采集
-                        if (mConfig.isUseExternalAudioRecord()) {
+                        if (mConfig.isUseExternalAudio()) {
                             if (!mConfig.isJoinChannelSuccess() && mAudioCapture != null) {
                                 mAudioCapture.start();
                             }
