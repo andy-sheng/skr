@@ -81,7 +81,8 @@
         app:bl_selected_drawable="@drawable/party_tag_selected"
         app:bl_unSelected_drawable="@drawable/party_tag_unselected"
         app:layout_constraintLeft_toLeftOf="@+id/rule_tv"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginLeft="@dimen/view_74_dp" />
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/game_pic_img"

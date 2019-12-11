@@ -3,6 +3,7 @@ package com.module.playways.party.room.view
 import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.SpanUtils
 import com.common.utils.U
@@ -159,11 +160,48 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
 
         setGameTabText()
         setHandCardText()
+
+        if (mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == true) {
+            //主持人
+            if (partyGameInfoModel?.gameType == EPGameType.PGT_Play.ordinal
+                    || partyGameInfoModel?.gameType == EPGameType.PGT_Question.ordinal) {
+                gameTv.visibility = View.VISIBLE
+                handCardTv.visibility = View.VISIBLE
+                ruleTv.visibility = View.VISIBLE
+                attentionTv.visibility = View.VISIBLE
+            } else if (partyGameInfoModel?.gameType == EPGameType.PGT_Free.ordinal
+                    || partyGameInfoModel?.gameType == EPGameType.PGT_KTV.ordinal) {
+                gameTv.visibility = View.VISIBLE
+                handCardTv.visibility = View.GONE
+                ruleTv.visibility = View.GONE
+                attentionTv.visibility = View.VISIBLE
+            }
+        } else {
+            //其他人
+            if (partyGameInfoModel?.gameType == EPGameType.PGT_Play.ordinal
+                    || partyGameInfoModel?.gameType == EPGameType.PGT_Question.ordinal) {
+                gameTv.visibility = View.VISIBLE
+                handCardTv.visibility = View.GONE
+                ruleTv.visibility = View.VISIBLE
+                attentionTv.visibility = View.VISIBLE
+            } else if (partyGameInfoModel?.gameType == EPGameType.PGT_Free.ordinal
+                    || partyGameInfoModel?.gameType == EPGameType.PGT_KTV.ordinal) {
+                gameTv.visibility = View.VISIBLE
+                handCardTv.visibility = View.GONE
+                ruleTv.visibility = View.GONE
+                attentionTv.visibility = View.VISIBLE
+            }
+        }
     }
 
     fun toWaitingState() {
         gameTv.isSelected = true
         partyGameTabView.toWaitingState()
+
+        gameTv.visibility = View.VISIBLE
+        handCardTv.visibility = View.GONE
+        ruleTv.visibility = View.GONE
+        attentionTv.visibility = View.VISIBLE
     }
 
     enum class TagType {
