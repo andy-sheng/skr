@@ -6,16 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExTextView
+import com.component.busilib.constans.GameModeType
 import com.module.playways.R
+import com.module.playways.room.data.H
 import com.module.playways.songmanager.model.GrabRoomSongModel
 import com.module.playways.songmanager.model.MicExistSongModel
 import com.module.playways.songmanager.utils.SongTagDrawableUtils
 import com.zq.live.proto.Common.StandPlayType
 
-class MicExistSongAdapter(var listener: MicExistListener?) : RecyclerView.Adapter<MicExistSongAdapter.ItemHolde>() {
+class MicExistSongAdapter(var gameType: Int, var listener: MicExistListener?) : RecyclerView.Adapter<MicExistSongAdapter.ItemHolde>() {
 
     // todo 先用之前等接口，有变化再改吧
     var mDataList = ArrayList<MicExistSongModel>()
@@ -73,6 +76,22 @@ class MicExistSongAdapter(var listener: MicExistListener?) : RecyclerView.Adapte
                 tvManage.text = "删除"
 
                 tvManage.background = SongTagDrawableUtils.redDrawable
+
+                if (gameType == GameModeType.GAME_MODE_PARTY) {
+                    // 显示的是所有人的已点
+                    if (H.partyRoomData?.myUserInfo?.isHost() == true) {
+                        // 置顶与之前保持一致即可
+                        tvManage.visibility = View.VISIBLE
+                    } else {
+                        stickIv.visibility = View.GONE
+                        if (model.userID == MyUserInfoManager.uid.toInt()) {
+                            // 我点的歌
+                            tvManage.visibility = View.VISIBLE
+                        } else {
+                            tvManage.visibility = View.GONE
+                        }
+                    }
+                }
             }
             tvSongDesc.visibility = View.GONE
 

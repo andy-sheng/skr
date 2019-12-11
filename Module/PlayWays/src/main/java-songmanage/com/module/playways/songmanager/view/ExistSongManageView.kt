@@ -43,7 +43,6 @@ class ExistSongManageView(context: Context, var roomID: Int, var gameType: Int) 
     private val refreshLayout: SmartRefreshLayout
     private val recyclerView: RecyclerView
     private val manageSongAdapter: MicExistSongAdapter
-
     private var offset = 0
     private var hasMore = true
     private val mCnt = 20
@@ -76,7 +75,7 @@ class ExistSongManageView(context: Context, var roomID: Int, var gameType: Int) 
         }
 
         recyclerView.layoutManager = LinearLayoutManager(context)
-        manageSongAdapter = MicExistSongAdapter(object : MicExistListener {
+        manageSongAdapter = MicExistSongAdapter(gameType, object : MicExistListener {
             override fun onClickDelete(model: MicExistSongModel?, position: Int) {
                 // 删除
                 model?.let { deleteSong(it) }
