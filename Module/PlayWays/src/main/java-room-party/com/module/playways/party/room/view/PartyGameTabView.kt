@@ -24,12 +24,14 @@ import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
+import com.module.playways.party.room.event.PartySelectSongEvent
 import com.module.playways.party.room.model.PartyGameInfoModel
 import com.module.playways.room.data.H
 import com.zq.live.proto.PartyRoom.EPGameType
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 class PartyGameTabView : ExConstraintLayout {
     val mTag = "PartyGameTabView"
@@ -41,6 +43,7 @@ class PartyGameTabView : ExConstraintLayout {
     var bottomRightOpTv: ExTextView
     var avatarIv: BaseImageView
     var singingTv: ExTextView
+    var selectSongTv: ExTextView
     var singingGroup: Group
 
     var partySelfSingLyricView: PartySelfSingLyricView? = null
@@ -71,6 +74,7 @@ class PartyGameTabView : ExConstraintLayout {
         bottomRightOpTv = rootView.findViewById(R.id.bottom_right_op_tv)
         avatarIv = rootView.findViewById(R.id.avatar_iv)
         singingTv = rootView.findViewById(R.id.singing_tv)
+        selectSongTv = rootView.findViewById(R.id.select_song_tv)
         singingGroup = rootView.findViewById(R.id.singing_group)
         bottomLeftOpTv.text = "切游戏"
         bottomRightOpTv.text = "下一题"
@@ -81,6 +85,10 @@ class PartyGameTabView : ExConstraintLayout {
 
         bottomRightOpTv.setDebounceViewClickListener {
             endQuestion()
+        }
+
+        selectSongTv.setDebounceViewClickListener {
+            EventBus.getDefault().post(PartySelectSongEvent())
         }
     }
 
@@ -126,6 +134,11 @@ class PartyGameTabView : ExConstraintLayout {
 
     //身份更新
     fun updateIdentity() {
+        singingGroup.visibility = View.GONE
+        selectSongTv.visibility = View.GONE
+        bottomLeftOpTv.visibility = View.GONE
+        bottomRightOpTv.visibility = View.GONE
+
         if (roomData?.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == true) {
             //主持人
             bottomLeftOpTv.visibility = View.VISIBLE
@@ -153,13 +166,32 @@ class PartyGameTabView : ExConstraintLayout {
             }
         } else {
             //其他
-            bottomLeftOpTv.visibility = View.GONE
-            bottomRightOpTv.visibility = View.GONE
-
             partyGameInfoModel?.let {
-                if (it.rule?.ruleType == EPGameType.PGT_KTV.ordinal && it.ktv?.userID == MyUserInfoManager.uid.toInt()) {
-                    bottomRightOpTv.visibility = View.VISIBLE
+                if (it.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
+                    if (it.ktv?.userID == MyUserInfoManager.uid.toInt()) {
+                        bottomRightOpTv.visibility = View.VISIBLE
+                        bottomRightOpTv.text = "切歌"
+                    }
+
+                    singingGroup.visibility = View.VISIBLE
+                    AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerInfoById(it.ktv?.userID
+                            ?: 0)?.userInfo?.avatar)
+                            .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+                            .setBorderColor(U.getColor(R.color.white))
+                            .setCircle(true)
+                            .build())
+                } else {
+                    singingGroup.visibility = View.GONE
                 }
+            }
+        }
+
+        partyGameInfoModel?.let {
+            if (roomData?.getPlayerInfoById(it.ktv?.userID ?: 0)?.isGuest() == true
+                    || roomData?.getPlayerInfoById(it.ktv?.userID ?: 0)?.isHost() == true) {
+                selectSongTv.visibility = View.VISIBLE
+            } else {
+                selectSongTv.visibility = View.GONE
             }
         }
     }

@@ -36,6 +36,7 @@ import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.actor.PartyApplyPanelView
 import com.module.playways.party.room.actor.PartyMemberPanelView
 import com.module.playways.party.room.bottom.PartyBottomContainerView
+import com.module.playways.party.room.event.PartySelectSongEvent
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
 import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.party.room.model.PartyPlayerInfoModel
@@ -607,6 +608,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
         showPersonInfoView(event.uid)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartySelectSongEvent) {
+        TODO("跳转到歌曲选择页面")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

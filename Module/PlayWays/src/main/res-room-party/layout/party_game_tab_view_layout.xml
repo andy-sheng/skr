@@ -90,4 +90,20 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:constraint_referenced_ids="avatar_iv, singing_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/select_song_tv"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_11_dp"
+        android:gravity="center"
+        android:text="点歌"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_gradient_endColor="#6047D3"
+        app:bl_gradient_startColor="#835DFD"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
