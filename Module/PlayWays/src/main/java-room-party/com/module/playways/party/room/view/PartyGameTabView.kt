@@ -168,18 +168,22 @@ class PartyGameTabView : ExConstraintLayout {
             //其他
             partyGameInfoModel?.let {
                 if (it.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
-                    if (it.ktv?.userID == MyUserInfoManager.uid.toInt()) {
-                        bottomRightOpTv.visibility = View.VISIBLE
-                        bottomRightOpTv.text = "切歌"
-                    }
+                    if (it.ktv?.userID ?: 0 > 0) {
+                        if (it.ktv?.userID == MyUserInfoManager.uid.toInt()) {
+                            bottomRightOpTv.visibility = View.VISIBLE
+                            bottomRightOpTv.text = "切歌"
+                        }
 
-                    singingGroup.visibility = View.VISIBLE
-                    AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerInfoById(it.ktv?.userID
-                            ?: 0)?.userInfo?.avatar)
-                            .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
-                            .setBorderColor(U.getColor(R.color.white))
-                            .setCircle(true)
-                            .build())
+                        singingGroup.visibility = View.VISIBLE
+                        AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerInfoById(it.ktv?.userID
+                                ?: 0)?.userInfo?.avatar)
+                                .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+                                .setBorderColor(U.getColor(R.color.white))
+                                .setCircle(true)
+                                .build())
+                    } else {
+                        singingGroup.visibility = View.GONE
+                    }
                 } else {
                     singingGroup.visibility = View.GONE
                 }
@@ -187,9 +191,13 @@ class PartyGameTabView : ExConstraintLayout {
         }
 
         partyGameInfoModel?.let {
-            if (roomData?.getPlayerInfoById(it.ktv?.userID ?: 0)?.isGuest() == true
-                    || roomData?.getPlayerInfoById(it.ktv?.userID ?: 0)?.isHost() == true) {
-                selectSongTv.visibility = View.VISIBLE
+            if (it.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
+                if (roomData?.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isGuest() == true
+                        || roomData?.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == true) {
+                    selectSongTv.visibility = View.VISIBLE
+                } else {
+                    selectSongTv.visibility = View.GONE
+                }
             } else {
                 selectSongTv.visibility = View.GONE
             }
@@ -198,7 +206,7 @@ class PartyGameTabView : ExConstraintLayout {
 
     //题目更新，只有换轮次的时候调用
     fun bindData() {
-        if(roomData?.realRoundInfo?.sceneInfo == null){
+        if (roomData?.realRoundInfo?.sceneInfo == null) {
             return
         }
 
@@ -231,17 +239,20 @@ class PartyGameTabView : ExConstraintLayout {
             textScrollView.visibility = View.VISIBLE
             setMainText("", "自由麦模式，大家畅所欲言吧～")
         } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
-            partySelfSingLyricView?.setVisibility(View.VISIBLE)
+            if (partyGameInfoModel?.ktv?.userID ?: 0 > 0) {
+                partySelfSingLyricView?.setVisibility(View.VISIBLE)
+                if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
+                    partySelfSingLyricView?.startFly(true) {
 
-            if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal
-                    && partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
-                partySelfSingLyricView?.startFly(true) {
+                    }
+                } else {
+                    partySelfSingLyricView?.startFly(false) {
 
+                    }
                 }
             } else {
-                partySelfSingLyricView?.startFly(false) {
-
-                }
+                //还没开始
+                partySelfSingLyricView?.setVisibility(View.GONE)
             }
         }
     }
