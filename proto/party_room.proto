@@ -165,7 +165,23 @@ message PGameItemInfo {
     EPGameType gameType = 2; //游戏类型
     PGamePlay play = 3; //剧本类游戏数据
     PGameQuestion question = 4; //问答类游戏数据
+    PFreeScene free         = 5; //自由主持类游戏
+    PKTVScene ktv           = 6; //ktv唱歌类游戏
 }
+
+message PFreeScene
+{
+}
+
+message PKTVScene
+{
+    Common.MusicInfo music   = 1;
+    bool hasNextMusic = 2;
+    uint32 musicCnt   = 3;
+    uint32 userID     = 4; //演唱者id
+}
+
+
 
 message PGameRule {
     uint32 ruleID = 1; //游戏规则标识
