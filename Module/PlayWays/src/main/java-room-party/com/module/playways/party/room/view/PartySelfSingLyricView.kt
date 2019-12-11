@@ -44,7 +44,7 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
         mManyLyricsView?.initLrcData()
     }
 
-    fun startFly(call: (() -> Unit)?) {
+    fun startFly(isSelf: Boolean, call: (() -> Unit)?) {
         tryInflate()
         val infoModel = mRoomData?.realRoundInfo
         val totalMs = infoModel?.endMs ?: 0 - (infoModel?.beginMs ?: 0)
@@ -53,22 +53,23 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
             call?.invoke()
         }
 
-        playWithAcc(infoModel, totalMs)
+        playWithAcc(isSelf, infoModel, totalMs)
     }
 
-    private fun playWithAcc(infoModel: PartyRoundInfoModel?, totalTs: Int) {
+    private fun playWithAcc(isSelf: Boolean, infoModel: PartyRoundInfoModel?, totalTs: Int) {
         if (infoModel == null) {
             MyLog.w(TAG, "playWithAcc infoModel = null totalTs=$totalTs")
             return
         }
 
         initLyric()
-        mSongModel = infoModel.itemInfo?.ktv?.music
+        mSongModel = infoModel.sceneInfo?.ktv?.music
         var curSong = mSongModel
         if (curSong == null) {
             MyLog.w(TAG, "playWithAcc curSong = null totalTs=$totalTs")
             return
         }
+        mManyLyricsView.setEnableVerbatim(isSelf)
         val configParams = LyricAndAccMatchManager.ConfigParams()
         configParams.manyLyricsView = mManyLyricsView
         configParams.lyricUrl = curSong.lyric

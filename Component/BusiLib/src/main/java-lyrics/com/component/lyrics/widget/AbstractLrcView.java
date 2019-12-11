@@ -425,6 +425,14 @@ public abstract class AbstractLrcView extends View {
         mNeedCountDownLine = needCountDownLine;
     }
 
+    public boolean isEnableVerbatim() {
+        return mEnableVerbatim;
+    }
+
+    public void setEnableVerbatim(boolean enableVerbatim) {
+        mEnableVerbatim = enableVerbatim;
+    }
+
     private WeakReference<Context> mActivityWR;
 
 

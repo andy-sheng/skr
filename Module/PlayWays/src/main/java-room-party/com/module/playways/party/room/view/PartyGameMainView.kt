@@ -79,11 +79,11 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
 
     private fun setHandCardText() {
         partyGameInfoModel?.let {
-            if (it.gameType == EPGameType.PGT_Play.value) {
+            if (it.rule?.ruleType == EPGameType.PGT_Play.value) {
                 handCardTv.text = "手卡"
-                setMainText("", it.play?.playCard)
-            } else if (it.gameType == EPGameType.PGT_Question.value) {
-                setMainText("", it.question?.questionContent)
+                setMainText("", it.play?.palyInfo?.playCard)
+            } else if (it.rule?.ruleType == EPGameType.PGT_Question.value) {
+                setMainText("", it.question?.questionInfo?.questionContent)
                 handCardTv.text = "答案"
             }
         }
@@ -91,7 +91,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
 
     private fun setGameTabText() {
         partyGameInfoModel?.let {
-            if (it.gameType == EPGameType.PGT_Free.value) {
+            if (it.rule?.ruleType == EPGameType.PGT_Free.value) {
                 gameTv.text = "聊天"
             } else {
                 gameTv.text = "游戏"
@@ -105,7 +105,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         tagType = TagType.RULE
 
         partyGameInfoModel?.let {
-            setMainText("游戏规则\n", it.gameRule?.ruleDesc)
+            setMainText("游戏规则\n", it.rule?.ruleDesc)
         }
     }
 
@@ -149,13 +149,13 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
 
     //轮次切换的时候调用
     fun updateRound(lastRoundInfo: PartyRoundInfoModel?) {
-        if (lastRoundInfo == null || lastRoundInfo?.itemInfo == null) {
+        if (lastRoundInfo == null || lastRoundInfo?.sceneInfo == null) {
             return
         }
 
         tryInflate()
 
-        this.partyGameInfoModel = lastRoundInfo?.itemInfo!!
+        this.partyGameInfoModel = lastRoundInfo?.sceneInfo!!
         partyGameTabView.bindData()
         toGameTab()
 
@@ -164,14 +164,14 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
 
         if (mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == true) {
             //主持人
-            if (partyGameInfoModel?.gameType == EPGameType.PGT_Play.ordinal
-                    || partyGameInfoModel?.gameType == EPGameType.PGT_Question.ordinal) {
+            if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Play.ordinal
+                    || partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Question.ordinal) {
                 gameTv.visibility = View.VISIBLE
                 handCardTv.visibility = View.VISIBLE
                 ruleTv.visibility = View.VISIBLE
                 attentionTv.visibility = View.VISIBLE
-            } else if (partyGameInfoModel?.gameType == EPGameType.PGT_Free.ordinal
-                    || partyGameInfoModel?.gameType == EPGameType.PGT_KTV.ordinal) {
+            } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Free.ordinal
+                    || partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
                 gameTv.visibility = View.VISIBLE
                 handCardTv.visibility = View.GONE
                 ruleTv.visibility = View.GONE
@@ -179,14 +179,14 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
             }
         } else {
             //其他人
-            if (partyGameInfoModel?.gameType == EPGameType.PGT_Play.ordinal
-                    || partyGameInfoModel?.gameType == EPGameType.PGT_Question.ordinal) {
+            if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Play.ordinal
+                    || partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Question.ordinal) {
                 gameTv.visibility = View.VISIBLE
                 handCardTv.visibility = View.GONE
                 ruleTv.visibility = View.VISIBLE
                 attentionTv.visibility = View.VISIBLE
-            } else if (partyGameInfoModel?.gameType == EPGameType.PGT_Free.ordinal
-                    || partyGameInfoModel?.gameType == EPGameType.PGT_KTV.ordinal) {
+            } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Free.ordinal
+                    || partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
                 gameTv.visibility = View.VISIBLE
                 handCardTv.visibility = View.GONE
                 ruleTv.visibility = View.GONE

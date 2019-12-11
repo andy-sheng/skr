@@ -196,8 +196,15 @@ class PartyGameTabView : ExConstraintLayout {
         } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
             partySelfSingLyricView?.setVisibility(View.VISIBLE)
 
-            partySelfSingLyricView?.startFly {
+            if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal
+                    && partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
+                partySelfSingLyricView?.startFly(true) {
 
+                }
+            } else {
+                partySelfSingLyricView?.startFly(false) {
+
+                }
             }
         }
     }
