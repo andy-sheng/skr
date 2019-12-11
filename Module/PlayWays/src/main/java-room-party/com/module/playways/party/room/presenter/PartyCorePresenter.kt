@@ -13,10 +13,13 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
+import com.common.utils.U
+import com.component.toast.CommonToastView
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
+import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.*
@@ -186,7 +189,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_IN_RC_ROOM, (30 * 1000).toLong())
     }
 
-    private fun pretendSystemMsg(text: String) {
+    fun pretendSystemMsg(text: String) {
         val commentSysModel = CommentSysModel(mRoomData.gameType, text)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
@@ -446,6 +449,19 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //                }
 //            }
 //        }
+    }
+
+    fun kickOut(userID: Int) {
+        val map = HashMap<String, Any>()
+        map["roomID"] = mRoomData.gameId
+        map["kickoutUserID"] = userID
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        GlobalScope.launch {
+            var result = subscribe { mRoomServerApi.kickout(body) }
+            if (result.errno == 0) {
+                // 主持人踢人成功了
+            }
+        }
     }
 
     /**
@@ -842,12 +858,6 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         partySeatInfoModel.micStatus = n?.micStatus ?: 0
         partySeatInfoModel.seatStatus = n?.seatStatus ?: 0
         mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.user), partySeatInfoModel)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PKickoutUserMsg) {
-        MyLog.d(TAG, "onEvent event = $event")
-        pretendSystemMsg("${event.kickResultContent}")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

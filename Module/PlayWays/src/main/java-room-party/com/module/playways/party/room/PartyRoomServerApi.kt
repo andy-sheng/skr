@@ -208,4 +208,12 @@ interface PartyRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partygame/end-round")
     fun endRound(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 踢人
+     * {"roomID": 0,"kickoutUserID": 0}
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/kickout")
+    fun kickout(@Body body: RequestBody): Call<ApiResult>
+
 }
