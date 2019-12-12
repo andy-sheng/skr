@@ -166,7 +166,7 @@ class PartyGameTabView : ExConstraintLayout {
                     bottomRightOpTv.visibility = View.GONE
                 } else if (it.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
                     //不管有没有歌都得可以切歌
-                    if (it.ktv?.userID == MyUserInfoManager.uid.toInt()) {
+                    if ((it.ktv?.userID ?: 0) > 0) {
                         bottomRightOpTv.text = "切歌"
                         bottomRightOpTv.visibility = View.VISIBLE
                     } else {
