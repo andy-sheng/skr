@@ -49,7 +49,7 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
     fun startFly(isSelf: Boolean, call: (() -> Unit)?) {
         tryInflate()
         val infoModel = mRoomData?.realRoundInfo
-        val totalMs = infoModel?.endMs ?: 0 - (infoModel?.beginMs ?: 0)
+        val totalMs = mRoomData?.realRoundInfo?.sceneInfo?.ktv?.singTimeMs ?: 0
         mSingCountDownView2.startPlay(0, totalMs, true)
         mSingCountDownView2.setListener {
             call?.invoke()

@@ -163,6 +163,7 @@ class GameKTVSceneModel : Serializable {
     var hasNextMusic: Boolean = false
     var musicCnt: Int = 0
     var userID: Int = 0
+    var singTimeMs: Int = 0
 
 
     companion object {
@@ -173,6 +174,7 @@ class GameKTVSceneModel : Serializable {
             p.hasNextMusic = pb.hasNextMusic
             p.musicCnt = pb.musicCnt
             p.userID = pb.userID
+            p.singTimeMs = pb.singTimeMs
             return p
         }
     }

@@ -193,6 +193,7 @@ message PKTVScene
     bool hasNextMusic = 2;
     uint32 musicCnt   = 3;
     uint32 userID     = 4; //演唱者id
+    uint32 singTimeMs = 5; //演唱时长
 }
 
     message PGameRule

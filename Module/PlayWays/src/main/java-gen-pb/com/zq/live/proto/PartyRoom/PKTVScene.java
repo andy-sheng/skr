@@ -30,6 +30,8 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
 
   public static final Integer DEFAULT_USERID = 0;
 
+  public static final Integer DEFAULT_SINGTIMEMS = 0;
+
   @WireField(
       tag = 1,
       adapter = "com.zq.live.proto.Common.MusicInfo#ADAPTER"
@@ -57,17 +59,28 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
   )
   private final Integer userID;
 
-  public PKTVScene(MusicInfo music, Boolean hasNextMusic, Integer musicCnt, Integer userID) {
-    this(music, hasNextMusic, musicCnt, userID, ByteString.EMPTY);
+  /**
+   * 演唱时长
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer singTimeMs;
+
+  public PKTVScene(MusicInfo music, Boolean hasNextMusic, Integer musicCnt, Integer userID,
+      Integer singTimeMs) {
+    this(music, hasNextMusic, musicCnt, userID, singTimeMs, ByteString.EMPTY);
   }
 
   public PKTVScene(MusicInfo music, Boolean hasNextMusic, Integer musicCnt, Integer userID,
-      ByteString unknownFields) {
+      Integer singTimeMs, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.music = music;
     this.hasNextMusic = hasNextMusic;
     this.musicCnt = musicCnt;
     this.userID = userID;
+    this.singTimeMs = singTimeMs;
   }
 
   @Override
@@ -77,6 +90,7 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
     builder.hasNextMusic = hasNextMusic;
     builder.musicCnt = musicCnt;
     builder.userID = userID;
+    builder.singTimeMs = singTimeMs;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -90,7 +104,8 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
         && Internal.equals(music, o.music)
         && Internal.equals(hasNextMusic, o.hasNextMusic)
         && Internal.equals(musicCnt, o.musicCnt)
-        && Internal.equals(userID, o.userID);
+        && Internal.equals(userID, o.userID)
+        && Internal.equals(singTimeMs, o.singTimeMs);
   }
 
   @Override
@@ -102,6 +117,7 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
       result = result * 37 + (hasNextMusic != null ? hasNextMusic.hashCode() : 0);
       result = result * 37 + (musicCnt != null ? musicCnt.hashCode() : 0);
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
+      result = result * 37 + (singTimeMs != null ? singTimeMs.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -114,6 +130,7 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
     if (hasNextMusic != null) builder.append(", hasNextMusic=").append(hasNextMusic);
     if (musicCnt != null) builder.append(", musicCnt=").append(musicCnt);
     if (userID != null) builder.append(", userID=").append(userID);
+    if (singTimeMs != null) builder.append(", singTimeMs=").append(singTimeMs);
     return builder.replace(0, 2, "PKTVScene{").append('}').toString();
   }
 
@@ -158,6 +175,16 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
     return userID;
   }
 
+  /**
+   * 演唱时长
+   */
+  public Integer getSingTimeMs() {
+    if(singTimeMs==null){
+        return DEFAULT_SINGTIMEMS;
+    }
+    return singTimeMs;
+  }
+
   public boolean hasMusic() {
     return music!=null;
   }
@@ -177,6 +204,13 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
     return userID!=null;
   }
 
+  /**
+   * 演唱时长
+   */
+  public boolean hasSingTimeMs() {
+    return singTimeMs!=null;
+  }
+
   public static final class Builder extends Message.Builder<PKTVScene, Builder> {
     private MusicInfo music;
 
@@ -185,6 +219,8 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
     private Integer musicCnt;
 
     private Integer userID;
+
+    private Integer singTimeMs;
 
     public Builder() {
     }
@@ -212,9 +248,17 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
       return this;
     }
 
+    /**
+     * 演唱时长
+     */
+    public Builder setSingTimeMs(Integer singTimeMs) {
+      this.singTimeMs = singTimeMs;
+      return this;
+    }
+
     @Override
     public PKTVScene build() {
-      return new PKTVScene(music, hasNextMusic, musicCnt, userID, super.buildUnknownFields());
+      return new PKTVScene(music, hasNextMusic, musicCnt, userID, singTimeMs, super.buildUnknownFields());
     }
   }
 
@@ -229,6 +273,7 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
           + ProtoAdapter.BOOL.encodedSizeWithTag(2, value.hasNextMusic)
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.musicCnt)
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.userID)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.singTimeMs)
           + value.unknownFields().size();
     }
 
@@ -238,6 +283,7 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
       ProtoAdapter.BOOL.encodeWithTag(writer, 2, value.hasNextMusic);
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.musicCnt);
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.userID);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.singTimeMs);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -251,6 +297,7 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
           case 2: builder.setHasNextMusic(ProtoAdapter.BOOL.decode(reader)); break;
           case 3: builder.setMusicCnt(ProtoAdapter.UINT32.decode(reader)); break;
           case 4: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 5: builder.setSingTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

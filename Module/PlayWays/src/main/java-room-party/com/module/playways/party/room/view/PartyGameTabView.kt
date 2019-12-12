@@ -13,6 +13,7 @@ import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -254,6 +255,7 @@ class PartyGameTabView : ExConstraintLayout {
                 partySelfSingLyricView?.setVisibility(View.VISIBLE)
                 if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
                     partySelfSingLyricView?.startFly(true) {
+                        MyLog.d(mTag, "partySelfSingLyricView?.startFly end")
                         endQuestion()
                         ZqEngineKit.getInstance().stopAudioMixing()
                     }
@@ -323,5 +325,6 @@ class PartyGameTabView : ExConstraintLayout {
         textScrollView.visibility = View.VISIBLE
         setMainText("", "还没有歌曲，大家快去点歌吧～")
         ZqEngineKit.getInstance().stopAudioMixing()
+        partySelfSingLyricView?.reset()
     }
 }
