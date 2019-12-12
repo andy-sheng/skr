@@ -32,6 +32,7 @@
         android:drawablePadding="@dimen/view_8_dp"
         android:gravity="center"
         android:text="音效"
+        android:visibility="gone"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintBottom_toBottomOf="parent"

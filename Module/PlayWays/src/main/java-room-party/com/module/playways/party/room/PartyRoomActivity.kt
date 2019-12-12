@@ -439,7 +439,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             }
 
             override fun onClickGameSound() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
         }
 
