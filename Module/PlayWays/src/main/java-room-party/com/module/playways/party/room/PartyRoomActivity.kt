@@ -17,7 +17,6 @@ import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
-import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
@@ -449,15 +448,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     }
 
     private fun showPanelView() {
-        if (mRoomData!!.realRoundInfo != null) {
-            val now = mRoomData!!.realRoundInfo
-            if (now != null) {
-//                mGiftPanelView?.show(mRoomData.peerUser)
-            } else {
-                mGiftPanelView?.show(null)
-            }
+        if (mRoomData.hostId == MyUserInfoManager.uid.toInt()) {
+            mGiftPanelView?.show(mRoomData.getPlayerInfoBySeq(1))
         } else {
-            mGiftPanelView?.show(null)
+            mGiftPanelView?.show(mRoomData.getPlayerInfoById(mRoomData.hostId))
         }
     }
 
