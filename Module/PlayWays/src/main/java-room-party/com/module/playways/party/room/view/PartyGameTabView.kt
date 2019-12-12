@@ -322,5 +322,6 @@ class PartyGameTabView : ExConstraintLayout {
         hideAllTypeView()
         textScrollView.visibility = View.VISIBLE
         setMainText("", "还没有歌曲，大家快去点歌吧～")
+        ZqEngineKit.getInstance().stopAudioMixing()
     }
 }
