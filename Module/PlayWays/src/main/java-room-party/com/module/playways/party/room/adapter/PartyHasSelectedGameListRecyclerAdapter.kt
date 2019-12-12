@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.common.core.view.setDebounceViewClickListener
-import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
@@ -26,7 +25,7 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
     }
 
     override fun onBindViewHolder(holder: ModelHolder, position: Int) {
-        holder.bindData(dataList.get(position))
+        holder.bindData(dataList.get(position), position)
     }
 
     fun addData(list: List<PartySelectedGameModel>) {
@@ -68,9 +67,17 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
             }
         }
 
-        fun bindData(model: PartySelectedGameModel) {
+        fun bindData(model: PartySelectedGameModel, position: Int) {
             this.model = model
             gameNameTv.text = model.name
+
+            if (position == 0) {
+                upIv.visibility = View.GONE
+                delTv.visibility = View.GONE
+            } else {
+                upIv.visibility = View.VISIBLE
+                delTv.visibility = View.VISIBLE
+            }
         }
     }
 }
