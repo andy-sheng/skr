@@ -23,6 +23,7 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.constans.GameModeType
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
+import com.module.playways.party.room.event.PartyRoundChangeEvent
 import com.module.playways.room.song.fragment.GrabSearchSongFragment
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
@@ -31,7 +32,6 @@ import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.model.RecommendTagModel
 import com.module.playways.songmanager.view.ExistSongManageView
 import com.module.playways.songmanager.view.RecommendSongView
-import com.zq.live.proto.Common.StandPlayType
 import com.zq.live.proto.MicRoom.EMWantSingType
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
@@ -52,7 +52,7 @@ class PartySongManageFragment : BaseFragment() {
     lateinit var mPagerAdapter: PagerAdapter
 
     private var mRoomData: PartyRoomData? = null
-    private var relaySongManageView: ExistSongManageView? = null
+    private var existSongManageView: ExistSongManageView? = null
     private val mSongManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
     private var mTagModelList: List<RecommendTagModel>? = null
 
@@ -202,12 +202,12 @@ class PartySongManageFragment : BaseFragment() {
         var view: View
 
         if (position == 0) {
-            if (relaySongManageView == null) {
-                relaySongManageView = ExistSongManageView(context!!, mRoomData?.gameId
+            if (existSongManageView == null) {
+                existSongManageView = ExistSongManageView(context!!, mRoomData?.gameId
                         ?: 0, GameModeType.GAME_MODE_PARTY)
             }
-            relaySongManageView?.tag = position
-            view = relaySongManageView!!
+            existSongManageView?.tag = position
+            view = existSongManageView!!
         } else {
             val recommendTagModel = recommendTagModelList[position]
             val recommendSongView = RecommendSongView(activity!!, SongManagerActivity.TYPE_FROM_PARTY,
@@ -221,6 +221,15 @@ class PartySongManageFragment : BaseFragment() {
         }
 
         return view
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyRoundChangeEvent){
+        existSongManageView?.isSongChange = true
+        if (viewpager.currentItem == 0) {
+            // 当前页面就是已点，直接去更新吧
+            existSongManageView?.tryLoad()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
