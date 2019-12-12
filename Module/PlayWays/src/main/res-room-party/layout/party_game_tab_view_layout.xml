@@ -80,6 +80,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_8_dp"
         android:text="演唱中..."
+        android:textColor="#DEA243"
+        android:textSize="@dimen/textsize_14_dp"
         app:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
         app:layout_constraintLeft_toRightOf="@+id/avatar_iv"
         app:layout_constraintTop_toTopOf="@+id/avatar_iv" />
@@ -92,7 +94,6 @@
         app:constraint_referenced_ids="avatar_iv, singing_tv" />
 
     <com.common.view.ex.ExTextView
-        android:visibility="gone"
         android:id="@+id/select_song_tv"
         android:layout_width="@dimen/view_60_dp"
         android:layout_height="@dimen/view_20_dp"
@@ -102,6 +103,7 @@
         android:text="点歌"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone"
         app:bl_corners_radius="@dimen/view_12_dp"
         app:bl_gradient_endColor="#6047D3"
         app:bl_gradient_startColor="#835DFD"
