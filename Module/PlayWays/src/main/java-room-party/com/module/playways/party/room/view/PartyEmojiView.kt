@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSON
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -30,6 +31,8 @@ import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 
 class PartyEmojiView(viewStub: ViewStub) : ExViewStub(viewStub) {
+
+    val mTag = "PartyEmojiView"
 
     private var recyclerView: RecyclerView? = null
     private var adapter: PartyEmojiAdapter? = null

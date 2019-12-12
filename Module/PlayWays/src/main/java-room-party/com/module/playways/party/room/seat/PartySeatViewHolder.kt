@@ -8,6 +8,7 @@ import android.support.constraint.Group
 import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
 import android.view.View
+import android.view.animation.CycleInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
@@ -44,7 +45,7 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
     var mPos: Int = -1
 
     init {
-        item.setDebounceViewClickListener {
+        avatarSdv.setDebounceViewClickListener {
             listener?.onClickItem(mPos, mModel)
         }
     }
@@ -93,7 +94,8 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
                 .build())
         animation?.removeAllListeners()
         animation?.cancel()
-        animation = ObjectAnimator.ofFloat(emojiSdv, View.TRANSLATION_Y, 12.dp().toFloat(), 0f, 12.dp().toFloat(), 0f, 12.dp().toFloat(), 0f)
+        animation = ObjectAnimator.ofFloat(emojiSdv, View.TRANSLATION_Y, -10.dp().toFloat(), 0f)
+        animation?.interpolator = CycleInterpolator(3f)
         animation?.duration = 2000
         animation?.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?) {
@@ -116,7 +118,7 @@ class EmptySeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) 
     var mModel: PartyActorInfoModel? = null
 
     init {
-        item.setDebounceViewClickListener {
+        emptyBg.setDebounceViewClickListener {
             listener?.onClickItem(mPos, mModel)
         }
     }

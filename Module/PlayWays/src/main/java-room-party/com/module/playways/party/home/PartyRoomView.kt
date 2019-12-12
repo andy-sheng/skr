@@ -58,7 +58,7 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
 
         refreshLayout.apply {
             setEnableLoadMore(true)
-            setEnableRefresh(false)
+            setEnableRefresh(true)
             setEnableLoadMoreWhenContentNotFull(false)
             setEnableOverScrollDrag(false)
 
@@ -98,11 +98,17 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
                 val list = JSON.parseArray(result.data.getString("roomInfo"), PartyRoomInfoModel::class.java)
                 addRoomList(list, isClean)
             }
+            finishLoadMoreOrRefresh()
             if (!isClean) {
                 // 是加载更多
                 starTimer(recommendInterval)
             }
         }
+    }
+
+    private fun finishLoadMoreOrRefresh() {
+        refreshLayout.finishLoadMore()
+        refreshLayout.finishRefresh()
     }
 
     private fun addRoomList(list: List<PartyRoomInfoModel>?, isClean: Boolean) {
