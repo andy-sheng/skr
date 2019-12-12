@@ -40,7 +40,7 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
 
     fun upModel(pos: Int) {
         val model = dataList.removeAt(pos)
-        dataList.add(0, model)
+        dataList.add(1, model)
         notifyDataSetChanged()
     }
 
@@ -74,6 +74,9 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
             if (position == 0) {
                 upIv.visibility = View.GONE
                 delTv.visibility = View.GONE
+            } else if (position == 1) {
+                upIv.visibility = View.GONE
+                delTv.visibility = View.VISIBLE
             } else {
                 upIv.visibility = View.VISIBLE
                 delTv.visibility = View.VISIBLE

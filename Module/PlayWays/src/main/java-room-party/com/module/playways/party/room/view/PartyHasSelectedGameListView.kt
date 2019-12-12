@@ -144,6 +144,9 @@ class PartyHasSelectedGameListView : ExConstraintLayout {
 
             if (result.errno == 0) {
                 partyHasSelectedGameListRecyclerAdapter?.deleteAt(pos)
+                if ((partyHasSelectedGameListRecyclerAdapter?.dataList?.size ?: 0) > 1) {
+                    partyHasSelectedGameListRecyclerAdapter?.notifyItemRangeChanged(1, 1)
+                }
 
                 if (offset > 0) {
                     offset--
