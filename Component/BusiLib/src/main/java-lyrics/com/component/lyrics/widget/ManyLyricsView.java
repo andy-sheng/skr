@@ -34,7 +34,6 @@ import com.component.lyrics.model.LyricsLineInfo;
 import com.component.lyrics.utils.LyricsUtils;
 import com.component.lyrics.utils.TimeUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -773,7 +772,11 @@ public class ManyLyricsView extends AbstractLrcView {
                 }
                 float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(mLyricsReader.getLyricsType(), paintHL, splitLyricsLineInfos.get(i), splitLyricsWordIndex, lyricsWordHLTime);
 
-                LyricsUtils.drawDynamicText(canvas, paint, paintHL, paintColor, paintHLColor, text, lineLyricsHLWidth, textX, lineBottomY, getMeasuredWidth());
+                if (mEnableVerbatim) {
+                    LyricsUtils.drawDynamicText(canvas, paint, paintHL, paintColor, paintHLColor, text, lineLyricsHLWidth, textX, lineBottomY, getMeasuredWidth());
+                } else {
+                    LyricsUtils.drawText(canvas, paint, mPaintColors, text, textX, lineBottomY, getMeasuredWidth());
+                }
 
                 //再把原来的大小设置进去
                 paint.setTextSize(paintOriginalTextSize);
