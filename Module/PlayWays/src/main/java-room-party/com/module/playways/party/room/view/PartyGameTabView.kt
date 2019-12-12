@@ -257,8 +257,9 @@ class PartyGameTabView : ExConstraintLayout {
             if (partyGameInfoModel?.ktv?.userID ?: 0 > 0) {
                 textScrollView.visibility = View.GONE
                 partySelfSingLyricView?.setVisibility(View.VISIBLE)
+
                 if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
-                    partySelfSingLyricView?.startFly(true) {
+                    partySelfSingLyricView?.startFly(0, true) {
                         MyLog.d(mTag, "partySelfSingLyricView?.startFly end")
                         endQuestion()
                         ZqEngineKit.getInstance().stopAudioMixing()
@@ -278,7 +279,13 @@ class PartyGameTabView : ExConstraintLayout {
                         ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel?.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
                     }
                 } else {
-                    partySelfSingLyricView?.startFly(false) {
+                    var elapsedTimeMs = roomData?.realRoundInfo?.elapsedTimeMs ?: 0
+                    if (elapsedTimeMs < 0) {
+                        elapsedTimeMs = 0
+                    }
+
+                    MyLog.d(mTag, "elapsedTimeMs is $elapsedTimeMs")
+                    partySelfSingLyricView?.startFly(elapsedTimeMs, false) {
 
                     }
                 }

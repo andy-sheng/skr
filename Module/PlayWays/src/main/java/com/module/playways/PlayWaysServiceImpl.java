@@ -37,11 +37,11 @@ import com.module.playways.mic.match.model.JoinMicRoomRspModel;
 import com.module.playways.mic.room.MicRoomActivity;
 import com.module.playways.mic.room.MicRoomServerApi;
 import com.module.playways.mic.room.event.MicChangeRoomEvent;
+import com.module.playways.party.home.PartyRoomView;
 import com.module.playways.party.match.model.JoinPartyRoomRspModel;
 import com.module.playways.party.room.PartyRoomActivity;
 import com.module.playways.party.room.PartyRoomServerApi;
 import com.module.playways.party.room.event.PartyChangeRoomEvent;
-import com.module.playways.party.home.PartyRoomView;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
@@ -290,6 +290,10 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                     public void process(ApiResult result) {
                         if (result.getErrno() == 0) {
                             JoinPartyRoomRspModel rsp = JSON.parseObject(result.getData().toString(), JoinPartyRoomRspModel.class);
+                            if (rsp.getCurrentRound() != null) {
+                                rsp.getCurrentRound().setElapsedTimeMs(rsp.getElapsedTimeMs());
+                            }
+
                             for (Activity activity : U.getActivityUtils().getActivityList()) {
                                 if (activity instanceof PartyRoomActivity) {
                                     MyLog.d(TAG, " 存在派对房页面了，发event刷新view");

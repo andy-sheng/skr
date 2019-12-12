@@ -4,13 +4,11 @@ import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.common.utils.SpanUtils
 import com.common.view.ExViewStub
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.LyricsReader
-import com.component.lyrics.utils.SongResUtils
 import com.component.lyrics.widget.ManyLyricsView
 import com.module.playways.R
 import com.module.playways.grab.room.view.SingCountDownView2
@@ -23,7 +21,7 @@ import io.reactivex.disposables.Disposable
 class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyRoomData?) : ExViewStub(viewStub) {
     val TAG = "RaceSelfSingLyricView"
 
-    protected lateinit var mManyLyricsView: ManyLyricsView
+    internal lateinit var mManyLyricsView: ManyLyricsView
     internal lateinit var mSingCountDownView2: SingCountDownView2
 
     internal var mDisposable: Disposable? = null
@@ -46,7 +44,7 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
         mManyLyricsView?.initLrcData()
     }
 
-    fun startFly(isSelf: Boolean, call: (() -> Unit)?) {
+    fun startFly(offset: Int, isSelf: Boolean, call: (() -> Unit)?) {
         tryInflate()
         val infoModel = mRoomData?.realRoundInfo
         val totalMs = mRoomData?.realRoundInfo?.sceneInfo?.ktv?.singTimeMs ?: 0
@@ -55,10 +53,10 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
             call?.invoke()
         }
 
-        playWithAcc(isSelf, infoModel, totalMs)
+        playWithAcc(offset, isSelf, infoModel, totalMs)
     }
 
-    private fun playWithAcc(isSelf: Boolean, infoModel: PartyRoundInfoModel?, totalTs: Int) {
+    private fun playWithAcc(offset: Int, isSelf: Boolean, infoModel: PartyRoundInfoModel?, totalTs: Int) {
         if (infoModel == null) {
             MyLog.w(TAG, "playWithAcc infoModel = null totalTs=$totalTs")
             return
@@ -80,12 +78,16 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
         configParams.accBeginTs = curSong.beginMs
         configParams.accEndTs = curSong.beginMs + totalTs
         configParams.authorName = curSong.uploaderName
+        configParams.needWaitAAC = isSelf
         mLyricAndAccMatchManager!!.setArgs(configParams)
         val finalCurSong = curSong
         mLyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener {
 
             override fun onLyricParseSuccess(reader: LyricsReader) {
 //                mSvlyric.visibility = View.GONE
+                if (offset > 0) {
+                    configParams.manyLyricsView?.seekTo(curSong.beginMs + offset)
+                }
             }
 
             override fun onLyricParseFailed() {

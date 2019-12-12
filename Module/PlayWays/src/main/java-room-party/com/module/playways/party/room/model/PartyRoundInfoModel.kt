@@ -14,6 +14,9 @@ class PartyRoundInfoModel : BaseRoundInfoModel() {
     var endMs: Int = 0 //结束相对时间（相对于createdTimeMs时间）
     var sceneInfo: PartyGameInfoModel? = null
 
+    //！！！这个不是服务器返回的，是中途进来的时候从roomData里面设置的
+    var elapsedTimeMs: Int = 0
+
     override fun getType(): Int {
         return TYPE_PARTY
     }
