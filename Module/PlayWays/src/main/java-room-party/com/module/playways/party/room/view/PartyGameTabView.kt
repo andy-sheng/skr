@@ -28,6 +28,7 @@ import com.module.playways.party.room.event.PartySelectSongEvent
 import com.module.playways.party.room.model.PartyGameInfoModel
 import com.module.playways.room.data.H
 import com.zq.live.proto.PartyRoom.EPGameType
+import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -216,6 +217,8 @@ class PartyGameTabView : ExConstraintLayout {
             return
         }
 
+        ZqEngineKit.getInstance().stopAudioMixing()
+
         partySelfSingLyricView?.reset()
 
         partyGameInfoModel = roomData?.realRoundInfo?.sceneInfo
@@ -252,6 +255,7 @@ class PartyGameTabView : ExConstraintLayout {
                 if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
                     partySelfSingLyricView?.startFly(true) {
                         endQuestion()
+                        ZqEngineKit.getInstance().stopAudioMixing()
                     }
                 } else {
                     partySelfSingLyricView?.startFly(false) {
