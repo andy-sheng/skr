@@ -59,7 +59,9 @@ class PartyGameListRecyclerAdapter : RecyclerView.Adapter<PartyGameListRecyclerA
             }
 
             itemView.setDebounceViewClickListener {
-                mMoreMethod?.invoke(model!!)
+                if (model?.ruleType == EPGameType.PGT_Play.ordinal) {
+                    mMoreMethod?.invoke(model!!)
+                }
             }
         }
 
