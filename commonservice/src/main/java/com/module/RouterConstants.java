@@ -142,4 +142,9 @@ public interface RouterConstants {
     String ACTIVITY_CREATE_PARTY_ROOM = "/party/PartyRoomCreateActivity";
     String ACTIVITY_PARTY_ROOM = "/party/PartyRoomActivity";
     String ACTIVITY_PARTY_SELECT_GAME = "/party/PartySelectGameActivity";
+
+
+    String ACTIVITY_CREATE_CLUB = "/club/CreateClubActivity";
+    String ACTIVITY_HOMEPAGE_CLUB = "/club/MyClubHomepageActivity";
+    String ACTIVITY_OTHER_HOMEPAGE_CLUB = "/club/OtherClubHomepageActivity";
 }

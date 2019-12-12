@@ -31,6 +31,8 @@ class PersonTagView : ConstraintLayout {
     private val USERID_TAG = 4             //撕歌ID标签
     private val FANS_NUM_TAG = 5           //粉丝数（他人中心才有）
     private val QINMI_TAG = 6              //亲密度 (信息卡片才有)
+    private val CLUB_ID_TAG = 7            //家族ID
+    private val CLUB_HOT_TAG = 8           //家族热度
 
     private var sex: Int = ESex.SX_UNKNOWN.value
 
