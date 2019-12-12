@@ -210,6 +210,8 @@ class PartyGameTabView : ExConstraintLayout {
             return
         }
 
+        partySelfSingLyricView?.reset()
+
         partyGameInfoModel = roomData?.realRoundInfo?.sceneInfo
 
         hideAllTypeView()
