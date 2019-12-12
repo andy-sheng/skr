@@ -93,21 +93,27 @@ class PartyGameTabView : ExConstraintLayout {
     }
 
     fun endQuestion() {
-        launch {
-            val map = mutableMapOf(
-                    "roomID" to H.partyRoomData?.gameId,
-                    "roundSeq" to H.partyRoomData?.realRoundSeq
-            )
+        partyGameInfoModel?.let {
+            launch {
+                val map = mutableMapOf(
+                        "roomID" to H.partyRoomData?.gameId,
+                        "roundSeq" to H.partyRoomData?.realRoundSeq
+                )
 
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe(RequestControl("${mTag} endQuestion", ControlType.CancelThis)) {
-                roomServerApi.endQuestion(body)
-            }
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val result = subscribe(RequestControl("${mTag} endQuestion", ControlType.CancelThis)) {
+                    if (it.rule?.ruleType == EPGameType.PGT_KTV.value) {
+                        roomServerApi.endMusic(body)
+                    } else {
+                        roomServerApi.endQuestion(body)
+                    }
+                }
 
-            if (result.errno == 0) {
+                if (result.errno == 0) {
 
-            } else {
-                U.getToastUtil().showShort(result.errmsg)
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                }
             }
         }
     }
@@ -245,7 +251,7 @@ class PartyGameTabView : ExConstraintLayout {
                 partySelfSingLyricView?.setVisibility(View.VISIBLE)
                 if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
                     partySelfSingLyricView?.startFly(true) {
-
+                        endQuestion()
                     }
                 } else {
                     partySelfSingLyricView?.startFly(false) {

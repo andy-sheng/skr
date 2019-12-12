@@ -216,4 +216,13 @@ interface PartyRoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/partygame/kickout")
     fun kickout(@Body body: RequestBody): Call<ApiResult>
 
+    /**
+     * {
+    "roomID": 0,
+    "roundSeq": 0
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/end-ktv-music")
+    fun endMusic(@Body body: RequestBody): Call<ApiResult>
+
 }
