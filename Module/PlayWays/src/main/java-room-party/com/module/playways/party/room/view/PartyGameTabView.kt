@@ -165,12 +165,9 @@ class PartyGameTabView : ExConstraintLayout {
                 } else if (it.rule?.ruleType == EPGameType.PGT_Free.ordinal) {
                     bottomRightOpTv.visibility = View.GONE
                 } else if (it.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
-                    if (it.ktv?.hasNextMusic == true) {
-                        bottomRightOpTv.text = "切歌"
-                        bottomRightOpTv.visibility = View.VISIBLE
-                    } else {
-                        bottomRightOpTv.visibility = View.GONE
-                    }
+                    //不管有没有歌都得可以切歌
+                    bottomRightOpTv.text = "切歌"
+                    bottomRightOpTv.visibility = View.VISIBLE
                 }
             }
         } else {
