@@ -98,19 +98,6 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
 
         })
 
-        // 开始开始混伴奏，开始解除引擎mute
-        val accFile = SongResUtils.getAccFileByUrl(mSongModel?.acc)
-        // midi不需要在这下，只要下好，native就会解析，打分就能恢复
-        val midiFile = SongResUtils.getMIDIFileByUrl(mSongModel?.midi)
-
-        val songBeginTs = mSongModel?.beginMs ?: 0
-        if (accFile != null && accFile.exists()) {
-            // 伴奏文件存在
-            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
-        } else {
-            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), mSongModel?.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
-        }
-
         ZqEngineKit.getInstance().setRecognizeListener { result, list, targetSongInfo, lineNo -> mLyricAndAccMatchManager!!.onAcrResult(result, list, targetSongInfo, lineNo) }
     }
 
