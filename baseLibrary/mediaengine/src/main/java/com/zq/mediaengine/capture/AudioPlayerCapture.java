@@ -74,7 +74,9 @@ public class AudioPlayerCapture {
     private int mAudioPlayerType = AUDIO_PLAYER_TYPE_AUDIOTRACK;
     private boolean mPlayerTypeChanged = false;
     private boolean mMute = false;
+    private float mPlayoutVolume = 1.0f;
     private boolean mMuteChanged = false;
+    private boolean mVolumeChanged = false;
 
     private Handler mMainHandler;
     private int mLoopCount;
@@ -190,6 +192,10 @@ public class AudioPlayerCapture {
                 if (mMuteChanged) {
                     mMuteChanged = false;
                     mPcmPlayer.setMute(mMute);
+                }
+                if (mVolumeChanged) {
+                    mVolumeChanged = false;
+                    mPcmPlayer.setVolume(mPlayoutVolume);
                 }
                 if (frame.buf != null && frame.buf.limit() > 0) {
                     // write audio data in blocking mode
@@ -350,6 +356,16 @@ public class AudioPlayerCapture {
      */
     public float getVolume() {
         return mAudioFileCapture.getVolume();
+    }
+
+    public void setPlayoutVolume(float volume) {
+        Log.d(TAG, "setPlayoutVolume: " + volume);
+        mVolumeChanged = (mPlayoutVolume != volume);
+        mPlayoutVolume = volume;
+    }
+
+    public float getPlayoutVolume() {
+        return mPlayoutVolume;
     }
 
     /**

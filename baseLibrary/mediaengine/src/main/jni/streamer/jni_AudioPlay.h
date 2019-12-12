@@ -49,6 +49,14 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1setM
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioSLPlayer
+ * Method:    _setVolume
+ * Signature: (JF)V
+ */
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1setVolume
+		(JNIEnv *, jobject, jlong, jfloat);
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_AudioSLPlayer
  * Method:    _getPosition
  * Signature: (J)J
  */

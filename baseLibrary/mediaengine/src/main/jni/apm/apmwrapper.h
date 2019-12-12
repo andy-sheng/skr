@@ -45,6 +45,8 @@ public:
 
     int Initialize(void);
 
+    int SetBypass(bool bypass);
+
     int ProcessStream(int16_t **out, int16_t *data, int len);
 
     int EnableHighPassFilter(bool enable);
@@ -94,6 +96,8 @@ private:
 
     bool mHasVoice;
     int mAnalogLevel;
+
+    bool mBypass;
 };
 
 #endif //KSYAPMDEMO_APMWRAPPER_H

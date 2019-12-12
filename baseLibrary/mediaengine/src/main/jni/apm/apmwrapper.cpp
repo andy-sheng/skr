@@ -11,6 +11,7 @@
 
 APMWrapper::APMWrapper() :
         mAPM(NULL),
+        mBypass(false),
         mHasVoice(true),
         mAnalogLevel(30),
         mSamplesPerFrame{0, 0},
@@ -90,12 +91,25 @@ int APMWrapper::Initialize() {
     return mAPM->Initialize();
 }
 
+int APMWrapper::SetBypass(bool bypass) {
+    mBypass = bypass;
+}
+
 /**
  * Processes a 10 ms |frame| of the primary audio stream. On the client-side,
  * this is the near-end (or captured) audio.
  */
 int APMWrapper::ProcessStream(int16_t **out, int16_t *data, int len) {
     // LOGD("ProcessStream data=0x%p len=%d", data, len);
+    if (data == NULL || len <= 0) {
+        return 0;
+    }
+
+    if (mBypass) {
+        *out = data;
+        return len;
+    }
+
     int idx = 0;
     int start = 0, size = 0, outSize = 0, ret = 0;
     audio_utils_fifo_write(&mFifo[0], (char *) data, (size_t)(len / mFrameSize[idx]));
@@ -108,7 +122,7 @@ int APMWrapper::ProcessStream(int16_t **out, int16_t *data, int len) {
         mOutData[idx] = (int16_t*)realloc(mOutData[idx], (size_t)mOutDataSize[idx]);
     }
 
-    int delay_ms = 200;
+    int delay_ms = 100;
     while (audio_utils_fifo_get_remain(&mFifo[idx]) >= mConfig[idx].num_frames()) {
         audio_utils_fifo_read(&mFifo[idx], mInData[idx], mConfig[idx].num_frames());
         size = mConfig[idx].num_samples() * getBytesPerSample(mInSampleFmt[idx]);
@@ -155,6 +169,7 @@ int APMWrapper::EnableHighPassFilter(bool enable) {
 }
 
 int APMWrapper::EnableNs(bool enable) {
+    LOGD("EnableNs %d", enable);
     mAPMConfig.noise_suppression.enabled = enable;
     mAPM->ApplyConfig(mAPMConfig);
     return 0;
@@ -194,6 +209,7 @@ int APMWrapper::EnableAECM(bool enable) {
 }
 
 int APMWrapper::EnableAEC(bool enable) {
+    LOGD("EnableAEC %d", enable);
     mAPMConfig.echo_canceller.enabled = enable;
     mAPMConfig.echo_canceller.mobile_mode = false;
     mAPM->ApplyConfig(mAPMConfig);
@@ -216,6 +232,14 @@ int APMWrapper::SetStreamDelay(int delay) {
 
 int APMWrapper::AnalyzeReverseStream(int16_t *data, int len) {
     // LOGD("AnalyzeReverseStream data=0x%p len=%d", data, len);
+    if (data == NULL || len <= 0) {
+        return 0;
+    }
+
+    if (mBypass) {
+        return 0;
+    }
+
     int idx = 1;
     int ret = 0, size = 0;
     audio_utils_fifo_write(&mFifo[1], (char *) data, len / mFrameSize[idx]);

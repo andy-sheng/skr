@@ -16,6 +16,8 @@ public interface IPcmPlayer {
 
     void setMute(boolean mute);
 
+    void setVolume(float volume);
+
     int start();
 
     int stop();

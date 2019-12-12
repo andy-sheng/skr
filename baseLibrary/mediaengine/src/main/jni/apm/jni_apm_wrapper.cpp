@@ -2,6 +2,7 @@
 // Created by 昝晓飞 on 17/3/16.
 //
 
+#include <include/android_nio_utils.h>
 #include "jni_apm_wrapper.h"
 #include "apmwrapper.h"
 #include "include/log.h"
@@ -26,13 +27,25 @@ JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_create
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_APMWrapper
+ * Method:    setBypass
+ * Signature: (JZ)I
+ */
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_setBypass
+        (JNIEnv *env, jobject thiz, jlong instance, jboolean enable) {
+    return getInstance(instance)->SetBypass(enable);
+}
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_APMWrapper
  * Method:    processStream
- * Signature: (JLjava/nio/ByteBuffer;)I
+ * Signature: (JILjava/nio/ByteBuffer;I)Ljava/nio/ByteBuffer;
  */
 JNIEXPORT jobject JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_processStream
-        (JNIEnv *env, jobject thiz, jlong instance, jint idx, jobject inBuf, jint insize) {
+        (JNIEnv *env, jobject thiz, jlong instance, jint idx, jobject byteBuffer, jint insize) {
     APMWrapper *apmWrapper = getInstance(instance);
-    short *buf = (short *) env->GetDirectBufferAddress(inBuf);
+
+    AutoBufferPointer abp(env, byteBuffer, JNI_TRUE);
+    short *buf = (short *)abp.pointer();
 
     int16_t *outBuf = NULL;
     jobject outByteBuffer = NULL;

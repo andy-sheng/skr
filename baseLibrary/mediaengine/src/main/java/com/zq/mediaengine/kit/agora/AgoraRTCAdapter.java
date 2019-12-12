@@ -639,14 +639,6 @@ public class AgoraRTCAdapter {
             mRtcEngine.setParameters("{\"che.audio.specify.codec\": \"OPUSFB\"}");
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
-
-            // 设置onRecordFrame回调的数据
-            int samplesPerCall = mConfig.getAudioSampleRate() * mConfig.getAudioChannels() * 20 / 1000;
-            MyLog.i(TAG, "setRecordingAudioFrameParameters samplesPerCall: " + samplesPerCall);
-            setRecordingAudioFrameParameters(mConfig.getAudioSampleRate(), mConfig.getAudioChannels(),
-                    Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, samplesPerCall);
-            setPlaybackAudioFrameParameters(mConfig.getAudioSampleRate(), mConfig.getAudioChannels(),
-                    Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, samplesPerCall);
         } else {
             mRtcEngine.disableAudio();
         }
@@ -682,12 +674,31 @@ public class AgoraRTCAdapter {
         mRtcEngine.setRemoteSubscribeFallbackOption(Constants.STREAM_FALLBACK_OPTION_AUDIO_ONLY);
 
         if (mConfig.isUseExternalAudio()) {
-            // 音视频自采集
+            // 音频自采集
             mRtcEngine.setExternalAudioSource(
                     true,                       // 开启外部音频源
                     mConfig.getAudioSampleRate(),   // 采样率，可以有8k，16k，32k，44.1k和48kHz等模式
                     mConfig.getAudioChannels()      // 外部音源的通道数，最多2个
             );
+            // 音频自渲染
+            mRtcEngine.setParameters("{\"che.audio.external_render\": true}");
+            // 同时开启声网APM处理逻辑
+//            mRtcEngine.setParameters("{\"che.audio.external.to.apm\": true}");
+//            mRtcEngine.setParameters("{\"che.audio.enable.agc\": false}");
+
+            // 设置onPlaybackFrame回调的数据
+            int samplesPerCall = mConfig.getAudioSampleRate() * mConfig.getAudioChannels() * 20 / 1000;
+            MyLog.i(TAG, "setPlaybackAudioFrameParameters samplesPerCall: " + samplesPerCall);
+            setPlaybackAudioFrameParameters(mConfig.getAudioSampleRate(), mConfig.getAudioChannels(),
+                    Constants.RAW_AUDIO_FRAME_OP_MODE_READ_ONLY, samplesPerCall);
+        } else {
+            // 设置onRecordFrame回调的数据
+            int samplesPerCall = mConfig.getAudioSampleRate() * mConfig.getAudioChannels() * 20 / 1000;
+            MyLog.i(TAG, "setRecordingAudioFrameParameters samplesPerCall: " + samplesPerCall);
+            setRecordingAudioFrameParameters(mConfig.getAudioSampleRate(), mConfig.getAudioChannels(),
+                    Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, samplesPerCall);
+            setPlaybackAudioFrameParameters(mConfig.getAudioSampleRate(), mConfig.getAudioChannels(),
+                    Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, samplesPerCall);
         }
         {
             mLocalAudioFormat = null;
@@ -801,7 +812,7 @@ public class AgoraRTCAdapter {
                     AudioBufFrame frame = new AudioBufFrame(mRemoteAudioFormat, byteBuffer, pts);
                     mRemoteAudioSrcPin.onFrameAvailable(frame);
 
-                    return !mConfig.isUseExternalAudio();
+                    return true;
                 }
             });
         }

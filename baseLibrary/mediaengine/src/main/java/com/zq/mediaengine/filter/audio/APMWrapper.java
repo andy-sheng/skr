@@ -57,6 +57,10 @@ public class APMWrapper {
         return mAPMProcessFormat;
     }
 
+    public int setBypass(boolean bypass) {
+        return setBypass(mAPMWrapperInstance, bypass);
+    }
+
     public ByteBuffer processStream(int idx, ByteBuffer data) {
         if (mAPMWrapperInstance == UNINIT || data == null) {
             return null;
@@ -64,7 +68,7 @@ public class APMWrapper {
         return processStream(mAPMWrapperInstance, idx, data, data.limit());
     }
 
-    private int enableHighPassFilter(boolean enable) {
+    public int enableHighPassFilter(boolean enable) {
         if (mAPMWrapperInstance == UNINIT) {
             return -1;
         }
@@ -161,6 +165,8 @@ public class APMWrapper {
 
 
     private native long create();
+
+    private native int setBypass(long instance, boolean bypass);
 
     private native ByteBuffer processStream(long instance, int idx, ByteBuffer data, int size);
 

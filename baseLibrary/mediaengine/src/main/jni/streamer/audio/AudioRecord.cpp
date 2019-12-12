@@ -190,7 +190,9 @@ void AudioRecord::bqRecorderCallback(SLAndroidSimpleBufferQueueItf bq, void *con
         memset(thiz->mBuffer, 0, (size_t) (thiz->mBufferSamples * thiz->mFrameSize));
         if ((now - thiz->mStartTime) >= 5000000) {
             thiz->mStartTime = now;
-            buf[0] = SHRT_MAX;
+            for (int i = 0; i < 4; i++) {
+                buf[i] = SHRT_MAX;
+            }
         }
     } else if (thiz->mVolume != 1.0f) {
         int16_t *buf = (short*) thiz->mBuffer;

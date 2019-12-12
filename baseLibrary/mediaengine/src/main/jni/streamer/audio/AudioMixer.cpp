@@ -9,6 +9,13 @@
 #undef LOG_TAG
 #define LOG_TAG "AudioMixer"
 
+static inline int64_t getNsTimestamp() {
+    struct timespec stamp;
+    clock_gettime(CLOCK_MONOTONIC, &stamp);
+    int64_t nsec = (int64_t) stamp.tv_sec*1000000000LL + stamp.tv_nsec;
+    return nsec;
+}
+
 AudioMixer::AudioMixer() {
     mMainIdx = 0;
     mMainFrameReady = false;
@@ -17,6 +24,7 @@ AudioMixer::AudioMixer() {
     mRightOutputVolume = 1.0f;
     mBuffer = NULL;
     mBufSize = 0;
+    mStatStartTime = 0;
     pthread_mutex_init(&mLock, NULL);
     for (int i=0; i<CHN_NUM; i++) {
         mChannelParams[i] = NULL;
@@ -242,6 +250,17 @@ int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
             ChannelParam *cp = mChannelParams[mMainIdx];
             result = filterProcess(cp->sampleFmt, cp->sampleRate, cp->channels, cp->bufferSamples,
                                    inBuf, inSize);
+        }
+
+        int64_t now = getNsTimestamp() / 1000;
+        if ((now - mStatStartTime) >= 5000000) {
+            mStatStartTime = now;
+            for (int i = 0; i < CHN_NUM; i++) {
+                ChannelFifo* cf = mChannelFifos[i];
+                if (cf) {
+                    LOGD("idx %d remain %d samples", i, audio_utils_fifo_get_remain(&cf->fifo));
+                }
+            }
         }
     } else {
         ChannelFifo* cf = mChannelFifos[idx];

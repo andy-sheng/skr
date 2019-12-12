@@ -25,8 +25,16 @@ JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_create
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_APMWrapper
+ * Method:    setBypass
+ * Signature: (JZ)I
+ */
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_setBypass
+        (JNIEnv *, jobject, jlong, jboolean);
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_APMWrapper
  * Method:    processStream
- * Signature: (JLjava/nio/ByteBuffer;)Ljava/nio/ByteBuffer;
+ * Signature: (JILjava/nio/ByteBuffer;I)Ljava/nio/ByteBuffer;
  */
 JNIEXPORT jobject JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_processStream
         (JNIEnv *, jobject, jlong, jint, jobject, jint);

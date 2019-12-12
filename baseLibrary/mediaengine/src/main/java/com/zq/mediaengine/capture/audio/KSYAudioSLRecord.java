@@ -52,8 +52,7 @@ public class KSYAudioSLRecord implements IKSYAudioRecord {
 
     @Override
     public long getNativeModule() {
-        return 0;
-//        return mInstance;
+        return mInstance;
     }
 
     @Override

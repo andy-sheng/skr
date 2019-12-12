@@ -1,11 +1,18 @@
 package com.zq.mediaengine.kit;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothHeadset;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.RectF;
+import android.media.AudioManager;
 import android.opengl.GLSurfaceView;
-import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 
@@ -52,10 +59,7 @@ import com.zq.mediaengine.kit.agora.AgoraRTCAdapter;
 import com.zq.mediaengine.kit.bytedance.BytedEffectFilter;
 import com.zq.mediaengine.kit.filter.AcrRecognizer;
 import com.zq.mediaengine.kit.filter.AudioDummyFilter;
-import com.zq.mediaengine.kit.filter.CbAudioEffectFilter;
 import com.zq.mediaengine.kit.filter.CbAudioScorer;
-import com.zq.mediaengine.kit.filter.TbAudioAgcFilter;
-import com.zq.mediaengine.kit.filter.TbAudioEffectFilter;
 import com.zq.mediaengine.kit.log.LogRunnable;
 import com.zq.mediaengine.publisher.MediaMuxerPublisher;
 import com.zq.mediaengine.publisher.Publisher;
@@ -118,6 +122,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     public static final boolean RECORD_FOR_DEBUG = false;
     public final boolean OPEN_AUDIO_RECORD_FOR_CALLBACK = true; // 是否开启用于用户反馈的录制
 
+    private Context mContext;
     private Params mConfig = new Params(); // 为了防止崩溃
 
     private volatile int mStatus = STATUS_UNINIT;// 0未初始化 1 初始ing 2 初始化 3 释放ing
@@ -159,18 +164,19 @@ public class ZqEngineKit implements AgoraOutCallback {
     private AudioCapture mAudioCapture;
     private AudioPlayerCapture mAudioPlayerCapture;
     private SrcPin<AudioBufFrame> mAudioLocalSrcPin;
+    private SrcPin<AudioBufFrame> mAudioSendSrcPin;
     private SrcPin<AudioBufFrame> mAudioRemoteSrcPin;
-    private AudioPreview mAudioPreview;
+    private AudioPreview mRemoteAudioPreview;
+    private AudioPreview mLocalAudioPreview;
 
     // AEC/NS/AGC等处理
     private APMFilter mAPMFilter;
     // 输出前的重采样模块
-    private AudioResampleFilter mAudioResampleFilter;
+    private AudioResampleFilter mAudioSendResampleFilter;
     // 录制前的重采样模块
     private AudioResampleFilter mAudioRecordResampleFilter;
-    private AudioResampleFilter mAudioRecordRemoteResampleFilter;
     // 对bgm, remote进行混音，用于回声消除
-    private AudioMixer mRemoteAudioMixer;
+//    private AudioMixer mRemoteAudioMixer;
     // 对mic, bgm进行混音，用于远端发送
     private AudioMixer mLocalAudioMixer;
     // 对mic, bgm, remote进行混音，用于录制
@@ -184,6 +190,10 @@ public class ZqEngineKit implements AgoraOutCallback {
     private RawFrameWriter mRawFrameWriter;
     private RawFrameWriter mCapRawFrameWriter;
     private RawFrameWriter mBgmRawFrameWriter;
+
+    private HeadSetReceiver mHeadSetReceiver;
+    protected boolean mHeadSetPlugged = false;
+    protected boolean mBluetoothPlugged = false;
 
     // 视频相关参数
     protected int mScreenRenderWidth = 0;
@@ -522,9 +532,14 @@ public class ZqEngineKit implements AgoraOutCallback {
         mStatus = STATUS_INITING;
         mInitFrom = from;
         mConfig = params;
+        mContext = U.app().getApplicationContext();
+
+        mConfig.setUseExternalAudio(true);
+        mConfig.setEnableInEarMonitoring(true);
 
         // TODO: engine代码合并后，采样率初始值在Params初始化时获取
-        mConfig.setAudioSampleRate(AudioUtil.getNativeSampleRate(U.app().getApplicationContext()));
+        mConfig.setAudioSampleRate(AudioUtil.getNativeSampleRate(mContext));
+        MyLog.i(TAG, "Audio native sampleRate: " + mConfig.getAudioSampleRate());
 
         initModules();
         mAgoraRTCAdapter.init(mConfig);
@@ -567,10 +582,11 @@ public class ZqEngineKit implements AgoraOutCallback {
         mRawFrameWriter = new RawFrameWriter();
 
         if (mConfig.isUseExternalAudio()) {
-            mAudioCapture = new AudioCapture(U.app().getApplicationContext());
-            mAudioCapture.setSampleRate(mConfig.getAudioSampleRate());
-            mAudioPlayerCapture = new AudioPlayerCapture(U.app().getApplicationContext());
-            mAudioPreview = new AudioPreview(U.app().getApplicationContext());
+            mAudioCapture = new AudioCapture(mContext);
+            mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
+            mAudioPlayerCapture = new AudioPlayerCapture(mContext);
+            mRemoteAudioPreview = new AudioPreview(mContext);
+            mLocalAudioPreview = new AudioPreview(mContext);
             mAPMFilter = new APMFilter();
 
             // debug录制的相关连接
@@ -584,23 +600,35 @@ public class ZqEngineKit implements AgoraOutCallback {
 //            mAudioLocalSrcPin = mAudioCapture.getSrcPin();
             // 自采集模式下，练歌房不需要声网SDK
             if (mConfig.getScene() != Params.Scene.audiotest) {
-                mRemoteAudioMixer = new AudioMixer();
-                // 加入房间后，以声网远端数据作为主驱动
-                mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(mAudioPreview.getSinkPin());
-                mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(mRemoteAudioMixer.getSinkPin(0));
-                mAudioPlayerCapture.getSrcPin().connect(mRemoteAudioMixer.getSinkPin(1));
-//                mRemoteAudioMixer.getSrcPin().connect(mAPMFilter.getReverseSinkPin());
-                mAudioRemoteSrcPin = mRemoteAudioMixer.getSrcPin();
+//                mRemoteAudioMixer = new AudioMixer();
+//                // 加入房间后，以声网远端数据作为主驱动
+                mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(mRemoteAudioPreview.getSinkPin());
+//                mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(mRemoteAudioMixer.getSinkPin(0));
+//                mAudioPlayerCapture.getSrcPin().connect(mRemoteAudioMixer.getSinkPin(1));
+////                mRemoteAudioMixer.getSrcPin().connect(mAPMFilter.getReverseSinkPin());
+//                mAudioRemoteSrcPin = mRemoteAudioMixer.getSrcPin();
+                mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(mAPMFilter.getReverseSinkPin());
+                mAudioRemoteSrcPin = mAgoraRTCAdapter.getRemoteAudioSrcPin();
             } else {
 //                mAudioPlayerCapture.getSrcPin().connect(mAPMFilter.getReverseSinkPin());
-                mAudioRemoteSrcPin = mAudioPlayerCapture.getSrcPin();
+//                mAudioRemoteSrcPin = mAudioPlayerCapture.getSrcPin();
+                mAudioRemoteSrcPin = mAgoraRTCAdapter.getRemoteAudioSrcPin();
             }
 
-            // 当前仅开启降噪模块
+            // 开启降噪模块
             mAPMFilter.enableNs(true);
             mAPMFilter.setNsLevel(APMFilter.NS_LEVEL_1);
+            // 开启AEC
+            mAPMFilter.enableAEC(true);
 
             mAudioCapture.setAudioCaptureListener(mOnAudioCaptureListener);
+            mAudioPlayerCapture.setOnPreparedListener(new AudioPlayerCapture.OnPreparedListener() {
+                @Override
+                public void onPrepared(AudioPlayerCapture audioPlayerCapture) {
+                    // TODO: 预加载完成通知
+                    onAudioMixingStateChanged(710, 0);
+                }
+            });
             mAudioPlayerCapture.setOnCompletionListener(new AudioPlayerCapture.OnCompletionListener() {
                 @Override
                 public void onCompletion(AudioPlayerCapture audioPlayerCapture) {
@@ -627,6 +655,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             });
         } else {
             mAudioLocalSrcPin = mAgoraRTCAdapter.getLocalAudioSrcPin();
+            mAudioSendSrcPin = mAgoraRTCAdapter.getLocalAudioSrcPin();
             mAudioRemoteSrcPin = mAgoraRTCAdapter.getRemoteAudioSrcPin();
         }
 
@@ -640,6 +669,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         // 打分重采样, 使用16k采样率, 单声道
         AudioBufFormat scoreFormat = new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16, SCORE_SAMPLE_RATE, 1);
         mScoreResampleFilter.setOutFormat(scoreFormat, true);
+        mScoreResampleFilter.setEnableLowLatency(false);
         if (SCORE_DEBUG) {
             mAudioDummyFilter = new AudioDummyFilter();
             mAudioLocalSrcPin.connect(mAudioDummyFilter.getSinkPin());
@@ -653,44 +683,47 @@ public class ZqEngineKit implements AgoraOutCallback {
             SrcPin<AudioBufFrame> scoreSrcPin = mScoreResampleFilter.getSrcPin();
             scoreSrcPin.connect(mCbAudioScorer.getSinkPin());
             scoreSrcPin.connect(mAcrRecognizer.getSinkPin());
+            // 连接音效模块
             mAudioLocalSrcPin.connect(mAudioFilterMgt.getSinkPin());
         }
 
         if (mConfig.isUseExternalAudio() || mConfig.isUseExternalAudioRecord()) {
-            mAudioResampleFilter = new AudioResampleFilter();
-            // 使用声网采集时，需要做buffer数据的隔离
-            mAudioResampleFilter.setOutFormat(new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16,
-                    mConfig.getAudioSampleRate(), mConfig.getAudioChannels()), !mConfig.isUseExternalAudio());
-            mRecordAudioMixer = new AudioMixer();
-
             // 录制时的重采样模块, 需要录制时再连接
             mAudioRecordResampleFilter = new AudioResampleFilter();
-            mAudioRecordRemoteResampleFilter = new AudioResampleFilter();
             mRecordAudioMixer = new AudioMixer();
 
-            // 连接输出resample
-            mAudioFilterMgt.getSrcPin().connect(mAudioResampleFilter.getSinkPin());
-            // PCM dump, 需要在最前面连接
-            mAudioResampleFilter.getSrcPin().connect((SinkPin<AudioBufFrame>) mRawFrameWriter.getSinkPin());
+            if (mConfig.isUseExternalAudio()) {
+                // 连接耳返模块
+                mAudioFilterMgt.getSrcPin().connect(mLocalAudioPreview.getSinkPin());
+            }
+            // PCM dump
+            mAudioFilterMgt.getSrcPin().connect((SinkPin<AudioBufFrame>) mRawFrameWriter.getSinkPin());
 
             if (mConfig.isUseExternalAudio()) {
-                // 自采集发送，需要做buffer数据的隔离
-                AudioCopyFilter audioCopyFilter = new AudioCopyFilter();
                 mLocalAudioMixer = new AudioMixer();
-                mAudioResampleFilter.getSrcPin().connect(audioCopyFilter.getSinkPin());
-                audioCopyFilter.getSrcPin().connect(mLocalAudioMixer.getSinkPin(0));
+                mLocalAudioPreview.getSrcPin().connect(mLocalAudioMixer.getSinkPin(0));
                 mAudioPlayerCapture.getSrcPin().connect(mLocalAudioMixer.getSinkPin(1));
                 mLocalAudioMixer.getSrcPin().connect(mAgoraRTCAdapter.getAudioSinkPin());
+                mAudioSendSrcPin = mLocalAudioMixer.getSrcPin();
             }
 
             // 录制功能
             mAudioEncoder = new MediaCodecAudioEncoder();
             mFilePublisher = new MediaMuxerPublisher();
-            mRecordAudioMixer.getSrcPin().connect(mAudioEncoder.getSinkPin());
+            mAudioRecordResampleFilter.getSrcPin().connect(mAudioEncoder.getSinkPin());
             mAudioEncoder.getSrcPin().connect(mFilePublisher.getAudioSink());
             mFilePublisher.setPubListener(mPubListener);
         } else {
             mAudioFilterMgt.getSrcPin().connect((SinkPin<AudioBufFrame>) mRawFrameWriter.getSinkPin());
+        }
+
+        if (mConfig.isUseExternalAudio()) {
+            AudioManager localAudioManager = (AudioManager) mContext.getSystemService(Context
+                    .AUDIO_SERVICE);
+            mHeadSetPlugged = localAudioManager.isWiredHeadsetOn();
+            mBluetoothPlugged = localAudioManager.isBluetoothA2dpOn() || localAudioManager.isBluetoothScoOn();
+            toggleAEC();
+            registerHeadsetPlugReceiver();
         }
     }
 
@@ -735,22 +768,33 @@ public class ZqEngineKit implements AgoraOutCallback {
     private void connectRecord(AudioBufFormat format) {
         if (mConfig.isUseExternalAudioRecord() || mConfig.isUseExternalAudio()) {
             mAudioRecordResampleFilter.setOutFormat(format);
-            mAudioRecordRemoteResampleFilter.setOutFormat(format);
-            mAudioResampleFilter.getSrcPin().connect(mAudioRecordResampleFilter.getSinkPin());
-            mAudioRemoteSrcPin.connect(mAudioRecordRemoteResampleFilter.getSinkPin());
+            mAudioRecordResampleFilter.setEnableLowLatency(false);
             // TODO: 非主播模式下, 需要用远端音频驱动录制
             mRecordAudioMixer.setMainSinkPinIndex(mConfig.isAnchor() ? 0 : 1);
-            mAudioRecordResampleFilter.getSrcPin().connect(mRecordAudioMixer.getSinkPin(0));
-            mAudioRecordRemoteResampleFilter.getSrcPin().connect(mRecordAudioMixer.getSinkPin(1));
+            mAudioSendSrcPin.connect(mRecordAudioMixer.getSinkPin(0));
+            mAudioRemoteSrcPin.connect(mRecordAudioMixer.getSinkPin(1));
+            mRecordAudioMixer.getSrcPin().connect(mAudioRecordResampleFilter.getSinkPin());
         }
     }
 
     private void disconnectRecord() {
         if (mConfig.isUseExternalAudioRecord() || mConfig.isUseExternalAudio()) {
-            mAudioResampleFilter.getSrcPin().disconnect(mAudioRecordResampleFilter.getSinkPin(), false);
-            mAudioRemoteSrcPin.disconnect(mAudioRecordRemoteResampleFilter.getSinkPin(), false);
-            mAudioRecordResampleFilter.getSrcPin().disconnect(mRecordAudioMixer.getSinkPin(0), false);
-            mAudioRecordRemoteResampleFilter.getSrcPin().disconnect(mRecordAudioMixer.getSinkPin(1), false);
+            mAudioSendSrcPin.disconnect(mRecordAudioMixer.getSinkPin(0), false);
+            mAudioRemoteSrcPin.disconnect(mRecordAudioMixer.getSinkPin(1), false);
+            mRecordAudioMixer.getSrcPin().disconnect(mAudioRecordResampleFilter.getSinkPin(), false);
+        }
+    }
+
+    // TODO: 开启APM处理后耳返延迟会增加20ms左右，当前在耳机模式下直接bypass掉
+    private void toggleAEC() {
+        if (mConfig.isUseExternalAudio()) {
+            if (mHeadSetPlugged || mBluetoothPlugged) {
+                //mAPMFilter.enableAEC(false);
+                mAPMFilter.setBypass(true);
+            } else {
+                //mAPMFilter.enableAEC(true);
+                mAPMFilter.setBypass(false);
+            }
         }
     }
 
@@ -776,7 +820,8 @@ public class ZqEngineKit implements AgoraOutCallback {
             @Override
             public void realRun() {
                 if (mConfig.isUseExternalAudio()) {
-                    mAudioPreview.stop();
+                    mRemoteAudioPreview.stop();
+                    mLocalAudioPreview.stop();
                     mAudioCapture.stop();
                     mAudioPlayerCapture.stop();
                 }
@@ -826,6 +871,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 // 如果有连接Mixer, 主idx的AudioSource需要最后release
                 mAudioPlayerCapture.release();
                 mAudioCapture.release();
+                unregisterHeadsetPlugReceiver();
             }
             MyLog.i(TAG, "destroyInner2");
             if (mConfig.isEnableVideo() && mConfig.isUseExternalVideo()) {
@@ -992,7 +1038,10 @@ public class ZqEngineKit implements AgoraOutCallback {
             // 成功后，自采集模式下开启采集
             if (mConfig.isUseExternalAudio()) {
                 mAudioCapture.start();
-                mAudioPreview.start();
+                mRemoteAudioPreview.start();
+                if (mConfig.isEnableInEarMonitoring() && (mHeadSetPlugged || mAudioCapture.getEnableLatencyTest())) {
+                    mLocalAudioPreview.start();
+                }
             }
 
             //告诉我成功
@@ -1104,10 +1153,24 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    mConfig.setEnableInEarMonitoring(enable);
-                    mAgoraRTCAdapter.enableInEarMonitoring(enable);
+                    enableInEarMonitoringInternal(enable);
                 }
             });
+        }
+    }
+
+    private void enableInEarMonitoringInternal(boolean enable) {
+        mConfig.setEnableInEarMonitoring(enable);
+        if (mConfig.isUseExternalAudio()) {
+            if (enable) {
+                if (mHeadSetPlugged || mAudioCapture.getEnableLatencyTest()) {
+                    mLocalAudioPreview.start();
+                }
+            } else {
+                mLocalAudioPreview.stop();
+            }
+        } else {
+            mAgoraRTCAdapter.enableInEarMonitoring(enable);
         }
     }
 
@@ -1139,9 +1202,9 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public void adjustRecordingSignalVolume(final int volume, final boolean setConfig) {
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("adjustRecordingSignalVolume " + volume + " setConfig: " + setConfig) {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (setConfig) {
                         mConfig.setRecordingSignalVolume(volume);
                     }
@@ -1166,9 +1229,9 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public void adjustPlaybackSignalVolume(final int volume, final boolean setConfig) {
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("adjustPlaybackSignalVolume " + volume + " setConfig: " + setConfig) {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (setConfig) {
                         mConfig.setPlaybackSignalVolume(volume);
                     }
@@ -1187,24 +1250,63 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
 
         mConfig.setStyleEnum(styleEnum);
-        List<AudioFilterBase> filters = new ArrayList<>(2);
-
-        // 添加音效
-        if (styleEnum == Params.AudioEffect.ktv) {
-            filters.add(new CbAudioEffectFilter(5));
-        } else if (styleEnum == Params.AudioEffect.rock) {
-            filters.add(new CbAudioEffectFilter(2));
-        } else if (styleEnum == Params.AudioEffect.liuxing) {
-            filters.add(new CbAudioEffectFilter(3));
-        } else if (styleEnum == Params.AudioEffect.kongling) {
-            filters.add(new CbAudioEffectFilter(1));
-        }
-
-        filters.add(new TbAudioAgcFilter(mConfig));
 
         if (mAudioFilterMgt != null) {
-            mAudioFilterMgt.setFilter(filters);
+            mAudioFilterMgt.setFilter((AudioFilterBase[]) null);
         }
+
+        if (mConfig.isUseExternalAudio()) {
+            if (styleEnum == Params.AudioEffect.none) {
+                mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
+                mAudioCapture.setEnableLatencyTest(false);
+                mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
+                mAudioPlayerCapture.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
+                if (!mHeadSetPlugged && !mBluetoothPlugged) {
+                    mLocalAudioPreview.stop();
+                }
+            } else if (styleEnum == Params.AudioEffect.ktv) {
+                mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
+                mAudioCapture.setEnableLatencyTest(false);
+                mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
+                mAudioPlayerCapture.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
+                if (!mHeadSetPlugged && !mBluetoothPlugged) {
+                    mLocalAudioPreview.stop();
+                }
+            } else if (styleEnum == Params.AudioEffect.rock) {
+                mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
+                mAudioCapture.setEnableLatencyTest(true);
+                mAudioCapture.setVolume(8.0f);
+                mAudioPlayerCapture.setVolume(0.f);
+                mLocalAudioPreview.start();
+            } else if (styleEnum == Params.AudioEffect.liuxing) {
+                mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
+                mAudioCapture.setEnableLatencyTest(true);
+                mAudioCapture.setVolume(8.0f);
+                mAudioPlayerCapture.setVolume(0.f);
+                mLocalAudioPreview.start();
+            } else if (styleEnum == Params.AudioEffect.kongling) {
+                // TODO:
+            }
+        }
+
+//        List<AudioFilterBase> filters = new ArrayList<>(2);
+//
+//        // 添加音效
+//        if (styleEnum == Params.AudioEffect.ktv) {
+//            filters.add(new CbAudioEffectFilter(5));
+//        } else if (styleEnum == Params.AudioEffect.rock) {
+//            filters.add(new CbAudioEffectFilter(2));
+//        } else if (styleEnum == Params.AudioEffect.liuxing) {
+//            filters.add(new CbAudioEffectFilter(3));
+//        } else if (styleEnum == Params.AudioEffect.kongling) {
+//            filters.add(new CbAudioEffectFilter(1));
+//        }
+//
+//        filters.add(new TbAudioAgcFilter(mConfig));
+//
+//        if (mAudioFilterMgt != null) {
+//            mAudioFilterMgt.setFilter(filters);
+//        }
     }
 
     public void setAudioEffectStyle(final Params.AudioEffect styleEnum) {
@@ -1299,7 +1401,8 @@ public class ZqEngineKit implements AgoraOutCallback {
         startAudioMixing(0, filePath, midiPath, mixMusicBeginOffset, loopback, replace, cycle);
     }
 
-    public void startAudioMixing(final int uid, final String filePath, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
+    public void startAudioMixing(final int uid, String path, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
+        final String filePath = "/sdcard/yindiao.m4a";
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle) {
                 @Override
@@ -1534,7 +1637,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         mConfig.setAudioMixingPlayoutVolume(volume);
                     }
                     if (mConfig.isUseExternalAudio()) {
-                        mAudioPlayerCapture.setVolume(volume / 100.f);
+                        mAudioPlayerCapture.setPlayoutVolume(volume / 100.f);
                     } else {
                         mAgoraRTCAdapter.adjustAudioMixingPlayoutVolume(volume);
                     }
@@ -1925,6 +2028,94 @@ public class ZqEngineKit implements AgoraOutCallback {
         public String token;
     }
 
+    private void registerHeadsetPlugReceiver() {
+        if (mHeadSetReceiver == null && mContext != null) {
+            mHeadSetReceiver = new HeadSetReceiver();
+            IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+
+            filter.addAction(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED);
+            filter.addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED);
+            filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+            mContext.registerReceiver(mHeadSetReceiver, filter);
+        }
+    }
+
+    private void unregisterHeadsetPlugReceiver() {
+        if (mHeadSetReceiver != null) {
+            mContext.unregisterReceiver(mHeadSetReceiver);
+            mHeadSetReceiver = null;
+        }
+    }
+
+    private class HeadSetReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (TextUtils.isEmpty(action)) {
+                return;
+            }
+
+            int state = BluetoothHeadset.STATE_DISCONNECTED;
+            if (action.equals(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED)) {
+                state = intent.getIntExtra(BluetoothHeadset.EXTRA_STATE,
+                        BluetoothHeadset.STATE_DISCONNECTED);
+                Log.d(TAG, "bluetooth state:" + state);
+                if (state == BluetoothHeadset.STATE_CONNECTED) {
+                    Log.d(TAG, "bluetooth Headset is plugged");
+                    mBluetoothPlugged = true;
+                } else if (state == BluetoothHeadset.STATE_DISCONNECTED) {
+                    Log.d(TAG, "bluetooth Headset is unplugged");
+                    mBluetoothPlugged = false;
+                }
+            } else if (action.equals(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED))// audio
+            {
+                state = intent.getIntExtra(BluetoothHeadset.EXTRA_STATE,
+                        BluetoothHeadset.STATE_AUDIO_DISCONNECTED);
+                if (state == BluetoothHeadset.STATE_AUDIO_CONNECTED) {
+                    Log.d(TAG, "bluetooth Headset is plugged");
+                    mBluetoothPlugged = true;
+                } else if (state == BluetoothHeadset.STATE_AUDIO_DISCONNECTED) {
+                    Log.d(TAG, "bluetooth Headset is unplugged");
+                    mBluetoothPlugged = false;
+                }
+            } else if (action.equals(Intent.ACTION_HEADSET_PLUG)) {
+                state = intent.getIntExtra("state", -1);
+
+                switch (state) {
+                    case 0:
+                        Log.d(TAG, "Headset is unplugged");
+                        mHeadSetPlugged = false;
+                        break;
+                    case 1:
+                        Log.d(TAG, "Headset is plugged");
+                        mHeadSetPlugged = true;
+                        break;
+                    default:
+                        Log.d(TAG, "I have no idea what the headset state is");
+                }
+            } else if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) { //蓝牙开关
+                state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.STATE_OFF);
+                if (state == BluetoothAdapter.STATE_OFF) {
+                    Log.d(TAG, "bluetooth Headset is unplugged");
+                    mBluetoothPlugged = false;
+                }
+            }
+
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    toggleAEC();
+                    if (mConfig.isUseExternalAudio() && mConfig.isEnableInEarMonitoring()) {
+                        if (mHeadSetPlugged || mAudioCapture.getEnableLatencyTest()) {
+                            mLocalAudioPreview.start();
+                        } else {
+                            mLocalAudioPreview.stop();
+                        }
+                    }
+                }
+            });
+        }
+    }
 
     // 视频相关接口
 

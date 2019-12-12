@@ -34,6 +34,11 @@ void Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1setMute
     getInstance(instance)->setMute(mute);
 }
 
+void Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1setVolume
+        (JNIEnv *env, jobject obj, jlong instance, jfloat volume) {
+    getInstance(instance)->setVolume(volume);
+}
+
 jlong Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1getPosition
         (JNIEnv *env, jobject obj, jlong instance) {
     return getInstance(instance)->getPosition();

@@ -882,9 +882,10 @@ public class Params implements Serializable {
             params = Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
                     .setEnableVideo(true)
                     .setEnableAudio(true)
-                    .setUseExternalAudio(false)
+                    .setUseExternalAudio(true)
                     .setUseExternalVideo(true)
                     .setUseExternalAudioRecord(true)
+                    .setEnableInEarMonitoring(true)
                     .setStyleEnum(AudioEffect.none)
                     .build();
         }

@@ -80,6 +80,9 @@ private:
     // for blocking mode
     bool mBlockingMode;
 
+    // show mixer buffer level
+    int64_t mStatStartTime;
+
     void fifoSwrInit(int idx);
     void fifoSwrRelease(int idx);
     ChannelFifo* fifoInit(int sampleFmt, int sampleRate, int channels, int bufferSamples, int fifoSizeInMs);
