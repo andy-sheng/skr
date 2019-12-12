@@ -584,7 +584,11 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (mConfig.isUseExternalAudio()) {
             mAudioCapture = new AudioCapture(mContext);
             mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
+            mAudioCapture.setSampleRate(mConfig.getAudioSampleRate());
             mAudioPlayerCapture = new AudioPlayerCapture(mContext);
+            mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
+            mAudioPlayerCapture.setOutFormat(new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16,
+                    mConfig.getAudioSampleRate(), mConfig.getAudioChannels()));
             mRemoteAudioPreview = new AudioPreview(mContext);
             mLocalAudioPreview = new AudioPreview(mContext);
             mAPMFilter = new APMFilter();
@@ -700,8 +704,13 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioFilterMgt.getSrcPin().connect((SinkPin<AudioBufFrame>) mRawFrameWriter.getSinkPin());
 
             if (mConfig.isUseExternalAudio()) {
+                // 转换下声道数
+                mAudioSendResampleFilter = new AudioResampleFilter();
+                mAudioSendResampleFilter.setOutFormat(new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16,
+                        mConfig.getAudioSampleRate(), mConfig.getAudioChannels()));
                 mLocalAudioMixer = new AudioMixer();
-                mLocalAudioPreview.getSrcPin().connect(mLocalAudioMixer.getSinkPin(0));
+                mLocalAudioPreview.getSrcPin().connect(mAudioSendResampleFilter.getSinkPin());
+                mAudioSendResampleFilter.getSrcPin().connect(mLocalAudioMixer.getSinkPin(0));
                 mAudioPlayerCapture.getSrcPin().connect(mLocalAudioMixer.getSinkPin(1));
                 mLocalAudioMixer.getSrcPin().connect(mAgoraRTCAdapter.getAudioSinkPin());
                 mAudioSendSrcPin = mLocalAudioMixer.getSrcPin();
@@ -843,6 +852,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         // 销毁前清理掉其他的异步任务
         mCustomHandlerThread.removeCallbacksAndMessages(null);
         tryStopRecordForFeedback("destroy");
+        stopAudioRecording();
         mCustomHandlerThread.post(new LogRunnable("destroy" + " from=" + from + " status=" + mStatus) {
             @Override
             public void realRun() {
@@ -859,17 +869,26 @@ public class ZqEngineKit implements AgoraOutCallback {
         MyLog.i(TAG, "destroyInner1");
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
+            mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_TIMEOUT);
         }
-        mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_TIMEOUT);
         if (mStatus == STATUS_INITED) {
             mStatus = STATUS_UNINITING;
             if (mMusicTimePlayTimeListener != null && !mMusicTimePlayTimeListener.isDisposed()) {
                 mMusicTimePlayTimeListener.dispose();
             }
             mConfig.setJoinChannelSuccess(false);
+            MyLog.i(TAG, "destroyInner11");
+            {
+                // 释放录制相关模块
+                mRecordAudioMixer.getSrcPin().disconnect(false);
+                mAudioRecordResampleFilter.release();
+                mRecordAudioMixer.release();
+            }
+            MyLog.i(TAG, "destroyInner12");
             if (mConfig.isUseExternalAudio()) {
                 // 如果有连接Mixer, 主idx的AudioSource需要最后release
                 mAudioPlayerCapture.release();
+                MyLog.i(TAG, "destroyInner13");
                 mAudioCapture.release();
                 unregisterHeadsetPlugReceiver();
             }

@@ -5,7 +5,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.zq.mediaengine.filter.audio.AudioBufSrcPin;
 import com.zq.mediaengine.filter.audio.AudioFilterMgt;
+import com.zq.mediaengine.filter.audio.AudioResampleFilter;
 import com.zq.mediaengine.filter.audio.AudioSLPlayer;
 import com.zq.mediaengine.filter.audio.AudioTrackPlayer;
 import com.zq.mediaengine.filter.audio.IPcmPlayer;
@@ -64,6 +66,7 @@ public class AudioPlayerCapture {
     public static final int ERROR_UNSUPPORTED = AudioFileCapture.ERROR_UNSUPPORTED;
 
     private SrcPin<AudioBufFrame> mSrcPin;
+    private AudioResampleFilter mAudioResampleFilter;
     private AudioFilterMgt mAudioFilterMgt;
     private AudioFileCapture mAudioFileCapture;
 
@@ -145,12 +148,13 @@ public class AudioPlayerCapture {
      */
     public AudioPlayerCapture(Context context) {
         mContext = context;
-        mSrcPin = new SrcPin<>();
+        mSrcPin = new AudioBufSrcPin();
         mStcMgt = new StcMgt();
         mMainHandler = new Handler(Looper.getMainLooper());
         mAudioFileCapture = new AudioFileCapture(context);
         setupListeners();
 
+        mAudioResampleFilter = new AudioResampleFilter();
         mAudioFilterMgt = new AudioFilterMgt();
         SinkPin<AudioBufFrame> playerSinkPin = new SinkPin<AudioBufFrame>() {
             AudioBufFormat mPcmOutFormat = null;
@@ -217,7 +221,10 @@ public class AudioPlayerCapture {
                 }
             }
         };
-        mAudioFileCapture.getSrcPin().connect(mAudioFilterMgt.getSinkPin());
+        // 默认不做resample
+        mAudioResampleFilter.setOutFormat(new AudioBufFormat(-1, -1, -1));
+        mAudioFileCapture.getSrcPin().connect(mAudioResampleFilter.getSinkPin());
+        mAudioResampleFilter.getSrcPin().connect(mAudioFilterMgt.getSinkPin());
         mAudioFilterMgt.getSrcPin().connect(playerSinkPin);
     }
 
@@ -318,6 +325,17 @@ public class AudioPlayerCapture {
     public void setAudioPlayerType(int type) {
         mPlayerTypeChanged = (mAudioPlayerType != type);
         mAudioPlayerType = type;
+    }
+
+    /**
+     * Set audio player output format
+     *
+     * @param format output format
+     */
+    public void setOutFormat(AudioBufFormat format) {
+        if (format != null) {
+            mAudioResampleFilter.setOutFormat(format);
+        }
     }
 
     /**
@@ -443,6 +461,11 @@ public class AudioPlayerCapture {
                 mPcmPlayer.release();
                 mPcmPlayer = null;
                 mStcMgt.reset();
+
+                // stop后发送 DETACH_NATIVE_MODULE 事件
+                AudioBufFrame frame = new AudioBufFrame(mOutFormat, null, 0);
+                frame.flags |= AVConst.FLAG_DETACH_NATIVE_MODULE;
+                mSrcPin.onFrameAvailable(frame);
             }
         });
     }
@@ -493,6 +516,10 @@ public class AudioPlayerCapture {
      * Release.
      */
     public void release() {
+        Log.d(TAG, "release");
+        // AudioFileCapture的release是异步的，这里先释放后面的模块
+        mSrcPin.disconnect(true);
+
         stop();
         mAudioFileCapture.release();
     }

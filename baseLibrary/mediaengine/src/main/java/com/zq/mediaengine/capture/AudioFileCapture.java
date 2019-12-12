@@ -419,7 +419,6 @@ public class AudioFileCapture {
      * Release.
      */
     public void release() {
-        mDecodeHandler.removeCallbacksAndMessages(null);
         stop();
         mDecodeHandler.sendEmptyMessage(CMD_RELEASE);
         mOnPreparedListener = null;
