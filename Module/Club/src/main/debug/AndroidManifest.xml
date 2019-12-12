@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wali.live.modulechannel">
+
+
+    <application
+        android:name="com.common.base.BaseApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/channel_icon"
+        android:label="@string/channel_app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme_All">
+
+    </application>
+
+</manifest>

@@ -246,6 +246,7 @@ dependencies {
         implementation project(":Module:IMKit")
         implementation project(":Module:Feeds")
         implementation project(":Module:Posts")
+        implementation project(":Module:Club")
 //        implementation project(":Module:DoublePlayMode")
         //api(rootProject.ext.dependencies["multidex"])
 //        implementation project(":Module:IMLib")

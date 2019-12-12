@@ -104,6 +104,7 @@ public interface RouterConstants {
     String SERVICE_POSTS = "/posts/service1";
     String SERVICE_GRAB_SERVICE = "/game/grab_service1";
     String SERVICE_DOUBLE_PLAY = "/game/double_play_service";
+    String SERVICE_CLUB = "/club/service1";
 
     String ACTIVITY_FOR_TEST = "/test/ForTestActivity";
 
