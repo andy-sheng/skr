@@ -12,6 +12,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
+import com.common.image.fresco.FrescoWorker
+import com.common.image.model.ImageFactory
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
@@ -87,7 +89,7 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
 
     fun playEmojiAnimation(model: PartyEmojiInfoModel) {
         emojiSdv.visibility = View.VISIBLE
-        AvatarUtils.loadAvatarByUrl(emojiSdv, AvatarUtils.newParamsBuilder(model.bigEmojiURL)
+        FrescoWorker.loadImage(emojiSdv, ImageFactory.newPathImage(model.bigEmojiURL)
                 .build())
         animation?.removeAllListeners()
         animation?.cancel()

@@ -92,8 +92,8 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/emoji_sdv"
-        android:layout_width="@dimen/view_42_dp"
-        android:layout_height="@dimen/view_54_dp"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_40_dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/avatar_sdv"
         app:layout_constraintLeft_toLeftOf="@id/avatar_sdv"

@@ -152,7 +152,7 @@ class PartyEmojiView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 this.mPos = position
                 this.mModel = model
 
-                FrescoWorker.loadImage(emojiIv, ImageFactory.newPathImage(model.smallEmojiURL)
+                FrescoWorker.loadImage(emojiIv, ImageFactory.newPathImage(model.bigEmojiURL)
                         .build())
                 emojiDesc.text = model.desc
             }
