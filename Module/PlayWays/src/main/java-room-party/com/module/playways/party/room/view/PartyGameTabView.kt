@@ -253,6 +253,7 @@ class PartyGameTabView : ExConstraintLayout {
             setMainText("", "自由麦模式，大家畅所欲言吧～")
         } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
             if (partyGameInfoModel?.ktv?.userID ?: 0 > 0) {
+                textScrollView.visibility = View.GONE
                 partySelfSingLyricView?.setVisibility(View.VISIBLE)
                 if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
                     partySelfSingLyricView?.startFly(true) {
@@ -282,6 +283,8 @@ class PartyGameTabView : ExConstraintLayout {
             } else {
                 //还没开始
                 partySelfSingLyricView?.setVisibility(View.GONE)
+                textScrollView.visibility = View.VISIBLE
+                setMainText("", "还没有歌曲，大家快去点歌吧～")
             }
         }
     }
@@ -338,7 +341,7 @@ class PartyGameTabView : ExConstraintLayout {
     fun toWaitingState() {
         hideAllTypeView()
         textScrollView.visibility = View.VISIBLE
-        setMainText("", "还没有歌曲，大家快去点歌吧～")
+        setMainText("", "房主还没有添加游戏，先聊聊天吧～")
         ZqEngineKit.getInstance().stopAudioMixing()
         partySelfSingLyricView?.reset()
     }
