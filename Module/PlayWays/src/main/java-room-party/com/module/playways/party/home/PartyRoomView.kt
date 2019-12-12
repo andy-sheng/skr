@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -120,9 +121,15 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
             adapter.notifyDataSetChanged()
         } else {
             if (!list.isNullOrEmpty()) {
-                // todo 可能需要补一个去重
+                // todo 可能需要补一个去重 (简单的去重，只去掉后面加入的重复)
                 val size = adapter.mDataList.size
-                adapter.mDataList.addAll(list)
+                for (room in list) {
+                    if (!adapter.mDataList.contains(room)) {
+                        adapter.mDataList.add(room)
+                    } else {
+                        MyLog.w("PartyRoomView", "重复的房间 = $room, isClean = $isClean")
+                    }
+                }
                 val newSize = adapter.mDataList.size
                 adapter.notifyItemRangeInserted(size, newSize - size)
             }
