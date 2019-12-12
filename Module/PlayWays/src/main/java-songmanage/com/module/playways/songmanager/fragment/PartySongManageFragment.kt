@@ -252,4 +252,9 @@ class PartySongManageFragment : BaseFragment() {
             }
         }
     }
+
+    override fun destroy() {
+        super.destroy()
+        existSongManageView?.destory()
+    }
 }
