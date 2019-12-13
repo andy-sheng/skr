@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.support.constraint.Group
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
@@ -31,6 +32,8 @@ import com.module.playways.party.room.model.PartyGameInfoModel
 import com.module.playways.room.data.H
 import com.zq.live.proto.PartyRoom.EPGameType
 import com.zq.mediaengine.kit.ZqEngineKit
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -50,6 +53,8 @@ class PartyGameTabView : ExConstraintLayout {
     var singingGroup: Group
 
     var partySelfSingLyricView: PartySelfSingLyricView? = null
+
+    var delaySingJob: Job? = null
 
     val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
 
@@ -224,6 +229,7 @@ class PartyGameTabView : ExConstraintLayout {
         ZqEngineKit.getInstance().stopAudioMixing()
 
         partySelfSingLyricView?.reset()
+        delaySingJob?.cancel()
 
         partyGameInfoModel = roomData?.realRoundInfo?.sceneInfo
 
@@ -255,38 +261,54 @@ class PartyGameTabView : ExConstraintLayout {
             setMainText("", "自由麦模式，大家畅所欲言吧～")
         } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
             if (partyGameInfoModel?.ktv?.userID ?: 0 > 0) {
-                textScrollView.visibility = View.GONE
-                partySelfSingLyricView?.setVisibility(View.VISIBLE)
+                textScrollView.visibility = View.VISIBLE
+                partySelfSingLyricView?.setVisibility(View.GONE)
 
-                if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
-                    partySelfSingLyricView?.startFly(0, true) {
-                        MyLog.d(mTag, "partySelfSingLyricView?.startFly end")
-                        endQuestion()
-                        ZqEngineKit.getInstance().stopAudioMixing()
-                    }
+                textGameTv.gravity = Gravity.CENTER
+                val messageTips = SpanUtils().append("下一首\n").setForegroundColor(U.getColor(R.color.white_trans_80)).setFontSize(U.getDisplayUtils().dip2px(14f))
+                        .append("《" + partyGameInfoModel?.ktv?.music?.itemName?.toString() + "》").setForegroundColor(U.getColor(R.color.white_trans_80)).setFontSize(U.getDisplayUtils().dip2px(18f))
+                        .create()
 
-                    val songModel = partyGameInfoModel?.ktv?.music
-                    // 开始开始混伴奏，开始解除引擎mute
-                    val accFile = SongResUtils.getAccFileByUrl(songModel?.acc)
-                    // midi不需要在这下，只要下好，native就会解析，打分就能恢复
-                    val midiFile = SongResUtils.getMIDIFileByUrl(songModel?.midi)
+                textGameTv.text = messageTips
+                singingTv.text = "准备演唱"
 
-                    val songBeginTs = songModel?.beginMs ?: 0
-                    if (accFile != null && accFile.exists()) {
-                        // 伴奏文件存在
-                        ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+                delaySingJob?.cancel()
+                delaySingJob = launch {
+                    delay(2000)
+                    textScrollView.visibility = View.GONE
+                    partySelfSingLyricView?.setVisibility(View.VISIBLE)
+                    singingTv.text = "演唱中..."
+
+                    if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
+                        partySelfSingLyricView?.startFly(0, true) {
+                            MyLog.d(mTag, "partySelfSingLyricView?.startFly end")
+                            endQuestion()
+                            ZqEngineKit.getInstance().stopAudioMixing()
+                        }
+
+                        val songModel = partyGameInfoModel?.ktv?.music
+                        // 开始开始混伴奏，开始解除引擎mute
+                        val accFile = SongResUtils.getAccFileByUrl(songModel?.acc)
+                        // midi不需要在这下，只要下好，native就会解析，打分就能恢复
+                        val midiFile = SongResUtils.getMIDIFileByUrl(songModel?.midi)
+
+                        val songBeginTs = songModel?.beginMs ?: 0
+                        if (accFile != null && accFile.exists()) {
+                            // 伴奏文件存在
+                            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+                        } else {
+                            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel?.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+                        }
                     } else {
-                        ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel?.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
-                    }
-                } else {
-                    var elapsedTimeMs = roomData?.realRoundInfo?.elapsedTimeMs ?: 0
-                    if (elapsedTimeMs < 0) {
-                        elapsedTimeMs = 0
-                    }
+                        var elapsedTimeMs = roomData?.realRoundInfo?.elapsedTimeMs ?: 0
+                        if (elapsedTimeMs < 0) {
+                            elapsedTimeMs = 0
+                        }
 
-                    MyLog.d(mTag, "elapsedTimeMs is $elapsedTimeMs")
-                    partySelfSingLyricView?.startFly(elapsedTimeMs, false) {
+                        MyLog.d(mTag, "elapsedTimeMs is $elapsedTimeMs")
+                        partySelfSingLyricView?.startFly(elapsedTimeMs, false) {
 
+                        }
                     }
                 }
             } else {
@@ -296,6 +318,13 @@ class PartyGameTabView : ExConstraintLayout {
                 setMainText("", "还没有歌曲，大家快去点歌吧～")
             }
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        ZqEngineKit.getInstance().stopAudioMixing()
+        partySelfSingLyricView?.reset()
+        delaySingJob?.cancel()
     }
 
     private fun hideAllTypeView() {
@@ -345,6 +374,7 @@ class PartyGameTabView : ExConstraintLayout {
                 .create()
 
         textGameTv.text = stringBuilder
+        textGameTv.gravity = Gravity.CENTER_VERTICAL
     }
 
     fun toWaitingState() {
@@ -353,5 +383,6 @@ class PartyGameTabView : ExConstraintLayout {
         setMainText("", "房主还没有添加游戏，先聊聊天吧～")
         ZqEngineKit.getInstance().stopAudioMixing()
         partySelfSingLyricView?.reset()
+        delaySingJob?.cancel()
     }
 }
