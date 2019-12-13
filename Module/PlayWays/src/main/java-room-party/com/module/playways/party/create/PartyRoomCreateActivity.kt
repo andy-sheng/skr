@@ -124,6 +124,13 @@ class PartyRoomCreateActivity : BaseActivity() {
         allManTv.setCompoundDrawables(selectDrawable1, null, null, null)
         onlyInviteTv.setCompoundDrawables(selectDrawable2, null, null, null)
         trySelect(2)
+
+        if ("change".equals(from)) {
+            nameEdittext.setText(H.partyRoomData?.topicName)
+            nameEdittext.setSelection(H.partyRoomData?.topicName?.length ?: 0)
+
+            trySelect(H.partyRoomData?.enterPermission ?: 2)
+        }
     }
 
     private fun trySelect(enterType: Int) {
@@ -139,7 +146,7 @@ class PartyRoomCreateActivity : BaseActivity() {
 
     private fun createRoom() {
         launch {
-            var topicName = nameEdittext.text.toString()
+            var topicName = nameEdittext.text.toString().trim()
 //            if(TextUtils.isEmpty(topicName)){
 //                topicName = "${MyUserInfoManager.nickName}的派对"
 //            }
@@ -165,24 +172,30 @@ class PartyRoomCreateActivity : BaseActivity() {
 
     private fun changeRoomSetting() {
         launch {
-            var topicName = nameEdittext.text.toString()
+            var topicName = nameEdittext.text.toString().trim()
 //            if(TextUtils.isEmpty(topicName)){
 //                topicName = "${MyUserInfoManager.nickName}的派对"
 //            }
-            val map = mutableMapOf(
-                    "enterPermission" to enterType,
-                    "roomID" to H.partyRoomData?.gameId,
-                    "topicName" to topicName
-            )
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe(RequestControl("changeRoom", ControlType.CancelThis)) {
-                roomServerApi.changeRoomInfo(body)
-            }
-            if (result.errno == 0) {
+
+            if (topicName.equals(H.partyRoomData?.topicName) && enterType == H.partyRoomData?.enterPermission) {
                 finish()
             } else {
-                U.getToastUtil().showShort(result.errmsg)
+                val map = mutableMapOf(
+                        "enterPermission" to enterType,
+                        "roomID" to H.partyRoomData?.gameId,
+                        "topicName" to topicName
+                )
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val result = subscribe(RequestControl("changeRoom", ControlType.CancelThis)) {
+                    roomServerApi.changeRoomInfo(body)
+                }
+                if (result.errno == 0) {
+                    finish()
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                }
             }
+
         }
     }
 

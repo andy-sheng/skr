@@ -1,6 +1,7 @@
 package com.module.playways.party.room.fragment
 
 import android.os.Bundle
+import android.text.TextUtils
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.view.setDebounceViewClickListener
@@ -45,6 +46,11 @@ class GonggaoSettingFragment : BaseFragment() {
     }
 
     private fun setNotice(notice: String) {
+        if (TextUtils.isEmpty(notice)) {
+            U.getToastUtil().showShort("公告不能为空")
+            return
+        }
+
         launch {
             val map = mutableMapOf(
                     "notice" to notice,
