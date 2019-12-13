@@ -73,7 +73,7 @@ class PartyManageDialogView(context: Context, model: PartyActorInfoModel?) : ExC
                     if (result.errno == 0) {
                         mDialogPlus?.dismiss()
                     } else {
-
+                        U.getToastUtil().showShort(result.errmsg)
                     }
                 }
             }
@@ -103,7 +103,7 @@ class PartyManageDialogView(context: Context, model: PartyActorInfoModel?) : ExC
                     if (result.errno == 0) {
                         mDialogPlus?.dismiss()
                     } else {
-
+                        U.getToastUtil().showShort(result.errmsg)
                     }
                 }
             }
@@ -132,7 +132,7 @@ class PartyManageDialogView(context: Context, model: PartyActorInfoModel?) : ExC
                     mDialogPlus?.dismiss()
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
                             .withInt("from", GameModeType.GAME_MODE_PARTY)
-                            .withInt("roomId",H.partyRoomData?.gameId ?:0)
+                            .withInt("roomId", H.partyRoomData?.gameId ?: 0)
                             .navigation()
                 }
                 function3.visibility = View.GONE
@@ -155,7 +155,7 @@ class PartyManageDialogView(context: Context, model: PartyActorInfoModel?) : ExC
                     if (result.errno == 0) {
                         mDialogPlus?.dismiss()
                     } else {
-
+                        U.getToastUtil().showShort(result.errmsg)
                     }
                 }
             }

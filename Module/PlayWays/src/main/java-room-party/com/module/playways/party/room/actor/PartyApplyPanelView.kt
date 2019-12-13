@@ -13,6 +13,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.component.person.event.ShowPersonCardEvent
@@ -102,8 +103,11 @@ class PartyApplyPanelView(context: Context) : ConstraintLayout(context), Corouti
                     adapter?.mDataList?.remove(model)
                     adapter?.notifyItemRemoved(position)//注意这里
                     if (position != adapter?.mDataList?.size) {
-                        adapter?.notifyItemRangeChanged(position, (adapter?.mDataList?.size ?: 0) - position)
+                        adapter?.notifyItemRangeChanged(position, (adapter?.mDataList?.size
+                                ?: 0) - position)
                     }
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
                 }
             }
         }
