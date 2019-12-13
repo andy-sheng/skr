@@ -21,14 +21,18 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/name_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_14_dp"
+        android:layout_marginRight="@dimen/view_11_dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="晴天"
         android:textColor="@color/black_trans_80"
         android:textSize="@dimen/textsize_16_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/avatar_iv"
+        app:layout_constraintRight_toLeftOf="@+id/op_tv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
