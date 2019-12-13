@@ -25,10 +25,10 @@
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/game_pic_img"
-        android:layout_width="@dimen/view_82_dp"
-        android:layout_height="@dimen/view_82_dp"
+        android:layout_width="@dimen/view_92_dp"
+        android:layout_height="@dimen/view_92_dp"
         android:layout_marginLeft="@dimen/view_18_dp"
-        android:layout_marginTop="@dimen/view_25_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,8 +36,8 @@
     <ScrollView
         android:id="@+id/text_scrollView"
         android:layout_width="0dp"
-        android:layout_height="@dimen/view_100_dp"
-        android:layout_marginTop="@dimen/view_15_dp"
+        android:layout_height="@dimen/view_92_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
         android:paddingLeft="@dimen/view_18_dp"
         android:paddingRight="@dimen/view_18_dp"
         android:visibility="gone"
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:lineSpacingExtra="@dimen/view_5_dp"
-            android:minHeight="@dimen/view_100_dp"
+            android:minHeight="@dimen/view_92_dp"
             android:text="" />
     </ScrollView>
 
