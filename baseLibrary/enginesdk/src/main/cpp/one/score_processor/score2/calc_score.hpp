@@ -5,15 +5,16 @@
 #include "mel_chord_ana.h"
 
 class CalcScore {
-  
+
 public:
     CalcScore(int sampleRate);
     ~CalcScore();
-    
+
     int LoadMelp(std::string filename, int startStamp);
     void Flow(short *data, int len);
+    void Flow(float *data, int len);
     int GetScore(int curTimeStamp);
-    
+
 private:
     std::vector<MelodyNote> _GetRangeNote(int startIdx, int endIdx);
     int _Matched(std::vector<PitchElement> vocPitchVec, std::vector<MelodyNote> tempNoteVec);
@@ -22,18 +23,22 @@ private:
         float diff = curNote - targetNote;
         diff = diff > 6 ? (diff-12): diff;
         diff = diff <-6 ? (diff+12): diff;
-        return diff;
+        return abs(diff);
     }
-    
+    float _EucDistance(std::vector<PitchElement>& vocPitchVec, std::vector<MelodyNote>& tempNoteVec, float len);
+    float _DTWDistance(std::vector<float>& pitchNoteVec, std::vector<float>& melNoteVec, float len);
+    float _CalScore(float eucDist, float dtwDist);
+
 private:
     int m_sampleRate = 44100;
     int m_channels = 1;
     int m_totalSamples = 0;
     int m_lastTimeStamp = 0;
+    float m_stepTimeMs;
     std::string m_melpfilename;
-    
+
     CPitchDetection* m_pitchDetector;
-    
+
     std::vector<MelodyNote> m_noteVec;
 
 };

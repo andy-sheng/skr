@@ -206,7 +206,7 @@ void MelChordAna::_Init(int tag) {
 void MelChordAna::_AnalyzeMelString(const string &_contents) {
 
     string contents = _TrimContents(_contents);
-    LOGI("_AnalyzeMelString contents=%s", contents.c_str());
+    LOGI("_AnalyzeMelString");
     if (contents != "") {
         stringstream ss(contents);
         ss.precision(10);
