@@ -388,7 +388,6 @@ public class AgoraRTCAdapter {
             if (mOutCallback != null) {
                 mOutCallback.onJoinChannelSuccess(channel, uid, elapsed);
             }
-            initWhenInChannel();
         }
 
         @Override
@@ -829,18 +828,6 @@ public class AgoraRTCAdapter {
             // 自定义本地视频渲染, 远程自定义渲染需要外部配置后设置
             mRtcEngine.setLocalVideoRenderer(mLocalVideoSrcPin);
         }
-    }
-
-    /**
-     * 一些必须在频道内才能出事
-     */
-    private void initWhenInChannel() {
-        // 初始化各个音量
-        adjustRecordingSignalVolume(mConfig.getRecordingSignalVolume());
-        adjustPlaybackSignalVolume(mConfig.getPlaybackSignalVolume());
-        adjustAudioMixingPlayoutVolume(mConfig.getAudioMixingPlayoutVolume());
-        adjustAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume());
-        enableInEarMonitoring(mConfig.isEnableInEarMonitoring());
     }
 
     /**

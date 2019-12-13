@@ -280,6 +280,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
         MyLog.d(TAG, "onJoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
         mConfig.setJoinChannelSuccess(true);
+        initWhenInChannel();
         UserStatus userStatus = ensureJoin(uid, "onJoinChannelSuccess");
 //        userStatus.setIsSelf(true);
         mConfig.setSelfUid(uid);
@@ -733,6 +734,15 @@ public class ZqEngineKit implements AgoraOutCallback {
             mBluetoothPlugged = localAudioManager.isBluetoothA2dpOn() || localAudioManager.isBluetoothScoOn();
             toggleAEC();
             registerHeadsetPlugReceiver();
+
+            // 初始参数配置
+            mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
+            mRemoteAudioPreview.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
+            mAudioPlayerCapture.setPlayoutVolume(mConfig.getAudioMixingPlayoutVolume() / 100.f);
+            mLocalAudioMixer.setInputVolume(1, mConfig.getAudioMixingPublishVolume() / 100.f);
+            if (mConfig.isEnableInEarMonitoring() && (mHeadSetPlugged || mAudioCapture.getEnableLatencyTest())) {
+                mLocalAudioPreview.start();
+            }
         }
     }
 
@@ -1064,9 +1074,6 @@ public class ZqEngineKit implements AgoraOutCallback {
             if (mConfig.isUseExternalAudio()) {
                 mAudioCapture.start();
                 mRemoteAudioPreview.start();
-                if (mConfig.isEnableInEarMonitoring() && (mHeadSetPlugged || mAudioCapture.getEnableLatencyTest())) {
-                    mLocalAudioPreview.start();
-                }
             }
 
             //告诉我成功
@@ -1113,6 +1120,18 @@ public class ZqEngineKit implements AgoraOutCallback {
                 }
             });
         }
+    }
+
+    /**
+     * 一些必须在频道内才能出事
+     */
+    private void initWhenInChannel() {
+        // 初始化各个音量
+        adjustRecordingSignalVolume(mConfig.getRecordingSignalVolume(), false);
+        adjustPlaybackSignalVolume(mConfig.getPlaybackSignalVolume(), false);
+        adjustAudioMixingPlayoutVolume(mConfig.getAudioMixingPlayoutVolume(), false);
+        adjustAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume(), false);
+        enableInEarMonitoring(mConfig.isEnableInEarMonitoring());
     }
 
     /**
@@ -1178,14 +1197,16 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    enableInEarMonitoringInternal(enable);
+                    enableInEarMonitoringInternal(enable, true);
                 }
             });
         }
     }
 
-    private void enableInEarMonitoringInternal(boolean enable) {
-        mConfig.setEnableInEarMonitoring(enable);
+    private void enableInEarMonitoringInternal(boolean enable, boolean setConfig) {
+        if (setConfig) {
+            mConfig.setEnableInEarMonitoring(enable);
+        }
         if (mConfig.isUseExternalAudio()) {
             if (enable) {
                 if (mHeadSetPlugged || mAudioCapture.getEnableLatencyTest()) {
@@ -1210,7 +1231,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                 @Override
                 public void run() {
                     mConfig.setInEarMonitoringVolume(volume);
-                    mAgoraRTCAdapter.setInEarMonitoringVolume(volume);
+                    if (mConfig.isUseExternalAudio()) {
+                        mLocalAudioPreview.setVolume(volume / 100.f);
+                    } else {
+                        mAgoraRTCAdapter.setInEarMonitoringVolume(volume);
+                    }
                 }
             });
         }
@@ -1260,7 +1285,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                     if (setConfig) {
                         mConfig.setPlaybackSignalVolume(volume);
                     }
-                    mAgoraRTCAdapter.adjustPlaybackSignalVolume(volume);
+                    if (mConfig.isUseExternalAudio()) {
+                        mRemoteAudioPreview.setVolume(volume / 100.f);
+                    } else {
+                        mAgoraRTCAdapter.adjustPlaybackSignalVolume(volume);
+                    }
                 }
             });
         }
@@ -1996,26 +2025,6 @@ public class ZqEngineKit implements AgoraOutCallback {
                 disconnectRecord();
             }
         });
-    }
-
-    /**
-     * TODO: 后面再实现
-     * 同步开始伴奏播放和录制。
-     *
-     * @param recordPath       录制文件输出地址
-     * @param musicPath        伴奏地址
-     * @param recordHumanVoice 是否仅录制人声
-     */
-    public void startAudioRecordWithMusic(final String recordPath, final String musicPath, final boolean recordHumanVoice) {
-
-    }
-
-    /**
-     * TODO: 后面再实现
-     * 停止录制以及伴奏播放。
-     */
-    public void stopAudioRecordAndMusic() {
-
     }
 
     public int getLineScore1() {
