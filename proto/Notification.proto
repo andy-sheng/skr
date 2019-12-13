@@ -43,11 +43,18 @@ message NotificationMsg {
     SpFollowUpdateAlbumMsg spFollowUpdateAlbumMsg = 25; //特别关注更新相册
 
     GiftReceivesMsg giftReceivesMsg = 26; //收到礼物的信息
+    InvitePartyMsg invitePartyMsg   = 27; //小剧场邀请用户
 }
 
 message SpFollowNewPostMsg {
     uint32 userID = 1;
     uint32 postsID = 2;
+}
+
+message InvitePartyMsg
+{
+    Common.UserInfo user = 1; //发起邀请的用户详情
+    uint32 roomID = 2; //房间id
 }
 
 message SpFollowUpdateAlbumMsg {
@@ -203,7 +210,7 @@ enum ENotificationMsgType {
     NM_SPFOLLOW_UPDATEALBUM = 16; //特别关注更新相册的信令
     NM_GIFT_RECEIVES = 17; //收到礼物的小红点消息
 
-
+    NM_INVITE_PARTY         = 18; //小剧场邀请用户
 }
 
 message FollowMsg {

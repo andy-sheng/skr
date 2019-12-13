@@ -327,12 +327,20 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PartyRoomInviteEvent) {
+    fun onEvent(event: InvitePartyMsg) {
         val floatWindowData = FloatWindowData(FloatWindowData.Type.PARTY_INVITE)
-        floatWindowData.userInfoModel = event.userInfoModel
+        floatWindowData.userInfoModel = UserInfoModel.parseFromPB(event.user)
         floatWindowData.roomID = event.roomID
         mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
     }
+
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onEvent(event: PartyRoomInviteEvent) {
+//        val floatWindowData = FloatWindowData(FloatWindowData.Type.PARTY_INVITE)
+//        floatWindowData.userInfoModel = event.userInfoModel
+//        floatWindowData.roomID = event.roomID
+//        mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: CRInviteInCreateRoomNotifyEvent) {

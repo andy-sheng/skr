@@ -99,7 +99,12 @@ public enum ENotificationMsgType implements WireEnum {
   /**
    * 收到礼物的小红点消息
    */
-  NM_GIFT_RECEIVES(17);
+  NM_GIFT_RECEIVES(17),
+
+  /**
+   * 小剧场邀请用户
+   */
+  NM_INVITE_PARTY(18);
 
   public static final ProtoAdapter<ENotificationMsgType> ADAPTER = new ProtoAdapter_ENotificationMsgType();
 
@@ -132,6 +137,7 @@ public enum ENotificationMsgType implements WireEnum {
       case 15: return NM_SPFOLLOW_NEWPOST;
       case 16: return NM_SPFOLLOW_UPDATEALBUM;
       case 17: return NM_GIFT_RECEIVES;
+      case 18: return NM_INVITE_PARTY;
       default: return null;
     }
   }

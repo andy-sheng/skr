@@ -237,6 +237,15 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
   )
   private final GiftReceivesMsg giftReceivesMsg;
 
+  /**
+   * 小剧场邀请用户
+   */
+  @WireField(
+      tag = 27,
+      adapter = "com.zq.live.proto.Notification.InvitePartyMsg#ADAPTER"
+  )
+  private final InvitePartyMsg invitePartyMsg;
+
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
       EMsgPosType posType, UserInfo sender, FollowMsg followMsg, InviteStandMsg inviteStandMsg,
       SysWarningMsg sysWarningMsg, CombineRoomInviteMsg inviteMsg, CombineRoomEnterMsg enterMsg,
@@ -245,8 +254,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       PostsLikeMsg postsLikeMsg, PostsCommentLikeMsg postsCommentLikeMsg,
       PostsCommentAddMsg postsCommentAddMsg, InviteMicMsg inviteMicMsg,
       SpFollowNewPostMsg spFollowNewPostMsg, SpFollowUpdateAlbumMsg spFollowUpdateAlbumMsg,
-      GiftReceivesMsg giftReceivesMsg) {
-    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, feedLikeMsg, feedCommentLikeMsg, feedCommentAddMsg, postsLikeMsg, postsCommentLikeMsg, postsCommentAddMsg, inviteMicMsg, spFollowNewPostMsg, spFollowUpdateAlbumMsg, giftReceivesMsg, ByteString.EMPTY);
+      GiftReceivesMsg giftReceivesMsg, InvitePartyMsg invitePartyMsg) {
+    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, feedLikeMsg, feedCommentLikeMsg, feedCommentAddMsg, postsLikeMsg, postsCommentLikeMsg, postsCommentAddMsg, inviteMicMsg, spFollowNewPostMsg, spFollowUpdateAlbumMsg, giftReceivesMsg, invitePartyMsg, ByteString.EMPTY);
   }
 
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
@@ -257,7 +266,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       PostsLikeMsg postsLikeMsg, PostsCommentLikeMsg postsCommentLikeMsg,
       PostsCommentAddMsg postsCommentAddMsg, InviteMicMsg inviteMicMsg,
       SpFollowNewPostMsg spFollowNewPostMsg, SpFollowUpdateAlbumMsg spFollowUpdateAlbumMsg,
-      GiftReceivesMsg giftReceivesMsg, ByteString unknownFields) {
+      GiftReceivesMsg giftReceivesMsg, InvitePartyMsg invitePartyMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -282,6 +291,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     this.spFollowNewPostMsg = spFollowNewPostMsg;
     this.spFollowUpdateAlbumMsg = spFollowUpdateAlbumMsg;
     this.giftReceivesMsg = giftReceivesMsg;
+    this.invitePartyMsg = invitePartyMsg;
   }
 
   @Override
@@ -310,6 +320,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     builder.spFollowNewPostMsg = spFollowNewPostMsg;
     builder.spFollowUpdateAlbumMsg = spFollowUpdateAlbumMsg;
     builder.giftReceivesMsg = giftReceivesMsg;
+    builder.invitePartyMsg = invitePartyMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -342,7 +353,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
         && Internal.equals(inviteMicMsg, o.inviteMicMsg)
         && Internal.equals(spFollowNewPostMsg, o.spFollowNewPostMsg)
         && Internal.equals(spFollowUpdateAlbumMsg, o.spFollowUpdateAlbumMsg)
-        && Internal.equals(giftReceivesMsg, o.giftReceivesMsg);
+        && Internal.equals(giftReceivesMsg, o.giftReceivesMsg)
+        && Internal.equals(invitePartyMsg, o.invitePartyMsg);
   }
 
   @Override
@@ -373,6 +385,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       result = result * 37 + (spFollowNewPostMsg != null ? spFollowNewPostMsg.hashCode() : 0);
       result = result * 37 + (spFollowUpdateAlbumMsg != null ? spFollowUpdateAlbumMsg.hashCode() : 0);
       result = result * 37 + (giftReceivesMsg != null ? giftReceivesMsg.hashCode() : 0);
+      result = result * 37 + (invitePartyMsg != null ? invitePartyMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -404,6 +417,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     if (spFollowNewPostMsg != null) builder.append(", spFollowNewPostMsg=").append(spFollowNewPostMsg);
     if (spFollowUpdateAlbumMsg != null) builder.append(", spFollowUpdateAlbumMsg=").append(spFollowUpdateAlbumMsg);
     if (giftReceivesMsg != null) builder.append(", giftReceivesMsg=").append(giftReceivesMsg);
+    if (invitePartyMsg != null) builder.append(", invitePartyMsg=").append(invitePartyMsg);
     return builder.replace(0, 2, "NotificationMsg{").append('}').toString();
   }
 
@@ -639,6 +653,16 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
   }
 
   /**
+   * 小剧场邀请用户
+   */
+  public InvitePartyMsg getInvitePartyMsg() {
+    if(invitePartyMsg==null){
+        return new InvitePartyMsg.Builder().build();
+    }
+    return invitePartyMsg;
+  }
+
+  /**
    * 消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -790,6 +814,13 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     return giftReceivesMsg!=null;
   }
 
+  /**
+   * 小剧场邀请用户
+   */
+  public boolean hasInvitePartyMsg() {
+    return invitePartyMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<NotificationMsg, Builder> {
     private Long timeMs;
 
@@ -836,6 +867,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     private SpFollowUpdateAlbumMsg spFollowUpdateAlbumMsg;
 
     private GiftReceivesMsg giftReceivesMsg;
+
+    private InvitePartyMsg invitePartyMsg;
 
     public Builder() {
     }
@@ -1015,9 +1048,17 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       return this;
     }
 
+    /**
+     * 小剧场邀请用户
+     */
+    public Builder setInvitePartyMsg(InvitePartyMsg invitePartyMsg) {
+      this.invitePartyMsg = invitePartyMsg;
+      return this;
+    }
+
     @Override
     public NotificationMsg build() {
-      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, feedLikeMsg, feedCommentLikeMsg, feedCommentAddMsg, postsLikeMsg, postsCommentLikeMsg, postsCommentAddMsg, inviteMicMsg, spFollowNewPostMsg, spFollowUpdateAlbumMsg, giftReceivesMsg, super.buildUnknownFields());
+      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, feedLikeMsg, feedCommentLikeMsg, feedCommentAddMsg, postsLikeMsg, postsCommentLikeMsg, postsCommentAddMsg, inviteMicMsg, spFollowNewPostMsg, spFollowUpdateAlbumMsg, giftReceivesMsg, invitePartyMsg, super.buildUnknownFields());
     }
   }
 
@@ -1051,6 +1092,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           + SpFollowNewPostMsg.ADAPTER.encodedSizeWithTag(24, value.spFollowNewPostMsg)
           + SpFollowUpdateAlbumMsg.ADAPTER.encodedSizeWithTag(25, value.spFollowUpdateAlbumMsg)
           + GiftReceivesMsg.ADAPTER.encodedSizeWithTag(26, value.giftReceivesMsg)
+          + InvitePartyMsg.ADAPTER.encodedSizeWithTag(27, value.invitePartyMsg)
           + value.unknownFields().size();
     }
 
@@ -1079,6 +1121,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       SpFollowNewPostMsg.ADAPTER.encodeWithTag(writer, 24, value.spFollowNewPostMsg);
       SpFollowUpdateAlbumMsg.ADAPTER.encodeWithTag(writer, 25, value.spFollowUpdateAlbumMsg);
       GiftReceivesMsg.ADAPTER.encodeWithTag(writer, 26, value.giftReceivesMsg);
+      InvitePartyMsg.ADAPTER.encodeWithTag(writer, 27, value.invitePartyMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1125,6 +1168,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           case 24: builder.setSpFollowNewPostMsg(SpFollowNewPostMsg.ADAPTER.decode(reader)); break;
           case 25: builder.setSpFollowUpdateAlbumMsg(SpFollowUpdateAlbumMsg.ADAPTER.decode(reader)); break;
           case 26: builder.setGiftReceivesMsg(GiftReceivesMsg.ADAPTER.decode(reader)); break;
+          case 27: builder.setInvitePartyMsg(InvitePartyMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1157,6 +1201,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       if (builder.spFollowNewPostMsg != null) builder.spFollowNewPostMsg = SpFollowNewPostMsg.ADAPTER.redact(builder.spFollowNewPostMsg);
       if (builder.spFollowUpdateAlbumMsg != null) builder.spFollowUpdateAlbumMsg = SpFollowUpdateAlbumMsg.ADAPTER.redact(builder.spFollowUpdateAlbumMsg);
       if (builder.giftReceivesMsg != null) builder.giftReceivesMsg = GiftReceivesMsg.ADAPTER.redact(builder.giftReceivesMsg);
+      if (builder.invitePartyMsg != null) builder.invitePartyMsg = InvitePartyMsg.ADAPTER.redact(builder.invitePartyMsg);
       builder.clearUnknownFields();
       return builder.build();
     }
