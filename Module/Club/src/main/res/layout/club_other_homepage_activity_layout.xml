@@ -167,7 +167,7 @@
                             app:bl_solid_color="#7088FF"
                             app:layout_constraintTop_toBottomOf="@id/club_tag_view">
 
-                            <com.module.club.homepage.member.view.ClubMemberView
+                            <com.module.club.homepage.view.ClubMemberView
                                 android:id="@+id/member_view"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/view_104_dp" />

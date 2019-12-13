@@ -1,4 +1,4 @@
-package com.module.club.homepage.member.view
+package com.module.club.homepage.view
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout

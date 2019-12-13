@@ -1,4 +1,4 @@
-package com.module.club.manage
+package com.module.club.manage.setting
 
 import android.os.Bundle
 import com.common.base.BaseActivity
@@ -45,5 +45,9 @@ class ClubManageActivity : BaseActivity() {
             // todo 解散家族
         }
 
+    }
+
+    override fun useEventBus(): Boolean {
+        return false
     }
 }

@@ -1,4 +1,4 @@
-package com.module.club.create
+package com.module.club.manage.create
 
 import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route

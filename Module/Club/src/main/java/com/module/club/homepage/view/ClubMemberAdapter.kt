@@ -1,4 +1,4 @@
-package com.module.club.homepage.member.view
+package com.module.club.homepage.view
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.module.club.R
 import com.module.club.homepage.utils.ClubRoleUtils
-import com.zq.live.proto.Common.EClubMemberRoleType
 
 class ClubMemberAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
