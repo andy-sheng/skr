@@ -93,7 +93,13 @@ class MicExistSongAdapter(var gameType: Int, var listener: MicExistListener?) : 
                     }
                 }
             }
-            tvSongDesc.visibility = View.GONE
+
+            if (gameType == GameModeType.GAME_MODE_PARTY) {
+                tvSongDesc.visibility = View.VISIBLE
+                tvSongDesc.text = "${H.partyRoomData?.getPlayerInfoById(model.userID)?.userInfo?.nicknameRemark}"
+            } else {
+                tvSongDesc.visibility = View.GONE
+            }
 
             when (model.songModel?.playType) {
                 StandPlayType.PT_SPK_TYPE.value -> {
