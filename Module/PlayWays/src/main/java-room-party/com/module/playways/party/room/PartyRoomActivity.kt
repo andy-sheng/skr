@@ -534,7 +534,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun showGameRuleDialog() {
         dismissDialog()
         mGameRuleDialog = DialogPlus.newDialog(this)
-                .setContentHolder(ViewHolder(R.layout.relay_game_rule_view_layout))
+                .setContentHolder(ViewHolder(R.layout.party_game_rule_view_layout))
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
                 .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
