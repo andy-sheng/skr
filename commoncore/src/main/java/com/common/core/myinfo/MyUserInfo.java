@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.userinfo.UserInfoDB;
+import com.common.core.userinfo.model.ClubMemberInfo;
 import com.common.core.userinfo.model.HonorInfo;
 import com.common.core.userinfo.model.ScoreStateModel;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -34,6 +35,7 @@ public class MyUserInfo implements Serializable {
     private VerifyInfo vipInfo;       // 加v信息
     private ScoreStateModel ranking;  // 段位信息
     private HonorInfo honorInfo;      // 会员信息
+    private ClubMemberInfo clubInfo;  // 家族信息
 
     private Location location;
     private Location location2;
@@ -177,6 +179,14 @@ public class MyUserInfo implements Serializable {
         this.ranking = ranking;
     }
 
+    public ClubMemberInfo getClubInfo() {
+        return clubInfo;
+    }
+
+    public void setClubInfo(ClubMemberInfo clubInfo) {
+        this.clubInfo = clubInfo;
+    }
+
     public static UserInfo toUserInfoPB(MyUserInfo myUserInfo) {
         UserInfo userInfo = new UserInfo.Builder()
                 .setUserID((int) myUserInfo.userId)
@@ -187,6 +197,7 @@ public class MyUserInfo implements Serializable {
                 .setVipInfo(VerifyInfo.Companion.toVipInfoPB(myUserInfo.vipInfo))
                 .setHonorInfo(HonorInfo.Companion.toHonorInfoPB(myUserInfo.getHonorInfo()))
                 .setRanking(ScoreStateModel.Companion.toUserRankingPB(myUserInfo.getRanking()))
+                .setClubInfo(ClubMemberInfo.Companion.toUserClubInfoPB(myUserInfo.getClubInfo()))
                 .build();
         return userInfo;
     }
@@ -206,6 +217,7 @@ public class MyUserInfo implements Serializable {
         myUserInfo.setVipInfo(userInfoModel.getVipInfo());
         myUserInfo.setRanking(userInfoModel.getRanking());
         myUserInfo.setHonorInfo(userInfoModel.getHonorInfo());
+        myUserInfo.setClubInfo(userInfoModel.getClubInfo());
         return myUserInfo;
     }
 
@@ -216,14 +228,15 @@ public class MyUserInfo implements Serializable {
             userInfoModel.setUserId((int) myUserInfo.getUserId());
             userInfoModel.setNickname(myUserInfo.getUserNickname());
             userInfoModel.setAvatar(myUserInfo.getAvatar());
-            userInfoModel.setVipInfo(myUserInfo.getVipInfo());
-            userInfoModel.setHonorInfo(myUserInfo.getHonorInfo());
             userInfoModel.setBirthday(myUserInfo.getBirthday());
             userInfoModel.setLocation(myUserInfo.getLocation());
             userInfoModel.setLocation2(myUserInfo.getLocation2());
             userInfoModel.setSex(myUserInfo.getSex());
             userInfoModel.setSignature(myUserInfo.getSignature());
             userInfoModel.setRanking(myUserInfo.getRanking());
+            userInfoModel.setVipInfo(myUserInfo.getVipInfo());
+            userInfoModel.setHonorInfo(myUserInfo.getHonorInfo());
+            userInfoModel.setClubInfo(myUserInfo.getClubInfo());
         }
         return userInfoModel;
     }
@@ -256,6 +269,7 @@ public class MyUserInfo implements Serializable {
                 jsonObject.put("vipInfo", myUserInfo.getVipInfo());
                 jsonObject.put("ranking", myUserInfo.getRanking());
                 jsonObject.put("honorInfo", myUserInfo.getHonorInfo());
+                jsonObject.put("clubInfo", myUserInfo.getClubInfo());
 
             } catch (JSONException e) {
                 MyLog.d(e);
@@ -288,6 +302,7 @@ public class MyUserInfo implements Serializable {
                 myInfoModel.setVipInfo(jsonObject.getObject("vipInfo", VerifyInfo.class));
                 myInfoModel.setRanking(jsonObject.getObject("ranking", ScoreStateModel.class));
                 myInfoModel.setHonorInfo(jsonObject.getObject("honorInfo", HonorInfo.class));
+                myInfoModel.setClubInfo(jsonObject.getObject("clubInfo", ClubMemberInfo.class));
             }
         }
         return myInfoModel;
@@ -307,6 +322,7 @@ public class MyUserInfo implements Serializable {
                 ", vipInfo=" + vipInfo +
                 ", ranking=" + ranking +
                 ", honorInfo=" + honorInfo +
+                ", clubInfo=" + clubInfo +
                 ", location=" + location +
                 ", location2=" + location2 +
                 ", ageStage=" + ageStage +

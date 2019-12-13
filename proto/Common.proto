@@ -21,7 +21,39 @@ message UserInfo {
     VipInfo vipInfo    = 8; //vip类型
     UserRanking ranking = 9; //排位信息
     HonorInfo honorInfo = 10;//会员信息
+    UserClubInfo clubInfo = 11; //家族信息
 }
+
+// 家族信息
+message ClubInfo
+{
+    uint32 clubID = 1; //家族ID
+    string name   = 2; //家族名字
+    string logo   = 3; //家族标志
+    string desc   = 4; //家族简介
+    string notice = 5; //家族公告
+
+    uint32 memberCnt = 6; //家族人数
+    uint32 hot       = 7; //人气
+}
+
+// 用户家族信息
+message UserClubInfo
+{
+    ClubInfo club                = 1;
+    EClubMemberRoleType roleType = 2; //家族角色信息
+    string roleDesc              = 3; //角色描述
+}
+
+// EClubMemberRoleType 成员角色类型
+enum EClubMemberRoleType {
+    ECMRT_Invalid   = 0; //未知
+    ECMRT_Founder   = 1; //族长
+    ECMRT_CoFounder = 2; //副族长
+    ECMRT_Hostman   = 3; //主持人
+    ECMRT_Common    = 4; //普通成员
+}
+
 
 //背景效果
 message BackgroundShowInfo

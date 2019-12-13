@@ -58,7 +58,8 @@ public class UserInfoModel implements Serializable, Cloneable {
 
     private VerifyInfo vipInfo;  // 加V的信息
     private ScoreStateModel ranking;  // 段位描述
-    private HonorInfo honorInfo;  // 会员信息
+    private HonorInfo honorInfo;      // 会员信息
+    private ClubMemberInfo clubInfo;  // 家族信息
 
     private int intimacy = -1;   // 亲密度
 
@@ -243,6 +244,14 @@ public class UserInfoModel implements Serializable, Cloneable {
         this.honorInfo = honorInfo;
     }
 
+    public ClubMemberInfo getClubInfo() {
+        return clubInfo;
+    }
+
+    public void setClubInfo(ClubMemberInfo clubInfo) {
+        this.clubInfo = clubInfo;
+    }
+
     public String getAgeStageString() {
         if (ageStage != 0) {
             if (ageStage == 1) {
@@ -361,6 +370,7 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoModel.setVipInfo(VerifyInfo.Companion.parseFromPB(model.getVipInfo()));
             userInfoModel.setRanking(ScoreStateModel.Companion.parseFromPB(model.getUserID(), model.getRanking()));
             userInfoModel.setHonorInfo(HonorInfo.Companion.parseFromPB(model.getUserID(), model.getHonorInfo()));
+            userInfoModel.setClubInfo(ClubMemberInfo.Companion.parseFromPB(model.getClubInfo()));
         }
         return userInfoModel;
     }
@@ -394,6 +404,7 @@ public class UserInfoModel implements Serializable, Cloneable {
             jsonObject.put("vipInfo", userInfModel.getVipInfo());
             jsonObject.put("ranking", userInfModel.getRanking());
             jsonObject.put("honorInfo", userInfModel.getHonorInfo());
+            jsonObject.put("clubInfo", userInfModel.getClubInfo());
             userInfoDB.setExt(jsonObject.toJSONString());
         }
         return userInfoDB;
@@ -429,6 +440,7 @@ public class UserInfoModel implements Serializable, Cloneable {
                 userInfoModel.setVipInfo(jsonObject.getObject("vipInfo", VerifyInfo.class));
                 userInfoModel.setRanking(jsonObject.getObject("ranking", ScoreStateModel.class));
                 userInfoModel.setHonorInfo(jsonObject.getObject("honorInfo", HonorInfo.class));
+                userInfoModel.setClubInfo(jsonObject.getObject("clubInfo", ClubMemberInfo.class));
             }
         }
         return userInfoModel;
@@ -458,6 +470,8 @@ public class UserInfoModel implements Serializable, Cloneable {
                 ", vipInfo=" + vipInfo +
                 ", ranking=" + ranking +
                 ", honorInfo=" + honorInfo +
+                ", clubInfo=" + clubInfo +
+                ", intimacy=" + intimacy +
                 '}';
     }
 
