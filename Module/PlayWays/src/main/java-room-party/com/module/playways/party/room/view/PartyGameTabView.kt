@@ -189,20 +189,26 @@ class PartyGameTabView : ExConstraintLayout {
                             bottomRightOpTv.visibility = View.VISIBLE
                             bottomRightOpTv.text = "切歌"
                         }
-
-                        singingGroup.visibility = View.VISIBLE
-                        AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerInfoById(it.ktv?.userID
-                                ?: 0)?.userInfo?.avatar)
-                                .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
-                                .setBorderColor(U.getColor(R.color.white))
-                                .setCircle(true)
-                                .build())
-                    } else {
-                        singingGroup.visibility = View.GONE
                     }
+                }
+            }
+        }
+
+        partyGameInfoModel?.let {
+            if (it.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
+                if (it.ktv?.userID ?: 0 > 0) {
+                    singingGroup.visibility = View.VISIBLE
+                    AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerInfoById(it.ktv?.userID
+                            ?: 0)?.userInfo?.avatar)
+                            .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+                            .setBorderColor(U.getColor(R.color.white))
+                            .setCircle(true)
+                            .build())
                 } else {
                     singingGroup.visibility = View.GONE
                 }
+            } else {
+                singingGroup.visibility = View.GONE
             }
         }
 

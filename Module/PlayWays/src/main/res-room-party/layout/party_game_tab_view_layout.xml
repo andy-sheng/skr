@@ -72,9 +72,11 @@
         android:layout_width="@dimen/view_26_dp"
         android:layout_height="@dimen/view_26_dp"
         android:layout_marginLeft="@dimen/view_13_dp"
-        android:layout_marginBottom="@dimen/view_13_dp"
+        android:layout_marginBottom="@dimen/view_9_dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/singing_tv"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/singing_tv"
@@ -82,17 +84,18 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_8_dp"
         android:text="演唱中..."
-        android:textColor="#DEA243"
+        android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_14_dp"
         app:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
-        app:layout_constraintLeft_toRightOf="@+id/avatar_iv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/avatar_iv"
         app:layout_constraintTop_toTopOf="@+id/avatar_iv" />
 
     <android.support.constraint.Group
         android:id="@+id/singing_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:constraint_referenced_ids="avatar_iv, singing_tv" />
 
     <com.common.view.ex.ExTextView
