@@ -1,4 +1,4 @@
-package com.module.playways.party.home
+package com.component.busilib.model
 
 import java.io.Serializable
 import com.alibaba.fastjson.annotation.JSONField

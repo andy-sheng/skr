@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.common.utils.dp
 import com.common.view.ex.drawable.DrawableCreator
+import com.component.busilib.model.PartyRoomInfoModel
 import com.module.playways.R
 
 class PartyRoomAdapter : RecyclerView.Adapter<PartyRoomViewHolder>() {

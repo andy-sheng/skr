@@ -12,19 +12,16 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.component.busilib.model.PartyRoomInfoModel
 import com.module.RouterConstants
 import com.module.playways.IPartyRoomView
 import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
-import com.module.playways.room.data.H
-import com.module.playways.room.room.RoomServerApi
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.*
-import okhttp3.MediaType
-import okhttp3.RequestBody
 
 // 首页的剧场
 class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomView, CoroutineScope by MainScope() {

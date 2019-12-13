@@ -8,9 +8,9 @@ import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.view.setAnimateDebounceViewClickListener
-import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExTextView
+import com.component.busilib.model.PartyRoomInfoModel
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 

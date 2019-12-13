@@ -16,6 +16,8 @@ class ClubPartyRoomView(context: Context, attrs: AttributeSet?, defStyleAttr: In
 
     init {
         View.inflate(context, R.layout.club_party_room_view_layout, this)
+
+
     }
 
 
