@@ -61,6 +61,7 @@ object PartyRoomMsgManager : BaseMsgManager<EPartyRoomMsgType, PartyRoomMsg>() {
             msg.msgType == EPartyRoomMsgType.PRT_GAME_OVER -> EventBus.getDefault().post(msg.pGameOverMsg)
             msg.msgType == EPartyRoomMsgType.PRT_CHANGE_ROOM_TOPIC -> EventBus.getDefault().post(msg.pChangeRoomTopicMsg)
             msg.msgType == EPartyRoomMsgType.PRT_CHANGE_ROOM_ENTER_PERMISSION -> EventBus.getDefault().post(msg.pChangeRoomEnterPermissionMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_UPDATE_POPULARITY -> EventBus.getDefault().post(msg.pUpdatePopularityMsg)
         }
     }
 }

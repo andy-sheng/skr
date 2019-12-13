@@ -106,7 +106,12 @@ public enum EPartyRoomMsgType implements WireEnum {
   /**
    * 修改房间进入权限
    */
-  PRT_CHANGE_ROOM_ENTER_PERMISSION(28);
+  PRT_CHANGE_ROOM_ENTER_PERMISSION(28),
+
+  /**
+   * 更新人气值
+   */
+  PRT_UPDATE_POPULARITY(29);
 
   public static final ProtoAdapter<EPartyRoomMsgType> ADAPTER = new ProtoAdapter_EPartyRoomMsgType();
 
@@ -141,6 +146,7 @@ public enum EPartyRoomMsgType implements WireEnum {
       case 26: return PRT_GAME_OVER;
       case 27: return PRT_CHANGE_ROOM_TOPIC;
       case 28: return PRT_CHANGE_ROOM_ENTER_PERMISSION;
+      case 29: return PRT_UPDATE_POPULARITY;
       default: return null;
     }
   }

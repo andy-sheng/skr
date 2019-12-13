@@ -823,6 +823,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PUpdatePopularityMsg) {
+        mRoomData.updatePopular(event.userID, event.popularity)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PSetSeatStatusMsg) {
         MyLog.d(TAG, "onEvent event = $event")
         var partySeatInfoModel = PartySeatInfoModel()

@@ -108,20 +108,20 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
      */
     var mySeatInfo: PartySeatInfoModel? = null
         set(value) {
-            MyLog.w("chengsimin","value=$value field=$field")
+            MyLog.w("chengsimin", "value=$value field=$field")
             if (field == null && value == null) {
 
             } else {
                 if (field != null && value != null) {
                     if (field!!.same(value)) {
-                        MyLog.w("chengsimin","same")
+                        MyLog.w("chengsimin", "same")
                     } else {
-                        MyLog.w("chengsimin","not same")
+                        MyLog.w("chengsimin", "not same")
                         field = value
                         EventBus.getDefault().post(PartyMySeatInfoChangeEvent())
                     }
                 } else {
-                    MyLog.w("chengsimin","not same")
+                    MyLog.w("chengsimin", "not same")
                     field = value
                     EventBus.getDefault().post(PartyMySeatInfoChangeEvent())
                 }
@@ -295,6 +295,15 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             if (seatInfoModel.userID == MyUserInfoManager.uid.toInt()) {
                 mySeatInfo = seatInfoModel
             }
+        }
+    }
+
+    fun updatePopular(userId: Int, popularity: Int) {
+        // 只更新人气数值
+        val player = getPlayerInfoById(userId)
+        if (player?.popularity != popularity) {
+            player?.popularity = popularity
+            EventBus.getDefault().post(PartyPopularityUpdateEvent(userId))
         }
     }
 

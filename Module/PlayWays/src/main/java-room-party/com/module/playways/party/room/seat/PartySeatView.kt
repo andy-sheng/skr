@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import com.common.core.myinfo.MyUserInfoManager
 import com.engine.EngineEvent
 import com.module.playways.party.room.PartyRoomData
+import com.module.playways.party.room.event.PartyPopularityUpdateEvent
 import com.module.playways.party.room.event.PartySeatInfoChangeEvent
 import com.module.playways.party.room.event.PartySendEmojiEvent
 import com.module.playways.party.room.model.PartyActorInfoModel
@@ -73,6 +74,18 @@ class PartySeatView : ConstraintLayout {
         val seatInfo = H.partyRoomData?.getSeatInfoByUserId(MyUserInfoManager.uid.toInt())
         seatInfo?.let {
             adapter.showUserEmoji(it, event.model)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyPopularityUpdateEvent) {
+        // 单个刷新人气
+        var p = PartyActorInfoModel()
+        p.player = H.partyRoomData?.getPlayerInfoById(event.userID)
+        p.seat = H.partyRoomData?.getSeatInfoByUserId(event.userID)
+        p.seat?.let {
+            adapter.mDataList[it.seatSeq] = p
+            adapter.notifyItemChanged(it.seatSeq - 1, PartySeatAdapter.REFRESH_HOT)
         }
     }
 

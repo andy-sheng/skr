@@ -9,9 +9,9 @@ class PartyRoomInfoModel : Serializable {
     var avatarUrl: String? = null
     @JSONField(name = "gameName")
     var gameName: String? = null
-    @JSONField(name = "ownerID")
+    @JSONField(name = "hostID")
     var ownerID: Int? = null
-    @JSONField(name = "ownerName")
+    @JSONField(name = "hostName")
     var ownerName: String? = null
     @JSONField(name = "playerNum")
     var playerNum: Int? = null

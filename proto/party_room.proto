@@ -42,8 +42,8 @@ message PartyRoomMsg {
     PGameOverMsg pGameOverMsg = 26; //游戏结束
     PChangeRoomTopicMsg pChangeRoomTopicMsg                     = 27; //修改房间主题
     PChangeRoomEnterPermissionMsg pChangeRoomEnterPermissionMsg = 28; //修改房间进入权限
+    PUpdatePopularityMsg pUpdatePopularityMsg                   = 29; //更新人气值
 
-    //TODO: 发送表情
 }
 
 enum EPartyRoomMsgType {
@@ -67,6 +67,7 @@ enum EPartyRoomMsgType {
     PRT_GAME_OVER = 26; //游戏结束
     PRT_CHANGE_ROOM_TOPIC            = 27; //修改房间主题
     PRT_CHANGE_ROOM_ENTER_PERMISSION = 28; //修改房间进入权限
+    PRT_UPDATE_POPULARITY            = 29; //更新人气值
 }
 
 enum EEnterPermissionType {
@@ -74,6 +75,13 @@ enum EEnterPermissionType {
     EPT_INVITE   = 1; //
     EPT_ALL      = 2; //
 }
+
+message PUpdatePopularityMsg
+{
+    uint32 userID     = 1; //用户id
+    uint32 popularity = 2; //最新的人气值
+}
+
 
 message PChangeRoomEnterPermissionMsg
 {
