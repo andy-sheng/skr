@@ -104,6 +104,9 @@ public class AgoraRTCAdapter {
     private AudioSinkPin mAudioSinkPin;
     private ImgTexSinkPin mVideoSinkPin;
 
+    // 自采集模式下是否开启声网APM处理
+    private boolean mEnableExternalAPM;
+
     // Debug
     private int mAudioCBCount = 0;
     private int mAudioCBSamples = 0;
@@ -682,9 +685,7 @@ public class AgoraRTCAdapter {
             );
             // 音频自渲染
             mRtcEngine.setParameters("{\"che.audio.external_render\": true}");
-            // 同时开启声网APM处理逻辑
-//            mRtcEngine.setParameters("{\"che.audio.external.to.apm\": true}");
-//            mRtcEngine.setParameters("{\"che.audio.enable.agc\": false}");
+            setEnableAPM(mEnableExternalAPM);
 
             // 设置onPlaybackFrame回调的数据
             int samplesPerCall = mConfig.getAudioSampleRate() * mConfig.getAudioChannels() * 20 / 1000;
@@ -827,6 +828,22 @@ public class AgoraRTCAdapter {
         } else {
             // 自定义本地视频渲染, 远程自定义渲染需要外部配置后设置
             mRtcEngine.setLocalVideoRenderer(mLocalVideoSrcPin);
+        }
+    }
+
+    /**
+     * 自采集模式下是否开启声网APM处理
+     * 可以在房间内动态调用
+     */
+    public void setEnableAPM(boolean enable) {
+        mEnableExternalAPM = enable;
+        if (mRtcEngine != null) {
+            MyLog.i(TAG, "setEnableAPM: " + enable);
+            if (enable) {
+                mRtcEngine.setParameters("{\"che.audio.external.to.apm\": true}");
+            } else {
+                mRtcEngine.setParameters("{\"che.audio.external.to.apm\": false}");
+            }
         }
     }
 

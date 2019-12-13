@@ -175,8 +175,6 @@ public class ZqEngineKit implements AgoraOutCallback {
     private AudioResampleFilter mAudioSendResampleFilter;
     // 录制前的重采样模块
     private AudioResampleFilter mAudioRecordResampleFilter;
-    // 对bgm, remote进行混音，用于回声消除
-//    private AudioMixer mRemoteAudioMixer;
     // 对mic, bgm进行混音，用于远端发送
     private AudioMixer mLocalAudioMixer;
     // 对mic, bgm, remote进行混音，用于录制
@@ -537,6 +535,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         mConfig.setUseExternalAudio(true);
         mConfig.setEnableInEarMonitoring(true);
+        mConfig.setUseLocalAPM(false);
 
         // TODO: engine代码合并后，采样率初始值在Params初始化时获取
         mConfig.setAudioSampleRate(AudioUtil.getNativeSampleRate(mContext));
@@ -600,31 +599,23 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioCapture.getSrcPin().connect((SinkPin<AudioBufFrame>) mCapRawFrameWriter.getSinkPin());
             mAudioPlayerCapture.getSrcPin().connect((SinkPin<AudioBufFrame>) mBgmRawFrameWriter.getSinkPin());
 
-            mAudioCapture.getSrcPin().connect(mAPMFilter.getSinkPin());
-            mAudioLocalSrcPin = mAPMFilter.getSrcPin();
-//            mAudioLocalSrcPin = mAudioCapture.getSrcPin();
-            // 自采集模式下，练歌房不需要声网SDK
-            if (mConfig.getScene() != Params.Scene.audiotest) {
-//                mRemoteAudioMixer = new AudioMixer();
-//                // 加入房间后，以声网远端数据作为主驱动
-                mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(mRemoteAudioPreview.getSinkPin());
-//                mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(mRemoteAudioMixer.getSinkPin(0));
-//                mAudioPlayerCapture.getSrcPin().connect(mRemoteAudioMixer.getSinkPin(1));
-////                mRemoteAudioMixer.getSrcPin().connect(mAPMFilter.getReverseSinkPin());
-//                mAudioRemoteSrcPin = mRemoteAudioMixer.getSrcPin();
-                mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(mAPMFilter.getReverseSinkPin());
-                mAudioRemoteSrcPin = mAgoraRTCAdapter.getRemoteAudioSrcPin();
-            } else {
-//                mAudioPlayerCapture.getSrcPin().connect(mAPMFilter.getReverseSinkPin());
-//                mAudioRemoteSrcPin = mAudioPlayerCapture.getSrcPin();
-                mAudioRemoteSrcPin = mAgoraRTCAdapter.getRemoteAudioSrcPin();
-            }
+            // 远端声音播放
+            mAudioRemoteSrcPin = mAgoraRTCAdapter.getRemoteAudioSrcPin();
+            mAudioRemoteSrcPin.connect(mRemoteAudioPreview.getSinkPin());
 
-            // 开启降噪模块
-            mAPMFilter.enableNs(true);
-            mAPMFilter.setNsLevel(APMFilter.NS_LEVEL_1);
-            // 开启AEC
-            mAPMFilter.enableAEC(true);
+            if (mConfig.isUseLocalAPM()) {
+                mAudioCapture.getSrcPin().connect(mAPMFilter.getSinkPin());
+                mAudioRemoteSrcPin.connect(mRemoteAudioPreview.getSinkPin());
+                mAudioLocalSrcPin = mAPMFilter.getSrcPin();
+
+                // 开启降噪模块
+                mAPMFilter.enableNs(true);
+                mAPMFilter.setNsLevel(APMFilter.NS_LEVEL_1);
+                // 开启AEC
+                mAPMFilter.enableAEC(true);
+            } else {
+                mAudioLocalSrcPin = mAudioCapture.getSrcPin();
+            }
 
             mAudioCapture.setAudioCaptureListener(mOnAudioCaptureListener);
             mAudioPlayerCapture.setOnPreparedListener(new AudioPlayerCapture.OnPreparedListener() {
@@ -810,15 +801,23 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
-    // TODO: 开启APM处理后耳返延迟会增加20ms左右，当前在耳机模式下直接bypass掉
     private void toggleAEC() {
         if (mConfig.isUseExternalAudio()) {
             if (mHeadSetPlugged || mBluetoothPlugged) {
-                //mAPMFilter.enableAEC(false);
-                mAPMFilter.setBypass(true);
+                if (mConfig.isUseLocalAPM()) {
+                    // 开启APM处理后耳返延迟会增加20ms左右，当前在耳机模式下直接bypass掉
+                    //mAPMFilter.enableAEC(false);
+                    mAPMFilter.setBypass(true);
+                } else {
+                    mAgoraRTCAdapter.setEnableAPM(false);
+                }
             } else {
-                //mAPMFilter.enableAEC(true);
-                mAPMFilter.setBypass(false);
+                if (mConfig.isUseLocalAPM()) {
+                    //mAPMFilter.enableAEC(true);
+                    mAPMFilter.setBypass(false);
+                } else {
+                    mAgoraRTCAdapter.setEnableAPM(true);
+                }
             }
         }
     }
@@ -1070,12 +1069,6 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
             mCustomHandlerThread.sendMessageDelayed(msg, 4000);
         } else {
-            // 成功后，自采集模式下开启采集
-            if (mConfig.isUseExternalAudio()) {
-                mAudioCapture.start();
-                mRemoteAudioPreview.start();
-            }
-
             //告诉我成功
             mConfig.setJoinRoomBeginTs(System.currentTimeMillis());
             Message msg = mCustomHandlerThread.obtainMessage();
@@ -1092,12 +1085,19 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public void setClientRole(final boolean isAnchor) {
         if (mCustomHandlerThread != null) {
-            mConfig.setAnchor(isAnchor);
             mCustomHandlerThread.post(new LogRunnable("setClientRole" + " isAnchor=" + isAnchor) {
                 @Override
                 public void realRun() {
+                    if (mConfig.isUseExternalAudio() && mConfig.isJoinChannelSuccess()) {
+                        if (isAnchor) {
+                            mAudioCapture.start();
+                        } else {
+                            mAudioCapture.stop();
+                        }
+                    }
                     mAgoraRTCAdapter.setClientRole(isAnchor);
                     if (isAnchor != mConfig.isAnchor()) {
+                        mConfig.setAnchor(isAnchor);
                         mCustomHandlerThread.removeMessage(MSG_ROLE_CHANGE_TIMEOUT);
                         Message msg = mCustomHandlerThread.obtainMessage();
                         msg.what = MSG_ROLE_CHANGE_TIMEOUT;
@@ -1132,6 +1132,14 @@ public class ZqEngineKit implements AgoraOutCallback {
         adjustAudioMixingPlayoutVolume(mConfig.getAudioMixingPlayoutVolume(), false);
         adjustAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume(), false);
         enableInEarMonitoring(mConfig.isEnableInEarMonitoring());
+
+        // 成功后，自采集模式下开启采集
+        if (mConfig.isUseExternalAudio()) {
+            if (mConfig.isAnchor()) {
+                mAudioCapture.start();
+            }
+            mRemoteAudioPreview.start();
+        }
     }
 
     /**

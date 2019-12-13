@@ -39,6 +39,8 @@ public class Params implements Serializable {
     @JSONField(serialize = false)
     private boolean useExternalAudioRecord = true; // 自定义音频录制
     @JSONField(serialize = false)
+    private boolean useLocalAPM = false; // 自采集时是否使用本地的APM处理模块，而不是声网的
+    @JSONField(serialize = false)
     private int localVideoWidth = 360; //本地视频的分辨率，会影响对端获取的流大小，确保是2的倍数
     @JSONField(serialize = false)
     private int localVideoHeight = 640;
@@ -105,7 +107,7 @@ public class Params implements Serializable {
     @JSONField(serialize = false)
     private int selfUid; // 本人在引擎中的id
     @JSONField(serialize = false)
-    private boolean enableSpeakerphone = false;// 开启扬声器
+    private boolean enableSpeakerphone = true;// 开启扬声器
     @JSONField(serialize = false)
     private boolean allRemoteAudioStreamsMute = false;// 禁其他音频流
     @JSONField(serialize = false)
@@ -195,6 +197,14 @@ public class Params implements Serializable {
 
     public void setUseExternalAudioRecord(boolean useExternalAudioRecord) {
         this.useExternalAudioRecord = useExternalAudioRecord;
+    }
+
+    public boolean isUseLocalAPM() {
+        return useLocalAPM;
+    }
+
+    public void setUseLocalAPM(boolean useLocalAPM) {
+        this.useLocalAPM = useLocalAPM;
     }
 
     public boolean isEnableVideo() {
@@ -711,6 +721,11 @@ public class Params implements Serializable {
 
         public Builder setUseExternalAudioRecord(boolean useExternalAudioRecord) {
             mParams.setUseExternalAudioRecord(useExternalAudioRecord);
+            return this;
+        }
+
+        public Builder setUseLocalAPM(boolean useLocalAPM) {
+            mParams.setUseLocalAPM(useLocalAPM);
             return this;
         }
 
