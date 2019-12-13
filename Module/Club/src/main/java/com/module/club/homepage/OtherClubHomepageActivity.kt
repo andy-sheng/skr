@@ -19,6 +19,7 @@ import com.component.person.view.PersonTagView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.club.R
+import com.module.club.homepage.member.ClubMemberView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -37,7 +38,7 @@ class OtherClubHomepageActivity : BaseActivity() {
     private var clubNameTv: TextView? = null
     private var clubRelationTv: TextView? = null
     private var clubTagView: PersonTagView? = null
-    private var memberView: RecyclerView? = null  //换成一个view来做
+    private var memberView: ClubMemberView? = null  //换成一个view来做
 
     private var clubIntroduceTitle: TextView? = null
     private var clubIntroduceContent: ExTextView? = null
@@ -54,7 +55,7 @@ class OtherClubHomepageActivity : BaseActivity() {
     private var scrollDivider = U.getDisplayUtils().dip2px(150f)  // 滑到分界线的时候
 
     override fun initView(savedInstanceState: Bundle?): Int {
-        return R.layout.other_club_homepage_activity_layout
+        return R.layout.club_other_homepage_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {

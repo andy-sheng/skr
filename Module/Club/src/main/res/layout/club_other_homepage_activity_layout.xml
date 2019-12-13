@@ -167,7 +167,7 @@
                             app:bl_solid_color="#7088FF"
                             app:layout_constraintTop_toBottomOf="@id/club_tag_view">
 
-                            <android.support.v7.widget.RecyclerView
+                            <com.module.club.homepage.member.ClubMemberView
                                 android:id="@+id/member_view"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/view_104_dp" />
@@ -299,8 +299,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
         android:layout_alignParentRight="true"
-        android:padding="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_4_dp"
+        android:padding="@dimen/view_16_dp"
         android:src="@drawable/common_more_icon" />
 
     <android.support.constraint.ConstraintLayout

@@ -9,7 +9,7 @@ import com.module.club.R
 @Route(path = RouterConstants.ACTIVITY_CREATE_CLUB)
 class CreateClubActivity : BaseActivity() {
     override fun initView(savedInstanceState: Bundle?): Int {
-        return R.layout.create_club_activity_layout
+        return R.layout.club_create_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {

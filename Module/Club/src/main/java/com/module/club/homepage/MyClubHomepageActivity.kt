@@ -56,7 +56,7 @@ class MyClubHomepageActivity : BaseActivity() {
     private var scrollDivider = U.getDisplayUtils().dip2px(150f)  // 滑到分界线的时候
 
     override fun initView(savedInstanceState: Bundle?): Int {
-        return R.layout.my_club_homepage_activity_layout
+        return R.layout.club_my_homepage_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
