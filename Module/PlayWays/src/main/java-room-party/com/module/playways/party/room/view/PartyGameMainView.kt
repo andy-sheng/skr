@@ -103,11 +103,11 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     private fun setHandCardText() {
         partyGameInfoModel?.let {
             if (it.rule?.ruleType == EPGameType.PGT_Play.value) {
-                handCardTv.text = "手卡"
+                handCardTv.text = " 手卡"
                 setMainText("", it.play?.palyInfo?.playCard)
             } else if (it.rule?.ruleType == EPGameType.PGT_Question.value) {
                 setMainText("", it.question?.questionInfo?.answerContent)
-                handCardTv.text = "答案"
+                handCardTv.text = " 答案"
             }
         }
     }
@@ -115,9 +115,9 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     private fun setGameTabText() {
         partyGameInfoModel?.let {
             if (it.rule?.ruleType == EPGameType.PGT_Free.value) {
-                gameTv.text = "聊天"
+                gameTv.text = " 聊天"
             } else {
-                gameTv.text = "游戏"
+                gameTv.text = " 游戏"
             }
         }
     }
