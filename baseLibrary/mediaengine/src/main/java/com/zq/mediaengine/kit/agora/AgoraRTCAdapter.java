@@ -21,6 +21,7 @@ import com.zq.engine.avstatistics.datastruct.SAgora;
 import com.zq.engine.avstatistics.datastruct.Skr;
 import com.zq.engine.avstatistics.logservice.SLogServiceBase;
 import com.zq.engine.avstatistics.sts.SSTSCredentialHolder;
+import com.zq.mediaengine.filter.audio.AudioBufSrcPin;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
@@ -282,7 +283,7 @@ public class AgoraRTCAdapter {
     private AgoraRTCAdapter(GLRender glRender) {
         mGLRender = glRender;
         mLocalAudioSrcPin = new SrcPin<>();
-        mRemoteAudioSrcPin = new SrcPin<>();
+        mRemoteAudioSrcPin = new AudioBufSrcPin();
         mLocalVideoSrcPin = new AgoraImgTexSrcPin(glRender);
         mRemoteVideoSrcPins = new HashMap<>();
         mAudioSinkPin = new AudioSinkPin();

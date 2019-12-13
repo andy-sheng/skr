@@ -788,8 +788,14 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private void disconnectRecord() {
         if (mConfig.isUseExternalAudioRecord() || mConfig.isUseExternalAudio()) {
-            mAudioSendSrcPin.disconnect(mRecordAudioMixer.getSinkPin(0), false);
-            mAudioRemoteSrcPin.disconnect(mRecordAudioMixer.getSinkPin(1), false);
+            // 先断开非主索引的连接
+            if (mRecordAudioMixer.getMainSinkPinIndex() == 0) {
+                mAudioRemoteSrcPin.disconnect(mRecordAudioMixer.getSinkPin(1), false);
+                mAudioSendSrcPin.disconnect(mRecordAudioMixer.getSinkPin(0), false);
+            } else {
+                mAudioSendSrcPin.disconnect(mRecordAudioMixer.getSinkPin(0), false);
+                mAudioRemoteSrcPin.disconnect(mRecordAudioMixer.getSinkPin(1), false);
+            }
             mRecordAudioMixer.getSrcPin().disconnect(mAudioRecordResampleFilter.getSinkPin(), false);
         }
     }
@@ -851,8 +857,8 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
         // 销毁前清理掉其他的异步任务
         mCustomHandlerThread.removeCallbacksAndMessages(null);
-        tryStopRecordForFeedback("destroy");
-        stopAudioRecording();
+        // destroy前必须先停止所有录制
+        stopAudioRecordingInner("destroy");
         mCustomHandlerThread.post(new LogRunnable("destroy" + " from=" + from + " status=" + mStatus) {
             @Override
             public void realRun() {
@@ -1421,7 +1427,8 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     public void startAudioMixing(final int uid, String path, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
-        final String filePath = "/sdcard/yindiao.m4a";
+//        final String filePath = "/sdcard/yindiao.m4a";
+        final String filePath = path;
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle) {
                 @Override

@@ -97,6 +97,10 @@ public class AudioMixer {
         _setMainIdx(mInstance, index);
     }
 
+    public final int getMainSinkPinIndex() {
+        return mMainSinkPinIndex;
+    }
+
     /**
      * Set input audio source volume,
      * the source audio data would multiply this value before mix.
@@ -290,6 +294,7 @@ public class AudioMixer {
     }
 
     private void doRelease() {
+        Log.d(TAG, "doRelease");
         mSrcPin.disconnect(true);
         mSinkPins.clear();
         if (mInstance != INSTANCE_UNINIT) {
@@ -356,6 +361,7 @@ public class AudioMixer {
 
         if ((frame.flags & AVConst.FLAG_DETACH_NATIVE_MODULE) != 0) {
             if (frame.format.nativeModule != 0) {
+                Log.d(TAG, "detach nativeModule " + frame.format.nativeModule);
                 _attachTo(mInstance, idx, frame.format.nativeModule, true);
             }
             // in blocking mode, do not flush cache

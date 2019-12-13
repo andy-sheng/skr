@@ -218,6 +218,7 @@ void AudioMixer::destroy(int idx) {
         fifoSwrRelease(idx);
     }
     pthread_mutex_unlock(&mLock);
+    LOGD("~destroy %d", idx);
 }
 
 int AudioMixer::init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples) {
@@ -321,7 +322,7 @@ int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
             } while (true);
             if (samples > 0) {
                 LOGD("mixer %d fifo full, try to write %d, remain %d",
-                     idx, size, samples * frameSize);
+                     idx, size / frameSize, samples);
             }
         }
     }
@@ -398,7 +399,7 @@ int AudioMixer::mixAll(uint8_t *inBuf, int inSize) {
             } while (true);
             if (samples > 0) {
                 LOGD("mixer %d fifo empty, try to read %d, remain %d",
-                     i, inSize, (int)samples * frameSize);
+                     i, inSize / frameSize, (int) samples);
             }
             mix((short *) inBuf, inSize / sizeof(short), leftMainVol, rightMainVol, (short *) mBuffer,
                 (inSize - (int)samples * frameSize) / sizeof(short), mInputVolume[i],

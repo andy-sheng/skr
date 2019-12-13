@@ -29,6 +29,7 @@ APMWrapper::APMWrapper() :
 }
 
 APMWrapper::~APMWrapper() {
+    LOGD("destroy");
     if (mAPM != NULL) {
         delete mAPM;
         mAPM = NULL;
@@ -51,13 +52,14 @@ APMWrapper::~APMWrapper() {
         }
     }
 
-    for(int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         if (mFifoBuffer[i]) {
             audio_utils_fifo_deinit(&mFifo[i]);
             free(mFifoBuffer[i]);
             mFifoBuffer[i] = NULL;
         }
     }
+    LOGD("~destroy");
 }
 
 int APMWrapper::Create() {
@@ -295,6 +297,7 @@ int APMWrapper::Config(int idx, int sampleFmt, int samplerate, int channels) {
 }
 
 int APMWrapper::init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples) {
+    LOGD("init bufferSamples=%d", bufferSamples);
     mBufferSamples[idx] = bufferSamples;
     Config(idx, sampleFmt, sampleRate, channels);
     filterInit(sampleFmt, sampleRate, channels, bufferSamples);
