@@ -550,7 +550,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //        ZqEngineKit.getInstance().stopRecognize()
         if (thisRound == null) {
             // 游戏结束了
-//            roomView.gameOver()
+            roomView.gameOver()
             return
         }
 
