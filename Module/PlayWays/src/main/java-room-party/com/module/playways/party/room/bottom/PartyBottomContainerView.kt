@@ -84,6 +84,8 @@ class PartyBottomContainerView : BottomContainerView {
                                 if (obj?.errno == 0) {
                                     roomData?.isMute = (roomData?.isMute == false)
                                     refreshInputMic()
+                                } else {
+                                    U.getToastUtil().showShort(obj?.errmsg)
                                 }
                             }
                         })
@@ -106,6 +108,8 @@ class PartyBottomContainerView : BottomContainerView {
                             override fun process(obj: ApiResult?) {
                                 if (obj?.errno == 0) {
 
+                                } else {
+                                    U.getToastUtil().showShort(obj?.errmsg)
                                 }
                             }
                         })
