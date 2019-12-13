@@ -70,9 +70,23 @@ class PartyBottomContainerView : BottomContainerView {
                 // 嘉宾和主持人
                 when {
                     roomData?.myUserInfo?.isHost() == true -> {
-                        //todo 缺一个主持人mute的接口
-                        roomData?.isMute = (roomData?.isMute == false)
-                        refreshInputMic()
+                        var micStatus = EMicStatus.MS_CLOSE.value
+                        if (roomData?.isMute == true) {  // 已经被禁麦了
+                            micStatus = EMicStatus.MS_OPEN.value
+                        }
+                        val map = mutableMapOf(
+                                "roomID" to roomData?.gameId,
+                                "micStatus" to micStatus
+                        )
+                        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                        ApiMethods.subscribe(mRoomServerApi.setHostMicStatus(body), object : ApiObserver<ApiResult>() {
+                            override fun process(obj: ApiResult?) {
+                                if (obj?.errno == 0) {
+                                    roomData?.isMute = (roomData?.isMute == false)
+                                    refreshInputMic()
+                                }
+                            }
+                        })
                     }
                     roomData?.myUserInfo?.isGuest() == true -> {
                         val mySeatInfo = roomData?.mySeatInfo

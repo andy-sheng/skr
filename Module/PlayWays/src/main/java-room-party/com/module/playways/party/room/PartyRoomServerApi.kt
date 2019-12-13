@@ -112,6 +112,14 @@ interface PartyRoomServerApi {
     fun setUserMicStatus2(@Body body: RequestBody): Observable<ApiResult>
 
     /**
+     * 主持人禁麦，解除禁麦 {"roomID": 0, "micStatus": 0}
+     * MS_OPEN = 1 : 开麦 - MS_CLOSE = 2 : 闭麦
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/set-host-mic")
+    fun setHostMicStatus(@Body body: RequestBody): Observable<ApiResult>
+
+
+    /**
      * 获取表情列表
      */
     @GET("http://dev.game.inframe.mobi/v1/partygame/list-emoji")
