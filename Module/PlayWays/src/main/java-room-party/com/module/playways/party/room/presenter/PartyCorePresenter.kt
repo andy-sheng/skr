@@ -13,13 +13,10 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
-import com.common.utils.U
-import com.component.toast.CommonToastView
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
-import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.*
@@ -785,7 +782,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyEnterPermissionEvent) {
-        pretendSystemMsg("房主将进房间权限修改为 ${mRoomData.enterPermission}")
+        val msg = if (mRoomData.enterPermission == 2) "允许所有人进入" else "仅邀请才能加入"
+        pretendSystemMsg("房主将进房间权限修改为 ${msg}")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
