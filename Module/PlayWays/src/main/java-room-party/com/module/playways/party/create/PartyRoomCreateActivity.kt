@@ -81,6 +81,7 @@ class PartyRoomCreateActivity : BaseActivity() {
         }
 
         titlebar.rightTextView.setDebounceViewClickListener {
+            titlebar.rightTextView.isClickable = false
             if (this.from == "create") {
                 createRoom()
             } else if (this.from == "change") {
@@ -165,6 +166,7 @@ class PartyRoomCreateActivity : BaseActivity() {
                         .navigation()
                 finish()
             } else {
+                titlebar.rightTextView.isClickable = true
                 U.getToastUtil().showShort(result.errmsg)
             }
         }
@@ -192,6 +194,7 @@ class PartyRoomCreateActivity : BaseActivity() {
                 if (result.errno == 0) {
                     finish()
                 } else {
+                    titlebar.rightTextView.isClickable = true
                     U.getToastUtil().showShort(result.errmsg)
                 }
             }
