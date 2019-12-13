@@ -1,4 +1,4 @@
-package com.module.club.homepage.member
+package com.module.club.homepage.member.view
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.module.club.R
+import com.module.club.homepage.utils.ClubRoleUtils
+import com.zq.live.proto.Common.EClubMemberRoleType
 
 class ClubMemberAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var mDataList = ArrayList<ClubMemberInfoModel>()
+    var mDataList = ArrayList<UserInfoModel>()
     var mTotal = 0
 
     private val ITEM_TYPE_NORMAL = 1
@@ -58,13 +61,23 @@ class ClubMemberAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val roleTagTv: TextView = item.findViewById(R.id.role_tag_tv)
 
         var mPos = -1
-        var mModel: ClubMemberInfoModel? = null
+        var mModel: UserInfoModel? = null
 
-        fun bindData(position: Int, model: ClubMemberInfoModel) {
+        fun bindData(position: Int, model: UserInfoModel) {
             this.mPos = position
             this.mModel = model
 
-            // todo
+            avatarView.bindData(model)
+            if (ClubRoleUtils.getClubRoleBackground(model.clubInfo.roleType) != null) {
+                roleTagTv.visibility = View.VISIBLE
+                roleTagTv.background = ClubRoleUtils.getClubRoleBackground(model.clubInfo.roleType)
+                roleTagTv.text = model.clubInfo.roleDesc
+                ClubRoleUtils.getClubRoleTextColor(model.clubInfo.roleType)?.let {
+                    roleTagTv.setTextColor(it)
+                }
+            } else {
+                roleTagTv.visibility = View.INVISIBLE
+            }
         }
     }
 

@@ -19,7 +19,7 @@ import com.component.person.view.PersonTagView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.club.R
-import com.module.club.homepage.member.ClubMemberView
+import com.module.club.homepage.member.view.ClubMemberView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout

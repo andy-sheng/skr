@@ -9,20 +9,29 @@
             android:name="com.module.club.ClubConfiguration"
             android:value="ConfigModule" />
 
-        <activity android:name=".create.CreateClubActivity"
+        <activity
+            android:name=".create.CreateClubActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
 
-        <activity android:name=".homepage.MyClubHomepageActivity"
+        <activity
+            android:name=".homepage.MyClubHomepageActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
 
-        <activity android:name=".homepage.OtherClubHomepageActivity"
+        <activity
+            android:name=".homepage.OtherClubHomepageActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".manage.ClubManageActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

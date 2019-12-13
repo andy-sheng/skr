@@ -40,7 +40,7 @@
         android:layout_marginLeft="@dimen/view_12_dp"
         android:layout_marginTop="@dimen/view_30_dp"
         android:layout_marginRight="@dimen/view_12_dp"
-        android:background="@drawable/mic_create_common_gradient_bg"
+        android:background="@drawable/common_gradient_top_corners_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titlebar" />
 

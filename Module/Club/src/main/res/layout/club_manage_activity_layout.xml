@@ -9,7 +9,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:centerText="房间设置"
+        app:centerText="家族设置"
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
@@ -40,14 +40,14 @@
         app:layout_constraintTop_toBottomOf="@+id/titlebar" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/room_info_setting_tv"
+        android:id="@+id/club_info_setting_tv"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_70_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/view_23_dp"
-        android:text="房间信息设置"
+        android:text="家族资料"
         android:textColor="@color/black_trans_80"
         android:textSize="@dimen/textsize_16_dp"
         android:textStyle="bold"
@@ -63,23 +63,23 @@
         android:background="@color/black_trans_10"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/room_info_setting_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/club_info_setting_tv" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/room_gonggao_tv"
+        android:id="@+id/club_notice_tv"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_70_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/view_23_dp"
-        android:text="房间公告"
+        android:text="编辑公告"
         android:textColor="@color/black_trans_80"
         android:textSize="@dimen/textsize_16_dp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/room_info_setting_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/club_info_setting_tv" />
 
     <View
         android:layout_width="@dimen/view_0_dp"
@@ -89,49 +89,23 @@
         android:background="@color/black_trans_10"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/room_gonggao_tv" />
-
-    <!--    <com.common.view.ex.ExTextView-->
-    <!--        android:id="@+id/room_host_change_tv"-->
-    <!--        android:layout_width="@dimen/view_0_dp"-->
-    <!--        android:layout_height="@dimen/view_70_dp"-->
-    <!--        android:layout_marginLeft="@dimen/view_10_dp"-->
-    <!--        android:layout_marginRight="@dimen/view_10_dp"-->
-    <!--        android:gravity="center_vertical"-->
-    <!--        android:paddingLeft="@dimen/view_23_dp"-->
-    <!--        android:text="主持人转让"-->
-    <!--        android:textColor="@color/black_trans_80"-->
-    <!--        android:textSize="@dimen/textsize_16_dp"-->
-    <!--        android:textStyle="bold"-->
-    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--        app:layout_constraintRight_toRightOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/room_gonggao_tv" />-->
-
-    <!--    <View-->
-    <!--        android:layout_width="@dimen/view_0_dp"-->
-    <!--        android:layout_height="@dimen/view_1_dp"-->
-    <!--        android:layout_marginLeft="@dimen/view_10_dp"-->
-    <!--        android:layout_marginRight="@dimen/view_10_dp"-->
-    <!--        android:background="@color/black_trans_10"-->
-    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--        app:layout_constraintRight_toRightOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/room_host_change_tv" />-->
+        app:layout_constraintTop_toBottomOf="@+id/club_notice_tv" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/room_administrator_tv"
+        android:id="@+id/club_transfer_tv"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_70_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/view_23_dp"
-        android:text="管理员设置"
+        android:text="转让家族"
         android:textColor="@color/black_trans_80"
         android:textSize="@dimen/textsize_16_dp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/room_gonggao_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/club_notice_tv" />
 
     <View
         android:layout_width="@dimen/view_0_dp"
@@ -141,6 +115,32 @@
         android:background="@color/black_trans_10"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/room_administrator_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/club_transfer_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/club_dissolve_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_70_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/view_23_dp"
+        android:text="解散家族"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/club_transfer_tv" />
+
+    <View
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/club_dissolve_tv" />
 
 </android.support.constraint.ConstraintLayout>
