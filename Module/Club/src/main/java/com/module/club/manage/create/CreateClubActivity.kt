@@ -154,7 +154,7 @@ class CreateClubActivity : BaseActivity() {
         val uploadTask = UploadParams.newBuilder(photoModel.localPath)
                 .setNeedCompress(true)
                 .setNeedMonitor(true)
-                .setFileType(UploadParams.FileType.audit)
+                .setFileType(UploadParams.FileType.picture)
                 .startUploadAsync(object : UploadCallback {
                     override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
                         callback?.onProgressNotInUiThread(currentSize, totalSize)
