@@ -62,7 +62,6 @@ class OtherClubHomepageActivity : BaseActivity() {
     private var srlNameTv: TextView? = null
 
     private var ivBack: ExImageView? = null
-    private var moreBtn: ExImageView? = null
     private var applyEnterTv: ExTextView? = null
 
     private var lastVerticalOffset = Int.MAX_VALUE
@@ -98,7 +97,6 @@ class OtherClubHomepageActivity : BaseActivity() {
         toolbarLayout = findViewById(R.id.toolbar_layout)
         srlNameTv = findViewById(R.id.srl_name_tv)
         ivBack = findViewById(R.id.iv_back)
-        moreBtn = findViewById(R.id.more_btn)
         applyEnterTv = findViewById(R.id.apply_enter_tv)
 
         adjustNotchPhone()
@@ -124,10 +122,6 @@ class OtherClubHomepageActivity : BaseActivity() {
 
     private fun initTopArea() {
         ivBack?.setDebounceViewClickListener { finish() }
-
-        moreBtn?.setDebounceViewClickListener {
-
-        }
     }
 
     private fun initMemberArea() {

@@ -78,9 +78,21 @@ interface ClubServerApi {
     fun getApplyMemberList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("status") status: Int): Call<ApiResult>
 
     /**
+     * 解散家族 {null}
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/club/dismiss-club")
+    fun dismissClub(@Body body: RequestBody): Call<ApiResult>
+
+    /**
      * 退出家族 {null}
      */
     @PUT("http://dev.api.inframe.mobi/v1/club/member-quit")
     fun existClub(@Body body: RequestBody): Call<ApiResult>
 
+    /**
+     * 改啥传啥
+     * 修改家族信息 {"clubID": 0,"desc": "string","logo": "string","name": "string","notice": "string"}
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/club/detail")
+    fun editClubInfo(@Body body: RequestBody): Call<ApiResult>
 }

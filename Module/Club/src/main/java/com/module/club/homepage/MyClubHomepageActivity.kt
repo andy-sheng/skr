@@ -23,6 +23,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
@@ -34,6 +35,7 @@ import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
 import com.module.club.homepage.room.ClubPartyRoomView
+import com.module.club.manage.setting.ClubManageFragment
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -131,7 +133,11 @@ class MyClubHomepageActivity : BaseActivity() {
         ivBack?.setDebounceViewClickListener { finish() }
 
         moreBtn?.setDebounceViewClickListener {
-            //todo 待补全
+            // 跳到设置页面
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, ClubManageFragment::class.java)
+                    .setAddToBackStack(true)
+                    .setHasAnimation(true)
+                    .build())
         }
 
         applyTv?.setDebounceViewClickListener {

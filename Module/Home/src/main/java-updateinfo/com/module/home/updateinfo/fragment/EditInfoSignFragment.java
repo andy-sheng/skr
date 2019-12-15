@@ -34,9 +34,6 @@ public class EditInfoSignFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
-
-
-        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
         mSignEt = (NoLeakEditText) getRootView().findViewById(R.id.sign_et);
         mSignTextSize = (ExTextView) getRootView().findViewById(R.id.sign_text_size);
 
