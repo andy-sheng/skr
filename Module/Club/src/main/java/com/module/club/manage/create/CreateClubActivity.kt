@@ -27,11 +27,11 @@ import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.view.SkrProgressView
 import com.component.person.photo.model.PhotoModel
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
-import com.module.club.manage.view.CreatingProgressDialogView
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
 import com.respicker.model.ImageItem
@@ -48,7 +48,7 @@ class CreateClubActivity : BaseActivity() {
     lateinit var divider: View
     lateinit var clubNameEt: NoLeakEditText
     lateinit var clubIntroductionEt: NoLeakEditText
-    var creatingProgressDialogView: CreatingProgressDialogView? = null
+    lateinit var progressView: SkrProgressView
 
     internal var mImageItemArrayList: MutableList<ImageItem> = java.util.ArrayList()
 
@@ -66,6 +66,7 @@ class CreateClubActivity : BaseActivity() {
         divider = findViewById(R.id.divider)
         clubNameEt = findViewById(R.id.club_name_et)
         clubIntroductionEt = findViewById(R.id.club_introduction_et)
+        progressView = findViewById(R.id.progress_view)
 
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
 
@@ -148,8 +149,7 @@ class CreateClubActivity : BaseActivity() {
     }
 
     private fun editFinish() {
-        creatingProgressDialogView = CreatingProgressDialogView(this)
-        creatingProgressDialogView?.showByDialog(false)
+        progressView.visibility = View.VISIBLE
 
         val photoModel = PhotoModel()
         photoModel.localPath = mImageItemArrayList[0].getPath()
@@ -167,9 +167,9 @@ class CreateClubActivity : BaseActivity() {
             }
 
             override fun onFailureNotInUiThread(msg: String?) {
+                progressView.visibility = View.GONE
                 photoModel.status = PhotoModel.STATUS_FAILED
                 U.getToastUtil().showShort(msg)
-                creatingProgressDialogView?.dismiss(false)
             }
         })
 
@@ -186,12 +186,13 @@ class CreateClubActivity : BaseActivity() {
 
             if (result.errno == 0) {
                 U.getToastUtil().showShort("创建成功")
+                progressView.visibility = View.GONE
                 finish()
             } else {
+                progressView.visibility = View.GONE
                 U.getToastUtil().showShort(result.errmsg)
             }
 
-            creatingProgressDialogView?.dismiss(false)
         }
     }
 

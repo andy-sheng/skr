@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:SkrProgressView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#7088FF">
@@ -160,6 +161,13 @@
         app:layout_constraintLeft_toLeftOf="@+id/bg_iv"
         app:layout_constraintRight_toRightOf="@+id/bg_iv"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+    <com.component.busilib.view.SkrProgressView
+        android:id="@+id/progress_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        SkrProgressView:progressText="创建中" />
 
 
 </android.support.constraint.ConstraintLayout>
