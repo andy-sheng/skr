@@ -47,7 +47,7 @@ class GonggaoSettingFragment : BaseFragment() {
         }
 
         saveTv.setDebounceViewClickListener {
-            setNotice(editText.text.toString())
+            setNotice(editText.text.toString().trim())
         }
     }
 
