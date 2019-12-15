@@ -73,7 +73,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:ly_enable_scroll="false"
-        app:ly_enable_verbatim="false"
+        app:ly_enable_verbatim="true"
         app:ly_high_light_paint_color_from="#DB4D84"
         app:ly_high_light_paint_color_from2="#4DA5DB"
 
