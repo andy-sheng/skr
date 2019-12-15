@@ -112,7 +112,10 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             DebugLogView.println(TAG, "isAnchor=$isAnchor")
             ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), isAnchor, mRoomData.agoraToken)
             // 不发送本地音频, 会造成第一次抢没声音
-            //ZqEngineKit.getInstance().muteLocalAudioStream(true)
+                if(mRoomData.getMyUserInfoInParty().isGuest()){
+                        ZqEngineKit.getInstance().muteLocalAudioStream(mRoomData.isMute)
+                }
+
         } else {
             MyLog.e(TAG, "房间号不合法 mRoomData.gameId=" + mRoomData.gameId)
         }

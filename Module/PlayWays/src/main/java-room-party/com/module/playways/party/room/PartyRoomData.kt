@@ -12,6 +12,7 @@ import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.model.PartySeatInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
+import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.EPRoundStatus
 import com.zq.live.proto.PartyRoom.EPUserRole
 import org.greenrobot.eventbus.EventBus
@@ -400,5 +401,8 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         updateUsers(rsp.users)
         this.expectRoundInfo = rsp.currentRound
         this.enterPermission = rsp.enterPermission
+        if(getMySeatInfoInParty()?.micStatus == EMicStatus.MS_CLOSE.value){
+            isMute = true
+        }
     }
 }
