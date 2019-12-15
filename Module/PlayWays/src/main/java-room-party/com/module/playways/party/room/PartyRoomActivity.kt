@@ -14,6 +14,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
+import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
@@ -125,6 +126,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private var mTipsDialogView: TipsDialogView? = null
     private var mVoiceControlPanelView: PartyVoiceControlPanelView? = null
     private var mPartyManageDialogView: PartyManageDialogView? = null
+    private var mPartyManageHostDialogView: PartyManageHostDialogView? = null
     private var mPartyApplyPanelView: PartyApplyPanelView? = null
     private var mPartyMemberPanelView: PartyMemberPanelView? = null
     private var mConfirmDialog: ConfirmDialog? = null
@@ -626,22 +628,45 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         showPersonInfoView(event.uid)
     }
 
+    private fun getPartyManageHostDialogView(): PartyManageHostDialogView {
+        if (mPartyManageHostDialogView == null) {
+            mPartyManageHostDialogView = PartyManageHostDialogView(this)
+        }
+
+        return mPartyManageHostDialogView!!
+    }
+
     //家族房，有房主，但是当前的人可以操作房主（让房主下麦自己上）
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyOpHostEvent) {
-
+        getPartyManageHostDialogView().apply {
+            function1.text = "上麦"
+            function1.setDebounceViewClickListener {
+                mCorePresenter.insteadClubHost()
+            }
+        }
     }
 
     //家族房，房主是自己，可以自己把自己下麦
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartySelfOpHostEvent) {
-
+        getPartyManageHostDialogView().apply {
+            function1.text = "下麦"
+            function1.setDebounceViewClickListener {
+                mCorePresenter.giveUpClubHost()
+            }
+        }
     }
 
     //家族房，没房主，自己上麦的弹窗
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyBeHostConfirmEvent) {
-
+        getPartyManageHostDialogView().apply {
+            function1.text = "上麦"
+            function1.setDebounceViewClickListener {
+                mCorePresenter.becomeClubHost()
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

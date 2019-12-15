@@ -238,4 +238,29 @@ interface PartyRoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/partygame/end-ktv-music")
     fun endMusic(@Body body: RequestBody): Call<ApiResult>
 
+    /**
+     * {
+    "roomID": 0,
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/club-become-host")
+    fun becomeClubHost(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * {
+    "curHostUserID": 0,
+    "roomID": 0
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/club-take-host")
+    fun takeClubHost(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * {
+    "curHostUserID": 0,
+    "roomID": 0
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/club-give-host")
+    fun giveClubHost(@Body body: RequestBody): Call<ApiResult>
 }
