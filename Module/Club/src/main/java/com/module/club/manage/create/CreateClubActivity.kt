@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
@@ -15,6 +16,10 @@ import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
 import com.common.image.model.oss.OssImgFactory
 import com.common.log.MyLog
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.utils.ImageUtils
@@ -24,10 +29,15 @@ import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
 import com.component.person.photo.model.PhotoModel
 import com.module.RouterConstants
+import com.module.club.ClubServerApi
 import com.module.club.R
+import com.module.club.manage.view.CreatingProgressDialogView
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
 import com.respicker.model.ImageItem
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 
 @Route(path = RouterConstants.ACTIVITY_CREATE_CLUB)
 class CreateClubActivity : BaseActivity() {
@@ -38,8 +48,11 @@ class CreateClubActivity : BaseActivity() {
     lateinit var divider: View
     lateinit var clubNameEt: NoLeakEditText
     lateinit var clubIntroductionEt: NoLeakEditText
+    var creatingProgressDialogView: CreatingProgressDialogView? = null
 
     internal var mImageItemArrayList: MutableList<ImageItem> = java.util.ArrayList()
+
+    private var clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.club_create_ss
@@ -99,7 +112,7 @@ class CreateClubActivity : BaseActivity() {
         }
     }
 
-    internal fun execUploadPhoto(photoModel: PhotoModel) {
+    internal fun execUploadPhoto(photoModel: PhotoModel, callback: UploadCallback?) {
         MyLog.d(TAG, "execUploadPhoto photoModel=$photoModel")
         val uploadTask = UploadParams.newBuilder(photoModel.localPath)
                 .setNeedCompress(true)
@@ -107,18 +120,17 @@ class CreateClubActivity : BaseActivity() {
                 .setFileType(UploadParams.FileType.audit)
                 .startUploadAsync(object : UploadCallback {
                     override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
-
+                        callback?.onProgressNotInUiThread(currentSize, totalSize)
                     }
 
                     override fun onSuccessNotInUiThread(url: String) {
                         MyLog.d(TAG, "上传成功 url=$url")
-                        photoModel.status = PhotoModel.STATUS_SUCCESS
-                        photoModel.picPath = url
+                        callback?.onSuccessNotInUiThread(url)
                     }
 
                     override fun onFailureNotInUiThread(msg: String) {
                         MyLog.d(TAG, "上传失败 msg=$msg")
-                        photoModel.status = PhotoModel.STATUS_FAILED
+                        callback?.onFailureNotInUiThread(msg)
                     }
                 })
     }
@@ -136,7 +148,56 @@ class CreateClubActivity : BaseActivity() {
     }
 
     private fun editFinish() {
-        finish()
+        creatingProgressDialogView = CreatingProgressDialogView(this)
+        creatingProgressDialogView?.showByDialog(false)
+
+        val photoModel = PhotoModel()
+        photoModel.localPath = mImageItemArrayList[0].getPath()
+        photoModel.status = PhotoModel.STATUS_WAIT_UPLOAD
+        execUploadPhoto(photoModel, object : UploadCallback {
+            override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
+
+            }
+
+            override fun onSuccessNotInUiThread(url: String?) {
+                photoModel.status = PhotoModel.STATUS_SUCCESS
+                photoModel.picPath = url
+
+                createClub(photoModel)
+            }
+
+            override fun onFailureNotInUiThread(msg: String?) {
+                photoModel.status = PhotoModel.STATUS_FAILED
+                U.getToastUtil().showShort(msg)
+                creatingProgressDialogView?.dismiss(false)
+            }
+        })
+
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(this)
+    }
+
+    private fun createClub(photoModel: PhotoModel) {
+        launch {
+            val map = mutableMapOf("logo" to photoModel.picPath, "name" to clubNameEt.text.toString(), "desc" to clubIntroductionEt.text.toString())
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("createClub", ControlType.CancelThis)) {
+                clubServerApi.createClub(body)
+            }
+
+            if (result.errno == 0) {
+                U.getToastUtil().showShort("创建成功")
+                finish()
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+
+            creatingProgressDialogView?.dismiss(false)
+        }
+    }
+
+    override fun destroy() {
+        super.destroy()
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(this)
     }
 
     override fun useEventBus(): Boolean {
