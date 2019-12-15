@@ -40,9 +40,7 @@ import com.module.playways.party.room.actor.PartyMemberPanelView
 import com.module.playways.party.room.bottom.PartyBottomContainerView
 import com.module.playways.party.room.event.PartySelectSongEvent
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
-import com.module.playways.party.room.model.PartyActorInfoModel
-import com.module.playways.party.room.model.PartyPlayerInfoModel
-import com.module.playways.party.room.model.PartyRoundInfoModel
+import com.module.playways.party.room.model.*
 import com.module.playways.party.room.presenter.PartyCorePresenter
 import com.module.playways.party.room.seat.PartySeatView
 import com.module.playways.party.room.top.PartyTopContentView
@@ -626,6 +624,24 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
         showPersonInfoView(event.uid)
+    }
+
+    //家族房，有房主，但是当前的人可以操作房主（让房主下麦自己上）
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyOpHostEvent) {
+
+    }
+
+    //家族房，房主是自己，可以自己把自己下麦
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartySelfOpHostEvent) {
+
+    }
+
+    //家族房，没房主，自己上麦的弹窗
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyBeHostConfirmEvent) {
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

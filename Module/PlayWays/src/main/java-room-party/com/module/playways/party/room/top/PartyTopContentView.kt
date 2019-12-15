@@ -7,21 +7,21 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
-import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
-import com.component.busilib.view.AvatarView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.event.PartyHostChangeEvent
 import com.module.playways.party.room.event.PartyOnlineUserCntChangeEvent
-import com.module.playways.relay.room.event.RelayLockChangeEvent
+import com.module.playways.party.room.model.PartyBeHostConfirmEvent
+import com.module.playways.party.room.model.PartyOpHostEvent
+import com.module.playways.party.room.model.PartySelfOpHostEvent
 import com.module.playways.room.data.H
-import com.zq.live.proto.RelayRoom.RMuteMsg
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -60,8 +60,34 @@ class PartyTopContentView : ExConstraintLayout {
         audienceIv = this.findViewById(R.id.audience_iv)
 
         avatarIv.setDebounceViewClickListener {
-            H.partyRoomData?.hostId?.let {
-                EventBus.getDefault().post(ShowPersonCardEvent(it))
+            if (H.partyRoomData?.hostId == null) {
+                return@setDebounceViewClickListener
+            }
+
+            val self = roomData?.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.userInfo?.clubInfo
+            val host = roomData?.getPlayerInfoById(roomData?.hostId ?: 0)?.userInfo?.clubInfo
+
+            if (roomData?.isClubHome() == true) {
+                if (self != null) {
+                    if (host == null) {
+                        if (self.canBeHost()) {
+                            EventBus.getDefault().post(PartyBeHostConfirmEvent())
+                            return@setDebounceViewClickListener
+                        }
+                    } else {
+                        if (self.canOpHost() && self.isHighLevelThen(host)) {
+                            EventBus.getDefault().post(PartyOpHostEvent())
+                            return@setDebounceViewClickListener
+                        } else if ((roomData?.hostId ?: 0) == MyUserInfoManager.uid.toInt()) {
+                            EventBus.getDefault().post(PartySelfOpHostEvent())
+                            return@setDebounceViewClickListener
+                        }
+                    }
+                }
+            }
+
+            if (H.partyRoomData?.hostId!! > 0) {
+                EventBus.getDefault().post(ShowPersonCardEvent(H.partyRoomData?.hostId!!))
             }
         }
         arrowIv.setDebounceViewClickListener { listener?.clickArrow(!mIsOpen) }
