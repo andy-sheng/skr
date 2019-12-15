@@ -27,6 +27,16 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
+        <activity android:name=".apply.ClubApplyListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity android:name=".member.ClubMemberListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".homepage.OtherClubHomepageActivity"
             android:launchMode="singleTask"

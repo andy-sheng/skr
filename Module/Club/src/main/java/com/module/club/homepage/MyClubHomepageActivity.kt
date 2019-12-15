@@ -133,6 +133,21 @@ class MyClubHomepageActivity : BaseActivity() {
         moreBtn?.setDebounceViewClickListener {
             //todo 待补全
         }
+
+        applyTv?.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_APPLY_CLUB)
+                    .navigation()
+        }
+
+        memberTv?.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_MEMBER)
+                    .withInt("clubID", clubID)
+                    .navigation()
+        }
+
+        contributionTv?.setDebounceViewClickListener {
+
+        }
     }
 
     private fun initRoomArea() {

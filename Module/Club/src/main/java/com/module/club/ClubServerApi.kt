@@ -3,10 +3,7 @@ package com.module.club
 import com.common.rxretrofit.ApiResult
 import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ClubServerApi {
     /**
@@ -48,5 +45,42 @@ interface ClubServerApi {
      */
     @GET("http://dev.api.inframe.mobi/v1/club/list-member-party")
     fun getClubMemberPartyDetail(@Query("clubID") clubID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
+
+    /**
+     * 申请加入家族 {"clubID": 0,"text": "string"}
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/club/member-join")
+    fun applyJoinClub(@Body body: RequestBody): Call<ApiResult>
+
+
+    /**
+     * 删除家族成员 {"userID": 0}
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/club/del-member")
+    fun delClubMember(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 设置家族成员信息 {"userID": 0, "role": 0}
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/club/member-info")
+    fun setClubMemberInfo(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 审核家族成员申请 {"applyID": 0, "auditStatus": 0}
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/club/audit-member-join")
+    fun auditMemberJoin(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 审核家族成员申请 // 1 未审核 2审核通过 3 审核不通过
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/list-member-apply")
+    fun getApplyMemberList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("status") status: Int): Call<ApiResult>
+
+    /**
+     * 退出家族 {null}
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/club/member-quit")
+    fun existClub(@Body body: RequestBody): Call<ApiResult>
 
 }

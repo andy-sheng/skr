@@ -35,6 +35,8 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import kotlin.math.abs
 
 @Route(path = RouterConstants.ACTIVITY_OTHER_HOMEPAGE_CLUB)
@@ -104,6 +106,7 @@ class OtherClubHomepageActivity : BaseActivity() {
         initMemberArea()
         initRoomArea()
         initToolBarScroll()
+        initApplyEnter()
 
         getHomePage()
         clubRoomView?.initData()
@@ -123,7 +126,7 @@ class OtherClubHomepageActivity : BaseActivity() {
         ivBack?.setDebounceViewClickListener { finish() }
 
         moreBtn?.setDebounceViewClickListener {
-            //todo 待补全
+
         }
     }
 
@@ -201,6 +204,26 @@ class OtherClubHomepageActivity : BaseActivity() {
                         toolbar?.visibility = View.GONE
                         toolbarLayout?.visibility = View.GONE
                     }
+                }
+            }
+        }
+    }
+
+    private fun initApplyEnter() {
+        applyEnterTv?.setDebounceViewClickListener {
+            launch {
+                val map = mapOf(
+                        "clubID" to clubID,
+                        "text" to ""
+                )
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val result = subscribe(RequestControl("applyJoinClub", ControlType.CancelThis)) {
+                    clubServerApi.applyJoinClub(body)
+                }
+                if (result.errno == 0) {
+                    U.getToastUtil().showShort("申请成功")
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
                 }
             }
         }

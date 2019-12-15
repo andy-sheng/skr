@@ -14,12 +14,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/title_tv"
+        android:id="@+id/agree_tv"
         android:layout_width="@dimen/view_50_dp"
         android:layout_height="@dimen/view_32_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center"
-        android:text="头衔"
+        android:text="同意"
         android:textColor="#3B4E79"
         android:textSize="@dimen/textsize_14_dp"
         app:bl_corners_bottomRightRadius="@dimen/view_16_dp"
@@ -31,11 +31,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/remove_tv"
+        android:id="@+id/refuse_tv"
         android:layout_width="@dimen/view_50_dp"
         android:layout_height="@dimen/view_32_dp"
         android:gravity="center"
-        android:text="移除"
+        android:text="拒绝"
         android:textColor="#3B4E79"
         android:textSize="@dimen/textsize_14_dp"
         app:bl_corners_bottomLeftRadius="@dimen/view_16_dp"
@@ -43,7 +43,7 @@
         app:bl_shape="rectangle"
         app:bl_solid_color="#FF8AB6"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/title_tv"
+        app:layout_constraintRight_toLeftOf="@id/agree_tv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -61,7 +61,7 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/status_tv"
         app:layout_constraintLeft_toRightOf="@id/avatar_view"
-        app:layout_constraintRight_toLeftOf="@id/role_tag_tv"
+        app:layout_constraintRight_toLeftOf="@id/refuse_tv"
         app:layout_constraintTop_toTopOf="@id/avatar_view"
         app:layout_constraintVertical_chainStyle="packed" />
 
@@ -80,21 +80,8 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@id/avatar_view"
         app:layout_constraintLeft_toRightOf="@id/avatar_view"
-        app:layout_constraintRight_toLeftOf="@id/remove_tv"
+        app:layout_constraintRight_toLeftOf="@id/refuse_tv"
         app:layout_constraintTop_toBottomOf="@id/name_tv" />
-
-    <TextView
-        android:id="@+id/role_tag_tv"
-        android:layout_width="@dimen/view_40_dp"
-        android:layout_height="@dimen/view_16_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:gravity="center"
-        android:textSize="@dimen/textsize_10_dp"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="@id/name_tv"
-        app:layout_constraintLeft_toRightOf="@id/name_tv"
-        app:layout_constraintRight_toLeftOf="@id/remove_tv"
-        app:layout_constraintTop_toTopOf="@id/name_tv" />
 
     <View
         android:layout_width="match_parent"

@@ -1,25 +1,20 @@
-package com.module.club.member
+package com.module.club.apply
 
 import android.os.Bundle
-import android.support.v4.net.ConnectivityManagerCompat
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.userinfo.model.ClubInfo
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
-import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
@@ -31,32 +26,25 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
-@Route(path = RouterConstants.ACTIVITY_LIST_MEMBER)
-class ClubMemberListActivity : BaseActivity() {
+
+@Route(path = RouterConstants.ACTIVITY_LIST_APPLY_CLUB)
+class ClubApplyListActivity : BaseActivity() {
 
     lateinit var titlebar: CommonTitleBar
     lateinit var refreshLayout: SmartRefreshLayout
     lateinit var contentRv: RecyclerView
-    lateinit var adapter: ClubMemberListAdapter
+    lateinit var adapter: ClubApplyListAdapter
 
-    private var clubID: Int = 0
     private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
     private var offset = 0
     private var hasMore = true
     private val cnt = 15
 
-    private var mTipsDialogView: TipsDialogView? = null
-
     override fun initView(savedInstanceState: Bundle?): Int {
-        return R.layout.club_member_list_activity_layout
+        return R.layout.club_apply_list_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        clubID = intent.getIntExtra("clubID", 0)
-//        if (clubID == 0) {
-//            finish()
-//        }
-
         titlebar = findViewById(R.id.titlebar)
         refreshLayout = findViewById(R.id.refreshLayout)
         contentRv = findViewById(R.id.content_rv)
@@ -66,10 +54,17 @@ class ClubMemberListActivity : BaseActivity() {
                 || MyUserInfoManager.myUserInfo?.clubInfo?.roleType == EClubMemberRoleType.ECMRT_CoFounder.value) {
             hasManage = true
         }
+        adapter = ClubApplyListAdapter(hasManage, object : ClubApplyListAdapter.Listener {
+            override fun onClickAgree(position: Int, model: ClubApplyInfoModel?) {
+                auditMemberJoin(position, model, true)
+            }
 
-        adapter = ClubMemberListAdapter(hasManage, object : ClubMemberListAdapter.Listener {
-            override fun onClickAvatar(position: Int, model: UserInfoModel?) {
-                model?.userId?.let {
+            override fun onClickRefuse(position: Int, model: ClubApplyInfoModel?) {
+                auditMemberJoin(position, model, false)
+            }
+
+            override fun onCLickAvatar(position: Int, model: ClubApplyInfoModel?) {
+                model?.user?.userId?.let {
                     val bundle = Bundle()
                     bundle.putInt("bundle_user_id", it)
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_OTHER_PERSON)
@@ -77,32 +72,7 @@ class ClubMemberListActivity : BaseActivity() {
                             .navigation()
                 }
             }
-
-            override fun onClickRemove(position: Int, model: UserInfoModel?) {
-                model?.userId?.let { userID ->
-                    mTipsDialogView?.dismiss(false)
-                    mTipsDialogView = TipsDialogView.Builder(this@ClubMemberListActivity)
-                            .setMessageTip("确定将${model.nicknameRemark}移除家族吗？")
-                            .setConfirmTip("移除")
-                            .setCancelTip("取消")
-                            .setConfirmBtnClickListener {
-                                mTipsDialogView?.dismiss()
-                                delMember(position, model, userID)
-                            }
-                            .setCancelBtnClickListener {
-                                mTipsDialogView?.dismiss()
-                            }
-                            .build()
-                    mTipsDialogView?.showByDialog()
-                }
-            }
-
-            override fun onClickTitle(position: Int, model: UserInfoModel?) {
-                // 等设计稿
-            }
         })
-        contentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        contentRv.adapter = adapter
 
         titlebar.leftTextView.setDebounceViewClickListener {
             finish()
@@ -116,7 +86,7 @@ class ClubMemberListActivity : BaseActivity() {
 
             setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
-                    getClubMemberList(offset, false)
+                    getApplyList(offset, false)
                 }
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
@@ -126,32 +96,26 @@ class ClubMemberListActivity : BaseActivity() {
             })
         }
 
-        getClubMemberList(0, true)
+        getApplyList(0, true)
     }
 
-    private fun getClubMemberList(off: Int, isClean: Boolean) {
+    private fun getApplyList(off: Int, isClean: Boolean) {
         launch {
             val result = subscribe(RequestControl("getClubMemberList", ControlType.CancelThis)) {
-                clubServerApi.getClubMemberList(clubID, off, cnt)
+                clubServerApi.getApplyMemberList(off, cnt, 1)
             }
             if (result.errno == 0) {
                 offset = result.data.getIntValue("offset")
                 hasMore = result.data.getBooleanValue("hasMore")
-                val list = JSON.parseArray(result.data.getString("items"), UserInfoModel::class.java)
-                addClubMemberList(list, isClean)
+                val list = JSON.parseArray(result.data.getString("items"), ClubApplyInfoModel::class.java)
+                addApplyList(list, isClean)
             }
             finishRefreshAndLoadMore()
         }
     }
 
-    private fun finishRefreshAndLoadMore() {
-        refreshLayout.finishRefresh()
-        refreshLayout.finishLoadMore()
-        refreshLayout.setEnableLoadMore(hasMore)
-    }
-
-    private fun addClubMemberList(list: List<UserInfoModel>?, clean: Boolean) {
-        if (clean) {
+    private fun addApplyList(list: List<ClubApplyInfoModel>?, isClean: Boolean) {
+        if (isClean) {
             adapter.mDataList.clear()
             if (!list.isNullOrEmpty()) {
                 adapter.mDataList.addAll(list)
@@ -167,17 +131,25 @@ class ClubMemberListActivity : BaseActivity() {
         }
     }
 
-    private fun delMember(position: Int, model: UserInfoModel, userID: Int) {
+    private fun finishRefreshAndLoadMore() {
+        refreshLayout.finishLoadMore()
+        refreshLayout.finishRefresh()
+        refreshLayout.setEnableLoadMore(hasMore)
+    }
+
+    private fun auditMemberJoin(position: Int, model: ClubApplyInfoModel?, isApprove: Boolean) {
+        // 1 未审核 2审核通过 3 审核不通过
         launch {
             val map = mapOf(
-                    "userID" to userID
+                    "applyID" to (model?.user?.userId ?: 0),
+                    "auditStatus" to (if (isApprove) 2 else 3)
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe(RequestControl("delClubMember", ControlType.CancelThis)) {
-                clubServerApi.delClubMember(body)
+            val result = subscribe(RequestControl("auditMemberJoin", ControlType.CancelThis)) {
+                clubServerApi.auditMemberJoin(body)
             }
             if (result.errno == 0) {
-                // 删除成功，更新下视图
+                // 审核完成
                 adapter.mDataList.remove(model)
                 adapter.notifyItemRemoved(position)//注意这里
                 if (position != adapter.mDataList.size) {
@@ -192,5 +164,4 @@ class ClubMemberListActivity : BaseActivity() {
     override fun useEventBus(): Boolean {
         return false
     }
-
 }
