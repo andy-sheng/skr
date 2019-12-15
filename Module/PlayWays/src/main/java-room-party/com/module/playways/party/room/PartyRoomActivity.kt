@@ -67,6 +67,9 @@ import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.live.proto.PartyRoom.PClubBecomeHostMsg
+import com.zq.live.proto.PartyRoom.PClubChangeHostMsg
+import com.zq.live.proto.PartyRoom.PClubGameStopMsg
 import com.zq.live.proto.PartyRoom.PKickoutUserMsg
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -681,6 +684,21 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         } else {
             U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PClubGameStopMsg) {
+        MyLog.w(TAG, "event ")
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PClubBecomeHostMsg) {
+        mRoomData.hostId = event.user.userInfo.userID
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PClubChangeHostMsg) {
+        mRoomData.hostId = event.toUser.userInfo.userID
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

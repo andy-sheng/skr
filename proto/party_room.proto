@@ -43,7 +43,9 @@ message PartyRoomMsg {
     PChangeRoomTopicMsg pChangeRoomTopicMsg                     = 27; //修改房间主题
     PChangeRoomEnterPermissionMsg pChangeRoomEnterPermissionMsg = 28; //修改房间进入权限
     PUpdatePopularityMsg pUpdatePopularityMsg                   = 29; //更新人气值
-
+    PClubGameStopMsg pClubGameStopMsg                           = 30; //家族派对房游戏停止
+    PClubBecomeHostMsg pClubBecomeHostMsg                       = 31; //家族派对房游戏新增主持人
+    PClubChangeHostMsg pClubChangeHostMsg                       = 32; //家族派对房游戏移交主持人
 }
 
 enum EPartyRoomMsgType {
@@ -68,12 +70,45 @@ enum EPartyRoomMsgType {
     PRT_CHANGE_ROOM_TOPIC            = 27; //修改房间主题
     PRT_CHANGE_ROOM_ENTER_PERMISSION = 28; //修改房间进入权限
     PRT_UPDATE_POPULARITY            = 29; //更新人气值
+    PRT_CLUB_GAME_STOP               = 30; //家族派对房游戏停止
+        PRT_CLUB_BECOME_HOST             = 31; //家族派对房游戏新增主持人
+        PRT_CLUB_CHANGE_HOST             = 32; //家族派对房游戏更改主持人
+
 }
 
 enum EEnterPermissionType {
     EPT_UNKNOWNS = 0; //
     EPT_INVITE   = 1; //
     EPT_ALL      = 2; //
+}
+
+message PClubGameStopMsg
+{
+    sint64 gameStopTimeMs           = 1; //家族房游戏停止时间戳
+    EPClubGameStopReason stopReason = 2; //游戏停止原因
+}
+
+enum EPClubGameStopReason {
+    PCGSR_UNKNOWN = 0; //未知
+    PCGSR_NO_HOST = 1; //不存在主持人,停止游戏
+}
+
+message PClubBecomeHostMsg
+{
+    POnlineInfo user = 1; //新增的主持人信息
+}
+
+message PClubChangeHostMsg
+{
+    POnlineInfo fromUser           = 1; //主持身份移交人
+    POnlineInfo toUser             = 2; //主持身份接收人
+    EClubChangeHostType changeType = 3; //更改方式
+}
+
+enum EClubChangeHostType {
+    ECCHT_UNKNOWN = 0; //未知
+    ECCHT_GIVE    = 1; //主动移交主持人
+    ECCHT_TAKE    = 2; //被动获取主持人
 }
 
 message PUpdatePopularityMsg
