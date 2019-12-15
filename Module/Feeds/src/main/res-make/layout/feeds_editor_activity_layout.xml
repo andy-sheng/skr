@@ -153,7 +153,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cd_container"
         SkrProgressView:layout_constraintBottom_toTopOf="@+id/reset_iv"
         app:ly_enable_scroll="false"
-        app:ly_enable_verbatim="false"
+        app:ly_enable_verbatim="true"
         app:ly_high_light_paint_color_from="@color/black_trans_30"
         app:ly_high_light_paint_color_to="@color/black_trans_30"
         app:ly_high_light_paint_text_size="20.0"
