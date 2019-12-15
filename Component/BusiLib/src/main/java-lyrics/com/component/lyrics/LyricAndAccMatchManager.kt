@@ -350,6 +350,7 @@ class LyricAndAccMatchManager {
         var accEndTs: Int = 0
         var authorName: String? = null
         var accLoadOk: Boolean = false
+        // 是否需要打分
         var needScore: Boolean = true
         //是否需要等待伴奏的回调
         var needWaitAAC: Boolean = true

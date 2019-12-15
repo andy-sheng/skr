@@ -78,7 +78,9 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
         configParams.accBeginTs = curSong.beginMs
         configParams.accEndTs = curSong.beginMs + totalTs
         configParams.authorName = curSong.uploaderName
+        configParams.needScore = false
         configParams.needWaitAAC = isSelf
+
         mLyricAndAccMatchManager!!.setArgs(configParams)
         val finalCurSong = curSong
         mLyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener {

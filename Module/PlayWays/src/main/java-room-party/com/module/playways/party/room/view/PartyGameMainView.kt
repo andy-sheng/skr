@@ -181,7 +181,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
 
     //轮次切换的时候调用
     fun updateRound(thisRound: PartyRoundInfoModel?) {
-        if (thisRound == null || thisRound?.sceneInfo == null) {
+        if (thisRound?.sceneInfo == null) {
             return
         }
 
