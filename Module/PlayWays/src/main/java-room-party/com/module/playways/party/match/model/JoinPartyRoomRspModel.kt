@@ -46,5 +46,7 @@ class JoinPartyRoomRspModel : Serializable {
     @JSONField(name = "elapsedTimeMs")
     var elapsedTimeMs: Int? = 0
 
-
+    //[ RT_UNKNOWN, RT_PERSONAL, RT_FAMILY ]
+    @JSONField(name = "roomType")
+    var roomType: Int? = 0
 }
