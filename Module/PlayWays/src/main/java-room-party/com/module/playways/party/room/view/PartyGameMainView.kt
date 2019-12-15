@@ -180,14 +180,14 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     }
 
     //轮次切换的时候调用
-    fun updateRound(lastRoundInfo: PartyRoundInfoModel?) {
-        if (lastRoundInfo == null || lastRoundInfo?.sceneInfo == null) {
+    fun updateRound(thisRound: PartyRoundInfoModel?) {
+        if (thisRound == null || thisRound?.sceneInfo == null) {
             return
         }
 
         tryInflate()
 
-        this.partyGameInfoModel = lastRoundInfo?.sceneInfo!!
+        this.partyGameInfoModel = thisRound?.sceneInfo!!
         partyGameTabView.bindData()
         toGameTab()
 

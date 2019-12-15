@@ -739,8 +739,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     /**
      * 某个游戏开始了 信息在 realRoundInfo里取
      */
-    override fun gameBegin(lastRoundInfo: PartyRoundInfoModel?) {
-        mPartyGameMainView?.updateRound(lastRoundInfo)
+    override fun gameBegin(thisRound: PartyRoundInfoModel?) {
+        mPartyGameMainView?.updateRound(thisRound)
     }
 
     /**
