@@ -55,7 +55,7 @@ class CreateClubActivity : BaseActivity() {
     private var clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
 
     override fun initView(savedInstanceState: Bundle?): Int {
-        return R.layout.club_create_ss
+        return R.layout.club_create_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
