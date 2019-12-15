@@ -232,7 +232,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_OTHER_HOMEPAGE_CLUB)
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_CLUB)
                             .navigation();
                     return false;
                 }
