@@ -43,6 +43,8 @@ class PartyGameListView : ExConstraintLayout {
 
     val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
 
+    var partyGameFirstLevelDialogView: PartyGameFirstLevelDialogView? = null
+
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -69,6 +71,15 @@ class PartyGameListView : ExConstraintLayout {
 
         partyGameListRecyclerAdapter?.mAddMethod = { model ->
             addGame(model)
+        }
+
+        partyGameListRecyclerAdapter?.mDetailMethod = { model ->
+            if (partyGameFirstLevelDialogView == null) {
+                partyGameFirstLevelDialogView = PartyGameFirstLevelDialogView(context)
+            }
+
+            partyGameFirstLevelDialogView?.showByDialog()
+            partyGameFirstLevelDialogView?.setDes("游戏规则", model.ruleDesc)
         }
 
         smartRefresh.apply {

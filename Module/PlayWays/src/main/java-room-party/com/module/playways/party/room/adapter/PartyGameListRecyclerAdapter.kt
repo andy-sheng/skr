@@ -14,6 +14,7 @@ import com.zq.live.proto.PartyRoom.EPGameType
 class PartyGameListRecyclerAdapter : RecyclerView.Adapter<PartyGameListRecyclerAdapter.PartyGameListHolder>() {
     val mPartyRuleList = ArrayList<PartyRule>()
     var mMoreMethod: ((PartyRule) -> Unit)? = null
+    var mDetailMethod: ((PartyRule) -> Unit)? = null
     var mAddMethod: ((PartyRule) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartyGameListHolder {
@@ -62,6 +63,10 @@ class PartyGameListRecyclerAdapter : RecyclerView.Adapter<PartyGameListRecyclerA
                 if (model?.ruleType == EPGameType.PGT_Play.ordinal) {
                     mMoreMethod?.invoke(model!!)
                 }
+            }
+
+            detailIv.setDebounceViewClickListener {
+                mDetailMethod?.invoke(model!!)
             }
         }
 

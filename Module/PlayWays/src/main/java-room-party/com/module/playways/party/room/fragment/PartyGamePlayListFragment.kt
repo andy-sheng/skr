@@ -18,6 +18,7 @@ import com.module.playways.party.room.adapter.PartyGamePlayListRecyclerAdapter
 import com.module.playways.party.room.event.PartyAddGameEvent
 import com.module.playways.party.room.model.PartyPlayRule
 import com.module.playways.party.room.model.PartyRule
+import com.module.playways.party.room.view.PartyGameFirstLevelDialogView
 import com.module.playways.room.data.H
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -43,6 +44,8 @@ class PartyGamePlayListFragment : BaseFragment() {
     val cnt = 30
     var hasMore = true
 
+    var partyGameFirstLevelDialogView: PartyGameFirstLevelDialogView? = null
+
     override fun initView(): Int {
         return R.layout.party_game_play_list_fragment_layout
     }
@@ -57,6 +60,17 @@ class PartyGamePlayListFragment : BaseFragment() {
 
         partyGamePlayListRecyclerAdapter?.mAddMethod = {
             addPlay(it)
+        }
+
+        partyGamePlayListRecyclerAdapter?.mMoreMethod = { model ->
+            activity?.let {
+                if (partyGameFirstLevelDialogView == null) {
+                    partyGameFirstLevelDialogView = PartyGameFirstLevelDialogView(it)
+                }
+
+                partyGameFirstLevelDialogView?.showByDialog()
+                partyGameFirstLevelDialogView?.setDes("剧本内容", model.playContent)
+            }
         }
 
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
