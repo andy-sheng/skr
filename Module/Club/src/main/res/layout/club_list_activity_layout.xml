@@ -17,6 +17,10 @@
         app:centerType="textView"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
+        app:rightType="textView"
+        app:rightText="+创建"
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_16_dp"
         app:showBottomLine="false"
         app:statusBarColor="@color/colorPrimary"
         app:titleBarColor="@color/colorPrimary" />

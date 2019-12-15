@@ -15,6 +15,11 @@ interface PartyRoomServerApi {
     @GET("http://dev.game.inframe.mobi/v1/partyroom/roomlist")
     fun getPartyRoomList(@Query("offset") offset: Int, @Query("limit") limit: Int): Call<ApiResult>
 
+    /**
+     * 首页列出推荐家族
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/list-recommend-club")
+    fun getRecommendClubList(@Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 
     /**
      * 进入房间 {"joinSrc": "JRS_UNKNOWN","platform": "PF_UNKNOWN","roomID": 0}

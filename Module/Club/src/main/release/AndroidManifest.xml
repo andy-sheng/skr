@@ -10,6 +10,12 @@
             android:value="ConfigModule" />
 
         <activity
+            android:name=".manage.list.ClubListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
             android:name=".manage.create.CreateClubActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

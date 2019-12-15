@@ -2,14 +2,18 @@ package com.module.club.manage.list
 
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
+import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
 import com.common.core.view.setDebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
+import com.module.RouterConstants
 import com.module.club.R
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 
+@Route(path = RouterConstants.ACTIVITY_LIST_CLUB)
 class ClubListActivity : BaseActivity() {
 
     lateinit var titlebar: CommonTitleBar
@@ -28,6 +32,11 @@ class ClubListActivity : BaseActivity() {
 
         titlebar.leftTextView.setDebounceViewClickListener {
             finish()
+        }
+
+        titlebar.rightTextView.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_CLUB)
+                    .navigation()
         }
 
         refreshLayout.apply {
