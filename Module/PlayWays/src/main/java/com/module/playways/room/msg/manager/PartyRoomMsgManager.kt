@@ -1,8 +1,6 @@
 package com.module.playways.room.msg.manager
 
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
-import com.common.notification.event.PartyRoomInviteEvent
 import com.zq.live.proto.PartyRoom.EPartyRoomMsgType
 import com.zq.live.proto.PartyRoom.PartyRoomMsg
 import org.greenrobot.eventbus.EventBus
@@ -62,6 +60,9 @@ object PartyRoomMsgManager : BaseMsgManager<EPartyRoomMsgType, PartyRoomMsg>() {
             msg.msgType == EPartyRoomMsgType.PRT_CHANGE_ROOM_TOPIC -> EventBus.getDefault().post(msg.pChangeRoomTopicMsg)
             msg.msgType == EPartyRoomMsgType.PRT_CHANGE_ROOM_ENTER_PERMISSION -> EventBus.getDefault().post(msg.pChangeRoomEnterPermissionMsg)
             msg.msgType == EPartyRoomMsgType.PRT_UPDATE_POPULARITY -> EventBus.getDefault().post(msg.pUpdatePopularityMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_CLUB_GAME_STOP -> EventBus.getDefault().post(msg.pClubGameStopMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_CLUB_BECOME_HOST -> EventBus.getDefault().post(msg.pClubBecomeHostMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_CLUB_CHANGE_HOST -> EventBus.getDefault().post(msg.pClubChangeHostMsg)
         }
     }
 }

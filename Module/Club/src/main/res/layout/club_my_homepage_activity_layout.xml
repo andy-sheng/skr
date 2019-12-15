@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#7088FF">
@@ -78,11 +79,10 @@
                 android:orientation="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
+                <com.module.club.homepage.room.ClubPartyRoomView
+                    android:id="@+id/club_room_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:overScrollMode="never" />
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 
@@ -171,7 +171,9 @@
                                 android:layout_width="@dimen/view_88_dp"
                                 android:layout_height="@dimen/view_36_dp"
                                 android:layout_marginTop="@dimen/view_20_dp"
+                                android:drawableLeft="@drawable/club_apply_icon"
                                 android:gravity="center"
+                                android:paddingLeft="@dimen/view_12_dp"
                                 android:text="申请"
                                 android:textColor="@color/white_trans_80"
                                 android:textSize="@dimen/textsize_14_dp"
@@ -188,7 +190,9 @@
                                 android:layout_width="@dimen/view_88_dp"
                                 android:layout_height="@dimen/view_36_dp"
                                 android:layout_marginTop="@dimen/view_20_dp"
+                                android:drawableLeft="@drawable/club_member_icon"
                                 android:gravity="center"
+                                android:paddingLeft="@dimen/view_12_dp"
                                 android:text="成员"
                                 android:textColor="@color/white_trans_80"
                                 android:textSize="@dimen/textsize_14_dp"
@@ -205,7 +209,9 @@
                                 android:layout_width="@dimen/view_88_dp"
                                 android:layout_height="@dimen/view_36_dp"
                                 android:layout_marginTop="@dimen/view_20_dp"
+                                android:drawableLeft="@drawable/club_contribution_icon"
                                 android:gravity="center"
+                                android:paddingLeft="@dimen/view_12_dp"
                                 android:text="贡献"
                                 android:textColor="@color/white_trans_80"
                                 android:textSize="@dimen/textsize_14_dp"
@@ -230,8 +236,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/view_1_dp"
                                 android:layout_marginLeft="@dimen/view_20_dp"
-                                android:layout_marginRight="@dimen/view_20_dp"
                                 android:layout_marginTop="@dimen/view_20_dp"
+                                android:layout_marginRight="@dimen/view_20_dp"
                                 android:background="@color/white_trans_30"
                                 app:layout_constrainedWidth="true"
                                 app:layout_constraintLeft_toRightOf="parent"

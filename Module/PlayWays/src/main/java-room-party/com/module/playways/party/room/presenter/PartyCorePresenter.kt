@@ -10,9 +10,12 @@ import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
+import com.common.utils.U
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
@@ -255,6 +258,57 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
     }
 
+    fun becomeClubHost() {
+        val map = HashMap<String, Any?>()
+        map["roomID"] = mRoomData.gameId
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe(RequestControl("becomeClubHost", ControlType.CancelThis)) {
+                mRoomServerApi.becomeClubHost(body)
+            }
+            if (result.errno == 0) {
+
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
+    }
+
+    fun insteadClubHost() {
+        val map = HashMap<String, Any?>()
+        map["roomID"] = mRoomData.gameId
+        map["curHostUserID"] = mRoomData.hostId
+
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe(RequestControl("insteadClubHost", ControlType.CancelThis)) {
+                mRoomServerApi.takeClubHost(body)
+            }
+            if (result.errno == 0) {
+
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
+    }
+
+    fun giveUpClubHost() {
+        val map = HashMap<String, Any?>()
+        map["roomID"] = mRoomData.gameId
+        map["getHostUserID"] = 0
+
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe(RequestControl("giveUpClubHost", ControlType.CancelThis)) {
+                mRoomServerApi.giveClubHost(body)
+            }
+            if (result.errno == 0) {
+
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
+    }
 
     override fun destroy() {
         MyLog.d(TAG, "destroy begin")

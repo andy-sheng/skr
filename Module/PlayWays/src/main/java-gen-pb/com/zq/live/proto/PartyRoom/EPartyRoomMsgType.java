@@ -111,7 +111,22 @@ public enum EPartyRoomMsgType implements WireEnum {
   /**
    * 更新人气值
    */
-  PRT_UPDATE_POPULARITY(29);
+  PRT_UPDATE_POPULARITY(29),
+
+  /**
+   * 家族派对房游戏停止
+   */
+  PRT_CLUB_GAME_STOP(30),
+
+  /**
+   * 家族派对房游戏新增主持人
+   */
+  PRT_CLUB_BECOME_HOST(31),
+
+  /**
+   * 家族派对房游戏更改主持人
+   */
+  PRT_CLUB_CHANGE_HOST(32);
 
   public static final ProtoAdapter<EPartyRoomMsgType> ADAPTER = new ProtoAdapter_EPartyRoomMsgType();
 
@@ -147,6 +162,9 @@ public enum EPartyRoomMsgType implements WireEnum {
       case 27: return PRT_CHANGE_ROOM_TOPIC;
       case 28: return PRT_CHANGE_ROOM_ENTER_PERMISSION;
       case 29: return PRT_UPDATE_POPULARITY;
+      case 30: return PRT_CLUB_GAME_STOP;
+      case 31: return PRT_CLUB_BECOME_HOST;
+      case 32: return PRT_CLUB_CHANGE_HOST;
       default: return null;
     }
   }

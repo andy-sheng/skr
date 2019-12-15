@@ -35,6 +35,87 @@ class ClubMemberInfo : Serializable {
         }
     }
 
+    fun isFounder(): Boolean {
+        if (roleType == EClubMemberRoleType.ECMRT_Founder.value) {
+            return true
+        }
+
+        return false
+    }
+
+    fun isCoFounder(): Boolean {
+        if (roleType == EClubMemberRoleType.ECMRT_CoFounder.value) {
+            return true
+        }
+
+        return false
+    }
+
+    fun isHostMan(): Boolean {
+        if (roleType == EClubMemberRoleType.ECMRT_Hostman.value) {
+            return true
+        }
+
+        return false
+    }
+
+    fun isHighLevelThen(clubMemberInfo: ClubMemberInfo): Boolean {
+        if (getLevelNum() > clubMemberInfo.getLevelNum()) {
+            return true
+        }
+
+        return false
+    }
+
+    fun isLowLevelThen(clubMemberInfo: ClubMemberInfo): Boolean {
+        if (getLevelNum() < clubMemberInfo.getLevelNum()) {
+            return true
+        }
+
+        return false
+    }
+
+    fun isSameLevelThen(clubMemberInfo: ClubMemberInfo): Boolean {
+        if (getLevelNum() == clubMemberInfo.getLevelNum()) {
+            return true
+        }
+
+        return false
+    }
+
+    /**
+     * 能否操作主持人的位置
+     */
+    fun canOpHost(): Boolean {
+        return when (roleType) {
+            EClubMemberRoleType.ECMRT_Founder.value -> true
+            EClubMemberRoleType.ECMRT_CoFounder.value -> true
+            EClubMemberRoleType.ECMRT_Hostman.value -> false
+            else -> false
+        }
+    }
+
+    /**
+     * 能变成主持人
+     */
+    fun canBeHost(): Boolean {
+        return when (roleType) {
+            EClubMemberRoleType.ECMRT_Founder.value -> true
+            EClubMemberRoleType.ECMRT_CoFounder.value -> true
+            EClubMemberRoleType.ECMRT_Hostman.value -> true
+            else -> false
+        }
+    }
+
+    private fun getLevelNum(): Int {
+        return when (roleType) {
+            EClubMemberRoleType.ECMRT_Founder.value -> 3
+            EClubMemberRoleType.ECMRT_CoFounder.value -> 2
+            EClubMemberRoleType.ECMRT_Hostman.value -> 1
+            else -> 0
+        }
+    }
+
     override fun toString(): String {
         return "ClubMemberInfo(club=$club, roleType=$roleType, roleDesc='$roleDesc')"
     }

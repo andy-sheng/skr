@@ -1,6 +1,5 @@
 package com.module.playways.party.room.adapter
 
-import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -11,24 +10,12 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
 import com.common.utils.U
 import com.common.view.ex.ExTextView
-import com.common.view.ex.drawable.DrawableCreator
 import com.module.playways.R
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 
 class ChangeHostRecyclerAdapter : RecyclerView.Adapter<ChangeHostRecyclerAdapter.ChangeHostHolder>() {
     val mRaceGamePlayInfoList = ArrayList<PartyPlayerInfoModel>()
     var mOpMethod: ((Int, PartyPlayerInfoModel) -> Unit)? = null
-
-    val mUnSelectedDrawable = DrawableCreator.Builder()
-            .setGradientColor(Color.parseColor("#FFD99B"), Color.parseColor("#E9A83B"))
-            .setCornersRadius(U.getDisplayUtils().dip2px(21f).toFloat())
-            .build()
-
-    val mSelectedDrawable = DrawableCreator.Builder()
-            .setStrokeColor(Color.parseColor("#956231"))
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1f).toFloat())
-            .setCornersRadius(U.getDisplayUtils().dip2px(21f).toFloat())
-            .build()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChangeHostHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.change_host_adapter_item_layout, parent, false)
@@ -41,15 +28,6 @@ class ChangeHostRecyclerAdapter : RecyclerView.Adapter<ChangeHostRecyclerAdapter
 
     override fun onBindViewHolder(holder: ChangeHostHolder, position: Int) {
         holder.bindData(position, mRaceGamePlayInfoList.get(position))
-    }
-
-    override fun onBindViewHolder(holder: ChangeHostHolder, position: Int, payloads: MutableList<Any>) {
-        if (payloads.isEmpty()) {
-            holder.bindData(position, mRaceGamePlayInfoList.get(position))
-        } else {
-            // 局部刷新
-            holder.updateText(position, mRaceGamePlayInfoList.get(position))
-        }
     }
 
     fun addData(list: List<PartyPlayerInfoModel>) {
@@ -90,20 +68,6 @@ class ChangeHostRecyclerAdapter : RecyclerView.Adapter<ChangeHostRecyclerAdapter
                     .build())
 
             nameTv.text = UserInfoManager.getInstance().getRemarkName(model.userID, model.userInfo.nickname)
-            updateText(position, model)
-        }
-
-        //会变化的内容
-        fun updateText(position: Int, model: PartyPlayerInfoModel) {
-            pos = position
-            this.model = model
-            if (model.isAdmin()) {
-                opTv.background = mSelectedDrawable
-                opTv.text = "已设管理员"
-            } else {
-                opTv.background = mUnSelectedDrawable
-                opTv.text = "设为管理员"
-            }
         }
     }
 }

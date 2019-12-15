@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.model.ClubInfo
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
@@ -17,6 +19,7 @@ import com.module.RouterConstants
 import com.module.playways.IPartyRoomView
 import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
+import com.module.playways.grab.room.view.control.RoundOverCardView
 import com.module.playways.party.room.PartyRoomServerApi
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -30,7 +33,7 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
     private val recyclerView: RecyclerView
 
     private val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
-    private val adapter = PartyRoomAdapter()
+    private val adapter: PartyRoomAdapter
     private var offset = 0
     private val cnt = 15
 
@@ -44,15 +47,36 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
         refreshLayout = this.findViewById(R.id.refreshLayout)
         recyclerView = this.findViewById(R.id.recycler_view)
 
+        adapter = PartyRoomAdapter(object : PartyRoomAdapter.Listener {
+            override fun onClickRoom(position: Int, model: PartyRoomInfoModel?) {
+                model?.roomID?.let {
+                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                    iRankingModeService.tryGoPartyRoom(it, 1)
+                }
+            }
+
+            override fun onClickClub(position: Int, clubInfo: ClubInfo?) {
+                clubInfo?.let {
+                    if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.clubID == it.clubID) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_HOMEPAGE_CLUB)
+                                .withInt("clubID", it.clubID)
+                                .navigation()
+                    } else {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_OTHER_HOMEPAGE_CLUB)
+                                .withInt("clubID", it.clubID)
+                                .navigation()
+                    }
+                }
+            }
+
+            override fun onClickClubMore() {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_CLUB)
+                        .navigation()
+            }
+
+        })
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
-
-        adapter.listener = { position, model ->
-            model?.roomID?.let {
-                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                iRankingModeService.tryGoPartyRoom(it, 1)
-            }
-        }
 
         refreshLayout.apply {
             setEnableLoadMore(true)
@@ -63,7 +87,7 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
             setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
                     stopTimer()
-                    loadData(offset, false)
+                    loadRoomListData(offset, false)
                 }
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
@@ -85,9 +109,26 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
         })
     }
 
-    fun loadData(off: Int, isClean: Boolean) {
+    private fun loadClubListData() {
         launch {
-            val result = subscribe(RequestControl("getPartyRoomList", ControlType.CancelThis)) {
+            val result = subscribe(RequestControl("loadClubListData", ControlType.CancelThis)) {
+                roomServerApi.getRecommendClubList(0, cnt)
+            }
+            if (result.errno == 0) {
+                val list = JSON.parseArray(result.data.getString("items"), ClubInfo::class.java)
+                adapter.mClubList?.clear()
+                if (!list.isNullOrEmpty()) {
+                    adapter.mClubList.addAll(list)
+                }
+                adapter.notifyItemChanged(0)
+            }
+            finishLoadMoreOrRefresh()
+        }
+    }
+
+    fun loadRoomListData(off: Int, isClean: Boolean) {
+        launch {
+            val result = subscribe(RequestControl("loadRoomListData", ControlType.CancelThis)) {
                 roomServerApi.getPartyRoomList(off, cnt)
             }
             if (result.errno == 0) {
@@ -138,7 +179,8 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
         roomJob = launch {
             delay(delayTime)
             repeat(Int.MAX_VALUE) {
-                loadData(0, true)
+                loadRoomListData(0, true)
+                loadClubListData()
                 delay(recommendInterval)
             }
         }

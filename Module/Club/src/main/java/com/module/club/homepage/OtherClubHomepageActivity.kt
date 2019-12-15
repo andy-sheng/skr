@@ -10,20 +10,33 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.core.avatar.AvatarUtils
+import com.common.core.userinfo.model.ClubInfo
 import com.common.core.view.setDebounceViewClickListener
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.person.view.PersonTagView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
+import com.module.club.ClubServerApi
 import com.module.club.R
+import com.module.club.homepage.room.ClubPartyRoomView
 import com.module.club.homepage.view.ClubMemberView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import kotlin.math.abs
 
 @Route(path = RouterConstants.ACTIVITY_OTHER_HOMEPAGE_CLUB)
@@ -31,9 +44,10 @@ class OtherClubHomepageActivity : BaseActivity() {
     private var imageBg: SimpleDraweeView? = null
     private var smartRefresh: SmartRefreshLayout? = null
     private var container: LinearLayout? = null
-    private var recyclerView: RecyclerView? = null //换成一个view来做
-    private var appbar: AppBarLayout? = null
 
+    private var clubRoomView: ClubPartyRoomView? = null
+
+    private var appbar: AppBarLayout? = null
     private var clubAvatarSdv: SimpleDraweeView? = null
     private var clubNameTv: TextView? = null
     private var clubRelationTv: TextView? = null
@@ -48,21 +62,29 @@ class OtherClubHomepageActivity : BaseActivity() {
     private var srlNameTv: TextView? = null
 
     private var ivBack: ExImageView? = null
-    private var moreBtn: ExImageView? = null
     private var applyEnterTv: ExTextView? = null
 
     private var lastVerticalOffset = Int.MAX_VALUE
     private var scrollDivider = U.getDisplayUtils().dip2px(150f)  // 滑到分界线的时候
+
+    private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
+    private var clubID: Int = 0
+    private var clubInfo: ClubInfo? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.club_other_homepage_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        clubID = intent.getIntExtra("clubID", 0)
+        if (clubID == 0) {
+            finish()
+        }
+
         imageBg = findViewById(R.id.image_bg)
         smartRefresh = findViewById(R.id.smart_refresh)
         container = findViewById(R.id.container)
-        recyclerView = findViewById(R.id.recycler_view)
+        clubRoomView = findViewById(R.id.club_room_view)
         appbar = findViewById(R.id.appbar)
         clubAvatarSdv = findViewById(R.id.club_avatar_sdv)
         clubNameTv = findViewById(R.id.club_name_tv)
@@ -75,17 +97,39 @@ class OtherClubHomepageActivity : BaseActivity() {
         toolbarLayout = findViewById(R.id.toolbar_layout)
         srlNameTv = findViewById(R.id.srl_name_tv)
         ivBack = findViewById(R.id.iv_back)
-        moreBtn = findViewById(R.id.more_btn)
         applyEnterTv = findViewById(R.id.apply_enter_tv)
 
         adjustNotchPhone()
+        initTopArea()
+        initMemberArea()
+        initRoomArea()
+        initToolBarScroll()
+        initApplyEnter()
 
-        ivBack?.setDebounceViewClickListener { finish() }
+        getHomePage()
+        clubRoomView?.initData()
+        memberView?.initData()
 
-        moreBtn?.setDebounceViewClickListener {
-            //todo 待补全
+    }
+
+    private fun adjustNotchPhone() {
+        if (U.getDeviceUtils().hasNotch(this@OtherClubHomepageActivity)) {
+            val layoutParams = clubAvatarSdv?.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.topMargin = layoutParams.topMargin + U.getStatusBarUtil().getStatusBarHeight(this@OtherClubHomepageActivity)
+            clubAvatarSdv?.layoutParams = layoutParams
         }
+    }
 
+    private fun initTopArea() {
+        ivBack?.setDebounceViewClickListener { finish() }
+    }
+
+    private fun initMemberArea() {
+        memberView?.clubID = clubID
+    }
+
+    private fun initRoomArea() {
+        clubRoomView?.clubID = clubID
         smartRefresh?.apply {
             setEnableRefresh(true)
             setEnableLoadMore(true)
@@ -97,11 +141,17 @@ class OtherClubHomepageActivity : BaseActivity() {
                 internal var lastScale = 0f
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
-
+                    smartRefresh?.setEnableLoadMore(true)
+                    getHomePage()
+                    clubRoomView?.initData()
+                    memberView?.initData()
                 }
 
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
-
+                    clubRoomView?.loadMoreData {
+                        finishRereshAndLoadMore()
+                        smartRefresh?.setEnableLoadMore(it)
+                    }
                 }
 
                 override fun onHeaderMoving(header: RefreshHeader?, isDragging: Boolean, percent: Float, offset: Int, headerHeight: Int, maxDragHeight: Int) {
@@ -116,7 +166,9 @@ class OtherClubHomepageActivity : BaseActivity() {
             })
 
         }
+    }
 
+    private fun initToolBarScroll() {
         appbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             // TODO: 2019-06-23 也可以加效果，看产品怎么说
             imageBg?.translationY = verticalOffset.toFloat()
@@ -151,12 +203,60 @@ class OtherClubHomepageActivity : BaseActivity() {
         }
     }
 
-    private fun adjustNotchPhone() {
-        if (U.getDeviceUtils().hasNotch(this@OtherClubHomepageActivity)) {
-            val layoutParams = clubAvatarSdv?.layoutParams as ConstraintLayout.LayoutParams
-            layoutParams.topMargin = layoutParams.topMargin + U.getStatusBarUtil().getStatusBarHeight(this@OtherClubHomepageActivity)
-            clubAvatarSdv?.layoutParams = layoutParams
+    private fun initApplyEnter() {
+        applyEnterTv?.setDebounceViewClickListener {
+            launch {
+                val map = mapOf(
+                        "clubID" to clubID,
+                        "text" to ""
+                )
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val result = subscribe(RequestControl("applyJoinClub", ControlType.CancelThis)) {
+                    clubServerApi.applyJoinClub(body)
+                }
+                if (result.errno == 0) {
+                    U.getToastUtil().showShort("申请成功")
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                }
+            }
         }
+    }
+
+
+    private fun getHomePage() {
+        launch {
+            val result = subscribe(RequestControl("getHomePage", ControlType.CancelThis)) {
+                clubServerApi.getClubHomePageDetail(clubID)
+            }
+            if (result.errno == 0) {
+                clubInfo = JSON.parseObject(result.data.getString("info"), ClubInfo::class.java)
+                refreshClubUI()
+            }
+            finishRereshAndLoadMore()
+        }
+    }
+
+    private fun refreshClubUI() {
+        AvatarUtils.loadAvatarByUrl(imageBg, AvatarUtils.newParamsBuilder(clubInfo?.logo)
+                .setCircle(false)
+                .setBlur(true)
+                .build())
+        AvatarUtils.loadAvatarByUrl(clubAvatarSdv, AvatarUtils.newParamsBuilder(clubInfo?.logo)
+                .setCircle(false)
+                .setCornerRadius(8.dp().toFloat())
+                .build())
+        clubNameTv?.text = clubInfo?.name
+        // todo 缺一个联系方式
+        clubTagView = findViewById(R.id.club_tag_view)
+
+        clubIntroduceContent?.text = clubInfo?.desc
+        srlNameTv?.text = clubInfo?.name
+    }
+
+    private fun finishRereshAndLoadMore() {
+        smartRefresh?.finishLoadMore()
+        smartRefresh?.finishRefresh()
     }
 
     override fun useEventBus(): Boolean {

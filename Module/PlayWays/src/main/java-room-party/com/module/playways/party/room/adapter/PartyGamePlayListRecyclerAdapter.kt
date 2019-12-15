@@ -13,6 +13,7 @@ import com.module.playways.party.room.model.PartyPlayRule
 class PartyGamePlayListRecyclerAdapter : RecyclerView.Adapter<PartyGamePlayListRecyclerAdapter.PartyGamePlayListHolder>() {
     val mPartyPlayRuleList = ArrayList<PartyPlayRule>()
     var mAddMethod: ((PartyPlayRule) -> Unit)? = null
+    var mMoreMethod: ((PartyPlayRule) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartyGamePlayListHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.party_game_list_item_layout, parent, false)
@@ -54,6 +55,10 @@ class PartyGamePlayListRecyclerAdapter : RecyclerView.Adapter<PartyGamePlayListR
 
             addTv.setDebounceViewClickListener {
                 mAddMethod?.invoke(model!!)
+            }
+
+            detailIv.setDebounceViewClickListener {
+                mMoreMethod?.invoke(model!!)
             }
 
             moreTv.visibility = View.GONE

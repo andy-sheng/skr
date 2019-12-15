@@ -15,6 +15,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
+import com.module.playways.party.room.adapter.AdministratorSelectRecyclerAdapter
 import com.module.playways.party.room.adapter.ChangeHostRecyclerAdapter
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.room.data.H
@@ -31,7 +32,7 @@ class AdministratorSelectFragment : BaseFragment() {
     lateinit var bgIv: ExImageView
     lateinit var recyclerView: RecyclerView
     lateinit var smartRefresh: SmartRefreshLayout
-    var changeHostRecyclerAdapter: ChangeHostRecyclerAdapter? = null
+    var changeHostRecyclerAdapter: AdministratorSelectRecyclerAdapter? = null
 
     var offset = 0
     val cnt = 30
@@ -52,7 +53,7 @@ class AdministratorSelectFragment : BaseFragment() {
 
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
 
-        changeHostRecyclerAdapter = ChangeHostRecyclerAdapter()
+        changeHostRecyclerAdapter = AdministratorSelectRecyclerAdapter()
         recyclerView.adapter = changeHostRecyclerAdapter
 
         changeHostRecyclerAdapter?.mOpMethod = { pos, model ->

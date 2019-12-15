@@ -14,7 +14,7 @@ import com.component.busilib.model.PartyRoomInfoModel
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 
-class PartyRoomViewHolder(item: View, var listener: ((position: Int, model: PartyRoomInfoModel?) -> Unit)?) : RecyclerView.ViewHolder(item) {
+class PartyRoomViewHolder(item: View, var listener: PartyRoomAdapter.Listener) : RecyclerView.ViewHolder(item) {
 
     private val avatarSdv: SimpleDraweeView = item.findViewById(R.id.avatar_sdv)
     private val roomNameTv: TextView = item.findViewById(R.id.room_name_tv)
@@ -28,7 +28,7 @@ class PartyRoomViewHolder(item: View, var listener: ((position: Int, model: Part
     var mModel: PartyRoomInfoModel? = null
 
     init {
-        item.setAnimateDebounceViewClickListener { listener?.invoke(mPos, mModel) }
+        item.setAnimateDebounceViewClickListener { listener.onClickRoom(mPos, mModel) }
     }
 
     fun bindData(position: Int, model: PartyRoomInfoModel) {
@@ -66,3 +66,5 @@ class PartyRoomViewHolder(item: View, var listener: ((position: Int, model: Part
     }
 
 }
+
+class PartyEmptyRoomViewHolder(item: View) : RecyclerView.ViewHolder(item)

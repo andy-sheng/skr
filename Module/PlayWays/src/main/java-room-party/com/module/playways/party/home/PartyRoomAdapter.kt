@@ -4,15 +4,21 @@ import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.common.core.userinfo.model.ClubInfo
 import com.common.utils.dp
 import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.model.PartyRoomInfoModel
 import com.module.playways.R
 
-class PartyRoomAdapter : RecyclerView.Adapter<PartyRoomViewHolder>() {
+class PartyRoomAdapter(var listener: Listener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var mDataList = ArrayList<PartyRoomInfoModel>()
-    var listener: ((position: Int, model: PartyRoomInfoModel?) -> Unit)? = null
+
+    var mClubList = ArrayList<ClubInfo>()  // 家族
+    var mDataList = ArrayList<PartyRoomInfoModel>()  // 房间
+
+    private val ITEM_TYPE_CLUB = 1
+    private val ITEM_TYPE_ROOM = 2
+    private val ITEM_TYPE_EMPTY_ROOM = 3
 
     companion object {
         val blueDrawable = DrawableCreator.Builder()
@@ -35,16 +41,45 @@ class PartyRoomAdapter : RecyclerView.Adapter<PartyRoomViewHolder>() {
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartyRoomViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.party_room_view_item_layout, parent, false)
-        return PartyRoomViewHolder(view, listener)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == ITEM_TYPE_ROOM) {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.party_room_view_item_layout, parent, false)
+            PartyRoomViewHolder(view, listener)
+        } else if (viewType == ITEM_TYPE_EMPTY_ROOM) {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.party_empty_room_layout, parent, false)
+            PartyEmptyRoomViewHolder(view)
+        } else {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.party_club_view_layout, parent, false)
+            PartyClubViewHolder(view, listener)
+        }
     }
 
     override fun getItemCount(): Int {
-        return mDataList.size
+        if (mDataList.size == 0) {
+            return 2
+        }
+        return mDataList.size + 1
     }
 
-    override fun onBindViewHolder(holder: PartyRoomViewHolder, position: Int) {
-        holder.bindData(position, mDataList[position])
+    override fun getItemViewType(position: Int): Int {
+        return when {
+            position == 0 -> ITEM_TYPE_CLUB
+            mDataList.size == 0 -> ITEM_TYPE_EMPTY_ROOM
+            else -> ITEM_TYPE_ROOM
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is PartyRoomViewHolder) {
+            holder.bindData(position, mDataList[position - 1])
+        } else if (holder is PartyClubViewHolder) {
+            holder.bindData(mClubList)
+        }
+    }
+
+    interface Listener {
+        fun onClickRoom(position: Int, model: PartyRoomInfoModel?)
+        fun onClickClub(position: Int, clubInfo: ClubInfo?)
+        fun onClickClubMore()
     }
 }

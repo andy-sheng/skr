@@ -128,7 +128,6 @@ class PartyRoomCreateActivity : BaseActivity() {
 
         if ("change".equals(from)) {
             nameEdittext.setText(H.partyRoomData?.topicName)
-            nameEdittext.setSelection(H.partyRoomData?.topicName?.length ?: 0)
 
             trySelect(H.partyRoomData?.enterPermission ?: 2)
         }

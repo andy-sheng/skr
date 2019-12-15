@@ -79,11 +79,10 @@
                 android:orientation="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
+                <com.module.club.homepage.room.ClubPartyRoomView
+                    android:id="@+id/club_room_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:overScrollMode="never" />
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 
@@ -292,16 +291,6 @@
         android:layout_marginLeft="@dimen/view_4_dp"
         android:padding="@dimen/view_16_dp"
         android:src="@drawable/img_back" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/more_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/view_4_dp"
-        android:padding="@dimen/view_16_dp"
-        android:src="@drawable/common_more_icon" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/function_area"

@@ -15,6 +15,11 @@ interface PartyRoomServerApi {
     @GET("http://dev.game.inframe.mobi/v1/partyroom/roomlist")
     fun getPartyRoomList(@Query("offset") offset: Int, @Query("limit") limit: Int): Call<ApiResult>
 
+    /**
+     * 首页列出推荐家族
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/list-recommend-club")
+    fun getRecommendClubList(@Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 
     /**
      * 进入房间 {"joinSrc": "JRS_UNKNOWN","platform": "PF_UNKNOWN","roomID": 0}
@@ -138,6 +143,12 @@ interface PartyRoomServerApi {
     @GET("http://dev.game.inframe.mobi/v1/partygame/online-user-list")
     fun getOnlineUserList(@Query("roomID") roomID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 
+    /**
+     * 拉取房间可邀请的段位
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partygame/club-could-be-host-list")
+    fun getCouldBeHostList(@Query("roomID") roomID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
+
     @GET("http://dev.game.inframe.mobi/v1/partygame/game-rule-list")
     fun getPartyGameRuleList(@Query("roomID") roomID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 
@@ -233,4 +244,29 @@ interface PartyRoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/partygame/end-ktv-music")
     fun endMusic(@Body body: RequestBody): Call<ApiResult>
 
+    /**
+     * {
+    "roomID": 0,
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/club-become-host")
+    fun becomeClubHost(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * {
+    "curHostUserID": 0,
+    "roomID": 0
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/club-take-host")
+    fun takeClubHost(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * {
+    "curHostUserID": 0,
+    "roomID": 0
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/club-give-host")
+    fun giveClubHost(@Body body: RequestBody): Call<ApiResult>
 }

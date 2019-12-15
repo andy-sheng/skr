@@ -1,5 +1,6 @@
 package com.module.playways.party.room.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.TextUtils
 import com.alibaba.fastjson.JSON
@@ -40,8 +41,13 @@ class GonggaoSettingFragment : BaseFragment() {
 
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
 
+        H.partyRoomData?.notice?.let {
+            editText.setText(H.partyRoomData?.notice)
+            editText.setSelection(H.partyRoomData?.notice?.length ?: 0)
+        }
+
         saveTv.setDebounceViewClickListener {
-            setNotice(editText.text.toString())
+            setNotice(editText.text.toString().trim())
         }
     }
 
@@ -74,6 +80,7 @@ class GonggaoSettingFragment : BaseFragment() {
     override fun destroy() {
         super.destroy()
         U.getSoundUtils().release(TAG)
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(context as Activity)
     }
 
     override fun useEventBus(): Boolean {

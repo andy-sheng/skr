@@ -67,6 +67,8 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             }
         }
 
+    var roomType: Int? = 0
+
     var users = ArrayList<PartyPlayerInfoModel>() // 当前的用户信息 包括 主持人管理员 以及 嘉宾
     var usersMap = HashMap<Int, PartyPlayerInfoModel>()  // 根据id找人
 
@@ -161,6 +163,14 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
      */
     fun getSeatInfoBySeq(seatSeq: Int): PartySeatInfoModel? {
         return seatsSeatIdMap[seatSeq]
+    }
+
+    fun isPersonnalHome(): Boolean {
+        return roomType == 1
+    }
+
+    fun isClubHome(): Boolean {
+        return roomType == 2
     }
 
     /**
@@ -401,6 +411,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         updateUsers(rsp.users)
         this.expectRoundInfo = rsp.currentRound
         this.enterPermission = rsp.enterPermission
+        this.roomType = rsp.roomType
         if(getMySeatInfoInParty()?.micStatus == EMicStatus.MS_CLOSE.value){
             isMute = true
         }

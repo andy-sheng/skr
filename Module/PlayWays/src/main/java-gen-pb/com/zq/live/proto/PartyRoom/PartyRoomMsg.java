@@ -241,6 +241,33 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
   )
   private final PUpdatePopularityMsg pUpdatePopularityMsg;
 
+  /**
+   * 家族派对房游戏停止
+   */
+  @WireField(
+      tag = 30,
+      adapter = "com.zq.live.proto.PartyRoom.PClubGameStopMsg#ADAPTER"
+  )
+  private final PClubGameStopMsg pClubGameStopMsg;
+
+  /**
+   * 家族派对房游戏新增主持人
+   */
+  @WireField(
+      tag = 31,
+      adapter = "com.zq.live.proto.PartyRoom.PClubBecomeHostMsg#ADAPTER"
+  )
+  private final PClubBecomeHostMsg pClubBecomeHostMsg;
+
+  /**
+   * 家族派对房游戏移交主持人
+   */
+  @WireField(
+      tag = 32,
+      adapter = "com.zq.live.proto.PartyRoom.PClubChangeHostMsg#ADAPTER"
+  )
+  private final PClubChangeHostMsg pClubChangeHostMsg;
+
   public PartyRoomMsg(Long timeMs, EPartyRoomMsgType msgType, Integer roomID,
       PJoinNoticeMsg pJoinNoticeMsg, PFixRoomNoticeMsg pFixRoomNoticeMsg,
       PSetRoomAdminMsg pSetRoomAdminMsg, PSetAllMemberMicMsg pSetAllMemberMicMsg,
@@ -251,8 +278,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PDynamicEmojiMsg pDynamicEmojiMsg, PGameOverMsg pGameOverMsg,
       PChangeRoomTopicMsg pChangeRoomTopicMsg,
       PChangeRoomEnterPermissionMsg pChangeRoomEnterPermissionMsg,
-      PUpdatePopularityMsg pUpdatePopularityMsg) {
-    this(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, ByteString.EMPTY);
+      PUpdatePopularityMsg pUpdatePopularityMsg, PClubGameStopMsg pClubGameStopMsg,
+      PClubBecomeHostMsg pClubBecomeHostMsg, PClubChangeHostMsg pClubChangeHostMsg) {
+    this(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, ByteString.EMPTY);
   }
 
   public PartyRoomMsg(Long timeMs, EPartyRoomMsgType msgType, Integer roomID,
@@ -265,7 +293,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PDynamicEmojiMsg pDynamicEmojiMsg, PGameOverMsg pGameOverMsg,
       PChangeRoomTopicMsg pChangeRoomTopicMsg,
       PChangeRoomEnterPermissionMsg pChangeRoomEnterPermissionMsg,
-      PUpdatePopularityMsg pUpdatePopularityMsg, ByteString unknownFields) {
+      PUpdatePopularityMsg pUpdatePopularityMsg, PClubGameStopMsg pClubGameStopMsg,
+      PClubBecomeHostMsg pClubBecomeHostMsg, PClubChangeHostMsg pClubChangeHostMsg,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -290,6 +320,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     this.pChangeRoomTopicMsg = pChangeRoomTopicMsg;
     this.pChangeRoomEnterPermissionMsg = pChangeRoomEnterPermissionMsg;
     this.pUpdatePopularityMsg = pUpdatePopularityMsg;
+    this.pClubGameStopMsg = pClubGameStopMsg;
+    this.pClubBecomeHostMsg = pClubBecomeHostMsg;
+    this.pClubChangeHostMsg = pClubChangeHostMsg;
   }
 
   @Override
@@ -318,6 +351,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     builder.pChangeRoomTopicMsg = pChangeRoomTopicMsg;
     builder.pChangeRoomEnterPermissionMsg = pChangeRoomEnterPermissionMsg;
     builder.pUpdatePopularityMsg = pUpdatePopularityMsg;
+    builder.pClubGameStopMsg = pClubGameStopMsg;
+    builder.pClubBecomeHostMsg = pClubBecomeHostMsg;
+    builder.pClubChangeHostMsg = pClubChangeHostMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -350,7 +386,10 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
         && Internal.equals(pGameOverMsg, o.pGameOverMsg)
         && Internal.equals(pChangeRoomTopicMsg, o.pChangeRoomTopicMsg)
         && Internal.equals(pChangeRoomEnterPermissionMsg, o.pChangeRoomEnterPermissionMsg)
-        && Internal.equals(pUpdatePopularityMsg, o.pUpdatePopularityMsg);
+        && Internal.equals(pUpdatePopularityMsg, o.pUpdatePopularityMsg)
+        && Internal.equals(pClubGameStopMsg, o.pClubGameStopMsg)
+        && Internal.equals(pClubBecomeHostMsg, o.pClubBecomeHostMsg)
+        && Internal.equals(pClubChangeHostMsg, o.pClubChangeHostMsg);
   }
 
   @Override
@@ -381,6 +420,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       result = result * 37 + (pChangeRoomTopicMsg != null ? pChangeRoomTopicMsg.hashCode() : 0);
       result = result * 37 + (pChangeRoomEnterPermissionMsg != null ? pChangeRoomEnterPermissionMsg.hashCode() : 0);
       result = result * 37 + (pUpdatePopularityMsg != null ? pUpdatePopularityMsg.hashCode() : 0);
+      result = result * 37 + (pClubGameStopMsg != null ? pClubGameStopMsg.hashCode() : 0);
+      result = result * 37 + (pClubBecomeHostMsg != null ? pClubBecomeHostMsg.hashCode() : 0);
+      result = result * 37 + (pClubChangeHostMsg != null ? pClubChangeHostMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -412,6 +454,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     if (pChangeRoomTopicMsg != null) builder.append(", pChangeRoomTopicMsg=").append(pChangeRoomTopicMsg);
     if (pChangeRoomEnterPermissionMsg != null) builder.append(", pChangeRoomEnterPermissionMsg=").append(pChangeRoomEnterPermissionMsg);
     if (pUpdatePopularityMsg != null) builder.append(", pUpdatePopularityMsg=").append(pUpdatePopularityMsg);
+    if (pClubGameStopMsg != null) builder.append(", pClubGameStopMsg=").append(pClubGameStopMsg);
+    if (pClubBecomeHostMsg != null) builder.append(", pClubBecomeHostMsg=").append(pClubBecomeHostMsg);
+    if (pClubChangeHostMsg != null) builder.append(", pClubChangeHostMsg=").append(pClubChangeHostMsg);
     return builder.replace(0, 2, "PartyRoomMsg{").append('}').toString();
   }
 
@@ -656,6 +701,36 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
   }
 
   /**
+   * 家族派对房游戏停止
+   */
+  public PClubGameStopMsg getPClubGameStopMsg() {
+    if(pClubGameStopMsg==null){
+        return new PClubGameStopMsg.Builder().build();
+    }
+    return pClubGameStopMsg;
+  }
+
+  /**
+   * 家族派对房游戏新增主持人
+   */
+  public PClubBecomeHostMsg getPClubBecomeHostMsg() {
+    if(pClubBecomeHostMsg==null){
+        return new PClubBecomeHostMsg.Builder().build();
+    }
+    return pClubBecomeHostMsg;
+  }
+
+  /**
+   * 家族派对房游戏移交主持人
+   */
+  public PClubChangeHostMsg getPClubChangeHostMsg() {
+    if(pClubChangeHostMsg==null){
+        return new PClubChangeHostMsg.Builder().build();
+    }
+    return pClubChangeHostMsg;
+  }
+
+  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -816,6 +891,27 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     return pUpdatePopularityMsg!=null;
   }
 
+  /**
+   * 家族派对房游戏停止
+   */
+  public boolean hasPClubGameStopMsg() {
+    return pClubGameStopMsg!=null;
+  }
+
+  /**
+   * 家族派对房游戏新增主持人
+   */
+  public boolean hasPClubBecomeHostMsg() {
+    return pClubBecomeHostMsg!=null;
+  }
+
+  /**
+   * 家族派对房游戏移交主持人
+   */
+  public boolean hasPClubChangeHostMsg() {
+    return pClubChangeHostMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<PartyRoomMsg, Builder> {
     private Long timeMs;
 
@@ -862,6 +958,12 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     private PChangeRoomEnterPermissionMsg pChangeRoomEnterPermissionMsg;
 
     private PUpdatePopularityMsg pUpdatePopularityMsg;
+
+    private PClubGameStopMsg pClubGameStopMsg;
+
+    private PClubBecomeHostMsg pClubBecomeHostMsg;
+
+    private PClubChangeHostMsg pClubChangeHostMsg;
 
     public Builder() {
     }
@@ -1051,9 +1153,33 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       return this;
     }
 
+    /**
+     * 家族派对房游戏停止
+     */
+    public Builder setPClubGameStopMsg(PClubGameStopMsg pClubGameStopMsg) {
+      this.pClubGameStopMsg = pClubGameStopMsg;
+      return this;
+    }
+
+    /**
+     * 家族派对房游戏新增主持人
+     */
+    public Builder setPClubBecomeHostMsg(PClubBecomeHostMsg pClubBecomeHostMsg) {
+      this.pClubBecomeHostMsg = pClubBecomeHostMsg;
+      return this;
+    }
+
+    /**
+     * 家族派对房游戏移交主持人
+     */
+    public Builder setPClubChangeHostMsg(PClubChangeHostMsg pClubChangeHostMsg) {
+      this.pClubChangeHostMsg = pClubChangeHostMsg;
+      return this;
+    }
+
     @Override
     public PartyRoomMsg build() {
-      return new PartyRoomMsg(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, super.buildUnknownFields());
+      return new PartyRoomMsg(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, super.buildUnknownFields());
     }
   }
 
@@ -1087,6 +1213,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
           + PChangeRoomTopicMsg.ADAPTER.encodedSizeWithTag(27, value.pChangeRoomTopicMsg)
           + PChangeRoomEnterPermissionMsg.ADAPTER.encodedSizeWithTag(28, value.pChangeRoomEnterPermissionMsg)
           + PUpdatePopularityMsg.ADAPTER.encodedSizeWithTag(29, value.pUpdatePopularityMsg)
+          + PClubGameStopMsg.ADAPTER.encodedSizeWithTag(30, value.pClubGameStopMsg)
+          + PClubBecomeHostMsg.ADAPTER.encodedSizeWithTag(31, value.pClubBecomeHostMsg)
+          + PClubChangeHostMsg.ADAPTER.encodedSizeWithTag(32, value.pClubChangeHostMsg)
           + value.unknownFields().size();
     }
 
@@ -1115,6 +1244,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PChangeRoomTopicMsg.ADAPTER.encodeWithTag(writer, 27, value.pChangeRoomTopicMsg);
       PChangeRoomEnterPermissionMsg.ADAPTER.encodeWithTag(writer, 28, value.pChangeRoomEnterPermissionMsg);
       PUpdatePopularityMsg.ADAPTER.encodeWithTag(writer, 29, value.pUpdatePopularityMsg);
+      PClubGameStopMsg.ADAPTER.encodeWithTag(writer, 30, value.pClubGameStopMsg);
+      PClubBecomeHostMsg.ADAPTER.encodeWithTag(writer, 31, value.pClubBecomeHostMsg);
+      PClubChangeHostMsg.ADAPTER.encodeWithTag(writer, 32, value.pClubChangeHostMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1154,6 +1286,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
           case 27: builder.setPChangeRoomTopicMsg(PChangeRoomTopicMsg.ADAPTER.decode(reader)); break;
           case 28: builder.setPChangeRoomEnterPermissionMsg(PChangeRoomEnterPermissionMsg.ADAPTER.decode(reader)); break;
           case 29: builder.setPUpdatePopularityMsg(PUpdatePopularityMsg.ADAPTER.decode(reader)); break;
+          case 30: builder.setPClubGameStopMsg(PClubGameStopMsg.ADAPTER.decode(reader)); break;
+          case 31: builder.setPClubBecomeHostMsg(PClubBecomeHostMsg.ADAPTER.decode(reader)); break;
+          case 32: builder.setPClubChangeHostMsg(PClubChangeHostMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1188,6 +1323,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       if (builder.pChangeRoomTopicMsg != null) builder.pChangeRoomTopicMsg = PChangeRoomTopicMsg.ADAPTER.redact(builder.pChangeRoomTopicMsg);
       if (builder.pChangeRoomEnterPermissionMsg != null) builder.pChangeRoomEnterPermissionMsg = PChangeRoomEnterPermissionMsg.ADAPTER.redact(builder.pChangeRoomEnterPermissionMsg);
       if (builder.pUpdatePopularityMsg != null) builder.pUpdatePopularityMsg = PUpdatePopularityMsg.ADAPTER.redact(builder.pUpdatePopularityMsg);
+      if (builder.pClubGameStopMsg != null) builder.pClubGameStopMsg = PClubGameStopMsg.ADAPTER.redact(builder.pClubGameStopMsg);
+      if (builder.pClubBecomeHostMsg != null) builder.pClubBecomeHostMsg = PClubBecomeHostMsg.ADAPTER.redact(builder.pClubBecomeHostMsg);
+      if (builder.pClubChangeHostMsg != null) builder.pClubChangeHostMsg = PClubChangeHostMsg.ADAPTER.redact(builder.pClubChangeHostMsg);
       builder.clearUnknownFields();
       return builder.build();
     }
