@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.ClubInfo
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
@@ -49,7 +50,17 @@ class ClubListActivity : BaseActivity() {
 
         adapter = ClubListAdapter(object : ClubListAdapter.Listener {
             override fun onClickItem(position: Int, model: ClubInfo?) {
-
+                model?.let {
+                    if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.clubID == it.clubID) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_HOMEPAGE_CLUB)
+                                .withInt("clubID", it.clubID)
+                                .navigation()
+                    } else {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_OTHER_HOMEPAGE_CLUB)
+                                .withInt("clubID", it.clubID)
+                                .navigation()
+                    }
+                }
             }
         })
 

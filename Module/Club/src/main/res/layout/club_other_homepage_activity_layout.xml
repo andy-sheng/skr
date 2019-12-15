@@ -79,11 +79,10 @@
                 android:orientation="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
+                <com.module.club.homepage.room.ClubPartyRoomView
+                    android:id="@+id/club_room_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:overScrollMode="never" />
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 
