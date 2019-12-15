@@ -10,6 +10,7 @@ import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
 import com.common.image.fresco.FrescoWorker
@@ -39,6 +40,7 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
+// 创建和编辑吧
 @Route(path = RouterConstants.ACTIVITY_CREATE_CLUB)
 class CreateClubActivity : BaseActivity() {
     lateinit var titlebar: CommonTitleBar
@@ -54,6 +56,8 @@ class CreateClubActivity : BaseActivity() {
 
     private var clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
 
+    var from = "create"
+
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.club_create_activity_layout
     }
@@ -68,25 +72,58 @@ class CreateClubActivity : BaseActivity() {
         clubIntroductionEt = findViewById(R.id.club_introduction_et)
         progressView = findViewById(R.id.progress_view)
 
+        val from = intent?.getStringExtra("from") ?: "create"
+        if (!TextUtils.isEmpty(from)) {
+            this.from = from
+            if ("change" == from) {
+                titlebar.rightTextView?.text = "更改"
+                // 初始化内容
+                FrescoWorker.loadImage(iconIv,
+                        ImageFactory.newPathImage(MyUserInfoManager.myUserInfo?.clubInfo?.club?.logo)
+                                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                                .setFailureDrawable(U.app().resources.getDrawable(com.component.busilib.R.drawable.load_img_error))
+                                .setLoadingDrawable(U.app().resources.getDrawable(com.component.busilib.R.drawable.loading_place_holder_img))
+                                .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_320.w).build())
+                                .build())
+                clubNameEt.setText("${MyUserInfoManager.myUserInfo?.clubInfo?.club?.name}")
+                clubIntroductionEt.setText("${MyUserInfoManager.myUserInfo?.clubInfo?.club?.desc}")
+
+            }
+        }
+
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
 
         titlebar.rightTextView.setDebounceViewClickListener {
-            if (mImageItemArrayList == null || mImageItemArrayList.size == 0) {
-                U.getToastUtil().showShort("请添加图片")
-                return@setDebounceViewClickListener
+            if ("create" == from) {
+                if (mImageItemArrayList == null || mImageItemArrayList.size == 0) {
+                    U.getToastUtil().showShort("请添加图片")
+                    return@setDebounceViewClickListener
+                }
+
+                if (TextUtils.isEmpty(clubNameEt.text.toString().trim())) {
+                    U.getToastUtil().showShort("请填写名称")
+                    return@setDebounceViewClickListener
+                }
+
+                if (TextUtils.isEmpty(clubIntroductionEt.text.toString().trim())) {
+                    U.getToastUtil().showShort("请填写简介")
+                    return@setDebounceViewClickListener
+                }
+
+                editFinish()
+            } else if ("change" == from) {
+                if (TextUtils.isEmpty(clubNameEt.text.toString().trim())) {
+                    U.getToastUtil().showShort("请填写名称")
+                    return@setDebounceViewClickListener
+                }
+
+                if (TextUtils.isEmpty(clubIntroductionEt.text.toString().trim())) {
+                    U.getToastUtil().showShort("请填写简介")
+                    return@setDebounceViewClickListener
+                }
+                changeFinish()
             }
 
-            if (TextUtils.isEmpty(clubNameEt.text.toString().trim())) {
-                U.getToastUtil().showShort("请填写名称")
-                return@setDebounceViewClickListener
-            }
-
-            if (TextUtils.isEmpty(clubIntroductionEt.text.toString().trim())) {
-                U.getToastUtil().showShort("请填写简介")
-                return@setDebounceViewClickListener
-            }
-
-            editFinish()
         }
 
         iconIvBg.setDebounceViewClickListener {
@@ -104,11 +141,10 @@ class CreateClubActivity : BaseActivity() {
                 FrescoWorker.loadImage(iconIv,
                         ImageFactory.newPathImage(imageItems.get(0).getPath())
                                 .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                                .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                                 .setFailureDrawable(U.app().resources.getDrawable(com.component.busilib.R.drawable.load_img_error))
                                 .setLoadingDrawable(U.app().resources.getDrawable(com.component.busilib.R.drawable.loading_place_holder_img))
                                 .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_320.w).build())
-                                .setBorderColor(Color.parseColor("#3B4E79")).build())
+                                .build())
             }
         }
     }
@@ -174,6 +210,82 @@ class CreateClubActivity : BaseActivity() {
         })
 
         U.getKeyBoardUtils().hideSoftInputKeyBoard(this)
+    }
+
+    private fun changeFinish() {
+        var hasLogoChange = true
+        if (mImageItemArrayList == null || mImageItemArrayList.size == 0) {
+            hasLogoChange = false
+        }
+        var hasNameChange = true
+        if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.name?.equals(clubNameEt.text.toString().trim()) == true) {
+            hasNameChange = false
+        }
+        var hasContentChange = true
+        if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.desc?.equals(clubIntroductionEt.text.toString().trim()) == true) {
+            hasContentChange = false
+        }
+
+        if (hasLogoChange || hasNameChange || hasContentChange) {
+            // 编辑过了
+            if (hasLogoChange) {
+                progressView.visibility = View.VISIBLE
+
+                val photoModel = PhotoModel()
+                photoModel.localPath = mImageItemArrayList[0].getPath()
+                photoModel.status = PhotoModel.STATUS_WAIT_UPLOAD
+                execUploadPhoto(photoModel, object : UploadCallback {
+                    override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
+
+                    }
+
+                    override fun onSuccessNotInUiThread(url: String?) {
+                        photoModel.status = PhotoModel.STATUS_SUCCESS
+                        photoModel.picPath = url
+
+                        setClubInfo(url, clubNameEt.text.toString().trim(), clubIntroductionEt.text.toString().trim())
+                    }
+
+                    override fun onFailureNotInUiThread(msg: String?) {
+                        progressView.visibility = View.GONE
+                        photoModel.status = PhotoModel.STATUS_FAILED
+                        U.getToastUtil().showShort(msg)
+                    }
+                })
+
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(this)
+            } else {
+                setClubInfo(null, clubNameEt.text.toString().trim(), clubIntroductionEt.text.toString().trim())
+            }
+        }
+    }
+
+    private fun setClubInfo(url: String?, name: String?, content: String?) {
+        launch {
+            val map = HashMap<String, Any?>()
+            map["clubID"] = MyUserInfoManager.myUserInfo?.clubInfo?.club?.clubID
+            if (!TextUtils.isEmpty(url)) {
+                map["logo"] = url
+            }
+            if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.name?.equals(clubNameEt.text.toString().trim()) == false) {
+                map["name"] = clubNameEt.text.toString().trim()
+            }
+            if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.desc?.equals(clubIntroductionEt.text.toString().trim()) == false) {
+                map["desc"] = clubIntroductionEt.text.toString().trim()
+            }
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("setNotice", ControlType.CancelThis)) {
+                clubServerApi.editClubInfo(body)
+            }
+
+            if (result.errno == 0) {
+                U.getToastUtil().showShort("家族资料设置成功")
+                finish()
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
     }
 
     private fun createClub(photoModel: PhotoModel) {

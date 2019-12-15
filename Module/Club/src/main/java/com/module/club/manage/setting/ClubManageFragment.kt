@@ -1,7 +1,9 @@
 package com.module.club.manage.setting
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
@@ -14,6 +16,7 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
 import com.zq.live.proto.Common.EClubMemberRoleType
@@ -38,6 +41,7 @@ class ClubManageFragment : BaseFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+
         titlebar = rootView.findViewById(R.id.titlebar)
 
         clubInfoSettingTv = rootView.findViewById(R.id.club_info_setting_tv)
@@ -73,7 +77,9 @@ class ClubManageFragment : BaseFragment() {
         }
 
         clubInfoSettingTv?.setDebounceViewClickListener {
-            
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_CLUB)
+                    .withString("from", "change")
+                    .navigation()
         }
 
         clubNoticeTv?.setDebounceViewClickListener {

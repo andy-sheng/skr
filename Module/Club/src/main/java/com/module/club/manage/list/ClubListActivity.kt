@@ -33,6 +33,8 @@ class ClubListActivity : BaseActivity() {
 
     var adapter: ClubListAdapter? = null
 
+    var from: String = "create"
+
     private var clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
     private var offset = 0
     private val cnt = 15
@@ -73,6 +75,7 @@ class ClubListActivity : BaseActivity() {
 
         titlebar.rightTextView.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_CLUB)
+                    .withString("from", "create")
                     .navigation()
         }
 
