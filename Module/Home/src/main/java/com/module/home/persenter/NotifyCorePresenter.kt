@@ -12,10 +12,7 @@ import com.common.core.global.event.ShowDialogInHomeEvent
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
 import com.common.core.scheme.SchemeSdkActivity
-import com.common.core.scheme.event.BothRelationFromSchemeEvent
-import com.common.core.scheme.event.DoubleInviteFromSchemeEvent
-import com.common.core.scheme.event.GrabInviteFromSchemeEvent
-import com.common.core.scheme.event.MicInviteFromSchemeEvent
+import com.common.core.scheme.event.*
 import com.common.core.userinfo.ResultCallback
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
@@ -248,6 +245,39 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         } else {
             // 不需要直接进
             tryGoMicRoom(event.ownerId, event.roomId)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyInviteFromSchemeEvent) {
+        // 派对房间邀请口令
+        if (event.ask == 1) {
+            // 需要再次确认弹窗
+            UserInfoManager.getInstance().getUserInfoByUuid(event.ownerId, true, object : ResultCallback<UserInfoModel>() {
+                override fun onGetLocalDB(o: UserInfoModel): Boolean {
+                    return false
+                }
+
+                override fun onGetServer(userInfoModel: UserInfoModel?): Boolean {
+                    if (userInfoModel != null) {
+                        var activity = U.getActivityUtils().topActivity
+                        if (activity is SchemeSdkActivity) {
+                            activity = U.getActivityUtils().homeActivity
+                        }
+                        val confirmDialog = ConfirmDialog(activity, userInfoModel, ConfirmDialog.TYPE_PARTY_INVITE_CONFIRM)
+                        confirmDialog.setListener {
+                            Observable.timer(500, TimeUnit.MILLISECONDS)
+                                    .compose(this@NotifyCorePresenter.bindUntilEvent(PresenterEvent.DESTROY))
+                                    .subscribe { tryGoPartyRoom( event.ownerId, event.roomId) }
+                        }
+                        confirmDialog.show()
+                    }
+                    return false
+                }
+            })
+        } else {
+            // 不需要直接进
+            tryGoPartyRoom( event.ownerId, event.roomId)
         }
     }
 
