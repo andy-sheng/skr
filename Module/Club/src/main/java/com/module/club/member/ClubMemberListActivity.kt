@@ -46,6 +46,7 @@ class ClubMemberListActivity : BaseActivity() {
     private val cnt = 15
 
     private var mTipsDialogView: TipsDialogView? = null
+    private var mClubMemberTitleDialog: ClubMemberTitleDialog? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.club_member_list_activity_layout
@@ -99,6 +100,26 @@ class ClubMemberListActivity : BaseActivity() {
 
             override fun onClickTitle(position: Int, model: UserInfoModel?) {
                 // 等设计稿
+                model?.let {
+                    mClubMemberTitleDialog?.dismiss(false)
+                    mClubMemberTitleDialog = ClubMemberTitleDialog(this@ClubMemberListActivity, model, object : ClubMemberTitleDialog.Listener {
+                        override fun onClickCoFounder() {
+                            mClubMemberTitleDialog?.dismiss()
+                            setClubMemberTitle(EClubMemberRoleType.ECMRT_CoFounder.value, position, it)
+                        }
+
+                        override fun onClickHost() {
+                            mClubMemberTitleDialog?.dismiss()
+                            setClubMemberTitle(EClubMemberRoleType.ECMRT_Hostman.value, position, it)
+                        }
+
+                        override fun onClickCommon() {
+                            mClubMemberTitleDialog?.dismiss()
+                            setClubMemberTitle(EClubMemberRoleType.ECMRT_Common.value, position, it)
+                        }
+                    })
+                    mClubMemberTitleDialog?.showByDialog()
+                }
             }
         })
         contentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -127,6 +148,24 @@ class ClubMemberListActivity : BaseActivity() {
         }
 
         getClubMemberList(0, true)
+    }
+
+    private fun setClubMemberTitle(role: Int, position: Int, model: UserInfoModel) {
+        launch {
+            val map = mapOf(
+                    "userID" to model.userId,
+                    "role" to role
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("setClubMemberTitle", ControlType.CancelThis)) {
+                clubServerApi.setClubMemberInfo(body)
+            }
+            if (result.errno == 0) {
+                // 设置成功，更新下身份
+                model.clubInfo?.roleType = role
+                adapter.notifyItemChanged(position)
+            }
+        }
     }
 
     private fun getClubMemberList(off: Int, isClean: Boolean) {
@@ -193,4 +232,9 @@ class ClubMemberListActivity : BaseActivity() {
         return false
     }
 
+    override fun destroy() {
+        super.destroy()
+        mClubMemberTitleDialog?.dismiss(false)
+        mTipsDialogView?.dismiss(false)
+    }
 }
