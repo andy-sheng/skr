@@ -28,7 +28,6 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_25_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
-        app:layout_goneMarginRight="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_14_dp"
         android:ellipsize="end"
         android:gravity="left|center_vertical"
@@ -42,7 +41,8 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/honor_iv"
-        app:layout_constraintTop_toBottomOf="@id/level_bg" />
+        app:layout_constraintTop_toBottomOf="@id/level_bg"
+        app:layout_goneMarginRight="@dimen/view_10_dp" />
 
     <ImageView
         android:id="@+id/honor_iv"
@@ -88,13 +88,24 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/verify_tv" />
 
+    <TextView
+        android:id="@+id/person_club_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/person_club_icon"
+        android:textColor="#6076E6"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/person_tag_view" />
+
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginTop="@dimen/view_30_dp"
         android:background="@color/black_trans_10"
-        app:layout_constraintTop_toBottomOf="@id/person_tag_view" />
+        app:layout_constraintTop_toBottomOf="@id/person_club_name" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/sign_tv"

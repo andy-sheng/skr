@@ -69,6 +69,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
 
     private val personTagView: PersonTagView
     private val guardView: GuardView
+    private val personClubName: TextView
     private val photoViewBg: ExImageView
     private val photoView: RecyclerView
     private val photoNumTv: ExTextView
@@ -112,6 +113,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
 
         personTagView = this.findViewById(R.id.person_tag_view)
         guardView = this.findViewById(R.id.guard_view)
+        personClubName = this.findViewById(R.id.person_club_name)
         photoViewBg = this.findViewById(R.id.photo_view_bg)
         photoView = this.findViewById(R.id.photo_view)
         photoNumTv = this.findViewById(R.id.photo_num_tv)
@@ -430,6 +432,13 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
 
             personTagView.setSex(userInfoModel.sex)
             personTagView.setLocation(userInfoModel.location)
+
+            if (!TextUtils.isEmpty(userInfoModel.clubInfo?.club?.name)) {
+                personClubName.visibility = View.VISIBLE
+                personClubName.text = userInfoModel.clubInfo?.club?.name
+            } else {
+                personClubName.visibility = View.GONE
+            }
         }
     }
 

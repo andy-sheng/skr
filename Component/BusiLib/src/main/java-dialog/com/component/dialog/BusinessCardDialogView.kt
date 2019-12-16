@@ -2,19 +2,23 @@ package com.component.dialog
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.component.busilib.R
 import com.component.level.utils.LevelConfigUtils
 import com.component.person.view.PersonTagView
 import com.facebook.drawee.view.SimpleDraweeView
+import com.module.RouterConstants
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 
@@ -29,6 +33,7 @@ class BusinessCardDialogView(context: Context, userInfoModel: UserInfoModel, mei
     private val honorIv: ImageView
     private val verifyTv: TextView
     private val personTagView: PersonTagView
+    private val personClubName: TextView
     private val divider: View
     private val signTv: ExTextView
 
@@ -41,6 +46,7 @@ class BusinessCardDialogView(context: Context, userInfoModel: UserInfoModel, mei
         honorIv = this.findViewById(R.id.honor_iv)
         verifyTv = this.findViewById(R.id.verify_tv)
         personTagView = this.findViewById(R.id.person_tag_view)
+        personClubName = this.findViewById(R.id.person_club_name)
         divider = this.findViewById(R.id.divider)
         signTv = this.findViewById(R.id.sign_tv)
 
@@ -73,7 +79,26 @@ class BusinessCardDialogView(context: Context, userInfoModel: UserInfoModel, mei
         personTagView.setCharmTotal(meiLiCntTotal)
         personTagView.setFansNum(fansNum)
 
+        if (!TextUtils.isEmpty(userInfoModel.clubInfo?.club?.name)) {
+            personClubName.visibility = View.VISIBLE
+            personClubName.text = userInfoModel.clubInfo?.club?.name
+        } else {
+            personClubName.visibility = View.GONE
+        }
+
         signTv.text = userInfoModel.signature
+
+        personClubName?.setDebounceViewClickListener {
+            if (MyUserInfoManager.uid.toInt() == userInfoModel.userId) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_HOMEPAGE_CLUB)
+                        .withInt("clubID", userInfoModel.clubInfo?.club?.clubID ?: 0)
+                        .navigation()
+            } else {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_OTHER_HOMEPAGE_CLUB)
+                        .withInt("clubID", userInfoModel.clubInfo?.club?.clubID ?: 0)
+                        .navigation()
+            }
+        }
     }
 
     /**
