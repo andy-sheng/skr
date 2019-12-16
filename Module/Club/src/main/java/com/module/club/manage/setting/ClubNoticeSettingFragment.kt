@@ -57,7 +57,7 @@ class ClubNoticeSettingFragment : BaseFragment() {
         launch {
             val map = mutableMapOf(
                     "notice" to notice,
-                    "clubID" to (MyUserInfoManager.myUserInfo?.clubInfo?.club?.clubID ?: 0)
+                    "clubID" to (MyUserInfoManager.clubID ?: 0)
             )
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))

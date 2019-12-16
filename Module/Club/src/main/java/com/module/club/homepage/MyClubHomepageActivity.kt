@@ -75,7 +75,7 @@ class MyClubHomepageActivity : BaseActivity() {
     private var scrollDivider = U.getDisplayUtils().dip2px(150f)  // 滑到分界线的时候
 
     private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
-    private var clubID: Int = 0
+    private val clubID: Int = MyUserInfoManager.clubID ?: 0
     private var clubInfo: ClubInfo? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
@@ -83,11 +83,6 @@ class MyClubHomepageActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        clubID = intent.getIntExtra("clubID", 0)
-//        if (clubID == 0) {
-//            finish()
-//        }
-
         imageBg = findViewById(R.id.image_bg)
         smartRefresh = findViewById(R.id.smart_refresh)
         container = findViewById(R.id.container)

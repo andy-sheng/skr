@@ -57,7 +57,7 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
 
             override fun onClickClub(position: Int, clubInfo: ClubInfo?) {
                 clubInfo?.let {
-                    if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.clubID == it.clubID) {
+                    if (MyUserInfoManager.clubID == it.clubID) {
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_HOMEPAGE_CLUB)
                                 .withInt("clubID", it.clubID)
                                 .navigation()

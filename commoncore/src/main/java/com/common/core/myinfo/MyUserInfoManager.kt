@@ -70,6 +70,9 @@ object MyUserInfoManager {
     val nickName: String
         get() = myUserInfo?.userNickname ?: ""
 
+    val clubID: Int?  // 俱乐部id
+        get() = myUserInfo?.clubInfo?.club?.clubID
+
     val age: Int
         get() {
             if (myUserInfo != null && !TextUtils.isEmpty(myUserInfo!!.birthday)) {

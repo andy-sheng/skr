@@ -53,9 +53,8 @@ class ClubListActivity : BaseActivity() {
         adapter = ClubListAdapter(object : ClubListAdapter.Listener {
             override fun onClickItem(position: Int, model: ClubInfo?) {
                 model?.let {
-                    if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.clubID == it.clubID) {
+                    if (MyUserInfoManager.clubID == it.clubID) {
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_HOMEPAGE_CLUB)
-                                .withInt("clubID", it.clubID)
                                 .navigation()
                     } else {
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_OTHER_HOMEPAGE_CLUB)

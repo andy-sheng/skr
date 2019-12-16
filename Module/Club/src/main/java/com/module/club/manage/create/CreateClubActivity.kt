@@ -263,7 +263,7 @@ class CreateClubActivity : BaseActivity() {
     private fun setClubInfo(url: String?, name: String?, content: String?) {
         launch {
             val map = HashMap<String, Any?>()
-            map["clubID"] = MyUserInfoManager.myUserInfo?.clubInfo?.club?.clubID
+            map["clubID"] = MyUserInfoManager.clubID
             if (!TextUtils.isEmpty(url)) {
                 map["logo"] = url
             }

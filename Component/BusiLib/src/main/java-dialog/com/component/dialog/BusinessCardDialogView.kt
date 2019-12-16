@@ -91,7 +91,6 @@ class BusinessCardDialogView(context: Context, userInfoModel: UserInfoModel, mei
         personClubName?.setDebounceViewClickListener {
             if (MyUserInfoManager.uid.toInt() == userInfoModel.userId) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_HOMEPAGE_CLUB)
-                        .withInt("clubID", userInfoModel.clubInfo?.club?.clubID ?: 0)
                         .navigation()
             } else {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_OTHER_HOMEPAGE_CLUB)
