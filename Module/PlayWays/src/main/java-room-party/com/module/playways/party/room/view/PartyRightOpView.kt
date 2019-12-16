@@ -11,6 +11,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
@@ -96,7 +97,7 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
                 }
                 refreshMicStatus()
             } else {
-
+                U.getToastUtil().showShort(result.errmsg)
             }
         }
     }
