@@ -78,6 +78,7 @@ public class AudioPlayerCapture {
     private StcMgt mStcMgt;
     private AudioBufFormat mOutFormat;
     private int mAudioPlayerType = AUDIO_PLAYER_TYPE_AUDIOTRACK;
+    private boolean mEnableLowLatency = false;
     private boolean mPlayerTypeChanged = false;
     private boolean mMute = false;
     private float mPlayoutVolume = 1.0f;
@@ -193,7 +194,7 @@ public class AudioPlayerCapture {
                 mPcmPlayer.start();
 
                 mPcmOutFormat = new AudioBufFormat(mOutFormat);
-                mPcmOutFormat.nativeModule = mPcmPlayer.getNativeInstance();
+                mPcmOutFormat.nativeModule = mEnableLowLatency ? mPcmPlayer.getNativeInstance() : 0;
                 mSrcPin.onFormatChanged(mPcmOutFormat);
             }
 
@@ -352,6 +353,13 @@ public class AudioPlayerCapture {
     public void setAudioPlayerType(int type) {
         mPlayerTypeChanged = (mAudioPlayerType != type);
         mAudioPlayerType = type;
+    }
+
+    /**
+     * Set audio player should use low latency mode with type OPENSLES.
+     */
+    public void setEnableLowLatency(boolean enableLowLatency) {
+        mEnableLowLatency = enableLowLatency;
     }
 
     /**

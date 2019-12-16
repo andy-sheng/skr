@@ -585,6 +585,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioCapture = new AudioCapture(mContext);
             mAudioCapture.setSampleRate(mConfig.getAudioSampleRate());
             mAudioPlayerCapture = new AudioPlayerCapture(mContext);
+            mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
             mAudioPlayerCapture.setOutFormat(new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16,
                     mConfig.getAudioSampleRate(), mConfig.getAudioChannels()));
             mRemoteAudioPreview = new AudioPreview(mContext);
@@ -727,13 +728,12 @@ public class ZqEngineKit implements AgoraOutCallback {
             // 初始参数配置
             if (mConfig.isEnableAudioLowLatency()) {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
-                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
+                mAudioPlayerCapture.setEnableLowLatency(true);
             } else {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
-                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_AUDIOTRACK);
+                mAudioPlayerCapture.setEnableLowLatency(false);
             }
-            int mixingLatency = mHeadSetPlugged ? mConfig.getAccMixingLatencyOnHeadset() : mConfig.getAccMixingLatencyOnSpeaker();
-            mLocalAudioMixer.setDelay(1, mixingLatency);
+            mLocalAudioMixer.setDelay(1, mConfig.getAccompanyMixingLatency());
             mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
             mRemoteAudioPreview.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
             mAudioPlayerCapture.setPlayoutVolume(mConfig.getAudioMixingPlayoutVolume() / 100.f);
@@ -1431,10 +1431,10 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (mConfig.isUseExternalAudio()) {
             if (enable) {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
-                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
+                mAudioPlayerCapture.setEnableLowLatency(true);
             } else {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
-                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_AUDIOTRACK);
+                mAudioPlayerCapture.setEnableLowLatency(false);
             }
         }
     }

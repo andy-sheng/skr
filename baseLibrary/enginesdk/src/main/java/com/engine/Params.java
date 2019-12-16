@@ -104,9 +104,7 @@ public class Params implements Serializable {
 
     // 低延迟音频相关
     private boolean enableAudioLowLatency = true;
-    // 伴奏人声对齐校正参数
-    private int accMixingLatencyOnSpeaker = 0;  // 外放校正参数
-    private int accMixingLatencyOnHeadset = 0;  // 有线耳机校正参数
+    private int accompanyMixingLatency = 0; // 伴奏人声对齐校正参数
     @JSONField(serialize = false)
     private boolean enableAudioPreviewLatencyTest = false;
     @JSONField(serialize = false)
@@ -716,20 +714,12 @@ public class Params implements Serializable {
         return enableAudioLowLatency;
     }
 
-    public void setAccMixingLatencyOnSpeaker(int accMixingLatencyOnSpeaker) {
-        this.accMixingLatencyOnSpeaker = accMixingLatencyOnSpeaker;
+    public void setAccompanyMixingLatency(int accompanyMixingLatency) {
+        this.accompanyMixingLatency = accompanyMixingLatency;
     }
 
-    public int getAccMixingLatencyOnSpeaker() {
-        return accMixingLatencyOnSpeaker;
-    }
-
-    public void setAccMixingLatencyOnHeadset(int accMixingLatencyOnHeadset) {
-        this.accMixingLatencyOnHeadset = accMixingLatencyOnHeadset;
-    }
-
-    public int getAccMixingLatencyOnHeadset() {
-        return accMixingLatencyOnHeadset;
+    public int getAccompanyMixingLatency() {
+        return accompanyMixingLatency;
     }
 
     public void setEnableAudioPreviewLatencyTest(boolean enableAudioPreviewLatencyTest) {
