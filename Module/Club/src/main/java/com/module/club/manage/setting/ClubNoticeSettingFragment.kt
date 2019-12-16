@@ -16,9 +16,12 @@ import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
 import com.module.club.ClubServerApi
 import com.module.club.R
+import com.module.club.homepage.event.ClubInfoChangeEvent
 import kotlinx.coroutines.launch
+import okhttp3.EventListener
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 // 家族公告
 class ClubNoticeSettingFragment : BaseFragment() {
@@ -67,6 +70,7 @@ class ClubNoticeSettingFragment : BaseFragment() {
 
             if (result.errno == 0) {
                 U.getToastUtil().showShort("公告设置成功")
+                EventBus.getDefault().post(ClubInfoChangeEvent())
                 U.getFragmentUtils().popFragment(this@ClubNoticeSettingFragment)
             } else {
                 U.getToastUtil().showShort(result.errmsg)

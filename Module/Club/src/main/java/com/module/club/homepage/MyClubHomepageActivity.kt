@@ -36,6 +36,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
+import com.module.club.homepage.event.ClubInfoChangeEvent
 import com.module.club.homepage.room.ClubPartyRoomView
 import com.module.club.manage.setting.ClubManageFragment
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -43,6 +44,8 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import kotlin.math.abs
 
 // 不要直接调用，用service的tryGoClubHomePage
@@ -85,6 +88,8 @@ class MyClubHomepageActivity : BaseActivity() {
             .setCornersRadius(4.dp().toFloat())
             .build()
 
+    private var isClubInfoChange = false // club信息改变
+
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.club_my_homepage_activity_layout
     }
@@ -121,6 +126,15 @@ class MyClubHomepageActivity : BaseActivity() {
 
         getHomePage()
         clubRoomView?.initData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isClubInfoChange) {
+            isClubInfoChange = false
+            getHomePage()
+            clubRoomView?.initData()
+        }
     }
 
     private fun adjustNotchPhone() {
@@ -268,8 +282,13 @@ class MyClubHomepageActivity : BaseActivity() {
         smartRefresh?.finishRefresh()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ClubInfoChangeEvent) {
+        isClubInfoChange = true
+    }
+
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 
     override fun canSlide(): Boolean {

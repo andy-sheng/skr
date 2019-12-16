@@ -33,12 +33,14 @@ import com.component.person.photo.model.PhotoModel
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
+import com.module.club.homepage.event.ClubInfoChangeEvent
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
 import com.respicker.model.ImageItem
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 // 创建和编辑吧
 @Route(path = RouterConstants.ACTIVITY_CREATE_CLUB)
@@ -280,6 +282,7 @@ class CreateClubActivity : BaseActivity() {
             }
 
             if (result.errno == 0) {
+                EventBus.getDefault().post(ClubInfoChangeEvent())
                 U.getToastUtil().showShort("家族资料设置成功")
                 finish()
             } else {
