@@ -16,6 +16,7 @@ class RelayRoundInfoModel : BaseRoundInfoModel() {
 
     var hasSendRoundOverInfo = false // 是否已经发送轮次结束
     var accLoadingOk = false
+    var peerAccLoadingOk = true // 对方的acc是否加载ok
     /* 一唱到底使用 */
     var status = ERRoundStatus.RRS_UNKNOWN.value
 

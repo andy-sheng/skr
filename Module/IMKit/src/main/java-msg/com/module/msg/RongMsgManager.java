@@ -23,6 +23,7 @@ import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
+import com.component.notification.PartyPeerAccStatusEvent;
 import com.module.common.ICallback;
 import com.module.msg.activity.ConversationActivity;
 import com.module.msg.custom.MyGIFMessageItemProvider;
@@ -295,6 +296,13 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     event.mLogUrl = jsonObject.getString("url");
                     event.date = jsonObject.getString("date");
                     event.extra = jsonObject.getString("extra");
+                    EventBus.getDefault().post(event);
+                }else if(specailOpMsg.getMessageType() == 3){
+                    JSONObject jsonObject = JSON.parseObject(specailOpMsg.getContentJsonStr());
+                    PartyPeerAccStatusEvent event = new PartyPeerAccStatusEvent();
+                    event.setUserID(jsonObject.getIntValue("userID"));
+                    event.setRoundSeq(jsonObject.getIntValue("roundSeq"));
+                    event.setAccLoadingOk(jsonObject.getBooleanValue("accLoadingOk"));
                     EventBus.getDefault().post(event);
                 }
             }

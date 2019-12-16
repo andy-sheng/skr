@@ -792,6 +792,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         MyLog.i(TAG, "destroy" + " from=" + from);
         if (!"force".equals(from)) {
             if (mInitFrom != null && !mInitFrom.equals(from)) {
+                MyLog.i(TAG, "mInitFrom="+mInitFrom+  " from=" + from +" cancel");
                 return;
             }
         }
