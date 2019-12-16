@@ -844,6 +844,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     override fun gameOver() {
         finish()
+        U.getToastUtil().showShort("房间已解散")
     }
 
 }
