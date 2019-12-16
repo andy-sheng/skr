@@ -493,6 +493,7 @@ open class GiftPanelView : FrameLayout {
 
             bindSelectedPlayerData()
         } else {
+            mCurMicroMan = null
             mGiftAllPlayersAdapter.setSelectedGrabPlayerInfoModel(null)
             mGiftAllPlayersAdapter.update(grabPlayerInfoModel)
         }
