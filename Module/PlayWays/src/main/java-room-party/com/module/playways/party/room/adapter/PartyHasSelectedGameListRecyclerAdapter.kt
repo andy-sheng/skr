@@ -50,6 +50,7 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
         var detailIv: ExImageView
         var upIv: ExImageView
         var delTv: ExTextView
+        var playingTv: ExTextView
         var model: PartySelectedGameModel? = null
 
         constructor(itemView: View) : super(itemView) {
@@ -57,6 +58,7 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
             detailIv = itemView.findViewById(R.id.detail_iv)
             upIv = itemView.findViewById(R.id.up_iv)
             delTv = itemView.findViewById(R.id.del_tv)
+            playingTv = itemView.findViewById(R.id.playing_tv)
 
             delTv.setDebounceViewClickListener {
                 mDelMethod?.invoke(dataList.indexOf(model!!), model!!)
@@ -70,10 +72,12 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
         fun bindData(model: PartySelectedGameModel, position: Int) {
             this.model = model
             gameNameTv.text = model.name
+            playingTv.visibility = View.GONE
 
             if (position == 0) {
                 upIv.visibility = View.GONE
                 delTv.visibility = View.GONE
+                playingTv.visibility = View.VISIBLE
             } else if (position == 1) {
                 upIv.visibility = View.GONE
                 delTv.visibility = View.VISIBLE
