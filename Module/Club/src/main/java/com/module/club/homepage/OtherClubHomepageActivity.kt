@@ -39,7 +39,7 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import kotlin.math.abs
 
-@Route(path = RouterConstants.ACTIVITY_OTHER_HOMEPAGE_CLUB)
+// 不要直接调用，用service的tryGoClubHomePage
 class OtherClubHomepageActivity : BaseActivity() {
     private var imageBg: SimpleDraweeView? = null
     private var smartRefresh: SmartRefreshLayout? = null

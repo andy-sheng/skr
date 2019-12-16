@@ -16,6 +16,7 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.component.busilib.model.PartyRoomInfoModel
 import com.module.RouterConstants
+import com.module.club.IClubModuleService
 import com.module.playways.IPartyRoomView
 import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
@@ -57,15 +58,8 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
 
             override fun onClickClub(position: Int, clubInfo: ClubInfo?) {
                 clubInfo?.let {
-                    if (MyUserInfoManager.clubID == it.clubID) {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_HOMEPAGE_CLUB)
-                                .withInt("clubID", it.clubID)
-                                .navigation()
-                    } else {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_OTHER_HOMEPAGE_CLUB)
-                                .withInt("clubID", it.clubID)
-                                .navigation()
-                    }
+                    val clubServices = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
+                    clubServices.tryGoClubHomePage(it.clubID)
                 }
             }
 

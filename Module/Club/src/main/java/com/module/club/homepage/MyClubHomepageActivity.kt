@@ -43,7 +43,7 @@ import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-@Route(path = RouterConstants.ACTIVITY_HOMEPAGE_CLUB)
+// 不要直接调用，用service的tryGoClubHomePage
 class MyClubHomepageActivity : BaseActivity() {
     private var imageBg: SimpleDraweeView? = null
     private var smartRefresh: SmartRefreshLayout? = null

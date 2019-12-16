@@ -410,4 +410,7 @@ public interface UserInfoServerApi {
 
     @GET("/v1/msgbox/sp-follow-list")
     Call<ApiResult> getSPFollowRecordList(@Query("userID") int userID, @Query("offset") int offset, @Query("cnt") int cnt);
+
+    @GET("http://dev.api.inframe.mobi/v1/club/my-member-info")
+    Observable<ApiResult> getMyClubInfo(@Query("userID") int userID);
 }

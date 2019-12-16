@@ -20,6 +20,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
+import com.module.club.IClubModuleService
 import com.module.club.R
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -57,14 +58,8 @@ class ClubListActivity : BaseActivity() {
         adapter = ClubListAdapter(object : ClubListAdapter.Listener {
             override fun onClickItem(position: Int, model: ClubInfo?) {
                 model?.let {
-                    if (MyUserInfoManager.clubID == it.clubID) {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_HOMEPAGE_CLUB)
-                                .navigation()
-                    } else {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_OTHER_HOMEPAGE_CLUB)
-                                .withInt("clubID", it.clubID)
-                                .navigation()
-                    }
+                    val clubServices = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
+                    clubServices.tryGoClubHomePage(it.clubID)
                 }
             }
         })

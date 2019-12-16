@@ -19,6 +19,8 @@ import com.component.level.utils.LevelConfigUtils
 import com.component.person.view.PersonTagView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
+import com.module.club.IClubModuleService
+import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 
@@ -89,14 +91,8 @@ class BusinessCardDialogView(context: Context, userInfoModel: UserInfoModel, mei
         signTv.text = userInfoModel.signature
 
         personClubName?.setDebounceViewClickListener {
-            if (MyUserInfoManager.uid.toInt() == userInfoModel.userId) {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_HOMEPAGE_CLUB)
-                        .navigation()
-            } else {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_OTHER_HOMEPAGE_CLUB)
-                        .withInt("clubID", userInfoModel.clubInfo?.club?.clubID ?: 0)
-                        .navigation()
-            }
+            val clubServices = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
+            clubServices.tryGoClubHomePage(userInfoModel.clubInfo?.club?.clubID ?: 0)
         }
     }
 
