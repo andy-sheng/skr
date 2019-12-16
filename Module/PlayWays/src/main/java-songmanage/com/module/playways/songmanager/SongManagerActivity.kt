@@ -104,7 +104,7 @@ class SongManagerActivity : BaseActivity() {
         } else if (from == TYPE_FROM_PARTY) {
             val mRoomData = intent.getSerializableExtra("room_data") as PartyRoomData
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, PartySongManageFragment::class.java)
-                    .setAddToBackStack(false)
+                    .setAddToBackStack(true)
                     .setHasAnimation(false)
                     .setEnterAnim(R.anim.slide_right_in)
                     .setExitAnim(R.anim.slide_right_out)
