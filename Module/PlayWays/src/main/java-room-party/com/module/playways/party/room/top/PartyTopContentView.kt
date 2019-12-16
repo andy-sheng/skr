@@ -42,6 +42,7 @@ class PartyTopContentView : ExConstraintLayout {
     val moreArrow: ExImageView
     val onlineNum: TextView
     val audienceIv: ImageView
+    val clubIconIv: ImageView
 
     var listener: Listener? = null
     var mIsOpen = true
@@ -58,6 +59,7 @@ class PartyTopContentView : ExConstraintLayout {
         moreArrow = this.findViewById(R.id.more_arrow)
         onlineNum = this.findViewById(R.id.online_num)
         audienceIv = this.findViewById(R.id.audience_iv)
+        clubIconIv = this.findViewById(R.id.club_icon_iv)
 
         avatarIv.setDebounceViewClickListener {
             if (H.partyRoomData?.hostId == null) {
@@ -94,6 +96,10 @@ class PartyTopContentView : ExConstraintLayout {
         moreArrow.setDebounceViewClickListener { listener?.showRoomMember() }
         onlineNum.setDebounceViewClickListener { listener?.showRoomMember() }
         audienceIv.setDebounceViewClickListener { listener?.showRoomMember() }
+
+        clubIconIv.setDebounceViewClickListener {
+            //TODO  家族入口
+        }
     }
 
     fun setArrowIcon(open: Boolean) {
@@ -119,6 +125,12 @@ class PartyTopContentView : ExConstraintLayout {
         nameTv.text = hostUser?.userInfo?.nicknameRemark
         compereTv.text = "房间号:${H.partyRoomData?.gameId}"
         onlineNum.text = "在线${H.partyRoomData?.onlineUserCnt}人"
+
+        if (H.partyRoomData?.isClubHome() == true) {
+            clubIconIv.visibility = View.VISIBLE
+        } else {
+            clubIconIv.visibility = View.GONE
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
