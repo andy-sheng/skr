@@ -39,6 +39,7 @@ import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.actor.PartyApplyPanelView
 import com.module.playways.party.room.actor.PartyMemberPanelView
 import com.module.playways.party.room.bottom.PartyBottomContainerView
+import com.module.playways.party.room.event.PartyGameSwitchEvent
 import com.module.playways.party.room.event.PartySelectSongEvent
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
 import com.module.playways.party.room.model.*
@@ -68,6 +69,7 @@ import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.PartyRoom.*
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -822,6 +824,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
      */
     override fun gameBegin(thisRound: PartyRoundInfoModel?) {
         mPartyGameMainView?.updateRound(thisRound)
+        EventBus.getDefault().post(PartyGameSwitchEvent())
     }
 
     /**

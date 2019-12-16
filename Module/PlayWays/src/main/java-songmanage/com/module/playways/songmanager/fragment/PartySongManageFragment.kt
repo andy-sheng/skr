@@ -23,6 +23,7 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.constans.GameModeType
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
+import com.module.playways.party.room.event.PartyGameSwitchEvent
 import com.module.playways.party.room.event.PartyRoundChangeEvent
 import com.module.playways.room.song.fragment.GrabSearchSongFragment
 import com.module.playways.room.song.model.SongModel
@@ -39,7 +40,7 @@ import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.HashMap
+import java.util.*
 
 
 class PartySongManageFragment : BaseFragment() {
@@ -224,12 +225,17 @@ class PartySongManageFragment : BaseFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PartyRoundChangeEvent){
+    fun onEvent(event: PartyRoundChangeEvent) {
         existSongManageView?.isSongChange = true
         if (viewpager.currentItem == 0) {
             // 当前页面就是已点，直接去更新吧
             existSongManageView?.tryLoad()
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyGameSwitchEvent) {
+        finish()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
