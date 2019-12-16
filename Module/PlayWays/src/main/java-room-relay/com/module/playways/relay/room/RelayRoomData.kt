@@ -47,6 +47,10 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         return listOf(peerUser) as List<PlayerInfoModel>
     }
 
+    override fun getCanGiveGiftList(): List<PlayerInfoModel> {
+        return getInSeatPlayerInfoList()
+    }
+
     var lastSingerID: Int? = null
 
     /**

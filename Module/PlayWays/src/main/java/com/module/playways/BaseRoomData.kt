@@ -163,6 +163,11 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
      */
     abstract fun getInSeatPlayerInfoList(): List<PlayerInfoModel>
 
+    /**
+     * 所有在位置上的选手，不算等待者
+     */
+    abstract fun getCanGiveGiftList(): List<PlayerInfoModel>
+
     companion object {
 
         val RANK_BATTLE_START_SVGA = "http://res-static.inframe.mobi/app/rank_battle_start.svga"

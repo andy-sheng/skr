@@ -15,6 +15,7 @@ import com.module.playways.grab.room.model.GrabConfigModel
 import com.module.playways.grab.room.model.GrabPlayerInfoModel
 import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
+import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.GrabRoom.EQRoundStatus
 import com.zq.live.proto.GrabRoom.EQUserRole
 import org.greenrobot.eventbus.EventBus
@@ -150,6 +151,10 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
             }
         }
         return l
+    }
+
+    override fun getCanGiveGiftList(): List<PlayerInfoModel> {
+        return getInSeatPlayerInfoList()
     }
 
     /**

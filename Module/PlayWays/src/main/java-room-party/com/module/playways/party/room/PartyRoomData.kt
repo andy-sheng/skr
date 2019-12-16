@@ -142,6 +142,19 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         return users
     }
 
+    override fun getCanGiveGiftList(): List<PlayerInfoModel> {
+        var list = ArrayList<PlayerInfoModel>()
+        this.seats?.let {
+            for (info in it) {
+                getPlayerInfoById(info.userID)?.let { model ->
+                    list.add(model)
+                }
+            }
+        }
+
+        return list
+    }
+
     override val gameType: Int
         get() = GameModeType.GAME_MODE_PARTY
 
@@ -412,7 +425,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         this.expectRoundInfo = rsp.currentRound
         this.enterPermission = rsp.enterPermission
         this.roomType = rsp.roomType
-        if(getMySeatInfoInParty()?.micStatus == EMicStatus.MS_CLOSE.value){
+        if (getMySeatInfoInParty()?.micStatus == EMicStatus.MS_CLOSE.value) {
             isMute = true
         }
     }
