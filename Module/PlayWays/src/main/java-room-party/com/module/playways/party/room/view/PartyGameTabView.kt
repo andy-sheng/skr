@@ -33,6 +33,7 @@ import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.PartySelectSongEvent
+import com.module.playways.party.room.event.PartySelfTurnToSingEvent
 import com.module.playways.party.room.model.PartyGameInfoModel
 import com.module.playways.room.data.H
 import com.respicker.model.ImageItem
@@ -357,6 +358,10 @@ class PartyGameTabView : ExConstraintLayout {
 
                         }
                     }
+                }
+
+                if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
+                    EventBus.getDefault().post(PartySelfTurnToSingEvent())
                 }
             } else {
                 //还没开始
