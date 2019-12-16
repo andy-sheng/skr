@@ -315,7 +315,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 } else {
                     // 非管理人员
                     if (model?.player?.userID != null) {
-                        showPersonInfoView(model?.player?.userID ?: 0)
+                        showPersonInfoView(model?.player?.userID ?: 0, null)
                     } else {
                         if (mRoomData.myUserInfo?.isGuest() == true) {
                             // 嘉宾 点了个空座位 没反应
@@ -547,7 +547,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun initCommentView() {
         mCommentView = findViewById(R.id.comment_view)
         mCommentView.setListener(CommentViewItemListener { userId ->
-            showPersonInfoView(userId)
+            showPersonInfoView(userId, null)
         })
         mCommentView.roomData = mRoomData
     }
@@ -585,7 +585,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mVIPEnterView?.enter(playerInfoModel, finishCall)
     }
 
-    private fun showPersonInfoView(userID: Int) {
+    private fun showPersonInfoView(userID: Int, isShowKick: Boolean?) {
         if (!U.getNetworkUtils().hasNetwork()) {
             U.getToastUtil().showShort("网络异常，请检查网络后重试!")
             return
@@ -593,10 +593,13 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         dismissDialog()
         mInputContainerView.hideSoftInput()
         var showKick = false
-        if (mRoomData.myUserInfo?.isHost() == true || mRoomData.myUserInfo?.isAdmin() == true) {
+        if (isShowKick != null) {
+            showKick = isShowKick
+        } else if (mRoomData.myUserInfo?.isHost() == true || mRoomData.myUserInfo?.isAdmin() == true) {
             // 主持人和管理员才有的踢人权限
             showKick = !(mRoomData.getPlayerInfoById(userID)?.isHost() == true || mRoomData.getPlayerInfoById(userID)?.isAdmin() == true)
         }
+
         mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_RELAY_ROOM, userID, showKick, false)
                 .setRoomID(mRoomData.gameId)
                 .setKickListener {
@@ -625,7 +628,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
-        showPersonInfoView(event.uid)
+        showPersonInfoView(event.uid, event.showKick)
     }
 
     private fun getPartyManageHostDialogView(): PartyManageHostDialogView {
