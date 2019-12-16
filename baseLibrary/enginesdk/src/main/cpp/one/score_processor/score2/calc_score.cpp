@@ -10,7 +10,7 @@
 #define LOGD(...) fprintf(stderr, __VA_ARGS__);fprintf(stderr, "\n")
 #endif
 
-#define DEBUG 1
+#define DEBUG 0
 
 using namespace std;
 
