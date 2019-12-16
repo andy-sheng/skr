@@ -101,4 +101,21 @@ interface ClubServerApi {
      */
     @PUT("http://dev.api.inframe.mobi/v1/club/detail")
     fun editClubInfo(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 获取家族榜单的tag
+     *
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/rank-tab")
+    fun getClubRankTags(): Call<ApiResult>
+
+    /**
+     * 获取家族榜单的成员
+     *
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/list-member-in-rank")
+    fun getClubRankList(@Query("offset") offset: Int, @Query("cnt") cnt: Int,
+                        @Query("rType") type: Int, @Query("clubID") clubID: Int): Call<ApiResult>
+
+
 }

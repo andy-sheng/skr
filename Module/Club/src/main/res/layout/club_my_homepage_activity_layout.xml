@@ -153,6 +153,7 @@
                             android:paddingLeft="@dimen/view_10_dp"
                             android:paddingRight="@dimen/view_10_dp"
                             android:textColor="#FFD287"
+                            android:singleLine="true"
                             android:textSize="@dimen/textsize_12_dp"
                             android:ellipsize="marquee"
                             android:gravity="center"

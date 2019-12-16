@@ -54,9 +54,9 @@ class ClubMemberListActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         clubID = intent.getIntExtra("clubID", 0)
-//        if (clubID == 0) {
-//            finish()
-//        }
+        if (clubID == 0) {
+            finish()
+        }
 
         titlebar = findViewById(R.id.titlebar)
         refreshLayout = findViewById(R.id.refreshLayout)

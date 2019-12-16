@@ -168,7 +168,9 @@ class MyClubHomepageActivity : BaseActivity() {
         }
 
         contributionTv?.setDebounceViewClickListener {
-
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_CLUB_RANK)
+                    .withInt("clubID", clubID)
+                    .navigation()
         }
     }
 
