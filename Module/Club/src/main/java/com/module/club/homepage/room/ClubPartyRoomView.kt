@@ -12,6 +12,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.component.busilib.model.PartyRoomInfoModel
 import com.module.club.ClubServerApi
 import com.module.club.R
 import kotlinx.coroutines.CoroutineScope
@@ -56,7 +57,8 @@ class ClubPartyRoomView(context: Context, attrs: AttributeSet?, defStyleAttr: In
                 clubServerApi.getClubPartyDetail(clubID)
             }
             if (result.errno == 0) {
-
+                adapter.clubParty = JSON.parseObject(result.data.getString("info"), PartyRoomInfoModel::class.java)
+                adapter.notifyItemChanged(0)
             }
         }
     }

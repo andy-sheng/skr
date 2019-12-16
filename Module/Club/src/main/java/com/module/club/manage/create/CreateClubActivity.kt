@@ -316,4 +316,8 @@ class CreateClubActivity : BaseActivity() {
     override fun useEventBus(): Boolean {
         return false
     }
+
+    override fun canSlide(): Boolean {
+        return false
+    }
 }

@@ -232,6 +232,10 @@ class ClubMemberListActivity : BaseActivity() {
         return false
     }
 
+    override fun canSlide(): Boolean {
+        return false
+    }
+
     override fun destroy() {
         super.destroy()
         mClubMemberTitleDialog?.dismiss(false)

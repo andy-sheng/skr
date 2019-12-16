@@ -18,7 +18,8 @@ import com.module.club.R
 
 class ClubPartyRoomAdapter : RecyclerView.Adapter<ClubPartyRoomAdapter.RoomViewHolder>() {
 
-    var mDataList = ArrayList<PartyRoomInfoModel>()
+    var clubParty: PartyRoomInfoModel = PartyRoomInfoModel()   // 家族派对
+    var mDataList = ArrayList<PartyRoomInfoModel>()  // 成员派对
 
     val blueDrawable = DrawableCreator.Builder()
             .setShape(DrawableCreator.Shape.Rectangle)
@@ -38,20 +39,45 @@ class ClubPartyRoomAdapter : RecyclerView.Adapter<ClubPartyRoomAdapter.RoomViewH
             .setCornersRadius(4.dp().toFloat())
             .build()
 
+    val ITEM_TYPE_CLUB_PARTY = 1  // 家族剧场
+    val ITEM_TYPE_MEMBER_PARTY = 2  // 成员剧场
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.club_party_room_view_item_layout, parent, false)
-        return RoomViewHolder(view)
+        return if (viewType == ITEM_TYPE_CLUB_PARTY) {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.club_party_room_view_item_layout, parent, false)
+            ClubPartyViewHolder(view)
+        } else {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.club_party_room_common_layout, parent, false)
+            RoomViewHolder(view)
+        }
     }
 
     override fun getItemCount(): Int {
-        return mDataList.size
+        return mDataList.size + 1
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == 0) {
+            ITEM_TYPE_CLUB_PARTY
+        } else {
+            ITEM_TYPE_MEMBER_PARTY
+        }
     }
 
     override fun onBindViewHolder(holder: RoomViewHolder, position: Int) {
-        holder.bindData(position, mDataList[position])
+        if (holder is ClubPartyViewHolder) {
+            holder.bindData(position, clubParty)
+        } else {
+            holder.bindData(position, mDataList[position - 1])
+        }
+
     }
 
-    inner class RoomViewHolder(item: View) : RecyclerView.ViewHolder(item) {
+    inner class ClubPartyViewHolder(item: View) : RoomViewHolder(item) {
+
+    }
+
+    open inner class RoomViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
         private val avatarSdv: SimpleDraweeView = item.findViewById(R.id.avatar_sdv)
         private val roomNameTv: TextView = item.findViewById(R.id.room_name_tv)
