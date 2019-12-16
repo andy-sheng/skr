@@ -11,19 +11,26 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.widget.ImageView
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.account.event.AccountEvent
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.component.dialog.InviteFriendDialog
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
+import com.module.home.MainPageSlideApi
 import com.module.home.R
 import com.module.home.game.presenter.GamePresenter3
 import com.module.home.game.view.*
@@ -33,6 +40,9 @@ import com.module.playways.IPartyRoomView
 import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -61,6 +71,9 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     private var alphaAnimation: AlphaAnimation? = null
     private var mInviteFriendDialog: InviteFriendDialog? = null
 
+    private val mainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
+    private var mTipsDialogView: TipsDialogView? = null
+
     override fun initView(): Int {
         return R.layout.game3_fragment_layout
     }
@@ -74,8 +87,36 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
         mInviteFriendIv.setAnimateDebounceViewClickListener {
             if (mGameVp.currentItem == 2) {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_PARTY_ROOM)
-                        .navigation()
+                launch {
+                    val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(null))
+                    val result = subscribe(RequestControl("hasCreatePermission", ControlType.CancelThis)) {
+                        mainPageSlideApi.hasCreatePermission(body)
+                    }
+                    if (result.errno == 0) {
+                        // 可以创建
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_PARTY_ROOM)
+                                .navigation()
+                    } else {
+                        if (result.errno == 8436006) {
+                            mTipsDialogView?.dismiss(false)
+                            mTipsDialogView = TipsDialogView.Builder(activity)
+                                    .setMessageTip("开通VIP特权，立即获得剧场创建权限")
+                                    .setConfirmTip("立即开通")
+                                    .setCancelTip("取消")
+                                    .setConfirmBtnClickListener {
+                                        mTipsDialogView?.dismiss(false)
+                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                                .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
+                                                .greenChannel().navigation()
+                                    }
+                                    .build()
+                            mTipsDialogView?.showByDialog()
+                        } else {
+                            U.getToastUtil().showShort(result.errmsg)
+                        }
+                    }
+                }
+
             } else {
                 showShareDialog()
             }
@@ -282,6 +323,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mFriendRoomGameView.destory()
         mPartyRoomView.destory()
         alphaAnimation?.cancel()
+        mTipsDialogView?.dismiss(false)
         mInviteFriendDialog?.dismiss(false)
     }
 }

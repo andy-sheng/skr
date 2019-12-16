@@ -133,4 +133,14 @@ public interface MainPageSlideApi {
      */
     @PUT("http://api.inframe.mobi/v1/honor/take-coin")
     Observable<ApiResult> vipTakeCoin(@Body RequestBody body);
+
+    /**
+     * 检查是否有创建权限 { null}
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partyroom/has-create-permission")
+    Call<ApiResult> hasCreatePermission(@Body RequestBody body);
+
 }
