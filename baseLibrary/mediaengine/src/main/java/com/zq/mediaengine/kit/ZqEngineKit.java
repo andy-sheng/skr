@@ -732,12 +732,13 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
                 mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_AUDIOTRACK);
             }
-            mLocalAudioMixer.setDelay(1, mConfig.getAccompanyMixingLatency());
+            int mixingLatency = mHeadSetPlugged ? mConfig.getAccMixingLatencyOnHeadset() : mConfig.getAccMixingLatencyOnSpeaker();
+            mLocalAudioMixer.setDelay(1, mixingLatency);
             mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
             mRemoteAudioPreview.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
             mAudioPlayerCapture.setPlayoutVolume(mConfig.getAudioMixingPlayoutVolume() / 100.f);
             mLocalAudioMixer.setInputVolume(1, mConfig.getAudioMixingPublishVolume() / 100.f);
-            if (mConfig.isEnableInEarMonitoring() && (mHeadSetPlugged || mAudioCapture.getEnableLatencyTest())) {
+            if (mConfig.isEnableInEarMonitoring() && shouldStartAudioPreview()) {
                 mLocalAudioPreview.start();
             }
         }
@@ -1217,13 +1218,18 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
+    private boolean shouldStartAudioPreview() {
+        return (mHeadSetPlugged || mConfig.isEnableAudioPreviewLatencyTest()) &&
+                !mConfig.isEnableAudioMixLatencyTest();
+    }
+
     private void enableInEarMonitoringInternal(boolean enable, boolean setConfig) {
         if (setConfig) {
             mConfig.setEnableInEarMonitoring(enable);
         }
         if (mConfig.isUseExternalAudio()) {
             if (enable) {
-                if (mHeadSetPlugged || mAudioCapture.getEnableLatencyTest()) {
+                if (shouldStartAudioPreview()) {
                     mLocalAudioPreview.start();
                 }
             } else {
@@ -1395,6 +1401,9 @@ public class ZqEngineKit implements AgoraOutCallback {
     private void doSetEnableAudioMixLatencyTest(boolean enable) {
         mConfig.setEnableAudioMixLatencyTest(enable);
         if (mConfig.isUseExternalAudio()) {
+            if (enable) {
+                mLocalAudioPreview.stop();
+            }
             mAudioPlayerCapture.setEnableLatencyTest(enable);
             mLocalAudioMixer.setEnableLatencyTest(enable);
         }
@@ -2209,7 +2218,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 public void run() {
                     toggleAEC();
                     if (mConfig.isUseExternalAudio() && mConfig.isEnableInEarMonitoring()) {
-                        if (mHeadSetPlugged || mAudioCapture.getEnableLatencyTest()) {
+                        if (shouldStartAudioPreview()) {
                             mLocalAudioPreview.start();
                         } else {
                             mLocalAudioPreview.stop();
