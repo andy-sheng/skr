@@ -3,6 +3,7 @@ package com.module.playways.party.room.view
 import android.content.Context
 import android.graphics.Color
 import android.support.constraint.Group
+import android.support.v4.app.FragmentActivity
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
 import com.alibaba.fastjson.JSON
+import com.common.callback.Callback
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
@@ -24,12 +26,16 @@ import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.component.lyrics.utils.SongResUtils
+import com.imagebrowse.ImageBrowseView
+import com.imagebrowse.big.BigImageBrowseFragment
+import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.PartySelectSongEvent
 import com.module.playways.party.room.model.PartyGameInfoModel
 import com.module.playways.room.data.H
+import com.respicker.model.ImageItem
 import com.zq.live.proto.PartyRoom.EPGameType
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.Job
@@ -97,6 +103,40 @@ class PartyGameTabView : ExConstraintLayout {
 
         selectSongTv.setDebounceViewClickListener {
             EventBus.getDefault().post(PartySelectSongEvent())
+        }
+
+        gamePicImg.setDebounceViewClickListener {
+            BigImageBrowseFragment.open(true, getContext() as FragmentActivity, object : DefaultImageBrowserLoader<ImageItem>() {
+                override fun init() {
+
+                }
+
+                override fun load(imageBrowseView: ImageBrowseView, position: Int, item: ImageItem) {
+                    imageBrowseView.load(gamePicImg.getTag() as String)
+                }
+
+                override fun getInitCurrentItemPostion(): Int {
+                    return 0
+                }
+
+                override fun getInitList(): List<ImageItem>? {
+                    val list = ArrayList<ImageItem>()
+                    list.add(ImageItem().apply {
+                        path = gamePicImg.getTag() as String
+                    })
+                    return list
+                }
+
+                override fun loadMore(backward: Boolean, position: Int, data: ImageItem, callback: Callback<List<ImageItem>>) {
+
+                }
+
+                override fun hasMore(backward: Boolean, position: Int, data: ImageItem): Boolean {
+
+                    return false
+                }
+
+            })
         }
     }
 
@@ -253,6 +293,7 @@ class PartyGameTabView : ExConstraintLayout {
                                 ?: 0) > 0) {
                     gamePicImg.visibility = View.VISIBLE
 
+                    gamePicImg.setTag(it.question?.questionInfo?.questionPic?.get(0))
                     AvatarUtils.loadAvatarByUrl(gamePicImg, AvatarUtils.newParamsBuilder(it.question?.questionInfo?.questionPic?.get(0))
                             .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                             .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
