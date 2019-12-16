@@ -135,7 +135,10 @@ public class MediaMuxerPublisher extends Publisher {
 
     @Override
     protected void doRelease() {
-        // do nothing
+        Log.d(TAG, "doRelease");
+        if (mMediaMuxer != null) {
+            doStop();
+        }
     }
 
     @Override

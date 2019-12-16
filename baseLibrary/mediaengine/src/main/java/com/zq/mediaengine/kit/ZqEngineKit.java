@@ -797,7 +797,8 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
         // 销毁前清理掉其他的异步任务
         mCustomHandlerThread.removeCallbacksAndMessages(null);
-        tryStopRecordForFeedback("destroy");
+        // destroy前必须先停止所有录制
+        stopAudioRecordingInner("destroy");
         mCustomHandlerThread.post(new LogRunnable("destroy" + " from=" + from + " status=" + mStatus) {
             @Override
             public void realRun() {
