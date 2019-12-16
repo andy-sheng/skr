@@ -16,7 +16,7 @@ CPitchDetection::CPitchDetection(int iSampleRate) throw(CParamException)
     pYinVamp = new PYinVamp(iSampleRate);
     m_sampleRate = iSampleRate;
     m_windowSize = 2048;
-    m_hopSize = 256;
+    m_hopSize = 480;
     const int iChannels = 1;
     if(!pYinVamp->initialise(iChannels, m_hopSize, m_windowSize)) {
         throw CParamException("Invalid Param To Init PYinVamp.");
@@ -25,7 +25,7 @@ CPitchDetection::CPitchDetection(int iSampleRate) throw(CParamException)
     m_slideWindow->SetHammWindow(false);
     m_tempDataBuf = new float[m_windowSize];
     m_totalSamples = 0;
-    
+
     //m_pitchYinfft = new_aubio_pitchyinfft(m_sampleRate, m_windowSize);
 
     m_fftWrapper = new CFFTWrapper(m_windowSize);
@@ -35,19 +35,19 @@ CPitchDetection::CPitchDetection(int iSampleRate) throw(CParamException)
     }
     m_ti4 =0;
     m_conf =0;
-    
+
     float m_ffttime[m_windowSize];
     float m_fftfreqre[m_windowSize/2+1];
     float m_fftfreqim[m_windowSize/2+1];
-    
-    
+
+
     // ---- Calculate autocorrelation of window ----
-    
+
     //float LOG_N = round(arlog2(m_windowSize));
-    
+
     m_acwinv = new float[m_windowSize];
     for (int ti = 0; ti < m_windowSize; ti++) {
-        
+
         m_ffttime[ti] = m_windowWeight[ti];
     }
     m_fftWrapper->FftForward(m_windowWeight, m_fftfreqre, m_fftfreqim);
@@ -66,9 +66,9 @@ CPitchDetection::CPitchDetection(int iSampleRate) throw(CParamException)
         }
     }
     m_acwinv[0] = 1;
-    
+
     m_maxPrevEnergy = 0;
-    
+
 #if LPF_FOR_PITCH_INPUT
     m_inputLPFilter = new BiquadEQ(m_sampleRate, 32767);
     m_inputLPFilter->InitLPF(800);
@@ -96,7 +96,7 @@ CPitchDetection::~CPitchDetection()
 //        del_aubio_pitchyinfft(m_pitchYinfft);
 //        m_pitchYinfft = NULL;
 //    }
-    
+
     if (m_fftWrapper!=NULL) {
         delete m_fftWrapper;
         m_fftWrapper = NULL;
@@ -114,7 +114,7 @@ CPitchDetection::~CPitchDetection()
         delete pYinVamp;
         pYinVamp = NULL;
     }
-    
+
 #if LPF_FOR_PITCH_INPUT
     if (m_inputLPFilter!=NULL) {
         delete m_inputLPFilter;
@@ -134,7 +134,7 @@ CPitchDetection::~CPitchDetection()
 float CPitchDetection::_calcEnergy(const float *data, const size_t length)
 {
     float acc = 0;
-    
+
     for(int i=0; i<length; i++)
     {
         acc += data[i] * data[i];
@@ -152,16 +152,16 @@ float CPitchDetection::_calcEnergy(const float *data, const size_t length)
 void CPitchDetection::_boostInputWav(float *data, const size_t length)
 {
     // 幅度增强的映射曲线为 sqrt(sin(-PI/2 : PI/2))
-    
+
     float value=0;
     float sign=0;
     for(int i=0; i<length; i++)
     {
         data[i] = sinf(data[i] * PI / 2);
-        
+
         value = fabsf(data[i]);
         sign = data[i]>0 ? 1:-1;
-        
+
         data[i] = sign * sqrt(value);
     }
 }
@@ -186,14 +186,14 @@ void CPitchDetection::_LPF1KHz(const float *data, float *LPF2, int sampleSize)
 void CPitchDetection::Process(const float *data, const size_t sampleSize)
 {
     //LOG4ARProfiling;
-    
+
     // 根据之前的最大能量值决定当前样本是否进行幅度增加
 #if LPF_FOR_PITCH_INPUT
     // 1.低通滤波
     // 4KHz低通滤波器，滤Android机高频噪声
     float LPF[sampleSize];
     _LPF1KHz(data, LPF, (int)sampleSize);
-    
+
     // 2.计算最大能量
     float rms = _calcEnergy(LPF, sampleSize);
     if(rms > m_maxPrevEnergy)
@@ -211,6 +211,7 @@ void CPitchDetection::Process(const float *data, const size_t sampleSize)
 #else
     // 1.计算最大能量
     float rms = _calcEnergy(data, sampleSize);
+//    std::cout << "rms: " << rms << " preEnergy: " << m_maxPrevEnergy << std::endl;
     if(rms > m_maxPrevEnergy)
     {
         m_maxPrevEnergy = rms;
@@ -224,7 +225,7 @@ void CPitchDetection::Process(const float *data, const size_t sampleSize)
         _boostInputWav(boostData, sampleSize);
     }
 #endif
-    
+
     size_t uiSlice = 64;
 //    const float  * pSamples = data;
     const float * pSamples = boostData;
@@ -249,14 +250,14 @@ void CPitchDetection::Process(const float *data, const size_t sampleSize)
             {
                 return ;
             }
-    
+
             //计算基频
 //            PitchElement curPitch;
             //Method 1 : 使用Aubio里面的Yinfft来计算基频
 //            Process_Yinfft(m_pitchYinfft, m_tempDataBuf, curPitch, m_windowSize);
             //Method 2 : 使用AutoTune里面先计算倒谱在计算基频的计算方式
 //            GetPitchElement(m_tempDataBuf,curPitch,m_windowSize);
-            
+
 //            if(curPitch.isVoiced)
 //                curPitch.noteRegion = CalNoteRegion(curPitch.freq);
 //            else
@@ -264,7 +265,7 @@ void CPitchDetection::Process(const float *data, const size_t sampleSize)
 //            curPitch.startFrameIndex = m_totalSamples - centerLatency - m_hopSize/2;
 //            curPitch.endFrameIndex = curPitch.startFrameIndex + m_hopSize - 1;
 //            m_pitchVector.push_back(curPitch);
-            
+
             //Mehod 3 : 使用PYIN算法来及算基频
 //            RealTime fTimestamp = 1000.0 * (m_totalSamples - centerLatency - m_hopSize / 2) / m_sampleRate;
             RealTime fTimestamp = 1000.0 * (m_totalSamples - frontLatency + m_hopSize * 0.75) / m_sampleRate; // 根据批量测试结果设定、by zhouyu
@@ -299,7 +300,7 @@ void CPitchDetection::MarkAsFinished()
             pitchElement.startFrameIndex = m_pitchVector.back().endFrameIndex + 1;
         m_pitchVector.push_back(pitchElement);
     }
-    
+
     for( int i=1;i<m_pitchVector.size();i++ )
     {
         if( m_pitchVector[i-1].freq / m_pitchVector[i].freq > 1.9 && m_pitchVector[i-1].freq / m_pitchVector[i].freq < 2.1 ){
@@ -310,7 +311,7 @@ void CPitchDetection::MarkAsFinished()
             }
         }
     }
-    
+
     //3:构造m_noteTranscriptions
     vector<Feature> featureNotes = featureSetOut[NOTE_FLAG];
     for(int i = 0; i < featureNotes.size(); i++) {
@@ -324,8 +325,11 @@ PitchElement CPitchDetection::buildPitchElementByFeature(Feature featurePitch)
     PitchElement pitchElement;
     pitchElement.startFrameIndex = featurePitch.timestamp * (m_sampleRate / 1000.0);
     pitchElement.endFrameIndex = pitchElement.startFrameIndex + m_hopSize - 1;
+    pitchElement.startTimeMs = featurePitch.timestamp;
+    pitchElement.endTimeMs = featurePitch.timestamp + m_hopSize * 1000.0 / m_sampleRate;
     pitchElement.freq = featurePitch.values[0];
     pitchElement.noteRegion = CalNoteRegion(featurePitch.values[0]);
+    pitchElement.note = CalNote(featurePitch.values[0]);
     if(pitchElement.freq > 0)
         pitchElement.isVoiced = true;
     return pitchElement;
@@ -338,6 +342,7 @@ NoteTranscription CPitchDetection::buildNoteTranscriptionByFeture(Feature featur
     noteTracscription.startTimeMs = featureNote.timestamp;
     noteTracscription.endTimeMs = featureNote.timestamp + featureNote.duration;
     noteTracscription.freq = featureNote.values[0];
+    noteTracscription.note = CalNote(featureNote.values[0]);
     return noteTracscription;
 }
 
@@ -389,10 +394,14 @@ int CPitchDetection::CalNoteRegion(double dFreq)
     else
         iNoteRegion = 9;
     return iNoteRegion;
-        
+
 }
 
-
+float CPitchDetection::CalNote(float dFreq)
+{
+    int note = (int)(69000.5 + 12000 * log10f(dFreq / 440.0) / log10f(2.0));
+    return (note % 12000) / 1000.0f;
+}
 
 //void CPitchDetection::Process_Yinfft(aubio_pitchyinfft_t* p, const float* pInput, PitchElement& pOutput, unsigned int uiLength)
 //{
@@ -425,30 +434,30 @@ static void addWindow(float *data , float *window , size_t len) {
     }
 }
 void CPitchDetection::GetPitchElement(const float *inData,PitchElement &curPitch,size_t windowSize){
-    
+
     float cepData[windowSize];
     memcpy(cepData, inData, windowSize*sizeof(float));
-    
+
     addWindow(cepData,m_windowWeight, windowSize);
     m_fftWrapper->CalcCepstrum(cepData, cepData);
-    
+
     float tf2 = 0;
     float m_pmin = 1 / (float)700;
     float m_pmax = 1 / (float)70;
     int m_corrsize = int(windowSize/2) +1 ;
     float conf = m_conf;
-    
+
     int64_t m_nmax =(m_sampleRate * m_pmax);
-    
+
     if (m_nmax > m_corrsize) {
         m_nmax = m_corrsize;
     }
     int64_t m_nmin = (uint64_t)(m_sampleRate * m_pmin);
-    
+
     float  pperiod = m_pmin;
-    
+
     int64_t tmpMin = m_nmin + 1;
-    
+
     for (; tmpMin < m_nmax; tmpMin++)
     {
         if (cepData[tmpMin] > cepData[tmpMin - 1])
@@ -456,7 +465,7 @@ void CPitchDetection::GetPitchElement(const float *inData,PitchElement &curPitch
             break;
         }
     }
-    
+
     int64_t tmpMax = m_nmax - 1;
     for (; tmpMax > tmpMin; tmpMax--)
     {
@@ -465,7 +474,7 @@ void CPitchDetection::GetPitchElement(const float *inData,PitchElement &curPitch
             break;
         }
     }
-    
+
     float partMax = 0;
     for (int64_t ti = tmpMin; ti < tmpMax; ti++)
     {
@@ -475,7 +484,7 @@ void CPitchDetection::GetPitchElement(const float *inData,PitchElement &curPitch
         }//找出波峰的位置
     }
     partMax = partMax * 0.5;
-    
+
     int64_t ti4 = 0;
     float tmpFft = -1;
     float fScoreMin = 1000000000;
@@ -489,7 +498,7 @@ void CPitchDetection::GetPitchElement(const float *inData,PitchElement &curPitch
         {
             tmpScore = cepData[ m_windowSize / 2] - cepData[m_windowSize / 2 - ti];
             tmpScore *= tmpScore;
-            
+
             if (m_ti4 > 10 && m_conf>0.8)
             {
                 tmpScore += 0.0001 * (ti - m_ti4) * (ti - m_ti4);
@@ -507,7 +516,7 @@ void CPitchDetection::GetPitchElement(const float *inData,PitchElement &curPitch
         tmpFft = cepData[ti];
     }
     if(m_conf>0.8)m_ti4 = ti4;
-    
+
     if (tf2 > 0) {
         conf = tf2 * m_acwinv[ti4];
         if (ti4 > 0 && ti4 < m_corrsize) {
@@ -522,7 +531,7 @@ void CPitchDetection::GetPitchElement(const float *inData,PitchElement &curPitch
             pperiod = (float)ti4 / m_sampleRate;
         }
     }
-    
+
     //    float tune = 440.0;
     float m_vthresh =0.7;
     // Convert to semitones
@@ -535,7 +544,7 @@ void CPitchDetection::GetPitchElement(const float *inData,PitchElement &curPitch
         curPitch.isVoiced = true;
         curPitch.freq = 1.0 / pperiod;
         curPitch.conf = conf;
-        
+
     }else{
         curPitch.isVoiced = false;
         curPitch.freq = 1.0 / pperiod;
