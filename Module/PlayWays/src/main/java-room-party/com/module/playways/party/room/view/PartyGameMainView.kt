@@ -198,7 +198,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     }
 
     //根据身份调整tag显示和关闭
-    private fun tagChange() {
+    fun tagChange() {
         if (mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == true) {
             //主持人
             if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Play.ordinal

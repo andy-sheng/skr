@@ -67,10 +67,7 @@ import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.zq.live.proto.PartyRoom.PClubBecomeHostMsg
-import com.zq.live.proto.PartyRoom.PClubChangeHostMsg
-import com.zq.live.proto.PartyRoom.PClubGameStopMsg
-import com.zq.live.proto.PartyRoom.PKickoutUserMsg
+import com.zq.live.proto.PartyRoom.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -694,11 +691,33 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PClubBecomeHostMsg) {
         mRoomData.hostId = event.user.userInfo.userID
+        (mRoomData.getPlayerAndWaiterInfoList() as List<PartyPlayerInfoModel>?)?.forEach {
+            if (mRoomData.hostId == it.userID) {
+                if (!(it.role.contains(EPUserRole.EPUR_HOST.value))) {
+                    it.role.add(EPUserRole.EPUR_HOST.value)
+                }
+            } else {
+                it.role?.remove(EPUserRole.EPUR_HOST.value)
+            }
+        }
+
+        mPartyGameMainView?.tagChange()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PClubChangeHostMsg) {
         mRoomData.hostId = event.toUser.userInfo.userID
+        (mRoomData.getPlayerAndWaiterInfoList() as List<PartyPlayerInfoModel>?)?.forEach {
+            if (mRoomData.hostId == it.userID) {
+                if (!(it.role.contains(EPUserRole.EPUR_HOST.value))) {
+                    it.role.add(EPUserRole.EPUR_HOST.value)
+                }
+            } else {
+                it.role?.remove(EPUserRole.EPUR_HOST.value)
+            }
+        }
+
+        mPartyGameMainView?.tagChange()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
