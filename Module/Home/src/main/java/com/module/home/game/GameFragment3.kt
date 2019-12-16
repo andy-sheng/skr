@@ -124,7 +124,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 return when (position) {
                     0 -> "好友"
                     1 -> "游戏"
-                    2 -> "剧场"
+                    2 -> "派对"
                     else -> super.getPageTitle(position)
                 }
             }
