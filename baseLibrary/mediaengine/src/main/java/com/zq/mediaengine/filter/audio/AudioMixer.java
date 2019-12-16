@@ -43,6 +43,7 @@ public class AudioMixer {
     private float mRightOutputVolume;
     private boolean mMute;
     private boolean mBlockingMode;
+    private boolean mEnableLatencyTest;
     private long[] mDelay;
 
     private AudioBufFormat mInFormats[];
@@ -289,6 +290,15 @@ public class AudioMixer {
         return mDelay[idx];
     }
 
+    public void setEnableLatencyTest(boolean enableLatencyTest) {
+        mEnableLatencyTest = enableLatencyTest;
+        _setEnableLatencyTest(mInstance, enableLatencyTest);
+    }
+
+    public boolean getEnableLatencyTest() {
+        return mEnableLatencyTest;
+    }
+
     synchronized public void release() {
         doRelease();
     }
@@ -324,7 +334,7 @@ public class AudioMixer {
         if (format.nativeModule != 0) {
             _attachTo(mInstance, idx, format.nativeModule, false);
         } else {
-            _config(mInstance, idx, format.sampleFormat, format.sampleRate, format.channels, 1024, 300);
+            _config(mInstance, idx, format.sampleFormat, format.sampleRate, format.channels, 1024, 800);
         }
         if (idx == mMainSinkPinIndex) {
             mOutFormat = new AudioBufFormat(format.sampleFormat,
@@ -418,6 +428,8 @@ public class AudioMixer {
     private native void _setInputVolume(long instance, int idx, float leftVol, float rightVol);
 
     private native void _setDelay(long instance, int idx, long delay);
+
+    private native void _setEnableLatencyTest(long instance, boolean enable);
 
     private native void _attachTo(long instance, int idx, long ptr, boolean detach);
 

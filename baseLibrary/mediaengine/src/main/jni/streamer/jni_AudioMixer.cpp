@@ -52,6 +52,11 @@ void Java_com_zq_mediaengine_filter_audio_AudioMixer__1setDelay
     getInstance(instance)->setDelay(idx, delay);
 }
 
+void Java_com_zq_mediaengine_filter_audio_AudioMixer__1setEnableLatencyTest
+        (JNIEnv *env, jobject obj, jlong instance, jboolean enable) {
+    getInstance(instance)->setEnableLatencyTest(enable);
+}
+
 void Java_com_zq_mediaengine_filter_audio_AudioMixer__1attachTo
         (JNIEnv *env, jobject obj, jlong instance, jint idx, jlong ptr, jboolean detach) {
     getInstance(instance)->attachTo(idx, (AudioFilterBase*)(intptr_t) ptr, detach);

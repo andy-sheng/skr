@@ -102,6 +102,14 @@ public class Params implements Serializable {
     private int recordingSignalVolume = 200;// 0-400 默认100，最多放大4倍
     private AudioEffect styleEnum = AudioEffect.none;// 混响style
 
+    // 低延迟音频相关
+    private boolean enableAudioLowLatency = true;
+    private int accompanyMixingLatency = 0; // 伴奏人声对齐校正参数
+    @JSONField(serialize = false)
+    private boolean enableAudioPreviewLatencyTest = false;
+    @JSONField(serialize = false)
+    private boolean enableAudioMixLatencyTest = false;
+
     @JSONField(serialize = false)
     private boolean cameraTorchOn = false; // 闪光灯常亮
     @JSONField(serialize = false)
@@ -696,6 +704,38 @@ public class Params implements Serializable {
 
     public void setAudioMixingPublishVolume(int audioMixingPublishVolume) {
         this.audioMixingPublishVolume = audioMixingPublishVolume;
+    }
+
+    public void setEnableAudioLowLatency(boolean enableAudioLowLatency) {
+        this.enableAudioLowLatency = enableAudioLowLatency;
+    }
+
+    public boolean isEnableAudioLowLatency() {
+        return enableAudioLowLatency;
+    }
+
+    public void setAccompanyMixingLatency(int accompanyMixingLatency) {
+        this.accompanyMixingLatency = accompanyMixingLatency;
+    }
+
+    public int getAccompanyMixingLatency() {
+        return accompanyMixingLatency;
+    }
+
+    public void setEnableAudioPreviewLatencyTest(boolean enableAudioPreviewLatencyTest) {
+        this.enableAudioPreviewLatencyTest = enableAudioPreviewLatencyTest;
+    }
+
+    public boolean isEnableAudioPreviewLatencyTest() {
+        return enableAudioPreviewLatencyTest;
+    }
+
+    public void setEnableAudioMixLatencyTest(boolean enableAudioMixLatencyTest) {
+        this.enableAudioMixLatencyTest = enableAudioMixLatencyTest;
+    }
+
+    public boolean isEnableAudioMixLatencyTest() {
+        return enableAudioMixLatencyTest;
     }
 
     public static class Builder {

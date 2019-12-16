@@ -25,7 +25,9 @@ import org.greenrobot.eventbus.ThreadMode
 
 open abstract class VoiceControlPanelView : ScrollView {
 
-    protected var mEarSb:SwitchButton?= null
+    protected var mEarSb: SwitchButton ?= null
+    protected var mMixSb: SwitchButton ?= null
+    protected var mLowLatencySb: SwitchButton ?= null
 
     protected var mPeopleVoice: ExTextView? =null
     protected var mPeopleVoiceSeekbar: SeekBar? =null
@@ -86,6 +88,8 @@ open abstract class VoiceControlPanelView : ScrollView {
         mKonglingSbtn = this.findViewById(R.id.kongling_sbtn)
 
         mEarSb = this.findViewById(R.id.ear_sb)
+        mMixSb = this.findViewById(R.id.mix_sb)
+        mLowLatencySb = this.findViewById(R.id.low_latency_sb)
 
         var marginLeft = getMarginLeft()
         marginLeft = marginLeft / 6
@@ -162,15 +166,24 @@ open abstract class VoiceControlPanelView : ScrollView {
                 }
             }
         }
-        mEarSb?.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(isChecked){
-                ZqEngineKit.getInstance().enableInEarMonitoring(true)
-            }else{
-                ZqEngineKit.getInstance().enableInEarMonitoring(false)
-            }
+
+        mLowLatencySb?.setOnCheckedChangeListener { buttonView, isChecked ->
+            ZqEngineKit.getInstance().setEnableAudioLowLatency(isChecked)
         }
-
-
+        mEarSb?.setOnCheckedChangeListener { buttonView, isChecked ->
+            // TODO: 测试用途
+//            ZqEngineKit.getInstance().enableInEarMonitoring(isChecked)
+            if (isChecked) {
+                mMixSb?.setCheckedNoEvent(false)
+            }
+            ZqEngineKit.getInstance().setEnableAudioPreviewLatencyTest(isChecked)
+        }
+        mMixSb?.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                mEarSb?.setCheckedNoEvent(false)
+            }
+            ZqEngineKit.getInstance().setEnableAudioMixLatencyTest(isChecked)
+        }
     }
 
     private fun setMarginLeft(view: AppCompatRadioButton?, marginLeft: Int) {
@@ -204,6 +217,12 @@ open abstract class VoiceControlPanelView : ScrollView {
         mAfterMode = styleEnum
         mAfterPeopleVoice = ZqEngineKit.getInstance().params.recordingSignalVolume
         mAfterMusicVoice = ZqEngineKit.getInstance().params.audioMixingPlayoutVolume
+
+        if (ZqEngineKit.getInstance().params != null) {
+            mEarSb?.setCheckedNoEvent(ZqEngineKit.getInstance().params.isEnableAudioPreviewLatencyTest)
+            mMixSb?.setCheckedNoEvent(ZqEngineKit.getInstance().params.isEnableAudioMixLatencyTest)
+            mLowLatencySb?.setCheckedNoEvent(ZqEngineKit.getInstance().params.isEnableAudioLowLatency)
+        }
     }
 
     override fun onDetachedFromWindow() {

@@ -19,6 +19,9 @@ import com.zq.mediaengine.framework.SrcPin;
 import com.zq.mediaengine.util.StcMgt;
 import com.zq.mediaengine.util.audio.AudioUtil;
 
+import java.nio.ByteBuffer;
+import java.nio.ShortBuffer;
+
 /**
  * Audio player capture.
  */
@@ -84,6 +87,10 @@ public class AudioPlayerCapture {
     private Handler mMainHandler;
     private int mLoopCount;
     private int mLoopedCount;
+
+    // 混音的延迟测试
+    private boolean mEnableLatencyTest;
+    private long mStartTime;
 
     private OnPreparedListener mOnPreparedListener;
     private OnFirstAudioFrameDecodedListener mOnFirstAudioFrameDecodedListener;
@@ -202,6 +209,26 @@ public class AudioPlayerCapture {
                     mPcmPlayer.setVolume(mPlayoutVolume);
                 }
                 if (frame.buf != null && frame.buf.limit() > 0) {
+                    if (mEnableLatencyTest) {
+                        ByteBuffer buffer = frame.buf;
+                        long now = System.nanoTime() / 1000;
+                        ShortBuffer shortBuffer = buffer.asShortBuffer();
+
+                        // clear buffer
+                        for (int i = 0; i < shortBuffer.limit(); i++) {
+                            shortBuffer.put(i, (short) 0);
+                        }
+
+                        // trigger impulse
+                        if ((now - mStartTime) >= 5000000L) {
+                            mStartTime = now;
+                            for (int i = 0; i < 4; i++) {
+                                shortBuffer.put(i, Short.MAX_VALUE);
+                            }
+                        }
+                        shortBuffer.rewind();
+                    }
+
                     // write audio data in blocking mode
                     mPcmPlayer.write(frame.buf);
 
@@ -384,6 +411,14 @@ public class AudioPlayerCapture {
 
     public float getPlayoutVolume() {
         return mPlayoutVolume;
+    }
+
+    public void setEnableLatencyTest(boolean enableLatencyTest) {
+        mEnableLatencyTest = enableLatencyTest;
+    }
+
+    public boolean getEnableLatencyTest() {
+        return mEnableLatencyTest;
     }
 
     /**

@@ -1,7 +1,7 @@
 <com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_198_dp"
+    android:layout_height="@dimen/view_250_dp"
     android:background="@drawable/img_dialog_bg"
     app:bl_corners_topLeftRadius="@dimen/view_12_dp"
     app:bl_corners_topRightRadius="@dimen/view_12_dp"
@@ -157,4 +157,101 @@
             app:textColor_checked="@color/white"
             app:textColor_normal="#E8E8FF" />
     </RadioGroup>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/ll_switch_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_200_dp"
+        android:layout_marginRight="@dimen/view_12_dp">
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/ear_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:text="耳返"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/textsize_14_dp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.kyleduo.switchbutton.SwitchButton
+            android:id="@+id/ear_sb"
+            android:layout_width="@dimen/view_56_dp"
+            android:layout_height="@dimen/view_23_dp"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:checked="false"
+            android:visibility="visible"
+            app:kswBackDrawable="@drawable/voice_control_switch_btn_bg"
+            app:kswThumbDrawable="@drawable/ty_anniu_da"
+            app:kswThumbMargin="@dimen/view_0_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/ear_tv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/mix_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:text="混音"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/textsize_14_dp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintLeft_toRightOf="@+id/ear_sb"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.kyleduo.switchbutton.SwitchButton
+            android:id="@+id/mix_sb"
+            android:layout_width="@dimen/view_56_dp"
+            android:layout_height="@dimen/view_23_dp"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:checked="false"
+            android:visibility="visible"
+            app:kswBackDrawable="@drawable/voice_control_switch_btn_bg"
+            app:kswThumbDrawable="@drawable/ty_anniu_da"
+            app:kswThumbMargin="@dimen/view_0_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/mix_tv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/low_latency_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:text="OpenSL"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/textsize_14_dp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintLeft_toRightOf="@+id/mix_sb"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.kyleduo.switchbutton.SwitchButton
+            android:id="@+id/low_latency_sb"
+            android:layout_width="@dimen/view_56_dp"
+            android:layout_height="@dimen/view_23_dp"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:checked="true"
+            android:visibility="visible"
+            app:kswBackDrawable="@drawable/voice_control_switch_btn_bg"
+            app:kswThumbDrawable="@drawable/ty_anniu_da"
+            app:kswThumbMargin="@dimen/view_0_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/low_latency_tv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
 </com.common.view.ex.ExRelativeLayout>

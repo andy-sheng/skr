@@ -583,10 +583,8 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         if (mConfig.isUseExternalAudio()) {
             mAudioCapture = new AudioCapture(mContext);
-            mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
             mAudioCapture.setSampleRate(mConfig.getAudioSampleRate());
             mAudioPlayerCapture = new AudioPlayerCapture(mContext);
-            mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
             mAudioPlayerCapture.setOutFormat(new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16,
                     mConfig.getAudioSampleRate(), mConfig.getAudioChannels()));
             mRemoteAudioPreview = new AudioPreview(mContext);
@@ -727,6 +725,14 @@ public class ZqEngineKit implements AgoraOutCallback {
             registerHeadsetPlugReceiver();
 
             // 初始参数配置
+            if (mConfig.isEnableAudioLowLatency()) {
+                mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
+                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
+            } else {
+                mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
+                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_AUDIOTRACK);
+            }
+            mLocalAudioMixer.setDelay(1, mConfig.getAccompanyMixingLatency());
             mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
             mRemoteAudioPreview.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
             mAudioPlayerCapture.setPlayoutVolume(mConfig.getAudioMixingPlayoutVolume() / 100.f);
@@ -1313,42 +1319,9 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         mConfig.setStyleEnum(styleEnum);
 
+        // TODO: 测试用途
         if (mAudioFilterMgt != null) {
             mAudioFilterMgt.setFilter((AudioFilterBase[]) null);
-        }
-
-        if (mConfig.isUseExternalAudio()) {
-            if (styleEnum == Params.AudioEffect.none) {
-                mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
-                mAudioCapture.setEnableLatencyTest(false);
-                mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
-                mAudioPlayerCapture.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
-                if (!mHeadSetPlugged && !mBluetoothPlugged) {
-                    mLocalAudioPreview.stop();
-                }
-            } else if (styleEnum == Params.AudioEffect.ktv) {
-                mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
-                mAudioCapture.setEnableLatencyTest(false);
-                mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
-                mAudioPlayerCapture.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
-                if (!mHeadSetPlugged && !mBluetoothPlugged) {
-                    mLocalAudioPreview.stop();
-                }
-            } else if (styleEnum == Params.AudioEffect.rock) {
-                mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
-                mAudioCapture.setEnableLatencyTest(true);
-                mAudioCapture.setVolume(8.0f);
-                mAudioPlayerCapture.setVolume(0.f);
-                mLocalAudioPreview.start();
-            } else if (styleEnum == Params.AudioEffect.liuxing) {
-                mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
-                mAudioCapture.setEnableLatencyTest(true);
-                mAudioCapture.setVolume(8.0f);
-                mAudioPlayerCapture.setVolume(0.f);
-                mLocalAudioPreview.start();
-            } else if (styleEnum == Params.AudioEffect.kongling) {
-                // TODO:
-            }
         }
 
 //        List<AudioFilterBase> filters = new ArrayList<>(2);
@@ -1379,6 +1352,93 @@ public class ZqEngineKit implements AgoraOutCallback {
                     //Params.AudioEffect styleEnum = Params.AudioEffect.none;//TODO 产品讨论结构先把混响都关了
 
                     doSetAudioEffect(styleEnum, false);
+                }
+            });
+        }
+    }
+
+    private void doSetEnableAudioPreviewLatencyTest(boolean enable) {
+        mConfig.setEnableAudioPreviewLatencyTest(enable);
+        if (mConfig.isUseExternalAudio()) {
+            mAudioCapture.setEnableLatencyTest(enable);
+            if (enable) {
+                mAudioCapture.setVolume(8.0f);
+                mAudioPlayerCapture.setVolume(0.f);
+                mLocalAudioPreview.start();
+            } else {
+                mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
+                mAudioPlayerCapture.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
+                if (!mHeadSetPlugged && !mBluetoothPlugged) {
+                    mLocalAudioPreview.stop();
+                }
+            }
+        }
+    }
+
+    /**
+     * 开启或关闭耳返延迟测试
+     */
+    public void setEnableAudioPreviewLatencyTest(final boolean enable) {
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.post(new LogRunnable("setEnableAudioPreviewLatencyTest: " + enable) {
+                @Override
+                public void realRun() {
+                    if (enable) {
+                        doSetEnableAudioMixLatencyTest(false);
+                    }
+                    doSetEnableAudioPreviewLatencyTest(enable);
+                }
+            });
+        }
+    }
+
+    private void doSetEnableAudioMixLatencyTest(boolean enable) {
+        mConfig.setEnableAudioMixLatencyTest(enable);
+        if (mConfig.isUseExternalAudio()) {
+            mAudioPlayerCapture.setEnableLatencyTest(enable);
+            mLocalAudioMixer.setEnableLatencyTest(enable);
+        }
+    }
+
+    /**
+     * 开启或关闭混音延迟测试
+     */
+    public void setEnableAudioMixLatencyTest(final boolean enable) {
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.post(new LogRunnable("setEnableAudioMixLatencyTest: " + enable) {
+                @Override
+                public void realRun() {
+                    if (enable) {
+                        doSetEnableAudioPreviewLatencyTest(false);
+                    }
+                    doSetEnableAudioMixLatencyTest(enable);
+                }
+            });
+        }
+    }
+
+    private void doSetEnableAudioLowLatency(boolean enable) {
+        mConfig.setEnableAudioLowLatency(enable);
+        if (mConfig.isUseExternalAudio()) {
+            if (enable) {
+                mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
+                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
+            } else {
+                mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
+                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_AUDIOTRACK);
+            }
+        }
+    }
+
+    /**
+     * 开启或关闭低延迟音频模式
+     */
+    public void setEnableAudioLowLatency(final boolean enable) {
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.post(new LogRunnable("setEnableAudioLowLatency: " + enable) {
+                @Override
+                public void realRun() {
+                    doSetEnableAudioLowLatency(enable);
                 }
             });
         }

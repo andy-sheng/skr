@@ -87,6 +87,14 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setDela
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
+ * Method:    _setEnableLatencyTest
+ * Signature: (JZ)V
+ */
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setEnableLatencyTest
+        (JNIEnv *, jobject, jlong, jboolean);
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_AudioMixer
  * Method:    _attachTo
  * Signature: (JIJZ)V
  */
