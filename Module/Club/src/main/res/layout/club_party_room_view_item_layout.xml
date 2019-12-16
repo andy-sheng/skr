@@ -19,7 +19,7 @@
         android:textSize="@dimen/textsize_14_dp" />
 
     <include
-        android:id="@+id/room_info_view"
+        android:id="@+id/room_info_content"
         layout="@layout/club_party_room_common_layout" />
 
     <View

@@ -132,19 +132,6 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/club_avatar_sdv" />
 
-                        <TextView
-                            android:id="@+id/club_relation_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/view_20_dp"
-                            android:layout_marginLeft="@dimen/view_12_dp"
-                            android:layout_marginRight="@dimen/view_12_dp"
-                            android:textColor="@color/white_trans_50"
-                            android:textSize="@dimen/textsize_14_dp"
-                            app:layout_constrainedWidth="true"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/club_name_tv" />
-
                         <com.component.person.view.PersonTagView
                             android:id="@+id/club_tag_view"
                             android:layout_width="wrap_content"
@@ -154,17 +141,37 @@
                             android:layout_marginRight="@dimen/view_12_dp"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/club_relation_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/club_name_tv" />
+
+                        <com.component.busilib.view.MarqueeTextView
+                            android:id="@+id/club_notice_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/view_20_dp"
+                            android:layout_marginLeft="@dimen/view_12_dp"
+                            android:layout_marginRight="@dimen/view_12_dp"
+                            android:layout_marginTop="@dimen/view_10_dp"
+                            android:paddingLeft="@dimen/view_10_dp"
+                            android:paddingRight="@dimen/view_10_dp"
+                            android:textColor="#FFD287"
+                            android:textSize="@dimen/textsize_12_dp"
+                            android:ellipsize="marquee"
+                            android:gravity="center"
+                            android:focusableInTouchMode="true"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/club_tag_view" />
 
                         <com.common.view.ex.ExConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/view_20_dp"
+                            android:layout_marginTop="@dimen/view_10_dp"
                             app:bl_corners_topLeftRadius="@dimen/view_16_dp"
                             app:bl_corners_topRightRadius="@dimen/view_16_dp"
                             app:bl_shape="rectangle"
                             app:bl_solid_color="#7088FF"
-                            app:layout_constraintTop_toBottomOf="@id/club_tag_view">
+                            app:layout_constraintTop_toBottomOf="@id/club_notice_tv">
 
                             <com.common.view.ex.ExTextView
                                 android:id="@+id/apply_tv"

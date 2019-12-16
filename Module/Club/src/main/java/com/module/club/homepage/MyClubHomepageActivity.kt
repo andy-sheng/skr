@@ -28,7 +28,9 @@ import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.view.AvatarView
+import com.component.busilib.view.MarqueeTextView
 import com.component.person.view.PersonTagView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
@@ -54,8 +56,8 @@ class MyClubHomepageActivity : BaseActivity() {
     private var appbar: AppBarLayout? = null
     private var clubAvatarSdv: SimpleDraweeView? = null
     private var clubNameTv: TextView? = null
-    private var clubRelationTv: TextView? = null
     private var clubTagView: PersonTagView? = null
+    private var clubNoticeTv: MarqueeTextView? = null
 
     private var applyTv: ExTextView? = null
     private var memberTv: ExTextView? = null
@@ -78,6 +80,11 @@ class MyClubHomepageActivity : BaseActivity() {
     private val clubID: Int = MyUserInfoManager.clubID ?: 0
     private var clubInfo: ClubInfo? = null
 
+    private val noticeDrawable = DrawableCreator.Builder()
+            .setSolidColor(U.getColor(R.color.black_trans_50))
+            .setCornersRadius(4.dp().toFloat())
+            .build()
+
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.club_my_homepage_activity_layout
     }
@@ -90,8 +97,8 @@ class MyClubHomepageActivity : BaseActivity() {
         appbar = findViewById(R.id.appbar)
         clubAvatarSdv = findViewById(R.id.club_avatar_sdv)
         clubNameTv = findViewById(R.id.club_name_tv)
-        clubRelationTv = findViewById(R.id.club_relation_tv)
         clubTagView = findViewById(R.id.club_tag_view)
+        clubNoticeTv = findViewById(R.id.club_notice_tv)
 
         applyTv = findViewById(R.id.apply_tv)
         memberTv = findViewById(R.id.member_tv)
@@ -248,9 +255,10 @@ class MyClubHomepageActivity : BaseActivity() {
                 .setCornerRadius(8.dp().toFloat())
                 .build())
         clubNameTv?.text = clubInfo?.name
-        // todo 缺一个联系方式
         clubTagView?.setClubID(clubID)
         clubTagView?.setClubHot(clubInfo?.hot ?: 0)
+        clubNoticeTv?.background = noticeDrawable
+        clubNoticeTv?.text = "公告${clubInfo?.notice}"
         clubIntroduceContent?.text = clubInfo?.desc
         srlNameTv?.text = clubInfo?.name
     }
