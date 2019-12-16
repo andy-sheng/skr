@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.module.club.R
+import com.module.club.homepage.utils.ClubRoleUtils
+import com.zq.live.proto.Common.EClubMemberRoleType
 
 class ClubMemberListAdapter(var hasManager: Boolean, var listener: Listener) : RecyclerView.Adapter<ClubMemberListAdapter.ClubMemberViewHolder>() {
 
@@ -66,10 +69,29 @@ class ClubMemberListAdapter(var hasManager: Boolean, var listener: Listener) : R
             this.mPos = position
             this.mModel = model
 
+            avatarView.bindData(model)
+            nameTv.text = model.nicknameRemark
+            // todo 这个状态待补全 statusTv
+            if (ClubRoleUtils.getClubRoleBackground(model.clubInfo.roleType) != null) {
+                roleTagTv.visibility = View.VISIBLE
+                roleTagTv.background = ClubRoleUtils.getClubRoleBackground(model.clubInfo.roleType)
+                roleTagTv.text = model.clubInfo.roleDesc
+                ClubRoleUtils.getClubRoleTextColor(model.clubInfo.roleType)?.let {
+                    roleTagTv.setTextColor(it)
+                }
+            } else {
+                roleTagTv.visibility = View.INVISIBLE
+            }
+
             if (hasManager) {
                 removeTv.visibility = View.VISIBLE
                 titleTv.visibility = View.VISIBLE
             } else {
+                removeTv.visibility = View.GONE
+                titleTv.visibility = View.GONE
+            }
+
+            if (model.userId == MyUserInfoManager.uid.toInt() || model.clubInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value) {
                 removeTv.visibility = View.GONE
                 titleTv.visibility = View.GONE
             }
