@@ -1,6 +1,7 @@
 package com.module.club.homepage.room
 
 import android.graphics.Color
+import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
+import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.utils.dp
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
@@ -16,7 +18,7 @@ import com.component.busilib.model.PartyRoomInfoModel
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.club.R
 
-class ClubPartyRoomAdapter : RecyclerView.Adapter<ClubPartyRoomAdapter.RoomViewHolder>() {
+class ClubPartyRoomAdapter(val listener: Listener) : RecyclerView.Adapter<ClubPartyRoomAdapter.RoomViewHolder>() {
 
     var clubParty: PartyRoomInfoModel = PartyRoomInfoModel()   // 家族派对
     var mDataList = ArrayList<PartyRoomInfoModel>()  // 成员派对
@@ -75,10 +77,16 @@ class ClubPartyRoomAdapter : RecyclerView.Adapter<ClubPartyRoomAdapter.RoomViewH
 
     inner class ClubPartyViewHolder(item: View) : RoomViewHolder(item) {
 
+        init {
+            roomInfoContent.setAnimateDebounceViewClickListener {
+                listener.onClickClubParty(mPos, mModel)
+            }
+        }
     }
 
     open inner class RoomViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
+        val roomInfoContent: ConstraintLayout = item.findViewById(R.id.room_info_content)
         private val avatarSdv: SimpleDraweeView = item.findViewById(R.id.avatar_sdv)
         private val roomNameTv: TextView = item.findViewById(R.id.room_name_tv)
         private val compereTv: TextView = item.findViewById(R.id.compere_tv)
@@ -89,6 +97,12 @@ class ClubPartyRoomAdapter : RecyclerView.Adapter<ClubPartyRoomAdapter.RoomViewH
 
         var mPos = -1
         var mModel: PartyRoomInfoModel? = null
+
+        init {
+            roomInfoContent.setAnimateDebounceViewClickListener {
+                listener.onClickClubMemberParty(mPos, mModel)
+            }
+        }
 
         fun bindData(position: Int, model: PartyRoomInfoModel) {
             this.mPos = position
@@ -124,5 +138,10 @@ class ClubPartyRoomAdapter : RecyclerView.Adapter<ClubPartyRoomAdapter.RoomViewH
             roomPlayerNumTv.text = "${model.playerNum?.toString()}人在线"
 
         }
+    }
+
+    interface Listener {
+        fun onClickClubParty(position: Int, model: PartyRoomInfoModel?)
+        fun onClickClubMemberParty(position: Int, model: PartyRoomInfoModel?)
     }
 }

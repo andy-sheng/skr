@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.userinfo.model.ClubInfo
 import com.common.rxretrofit.ApiManager
@@ -13,8 +14,10 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.component.busilib.model.PartyRoomInfoModel
+import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
+import com.module.playways.IPlaywaysModeService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -26,11 +29,12 @@ class ClubPartyRoomView(context: Context, attrs: AttributeSet?, defStyleAttr: In
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
 
     private val recyclerView: RecyclerView
-    private val adapter: ClubPartyRoomAdapter = ClubPartyRoomAdapter()
+    private val adapter: ClubPartyRoomAdapter
 
     var clubID: Int = 0
     private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
     private var offset = 0
+    private var hasMore = true
     private val cnt = 15
 
     init {
@@ -38,6 +42,22 @@ class ClubPartyRoomView(context: Context, attrs: AttributeSet?, defStyleAttr: In
 
         recyclerView = this.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        adapter = ClubPartyRoomAdapter(object : ClubPartyRoomAdapter.Listener {
+            override fun onClickClubParty(position: Int, model: PartyRoomInfoModel?) {
+                model?.roomID?.let {
+                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                    iRankingModeService.tryGoPartyRoom(it, 1)
+                }
+
+            }
+
+            override fun onClickClubMemberParty(position: Int, model: PartyRoomInfoModel?) {
+                model?.roomID?.let {
+                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                    iRankingModeService.tryGoPartyRoom(it, 1)
+                }
+            }
+        })
         recyclerView.adapter = adapter
     }
 
@@ -70,7 +90,28 @@ class ClubPartyRoomView(context: Context, attrs: AttributeSet?, defStyleAttr: In
                 clubServerApi.getClubMemberPartyDetail(clubID, off, cnt)
             }
             if (result.errno == 0) {
+                offset = result.data.getIntValue("offset")
+                hasMore = result.data.getBooleanValue("hasMore")
+                val list = JSON.parseArray(result.data.getString("items"), PartyRoomInfoModel::class.java)
+                addClubMemberList(list, isClean)
+                callBack?.invoke(hasMore)
+            }
+        }
+    }
 
+    private fun addClubMemberList(list: List<PartyRoomInfoModel>?, isClean: Boolean) {
+        if (isClean) {
+            adapter.mDataList.clear()
+            if (!list.isNullOrEmpty()) {
+                adapter.mDataList.addAll(list)
+            }
+            adapter.notifyDataSetChanged()
+        } else {
+            if (!list.isNullOrEmpty()) {
+                val size = adapter.mDataList.size
+                adapter.mDataList.addAll(list)
+                val newSize = adapter.mDataList.size
+                adapter.notifyItemRangeInserted((size + 1), 1 + newSize - size)
             }
         }
     }
