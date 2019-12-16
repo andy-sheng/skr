@@ -1,6 +1,7 @@
 package com.module.club.apply
 
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -73,6 +74,8 @@ class ClubApplyListActivity : BaseActivity() {
                 }
             }
         })
+        contentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        contentRv.adapter = adapter
 
         titlebar.leftTextView.setDebounceViewClickListener {
             finish()
@@ -141,7 +144,7 @@ class ClubApplyListActivity : BaseActivity() {
         // 1 未审核 2审核通过 3 审核不通过
         launch {
             val map = mapOf(
-                    "applyID" to (model?.user?.userId ?: 0),
+                    "applyID" to (model?.applyID ?: 0),
                     "auditStatus" to (if (isApprove) 2 else 3)
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))

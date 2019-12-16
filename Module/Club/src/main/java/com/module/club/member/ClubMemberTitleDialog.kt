@@ -36,8 +36,9 @@ class ClubMemberTitleDialog(context: Context, model: UserInfoModel?, listener: L
                 || model?.clubInfo?.roleType == EClubMemberRoleType.ECMRT_Hostman.value) {
             // 有身份得先撤销身份
             function1.visibility = View.GONE
-            function1.text = "撤销头衔"
-            function1.setDebounceViewClickListener { listener.onClickCommon() }
+            function2.visibility = View.VISIBLE
+            function2.text = "撤销头衔"
+            function2.setDebounceViewClickListener { listener.onClickCommon() }
         } else {
             function1.visibility = View.VISIBLE
             function1.text = "设为副族长"
