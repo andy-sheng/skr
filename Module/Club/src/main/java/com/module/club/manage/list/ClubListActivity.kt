@@ -15,7 +15,9 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
@@ -39,6 +41,8 @@ class ClubListActivity : BaseActivity() {
     private var offset = 0
     private val cnt = 15
     private var hasMore = true
+
+    private var mTipsDialogView: TipsDialogView? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.club_list_activity_layout
@@ -73,9 +77,35 @@ class ClubListActivity : BaseActivity() {
         }
 
         titlebar.rightTextView.setDebounceViewClickListener {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_CLUB)
-                    .withString("from", "create")
-                    .navigation()
+            launch {
+                val result = subscribe(RequestControl("checkCreatePermission", ControlType.CancelThis)) {
+                    clubServerApi.checkCreatePermission()
+                }
+                if (result.errno == 0) {
+                    // 可以创建
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_CLUB)
+                            .withString("from", "create")
+                            .navigation()
+                } else {
+                    if (result.errno == 8440202) {
+                        mTipsDialogView?.dismiss(false)
+                        mTipsDialogView = TipsDialogView.Builder(this@ClubListActivity)
+                                .setMessageTip("开通VIP特权，立即获得家族创建权限")
+                                .setConfirmTip("立即开通")
+                                .setCancelTip("取消")
+                                .setConfirmBtnClickListener {
+                                    mTipsDialogView?.dismiss(false)
+                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                            .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
+                                            .greenChannel().navigation()
+                                }
+                                .build()
+                        mTipsDialogView?.showByDialog()
+                    } else {
+                        U.getToastUtil().showShort(result.errmsg)
+                    }
+                }
+            }
         }
 
         refreshLayout.apply {

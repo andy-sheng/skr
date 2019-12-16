@@ -12,6 +12,12 @@ interface ClubServerApi {
     @GET("http://dev.api.inframe.mobi/v1/club/list-recommend-club-inner")
     fun getInnerRecommendClubList(@Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 
+    /**
+     * 检查能否创建家族
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/permission-to-create")
+    fun checkCreatePermission(): Call<ApiResult>
+
     /** 创建家族
      * {
     "desc": "string",
