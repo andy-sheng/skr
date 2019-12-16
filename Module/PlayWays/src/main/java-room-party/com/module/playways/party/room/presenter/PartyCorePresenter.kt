@@ -819,7 +819,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyNoticeChangeEvent) {
-        pretendSystemMsg("房主将公告修改为 ${mRoomData.notice}")
+        pretendSystemMsg("主持人将公告修改为 ${mRoomData.notice}")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -829,7 +829,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyTopicNameChangeEvent) {
-        pretendSystemMsg("房主将主题修改为 ${mRoomData.topicName}")
+        pretendSystemMsg("主持人将主题修改为 ${mRoomData.topicName}")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -840,7 +840,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyEnterPermissionEvent) {
         val msg = if (mRoomData.enterPermission == 2) "允许所有人进入" else "仅邀请才能加入"
-        pretendSystemMsg("房主将进房间权限修改为 ${msg}")
+        pretendSystemMsg("主持人将进房间权限修改为 ${msg}")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
