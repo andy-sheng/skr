@@ -249,8 +249,8 @@ class MyClubHomepageActivity : BaseActivity() {
                 .build())
         clubNameTv?.text = clubInfo?.name
         // todo 缺一个联系方式
-        clubTagView = findViewById(R.id.club_tag_view)
-
+        clubTagView?.setClubID(clubID)
+        clubTagView?.setClubHot(clubInfo?.hot ?: 0)
         clubIntroduceContent?.text = clubInfo?.desc
         srlNameTv?.text = clubInfo?.name
     }
