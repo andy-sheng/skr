@@ -17,6 +17,7 @@ import com.module.playways.party.room.event.PartyNoticeChangeEvent
 import com.module.playways.party.room.model.PartyGameInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.zq.live.proto.PartyRoom.EPGameType
+import com.zq.live.proto.PartyRoom.EPRoundStatus
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -231,9 +232,15 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
             }
         }
 
+        if (mRoomData?.realRoundInfo?.status == EPRoundStatus.PRS_WAITING.value) {
+            ruleTv.visibility = View.GONE
+            handCardTv.visibility = View.GONE
+        }
+
         if (getCurrentSelectedView().visibility == View.GONE) {
             changeTabByType(TagType.GAME)
         }
+
     }
 
     private fun getCurrentSelectedView(): View {
