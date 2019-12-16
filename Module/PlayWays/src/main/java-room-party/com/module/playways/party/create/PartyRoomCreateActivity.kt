@@ -110,12 +110,12 @@ class PartyRoomCreateActivity : BaseActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val str = s.toString()
                 val length = U.getStringUtils().getStringLength(str)
-                if (length > 16) {
+                if (length > 30) {
                     MyLog.d(TAG, "onTextChanged s = $str")
                     val selectIndex = preString.length
                     nameEdittext.setText(preString)
                     nameEdittext.setSelection(selectIndex)
-                    U.getToastUtil().showShort("昵称不能超过8个汉字或16个英文")
+                    U.getToastUtil().showShort("不能超过15个汉字或30个英文")
                 }
             }
         })
