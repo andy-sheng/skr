@@ -2,10 +2,10 @@ package com.module.playways.party.room.presenter
 
 import android.os.Handler
 import android.os.Message
-import android.text.TextUtils
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoManager
 import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
@@ -36,6 +36,7 @@ import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.PartyRoomMsgManager
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
+import com.zq.live.proto.Common.EClubMemberRoleType
 import com.zq.live.proto.PartyRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.GlobalScope
@@ -125,13 +126,16 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
         joinRcRoom(-1)
         if (mRoomData.gameId > 0) {
-            if(mRoomData.notice.isNotEmpty()){
+            if (mRoomData.notice.isNotEmpty()) {
                 pretendSystemMsg("房间公告 ${mRoomData.notice}")
-            }else{
+            } else {
 
                 pretendSystemMsg("欢迎加入${mRoomData.getPlayerInfoById(mRoomData.hostId)?.userInfo?.nicknameRemark}")
             }
         }
+
+        pretendSystemMsg("温馨提示：连麦时佩戴耳机效果最佳哦～")
+
         startHeartbeat()
         startSyncGameStatus()
     }
@@ -778,6 +782,23 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
         roomView.joinNotice(playerInfoModel)
         mRoomData.updateUser(playerInfoModel, seatInfoModel)
+
+        if (mRoomData.isClubHome()) {
+            pretendSystemMsg("${getIdentityName(event.user.userInfo.clubInfo.roleType.value)}${UserInfoManager.getInstance().getRemarkName(event.user.userInfo.userID, event.user.userInfo.nickName)} 加入房间")
+        } else {
+            pretendSystemMsg("${UserInfoManager.getInstance().getRemarkName(event.user.userInfo.userID, event.user.userInfo.nickName)} 加入房间")
+        }
+    }
+
+    private fun getIdentityName(roleType: Int): String {
+        when (roleType) {
+            EClubMemberRoleType.ECMRT_Invalid.value -> ""
+            EClubMemberRoleType.ECMRT_Founder.value -> "【族长】"
+            EClubMemberRoleType.ECMRT_CoFounder.value -> "【副组长】"
+            EClubMemberRoleType.ECMRT_Hostman.value -> "【主持人】"
+            EClubMemberRoleType.ECMRT_Common.value -> ""
+            else -> ""
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -844,9 +865,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         partySeatInfoModel.userID = event.userID
         partySeatInfoModel.seatStatus = ESeatStatus.SS_OPEN.value
         mRoomData.updateSeat(partySeatInfoModel)
-        if(event.micStatus.value == EMicStatus.MS_OPEN.value){
+        if (event.micStatus.value == EMicStatus.MS_OPEN.value) {
             pretendSystemMsg("${event.opUser.userInfo.nickName} 将 ${mRoomData.getPlayerInfoById(event.userID)?.userInfo?.nicknameRemark} 的麦开启")
-        }else{
+        } else {
             pretendSystemMsg("${event.opUser.userInfo.nickName} 将 ${mRoomData.getPlayerInfoById(event.userID)?.userInfo?.nicknameRemark} 的麦关闭")
         }
     }
@@ -872,9 +893,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         MyLog.d(TAG, "onEvent event = $event")
 //        if(mRoomData.myUserInfo?.isHost() == true || mRoomData.){
 //        }
-        if(event.cancel){
+        if (event.cancel) {
             pretendSystemMsg("${event.user.userInfo.nickName} 取消申请")
-        }else{
+        } else {
             pretendSystemMsg("${event.user.userInfo.nickName} 申请上麦")
         }
 
@@ -898,7 +919,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         partySeatInfoModel.seatStatus = n?.seatStatus ?: 0
         mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.user), partySeatInfoModel)
         //TODO
-        if(event.opUser.userInfo.userID != event.user.userInfo.userID){
+        if (event.opUser.userInfo.userID != event.user.userInfo.userID) {
             // 不是自己主动下麦的
             pretendSystemMsg("${event.opUser.userInfo.nickName} 将 ${event.user.userInfo.nickName} 下麦")
         }
