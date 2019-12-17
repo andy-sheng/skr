@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
@@ -17,10 +18,12 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.ex.NoLeakEditText
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
@@ -144,6 +147,8 @@ class PartyRoomCreateActivity : BaseActivity() {
         }
     }
 
+    var mTipsDialogView: TipsDialogView? = null
+
     private fun createRoom() {
         launch {
             var topicName = nameEdittext.text.toString().trim()
@@ -158,14 +163,38 @@ class PartyRoomCreateActivity : BaseActivity() {
             val result = subscribe(RequestControl("createRoom", ControlType.CancelThis)) {
                 roomServerApi.createRoom(body)
             }
+            titlebar.rightTextView.isClickable = true
             if (result.errno == 0) {
                 var rsp = JSON.parseObject(result.data.toString(), JoinPartyRoomRspModel::class.java)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_ROOM)
                         .withSerializable("JoinPartyRoomRspModel", rsp)
                         .navigation()
                 finish()
+            } else if (8436006 == result.errno) {
+                if (MyUserInfoManager.myUserInfo?.vipInfo == null) {
+                    mTipsDialogView = TipsDialogView.Builder(this@PartyRoomCreateActivity)
+                            .setMessageTip("开通VIP特权，立即获得创建权限")
+                            .setConfirmTip("立即开通")
+                            .setCancelTip("取消")
+                            .setConfirmBtnClickListener(object : AnimateClickListener() {
+                                override fun click(view: View) {
+                                    mTipsDialogView?.dismiss(false)
+                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                            .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
+                                            .greenChannel().navigation()
+                                }
+                            })
+                            .setCancelBtnClickListener(object : AnimateClickListener() {
+                                override fun click(view: View) {
+                                    mTipsDialogView?.dismiss(true)
+                                }
+                            })
+                            .build()
+                    mTipsDialogView?.showByDialog(true)
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                }
             } else {
-                titlebar.rightTextView.isClickable = true
                 U.getToastUtil().showShort(result.errmsg)
             }
         }
