@@ -2,8 +2,9 @@ package com.module.club.manage.create
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
+import android.os.Looper
+import android.os.MessageQueue
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
@@ -53,6 +54,7 @@ class CreateClubActivity : BaseActivity() {
     lateinit var clubNameEt: NoLeakEditText
     lateinit var clubIntroductionEt: NoLeakEditText
     lateinit var progressView: SkrProgressView
+    lateinit var placeHolder: View
 
     internal var mImageItemArrayList: MutableList<ImageItem> = java.util.ArrayList()
 
@@ -73,6 +75,16 @@ class CreateClubActivity : BaseActivity() {
         clubNameEt = findViewById(R.id.club_name_et)
         clubIntroductionEt = findViewById(R.id.club_introduction_et)
         progressView = findViewById(R.id.progress_view)
+        placeHolder = findViewById(R.id.place_holder)
+        placeHolder.layoutParams.height = U.getDisplayUtils().phoneHeight - U.getDisplayUtils().dip2px(486f)
+
+        Looper.myQueue().addIdleHandler(object : MessageQueue.IdleHandler {
+            override fun queueIdle(): Boolean {
+                placeHolder.layoutParams.height = U.getDisplayUtils().phoneHeight - U.getDisplayUtils().dip2px(486f) - titlebar.measuredHeight
+                placeHolder.requestLayout()
+                return false
+            }
+        })
 
         val from = intent?.getStringExtra("from") ?: "create"
         if (!TextUtils.isEmpty(from)) {
