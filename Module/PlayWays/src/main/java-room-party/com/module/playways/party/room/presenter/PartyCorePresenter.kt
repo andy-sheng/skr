@@ -879,6 +879,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         partySeatInfoModel.userID = event.userID
         partySeatInfoModel.seatStatus = ESeatStatus.SS_OPEN.value
         mRoomData.updateSeat(partySeatInfoModel)
+        if(event.micStatus.value == EMicStatus.MS_OPEN.value){
+            pretendSystemMsg("${event.opUser.userInfo.nickName} 将 ${mRoomData.getPlayerInfoById(event.userID)?.userInfo?.nicknameRemark} 的麦开启")
+        }else{
+            pretendSystemMsg("${event.opUser.userInfo.nickName} 将 ${mRoomData.getPlayerInfoById(event.userID)?.userInfo?.nicknameRemark} 的麦关闭")
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -922,6 +927,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         partySeatInfoModel.micStatus = n?.micStatus ?: 0
         partySeatInfoModel.seatStatus = n?.seatStatus ?: 0
         mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.user), partySeatInfoModel)
+        //TODO
+        pretendSystemMsg(" ${event.user.userInfo.nickName} 下麦")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
