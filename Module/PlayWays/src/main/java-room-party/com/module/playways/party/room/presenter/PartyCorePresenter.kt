@@ -925,8 +925,10 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.user), partySeatInfoModel)
         //TODO
         if (event.opUser.userInfo.userID != event.user.userInfo.userID) {
-            // 不是自己主动下麦的
-            pretendSystemMsg("${event.opUser.userInfo.nickName} 已将你抱下麦")
+            if(event.user.userInfo.userID == MyUserInfoManager.uid.toInt()){
+                // 不是自己主动下麦的
+                pretendSystemMsg("${event.opUser.userInfo.nickName} 已将你抱下麦")
+            }
         }
     }
 
