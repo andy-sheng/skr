@@ -41,6 +41,8 @@ import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.actor.PartyApplyPanelView
 import com.module.playways.party.room.actor.PartyMemberPanelView
 import com.module.playways.party.room.bottom.PartyBottomContainerView
+import com.module.playways.party.room.event.PartyBeHostConfirmEvent
+import com.module.playways.party.room.event.PartyOpHostEvent
 import com.module.playways.party.room.event.PartySelectSongEvent
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
 import com.module.playways.party.room.model.*

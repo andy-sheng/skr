@@ -18,8 +18,8 @@ import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.event.PartyHostChangeEvent
 import com.module.playways.party.room.event.PartyOnlineUserCntChangeEvent
-import com.module.playways.party.room.model.PartyBeHostConfirmEvent
-import com.module.playways.party.room.model.PartyOpHostEvent
+import com.module.playways.party.room.event.PartyBeHostConfirmEvent
+import com.module.playways.party.room.event.PartyOpHostEvent
 import com.module.playways.party.room.model.PartySelfOpHostEvent
 import com.module.playways.room.data.H
 import org.greenrobot.eventbus.EventBus
