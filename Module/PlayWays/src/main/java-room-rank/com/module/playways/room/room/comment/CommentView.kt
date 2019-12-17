@@ -291,7 +291,7 @@ class CommentView : EdgeTransparentView {
             EClubMemberRoleType.ECMRT_Founder.value -> "【族长】"
             EClubMemberRoleType.ECMRT_CoFounder.value -> "【副族长】"
             EClubMemberRoleType.ECMRT_Hostman.value -> "【主持人】"
-            EClubMemberRoleType.ECMRT_Common.value -> "【族人】"
+            EClubMemberRoleType.ECMRT_Common.value -> "【族员】"
             else -> ""
         }
 
