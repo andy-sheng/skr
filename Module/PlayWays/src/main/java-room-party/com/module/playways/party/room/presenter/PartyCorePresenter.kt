@@ -926,7 +926,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         //TODO
         if (event.opUser.userInfo.userID != event.user.userInfo.userID) {
             // 不是自己主动下麦的
-            pretendSystemMsg("${event.opUser.userInfo.nickName} 将 ${event.user.userInfo.nickName} 下麦")
+            pretendSystemMsg("${event.opUser.userInfo.nickName} 已将你抱下麦")
         }
     }
 
