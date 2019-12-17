@@ -126,6 +126,9 @@ void AudioReverb::ReverbProcess(short *buf, const int samples)
         }
         mReCreate = false;
     }
+    if (mScenario == AUDIO_REVERB_LEVEL_0) {
+        return;
+    }
     if (mReverbImp == NULL) {
         mReverbImp = &mReverbImp_;
         Init();
@@ -152,9 +155,9 @@ void AudioReverb::ReverbProcess(short *buf, const int samples)
 
 void  AudioReverb::ReverbSet(int scenario) {
     if (mScenario != scenario) {
+        mScenario = scenario;
         mReCreate = true;
     }
-    mScenario = scenario;
 }
 
 int AudioReverb::init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples) {

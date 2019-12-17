@@ -13,7 +13,7 @@
 #define KSYSTREAMERANDROID_JNI_CLASS_DEF_H
 
 #ifndef JAVA_PACKAGE_PATH
-#define JAVA_PACKAGE_PATH                          "com/ksyun/media/streamer/"
+#define JAVA_PACKAGE_PATH                          "com/zq/mediaengine/"
 #endif
 
 ///////////// ArrayList Define ////////////////////////////////////////

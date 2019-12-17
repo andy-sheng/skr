@@ -8,6 +8,7 @@ import com.alibaba.fastjson.TypeReference;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -92,24 +93,15 @@ public class AudioEffectParamController {
                 json = DesEncode.decode(AudioEffectParamController.DES_KEY,
                         content);
 
-//                Gson gson = new Gson();
-//                AudioEffectParamController.params = gson.fromJson(json, new TypeToken<Map<Integer, SongStyleEffectParam>>() {
-//                }.getType());
+//                FileOutputStream fout = new FileOutputStream("/sdcard/effect_params.json");
+//                fout.write(json.getBytes());
+//                fout.close();
+
                 AudioEffectParamController.params = JSON.parseObject(
                         json, new TypeReference<Map<Integer, SongStyleEffectParam>>() {
                         }.getType());
 
                 Log.i("songstudio", "init songstudio param success...");
-
-//                int len = json.length();
-//                int pos = 0;
-//                do {
-//                    int end = pos + 2048;
-//                    end = (end < len) ? end : len;
-//                    String tmp = json.substring(pos, end);
-//                    pos = end;
-//                    Log.e("songstudio", "tmp: " + tmp);
-//                } while (pos < len);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -45,6 +45,10 @@ class KSYAudioEffectWrapper {
         native_remove_effects(mInstance);
     }
 
+    public void applyEffects() {
+        native_apply_effects(mInstance);
+    }
+
     public void process(ByteBuffer buf) {
         if (buf != null && buf.limit() > 0) {
             native_process(mInstance, buf, buf.limit());
@@ -78,6 +82,7 @@ class KSYAudioEffectWrapper {
     private native void native_set_pitch_level(long ptr, int level);
     private native void native_add_effect(long ptr, String name, int argc, EffectOption[] argv);
     private native void native_remove_effects(long ptr);
+    private native void native_apply_effects(long ptr);
     private native void native_process(long ptr, ByteBuffer buf, int size);
     private native void native_quit(long ptr);
     private native void attachTo(long instance, int idx, long ptr, boolean detach);

@@ -16,6 +16,7 @@
 #define AUDIO_PITCH_LEVEL_6 2
 #define AUDIO_PITCH_LEVEL_7 3
 
+#define AUDIO_EFFECT_TYPE_NONE 0
 #define AUDIO_EFFECT_TYPE_PITCH 9
 #define AUDIO_EFFECT_TYPE_FEMALE 10
 #define AUDIO_EFFECT_TYPE_MALE 11
@@ -157,17 +158,19 @@ void KSYAudioEffect::setAudioFormat(int sample_fmt, int sample_rate, int channel
 
 void KSYAudioEffect::setEffectType(int type) {
     if (type != mEffectType) {
-        mReCreate = true;
+        mEffectType = type;
+        if (type != AUDIO_EFFECT_TYPE_USER_DEFINED) {
+            mReCreate = true;
+        }
     }
-    mEffectType = type;
 }
 
 void KSYAudioEffect::setPitchLevel(int level) {
     setEffectType(AUDIO_EFFECT_TYPE_PITCH);
     if (level != mPitchLevel) {
+        mPitchLevel = level;
         mReCreate = true;
     }
-    mPitchLevel = level;
 }
 
 void KSYAudioEffect::auto_effect(char const *name, float factor,
@@ -275,6 +278,11 @@ void KSYAudioEffect::addEffects() {
         mChain = NULL;
         mInBuffer = NULL;
         mOutBuffer = NULL;
+    }
+
+    if (mEffectType == AUDIO_EFFECT_TYPE_NONE) {
+        // bypass mode
+        return;
     }
 
     //mInBuffer and mOutBuffer is freed by sox_delete_effects_chain
@@ -460,15 +468,11 @@ void KSYAudioEffect::addUserEffects(sox_signalinfo_t *interm_signal) {
 }
 
 void KSYAudioEffect::processAudio(uint8_t *buf, int len) {
-    if (mReCreate) {
-        if (mChain != NULL) {
-            sox_delete_effects_chain(mChain);
-            mChain = NULL;
-        }
+    if ((mChain == NULL && mEffectType != AUDIO_EFFECT_TYPE_NONE) || mReCreate) {
         mReCreate = false;
-    }
-    if (mChain == NULL) {
+        LOGD("addEffects");
         addEffects();
+        LOGD("~addEffects");
     }
     if (mChain != NULL) {
         stop = false;
@@ -480,7 +484,11 @@ void KSYAudioEffect::processAudio(uint8_t *buf, int len) {
         memcpy(mInBuffer->in_buf, buf, (size_t)len);
 
         sox_flow_effects(mChain, update_status, this);
+    } else {
+        // EFFECT_NONE
+        return;
     }
+
     if (mOutBuffer->out_length > 0) {
 #if DEBUG
         fwrite(mOutBuffer->out_buf, 1, mOutBuffer->out_length, out_file);
@@ -568,7 +576,6 @@ void KSYAudioEffect::addEffects(char const *name, int argc, char *argv[]) {
         LOGD("set audio effect argv[%d]:%s", i, params->argv[i]);
     }
     mUserDefineParams.push_back(params);
-    mReCreate = true;
 }
 
 void KSYAudioEffect::removeEffects() {
@@ -590,5 +597,8 @@ void KSYAudioEffect::removeEffects() {
         }
         mUserDefineParams.clear();
     }
+}
+
+void KSYAudioEffect::applyEffects() {
     mReCreate = true;
 }

@@ -76,6 +76,12 @@ void Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1remove_1
     thiz->removeEffects();
 }
 
+void Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1apply_1effects
+        (JNIEnv *env, jobject object, jlong instance) {
+    KSYAudioEffect *thiz = (KSYAudioEffect *) instance;
+    thiz->applyEffects();
+}
+
 void Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1process
         (JNIEnv *env, jobject object, jlong instance, jobject byteBuffer, jint len) {
     KSYAudioEffect *thiz = (KSYAudioEffect *) instance;

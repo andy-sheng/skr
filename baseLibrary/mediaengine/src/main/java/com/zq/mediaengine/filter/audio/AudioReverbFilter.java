@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
  * Audio reverb filter, with 5 acceptable level.
  */
 public class AudioReverbFilter extends AudioFilterBase {
+    public static int AUDIO_REVERB_LEVEL_0 = 0;
     public static int AUDIO_REVERB_LEVEL_1 = 1;
     public static int AUDIO_REVERB_LEVEL_2 = 2;
     public static int AUDIO_REVERB_LEVEL_3 = 3;

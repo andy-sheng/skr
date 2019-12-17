@@ -27,6 +27,8 @@ struct Reverb_priv_t
 
 #define REVERB_BLOCK 16384
 #define REVERB_FRAMELEN (16384)
+
+#define AUDIO_REVERB_LEVEL_0 0
 #define AUDIO_REVERB_LEVEL_1 1
 #define AUDIO_REVERB_LEVEL_2 2
 #define AUDIO_REVERB_LEVEL_3 3

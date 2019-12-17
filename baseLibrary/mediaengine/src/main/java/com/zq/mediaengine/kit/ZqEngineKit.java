@@ -45,6 +45,7 @@ import com.zq.mediaengine.filter.audio.AudioFilterMgt;
 import com.zq.mediaengine.filter.audio.AudioMixer;
 import com.zq.mediaengine.filter.audio.AudioPreview;
 import com.zq.mediaengine.filter.audio.AudioResampleFilter;
+import com.zq.mediaengine.filter.audio.AudioReverbFilter;
 import com.zq.mediaengine.filter.imgtex.ImgTexMixer;
 import com.zq.mediaengine.filter.imgtex.ImgTexPreview;
 import com.zq.mediaengine.filter.imgtex.ImgTexScaleFilter;
@@ -59,7 +60,9 @@ import com.zq.mediaengine.kit.agora.AgoraRTCAdapter;
 import com.zq.mediaengine.kit.bytedance.BytedEffectFilter;
 import com.zq.mediaengine.kit.filter.AcrRecognizer;
 import com.zq.mediaengine.kit.filter.AudioDummyFilter;
+import com.zq.mediaengine.kit.filter.CbAudioEffectFilter;
 import com.zq.mediaengine.kit.filter.CbAudioScorer;
+import com.zq.mediaengine.kit.filter.TbAudioAgcFilter;
 import com.zq.mediaengine.kit.log.LogRunnable;
 import com.zq.mediaengine.publisher.MediaMuxerPublisher;
 import com.zq.mediaengine.publisher.Publisher;
@@ -156,6 +159,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private AgoraRTCAdapter mAgoraRTCAdapter;
     private AudioDummyFilter mAudioDummyFilter;
     private AudioFilterMgt mAudioFilterMgt;
+    private AudioReverbFilter mAudioReverbFilter;
     private AudioResampleFilter mScoreResampleFilter;
     private CbAudioScorer mCbAudioScorer;
     private AcrRecognizer mAcrRecognizer;
@@ -576,6 +580,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private void initAudioModules() {
         MyLog.i(TAG, "initAudioModules");
         mAudioFilterMgt = new AudioFilterMgt();
+        mAudioReverbFilter = new AudioReverbFilter();
         mScoreResampleFilter = new AudioResampleFilter();
         mCbAudioScorer = new CbAudioScorer();
         // 单mic数据PCM录制
@@ -681,6 +686,9 @@ public class ZqEngineKit implements AgoraOutCallback {
             // 连接音效模块
             mAudioLocalSrcPin.connect(mAudioFilterMgt.getSinkPin());
         }
+
+        // 添加音效滤镜
+        mAudioFilterMgt.setFilter(mAudioReverbFilter);
 
         if (mConfig.isUseExternalAudio() || mConfig.isUseExternalAudioRecord()) {
             // 录制时的重采样模块, 需要录制时再连接
@@ -1325,14 +1333,32 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         mConfig.setStyleEnum(styleEnum);
 
-        // TODO: 测试用途
-        if (mAudioFilterMgt != null) {
-            mAudioFilterMgt.setFilter((AudioFilterBase[]) null);
+        if (mAudioReverbFilter != null) {
+            int type = AudioReverbFilter.AUDIO_REVERB_LEVEL_0;
+            switch (styleEnum) {
+                case none:
+                    type = AudioReverbFilter.AUDIO_REVERB_LEVEL_0;
+                    break;
+                case ktv:
+                    type = AudioReverbFilter.AUDIO_REVERB_LEVEL_4;
+                    break;
+                case rock:
+                    type = AudioReverbFilter.AUDIO_REVERB_LEVEL_3;
+                    break;
+                case liuxing:
+                    type = AudioReverbFilter.AUDIO_REVERB_LEVEL_2;
+                    break;
+                case kongling:
+                    type = AudioReverbFilter.AUDIO_REVERB_LEVEL_1;
+                    break;
+                default:
+                    break;
+            }
+            mAudioReverbFilter.setReverbLevel(type);
         }
 
-//        List<AudioFilterBase> filters = new ArrayList<>(2);
-//
 //        // 添加音效
+//        List<AudioFilterBase> filters = new ArrayList<>(2);
 //        if (styleEnum == Params.AudioEffect.ktv) {
 //            filters.add(new CbAudioEffectFilter(5));
 //        } else if (styleEnum == Params.AudioEffect.rock) {
@@ -1343,7 +1369,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 //            filters.add(new CbAudioEffectFilter(1));
 //        }
 //
-//        filters.add(new TbAudioAgcFilter(mConfig));
+////        filters.add(new TbAudioAgcFilter(mConfig));
 //
 //        if (mAudioFilterMgt != null) {
 //            mAudioFilterMgt.setFilter(filters);

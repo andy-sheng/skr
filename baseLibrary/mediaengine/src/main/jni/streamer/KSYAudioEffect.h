@@ -67,6 +67,7 @@ public:
     int process(int idx, uint8_t* inBuf, int inSize);
     void addEffects(char const *name, int argc, char* argv[]);
     void removeEffects();
+    void applyEffects();
     bool stop;
 private:
     sox_effects_chain_t *mChain;
