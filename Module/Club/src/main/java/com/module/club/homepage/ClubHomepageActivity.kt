@@ -1,5 +1,6 @@
 package com.module.club.homepage
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.AppBarLayout
@@ -34,7 +35,7 @@ import com.module.club.R
 import com.module.club.homepage.event.ClubInfoChangeEvent
 import com.module.club.homepage.room.ClubPartyRoomView
 import com.module.club.homepage.view.ClubMemberView
-import com.module.club.manage.setting.ClubManageFragment
+import com.module.club.manage.setting.ClubManageActivity
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -201,11 +202,9 @@ class ClubHomepageActivity : BaseActivity() {
 
         moreBtn?.setDebounceViewClickListener {
             // 跳到设置页面
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, ClubManageFragment::class.java)
-                    .addDataBeforeAdd(1, clubMemberInfo)
-                    .setAddToBackStack(true)
-                    .setHasAnimation(true)
-                    .build())
+            val intent = Intent(this, ClubManageActivity::class.java)
+            intent.putExtra("clubMemberInfo", clubMemberInfo)
+            startActivity(intent)
         }
 
         applyTv?.setDebounceViewClickListener {
@@ -354,7 +353,7 @@ class ClubHomepageActivity : BaseActivity() {
         clubTagView?.setClubID(clubID)
         clubTagView?.setClubHot(clubID)
         clubNoticeTv?.background = noticeDrawable
-        clubNoticeTv?.text = "公告${clubInfo?.notice}"
+        clubNoticeTv?.text = "公告: ${clubInfo?.notice}"
         clubIntroduceContent?.text = clubInfo?.desc
         srlNameTv?.text = clubInfo?.name
     }

@@ -80,6 +80,7 @@ class ClubNoticeSettingFragment : BaseFragment() {
             }
 
             if (result.errno == 0) {
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
                 U.getToastUtil().showShort("公告设置成功")
                 EventBus.getDefault().post(ClubInfoChangeEvent())
                 U.getFragmentUtils().popFragment(this@ClubNoticeSettingFragment)

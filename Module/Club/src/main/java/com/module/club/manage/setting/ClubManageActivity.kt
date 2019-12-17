@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.ClubMemberInfo
@@ -27,7 +28,7 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
-class ClubManageFragment : BaseFragment() {
+class ClubManageActivity : BaseActivity() {
 
     private var titlebar: CommonTitleBar? = null
 
@@ -43,28 +44,22 @@ class ClubManageFragment : BaseFragment() {
 
     private var mTipsDialogView: TipsDialogView? = null
 
-    override fun initView(): Int {
+    override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.club_manage_fragment_layout
     }
 
-    override fun setData(type: Int, data: Any?) {
-        super.setData(type, data)
-        if (type == 1) {
-            clubMemberInfo = data as ClubMemberInfo?
-        }
-    }
-
     override fun initData(savedInstanceState: Bundle?) {
+        clubMemberInfo = intent.getSerializableExtra("clubMemberInfo") as ClubMemberInfo?
         if (clubMemberInfo == null) {
             finish()
         }
 
-        titlebar = rootView.findViewById(R.id.titlebar)
-        clubInfoSettingTv = rootView.findViewById(R.id.club_info_setting_tv)
-        clubNoticeTv = rootView.findViewById(R.id.club_notice_tv)
-        clubTransferTv = rootView.findViewById(R.id.club_transfer_tv)
-        clubDissolveTv = rootView.findViewById(R.id.club_dissolve_tv)
-        clubExitTv = rootView.findViewById(R.id.club_exit_tv)
+        titlebar = findViewById(R.id.titlebar)
+        clubInfoSettingTv = findViewById(R.id.club_info_setting_tv)
+        clubNoticeTv = findViewById(R.id.club_notice_tv)
+        clubTransferTv = findViewById(R.id.club_transfer_tv)
+        clubDissolveTv = findViewById(R.id.club_dissolve_tv)
+        clubExitTv = findViewById(R.id.club_exit_tv)
 
         clubTransferTv?.visibility = View.GONE
         when {
@@ -101,7 +96,7 @@ class ClubManageFragment : BaseFragment() {
 
         clubNoticeTv?.setDebounceViewClickListener {
             // 跳到公告设置
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, ClubNoticeSettingFragment::class.java)
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, ClubNoticeSettingFragment::class.java)
                     .addDataBeforeAdd(1, clubMemberInfo)
                     .setAddToBackStack(true)
                     .setHasAnimation(true)
@@ -110,7 +105,7 @@ class ClubManageFragment : BaseFragment() {
 
         clubDissolveTv?.setDebounceViewClickListener {
             mTipsDialogView?.dismiss(false)
-            mTipsDialogView = TipsDialogView.Builder(activity)
+            mTipsDialogView = TipsDialogView.Builder(this)
                     .setMessageTip("确定解散家族么")
                     .setConfirmTip("确定")
                     .setCancelTip("取消")
@@ -128,7 +123,7 @@ class ClubManageFragment : BaseFragment() {
         clubExitTv?.setDebounceViewClickListener {
             // 退出家族
             mTipsDialogView?.dismiss(false)
-            mTipsDialogView = TipsDialogView.Builder(activity)
+            mTipsDialogView = TipsDialogView.Builder(this)
                     .setMessageTip("确定退出家族么")
                     .setConfirmTip("确定")
                     .setCancelTip("取消")
@@ -154,7 +149,7 @@ class ClubManageFragment : BaseFragment() {
             if (result.errno == 0) {
                 // 解散成功
                 U.getToastUtil().showShort("家族解散成功")
-                activity?.finish()
+                finish()
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }
@@ -170,7 +165,7 @@ class ClubManageFragment : BaseFragment() {
             if (result.errno == 0) {
                 // 退出成功
                 U.getToastUtil().showShort("家族退出成功")
-                activity?.finish()
+                finish()
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }
