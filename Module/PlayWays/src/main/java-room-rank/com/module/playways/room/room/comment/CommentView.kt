@@ -258,11 +258,12 @@ class CommentView : EdgeTransparentView {
 
 
         if (roomData != null && roomData is PartyRoomData && roomData.isClubHome()) {
-            roomData.getPlayerInfoById(event.info.sender.userID)?.let {
-                val commentTextModel = CommentTextModel.parseFromEvent(event, roomData)
+            val partyPlayerInfoModel = roomData.getPlayerInfoById(event.info.sender.userID)
+            val commentTextModel = CommentTextModel.parseFromEvent(event, roomData)
+            if (partyPlayerInfoModel != null) {
                 when {
-                    it.isHost() -> commentTextModel.nameBuilder?.insert(0, "【主持人】")
-                    it.isAdmin() -> commentTextModel.nameBuilder?.insert(0, "【管理员】")
+                    partyPlayerInfoModel.isHost() -> commentTextModel.nameBuilder?.insert(0, "【主持人】")
+                    partyPlayerInfoModel.isAdmin() -> commentTextModel.nameBuilder?.insert(0, "【管理员】")
                     else -> {
                         if (event.info.sender?.hasClubInfo() == true) {
                             commentTextModel.nameBuilder?.insert(0, getIdentityName(event.info.sender.clubInfo?.roleType?.value
@@ -271,6 +272,12 @@ class CommentView : EdgeTransparentView {
                         processCommentModel(commentTextModel)
                     }
                 }
+            } else {
+                if (event.info.sender?.hasClubInfo() == true) {
+                    commentTextModel.nameBuilder?.insert(0, getIdentityName(event.info.sender.clubInfo?.roleType?.value
+                            ?: 0))
+                }
+                processCommentModel(commentTextModel)
             }
         } else {
             val commentTextModel = CommentTextModel.parseFromEvent(event, roomData)
