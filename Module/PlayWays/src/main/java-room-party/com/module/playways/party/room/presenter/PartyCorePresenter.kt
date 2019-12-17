@@ -799,6 +799,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             EClubMemberRoleType.ECMRT_Common.value -> ""
             else -> ""
         }
+
+        return ""
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
