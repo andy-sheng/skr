@@ -597,12 +597,15 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         var showKick = false
         if (isShowKick != null) {
             showKick = isShowKick
-        } else if (mRoomData.myUserInfo?.isHost() == true || mRoomData.myUserInfo?.isAdmin() == true) {
-            // 主持人和管理员才有的踢人权限
-            showKick = !(mRoomData.getPlayerInfoById(userID)?.isHost() == true || mRoomData.getPlayerInfoById(userID)?.isAdmin() == true)
+        } else if (mRoomData.myUserInfo?.isHost() == true) {
+            // 主持人 能踢所有人
+            showKick = mRoomData.getPlayerInfoById(userID)?.isHost() != true
+        }else if(mRoomData.myUserInfo?.isAdmin() == true){
+            // 管理员能踢 嘉宾 观众
+            showKick = !(mRoomData.getPlayerInfoById(userID)?.isAdmin() == true || mRoomData.getPlayerInfoById(userID)?.isHost() == true)
         }
 
-        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_RELAY_ROOM, userID, showKick, false)
+        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_PARTY_ROOM, userID, showKick, false)
                 .setRoomID(mRoomData.gameId)
                 .setKickListener {
                     showKickConfirmDialog(it)

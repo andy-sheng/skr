@@ -130,7 +130,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //                }
 //                pretendEnterRoom(playerInfoModel)
 //            }
-            pretendRoomNameSystemMsg("${mRoomData.roomName}", CommentSysModel.TYPE_ENTER_ROOM)
+            if(mRoomData.notice.isNotEmpty()){
+                pretendSystemMsg("房间公告 ${mRoomData.notice}")
+            }else{
+                pretendRoomNameSystemMsg("${mRoomData.roomName}", CommentSysModel.TYPE_ENTER_ROOM)
+            }
         }
         startHeartbeat()
         startSyncGameStatus()
