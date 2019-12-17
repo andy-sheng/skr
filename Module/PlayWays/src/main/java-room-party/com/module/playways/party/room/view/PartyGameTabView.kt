@@ -30,11 +30,11 @@ import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.playways.R
+import com.module.playways.party.room.PartyRoomActivity
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.PartyGameSwitchEvent
 import com.module.playways.party.room.event.PartySelectSongEvent
-import com.module.playways.party.room.event.PartySelfTurnToSingEvent
 import com.module.playways.party.room.model.PartyGameInfoModel
 import com.module.playways.room.data.H
 import com.respicker.model.ImageItem
@@ -366,7 +366,19 @@ class PartyGameTabView : ExConstraintLayout {
                 }
 
                 if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
-                    EventBus.getDefault().post(PartySelfTurnToSingEvent())
+                    // 关闭其他任何页面 不仅仅是选歌 还有邀请好友等
+                    // 销毁其他的除party房页面外所有界面
+                    for (i in U.getActivityUtils().activityList.size - 1 downTo 0) {
+                        val activity = U.getActivityUtils().activityList[i]
+                        if (activity is PartyRoomActivity) {
+                            break
+                        }
+                        if (U.getActivityUtils().isHomeActivity(activity)) {
+                            continue
+                        }
+                        activity.finish()
+                    }
+//                    EventBus.getDefault().post(PartySelfTurnToSingEvent())
                 }
             } else {
                 //还没开始

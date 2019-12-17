@@ -25,7 +25,6 @@ import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.event.PartyGameSwitchEvent
 import com.module.playways.party.room.event.PartyRoundChangeEvent
-import com.module.playways.party.room.event.PartySelfTurnToSingEvent
 import com.module.playways.room.song.fragment.GrabSearchSongFragment
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
@@ -239,11 +238,11 @@ class PartySongManageFragment : BaseFragment() {
         activity?.finish()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PartySelfTurnToSingEvent) {
-        U.getToastUtil().showShort("轮到你唱了")
-        activity?.finish()
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onEvent(event: PartySelfTurnToSingEvent) {
+//        U.getToastUtil().showShort("轮到你唱了")
+//        activity?.finish()
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AddSongEvent) {
