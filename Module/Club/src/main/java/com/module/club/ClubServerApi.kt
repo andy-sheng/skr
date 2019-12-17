@@ -40,6 +40,13 @@ interface ClubServerApi {
     @GET("http://dev.api.inframe.mobi/v1/club/check-member-info")
     fun getClubMemberInfo(@Query("userID") userID: Int, @Query("clubID") clubID: Int): Call<ApiResult>
 
+
+    /**
+     * 查询成员申请数量，带水位
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/count-member-apply")
+    fun getCountMemberApply(@Query("clubID") clubID: Int, @Query("lastTimeMs") lastTimeMs: Long): Call<ApiResult>
+
     /**
      * 查询家族中的成员
      */

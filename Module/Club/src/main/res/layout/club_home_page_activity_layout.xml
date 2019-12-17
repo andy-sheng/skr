@@ -199,6 +199,16 @@
                                     app:layout_constraintRight_toLeftOf="@id/member_tv"
                                     app:layout_constraintTop_toTopOf="parent" />
 
+                                <com.common.view.ex.ExImageView
+                                    android:id="@+id/apply_red_iv"
+                                    android:layout_width="@dimen/view_8_dp"
+                                    android:layout_height="@dimen/view_8_dp"
+                                    android:visibility="gone"
+                                    app:bl_corners_radius="@dimen/view_8_dp"
+                                    app:bl_solid_color="#FF8AB6"
+                                    app:layout_constraintRight_toRightOf="@id/apply_tv"
+                                    app:layout_constraintTop_toTopOf="@id/apply_tv" />
+
                                 <com.common.view.ex.ExTextView
                                     android:id="@+id/member_tv"
                                     android:layout_width="@dimen/view_88_dp"

@@ -50,6 +50,8 @@ import kotlin.math.abs
 
 class ClubHomepageActivity : BaseActivity() {
 
+    private val SP_KEY_APPLY_WATER_LEVEL = "sp_key_apply_water_level"
+
     private var imageBg: SimpleDraweeView? = null
     private var smartRefresh: SmartRefreshLayout? = null
     private var container: LinearLayout? = null
@@ -65,6 +67,7 @@ class ClubHomepageActivity : BaseActivity() {
 
     private var functionArea: ConstraintLayout? = null
     private var applyTv: ExTextView? = null
+    private var applyRedIv: ExImageView? = null
     private var memberTv: ExTextView? = null
     private var contributionTv: ExTextView? = null
 
@@ -90,6 +93,9 @@ class ClubHomepageActivity : BaseActivity() {
     private var clubMemberInfo: ClubMemberInfo? = null
     private var clubID: Int = 0
     private var isMyClub = false
+
+    private var applyTimeMs: Long = 0
+    private var applyRedCount: Int = 0
 
     private val noticeDrawable = DrawableCreator.Builder()
             .setSolidColor(U.getColor(R.color.black_trans_50))
@@ -123,6 +129,7 @@ class ClubHomepageActivity : BaseActivity() {
 
         functionArea = this.findViewById(R.id.function_area)
         applyTv = this.findViewById(R.id.apply_tv)
+        applyRedIv = this.findViewById(R.id.apply_red_iv)
         memberTv = this.findViewById(R.id.member_tv)
         contributionTv = this.findViewById(R.id.contribution_tv)
 
@@ -173,6 +180,8 @@ class ClubHomepageActivity : BaseActivity() {
         clubRoomView?.initData()
         if (!isMyClub) {
             memberView?.initData()
+        } else {
+            checkApplyRed()
         }
     }
 
@@ -184,6 +193,8 @@ class ClubHomepageActivity : BaseActivity() {
             getClubMemberInfo()
             if (!isMyClub) {
                 memberView?.initData()
+            } else {
+                checkApplyRed()
             }
         }
     }
@@ -208,6 +219,8 @@ class ClubHomepageActivity : BaseActivity() {
         }
 
         applyTv?.setDebounceViewClickListener {
+            U.getPreferenceUtils().setSettingLong(SP_KEY_APPLY_WATER_LEVEL, applyTimeMs)
+            applyRedIv?.visibility = View.GONE
             ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_APPLY_CLUB)
                     .navigation()
         }
@@ -247,6 +260,8 @@ class ClubHomepageActivity : BaseActivity() {
                     clubRoomView?.initData()
                     if (!isMyClub) {
                         memberView?.initData()
+                    } else {
+                        checkApplyRed()
                     }
                 }
 
@@ -336,6 +351,26 @@ class ClubHomepageActivity : BaseActivity() {
                 refreshClubUI()
             }
             finishRereshAndLoadMore()
+        }
+    }
+
+    private fun checkApplyRed() {
+        launch {
+            val lastTimeMs = U.getPreferenceUtils().getSettingLong(SP_KEY_APPLY_WATER_LEVEL, 0)
+            val result = subscribe(RequestControl("getCountMemberApply", ControlType.CancelThis)) {
+                clubServerApi.getCountMemberApply(clubID, lastTimeMs)
+            }
+            if (result.errno == 0) {
+                applyTimeMs = result.data.getLongValue("timeMs")
+                applyRedCount = result.data.getIntValue("total")
+
+                // 是否显示红点
+                if (applyRedCount > 0) {
+                    applyRedIv?.visibility = View.VISIBLE
+                } else {
+                    applyRedIv?.visibility = View.GONE
+                }
+            }
         }
     }
 
