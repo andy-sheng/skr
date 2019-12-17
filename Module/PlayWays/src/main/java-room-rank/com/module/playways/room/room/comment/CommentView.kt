@@ -256,7 +256,7 @@ class CommentView : EdgeTransparentView {
             setOnBottom("CommentMsgEvent", true)
         }
 
-
+        val roomData = this.roomData
         if (roomData != null && roomData is PartyRoomData && roomData.isClubHome()) {
             val partyPlayerInfoModel = roomData.getPlayerInfoById(event.info.sender.userID)
             val commentTextModel = CommentTextModel.parseFromEvent(event, roomData)
