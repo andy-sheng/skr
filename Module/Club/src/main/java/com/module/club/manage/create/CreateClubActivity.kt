@@ -383,6 +383,10 @@ class CreateClubActivity : BaseActivity() {
         return false
     }
 
+    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+        return true
+    }
+
     override fun canSlide(): Boolean {
         return false
     }
