@@ -435,7 +435,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
 
             if (!TextUtils.isEmpty(userInfoModel.clubInfo?.club?.name)) {
                 personClubName.visibility = View.VISIBLE
-                personClubName.text = userInfoModel.clubInfo?.club?.name
+                personClubName.text = "【${userInfoModel.clubInfo?.club?.name}】"
             } else {
                 personClubName.visibility = View.GONE
             }

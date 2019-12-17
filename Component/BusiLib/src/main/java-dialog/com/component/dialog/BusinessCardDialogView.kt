@@ -83,7 +83,7 @@ class BusinessCardDialogView(context: Context, userInfoModel: UserInfoModel, mei
 
         if (!TextUtils.isEmpty(userInfoModel.clubInfo?.club?.name)) {
             personClubName.visibility = View.VISIBLE
-            personClubName.text = userInfoModel.clubInfo?.club?.name
+            personClubName.text = "【${userInfoModel.clubInfo?.club?.name}】"
         } else {
             personClubName.visibility = View.GONE
         }
