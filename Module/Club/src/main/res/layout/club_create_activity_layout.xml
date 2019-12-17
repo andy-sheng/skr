@@ -160,7 +160,7 @@
             android:layout_marginRight="@dimen/view_25_dp"
             android:background="@null"
             android:gravity="left|top"
-            android:hint="来一个精辟的乐团介绍吧～"
+            android:hint="来一个精辟的家族介绍吧～"
             android:textSize="@dimen/textsize_14_dp"
             app:layout_constraintLeft_toLeftOf="@+id/bg_iv"
             app:layout_constraintRight_toRightOf="@+id/bg_iv"
