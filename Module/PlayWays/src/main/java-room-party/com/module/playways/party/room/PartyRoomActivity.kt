@@ -155,37 +155,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     override fun initData(savedInstanceState: Bundle?) {
         ensureActivtyTop()
         var rspModel = intent.getSerializableExtra("JoinPartyRoomRspModel") as JoinPartyRoomRspModel?
-//        if (joinRaceRoomRspModel == null) {
-//            // 构造假数据 用于测试
-//            var joinRaceRoomRspModel1 = JoinPartyRoomRspModel()
-//            joinRaceRoomRspModel1?.roomID = 10001
-//            joinRaceRoomRspModel1?.createTimeMs = (System.currentTimeMillis() / 30000) * 30000
-//            val list = ArrayList<UserInfoModel>()
-//            if (MyUserInfoManager.uid.toInt() == 1705476) {
-//                var userInfoModel = UserInfoModel()
-//                userInfoModel.userId = 1985618
-//                list.add(userInfoModel)
-//            } else {
-//                var userInfoModel = UserInfoModel()
-//                userInfoModel.userId = 1705476
-//                list.add(userInfoModel)
-//            }
-//            joinRaceRoomRspModel1.users = list
-//            var roundInfoModel = RelayRoundInfoModel()
-//            roundInfoModel.status = ERRoundStatus.RRS_SING.value
-//            roundInfoModel.singBeginMs = 30 * 1000
-//            roundInfoModel.userID = 1705476
-//            var music = SongModel()
-//            music.itemName = "告白气球"
-//            music.acc = "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3"
-//            music.lyric = "http://song-static.inframe.mobi/lrc/4ee4ac0711c74d6f333fcac10c113239.zrce"
-//            music.beginMs = 0
-//            music.endMs = 4 * 60 * 1000
-//            music.relaySegments = arrayListOf(43 * 1000, 65 * 1000, 87 * 1000)
-//            roundInfoModel.music = music
-//            joinRaceRoomRspModel1.currentRound = roundInfoModel
-//            joinRaceRoomRspModel = joinRaceRoomRspModel1
-//        }
         rspModel?.let {
             mRoomData.loadFromRsp(it)
             MyLog.d(TAG, "initData mRoomData=$mRoomData")
@@ -197,7 +166,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         addPresent(mCorePresenter)
         mVipEnterPresenter = VipEnterPresenter(this, mRoomData)
         addPresent(mVipEnterPresenter)
-//        addPresent(mDoubleRoomInvitePresenter)
         // 请保证从下面的view往上面的view开始初始化
         findViewById<View>(R.id.main_act_container).setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
