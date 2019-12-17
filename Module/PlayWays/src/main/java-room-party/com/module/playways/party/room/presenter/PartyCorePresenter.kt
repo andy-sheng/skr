@@ -867,10 +867,13 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         partySeatInfoModel.userID = event.userID
         partySeatInfoModel.seatStatus = ESeatStatus.SS_OPEN.value
         mRoomData.updateSeat(partySeatInfoModel)
-        if (event.micStatus.value == EMicStatus.MS_OPEN.value) {
-            pretendSystemMsg("${event.opUser.userInfo.nickName} 将 ${mRoomData.getPlayerInfoById(event.userID)?.userInfo?.nicknameRemark} 的麦开启")
-        } else {
-            pretendSystemMsg("${event.opUser.userInfo.nickName} 将 ${mRoomData.getPlayerInfoById(event.userID)?.userInfo?.nicknameRemark} 的麦关闭")
+
+        if (event.userID == MyUserInfoManager.uid.toInt()) {
+            if (event.micStatus.value == EMicStatus.MS_OPEN.value) {
+                pretendSystemMsg("${event.opUser.userInfo.nickName} 已将你的麦克风权限开启")
+            } else {
+                pretendSystemMsg("${event.opUser.userInfo.nickName} 已将你的麦关闭")
+            }
         }
     }
 
