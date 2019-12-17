@@ -23,7 +23,7 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.constans.GameModeType
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
-import com.module.playways.party.room.event.PartyGameSwitchEvent
+import com.module.playways.party.room.event.PartyFinishSongManageFragmentEvent
 import com.module.playways.party.room.event.PartyRoundChangeEvent
 import com.module.playways.party.room.event.PartySelfTurnToSingEvent
 import com.module.playways.room.song.fragment.GrabSearchSongFragment
@@ -235,7 +235,7 @@ class PartySongManageFragment : BaseFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PartyGameSwitchEvent) {
+    fun onEvent(event: PartyFinishSongManageFragmentEvent) {
         activity?.finish()
     }
 

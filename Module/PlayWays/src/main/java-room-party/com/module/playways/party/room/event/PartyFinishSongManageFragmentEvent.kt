@@ -1,4 +1,4 @@
 package com.module.playways.party.room.event
 
-class PartyGameSwitchEvent {
+class PartyFinishSongManageFragmentEvent {
 }
