@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
@@ -14,6 +15,8 @@ import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.component.person.event.ShowPersonCardEvent
+import com.module.RouterConstants
+import com.module.club.IClubModuleService
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.event.PartyHostChangeEvent
@@ -98,7 +101,8 @@ class PartyTopContentView : ExConstraintLayout {
         audienceIv.setDebounceViewClickListener { listener?.showRoomMember() }
 
         clubIconIv.setDebounceViewClickListener {
-            //TODO  家族入口
+            val clubServices = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
+            clubServices.tryGoClubHomePage(H.partyRoomData?.clubInfo?.clubID ?: 0)
         }
     }
 
