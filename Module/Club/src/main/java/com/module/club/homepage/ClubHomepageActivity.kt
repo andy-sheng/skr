@@ -367,4 +367,8 @@ class ClubHomepageActivity : BaseActivity() {
     fun onEvent(event: ClubInfoChangeEvent) {
         isClubInfoChange = true
     }
+
+    override fun canSlide(): Boolean {
+        return false
+    }
 }

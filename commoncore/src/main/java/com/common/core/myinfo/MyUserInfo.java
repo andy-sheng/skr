@@ -35,7 +35,7 @@ public class MyUserInfo implements Serializable {
     private VerifyInfo vipInfo;       // 加v信息
     private ScoreStateModel ranking;  // 段位信息
     private HonorInfo honorInfo;      // 会员信息
-    private ClubMemberInfo clubInfo;  // 家族信息
+    private ClubMemberInfo clubInfo;  // 家族信息(不一定准)
 
     private Location location;
     private Location location2;
