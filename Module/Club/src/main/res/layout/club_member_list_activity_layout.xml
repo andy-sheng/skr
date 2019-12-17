@@ -17,10 +17,6 @@
         app:centerType="textView"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
-        app:rightText="完成"
-        app:rightTextColor="@color/white_trans_50"
-        app:rightTextSize="@dimen/textsize_16_dp"
-        app:rightType="textView"
         app:showBottomLine="false"
         app:statusBarColor="@color/colorPrimary"
         app:titleBarColor="@color/colorPrimary" />
