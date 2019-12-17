@@ -1,6 +1,7 @@
 package com.module.playways
 
 import android.util.LruCache
+import com.common.core.userinfo.model.ClubInfo
 import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent
 import com.module.playways.race.match.pbLocalModel.LocalRGameConfigMsg
@@ -22,6 +23,8 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
     var gameId: Int = 0 // 房间id
 
     var sysAvatar: String? = null // 系统头像
+
+    var clubInfo: ClubInfo? = null   // 家族信息
 
     /**
      * 当要拿服务器时间和本地时间比较时，请将服务器时间加上这个矫正值
@@ -127,9 +130,9 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
     /**
      * 是否在 waiters 或者 playerers 里
      */
-    fun inPlayerOrWaiterInfoList(userId:Int):Boolean{
-        for(p in getPlayerAndWaiterInfoList()){
-            if(p.userInfo.userId == userId){
+    fun inPlayerOrWaiterInfoList(userId: Int): Boolean {
+        for (p in getPlayerAndWaiterInfoList()) {
+            if (p.userInfo.userId == userId) {
                 return true
             }
         }
@@ -145,13 +148,13 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
         }
 //        val playerInfoModel = userInfoMap?.get(userID)
 //        if (playerInfoModel == null) {
-            val l = getPlayerAndWaiterInfoList()
-            for (playerInfo in l) {
-                if (playerInfo.userInfo.userId == userID) {
+        val l = getPlayerAndWaiterInfoList()
+        for (playerInfo in l) {
+            if (playerInfo.userInfo.userId == userID) {
 //                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
-                    return playerInfo.userInfo
-                }
+                return playerInfo.userInfo
             }
+        }
 //        } else {
 //            return playerInfoModel.userInfo
 //        }

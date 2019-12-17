@@ -1,6 +1,7 @@
 package com.module.playways.party.match.model
 
 import com.alibaba.fastjson.annotation.JSONField
+import com.common.core.userinfo.model.ClubInfo
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.model.PartySeatInfoModel
@@ -12,6 +13,9 @@ class JoinPartyRoomRspModel : Serializable {
 
     @JSONField(name = "agoraToken")
     var agoraToken: String? = null
+
+    @JSONField(name = "clubInfo")
+    var clubInfo: ClubInfo? = null
 
     @JSONField(name = "applyUserCnt")
     var applyUserCnt: Int? = null

@@ -414,6 +414,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     fun loadFromRsp(rsp: JoinPartyRoomRspModel) {
         this.gameId = rsp.roomID
         this.agoraToken = rsp.agoraToken
+        this.clubInfo = rsp.clubInfo
         this.applyUserCnt = rsp.applyUserCnt ?: 0
         this.gameStartTs = (rsp.gameStartTimeMs ?: 0L)
         this.notice = rsp.notice ?: ""
