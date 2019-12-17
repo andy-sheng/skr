@@ -12,6 +12,7 @@ import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
+import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
@@ -566,7 +567,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         } else if (mRoomData.myUserInfo?.isHost() == true) {
             // 主持人 能踢所有人
             showKick = mRoomData.getPlayerInfoById(userID)?.isHost() != true
-        }else if(mRoomData.myUserInfo?.isAdmin() == true){
+        } else if (mRoomData.myUserInfo?.isAdmin() == true) {
             // 管理员能踢 嘉宾 观众
             showKick = !(mRoomData.getPlayerInfoById(userID)?.isAdmin() == true || mRoomData.getPlayerInfoById(userID)?.isHost() == true)
         }
@@ -692,6 +693,12 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
 
         mPartyGameMainView?.tagChange()
+
+        if (event.hasToUser() && (event.toUser.userInfo?.userID ?: 0) > 0) {
+            mCorePresenter?.pretendSystemMsg("${UserInfoManager.getInstance().getRemarkName(event.toUser.userInfo.userID, event.toUser.userInfo.nickName)} 已成为新的主持人")
+        } else {
+            mCorePresenter?.pretendSystemMsg("主持人已下麦，已自动结束所有游戏")
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
