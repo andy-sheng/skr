@@ -10,6 +10,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.KeyboardEvent
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.ex.NoLeakEditText
@@ -20,6 +21,7 @@ import com.module.playways.room.data.H
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 class GonggaoSettingFragment : BaseFragment() {
     val mTag = "GonggaoSettingFragment"
@@ -81,6 +83,9 @@ class GonggaoSettingFragment : BaseFragment() {
         super.destroy()
         U.getSoundUtils().release(TAG)
         U.getKeyBoardUtils().hideSoftInputKeyBoard(context as Activity)
+
+        val keyboardEvent = KeyboardEvent("$mTag destroy", KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN, 0)
+        EventBus.getDefault().post(keyboardEvent)
     }
 
     override fun useEventBus(): Boolean {
