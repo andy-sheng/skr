@@ -228,6 +228,7 @@ class ClubHomepageActivity : BaseActivity() {
 
     private fun initMemberArea() {
         memberView?.clubID = clubID
+        memberView?.memberCnt = clubMemberInfo?.club?.memberCnt ?: 0
     }
 
     private fun initRoomArea() {

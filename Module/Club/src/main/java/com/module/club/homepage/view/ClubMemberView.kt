@@ -1,17 +1,20 @@
 package com.module.club.homepage.view
 
 import android.content.Context
+import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
 import kotlinx.coroutines.CoroutineScope
@@ -28,6 +31,7 @@ class ClubMemberView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
     private val adapter: ClubMemberAdapter
 
     var clubID: Int = 0
+    var memberCnt: Int = 0
     private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
     private var offset = 0
     private val cnt = 15
@@ -39,6 +43,17 @@ class ClubMemberView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         adapter = ClubMemberAdapter()
         recyclerView.layoutManager = GridLayoutManager(context, 6)
         recyclerView.adapter = adapter
+
+        adapter.listener = { position, model ->
+            model?.userId?.let {
+                val bundle = Bundle()
+                bundle.putInt("bundle_user_id", it)
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                        .with(bundle)
+                        .navigation()
+            }
+        }
     }
 
     fun initData() {
@@ -48,6 +63,7 @@ class ClubMemberView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
             }
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("items"), UserInfoModel::class.java)
+                adapter.mTotal = memberCnt
                 adapter.mDataList.clear()
                 if (!list.isNullOrEmpty()) {
                     adapter.mDataList.addAll(list)

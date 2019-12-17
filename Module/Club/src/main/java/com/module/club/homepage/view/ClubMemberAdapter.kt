@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.module.club.R
@@ -16,6 +17,8 @@ class ClubMemberAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var mDataList = ArrayList<UserInfoModel>()
     var mTotal = 0
+
+    var listener: ((position: Int, model: UserInfoModel?) -> Unit)? = null
 
     private val ITEM_TYPE_NORMAL = 1
     private val ITEM_TYPE_LAST = 2
@@ -61,6 +64,12 @@ class ClubMemberAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         var mPos = -1
         var mModel: UserInfoModel? = null
+
+        init {
+            avatarView?.setDebounceViewClickListener {
+                listener?.invoke(mPos, mModel)
+            }
+        }
 
         fun bindData(position: Int, model: UserInfoModel) {
             this.mPos = position
