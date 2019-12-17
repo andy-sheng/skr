@@ -46,7 +46,7 @@ class ClubPartyRoomView(context: Context, attrs: AttributeSet?, defStyleAttr: In
             override fun onClickClubParty(position: Int, model: PartyRoomInfoModel?) {
                 model?.roomID?.let {
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                    iRankingModeService.tryGoPartyRoom(it, 1)
+                    iRankingModeService.tryGoPartyRoom(it, 1, 2)
                 }
 
             }
@@ -54,7 +54,7 @@ class ClubPartyRoomView(context: Context, attrs: AttributeSet?, defStyleAttr: In
             override fun onClickClubMemberParty(position: Int, model: PartyRoomInfoModel?) {
                 model?.roomID?.let {
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                    iRankingModeService.tryGoPartyRoom(it, 1)
+                    iRankingModeService.tryGoPartyRoom(it, 1, 1)
                 }
             }
         })

@@ -276,12 +276,16 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     }
 
     @Override
-    public void tryGoPartyRoom(int roomID, int joinSrc) {
+    public void tryGoPartyRoom(int roomID, int joinSrc, int roomType) {
         // 列表添加 JRS_LIST    = 1;  邀请添加 JRS_INVITE  = 2;
+        // roomType RT_PERSONAL = 1;普通房间  RT_FAMILY = 2;家族剧场
         HashMap map = new HashMap();
         map.put("platform", 20);
         map.put("roomID", roomID);
         map.put("joinSrc", joinSrc);
+        if (roomType != 0) {
+            map.put("roomType", roomType);
+        }
         skrAudioPermission.ensurePermission(new Runnable() {
             @Override
             public void run() {

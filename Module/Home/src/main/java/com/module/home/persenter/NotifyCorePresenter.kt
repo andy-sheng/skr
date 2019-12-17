@@ -510,7 +510,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     internal fun tryGoPartyRoom(ownerId: Int, roomID: Int) {
         mSkrAudioPermission!!.ensurePermission({
             val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-            iRankingModeService.tryGoPartyRoom(roomID, 2)
+            iRankingModeService.tryGoPartyRoom(roomID, 2,0)
         }, true)
     }
 
