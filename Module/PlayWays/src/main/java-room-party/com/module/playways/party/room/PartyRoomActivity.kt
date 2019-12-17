@@ -812,7 +812,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 .setCancelTip("取消")
                 .setConfirmBtnClickListener {
                     mTipsDialogView?.dismiss(false)
-                    gameOver()
+                    finish()
                 }
                 .setCancelBtnClickListener {
                     mTipsDialogView?.dismiss()
