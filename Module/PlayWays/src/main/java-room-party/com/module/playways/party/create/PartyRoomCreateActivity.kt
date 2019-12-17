@@ -88,7 +88,7 @@ class PartyRoomCreateActivity : BaseActivity() {
         titlebar.rightTextView.setDebounceViewClickListener {
             titlebar.rightTextView.isClickable = false
             if (this.from == "create") {
-                skrAudioPermission.ensurePermission({createRoom()},true)
+                skrAudioPermission.ensurePermission({ createRoom() }, true)
             } else if (this.from == "change") {
                 changeRoomSetting()
             }
@@ -186,11 +186,9 @@ class PartyRoomCreateActivity : BaseActivity() {
                                             .greenChannel().navigation()
                                 }
                             })
-                            .setCancelBtnClickListener(object : AnimateClickListener() {
-                                override fun click(view: View) {
-                                    mTipsDialogView?.dismiss(true)
-                                }
-                            })
+                            .setCancelBtnClickListener {
+                                mTipsDialogView?.dismiss()
+                            }
                             .build()
                     mTipsDialogView?.showByDialog(true)
                 } else {

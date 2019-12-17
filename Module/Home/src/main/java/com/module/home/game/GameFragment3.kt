@@ -109,6 +109,9 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                                                 .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
                                                 .greenChannel().navigation()
                                     }
+                                    .setCancelBtnClickListener {
+                                        mTipsDialogView?.dismiss()
+                                    }
                                     .build()
                             mTipsDialogView?.showByDialog()
                         } else {

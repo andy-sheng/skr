@@ -17,6 +17,7 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
@@ -39,6 +40,8 @@ class ClubManageFragment : BaseFragment() {
     private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
 
     private var clubMemberInfo: ClubMemberInfo? = null
+
+    private var mTipsDialogView: TipsDialogView? = null
 
     override fun initView(): Int {
         return R.layout.club_manage_fragment_layout
@@ -106,12 +109,38 @@ class ClubManageFragment : BaseFragment() {
         }
 
         clubDissolveTv?.setDebounceViewClickListener {
-            dissolveClub()
+            mTipsDialogView?.dismiss(false)
+            mTipsDialogView = TipsDialogView.Builder(activity)
+                    .setMessageTip("确定解散家族么")
+                    .setConfirmTip("确定")
+                    .setCancelTip("取消")
+                    .setConfirmBtnClickListener {
+                        mTipsDialogView?.dismiss()
+                        dissolveClub()
+                    }
+                    .setCancelBtnClickListener {
+                        mTipsDialogView?.dismiss()
+                    }
+                    .build()
+            mTipsDialogView?.showByDialog()
         }
 
         clubExitTv?.setDebounceViewClickListener {
             // 退出家族
-            existClub()
+            mTipsDialogView?.dismiss(false)
+            mTipsDialogView = TipsDialogView.Builder(activity)
+                    .setMessageTip("确定退出家族么")
+                    .setConfirmTip("确定")
+                    .setCancelTip("取消")
+                    .setConfirmBtnClickListener {
+                        mTipsDialogView?.dismiss()
+                        existClub()
+                    }
+                    .setCancelBtnClickListener {
+                        mTipsDialogView?.dismiss()
+                    }
+                    .build()
+            mTipsDialogView?.showByDialog()
         }
 
     }
@@ -150,5 +179,10 @@ class ClubManageFragment : BaseFragment() {
 
     override fun useEventBus(): Boolean {
         return false
+    }
+
+    override fun destroy() {
+        super.destroy()
+        mTipsDialogView?.dismiss(false)
     }
 }
