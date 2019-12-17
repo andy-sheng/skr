@@ -177,7 +177,7 @@ class ClubHomepageActivity : BaseActivity() {
         refreshClubUI()
 
         // 初始化数据
-        clubRoomView?.initData()
+        clubRoomView?.initData(null)
         if (!isMyClub) {
             memberView?.initData()
         } else {
@@ -189,7 +189,7 @@ class ClubHomepageActivity : BaseActivity() {
         super.onResume()
         if (isClubInfoChange) {
             isClubInfoChange = false
-            clubRoomView?.initData()
+            clubRoomView?.initData(null)
             getClubMemberInfo()
             if (!isMyClub) {
                 memberView?.initData()
@@ -257,7 +257,10 @@ class ClubHomepageActivity : BaseActivity() {
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
                     smartRefresh?.setEnableLoadMore(true)
-                    clubRoomView?.initData()
+                    clubRoomView?.initData {
+                        finishRereshAndLoadMore()
+                        smartRefresh?.setEnableLoadMore(it)
+                    }
                     if (!isMyClub) {
                         memberView?.initData()
                     } else {

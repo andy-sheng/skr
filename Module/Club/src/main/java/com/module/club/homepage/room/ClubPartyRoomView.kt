@@ -61,9 +61,9 @@ class ClubPartyRoomView(context: Context, attrs: AttributeSet?, defStyleAttr: In
         recyclerView.adapter = adapter
     }
 
-    fun initData() {
+    fun initData(callBack: ((hasMore: Boolean) -> Unit)?) {
         loadClubPartyDetail()
-        loadClubMemberPartyList(0, true, null)
+        loadClubMemberPartyList(0, true, callBack)
     }
 
     fun loadMoreData(callBack: ((hasMore: Boolean) -> Unit)?) {
