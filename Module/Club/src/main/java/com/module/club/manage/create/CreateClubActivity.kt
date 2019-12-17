@@ -117,29 +117,26 @@ class CreateClubActivity : BaseActivity() {
             }
         })
 
-//        clubNameEt.addTextChangedListener(object : TextWatcher {
-//            var preString = ""
-//            override fun afterTextChanged(s: Editable?) {
-//
-//            }
-//
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//                preString = s.toString()
-//                MyLog.d(TAG, "beforeTextChanged s = $preString")
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                val str = s.toString()
-//                val length = U.getStringUtils().getStringLength(str)
-//                if (length > 30) {
-//                    MyLog.d(TAG, "onTextChanged s = $str")
-//                    val selectIndex = preString.length
-//                    clubNameEt.setText(preString)
-//                    clubNameEt.setSelection(selectIndex)
-//                    U.getToastUtil().showShort("不能超过15个汉字或30个英文")
-//                }
-//            }
-//        })
+        clubNameEt.addTextChangedListener(object : TextWatcher {
+            var preString = ""
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                preString = s.toString()
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s.toString()
+                val length = str.length
+                if (length > 8) {
+                    val selectIndex = preString.length
+                    clubNameEt.setText(preString)
+                    clubNameEt.setSelection(selectIndex)
+                }
+            }
+        })
 
         val from = intent?.getStringExtra("from") ?: "create"
         if (!TextUtils.isEmpty(from)) {
