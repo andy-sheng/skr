@@ -82,6 +82,7 @@
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@id/avatar_view"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toRightOf="@id/avatar_view"
         app:layout_constraintRight_toLeftOf="@id/remove_tv"
         app:layout_constraintTop_toBottomOf="@id/name_tv" />

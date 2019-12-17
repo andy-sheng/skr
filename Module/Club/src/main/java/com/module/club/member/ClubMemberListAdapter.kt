@@ -71,7 +71,7 @@ class ClubMemberListAdapter(var hasManager: Boolean, var listener: Listener) : R
 
             avatarView.bindData(model)
             nameTv.text = model.nicknameRemark
-            // todo 这个状态待补全 statusTv
+            statusTv.text = model.ranking?.rankingDesc
             if (ClubRoleUtils.getClubRoleBackground(model.clubInfo.roleType) != null) {
                 roleTagTv.visibility = View.VISIBLE
                 roleTagTv.background = ClubRoleUtils.getClubRoleBackground(model.clubInfo.roleType)
