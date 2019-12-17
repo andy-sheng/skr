@@ -19,6 +19,7 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
@@ -71,6 +72,7 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.PartyRoom.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.StringBuilder
 
 
 @Route(path = RouterConstants.ACTIVITY_PARTY_ROOM)
@@ -709,7 +711,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     fun onEvent(event: PKickoutUserMsg) {
         //todo 需不需要让被踢人游戏直接结束
         MyLog.d(TAG, "onEvent event = $event")
-        mCorePresenter.pretendSystemMsg("${event.kickResultContent}")
         if (event.kickUser.userInfo.userID == MyUserInfoManager.uid.toInt()) {
             // 我被踢出去了
             U.getToastUtil().showSkrCustomLong(CommonToastView.Builder(U.app())
@@ -717,6 +718,18 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                     .setText("管理员已将你踢出房间")
                     .build())
             finish()
+        } else {
+            val opUser = PartyPlayerInfoModel.parseFromPb(event.opUser)
+            val stringBuilder = StringBuilder()
+            if (opUser.isHost()) {
+                stringBuilder.append("【主持人】")
+            } else if (opUser.isAdmin()) {
+                stringBuilder.append("【管理员】")
+            }
+            stringBuilder.append(opUser.userInfo?.nicknameRemark ?: "")
+            val kickUser = PartyPlayerInfoModel.parseFromPb(event.kickUser)
+            stringBuilder.append("将${kickUser.userInfo?.nicknameRemark}踢出了房间")
+            mCorePresenter.pretendSystemMsg(stringBuilder.toString())
         }
     }
 
