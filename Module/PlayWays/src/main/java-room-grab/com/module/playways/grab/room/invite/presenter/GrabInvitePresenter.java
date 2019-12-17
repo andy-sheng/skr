@@ -47,7 +47,7 @@ public class GrabInvitePresenter {
     }
 
     public void getFriendList(int mOffset, int mLimit) {
-        UserInfoManager.getInstance().getMyFriends(UserInfoManager.ONLINE_PULL_GAME, roomID, gameType, new UserInfoManager.UserInfoListCallback() {
+        UserInfoManager.getInstance().getMyFriends(UserInfoManager.ONLINE_PULL_GAME, roomID, gameType, false, new UserInfoManager.UserInfoListCallback() {
             @Override
             public void onSuccess(UserInfoManager.FROM from, int offset, List<UserInfoModel> list) {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
