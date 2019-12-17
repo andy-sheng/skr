@@ -44,6 +44,7 @@ import com.module.playways.party.room.bottom.PartyBottomContainerView
 import com.module.playways.party.room.event.PartyBeHostConfirmEvent
 import com.module.playways.party.room.event.PartyOpHostEvent
 import com.module.playways.party.room.event.PartySelectSongEvent
+import com.module.playways.party.room.event.PartySelfOpHostEvent
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
 import com.module.playways.party.room.model.*
 import com.module.playways.party.room.presenter.PartyCorePresenter
