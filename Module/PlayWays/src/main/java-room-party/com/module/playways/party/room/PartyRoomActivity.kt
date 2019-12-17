@@ -795,7 +795,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
      */
     override fun gameBegin(thisRound: PartyRoundInfoModel?) {
         mPartyGameMainView?.updateRound(thisRound)
-        EventBus.getDefault().post(PartyGameSwitchEvent())
     }
 
     /**

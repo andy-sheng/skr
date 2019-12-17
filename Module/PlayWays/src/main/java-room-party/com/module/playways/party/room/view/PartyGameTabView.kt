@@ -32,6 +32,7 @@ import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
+import com.module.playways.party.room.event.PartyGameSwitchEvent
 import com.module.playways.party.room.event.PartySelectSongEvent
 import com.module.playways.party.room.event.PartySelfTurnToSingEvent
 import com.module.playways.party.room.model.PartyGameInfoModel
@@ -180,7 +181,7 @@ class PartyGameTabView : ExConstraintLayout {
             }
 
             if (result.errno == 0) {
-
+                EventBus.getDefault().post(PartyGameSwitchEvent())
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }

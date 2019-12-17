@@ -236,13 +236,13 @@ class PartySongManageFragment : BaseFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyGameSwitchEvent) {
-        finish()
+        activity?.finish()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartySelfTurnToSingEvent) {
         U.getToastUtil().showShort("轮到你唱了")
-        finish()
+        activity?.finish()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -259,7 +259,6 @@ class PartySongManageFragment : BaseFragment() {
             if (result.errno == 0) {
                 // todo 需不需要通知其它页面
                 U.getToastUtil().showShort("点歌请求发送成功")
-                activity?.finish()
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }
