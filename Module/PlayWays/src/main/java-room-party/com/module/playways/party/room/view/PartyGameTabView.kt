@@ -181,7 +181,7 @@ class PartyGameTabView : ExConstraintLayout {
             }
 
             if (result.errno == 0) {
-                EventBus.getDefault().post(PartyGameSwitchEvent())
+
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }
@@ -305,9 +305,13 @@ class PartyGameTabView : ExConstraintLayout {
                     gamePicImg.visibility = View.GONE
                 }
             }
+
+            EventBus.getDefault().post(PartyGameSwitchEvent())
         } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Free.ordinal) {
             textScrollView.visibility = View.VISIBLE
             setMainText("", "自由麦模式，大家畅所欲言吧～")
+
+            EventBus.getDefault().post(PartyGameSwitchEvent())
         } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
             if (partyGameInfoModel?.ktv?.userID ?: 0 > 0) {
                 textScrollView.visibility = View.VISIBLE
