@@ -295,7 +295,7 @@ class CreateClubActivity : BaseActivity() {
 
             if (result.errno == 0) {
                 EventBus.getDefault().post(ClubInfoChangeEvent())
-                U.getToastUtil().showShort("家族资料设置成功")
+                U.getToastUtil().showShort("家族资料审核中")
                 finish()
             } else {
                 U.getToastUtil().showShort(result.errmsg)
@@ -312,7 +312,7 @@ class CreateClubActivity : BaseActivity() {
             }
 
             if (result.errno == 0) {
-                U.getToastUtil().showShort("创建成功")
+                U.getToastUtil().showShort("已提交创建家族申请")
                 progressView.visibility = View.GONE
                 finish()
             } else {
