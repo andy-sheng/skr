@@ -2,6 +2,7 @@ package com.module.playways.party.room.presenter
 
 import android.os.Handler
 import android.os.Message
+import android.text.TextUtils
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
@@ -115,56 +116,25 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             DebugLogView.println(TAG, "isAnchor=$isAnchor")
             ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), isAnchor, mRoomData.agoraToken)
             // 不发送本地音频, 会造成第一次抢没声音
-                if(mRoomData.getMyUserInfoInParty().isGuest()){
-                        ZqEngineKit.getInstance().muteLocalAudioStream(mRoomData.isMute)
-                }
+            if (mRoomData.getMyUserInfoInParty().isGuest()) {
+                ZqEngineKit.getInstance().muteLocalAudioStream(mRoomData.isMute)
+            }
 
         } else {
             MyLog.e(TAG, "房间号不合法 mRoomData.gameId=" + mRoomData.gameId)
         }
         joinRcRoom(-1)
         if (mRoomData.gameId > 0) {
-//            for (playerInfoModel in mRoomData.getPlayerAndWaiterInfoList()) {
-//                if (!playerInfoModel.isOnline) {
-//                    continue
-//                }
-//                pretendEnterRoom(playerInfoModel)
-//            }
             if(mRoomData.notice.isNotEmpty()){
                 pretendSystemMsg("房间公告 ${mRoomData.notice}")
             }else{
-                pretendRoomNameSystemMsg("${mRoomData.roomName}", CommentSysModel.TYPE_ENTER_ROOM)
+
+                pretendSystemMsg("欢迎加入${mRoomData.getPlayerInfoById(mRoomData.hostId)?.userInfo?.nicknameRemark}")
             }
         }
         startHeartbeat()
         startSyncGameStatus()
     }
-
-//    fun changeMatchState(isChecked: Boolean) {
-//        launch {
-//            val map = mutableMapOf(
-//                    "roomID" to mRoomData?.gameId,
-//                    "matchStatus" to (if (isChecked) 2 else 1)
-//            )
-//
-//            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-//            val result = subscribe(RequestControl("$TAG changeMatchState", ControlType.CancelLast)) {
-//                mRoomServerApi.changeMatchStatus(body)
-//            }
-//
-//            if (result.errno == 0) {
-//                if (isChecked) {
-////                    val commentSysModel = CommentSysModel(GameModeType.GAME_MODE_RACE, "房主已将房间设置为 不允许用户匹配进入")
-////                    EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
-//                } else {
-////                    val commentSysModel = CommentSysModel(GameModeType.GAME_MODE_RACE, "房主已将房间设置为 允许用户匹配进入")
-////                    EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
-//                }
-//            } else {
-//                U.getToastUtil().showShort(result.errmsg)
-//            }
-//        }
-//    }
 
     private fun joinRcRoom(deep: Int) {
         if (deep > 4) {
@@ -198,11 +168,6 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     fun pretendSystemMsg(text: String) {
         val commentSysModel = CommentSysModel(mRoomData.gameType, text)
-        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
-    }
-
-    private fun pretendRoomNameSystemMsg(roomName: String?, type: Int) {
-        val commentSysModel = CommentSysModel(roomName ?: "", type)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
 
