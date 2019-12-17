@@ -197,7 +197,7 @@ public class MyUserInfo implements Serializable {
                 .setVipInfo(VerifyInfo.Companion.toVipInfoPB(myUserInfo.vipInfo))
                 .setHonorInfo(HonorInfo.Companion.toHonorInfoPB(myUserInfo.getHonorInfo()))
                 .setRanking(ScoreStateModel.Companion.toUserRankingPB(myUserInfo.getRanking()))
-                .setClubInfo(ClubMemberInfo.Companion.toUserClubInfoPB(myUserInfo.getClubInfo()))
+                .setClubInfo(ClubMemberInfo.Companion.toUClubInfoPB(myUserInfo.getClubInfo()))
                 .build();
         return userInfo;
     }

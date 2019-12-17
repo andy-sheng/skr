@@ -1,9 +1,9 @@
 package com.module.playways.room.room.comment.model
 
-import android.text.TextUtils
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.SpanUtils
 import com.module.playways.BaseRoomData
+import com.module.playways.party.room.PartyRoomData
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.model.FakeUserInfoModel
 import com.module.playways.room.msg.event.CommentMsgEvent
@@ -39,6 +39,10 @@ class CommentTextModel : CommentModel() {
                         commentModel.fakeUserInfo = fakeUserInfoModel
                     }
                     commentModel.isFake = roomData.isFakeForMe(commentModel.userInfo?.userId)
+                }
+
+                if (roomData is PartyRoomData) {
+
                 }
 
                 if (event.mUserInfoModelList == null || event.mUserInfoModelList.size == 0) {

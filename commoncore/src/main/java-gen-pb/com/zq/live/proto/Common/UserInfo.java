@@ -137,19 +137,19 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
    */
   @WireField(
       tag = 11,
-      adapter = "com.zq.live.proto.Common.UserClubInfo#ADAPTER"
+      adapter = "com.zq.live.proto.Common.UClubInfo#ADAPTER"
   )
-  private final UserClubInfo clubInfo;
+  private final UClubInfo clubInfo;
 
   public UserInfo(Integer userID, String nickName, String avatar, ESex sex, String description,
       Boolean isSystem, Integer mainLevel, VipInfo vipInfo, UserRanking ranking,
-      HonorInfo honorInfo, UserClubInfo clubInfo) {
+      HonorInfo honorInfo, UClubInfo clubInfo) {
     this(userID, nickName, avatar, sex, description, isSystem, mainLevel, vipInfo, ranking, honorInfo, clubInfo, ByteString.EMPTY);
   }
 
   public UserInfo(Integer userID, String nickName, String avatar, ESex sex, String description,
       Boolean isSystem, Integer mainLevel, VipInfo vipInfo, UserRanking ranking,
-      HonorInfo honorInfo, UserClubInfo clubInfo, ByteString unknownFields) {
+      HonorInfo honorInfo, UClubInfo clubInfo, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.nickName = nickName;
@@ -352,9 +352,9 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   /**
    * 家族信息
    */
-  public UserClubInfo getClubInfo() {
+  public UClubInfo getClubInfo() {
     if(clubInfo==null){
-        return new UserClubInfo.Builder().build();
+        return new UClubInfo.Builder().build();
     }
     return clubInfo;
   }
@@ -457,7 +457,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
 
     private HonorInfo honorInfo;
 
-    private UserClubInfo clubInfo;
+    private UClubInfo clubInfo;
 
     public Builder() {
     }
@@ -545,7 +545,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     /**
      * 家族信息
      */
-    public Builder setClubInfo(UserClubInfo clubInfo) {
+    public Builder setClubInfo(UClubInfo clubInfo) {
       this.clubInfo = clubInfo;
       return this;
     }
@@ -573,7 +573,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
           + VipInfo.ADAPTER.encodedSizeWithTag(8, value.vipInfo)
           + UserRanking.ADAPTER.encodedSizeWithTag(9, value.ranking)
           + HonorInfo.ADAPTER.encodedSizeWithTag(10, value.honorInfo)
-          + UserClubInfo.ADAPTER.encodedSizeWithTag(11, value.clubInfo)
+          + UClubInfo.ADAPTER.encodedSizeWithTag(11, value.clubInfo)
           + value.unknownFields().size();
     }
 
@@ -589,7 +589,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       VipInfo.ADAPTER.encodeWithTag(writer, 8, value.vipInfo);
       UserRanking.ADAPTER.encodeWithTag(writer, 9, value.ranking);
       HonorInfo.ADAPTER.encodeWithTag(writer, 10, value.honorInfo);
-      UserClubInfo.ADAPTER.encodeWithTag(writer, 11, value.clubInfo);
+      UClubInfo.ADAPTER.encodeWithTag(writer, 11, value.clubInfo);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -616,7 +616,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
           case 8: builder.setVipInfo(VipInfo.ADAPTER.decode(reader)); break;
           case 9: builder.setRanking(UserRanking.ADAPTER.decode(reader)); break;
           case 10: builder.setHonorInfo(HonorInfo.ADAPTER.decode(reader)); break;
-          case 11: builder.setClubInfo(UserClubInfo.ADAPTER.decode(reader)); break;
+          case 11: builder.setClubInfo(UClubInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -634,7 +634,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       if (builder.vipInfo != null) builder.vipInfo = VipInfo.ADAPTER.redact(builder.vipInfo);
       if (builder.ranking != null) builder.ranking = UserRanking.ADAPTER.redact(builder.ranking);
       if (builder.honorInfo != null) builder.honorInfo = HonorInfo.ADAPTER.redact(builder.honorInfo);
-      if (builder.clubInfo != null) builder.clubInfo = UserClubInfo.ADAPTER.redact(builder.clubInfo);
+      if (builder.clubInfo != null) builder.clubInfo = UClubInfo.ADAPTER.redact(builder.clubInfo);
       builder.clearUnknownFields();
       return builder.build();
     }

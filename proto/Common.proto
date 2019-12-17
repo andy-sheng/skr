@@ -21,7 +21,13 @@ message UserInfo {
     VipInfo vipInfo    = 8; //vip类型
     UserRanking ranking = 9; //排位信息
     HonorInfo honorInfo = 10;//会员信息
-    UserClubInfo clubInfo = 11; //家族信息
+    UClubInfo clubInfo  = 11; //家族信息
+}
+
+message UClubInfo
+{
+    EClubMemberRoleType roleType = 1; //家族角色信息
+    uint32 clubID                = 2; //自己的clubID
 }
 
 // 家族信息

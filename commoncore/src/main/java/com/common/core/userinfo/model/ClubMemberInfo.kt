@@ -14,12 +14,23 @@ class ClubMemberInfo : Serializable {
     var roleDesc: String = ""
 
     companion object {
-        fun parseFromPB(userClubInfo: com.zq.live.proto.Common.UserClubInfo): ClubMemberInfo {
+        fun parseFromPB(userClubInfo: com.zq.live.proto.Common.UClubInfo): ClubMemberInfo {
             val result = ClubMemberInfo()
-            result.club = ClubInfo.parseFromPB(userClubInfo.club)
+            result.club = ClubInfo()
+            result.club?.clubID = userClubInfo.clubID
             result.roleType = userClubInfo.roleType.value
-            result.roleDesc = userClubInfo.roleDesc
             return result
+        }
+
+        fun toUClubInfoPB(memberInfo: ClubMemberInfo?): com.zq.live.proto.Common.UClubInfo? {
+            return if (memberInfo != null) {
+                com.zq.live.proto.Common.UClubInfo.Builder()
+                        .setClubID(memberInfo.club?.clubID)
+                        .setRoleType(EClubMemberRoleType.fromValue(memberInfo.roleType))
+                        .build()
+            } else {
+                null
+            }
         }
 
         fun toUserClubInfoPB(memberInfo: ClubMemberInfo?): com.zq.live.proto.Common.UserClubInfo? {
