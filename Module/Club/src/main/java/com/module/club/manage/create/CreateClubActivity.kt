@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
 import android.os.MessageQueue
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.View
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -27,6 +29,7 @@ import com.common.upload.UploadParams
 import com.common.utils.ImageUtils
 import com.common.utils.U
 import com.common.view.ex.ExImageView
+import com.common.view.ex.ExTextView
 import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.SkrProgressView
@@ -55,6 +58,8 @@ class CreateClubActivity : BaseActivity() {
     lateinit var clubIntroductionEt: NoLeakEditText
     lateinit var progressView: SkrProgressView
     lateinit var placeHolder: View
+    lateinit var textCount: ExTextView
+
 
     internal var mImageItemArrayList: MutableList<ImageItem> = java.util.ArrayList()
 
@@ -77,6 +82,7 @@ class CreateClubActivity : BaseActivity() {
         clubIntroductionEt = findViewById(R.id.club_introduction_et)
         progressView = findViewById(R.id.progress_view)
         placeHolder = findViewById(R.id.place_holder)
+        textCount = findViewById(R.id.text_count)
         placeHolder.layoutParams.height = U.getDisplayUtils().phoneHeight - U.getDisplayUtils().dip2px(486f)
 
         Looper.myQueue().addIdleHandler(object : MessageQueue.IdleHandler {
@@ -86,6 +92,54 @@ class CreateClubActivity : BaseActivity() {
                 return false
             }
         })
+
+        clubIntroductionEt.addTextChangedListener(object : TextWatcher {
+            var preString = ""
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                preString = s.toString()
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s.toString()
+                val length = str.length
+                if (length > 200) {
+                    val selectIndex = preString.length
+                    clubIntroductionEt.setText(preString)
+                    clubIntroductionEt.setSelection(selectIndex)
+                    textCount.text = "200/200"
+                } else {
+                    textCount.text = "${s.toString().length}/200"
+                }
+            }
+        })
+
+//        clubNameEt.addTextChangedListener(object : TextWatcher {
+//            var preString = ""
+//            override fun afterTextChanged(s: Editable?) {
+//
+//            }
+//
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+//                preString = s.toString()
+//                MyLog.d(TAG, "beforeTextChanged s = $preString")
+//            }
+//
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//                val str = s.toString()
+//                val length = U.getStringUtils().getStringLength(str)
+//                if (length > 30) {
+//                    MyLog.d(TAG, "onTextChanged s = $str")
+//                    val selectIndex = preString.length
+//                    clubNameEt.setText(preString)
+//                    clubNameEt.setSelection(selectIndex)
+//                    U.getToastUtil().showShort("不能超过15个汉字或30个英文")
+//                }
+//            }
+//        })
 
         val from = intent?.getStringExtra("from") ?: "create"
         if (!TextUtils.isEmpty(from)) {
