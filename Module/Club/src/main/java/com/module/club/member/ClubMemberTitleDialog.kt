@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.view.Gravity
 import android.view.View
+import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExTextView
@@ -14,7 +15,7 @@ import com.zq.live.proto.Common.EClubMemberRoleType
 
 // 家族头衔授予 副族长 主持人 取消
 // 取消头衔授予 取消头衔 取消
-class ClubMemberTitleDialog(context: Context, model: UserInfoModel?, listener: Listener) : ConstraintLayout(context) {
+class ClubMemberTitleDialog(context: Context, clubMemberInfo: ClubMemberInfo?, model: UserInfoModel?, listener: Listener) : ConstraintLayout(context) {
 
     private val function1: ExTextView
     private val function2: ExTextView
@@ -46,6 +47,21 @@ class ClubMemberTitleDialog(context: Context, model: UserInfoModel?, listener: L
             function2.visibility = View.VISIBLE
             function2.text = "设为主持人"
             function2.setDebounceViewClickListener { listener.onClickHost() }
+            when {
+                clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value -> {
+                    function1.visibility = View.VISIBLE
+                    function2.visibility = View.VISIBLE
+                }
+                clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_CoFounder.value -> {
+                    function1.visibility = View.GONE
+                    function2.visibility = View.VISIBLE
+                }
+                else -> {
+                    function1.visibility = View.GONE
+                    function2.visibility = View.GONE
+                }
+            }
+
         }
     }
 

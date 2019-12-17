@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.ClubInfo
+import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
@@ -39,7 +40,9 @@ class ClubMemberListActivity : BaseActivity() {
     lateinit var contentRv: RecyclerView
     lateinit var adapter: ClubMemberListAdapter
 
+    private var clubMemberInfo: ClubMemberInfo? = null
     private var clubID: Int = 0
+
     private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
     private var offset = 0
     private var hasMore = true
@@ -53,9 +56,11 @@ class ClubMemberListActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        clubID = intent.getIntExtra("clubID", 0)
-        if (clubID == 0) {
+        clubMemberInfo = intent.getSerializableExtra("clubMemberInfo") as ClubMemberInfo?
+        if (clubMemberInfo == null) {
             finish()
+        } else {
+            clubID = clubMemberInfo?.club?.clubID ?: 0
         }
 
         titlebar = findViewById(R.id.titlebar)
@@ -102,7 +107,7 @@ class ClubMemberListActivity : BaseActivity() {
                 // 等设计稿
                 model?.let {
                     mClubMemberTitleDialog?.dismiss(false)
-                    mClubMemberTitleDialog = ClubMemberTitleDialog(this@ClubMemberListActivity, model, object : ClubMemberTitleDialog.Listener {
+                    mClubMemberTitleDialog = ClubMemberTitleDialog(this@ClubMemberListActivity, clubMemberInfo, model, object : ClubMemberTitleDialog.Listener {
                         override fun onClickCoFounder() {
                             mClubMemberTitleDialog?.dismiss()
                             setClubMemberTitle(EClubMemberRoleType.ECMRT_CoFounder.value, position, it)

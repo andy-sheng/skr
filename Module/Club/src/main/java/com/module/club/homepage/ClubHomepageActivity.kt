@@ -227,7 +227,7 @@ class ClubHomepageActivity : BaseActivity() {
 
         memberTv?.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_MEMBER)
-                    .withInt("clubID", clubMemberInfo?.club?.clubID ?: 0)
+                    .withSerializable("clubMemberInfo", clubMemberInfo)
                     .navigation()
         }
 
