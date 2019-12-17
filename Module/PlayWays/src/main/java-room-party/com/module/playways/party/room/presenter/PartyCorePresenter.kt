@@ -872,7 +872,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         MyLog.d(TAG, "onEvent event = $event")
 //        if(mRoomData.myUserInfo?.isHost() == true || mRoomData.){
 //        }
-        pretendSystemMsg("${event.user.userInfo.nickName} 申请上麦")
+        if(event.cancel){
+            pretendSystemMsg("${event.user.userInfo.nickName} 取消申请")
+        }else{
+            pretendSystemMsg("${event.user.userInfo.nickName} 申请上麦")
+        }
+
         mRoomData.applyUserCnt = event.applyUserCnt
     }
 
@@ -893,7 +898,10 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         partySeatInfoModel.seatStatus = n?.seatStatus ?: 0
         mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.user), partySeatInfoModel)
         //TODO
-        pretendSystemMsg(" ${event.user.userInfo.nickName} 下麦")
+        if(event.opUser.userInfo.userID != event.user.userInfo.userID){
+            // 不是自己主动下麦的
+            pretendSystemMsg("${event.opUser.userInfo.nickName} 将 ${event.user.userInfo.nickName} 下麦")
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

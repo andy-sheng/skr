@@ -158,11 +158,13 @@ message PGetSeatMsg {
 message PBackSeatMsg {
     POnlineInfo user = 1; //用户信息
     uint32 seatSeq = 2; //座位顺序
+    POnlineInfo opUser = 3; //执行者
 }
 
 message PApplyForGuest {
     POnlineInfo user = 1; //用户信息
     uint32 applyUserCnt = 2; //申请人数
+    bool cancel         = 3; //是否取消申请
 }
 
 message PExitGameMsg {
