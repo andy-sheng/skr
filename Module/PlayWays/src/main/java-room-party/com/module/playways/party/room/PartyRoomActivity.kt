@@ -3,6 +3,7 @@ package com.module.playways.party.room
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.text.TextUtils
 import android.view.*
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -19,7 +20,6 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
-import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
@@ -72,7 +72,6 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.PartyRoom.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.lang.StringBuilder
 
 
 @Route(path = RouterConstants.ACTIVITY_PARTY_ROOM)
@@ -682,6 +681,28 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
         event?.user?.userInfo?.let {
             mCorePresenter?.pretendSystemMsg("${UserInfoManager.getInstance().getRemarkName(it.userID, it.nickName)} 已成为新的主持人")
+            if (it.userID == MyUserInfoManager.uid.toInt()) {
+                finishTopActivity("您已成为主持人")
+            }
+        }
+    }
+
+    private fun finishTopActivity(str: String) {
+        var hasActivity = false
+        for (i in U.getActivityUtils().activityList.size - 1 downTo 0) {
+            val activity = U.getActivityUtils().activityList[i]
+            if (activity is PartyRoomActivity) {
+                break
+            }
+            if (U.getActivityUtils().isHomeActivity(activity)) {
+                continue
+            }
+            activity.finish()
+            hasActivity = true
+        }
+
+        if (!TextUtils.isEmpty(str) && hasActivity) {
+            U.getToastUtil().showShort(str)
         }
     }
 
@@ -702,6 +723,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
         if (event.hasToUser() && (event.toUser.userInfo?.userID ?: 0) > 0) {
             mCorePresenter?.pretendSystemMsg("${UserInfoManager.getInstance().getRemarkName(event.toUser.userInfo.userID, event.toUser.userInfo.nickName)} 已成为新的主持人")
+            if (event.toUser.userInfo.userID == MyUserInfoManager.uid.toInt()) {
+                finishTopActivity("您已成为主持人")
+            }
         } else {
             mCorePresenter?.pretendSystemMsg("主持人已下麦，已自动结束所有游戏")
         }
