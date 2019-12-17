@@ -677,6 +677,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
 
         mPartyGameMainView?.tagChange()
+
+        event?.user?.userInfo?.let {
+            mCorePresenter?.pretendSystemMsg("${UserInfoManager.getInstance().getRemarkName(it.userID, it.nickName)} 已成为新的主持人")
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
