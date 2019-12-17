@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.permission.SkrAudioPermission;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.notification.event.CRSyncInviteUserNotifyEvent;
@@ -81,6 +82,8 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     }
 
     Disposable mJoinRoomDisposable;
+
+    SkrAudioPermission skrAudioPermission = new SkrAudioPermission();
 
     SkrVerifyUtils skrVerifyUtils = new SkrVerifyUtils();
 
@@ -279,8 +282,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         map.put("platform", 20);
         map.put("roomID", roomID);
         map.put("joinSrc", joinSrc);
-
-        skrVerifyUtils.checkHasMicAudioPermission(new Runnable() {
+        skrAudioPermission.ensurePermission(new Runnable() {
             @Override
             public void run() {
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
@@ -320,7 +322,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                     }
                 });
             }
-        });
+        }, true);
     }
 
     private void goMicRoom(HashMap map) {

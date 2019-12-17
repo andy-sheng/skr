@@ -11,6 +11,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.permission.SkrAudioPermission
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
@@ -58,6 +59,7 @@ class PartyRoomCreateActivity : BaseActivity() {
             .setUnSelectedDrawable(U.getDrawable(R.drawable.chuangjian_weixuanzhong))
             .build()
 
+    val skrAudioPermission = SkrAudioPermission()
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.create_party_activity_layout
@@ -86,7 +88,7 @@ class PartyRoomCreateActivity : BaseActivity() {
         titlebar.rightTextView.setDebounceViewClickListener {
             titlebar.rightTextView.isClickable = false
             if (this.from == "create") {
-                createRoom()
+                skrAudioPermission.ensurePermission({createRoom()},true)
             } else if (this.from == "change") {
                 changeRoomSetting()
             }
@@ -229,6 +231,11 @@ class PartyRoomCreateActivity : BaseActivity() {
             }
 
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        skrAudioPermission.onBackFromPermisionManagerMaybe(this)
     }
 
     override fun useEventBus(): Boolean {
