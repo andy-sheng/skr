@@ -32,6 +32,7 @@ import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
+import com.module.playways.party.room.event.PartyGameSwitchEvent
 import com.module.playways.party.room.event.PartySelectSongEvent
 import com.module.playways.party.room.event.PartySelfTurnToSingEvent
 import com.module.playways.party.room.model.PartyGameInfoModel
@@ -304,9 +305,13 @@ class PartyGameTabView : ExConstraintLayout {
                     gamePicImg.visibility = View.GONE
                 }
             }
+
+            EventBus.getDefault().post(PartyGameSwitchEvent())
         } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Free.ordinal) {
             textScrollView.visibility = View.VISIBLE
             setMainText("", "自由麦模式，大家畅所欲言吧～")
+
+            EventBus.getDefault().post(PartyGameSwitchEvent())
         } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
             if (partyGameInfoModel?.ktv?.userID ?: 0 > 0) {
                 textScrollView.visibility = View.VISIBLE
