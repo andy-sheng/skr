@@ -70,7 +70,7 @@ object MyUserInfoManager {
     val nickName: String
         get() = myUserInfo?.userNickname ?: ""
 
-    val clubID: Int?  // 俱乐部id
+    val clubID: Int?  // 不准
         get() = myUserInfo?.clubInfo?.club?.clubID
 
     val age: Int

@@ -7,6 +7,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
@@ -19,6 +20,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
+import com.zq.live.proto.Common.ClubInfo
 import com.zq.live.proto.Common.EClubMemberRoleType
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
@@ -36,14 +38,25 @@ class ClubManageFragment : BaseFragment() {
 
     private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
 
+    private var clubMemberInfo: ClubMemberInfo? = null
+
     override fun initView(): Int {
         return R.layout.club_manage_fragment_layout
     }
 
+    override fun setData(type: Int, data: Any?) {
+        super.setData(type, data)
+        if (type == 1) {
+            clubMemberInfo = data as ClubMemberInfo?
+        }
+    }
+
     override fun initData(savedInstanceState: Bundle?) {
+        if (clubMemberInfo == null) {
+            finish()
+        }
 
         titlebar = rootView.findViewById(R.id.titlebar)
-
         clubInfoSettingTv = rootView.findViewById(R.id.club_info_setting_tv)
         clubNoticeTv = rootView.findViewById(R.id.club_notice_tv)
         clubTransferTv = rootView.findViewById(R.id.club_transfer_tv)
@@ -52,13 +65,13 @@ class ClubManageFragment : BaseFragment() {
 
         clubTransferTv?.visibility = View.GONE
         when {
-            MyUserInfoManager.myUserInfo?.clubInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value -> {
+            clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value -> {
                 clubInfoSettingTv?.visibility = View.VISIBLE
                 clubNoticeTv?.visibility = View.VISIBLE
                 clubDissolveTv?.visibility = View.VISIBLE
                 clubExitTv?.visibility = View.GONE
             }
-            MyUserInfoManager.myUserInfo?.clubInfo?.roleType == EClubMemberRoleType.ECMRT_CoFounder.value -> {
+            clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_CoFounder.value -> {
                 clubInfoSettingTv?.visibility = View.VISIBLE
                 clubNoticeTv?.visibility = View.VISIBLE
                 clubDissolveTv?.visibility = View.GONE
@@ -79,12 +92,14 @@ class ClubManageFragment : BaseFragment() {
         clubInfoSettingTv?.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_CLUB)
                     .withString("from", "change")
+                    .withSerializable("clubMemberInfo", clubMemberInfo)
                     .navigation()
         }
 
         clubNoticeTv?.setDebounceViewClickListener {
             // 跳到公告设置
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, ClubNoticeSettingFragment::class.java)
+                    .addDataBeforeAdd(1, clubMemberInfo)
                     .setAddToBackStack(true)
                     .setHasAnimation(true)
                     .build())

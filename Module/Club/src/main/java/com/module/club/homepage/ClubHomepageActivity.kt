@@ -3,44 +3,52 @@ package com.module.club.homepage
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.AppBarLayout
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.avatar.AvatarUtils
-import com.common.core.userinfo.model.ClubInfo
+import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.common.view.ex.drawable.DrawableCreator
+import com.component.busilib.view.MarqueeTextView
 import com.component.person.view.PersonTagView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
+import com.module.club.homepage.event.ClubInfoChangeEvent
 import com.module.club.homepage.room.ClubPartyRoomView
 import com.module.club.homepage.view.ClubMemberView
+import com.module.club.manage.setting.ClubManageFragment
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
+import com.zq.live.proto.Common.EClubMemberRoleType
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import kotlin.math.abs
 
-// 不要直接调用，用service的tryGoClubHomePage
-class OtherClubHomepageActivity : BaseActivity() {
+class ClubHomepageActivity : BaseActivity() {
+
     private var imageBg: SimpleDraweeView? = null
     private var smartRefresh: SmartRefreshLayout? = null
     private var container: LinearLayout? = null
@@ -50,8 +58,15 @@ class OtherClubHomepageActivity : BaseActivity() {
     private var appbar: AppBarLayout? = null
     private var clubAvatarSdv: SimpleDraweeView? = null
     private var clubNameTv: TextView? = null
-    private var clubRelationTv: TextView? = null
     private var clubTagView: PersonTagView? = null
+
+    private var clubNoticeTv: MarqueeTextView? = null
+
+    private var functionArea: ConstraintLayout? = null
+    private var applyTv: ExTextView? = null
+    private var memberTv: ExTextView? = null
+    private var contributionTv: ExTextView? = null
+
     private var memberView: ClubMemberView? = null  //换成一个view来做
 
     private var clubIntroduceTitle: TextView? = null
@@ -62,42 +77,87 @@ class OtherClubHomepageActivity : BaseActivity() {
     private var srlNameTv: TextView? = null
 
     private var ivBack: ExImageView? = null
+    private var moreBtn: ExImageView? = null
+
+    private var applyArea: ConstraintLayout? = null
     private var applyEnterTv: ExTextView? = null
 
     private var lastVerticalOffset = Int.MAX_VALUE
     private var scrollDivider = U.getDisplayUtils().dip2px(150f)  // 滑到分界线的时候
 
     private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
+    private var clubMemberInfo: ClubMemberInfo? = null
     private var clubID: Int = 0
-    private var clubInfo: ClubInfo? = null
+    private var isMyClub = false
+
+    private val noticeDrawable = DrawableCreator.Builder()
+            .setSolidColor(U.getColor(R.color.black_trans_50))
+            .setCornersRadius(4.dp().toFloat())
+            .build()
+
+    private var isClubInfoChange = false // club信息改变
 
     override fun initView(savedInstanceState: Bundle?): Int {
-        return R.layout.club_other_homepage_activity_layout
+        return R.layout.club_home_page_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        clubID = intent.getIntExtra("clubID", 0)
-        if (clubID == 0) {
+        clubMemberInfo = intent.getSerializableExtra("clubMemberInfo") as ClubMemberInfo?
+        clubID = clubMemberInfo?.club?.clubID ?: 0
+        if (clubMemberInfo == null) {
             finish()
         }
 
-        imageBg = findViewById(R.id.image_bg)
-        smartRefresh = findViewById(R.id.smart_refresh)
-        container = findViewById(R.id.container)
-        clubRoomView = findViewById(R.id.club_room_view)
-        appbar = findViewById(R.id.appbar)
-        clubAvatarSdv = findViewById(R.id.club_avatar_sdv)
-        clubNameTv = findViewById(R.id.club_name_tv)
-        clubRelationTv = findViewById(R.id.club_relation_tv)
-        clubTagView = findViewById(R.id.club_tag_view)
-        memberView = findViewById(R.id.member_view)
-        clubIntroduceTitle = findViewById(R.id.club_introduce_title)
-        clubIntroduceContent = findViewById(R.id.club_introduce_content)
-        toolbar = findViewById(R.id.toolbar)
-        toolbarLayout = findViewById(R.id.toolbar_layout)
-        srlNameTv = findViewById(R.id.srl_name_tv)
-        ivBack = findViewById(R.id.iv_back)
-        applyEnterTv = findViewById(R.id.apply_enter_tv)
+        imageBg = this.findViewById(R.id.image_bg)
+        smartRefresh = this.findViewById(R.id.smart_refresh)
+        container = this.findViewById(R.id.container)
+
+        clubRoomView = this.findViewById(R.id.club_room_view)
+
+        appbar = this.findViewById(R.id.appbar)
+        clubAvatarSdv = this.findViewById(R.id.club_avatar_sdv)
+        clubNameTv = this.findViewById(R.id.club_name_tv)
+        clubTagView = this.findViewById(R.id.club_tag_view)
+        clubNoticeTv = this.findViewById(R.id.club_notice_tv)
+
+        functionArea = this.findViewById(R.id.function_area)
+        applyTv = this.findViewById(R.id.apply_tv)
+        memberTv = this.findViewById(R.id.member_tv)
+        contributionTv = this.findViewById(R.id.contribution_tv)
+
+        memberView = this.findViewById(R.id.member_view)
+
+        clubIntroduceTitle = this.findViewById(R.id.club_introduce_title)
+        clubIntroduceContent = this.findViewById(R.id.club_introduce_content)
+
+        toolbar = this.findViewById(R.id.toolbar)
+        toolbarLayout = this.findViewById(R.id.toolbar_layout)
+        srlNameTv = this.findViewById(R.id.srl_name_tv)
+
+        ivBack = this.findViewById(R.id.iv_back)
+        moreBtn = this.findViewById(R.id.more_btn)
+
+        applyArea = this.findViewById(R.id.apply_area)
+        applyEnterTv = this.findViewById(R.id.apply_enter_tv)
+
+        isMyClub = (clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value
+                || clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_CoFounder.value
+                || clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_Hostman.value
+                || clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_Common.value)
+
+        if (isMyClub) {
+            clubNoticeTv?.visibility = View.VISIBLE
+            memberView?.visibility = View.GONE
+            functionArea?.visibility = View.VISIBLE
+            applyArea?.visibility = View.GONE
+            moreBtn?.visibility = View.VISIBLE
+        } else {
+            clubNoticeTv?.visibility = View.GONE
+            memberView?.visibility = View.VISIBLE
+            functionArea?.visibility = View.GONE
+            applyArea?.visibility = View.VISIBLE
+            moreBtn?.visibility = View.GONE
+        }
 
         adjustNotchPhone()
         initTopArea()
@@ -106,22 +166,64 @@ class OtherClubHomepageActivity : BaseActivity() {
         initToolBarScroll()
         initApplyEnter()
 
-        getHomePage()
-        clubRoomView?.initData()
-        memberView?.initData()
+        refreshClubUI()
 
+        // 初始化数据
+        clubRoomView?.initData()
+        if (!isMyClub) {
+            memberView?.initData()
+        }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (isClubInfoChange) {
+            isClubInfoChange = false
+            clubRoomView?.initData()
+            getClubMemberInfo()
+            if (!isMyClub) {
+                memberView?.initData()
+            }
+        }
+    }
+
+
     private fun adjustNotchPhone() {
-        if (U.getDeviceUtils().hasNotch(this@OtherClubHomepageActivity)) {
+        if (U.getDeviceUtils().hasNotch(this@ClubHomepageActivity)) {
             val layoutParams = clubAvatarSdv?.layoutParams as ConstraintLayout.LayoutParams
-            layoutParams.topMargin = layoutParams.topMargin + U.getStatusBarUtil().getStatusBarHeight(this@OtherClubHomepageActivity)
+            layoutParams.topMargin = layoutParams.topMargin + U.getStatusBarUtil().getStatusBarHeight(this@ClubHomepageActivity)
             clubAvatarSdv?.layoutParams = layoutParams
         }
     }
 
     private fun initTopArea() {
         ivBack?.setDebounceViewClickListener { finish() }
+
+        moreBtn?.setDebounceViewClickListener {
+            // 跳到设置页面
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, ClubManageFragment::class.java)
+                    .addDataBeforeAdd(1, clubMemberInfo)
+                    .setAddToBackStack(true)
+                    .setHasAnimation(true)
+                    .build())
+        }
+
+        applyTv?.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_APPLY_CLUB)
+                    .navigation()
+        }
+
+        memberTv?.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_MEMBER)
+                    .withInt("clubID", clubMemberInfo?.club?.clubID ?: 0)
+                    .navigation()
+        }
+
+        contributionTv?.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_CLUB_RANK)
+                    .withInt("clubID", clubMemberInfo?.club?.clubID ?: 0)
+                    .navigation()
+        }
     }
 
     private fun initMemberArea() {
@@ -142,9 +244,10 @@ class OtherClubHomepageActivity : BaseActivity() {
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
                     smartRefresh?.setEnableLoadMore(true)
-                    getHomePage()
                     clubRoomView?.initData()
-                    memberView?.initData()
+                    if (!isMyClub) {
+                        memberView?.initData()
+                    }
                 }
 
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
@@ -223,14 +326,13 @@ class OtherClubHomepageActivity : BaseActivity() {
         }
     }
 
-
-    private fun getHomePage() {
+    private fun getClubMemberInfo() {
         launch {
-            val result = subscribe(RequestControl("getHomePage", ControlType.CancelThis)) {
-                clubServerApi.getClubHomePageDetail(clubID)
+            val result = subscribe(RequestControl("getClubMemberInfo", ControlType.CancelThis)) {
+                clubServerApi.getClubMemberInfo(MyUserInfoManager.uid.toInt(), clubID)
             }
             if (result.errno == 0) {
-                clubInfo = JSON.parseObject(result.data.getString("info"), ClubInfo::class.java)
+                clubMemberInfo = JSON.parseObject(result.data.getString("info"), ClubMemberInfo::class.java)
                 refreshClubUI()
             }
             finishRereshAndLoadMore()
@@ -238,6 +340,7 @@ class OtherClubHomepageActivity : BaseActivity() {
     }
 
     private fun refreshClubUI() {
+        val clubInfo = clubMemberInfo?.club
         AvatarUtils.loadAvatarByUrl(imageBg, AvatarUtils.newParamsBuilder(clubInfo?.logo)
                 .setCircle(false)
                 .setBlur(true)
@@ -247,9 +350,10 @@ class OtherClubHomepageActivity : BaseActivity() {
                 .setCornerRadius(8.dp().toFloat())
                 .build())
         clubNameTv?.text = clubInfo?.name
-        // todo 缺一个联系方式
         clubTagView?.setClubID(clubID)
-        clubTagView?.setClubHot(clubInfo?.hot ?: 0)
+        clubTagView?.setClubHot(clubID)
+        clubNoticeTv?.background = noticeDrawable
+        clubNoticeTv?.text = "公告${clubInfo?.notice}"
         clubIntroduceContent?.text = clubInfo?.desc
         srlNameTv?.text = clubInfo?.name
     }
@@ -259,11 +363,8 @@ class OtherClubHomepageActivity : BaseActivity() {
         smartRefresh?.finishRefresh()
     }
 
-    override fun useEventBus(): Boolean {
-        return false
-    }
-
-    override fun canSlide(): Boolean {
-        return false
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ClubInfoChangeEvent) {
+        isClubInfoChange = true
     }
 }

@@ -413,4 +413,10 @@ public interface UserInfoServerApi {
 
     @GET("http://dev.api.inframe.mobi/v1/club/my-member-info")
     Observable<ApiResult> getMyClubInfo(@Query("userID") int userID);
+
+    /**
+     * 查询指定家族的成员信息
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/check-member-info")
+    Observable<ApiResult> getClubMemberInfo(@Query("userID") int userID, @Query("clubID") int clubID);
 }

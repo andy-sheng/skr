@@ -11,7 +11,7 @@ import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
-import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
 import com.common.image.fresco.FrescoWorker
@@ -59,6 +59,7 @@ class CreateClubActivity : BaseActivity() {
     internal var mImageItemArrayList: MutableList<ImageItem> = java.util.ArrayList()
 
     private var clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
+    private var clubMemberInfo: ClubMemberInfo? = null // 更改家族资料会带过来
 
     var from = "create"
 
@@ -90,18 +91,17 @@ class CreateClubActivity : BaseActivity() {
         if (!TextUtils.isEmpty(from)) {
             this.from = from
             if ("change" == from) {
+                clubMemberInfo = intent?.getSerializableExtra("clubMemberInfo") as ClubMemberInfo?
                 titlebar.rightTextView?.text = "更改"
                 // 初始化内容
-                FrescoWorker.loadImage(iconIv,
-                        ImageFactory.newPathImage(MyUserInfoManager.myUserInfo?.clubInfo?.club?.logo)
-                                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                                .setFailureDrawable(U.app().resources.getDrawable(com.component.busilib.R.drawable.load_img_error))
-                                .setLoadingDrawable(U.app().resources.getDrawable(com.component.busilib.R.drawable.loading_place_holder_img))
-                                .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_320.w).build())
-                                .build())
-                clubNameEt.setText("${MyUserInfoManager.myUserInfo?.clubInfo?.club?.name}")
-                clubIntroductionEt.setText("${MyUserInfoManager.myUserInfo?.clubInfo?.club?.desc}")
-
+                FrescoWorker.loadImage(iconIv, ImageFactory.newPathImage(clubMemberInfo?.club?.logo)
+                        .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                        .setFailureDrawable(U.app().resources.getDrawable(com.component.busilib.R.drawable.load_img_error))
+                        .setLoadingDrawable(U.app().resources.getDrawable(com.component.busilib.R.drawable.loading_place_holder_img))
+                        .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_320.w).build())
+                        .build())
+                clubNameEt.setText("${clubMemberInfo?.club?.name}")
+                clubIntroductionEt.setText("${clubMemberInfo?.club?.desc}")
             }
         }
 
@@ -232,11 +232,11 @@ class CreateClubActivity : BaseActivity() {
             hasLogoChange = false
         }
         var hasNameChange = true
-        if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.name?.equals(clubNameEt.text.toString().trim()) == true) {
+        if (clubMemberInfo?.club?.name?.equals(clubNameEt.text.toString().trim()) == true) {
             hasNameChange = false
         }
         var hasContentChange = true
-        if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.desc?.equals(clubIntroductionEt.text.toString().trim()) == true) {
+        if (clubMemberInfo?.club?.desc?.equals(clubIntroductionEt.text.toString().trim()) == true) {
             hasContentChange = false
         }
 
@@ -277,14 +277,14 @@ class CreateClubActivity : BaseActivity() {
     private fun setClubInfo(url: String?, name: String?, content: String?) {
         launch {
             val map = HashMap<String, Any?>()
-            map["clubID"] = MyUserInfoManager.clubID
+            map["clubID"] = clubMemberInfo?.club?.clubID ?: 0
             if (!TextUtils.isEmpty(url)) {
                 map["logo"] = url
             }
-            if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.name?.equals(clubNameEt.text.toString().trim()) == false) {
+            if (clubMemberInfo?.club?.name?.equals(clubNameEt.text.toString().trim()) == false) {
                 map["name"] = clubNameEt.text.toString().trim()
             }
-            if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.desc?.equals(clubIntroductionEt.text.toString().trim()) == false) {
+            if (clubMemberInfo?.club?.desc?.equals(clubIntroductionEt.text.toString().trim()) == false) {
                 map["desc"] = clubIntroductionEt.text.toString().trim()
             }
 

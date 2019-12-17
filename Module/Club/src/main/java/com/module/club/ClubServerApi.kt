@@ -35,6 +35,12 @@ interface ClubServerApi {
     fun getClubHomePageDetail(@Query("clubID") clubID: Int): Call<ApiResult>
 
     /**
+     * 查询指定家族的成员信息
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/check-member-info")
+    fun getClubMemberInfo(@Query("userID") userID: Int, @Query("clubID") clubID: Int): Call<ApiResult>
+
+    /**
      * 查询家族中的成员
      */
     @GET("http://dev.api.inframe.mobi/v1/club/list-member")
