@@ -164,6 +164,8 @@ class ClubMemberListActivity : BaseActivity() {
                 // 设置成功，更新下身份
                 model.clubInfo?.roleType = role
                 adapter.notifyItemChanged(position)
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
             }
         }
     }
