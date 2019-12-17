@@ -42,12 +42,16 @@ class ClubPartyRoomAdapter(val listener: Listener) : RecyclerView.Adapter<ClubPa
             .build()
 
     val ITEM_TYPE_CLUB_PARTY = 1  // 家族剧场
-    val ITEM_TYPE_MEMBER_PARTY = 2  // 成员剧场
+    val ITEM_TYPE_FIRST_MEMBER_PARTY = 2 // 第一个成员剧场
+    val ITEM_TYPE_MEMBER_PARTY = 3  // 成员剧场
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomViewHolder {
         return if (viewType == ITEM_TYPE_CLUB_PARTY) {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.club_party_room_view_item_layout, parent, false)
             ClubPartyViewHolder(view)
+        } else if (viewType == ITEM_TYPE_FIRST_MEMBER_PARTY) {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.club_first_member_room_layout, parent, false)
+            FirstMemberRoomViewHolder(view)
         } else {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.club_party_room_common_layout, parent, false)
             RoomViewHolder(view)
@@ -59,10 +63,10 @@ class ClubPartyRoomAdapter(val listener: Listener) : RecyclerView.Adapter<ClubPa
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0) {
-            ITEM_TYPE_CLUB_PARTY
-        } else {
-            ITEM_TYPE_MEMBER_PARTY
+        return when (position) {
+            0 -> ITEM_TYPE_CLUB_PARTY
+            1 -> ITEM_TYPE_FIRST_MEMBER_PARTY
+            else -> ITEM_TYPE_MEMBER_PARTY
         }
     }
 
@@ -82,6 +86,10 @@ class ClubPartyRoomAdapter(val listener: Listener) : RecyclerView.Adapter<ClubPa
                 listener.onClickClubParty(mPos, mModel)
             }
         }
+    }
+
+    inner class FirstMemberRoomViewHolder(item: View) : RoomViewHolder(item) {
+
     }
 
     open inner class RoomViewHolder(item: View) : RecyclerView.ViewHolder(item) {
