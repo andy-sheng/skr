@@ -78,7 +78,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
     // 题目信息在轮次信息里 轮次信息在父类的 realRoundInfo 中
     var hostId = 0 //主持人id
-        set(value) {
+        private set(value) {
             if (field != value) {
                 field = value
                 EventBus.getDefault().post(PartyHostChangeEvent(field))
@@ -88,7 +88,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
      * 本人的用户信息
      */
     var myUserInfo: PartyPlayerInfoModel? = null
-        set(value) {
+        private set(value) {
             if (field == null && value == null) {
 
             } else {
@@ -110,7 +110,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
      * 本人的座位信息
      */
     var mySeatInfo: PartySeatInfoModel? = null
-        set(value) {
+        private set(value) {
             MyLog.w("chengsimin", "value=$value field=$field")
             if (field == null && value == null) {
 
@@ -264,6 +264,9 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                 if (info.isHost()) {
                     hostId = info.userID
                 }
+                if (info.userID == hostId && !info.isHost()) {
+                    hostId = 0
+                }
             }
             if (!hasMy) {
                 myUserInfo = null
@@ -305,10 +308,20 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {
                 myUserInfo = playerInfoModel
             }
+            if (playerInfoModel.isHost()) {
+                hostId = playerInfoModel.userID
+            }
+            if (playerInfoModel.userID == hostId && !playerInfoModel.isHost()) {
+                hostId = 0
+            }
         }
         if (!playerInfoModel.isNotOnlyAudience()) {
             if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {
                 myUserInfo = null
+            }
+            if (playerInfoModel.userID == hostId) {
+                // 主持人变观众了
+                hostId = 0
             }
         }
     }
