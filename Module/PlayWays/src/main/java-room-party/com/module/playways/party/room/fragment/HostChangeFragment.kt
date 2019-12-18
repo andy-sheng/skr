@@ -83,6 +83,13 @@ class HostChangeFragment : BaseFragment() {
                 val list = JSON.parseArray(result.data.getString("users"), PartyPlayerInfoModel::class.java)
                 list?.let {
                     if (it.size > 0) {
+                        val iterator = list.iterator()
+                        while (iterator.hasNext()) {
+                            if (iterator.next().userID == (H.partyRoomData?.hostId ?: 0)) {
+                                iterator.remove()
+                            }
+                        }
+
                         administratorSelectRecyclerAdapter?.addData(it)
                         administratorSelectRecyclerAdapter?.notifyDataSetChanged()
                     }
