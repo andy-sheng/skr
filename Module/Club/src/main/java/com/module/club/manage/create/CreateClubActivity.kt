@@ -34,6 +34,7 @@ import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.SkrProgressView
 import com.component.person.photo.model.PhotoModel
+import com.component.toast.CommonToastView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
@@ -363,9 +364,12 @@ class CreateClubActivity : BaseActivity() {
             }
 
             if (result.errno == 0) {
-                U.getToastUtil().showShort("已提交创建家族申请")
                 progressView.visibility = View.GONE
                 finish()
+                U.getToastUtil().showSkrCustomLong(CommonToastView.Builder(U.app())
+                        .setImage(R.drawable.touxiangshezhichenggong_icon)
+                        .setText("家族创建申请已提交")
+                        .build())
             } else {
                 progressView.visibility = View.GONE
                 U.getToastUtil().showShort(result.errmsg)
