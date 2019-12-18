@@ -898,9 +898,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //        if(mRoomData.myUserInfo?.isHost() == true || mRoomData.){
 //        }
         if (event.cancel) {
-            pretendSystemMsg("${event.user.userInfo.nickName} 取消申请")
+//            pretendSystemMsg("${event.user.userInfo.nickName} 取消申请")
         } else {
-            pretendSystemMsg("${event.user.userInfo.nickName} 申请上麦")
+//            pretendSystemMsg("${event.user.userInfo.nickName} 申请上麦")
         }
 
         mRoomData.applyUserCnt = event.applyUserCnt
