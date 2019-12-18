@@ -332,7 +332,16 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun initGameMainView() {
         mPartyGameMainView = PartyGameMainView(findViewById(R.id.party_game_main_view_layout_viewStub), mRoomData)
         mPartyGameMainView?.tryInflate()
-        mPartyGameMainView?.toWaitingState()
+
+        if (mRoomData.isClubHome()) {
+            if (mRoomData.hostId > 0) {
+                mPartyGameMainView?.toWaitingState()
+            } else {
+                mPartyGameMainView?.toNoAnchorState()
+            }
+        } else {
+            mPartyGameMainView?.toWaitingState()
+        }
     }
 
     private fun initVipEnterView() {

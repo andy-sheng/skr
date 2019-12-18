@@ -454,4 +454,13 @@ class PartyGameTabView : ExConstraintLayout {
         partySelfSingLyricView?.reset()
         delaySingJob?.cancel()
     }
+
+    fun toNoAnchorState() {
+        hideAllTypeView()
+        textScrollView.visibility = View.VISIBLE
+        setMainText("", "还没有房主，先聊聊天吧～")
+        ZqEngineKit.getInstance().stopAudioMixing()
+        partySelfSingLyricView?.reset()
+        delaySingJob?.cancel()
+    }
 }

@@ -159,8 +159,16 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyHostChangeEvent) {
-        partyGameTabView.updateIdentity()
-        tagChange()
+        if (event.hostId > 0) {
+            if (mRoomData?.realRoundInfo?.sceneInfo == null) {
+                toWaitingState()
+            } else {
+                partyGameTabView.updateIdentity()
+                tagChange()
+            }
+        } else {
+            toNoAnchorState()
+        }
     }
 
     private fun setMainText(title: String?, content: String?) {
@@ -273,6 +281,16 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     fun toWaitingState() {
         gameTv.isSelected = true
         partyGameTabView.toWaitingState()
+
+        gameTv.visibility = View.VISIBLE
+        handCardTv.visibility = View.GONE
+        ruleTv.visibility = View.GONE
+        attentionTv.visibility = View.VISIBLE
+    }
+
+    fun toNoAnchorState() {
+        gameTv.isSelected = true
+        partyGameTabView.toNoAnchorState()
 
         gameTv.visibility = View.VISIBLE
         handCardTv.visibility = View.GONE
