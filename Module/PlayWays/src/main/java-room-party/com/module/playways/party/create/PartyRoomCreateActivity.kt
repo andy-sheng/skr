@@ -152,11 +152,13 @@ class PartyRoomCreateActivity : BaseActivity() {
     var mTipsDialogView: TipsDialogView? = null
 
     private fun createRoom() {
+        var topicName = nameEdittext.text.toString().trim()
+        if (TextUtils.isEmpty(topicName)) {
+            U.getToastUtil().showShort("房间主题不可以为空")
+            return
+        }
+
         launch {
-            var topicName = nameEdittext.text.toString().trim()
-//            if(TextUtils.isEmpty(topicName)){
-//                topicName = "${MyUserInfoManager.nickName}的派对"
-//            }
             val map = mutableMapOf(
                     "enterPermission" to enterType,
                     "topicName" to topicName
