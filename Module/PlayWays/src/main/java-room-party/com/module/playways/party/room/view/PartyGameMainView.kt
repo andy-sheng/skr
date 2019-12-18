@@ -12,6 +12,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
+import com.module.playways.party.room.event.PartyHostChangeEvent
 import com.module.playways.party.room.event.PartyMyUserInfoChangeEvent
 import com.module.playways.party.room.event.PartyNoticeChangeEvent
 import com.module.playways.party.room.model.PartyGameInfoModel
@@ -152,6 +153,12 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyMyUserInfoChangeEvent) {
+        partyGameTabView.updateIdentity()
+        tagChange()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyHostChangeEvent) {
         partyGameTabView.updateIdentity()
         tagChange()
     }

@@ -674,10 +674,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PClubBecomeHostMsg) {
-        mRoomData.hostId = event.user.userInfo.userID
+        val hostUserID = event.user.userInfo.userID
         var hasModel = false
         (mRoomData.getPlayerAndWaiterInfoList() as List<PartyPlayerInfoModel>?)?.forEach {
-            if (mRoomData.hostId == it.userID) {
+            if (hostUserID == it.userID) {
                 if (!(it.role.contains(EPUserRole.EPUR_HOST.value))) {
                     it.role.add(EPUserRole.EPUR_HOST.value)
                     hasModel = true
@@ -693,6 +693,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             mRoomData.usersMap[model.userID] = model
         }
 
+        //写在这里是为了延迟发event，因为可能主持人没有在user里面
+        mRoomData.hostId = event.user.userInfo.userID
         mPartyGameMainView?.tagChange()
 
         event?.user?.userInfo?.let {
@@ -726,10 +728,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PClubChangeHostMsg) {
-        mRoomData.hostId = event.toUser.userInfo.userID
+        val hostUserID = event.toUser.userInfo.userID
         var hasModel = false
         (mRoomData.getPlayerAndWaiterInfoList() as List<PartyPlayerInfoModel>?)?.forEach {
-            if (mRoomData.hostId == it.userID) {
+            if (hostUserID == it.userID) {
                 if (!(it.role.contains(EPUserRole.EPUR_HOST.value))) {
                     it.role.add(EPUserRole.EPUR_HOST.value)
                     hasModel = true
@@ -749,6 +751,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             }
         }
 
+        //写在这里是为了延迟发event，因为可能主持人没有在user里面
+        mRoomData.hostId = event.toUser?.userInfo?.userID ?: 0
         mPartyGameMainView?.tagChange()
 
         if (event.hasToUser() && (event.toUser.userInfo?.userID ?: 0) > 0) {
