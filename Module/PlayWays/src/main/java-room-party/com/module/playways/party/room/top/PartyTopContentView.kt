@@ -27,7 +27,8 @@ import com.module.RouterConstants
 import com.module.club.IClubModuleService
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
-import com.module.playways.party.room.event.*
+import com.module.playways.party.room.event.PartyHostChangeEvent
+import com.module.playways.party.room.event.PartyOnlineUserCntChangeEvent
 import com.module.playways.room.data.H
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -83,15 +84,15 @@ class PartyTopContentView : ExConstraintLayout {
                     if (it != null) {
                         if (host == null) {
                             if (it.canBeHost()) {
-                                EventBus.getDefault().post(PartyBeHostConfirmEvent())
+                                listener?.showPartyBeHostConfirm()
                                 return@getClubIdentify
                             }
                         } else {
                             if (it.canOpHost() && it.isHighLevelThen(host)) {
-                                EventBus.getDefault().post(PartyOpHostEvent())
+                                listener?.showPartyOpHost()
                                 return@getClubIdentify
                             } else if ((roomData?.hostId ?: 0) == MyUserInfoManager.uid.toInt()) {
-                                EventBus.getDefault().post(PartySelfOpHostEvent())
+                                listener?.showPartySelfOpHost()
                                 return@getClubIdentify
                             }
                         }
@@ -207,5 +208,8 @@ class PartyTopContentView : ExConstraintLayout {
     interface Listener {
         fun clickArrow(open: Boolean)
         fun showRoomMember()
+        fun showPartyBeHostConfirm()
+        fun showPartyOpHost()
+        fun showPartySelfOpHost()
     }
 }

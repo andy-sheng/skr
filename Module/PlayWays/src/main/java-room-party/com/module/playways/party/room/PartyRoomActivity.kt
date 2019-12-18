@@ -41,7 +41,8 @@ import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.actor.PartyApplyPanelView
 import com.module.playways.party.room.actor.PartyMemberPanelView
 import com.module.playways.party.room.bottom.PartyBottomContainerView
-import com.module.playways.party.room.event.*
+import com.module.playways.party.room.event.PartyHostChangeEvent
+import com.module.playways.party.room.event.PartySelectSongEvent
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
 import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.party.room.model.PartyPlayerInfoModel
@@ -510,6 +511,36 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                     mWidgetAnimationController.close()
                 }
             }
+
+            override fun showPartyBeHostConfirm() {
+                getPartyManageHostDialogView().apply {
+                    function1.text = "上麦"
+                    function1.setDebounceViewClickListener {
+                        mCorePresenter.becomeClubHost()
+                        dismiss(false)
+                    }
+                }.showByDialog()
+            }
+
+            override fun showPartyOpHost() {
+                getPartyManageHostDialogView().apply {
+                    function1.text = "上麦"
+                    function1.setDebounceViewClickListener {
+                        mCorePresenter.insteadClubHost()
+                        dismiss(false)
+                    }
+                }.showByDialog()
+            }
+
+            override fun showPartySelfOpHost() {
+                getPartyManageHostDialogView().apply {
+                    function1.text = "下麦"
+                    function1.setDebounceViewClickListener {
+                        mCorePresenter.giveUpClubHost()
+                        dismiss(false)
+                    }
+                }.showByDialog()
+            }
         }
     }
 
@@ -622,42 +653,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
 
         return mPartyManageHostDialogView!!
-    }
-
-    //家族房，有房主，但是当前的人可以操作房主（让房主下麦自己上）
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PartyOpHostEvent) {
-        getPartyManageHostDialogView().apply {
-            function1.text = "上麦"
-            function1.setDebounceViewClickListener {
-                mCorePresenter.insteadClubHost()
-                dismiss(false)
-            }
-        }.showByDialog()
-    }
-
-    //家族房，房主是自己，可以自己把自己下麦
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PartySelfOpHostEvent) {
-        getPartyManageHostDialogView().apply {
-            function1.text = "下麦"
-            function1.setDebounceViewClickListener {
-                mCorePresenter.giveUpClubHost()
-                dismiss(false)
-            }
-        }.showByDialog()
-    }
-
-    //家族房，没房主，自己上麦的弹窗
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PartyBeHostConfirmEvent) {
-        getPartyManageHostDialogView().apply {
-            function1.text = "上麦"
-            function1.setDebounceViewClickListener {
-                mCorePresenter.becomeClubHost()
-                dismiss(false)
-            }
-        }.showByDialog()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
