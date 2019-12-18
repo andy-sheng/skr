@@ -41,10 +41,7 @@ import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.actor.PartyApplyPanelView
 import com.module.playways.party.room.actor.PartyMemberPanelView
 import com.module.playways.party.room.bottom.PartyBottomContainerView
-import com.module.playways.party.room.event.PartyBeHostConfirmEvent
-import com.module.playways.party.room.event.PartyOpHostEvent
-import com.module.playways.party.room.event.PartySelectSongEvent
-import com.module.playways.party.room.event.PartySelfOpHostEvent
+import com.module.playways.party.room.event.*
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
 import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.party.room.model.PartyPlayerInfoModel
@@ -74,7 +71,8 @@ import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.zq.live.proto.PartyRoom.*
+import com.zq.live.proto.PartyRoom.PClubGameStopMsg
+import com.zq.live.proto.PartyRoom.PKickoutUserMsg
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -682,38 +680,19 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PClubBecomeHostMsg) {
-        val hostUserID = event.user.userInfo.userID
-        var hasModel = false
-        (mRoomData.getPlayerAndWaiterInfoList() as List<PartyPlayerInfoModel>?)?.forEach {
-            if (hostUserID == it.userID) {
-                if (!(it.role.contains(EPUserRole.EPUR_HOST.value))) {
-                    it.role.add(EPUserRole.EPUR_HOST.value)
-                    hasModel = true
+    fun onEvent(event: PartyHostChangeEvent) {
+        if (mRoomData.isClubHome()) {
+            if (mRoomData.hostId > 0) {
+                val model = mRoomData.getPlayerInfoById(mRoomData.hostId)
+                mCorePresenter?.pretendSystemMsg("${UserInfoManager.getInstance().getRemarkName(model?.userInfo?.userId
+                        ?: 0, model?.userInfo?.nickname)} 已成为新的主持人")
+                if ((model?.userInfo?.userId ?: 0) == MyUserInfoManager.uid.toInt()) {
+                    finishTopActivity("您已成为主持人")
                 }
             } else {
-                it.role?.remove(EPUserRole.EPUR_HOST.value)
+                mCorePresenter?.pretendSystemMsg("主持人已下麦，已自动结束所有游戏")
             }
         }
-
-        if (!hasModel) {
-            val model = PartyPlayerInfoModel.parseFromPb(event.user)
-            mRoomData.users.add(model)
-            mRoomData.usersMap[model.userID] = model
-        }
-
-        //写在这里是为了延迟发event，因为可能主持人没有在user里面
-        mRoomData.hostId = event.user.userInfo.userID
-        mPartyGameMainView?.tagChange()
-
-        event?.user?.userInfo?.let {
-            mCorePresenter?.pretendSystemMsg("${UserInfoManager.getInstance().getRemarkName(it.userID, it.nickName)} 已成为新的主持人")
-            if (it.userID == MyUserInfoManager.uid.toInt()) {
-                finishTopActivity("您已成为主持人")
-            }
-        }
-
-        mTopContentView.bindData()
     }
 
     private fun finishTopActivity(str: String) {
@@ -733,47 +712,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         if (!TextUtils.isEmpty(str) && hasActivity) {
             U.getToastUtil().showShort(str)
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PClubChangeHostMsg) {
-        val hostUserID = event.toUser.userInfo.userID
-        var hasModel = false
-        (mRoomData.getPlayerAndWaiterInfoList() as List<PartyPlayerInfoModel>?)?.forEach {
-            if (hostUserID == it.userID) {
-                if (!(it.role.contains(EPUserRole.EPUR_HOST.value))) {
-                    it.role.add(EPUserRole.EPUR_HOST.value)
-                    hasModel = true
-                }
-            } else {
-                it.role?.remove(EPUserRole.EPUR_HOST.value)
-            }
-        }
-
-        if (!hasModel) {
-            event.toUser?.userInfo?.let {
-                if (it.userID > 0) {
-                    val model = PartyPlayerInfoModel.parseFromPb(event.toUser)
-                    mRoomData.users.add(model)
-                    mRoomData.usersMap[model.userID] = model
-                }
-            }
-        }
-
-        //写在这里是为了延迟发event，因为可能主持人没有在user里面
-        mRoomData.hostId = event.toUser?.userInfo?.userID ?: 0
-        mPartyGameMainView?.tagChange()
-
-        if (event.hasToUser() && (event.toUser.userInfo?.userID ?: 0) > 0) {
-            mCorePresenter?.pretendSystemMsg("${UserInfoManager.getInstance().getRemarkName(event.toUser.userInfo.userID, event.toUser.userInfo.nickName)} 已成为新的主持人")
-            if (event.toUser.userInfo.userID == MyUserInfoManager.uid.toInt()) {
-                finishTopActivity("您已成为主持人")
-            }
-        } else {
-            mCorePresenter?.pretendSystemMsg("主持人已下麦，已自动结束所有游戏")
-        }
-
-        mTopContentView.bindData()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

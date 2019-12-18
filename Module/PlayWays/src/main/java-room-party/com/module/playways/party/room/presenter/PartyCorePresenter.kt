@@ -169,6 +169,22 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PClubBecomeHostMsg) {
+        val model = PartyPlayerInfoModel.parseFromPb(event.user)
+        mRoomData.updateUser(model, null)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PClubChangeHostMsg) {
+        val fromModel = PartyPlayerInfoModel.parseFromPb(event.fromUser)
+        mRoomData.updateUser(fromModel, null)
+
+        if (event.hasToUser() && (event.toUser.userInfo?.userID ?: 0) > 0) {
+            mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.toUser), null)
+        }
+    }
+
     private fun ensureInRcRoom() {
         mUiHandler.removeMessages(MSG_ENSURE_IN_RC_ROOM)
         mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_IN_RC_ROOM, (30 * 1000).toLong())
