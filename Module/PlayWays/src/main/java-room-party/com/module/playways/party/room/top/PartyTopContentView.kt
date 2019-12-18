@@ -19,11 +19,7 @@ import com.module.RouterConstants
 import com.module.club.IClubModuleService
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
-import com.module.playways.party.room.event.PartyHostChangeEvent
-import com.module.playways.party.room.event.PartyOnlineUserCntChangeEvent
-import com.module.playways.party.room.event.PartyBeHostConfirmEvent
-import com.module.playways.party.room.event.PartyOpHostEvent
-import com.module.playways.party.room.event.PartySelfOpHostEvent
+import com.module.playways.party.room.event.*
 import com.module.playways.room.data.H
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -120,13 +116,20 @@ class PartyTopContentView : ExConstraintLayout {
 
     fun bindData() {
         val hostUser = H.partyRoomData?.getPlayerInfoById(H.partyRoomData?.hostId ?: 0)
-        AvatarUtils.loadAvatarByUrl(avatarIv,
-                AvatarUtils.newParamsBuilder(hostUser?.userInfo?.avatar)
-                        .setBorderColor(Color.WHITE)
-                        .setBorderWidth(1.dp().toFloat())
-                        .setCircle(true)
-                        .build())
-        nameTv.text = hostUser?.userInfo?.nicknameRemark
+        if (hostUser != null) {
+            avatarIv.visibility = View.VISIBLE
+            AvatarUtils.loadAvatarByUrl(avatarIv,
+                    AvatarUtils.newParamsBuilder(hostUser?.userInfo?.avatar)
+                            .setBorderColor(Color.WHITE)
+                            .setBorderWidth(1.dp().toFloat())
+                            .setCircle(true)
+                            .build())
+            nameTv.text = hostUser?.userInfo?.nicknameRemark
+        } else {
+            nameTv.text = "无房主"
+            avatarIv.visibility = View.INVISIBLE
+        }
+
         compereTv.text = "房间号:${H.partyRoomData?.gameId}"
         onlineNum.text = "在线${H.partyRoomData?.onlineUserCnt}人"
 

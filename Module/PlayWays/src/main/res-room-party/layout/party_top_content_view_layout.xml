@@ -29,6 +29,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/arrow_iv">
 
+        <ImageView
+            android:id="@+id/avatar_iv_bg"
+            android:layout_width="@dimen/view_26_dp"
+            android:layout_height="@dimen/view_26_dp"
+            android:layout_marginLeft="@dimen/view_4_dp"
+            android:src="@drawable/no_host"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.common.image.fresco.BaseImageView
             android:id="@+id/avatar_iv"
             android:layout_width="@dimen/view_26_dp"
