@@ -693,6 +693,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 finishTopActivity("您已成为主持人")
             }
         }
+
+        mTopContentView.bindData()
     }
 
     private fun finishTopActivity(str: String) {
@@ -737,6 +739,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         } else {
             mCorePresenter?.pretendSystemMsg("主持人已下麦，已自动结束所有游戏")
         }
+
+        mTopContentView.bindData()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
