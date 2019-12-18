@@ -18,6 +18,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
@@ -169,6 +170,17 @@ class PartyTopContentView : ExConstraintLayout {
         } else {
             nameTv.text = "无房主"
             avatarIv.visibility = View.INVISIBLE
+
+            if (H.partyRoomData?.isClubHome() == true) {
+                if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.clubID == H.partyRoomData?.clubInfo?.clubID
+                        && MyUserInfoManager.myUserInfo?.clubInfo?.canBeHost() == true) {
+                    val spanUtils = SpanUtils()
+                            .append("上麦主持").setForegroundColor(Color.parseColor("#DEA243")).create()
+                    nameTv.text = spanUtils
+                } else {
+                    nameTv.text = "暂无主持人"
+                }
+            }
         }
 
         compereTv.text = "房间号:${H.partyRoomData?.gameId}"
