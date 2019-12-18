@@ -455,6 +455,7 @@ class PartyGameTabView : ExConstraintLayout {
         ZqEngineKit.getInstance().stopAudioMixing()
         partySelfSingLyricView?.reset()
         delaySingJob?.cancel()
+        EventBus.getDefault().post(PartyFinishSongManageFragmentEvent())
     }
 
     fun toNoAnchorState() {
@@ -464,5 +465,6 @@ class PartyGameTabView : ExConstraintLayout {
         ZqEngineKit.getInstance().stopAudioMixing()
         partySelfSingLyricView?.reset()
         delaySingJob?.cancel()
+        EventBus.getDefault().post(PartyFinishSongManageFragmentEvent())
     }
 }
