@@ -944,7 +944,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         mRoomData.applyUserCnt = event.applyUserCnt
         mRoomData.onlineUserCnt = event.onlineUserCnt
         var u = PartyPlayerInfoModel.parseFromPb(event.user)
-        mRoomData.removeUser(u)
+        mRoomData.updateUser(u,null)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

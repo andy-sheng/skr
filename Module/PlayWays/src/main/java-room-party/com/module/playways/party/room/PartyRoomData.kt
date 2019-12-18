@@ -296,7 +296,6 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                 usersMap[playerInfoModel.userID] = playerInfoModel
                 hasUserChange = true
             }
-
         } else {
             // 是观众了 去除信息
             usersMap.remove(playerInfoModel.userID)
@@ -323,8 +322,26 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                 // 主持人变观众了
                 hostId = 0
             }
+
+            if (seatInfoModel == null && seatsUserIdMap.containsKey(playerInfoModel.userID)) {
+                var seat = seatsUserIdMap[playerInfoModel.userID]
+                seat?.userID = 0
+                EventBus.getDefault().post(PartySeatInfoChangeEvent(seat?.seatSeq ?: -1))
+            }
         }
     }
+
+//    fun removeUser(playerInfoModel: PartyPlayerInfoModel) {
+//        usersMap.remove(playerInfoModel.userID)
+//        if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {
+//            myUserInfo = null
+//        }
+//        if (seatsUserIdMap.containsKey(playerInfoModel.userID)) {
+//            var seat = seatsUserIdMap[playerInfoModel.userID]
+//            seat?.userID = 0
+//            EventBus.getDefault().post(PartySeatInfoChangeEvent(seat?.seatSeq ?: -1))
+//        }
+//    }
 
     /**
      * 更新座位信息，传入一堆座位
@@ -395,18 +412,6 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         if (player?.popularity != popularity) {
             player?.popularity = popularity
             EventBus.getDefault().post(PartyPopularityUpdateEvent(userId))
-        }
-    }
-
-    fun removeUser(playerInfoModel: PartyPlayerInfoModel) {
-        usersMap.remove(playerInfoModel.userID)
-        if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {
-            myUserInfo = null
-        }
-        if (seatsUserIdMap.containsKey(playerInfoModel.userID)) {
-            var seat = seatsUserIdMap[playerInfoModel.userID]
-            seat?.userID = 0
-            EventBus.getDefault().post(PartySeatInfoChangeEvent(seat?.seatSeq ?: -1))
         }
     }
 
