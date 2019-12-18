@@ -220,7 +220,7 @@ class PartyRoomCreateActivity : BaseActivity() {
                     roomServerApi.changeRoomInfo(body)
                 }
                 if (result.errno == 0) {
-                    U.getToastUtil().showShort("修改成功")
+                    U.getToastUtil().showShort("房间信息修改成功")
                     finish()
                 } else {
                     titlebar.rightTextView.isClickable = true
