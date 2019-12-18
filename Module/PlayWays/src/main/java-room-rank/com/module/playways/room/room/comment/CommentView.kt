@@ -257,27 +257,31 @@ class CommentView : EdgeTransparentView {
         }
 
         val roomData = this.roomData
-        if (roomData != null && roomData is PartyRoomData && roomData.isClubHome()) {
+        if (roomData != null && roomData is PartyRoomData) {
             val partyPlayerInfoModel = roomData.getPlayerInfoById(event.info.sender.userID)
             val commentTextModel = CommentTextModel.parseFromEvent(event, roomData)
-            if (partyPlayerInfoModel != null) {
-                when {
-                    partyPlayerInfoModel.isHost() -> commentTextModel.nameBuilder?.insert(0, "【主持人】")
-                    partyPlayerInfoModel.isAdmin() -> commentTextModel.nameBuilder?.insert(0, "【管理员】")
-                    else -> {
-                        if (event.info.sender?.hasClubInfo() == true) {
-                            commentTextModel.nameBuilder?.insert(0, getIdentityName(event.info.sender.clubInfo?.roleType?.value
-                                    ?: 0))
+            when {
+                partyPlayerInfoModel != null -> {
+                    when {
+                        partyPlayerInfoModel.isHost() -> commentTextModel.nameBuilder?.insert(0, "【主持人】")
+                        partyPlayerInfoModel.isAdmin() -> commentTextModel.nameBuilder?.insert(0, "【管理员】")
+                        else -> {
+                            if (event.info.sender?.hasClubInfo() == true) {
+                                commentTextModel.nameBuilder?.insert(0, getIdentityName(event.info.sender.clubInfo?.roleType?.value
+                                        ?: 0))
+                            }
                         }
                     }
+                    processCommentModel(commentTextModel)
                 }
-                processCommentModel(commentTextModel)
-            } else {
-                if (event.info.sender?.clubInfo?.clubID == roomData.clubInfo?.clubID && event.info.sender?.hasClubInfo() == true) {
-                    commentTextModel.nameBuilder?.insert(0, getIdentityName(event.info.sender.clubInfo?.roleType?.value
-                            ?: 0))
+                roomData.isClubHome() -> {
+                    if (event.info.sender?.clubInfo?.clubID == roomData.clubInfo?.clubID && event.info.sender?.hasClubInfo() == true) {
+                        commentTextModel.nameBuilder?.insert(0, getIdentityName(event.info.sender.clubInfo?.roleType?.value
+                                ?: 0))
+                    }
+                    processCommentModel(commentTextModel)
                 }
-                processCommentModel(commentTextModel)
+                else -> processCommentModel(commentTextModel)
             }
         } else {
             val commentTextModel = CommentTextModel.parseFromEvent(event, roomData)
