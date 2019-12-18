@@ -426,9 +426,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                         var users = JSON.parseArray(result.data.getString("users"), PartyPlayerInfoModel::class.java)
                         val gameOverTimeMs = result.data.getLongValue("gameOverTimeMs")
                         // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
-                        if (seats != null && users != null && thisRound != null) {
                             processSyncResult(gameOverTimeMs, onlineUserCnt, applyUserCnt, seats, users, thisRound)
-                        }
                     }
                 } else {
 
@@ -1021,11 +1019,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     /**
      * 明确数据可以刷新
      */
-    private fun processSyncResult(gameOverTimeMs: Long, onlineUserCnt: Int, applyUserCnt: Int, seats: List<PartySeatInfoModel>, users: List<PartyPlayerInfoModel>, thisRound: PartyRoundInfoModel) {
+    private fun processSyncResult(gameOverTimeMs: Long, onlineUserCnt: Int, applyUserCnt: Int, seats: List<PartySeatInfoModel>?, users: List<PartyPlayerInfoModel>?, thisRound: PartyRoundInfoModel?) {
         mRoomData.gameOverTs = gameOverTimeMs
         mRoomData.onlineUserCnt = onlineUserCnt
         mRoomData.applyUserCnt = applyUserCnt
-        mRoomData.updateUsers(users as ArrayList<PartyPlayerInfoModel>)
+        mRoomData.updateUsers(users as ArrayList<PartyPlayerInfoModel>?)
         if (gameOverTimeMs > 0) {
             mRoomData.emptySeats()
             if (mRoomData.isClubHome()) {
@@ -1039,9 +1037,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             mRoomData.checkRoundInEachMode()
         } else {
             mRoomData.updateSeats(seats as ArrayList<PartySeatInfoModel>)
-            if (thisRound.roundSeq == mRoomData.realRoundSeq) {
+            if (thisRound?.roundSeq == mRoomData.realRoundSeq) {
                 mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(thisRound, true)
-            } else if (thisRound.roundSeq > mRoomData.realRoundSeq) {
+            } else if ((thisRound?.roundSeq?:0) > mRoomData.realRoundSeq) {
                 MyLog.w(TAG, "sync 回来的轮次大，要替换 roundInfo 了")
                 // 主轮次结束
                 launch {
