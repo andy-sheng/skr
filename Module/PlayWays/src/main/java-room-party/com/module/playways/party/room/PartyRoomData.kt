@@ -69,12 +69,12 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
     var roomType: Int? = 0
 
-    var users = ArrayList<PartyPlayerInfoModel>() // 当前的用户信息 包括 主持人管理员 以及 嘉宾
-    var usersMap = HashMap<Int, PartyPlayerInfoModel>()  // 根据id找人
+    private var users = ArrayList<PartyPlayerInfoModel>() // 当前的用户信息 包括 主持人管理员 以及 嘉宾
+    private var usersMap = HashMap<Int, PartyPlayerInfoModel>()  // 根据id找人
 
-    var seats = ArrayList<PartySeatInfoModel>() // 座位信息
-    var seatsSeatIdMap = HashMap<Int, PartySeatInfoModel>() // 根据座位id找座位
-    var seatsUserIdMap = HashMap<Int, PartySeatInfoModel>() // 根据用户id找座位
+    private var seats = ArrayList<PartySeatInfoModel>() // 座位信息
+    private var seatsSeatIdMap = HashMap<Int, PartySeatInfoModel>() // 根据座位id找座位
+    private var seatsUserIdMap = HashMap<Int, PartySeatInfoModel>() // 根据用户id找座位
 
     // 题目信息在轮次信息里 轮次信息在父类的 realRoundInfo 中
     var hostId = 0 //主持人id
@@ -246,6 +246,9 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         return mySeatInfo
     }
 
+    /**
+     * 更新用户信息，传入一个列表
+     */
     fun updateUsers(list: ArrayList<PartyPlayerInfoModel>?) {
         if (list?.isNotEmpty() == true) {
             var hasMy = false
@@ -268,69 +271,10 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         }
     }
 
-    fun updateSeats(list: ArrayList<PartySeatInfoModel>?) {
-        if (list?.isNotEmpty() == true) {
-            seats.clear()
-            seats.addAll(list)
-            seatsSeatIdMap.clear()
-            seatsUserIdMap.clear()
-            var hasMy = false
-            for (info in seats) {
-                seatsSeatIdMap[info.seatSeq] = info
-                if (info.userID > 0) {
-                    seatsUserIdMap[info.userID] = info
-                }
-                if (info.userID == MyUserInfoManager.uid.toInt()) {
-                    mySeatInfo = info
-                    hasMy = true
-                }
-            }
-            if (!hasMy) {
-                mySeatInfo = null
-            }
-            EventBus.getDefault().post(PartySeatInfoChangeEvent(-1))
-        }
-    }
-
-    fun updateSeat(seatInfoModel: PartySeatInfoModel?) {
-        var hasSeatChange = false
-        if (seatInfoModel != null) {
-            var ss = seatsSeatIdMap[seatInfoModel.seatSeq]
-            if (ss != null) {
-                if (ss.same(seatInfoModel)) {
-
-                } else {
-                    seats.remove(ss)
-                    seats.add(seatInfoModel)
-                    seatsSeatIdMap[seatInfoModel.seatSeq] = seatInfoModel
-                    seatsUserIdMap[seatInfoModel.userID] = seatInfoModel
-                    hasSeatChange = true
-                }
-            } else {
-                seats.add(seatInfoModel)
-                seatsSeatIdMap[seatInfoModel.seatSeq] = seatInfoModel
-                seatsUserIdMap[seatInfoModel.userID] = seatInfoModel
-                hasSeatChange = true
-            }
-        }
-        if (hasSeatChange) {
-            // 座位信息有变化
-            EventBus.getDefault().post(PartySeatInfoChangeEvent(seatInfoModel!!.seatSeq))
-            if (seatInfoModel.userID == MyUserInfoManager.uid.toInt()) {
-                mySeatInfo = seatInfoModel
-            }
-        }
-    }
-
-    fun updatePopular(userId: Int, popularity: Int) {
-        // 只更新人气数值
-        val player = getPlayerInfoById(userId)
-        if (player?.popularity != popularity) {
-            player?.popularity = popularity
-            EventBus.getDefault().post(PartyPopularityUpdateEvent(userId))
-        }
-    }
-
+    /**
+     * 更新用户信息
+     * 有座位传座位，没有就不传
+     */
     fun updateUser(playerInfoModel: PartyPlayerInfoModel, seatInfoModel: PartySeatInfoModel?) {
         // 判断是否要更新用户
         var hasUserChange = false
@@ -366,6 +310,78 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {
                 myUserInfo = null
             }
+        }
+    }
+
+    /**
+     * 更新座位信息，传入一堆座位
+     */
+    fun updateSeats(list: ArrayList<PartySeatInfoModel>?) {
+        if (list?.isNotEmpty() == true) {
+            seats.clear()
+            seats.addAll(list)
+            seatsSeatIdMap.clear()
+            seatsUserIdMap.clear()
+            var hasMy = false
+            for (info in seats) {
+                seatsSeatIdMap[info.seatSeq] = info
+                if (info.userID > 0) {
+                    seatsUserIdMap[info.userID] = info
+                }
+                if (info.userID == MyUserInfoManager.uid.toInt()) {
+                    mySeatInfo = info
+                    hasMy = true
+                }
+            }
+            if (!hasMy) {
+                mySeatInfo = null
+            }
+            EventBus.getDefault().post(PartySeatInfoChangeEvent(-1))
+        }
+    }
+
+    /**
+     * 更新单个座位信息
+     */
+    fun updateSeat(seatInfoModel: PartySeatInfoModel?) {
+        var hasSeatChange = false
+        if (seatInfoModel != null) {
+            var ss = seatsSeatIdMap[seatInfoModel.seatSeq]
+            if (ss != null) {
+                if (ss.same(seatInfoModel)) {
+
+                } else {
+                    seats.remove(ss)
+                    seats.add(seatInfoModel)
+                    seatsSeatIdMap[seatInfoModel.seatSeq] = seatInfoModel
+                    seatsUserIdMap[seatInfoModel.userID] = seatInfoModel
+                    hasSeatChange = true
+                }
+            } else {
+                seats.add(seatInfoModel)
+                seatsSeatIdMap[seatInfoModel.seatSeq] = seatInfoModel
+                seatsUserIdMap[seatInfoModel.userID] = seatInfoModel
+                hasSeatChange = true
+            }
+        }
+        if (hasSeatChange) {
+            // 座位信息有变化
+            EventBus.getDefault().post(PartySeatInfoChangeEvent(seatInfoModel!!.seatSeq))
+            if (seatInfoModel.userID == MyUserInfoManager.uid.toInt()) {
+                mySeatInfo = seatInfoModel
+            }
+        }
+    }
+
+    /**
+     * 更新人气信息
+     */
+    fun updatePopular(userId: Int, popularity: Int) {
+        // 只更新人气数值
+        val player = getPlayerInfoById(userId)
+        if (player?.popularity != popularity) {
+            player?.popularity = popularity
+            EventBus.getDefault().post(PartyPopularityUpdateEvent(userId))
         }
     }
 
