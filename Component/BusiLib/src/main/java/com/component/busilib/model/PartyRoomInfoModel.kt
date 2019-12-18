@@ -21,6 +21,8 @@ class PartyRoomInfoModel : Serializable {
     var roomName: String? = null
     @JSONField(name = "topicName")
     var topicName: String? = null
+    @JSONField(name = "roomtype")
+    var roomtype: Int? = null
 
     override fun toString(): String {
         return "PartyRoomInfoModel(avatarUrl=$avatarUrl, gameName=$gameName, ownerID=$ownerID, ownerName=$ownerName, playerNum=$playerNum, roomID=$roomID, roomName=$roomName, topicName=$topicName)"

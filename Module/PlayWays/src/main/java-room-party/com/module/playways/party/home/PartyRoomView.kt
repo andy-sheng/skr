@@ -52,7 +52,7 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
             override fun onClickRoom(position: Int, model: PartyRoomInfoModel?) {
                 model?.roomID?.let {
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                    iRankingModeService.tryGoPartyRoom(it, 1, 1)
+                    iRankingModeService.tryGoPartyRoom(it, 1, model.roomtype ?: 0)
                 }
             }
 
