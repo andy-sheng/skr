@@ -810,7 +810,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyNoticeChangeEvent) {
-        pretendSystemMsg("主持人将公告修改为 ${mRoomData.notice}")
+        pretendSystemMsg("房间公告 ${mRoomData.notice}")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
