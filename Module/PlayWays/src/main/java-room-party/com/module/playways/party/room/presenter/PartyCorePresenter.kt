@@ -416,26 +416,18 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                 delay(10 * 1000)
                 val result = subscribe { mRoomServerApi.syncStatus(mRoomData.gameId.toLong()) }
                 if (result.errno == 0) {
-                    val gameOverTimeMs = result.data.getLongValue("gameOverTimeMs")
-                    if (gameOverTimeMs > 0) {
-                        mRoomData.gameOverTs = gameOverTimeMs
-                        DebugLogView.println(TAG, "gameOverTimeMs=${gameOverTimeMs} 游戏结束时间>0 ，游戏结束，退出房间")
-                        // 游戏结束了，停服了
-                        mRoomData.expectRoundInfo = null
-                        mRoomData.checkRoundInEachMode()
-                    } else {
-                        val syncStatusTimeMs = result.data.getLongValue("syncStatusTimeMs")
-                        if (syncStatusTimeMs > mRoomData.lastSyncTs) {
-                            mRoomData.lastSyncTs = syncStatusTimeMs
-                            val thisRound = JSON.parseObject(result.data.getString("currentRound"), PartyRoundInfoModel::class.java)
-                            val onlineUserCnt = result.data.getIntValue("onlineUserCnt")
-                            val applyUserCnt = result.data.getIntValue("applyUserCnt")
-                            val seats = JSON.parseArray(result.data.getString("seats"), PartySeatInfoModel::class.java)
-                            var users = JSON.parseArray(result.data.getString("users"), PartyPlayerInfoModel::class.java)
-                            // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
-                            if (seats != null && users != null && thisRound != null) {
-                                processSyncResult(onlineUserCnt, applyUserCnt, seats, users, thisRound)
-                            }
+                    val syncStatusTimeMs = result.data.getLongValue("syncStatusTimeMs")
+                    if (syncStatusTimeMs > mRoomData.lastSyncTs) {
+                        mRoomData.lastSyncTs = syncStatusTimeMs
+                        val thisRound = JSON.parseObject(result.data.getString("currentRound"), PartyRoundInfoModel::class.java)
+                        val onlineUserCnt = result.data.getIntValue("onlineUserCnt")
+                        val applyUserCnt = result.data.getIntValue("applyUserCnt")
+                        val seats = JSON.parseArray(result.data.getString("seats"), PartySeatInfoModel::class.java)
+                        var users = JSON.parseArray(result.data.getString("users"), PartyPlayerInfoModel::class.java)
+                        val gameOverTimeMs = result.data.getLongValue("gameOverTimeMs")
+                        // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
+                        if (seats != null && users != null && thisRound != null) {
+                            processSyncResult(gameOverTimeMs, onlineUserCnt, applyUserCnt, seats, users, thisRound)
                         }
                     }
                 } else {
@@ -581,7 +573,13 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //        ZqEngineKit.getInstance().stopRecognize()
         if (thisRound == null) {
             // 游戏结束了
-            roomView.gameOver()
+            if(mRoomData.isClubHome()){
+                roomView.showRoundOver(lastRound) {
+                    roomView.showWaiting()
+                }
+            }else{
+                roomView.gameOver()
+            }
             return
         }
 
@@ -1018,26 +1016,40 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             var thisRound = PartyRoundInfoModel.parseFromRoundInfo(event.currentRound)
             // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
             startSyncGameStatus()
-            processSyncResult(onlineUserCnt, applyUserCnt, seats, users, thisRound)
+            processSyncResult(0, onlineUserCnt, applyUserCnt, seats, users, thisRound)
         }
     }
 
     /**
      * 明确数据可以刷新
      */
-    private fun processSyncResult(onlineUserCnt: Int, applyUserCnt: Int, seats: List<PartySeatInfoModel>, users: List<PartyPlayerInfoModel>, thisRound: PartyRoundInfoModel) {
+    private fun processSyncResult(gameOverTimeMs: Long, onlineUserCnt: Int, applyUserCnt: Int, seats: List<PartySeatInfoModel>, users: List<PartyPlayerInfoModel>, thisRound: PartyRoundInfoModel) {
+        mRoomData.gameOverTs = gameOverTimeMs
         mRoomData.onlineUserCnt = onlineUserCnt
         mRoomData.applyUserCnt = applyUserCnt
-        mRoomData.updateSeats(seats as ArrayList<PartySeatInfoModel>)
         mRoomData.updateUsers(users as ArrayList<PartyPlayerInfoModel>)
-        if (thisRound.roundSeq == mRoomData.realRoundSeq) {
-            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(thisRound, true)
-        } else if (thisRound.roundSeq > mRoomData.realRoundSeq) {
-            MyLog.w(TAG, "sync 回来的轮次大，要替换 roundInfo 了")
-            // 主轮次结束
-            launch {
-                mRoomData.expectRoundInfo = thisRound
-                mRoomData.checkRoundInEachMode()
+        if (gameOverTimeMs > 0) {
+            mRoomData.emptySeats()
+            if (mRoomData.isClubHome()) {
+                DebugLogView.println(TAG, "gameOverTimeMs=${gameOverTimeMs} 游戏结束时间>0 ，游戏结束")
+            } else {
+                DebugLogView.println(TAG, "gameOverTimeMs=${gameOverTimeMs} 游戏结束时间>0")
+            }
+            mRoomData.gameOverTs = gameOverTimeMs
+            // 游戏结束了，停服了
+            mRoomData.expectRoundInfo = null
+            mRoomData.checkRoundInEachMode()
+        } else {
+            mRoomData.updateSeats(seats as ArrayList<PartySeatInfoModel>)
+            if (thisRound.roundSeq == mRoomData.realRoundSeq) {
+                mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(thisRound, true)
+            } else if (thisRound.roundSeq > mRoomData.realRoundSeq) {
+                MyLog.w(TAG, "sync 回来的轮次大，要替换 roundInfo 了")
+                // 主轮次结束
+                launch {
+                    mRoomData.expectRoundInfo = thisRound
+                    mRoomData.checkRoundInEachMode()
+                }
             }
         }
     }

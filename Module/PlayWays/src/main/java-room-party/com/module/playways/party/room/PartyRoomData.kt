@@ -403,6 +403,16 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         }
     }
 
+    fun emptySeats() {
+        seatsUserIdMap.clear()
+        for (info in seats) {
+            info.userID = 0
+            seatsSeatIdMap[info.seatSeq] = info
+        }
+        mySeatInfo = null
+        EventBus.getDefault().post(PartySeatInfoChangeEvent(-1))
+    }
+
     /**
      * 更新人气信息
      */
@@ -464,4 +474,5 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             isMute = true
         }
     }
+
 }
