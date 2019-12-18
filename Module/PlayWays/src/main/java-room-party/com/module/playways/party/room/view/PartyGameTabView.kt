@@ -378,6 +378,8 @@ class PartyGameTabView : ExConstraintLayout {
                         }
                         activity.finish()
                     }
+
+                    U.getToastUtil().showShort("轮到你演唱了")
 //                    EventBus.getDefault().post(PartySelfTurnToSingEvent())
                 }
             } else {
