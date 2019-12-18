@@ -126,15 +126,19 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
         joinRcRoom(-1)
         if (mRoomData.gameId > 0) {
-            if (mRoomData.notice.isNotEmpty()) {
-                pretendSystemMsg("房间公告 ${mRoomData.notice}")
+            if (mRoomData.isClubHome()) {
+                pretendSystemMsg("欢迎加入${mRoomData.clubInfo?.name}的派对")
             } else {
-
-                pretendSystemMsg("欢迎加入${mRoomData.getPlayerInfoById(mRoomData.hostId)?.userInfo?.nicknameRemark}")
+                if (mRoomData.notice.isNotEmpty()) {
+                    pretendSystemMsg("房间公告 ${mRoomData.notice}")
+                } else {
+                    pretendSystemMsg("欢迎加入${mRoomData.getPlayerInfoById(mRoomData.hostId)?.userInfo?.nicknameRemark}的派对")
+                }
             }
-        }
 
-        pretendSystemMsg("温馨提示：连麦时佩戴耳机效果最佳哦～")
+        }
+        
+        pretendSystemMsg("撕歌倡导绿色健康游戏，并24小时对语音房进行巡查。如发现违规行为，官方将封号处理。此外温馨提示，连麦时佩戴耳机效果将提高游戏体验。")
 
         startHeartbeat()
         startSyncGameStatus()
@@ -925,7 +929,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.user), partySeatInfoModel)
         //TODO
         if (event.opUser.userInfo.userID != event.user.userInfo.userID) {
-            if(event.user.userInfo.userID == MyUserInfoManager.uid.toInt()){
+            if (event.user.userInfo.userID == MyUserInfoManager.uid.toInt()) {
                 // 不是自己主动下麦的
                 pretendSystemMsg("${event.opUser.userInfo.nickName} 已将你抱下麦")
             }
