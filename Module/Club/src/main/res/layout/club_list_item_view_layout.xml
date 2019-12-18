@@ -44,6 +44,7 @@
         android:layout_marginTop="@dimen/view_4_dp"
         android:layout_marginRight="@dimen/view_16_dp"
         android:drawableLeft="@drawable/party_hot_icon"
+        android:drawablePadding="@dimen/view_5_dp"
         android:gravity="center"
         android:paddingLeft="@dimen/view_8_dp"
         android:paddingRight="@dimen/view_8_dp"
