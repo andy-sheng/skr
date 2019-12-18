@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.common.core.view.setDebounceViewClickListener
+import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.module.club.R
@@ -63,7 +64,7 @@ class ClubApplyListAdapter(var hasManager: Boolean, var listener: Listener) : Re
 
             avatarView.bindData(model.user)
             nameTv.text = model.user?.nicknameRemark
-            statusTv.text = model.user?.ranking?.rankingDesc
+            statusTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.applyTimeMs, System.currentTimeMillis())
             if (hasManager) {
                 agreeTv.visibility = View.VISIBLE
                 refuseTv.visibility = View.VISIBLE
