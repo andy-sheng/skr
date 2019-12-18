@@ -46,7 +46,9 @@ import com.module.playways.party.room.event.PartyOpHostEvent
 import com.module.playways.party.room.event.PartySelectSongEvent
 import com.module.playways.party.room.event.PartySelfOpHostEvent
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
-import com.module.playways.party.room.model.*
+import com.module.playways.party.room.model.PartyActorInfoModel
+import com.module.playways.party.room.model.PartyPlayerInfoModel
+import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.presenter.PartyCorePresenter
 import com.module.playways.party.room.seat.PartySeatView
 import com.module.playways.party.room.top.PartyTopContentView
@@ -622,8 +624,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             function1.text = "上麦"
             function1.setDebounceViewClickListener {
                 mCorePresenter.insteadClubHost()
+                dismiss(false)
             }
-        }
+        }.showByDialog()
     }
 
     //家族房，房主是自己，可以自己把自己下麦
@@ -633,8 +636,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             function1.text = "下麦"
             function1.setDebounceViewClickListener {
                 mCorePresenter.giveUpClubHost()
+                dismiss(false)
             }
-        }
+        }.showByDialog()
     }
 
     //家族房，没房主，自己上麦的弹窗
@@ -644,8 +648,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             function1.text = "上麦"
             function1.setDebounceViewClickListener {
                 mCorePresenter.becomeClubHost()
+                dismiss(false)
             }
-        }
+        }.showByDialog()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -7,10 +7,18 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoServerApi
+import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ApiMethods
+import com.common.rxretrofit.ApiObserver
+import com.common.rxretrofit.ApiResult
+import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
@@ -59,37 +67,42 @@ class PartyTopContentView : ExConstraintLayout {
         onlineNum = this.findViewById(R.id.online_num)
         audienceIv = this.findViewById(R.id.audience_iv)
         clubIconIv = this.findViewById(R.id.club_icon_iv)
+        (this.findViewById(R.id.avatar_iv_bg) as View).setOnClickListener {
+            avatarIv.callOnClick()
+        }
 
         avatarIv.setDebounceViewClickListener {
             if (H.partyRoomData?.hostId == null) {
                 return@setDebounceViewClickListener
             }
 
-            val self = roomData?.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.userInfo?.clubInfo
-            val host = roomData?.getPlayerInfoById(roomData?.hostId ?: 0)?.userInfo?.clubInfo
 
             if (roomData?.isClubHome() == true) {
-                if (self != null) {
-                    if (host == null) {
-                        if (self.canBeHost()) {
-                            EventBus.getDefault().post(PartyBeHostConfirmEvent())
-                            return@setDebounceViewClickListener
+                val host = roomData?.getPlayerInfoById(roomData?.hostId ?: 0)?.userInfo?.clubInfo
+                getClubIdentify(roomData?.clubInfo?.clubID ?: 0) {
+                    if (it != null) {
+                        if (host == null) {
+                            if (it.canBeHost()) {
+                                EventBus.getDefault().post(PartyBeHostConfirmEvent())
+                                return@getClubIdentify
+                            }
+                        } else {
+                            if (it.canOpHost() && it.isHighLevelThen(host)) {
+                                EventBus.getDefault().post(PartyOpHostEvent())
+                                return@getClubIdentify
+                            } else if ((roomData?.hostId ?: 0) == MyUserInfoManager.uid.toInt()) {
+                                EventBus.getDefault().post(PartySelfOpHostEvent())
+                                return@getClubIdentify
+                            }
                         }
-                    } else {
-                        if (self.canOpHost() && self.isHighLevelThen(host)) {
-                            EventBus.getDefault().post(PartyOpHostEvent())
-                            return@setDebounceViewClickListener
-                        } else if ((roomData?.hostId ?: 0) == MyUserInfoManager.uid.toInt()) {
-                            EventBus.getDefault().post(PartySelfOpHostEvent())
-                            return@setDebounceViewClickListener
-                        }
+                    }
+
+                    if (H.partyRoomData?.hostId!! > 0) {
+                        EventBus.getDefault().post(ShowPersonCardEvent(H.partyRoomData?.hostId!!))
                     }
                 }
             }
 
-            if (H.partyRoomData?.hostId!! > 0) {
-                EventBus.getDefault().post(ShowPersonCardEvent(H.partyRoomData?.hostId!!))
-            }
         }
         arrowIv.setDebounceViewClickListener { listener?.clickArrow(!mIsOpen) }
         moreArrow.setDebounceViewClickListener { listener?.showRoomMember() }
@@ -100,6 +113,33 @@ class PartyTopContentView : ExConstraintLayout {
             val clubServices = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
             clubServices.tryGoClubHomePage(H.partyRoomData?.clubInfo?.clubID ?: 0)
         }
+    }
+
+    fun getClubIdentify(clubID: Int, call: ((ClubMemberInfo?) -> Unit)) {
+        val userServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
+        ApiMethods.subscribe(userServerApi.getClubMemberInfo(MyUserInfoManager.uid.toInt(), clubID), object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult) {
+                if (result.errno == 0) {
+                    val clubMemberInfo = JSON.parseObject(result.data.getString("info"), ClubMemberInfo::class.java)
+                    call.invoke(clubMemberInfo)
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                    call.invoke(null)
+                }
+            }
+
+            override fun onNetworkError(errorType: ApiObserver.ErrorType) {
+                super.onNetworkError(errorType)
+                call.invoke(null)
+                U.getToastUtil().showShort("网络错误")
+            }
+
+            override fun onError(e: Throwable) {
+                super.onError(e)
+                U.getToastUtil().showShort(e.message)
+                call.invoke(null)
+            }
+        })
     }
 
     fun setArrowIcon(open: Boolean) {
