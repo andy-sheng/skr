@@ -9,12 +9,22 @@ import java.nio.ByteBuffer;
  * Audio reverb filter, with 5 acceptable level.
  */
 public class AudioReverbFilter extends AudioFilterBase {
-    public static int AUDIO_REVERB_LEVEL_0 = 0;
+    private static final String TAG = "AudioReverbFilter";
+
+    public static int AUDIO_REVERB_NONE = 0;
+
     public static int AUDIO_REVERB_LEVEL_1 = 1;
     public static int AUDIO_REVERB_LEVEL_2 = 2;
     public static int AUDIO_REVERB_LEVEL_3 = 3;
     public static int AUDIO_REVERB_LEVEL_4 = 4;
     public static int AUDIO_REVERB_LEVEL_5 = 5;
+
+    // from Audacity
+    public static int AUDIO_REVERB_PRESET_BATHROOM = 10;
+    public static int AUDIO_REVERB_PRESET_SMALLROOM = 11;
+    public static int AUDIO_REVERB_PRESET_MEDIUMROOM = 12;
+    public static int AUDIO_REVERB_PRESET_LARGEROOM = 13;
+    public static int AUDIO_REVERB_PRESET_CHURCHHALL = 14;
 
     private int mReverbLevel = AUDIO_REVERB_LEVEL_3;
     private boolean mEffect = false;

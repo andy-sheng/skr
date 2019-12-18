@@ -34,6 +34,12 @@ struct Reverb_priv_t
 #define AUDIO_REVERB_LEVEL_3 3
 #define AUDIO_REVERB_LEVEL_4 4
 
+#define AUDIO_REVERB_PRESET_BATHROOM 10
+#define AUDIO_REVERB_PRESET_SMALLROOM 11
+#define AUDIO_REVERB_PRESET_MEDIUMROOM 12
+#define AUDIO_REVERB_PRESET_LARGEROOM 13
+#define AUDIO_REVERB_PRESET_CHURCHHALL 14
+
 class AudioReverb : public AudioFilterBase {
 public:
     AudioReverb();

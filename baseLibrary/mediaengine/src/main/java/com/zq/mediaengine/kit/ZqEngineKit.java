@@ -562,6 +562,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void initModules() {
+        MyLog.i(TAG, "Latency test ProductModel: " + U.getDeviceUtils().getProductModel());
         MyLog.i(TAG, "isUseExternalAudio: " + mConfig.isUseExternalAudio() +
                 " isUseExternalVideo: " + mConfig.isUseExternalVideo() +
                 " isUseExternalRecord: " + mConfig.isUseExternalAudioRecord());
@@ -1334,22 +1335,22 @@ public class ZqEngineKit implements AgoraOutCallback {
         mConfig.setStyleEnum(styleEnum);
 
         if (mAudioReverbFilter != null) {
-            int type = AudioReverbFilter.AUDIO_REVERB_LEVEL_0;
+            int type = AudioReverbFilter.AUDIO_REVERB_NONE;
             switch (styleEnum) {
                 case none:
-                    type = AudioReverbFilter.AUDIO_REVERB_LEVEL_0;
+                    type = AudioReverbFilter.AUDIO_REVERB_NONE;
                     break;
                 case ktv:
-                    type = AudioReverbFilter.AUDIO_REVERB_LEVEL_4;
+                    type = AudioReverbFilter.AUDIO_REVERB_PRESET_CHURCHHALL;
                     break;
                 case rock:
-                    type = AudioReverbFilter.AUDIO_REVERB_LEVEL_3;
+                    type = AudioReverbFilter.AUDIO_REVERB_PRESET_LARGEROOM;
                     break;
                 case liuxing:
-                    type = AudioReverbFilter.AUDIO_REVERB_LEVEL_2;
+                    type = AudioReverbFilter.AUDIO_REVERB_PRESET_MEDIUMROOM;
                     break;
                 case kongling:
-                    type = AudioReverbFilter.AUDIO_REVERB_LEVEL_1;
+                    type = AudioReverbFilter.AUDIO_REVERB_PRESET_SMALLROOM;
                     break;
                 default:
                     break;
