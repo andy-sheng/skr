@@ -271,10 +271,9 @@ class CommentView : EdgeTransparentView {
                         }
                     }
                 }
-
                 processCommentModel(commentTextModel)
             } else {
-                if (event.info.sender?.hasClubInfo() == true) {
+                if (event.info.sender?.clubInfo?.clubID == roomData.clubInfo?.clubID && event.info.sender?.hasClubInfo() == true) {
                     commentTextModel.nameBuilder?.insert(0, getIdentityName(event.info.sender.clubInfo?.roleType?.value
                             ?: 0))
                 }
