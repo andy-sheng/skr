@@ -675,14 +675,22 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PClubBecomeHostMsg) {
         mRoomData.hostId = event.user.userInfo.userID
+        var hasModel = false
         (mRoomData.getPlayerAndWaiterInfoList() as List<PartyPlayerInfoModel>?)?.forEach {
             if (mRoomData.hostId == it.userID) {
                 if (!(it.role.contains(EPUserRole.EPUR_HOST.value))) {
                     it.role.add(EPUserRole.EPUR_HOST.value)
+                    hasModel = true
                 }
             } else {
                 it.role?.remove(EPUserRole.EPUR_HOST.value)
             }
+        }
+
+        if (!hasModel) {
+            val model = PartyPlayerInfoModel.parseFromPb(event.user)
+            mRoomData.users.add(model)
+            mRoomData.usersMap[model.userID] = model
         }
 
         mPartyGameMainView?.tagChange()
@@ -719,13 +727,25 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PClubChangeHostMsg) {
         mRoomData.hostId = event.toUser.userInfo.userID
+        var hasModel = false
         (mRoomData.getPlayerAndWaiterInfoList() as List<PartyPlayerInfoModel>?)?.forEach {
             if (mRoomData.hostId == it.userID) {
                 if (!(it.role.contains(EPUserRole.EPUR_HOST.value))) {
                     it.role.add(EPUserRole.EPUR_HOST.value)
+                    hasModel = true
                 }
             } else {
                 it.role?.remove(EPUserRole.EPUR_HOST.value)
+            }
+        }
+
+        if (!hasModel) {
+            event.toUser?.userInfo?.let {
+                if (it.userID > 0) {
+                    val model = PartyPlayerInfoModel.parseFromPb(event.toUser)
+                    mRoomData.users.add(model)
+                    mRoomData.usersMap[model.userID] = model
+                }
             }
         }
 
