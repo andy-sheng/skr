@@ -794,15 +794,13 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     private fun getIdentityName(roleType: Int): String {
         when (roleType) {
-            EClubMemberRoleType.ECMRT_Invalid.value -> ""
-            EClubMemberRoleType.ECMRT_Founder.value -> "【族长】"
-            EClubMemberRoleType.ECMRT_CoFounder.value -> "【副族长】"
-            EClubMemberRoleType.ECMRT_Hostman.value -> "【主持人】"
-            EClubMemberRoleType.ECMRT_Common.value -> "【族员】"
-            else -> ""
+            EClubMemberRoleType.ECMRT_Invalid.value -> return ""
+            EClubMemberRoleType.ECMRT_Founder.value -> return "【族长】"
+            EClubMemberRoleType.ECMRT_CoFounder.value -> return "【副族长】"
+            EClubMemberRoleType.ECMRT_Hostman.value -> return "【主持人】"
+            EClubMemberRoleType.ECMRT_Common.value -> return "【族员】"
+            else -> return ""
         }
-
-        return ""
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

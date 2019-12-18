@@ -14,6 +14,7 @@ import com.module.playways.party.room.model.PartySelectedGameModel
 class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameModel, PartyHasSelectedGameListRecyclerAdapter.ModelHolder>() {
     var mDelMethod: ((Int, PartySelectedGameModel) -> Unit)? = null
     var mUpMethod: ((Int, PartySelectedGameModel) -> Unit)? = null
+    var mDetailMethod: ((PartySelectedGameModel) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModelHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.party_has_selected_game_list_item_layout, parent, false)
@@ -66,6 +67,10 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
 
             upIv.setDebounceViewClickListener {
                 mUpMethod?.invoke(dataList.indexOf(model!!), model!!)
+            }
+
+            detailIv.setDebounceViewClickListener {
+                mDetailMethod?.invoke(model!!)
             }
         }
 
