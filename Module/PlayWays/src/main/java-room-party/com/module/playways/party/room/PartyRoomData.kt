@@ -67,7 +67,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             }
         }
 
-    var roomType: Int? = 0
+    var roomType: Int? = 0 // 1是个人房 2是家族房
 
     private var users = ArrayList<PartyPlayerInfoModel>() // 当前的用户信息 包括 主持人管理员 以及 嘉宾
     private var usersMap = HashMap<Int, PartyPlayerInfoModel>()  // 根据id找人
@@ -178,7 +178,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         return seatsSeatIdMap[seatSeq]
     }
 
-    fun isPersonnalHome(): Boolean {
+    fun isPersonalHome(): Boolean {
         return roomType == 1
     }
 

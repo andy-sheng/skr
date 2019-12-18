@@ -61,7 +61,7 @@ class HostChangeFragment : BaseFragment() {
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         launch {
-            var result = subscribe(RequestControl("giveUpClubHost", ControlType.CancelThis)) {
+            var result = subscribe(RequestControl("giveClubHost", ControlType.CancelThis)) {
                 roomServerApi.giveClubHost(body)
             }
 

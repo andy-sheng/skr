@@ -53,9 +53,7 @@ import org.greenrobot.eventbus.ThreadMode
 class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomView) : RxLifeCyclePresenter() {
 
     companion object {
-
         internal val MSG_ENSURE_IN_RC_ROOM = 9// 确保在融云的聊天室，保证融云的长链接
-
     }
 
     internal var mAbsenTimes = 0
@@ -120,7 +118,6 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             if (mRoomData.getMyUserInfoInParty().isGuest()) {
                 ZqEngineKit.getInstance().muteLocalAudioStream(mRoomData.isMute)
             }
-
         } else {
             MyLog.e(TAG, "房间号不合法 mRoomData.gameId=" + mRoomData.gameId)
         }
@@ -166,22 +163,6 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                  */
                 JiGuangPush.joinSkrRoomId(mRoomData.gameId.toString())
             }
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PClubBecomeHostMsg) {
-        val model = PartyPlayerInfoModel.parseFromPb(event.user)
-        mRoomData.updateUser(model, null)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PClubChangeHostMsg) {
-        val fromModel = PartyPlayerInfoModel.parseFromPb(event.fromUser)
-        mRoomData.updateUser(fromModel, null)
-
-        if (event.hasToUser() && (event.toUser.userInfo?.userID ?: 0) > 0) {
-            mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.toUser), null)
         }
     }
 
@@ -267,14 +248,14 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
     }
 
-    fun insteadClubHost() {
+    fun takeClubHost() {
         val map = HashMap<String, Any?>()
         map["roomID"] = mRoomData.gameId
         map["curHostUserID"] = mRoomData.hostId
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         launch {
-            var result = subscribe(RequestControl("insteadClubHost", ControlType.CancelThis)) {
+            var result = subscribe(RequestControl("takeClubHost", ControlType.CancelThis)) {
                 mRoomServerApi.takeClubHost(body)
             }
             if (result.errno == 0) {
@@ -285,14 +266,14 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
     }
 
-    fun giveUpClubHost() {
+    fun giveClubHost() {
         val map = HashMap<String, Any?>()
         map["roomID"] = mRoomData.gameId
         map["getHostUserID"] = 0
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         launch {
-            var result = subscribe(RequestControl("giveUpClubHost", ControlType.CancelThis)) {
+            var result = subscribe(RequestControl("giveClubHost", ControlType.CancelThis)) {
                 mRoomServerApi.giveClubHost(body)
             }
             if (result.errno == 0) {
@@ -564,6 +545,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                 ZqEngineKit.getInstance().setClientRole(true)
                 mRoomData.isMute = false
             }
+            startHeartbeat()
         } else if (mRoomData.myUserInfo?.isAdmin() == true) {
             //我是管理员了
         } else if (mRoomData.myUserInfo?.isGuest() == true) {
@@ -960,7 +942,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         mRoomData.applyUserCnt = event.applyUserCnt
         mRoomData.onlineUserCnt = event.onlineUserCnt
         var u = PartyPlayerInfoModel.parseFromPb(event.user)
-        mRoomData.updateUser(u,null)
+        mRoomData.updateUser(u, null)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -969,7 +951,6 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         mRoomData.expectRoundInfo = null
         mRoomData.checkRoundInEachMode()
     }
-
 
     /**
      * 轮次变化
@@ -996,7 +977,27 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PClubBecomeHostMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        val model = PartyPlayerInfoModel.parseFromPb(event.user)
+        mRoomData.updateUser(model, null)
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PClubChangeHostMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        val fromModel = PartyPlayerInfoModel.parseFromPb(event.fromUser)
+        mRoomData.updateUser(fromModel, null)
+        if (event.hasToUser() && (event.toUser.userInfo?.userID ?: 0) > 0) {
+            mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.toUser), null)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PClubGameStopMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+    }
     // TODO sync
     /**
      * 同步

@@ -526,7 +526,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 getPartyManageHostDialogView().apply {
                     function1.text = "上麦"
                     function1.setDebounceViewClickListener {
-                        mCorePresenter.insteadClubHost()
+                        mCorePresenter.takeClubHost()
                         dismiss(false)
                     }
                 }.showByDialog()
@@ -536,7 +536,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 getPartyManageHostDialogView().apply {
                     function1.text = "下麦"
                     function1.setDebounceViewClickListener {
-                        mCorePresenter.giveUpClubHost()
+                        mCorePresenter.giveClubHost()
                         dismiss(false)
                     }
                 }.showByDialog()
@@ -667,11 +667,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         } else {
             U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PClubGameStopMsg) {
-        MyLog.w(TAG, "event ")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
