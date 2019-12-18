@@ -153,10 +153,6 @@ class PartyRoomCreateActivity : BaseActivity() {
 
     private fun createRoom() {
         var topicName = nameEdittext.text.toString().trim()
-        if (TextUtils.isEmpty(topicName)) {
-            U.getToastUtil().showShort("房间主题不可以为空")
-            return
-        }
 
         launch {
             val map = mutableMapOf(
@@ -203,6 +199,13 @@ class PartyRoomCreateActivity : BaseActivity() {
     }
 
     private fun changeRoomSetting() {
+        var topicName = nameEdittext.text.toString().trim()
+
+        if (TextUtils.isEmpty(topicName)) {
+            U.getToastUtil().showShort("房间主题不可以为空")
+            return
+        }
+
         launch {
             var topicName = nameEdittext.text.toString().trim()
 //            if(TextUtils.isEmpty(topicName)){
