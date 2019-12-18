@@ -426,7 +426,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                         var users = JSON.parseArray(result.data.getString("users"), PartyPlayerInfoModel::class.java)
                         val gameOverTimeMs = result.data.getLongValue("gameOverTimeMs")
                         // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
-                            processSyncResult(gameOverTimeMs, onlineUserCnt, applyUserCnt, seats, users, thisRound)
+                        processSyncResult(gameOverTimeMs, onlineUserCnt, applyUserCnt, seats, users, thisRound)
                     }
                 } else {
 
@@ -571,11 +571,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //        ZqEngineKit.getInstance().stopRecognize()
         if (thisRound == null) {
             // 游戏结束了
-            if(mRoomData.isClubHome()){
+            if (mRoomData.isClubHome()) {
                 roomView.showRoundOver(lastRound) {
                     roomView.showWaiting()
                 }
-            }else{
+            } else {
                 roomView.gameOver()
             }
             return
@@ -868,9 +868,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
         if (event.userID == MyUserInfoManager.uid.toInt()) {
             if (event.micStatus.value == EMicStatus.MS_OPEN.value) {
-                pretendSystemMsg("${event.opUser.userInfo.nickName} 已将你的麦克风权限开启")
+                pretendSystemMsg("${getIdentityName(event.opUser.userInfo.clubInfo.roleType.value)} 已将你的麦克风权限开启")
             } else {
-                pretendSystemMsg("${event.opUser.userInfo.nickName} 已将你的麦关闭")
+                pretendSystemMsg("${getIdentityName(event.opUser.userInfo.clubInfo.roleType.value)} 已将你的麦关闭")
             }
         }
     }
@@ -925,7 +925,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         if (event.opUser.userInfo.userID != event.user.userInfo.userID) {
             if (event.user.userInfo.userID == MyUserInfoManager.uid.toInt()) {
                 // 不是自己主动下麦的
-                pretendSystemMsg("${event.opUser.userInfo.nickName} 已将你抱下麦")
+                pretendSystemMsg("${getIdentityName(event.opUser.userInfo.clubInfo.roleType.value)} 已将你抱下麦")
             }
         }
     }
@@ -1039,7 +1039,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             mRoomData.updateSeats(seats as ArrayList<PartySeatInfoModel>)
             if (thisRound?.roundSeq == mRoomData.realRoundSeq) {
                 mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(thisRound, true)
-            } else if ((thisRound?.roundSeq?:0) > mRoomData.realRoundSeq) {
+            } else if ((thisRound?.roundSeq ?: 0) > mRoomData.realRoundSeq) {
                 MyLog.w(TAG, "sync 回来的轮次大，要替换 roundInfo 了")
                 // 主轮次结束
                 launch {
