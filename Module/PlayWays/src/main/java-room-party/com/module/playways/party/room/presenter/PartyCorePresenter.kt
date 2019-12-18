@@ -137,7 +137,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             }
 
         }
-        
+
         pretendSystemMsg("撕歌倡导绿色健康游戏，并24小时对语音房进行巡查。如发现违规行为，官方将封号处理。此外温馨提示，连麦时佩戴耳机效果将提高游戏体验。")
 
         startHeartbeat()
@@ -436,7 +436,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                             val seats = JSON.parseArray(result.data.getString("seats"), PartySeatInfoModel::class.java)
                             var users = JSON.parseArray(result.data.getString("users"), PartyPlayerInfoModel::class.java)
                             // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
-                            processSyncResult(onlineUserCnt, applyUserCnt, seats, users, thisRound)
+                            if (seats != null && users != null && thisRound != null) {
+                                processSyncResult(onlineUserCnt, applyUserCnt, seats, users, thisRound)
+                            }
                         }
                     }
                 } else {
