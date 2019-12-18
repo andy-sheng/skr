@@ -135,7 +135,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
         }
 
-        pretendSystemMsg("撕歌倡导绿色健康游戏，并24小时对语音房进行巡查。如发现违规行为，官方将封号处理。此外温馨提示，连麦时佩戴耳机效果将提高游戏体验。")
+        pretendSystemMsg("撕歌倡导绿色健康游戏，并24小时对语音房进行巡查。如发现违规行为，官方将封号处理。")
+        pretendSystemMsg("温馨提示，连麦时佩戴耳机效果将提高游戏体验。")
 
         startHeartbeat()
         startSyncGameStatus()
