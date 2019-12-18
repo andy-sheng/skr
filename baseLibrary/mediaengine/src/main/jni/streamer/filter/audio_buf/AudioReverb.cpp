@@ -147,6 +147,66 @@ void AudioReverb::Init()
             mParams.stereoWidth = 100;
             mParams.wetOnly = false;
             break;
+        case AUDIO_REVERB_RNB:
+            mParams.roomSize = 64;
+            mParams.preDelay = 77;
+            mParams.reverberance = 62;
+            mParams.hfDamping = 15;
+            mParams.toneLow = 100;
+            mParams.toneHigh = 100;
+            mParams.wetGain = -5.5;
+            mParams.dryGain = 0;    // -3.6
+            mParams.stereoWidth = 83;
+            mParams.wetOnly = false;
+            break;
+        case AUDIO_REVERB_ROCK:
+            mParams.roomSize = 85;
+            mParams.preDelay = 76;
+            mParams.reverberance = 89;
+            mParams.hfDamping = 26;
+            mParams.toneLow = 100;
+            mParams.toneHigh = 100;
+            mParams.wetGain = 0;
+            mParams.dryGain = -3;   // -5
+            mParams.stereoWidth = 98;
+            mParams.wetOnly = false;
+            break;
+        case AUDIO_REVERB_POPULAR:
+            mParams.roomSize = 95;
+            mParams.preDelay = 84;
+            mParams.reverberance = 81;
+            mParams.hfDamping = 50;
+            mParams.toneLow = 100;
+            mParams.toneHigh = 100;
+            mParams.wetGain = -4;
+            mParams.dryGain = -1;   // -5
+            mParams.stereoWidth = 100;
+            mParams.wetOnly = false;
+            break;
+        case AUDIO_REVERB_DANCE:
+            mParams.roomSize = 84;
+            mParams.preDelay = 66;
+            mParams.reverberance = 35;
+            mParams.hfDamping = 20;
+            mParams.toneLow = 100;
+            mParams.toneHigh = 100;
+            mParams.wetGain = -5.6;
+            mParams.dryGain = 0;    // -4
+            mParams.stereoWidth = 100;
+            mParams.wetOnly = false;
+            break;
+        case AUDIO_REVERB_NEW_CENT:
+            mParams.roomSize = 92;
+            mParams.preDelay = 95;
+            mParams.reverberance = 78;
+            mParams.hfDamping = 42;
+            mParams.toneLow = 100;
+            mParams.toneHigh = 100;
+            mParams.wetGain = -2.7;
+            mParams.dryGain = -2;    // -4.5
+            mParams.stereoWidth = 89;
+            mParams.wetOnly = false;
+            break;
         default:
             mParams.roomSize = 30;
             mParams.preDelay = 10;

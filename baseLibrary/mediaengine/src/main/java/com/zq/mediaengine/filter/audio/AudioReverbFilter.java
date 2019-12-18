@@ -26,6 +26,12 @@ public class AudioReverbFilter extends AudioFilterBase {
     public static int AUDIO_REVERB_PRESET_LARGEROOM = 13;
     public static int AUDIO_REVERB_PRESET_CHURCHHALL = 14;
 
+    public static int AUDIO_REVERB_RNB = 20;
+    public static int AUDIO_REVERB_ROCK = 21;
+    public static int AUDIO_REVERB_POPULAR = 22;
+    public static int AUDIO_REVERB_DANCE = 23;
+    public static int AUDIO_REVERB_NEW_CENT = 24;
+
     private int mReverbLevel = AUDIO_REVERB_LEVEL_3;
     private boolean mEffect = false;
     private AudioReverbWrap mAudioReverbWrap;

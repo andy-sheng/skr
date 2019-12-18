@@ -40,6 +40,12 @@ struct Reverb_priv_t
 #define AUDIO_REVERB_PRESET_LARGEROOM 13
 #define AUDIO_REVERB_PRESET_CHURCHHALL 14
 
+#define AUDIO_REVERB_RNB 20
+#define AUDIO_REVERB_ROCK 21
+#define AUDIO_REVERB_POPULAR 22
+#define AUDIO_REVERB_DANCE 23
+#define AUDIO_REVERB_NEW_CENT 24
+
 class AudioReverb : public AudioFilterBase {
 public:
     AudioReverb();

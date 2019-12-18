@@ -1341,16 +1341,16 @@ public class ZqEngineKit implements AgoraOutCallback {
                     type = AudioReverbFilter.AUDIO_REVERB_NONE;
                     break;
                 case ktv:
-                    type = AudioReverbFilter.AUDIO_REVERB_PRESET_CHURCHHALL;
+                    type = AudioReverbFilter.AUDIO_REVERB_NEW_CENT;
                     break;
                 case rock:
-                    type = AudioReverbFilter.AUDIO_REVERB_PRESET_LARGEROOM;
+                    type = AudioReverbFilter.AUDIO_REVERB_ROCK;
                     break;
                 case liuxing:
-                    type = AudioReverbFilter.AUDIO_REVERB_PRESET_MEDIUMROOM;
+                    type = AudioReverbFilter.AUDIO_REVERB_POPULAR;
                     break;
                 case kongling:
-                    type = AudioReverbFilter.AUDIO_REVERB_PRESET_SMALLROOM;
+                    type = AudioReverbFilter.AUDIO_REVERB_RNB;
                     break;
                 default:
                     break;
