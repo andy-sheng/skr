@@ -850,9 +850,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     fun onEvent(event: PSetAllMemberMicMsg) {
         MyLog.d(TAG, "onEvent event = $event")
         if (event.micStatus.value == EMicStatus.MS_CLOSE.value) {
-            pretendSystemMsg("${event.opUser.userInfo.nickName} 设置为 全员禁麦")
+            pretendSystemMsg("${getIdentityName(event.opUser.userInfo.clubInfo.roleType.value)} 设置为 全员禁麦")
         } else if (event.micStatus.value == EMicStatus.MS_OPEN.value) {
-            pretendSystemMsg("${event.opUser.userInfo.nickName} 设置为 解除全员禁麦")
+            pretendSystemMsg("${getIdentityName(event.opUser.userInfo.clubInfo.roleType.value)} 设置为 解除全员禁麦")
         }
         mRoomData.updateSeats(PartySeatInfoModel.parseFromPb(event.seatsList))
     }
