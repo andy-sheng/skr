@@ -1,5 +1,6 @@
 package com.module.club.rank
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
@@ -74,10 +75,10 @@ class ClubRankListActivity : BaseActivity() {
         }
 
         tagTab.setCustomTabView(R.layout.club_rank_tab, R.id.tab_tv)
-        tagTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
+        tagTab.setSelectedIndicatorColors(Color.parseColor("#9680FF"))
         tagTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER)
         tagTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE)
-//        tagTab.setIndicatorWidth(U.getDisplayUtils().dip2px(56f))
+        tagTab.setIndicatorWidth(U.getDisplayUtils().dip2px(80f))
         tagTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(13f))
         tagTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(24f).toFloat())
         tagTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(12f).toFloat())

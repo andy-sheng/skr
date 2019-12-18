@@ -13,6 +13,6 @@
         android:singleLine="true"
         android:textSize="@dimen/textsize_14_dp"
         app:bl_selected_textColor="@color/white"
-        app:bl_unSelected_textColor="@color/white_trans_50" />
+        app:bl_unSelected_textColor="@color/black_trans_50" />
 
 </RelativeLayout>
