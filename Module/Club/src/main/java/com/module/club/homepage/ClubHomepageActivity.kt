@@ -394,7 +394,7 @@ class ClubHomepageActivity : BaseActivity() {
                 .build())
         clubNameTv?.text = clubInfo?.name
         clubTagView?.setClubID(clubID)
-        clubTagView?.setClubHot(clubID)
+        clubTagView?.setClubHot(clubMemberInfo?.club?.hot ?: 0)
         clubNoticeTv?.background = noticeDrawable
         clubNoticeTv?.text = "公告: ${clubInfo?.notice}"
         clubIntroduceContent?.text = clubInfo?.desc
