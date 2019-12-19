@@ -193,6 +193,9 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                     1 -> {
                         StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
                     }
+                    2 -> {
+                        StatisticsAdapter.recordCountEvent("game", "party_expose", null)
+                    }
                 }
             }
 

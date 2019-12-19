@@ -7,20 +7,19 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.ClubInfo
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.statistics.StatisticsAdapter
 import com.component.busilib.model.PartyRoomInfoModel
 import com.module.RouterConstants
 import com.module.club.IClubModuleService
 import com.module.playways.IPartyRoomView
 import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
-import com.module.playways.grab.room.view.control.RoundOverCardView
 import com.module.playways.party.room.PartyRoomServerApi
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -53,6 +52,12 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
                 model?.roomID?.let {
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                     iRankingModeService.tryGoPartyRoom(it, 1, model.roomtype ?: 0)
+
+                    if (model.roomtype == 1) {
+                        StatisticsAdapter.recordCountEvent("party", "personal_room_recommend", null)
+                    } else if (model.roomtype == 2) {
+                        StatisticsAdapter.recordCountEvent("party", "family_room_recommend", null)
+                    }
                 }
             }
 
@@ -60,6 +65,8 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
                 clubInfo?.let {
                     val clubServices = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
                     clubServices.tryGoClubHomePage(it.clubID)
+
+                    StatisticsAdapter.recordCountEvent("family", "recommend", null)
                 }
             }
 
