@@ -167,7 +167,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
                 tagChange()
             }
         } else {
-            toNoAnchorState()
+            toWaitingState()
         }
     }
 
@@ -281,16 +281,6 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     fun toWaitingState() {
         gameTv.isSelected = true
         partyGameTabView.toWaitingState()
-
-        gameTv.visibility = View.VISIBLE
-        handCardTv.visibility = View.GONE
-        ruleTv.visibility = View.GONE
-        attentionTv.visibility = View.VISIBLE
-    }
-
-    fun toNoAnchorState() {
-        gameTv.isSelected = true
-        partyGameTabView.toNoAnchorState()
 
         gameTv.visibility = View.VISIBLE
         handCardTv.visibility = View.GONE

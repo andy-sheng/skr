@@ -195,6 +195,11 @@ class PartyGameTabView : ExConstraintLayout {
         bottomLeftOpTv.visibility = View.GONE
         bottomRightOpTv.visibility = View.GONE
 
+        if ((roomData?.hostId ?: 0) <= 0 || roomData?.realRoundInfo?.sceneInfo == null) {
+            toWaitingState()
+            return
+        }
+
         if (roomData?.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == true) {
             //主持人
             bottomLeftOpTv.visibility = View.VISIBLE
@@ -451,17 +456,13 @@ class PartyGameTabView : ExConstraintLayout {
     fun toWaitingState() {
         hideAllTypeView()
         textScrollView.visibility = View.VISIBLE
-        setMainText("", "房主还没有添加游戏，先聊聊天吧～")
-        ZqEngineKit.getInstance().stopAudioMixing()
-        partySelfSingLyricView?.reset()
-        delaySingJob?.cancel()
-        EventBus.getDefault().post(PartyFinishSongManageFragmentEvent())
-    }
 
-    fun toNoAnchorState() {
-        hideAllTypeView()
-        textScrollView.visibility = View.VISIBLE
-        setMainText("", "还没有房主，先聊聊天吧～")
+        if (roomData!!.hostId > 0) {
+            setMainText("", "房主还没有添加游戏，先聊聊天吧～")
+        } else {
+            setMainText("", "还没有房主，先聊聊天吧～")
+        }
+
         ZqEngineKit.getInstance().stopAudioMixing()
         partySelfSingLyricView?.reset()
         delaySingJob?.cancel()

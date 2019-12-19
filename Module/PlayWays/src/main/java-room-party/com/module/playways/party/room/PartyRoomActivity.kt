@@ -335,16 +335,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun initGameMainView() {
         mPartyGameMainView = PartyGameMainView(findViewById(R.id.party_game_main_view_layout_viewStub), mRoomData)
         mPartyGameMainView?.tryInflate()
-
-        if (mRoomData.isClubHome()) {
-            if (mRoomData.hostId > 0) {
-                mPartyGameMainView?.toWaitingState()
-            } else {
-                mPartyGameMainView?.toNoAnchorState()
-            }
-        } else {
-            mPartyGameMainView?.toWaitingState()
-        }
+        mPartyGameMainView?.toWaitingState()
     }
 
     private fun initVipEnterView() {
@@ -824,11 +815,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
      * 没有游戏了
      */
     override fun showWaiting() {
-        if (mRoomData.hostId > 0) {
-            mPartyGameMainView?.toWaitingState()
-        } else {
-            mPartyGameMainView?.toNoAnchorState()
-        }
+        mPartyGameMainView?.toWaitingState()
+
     }
 
     override fun joinNotice(model: PartyPlayerInfoModel?) {
