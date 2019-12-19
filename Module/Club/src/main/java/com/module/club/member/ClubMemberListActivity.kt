@@ -63,9 +63,10 @@ class ClubMemberListActivity : BaseActivity() {
         refreshLayout = findViewById(R.id.refreshLayout)
         contentRv = findViewById(R.id.content_rv)
 
-        adapter = ClubMemberListAdapter(clubMemberInfo?.roleType ?: 0, object : ClubMemberListAdapter.Listener {
-            override fun onClickAvatar(position: Int, model: UserInfoModel?) {
-                model?.userId?.let {
+        adapter = ClubMemberListAdapter(clubMemberInfo?.roleType
+                ?: 0, object : ClubMemberListAdapter.Listener {
+            override fun onClickAvatar(position: Int, model: ClubMemberInfoModel?) {
+                model?.userInfoModel?.userId?.let {
                     val bundle = Bundle()
                     bundle.putInt("bundle_user_id", it)
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_OTHER_PERSON)
@@ -74,11 +75,11 @@ class ClubMemberListActivity : BaseActivity() {
                 }
             }
 
-            override fun onClickRemove(position: Int, model: UserInfoModel?) {
-                model?.userId?.let { userID ->
+            override fun onClickRemove(position: Int, model: ClubMemberInfoModel?) {
+                model?.userInfoModel?.userId?.let { userID ->
                     mTipsDialogView?.dismiss(false)
                     mTipsDialogView = TipsDialogView.Builder(this@ClubMemberListActivity)
-                            .setMessageTip("确定将${model.nicknameRemark}移除家族吗？")
+                            .setMessageTip("确定将${model?.userInfoModel?.nicknameRemark}移除家族吗？")
                             .setConfirmTip("移除")
                             .setCancelTip("取消")
                             .setConfirmBtnClickListener {
@@ -93,11 +94,11 @@ class ClubMemberListActivity : BaseActivity() {
                 }
             }
 
-            override fun onClickTitle(position: Int, model: UserInfoModel?) {
+            override fun onClickTitle(position: Int, model: ClubMemberInfoModel?) {
                 // 等设计稿
-                model?.let {
+                model?.userInfoModel?.let {
                     mClubMemberTitleDialog?.dismiss(false)
-                    mClubMemberTitleDialog = ClubMemberTitleDialog(this@ClubMemberListActivity, clubMemberInfo, model, object : ClubMemberTitleDialog.Listener {
+                    mClubMemberTitleDialog = ClubMemberTitleDialog(this@ClubMemberListActivity, clubMemberInfo, it, object : ClubMemberTitleDialog.Listener {
                         override fun onClickCoFounder() {
                             mClubMemberTitleDialog?.dismiss()
                             setClubMemberTitle(EClubMemberRoleType.ECMRT_CoFounder.value, position, it)
@@ -175,7 +176,7 @@ class ClubMemberListActivity : BaseActivity() {
             if (result.errno == 0) {
                 offset = result.data.getIntValue("offset")
                 hasMore = result.data.getBooleanValue("hasMore")
-                val list = JSON.parseArray(result.data.getString("items"), UserInfoModel::class.java)
+                val list = JSON.parseArray(result.data.getString("items"), ClubMemberInfoModel::class.java)
                 addClubMemberList(list, isClean)
             }
             finishRefreshAndLoadMore()
@@ -188,7 +189,7 @@ class ClubMemberListActivity : BaseActivity() {
         refreshLayout.setEnableLoadMore(hasMore)
     }
 
-    private fun addClubMemberList(list: List<UserInfoModel>?, clean: Boolean) {
+    private fun addClubMemberList(list: List<ClubMemberInfoModel>?, clean: Boolean) {
         if (clean) {
             adapter.mDataList.clear()
             if (!list.isNullOrEmpty()) {
@@ -205,7 +206,7 @@ class ClubMemberListActivity : BaseActivity() {
         }
     }
 
-    private fun delMember(position: Int, model: UserInfoModel, userID: Int) {
+    private fun delMember(position: Int, model: ClubMemberInfoModel, userID: Int) {
         launch {
             val map = mapOf(
                     "userID" to userID

@@ -130,7 +130,7 @@ class ClubListActivity : BaseActivity() {
     private fun loadClubListData(off: Int, isClean: Boolean) {
         launch {
             val result = subscribe(RequestControl("loadClubListData", ControlType.CancelThis)) {
-                clubServerApi.getInnerRecommendClubList(0, cnt)
+                clubServerApi.getInnerRecommendClubList(off, cnt)
             }
             if (result.errno == 0) {
                 offset = result.data.getIntValue("offset")

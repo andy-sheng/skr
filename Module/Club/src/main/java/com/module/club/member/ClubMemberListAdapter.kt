@@ -16,7 +16,7 @@ import com.zq.live.proto.Common.EClubMemberRoleType
 
 class ClubMemberListAdapter(var myRoleType: Int, var listener: Listener) : RecyclerView.Adapter<ClubMemberListAdapter.ClubMemberViewHolder>() {
 
-    var mDataList = ArrayList<UserInfoModel>()
+    var mDataList = ArrayList<ClubMemberInfoModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClubMemberViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.club_member_list_item_layout, parent, false)
@@ -41,7 +41,7 @@ class ClubMemberListAdapter(var myRoleType: Int, var listener: Listener) : Recyc
         private val roleTagTv: TextView = item.findViewById(R.id.role_tag_tv)
 
         var mPos = -1
-        var mModel: UserInfoModel? = null
+        var mModel: ClubMemberInfoModel? = null
 
         init {
             avatarView.setDebounceViewClickListener {
@@ -65,18 +65,21 @@ class ClubMemberListAdapter(var myRoleType: Int, var listener: Listener) : Recyc
             }
         }
 
-        fun bindData(position: Int, model: UserInfoModel) {
+        fun bindData(position: Int, model: ClubMemberInfoModel) {
             this.mPos = position
             this.mModel = model
 
-            avatarView.bindData(model)
-            nameTv.text = model.nicknameRemark
-            statusTv.text = model.ranking?.rankingDesc
-            if (ClubRoleUtils.getClubRoleBackground(model.clubInfo.roleType) != null) {
+            avatarView.bindData(model.userInfoModel)
+            nameTv.text = model.userInfoModel?.nicknameRemark
+            statusTv.text = model.onlineDesc
+            if (ClubRoleUtils.getClubRoleBackground(model.userInfoModel?.clubInfo?.roleType
+                            ?: 0) != null) {
                 roleTagTv.visibility = View.VISIBLE
-                roleTagTv.background = ClubRoleUtils.getClubRoleBackground(model.clubInfo.roleType)
-                roleTagTv.text = model.clubInfo.roleDesc
-                ClubRoleUtils.getClubRoleTextColor(model.clubInfo.roleType)?.let {
+                roleTagTv.background = ClubRoleUtils.getClubRoleBackground(model.userInfoModel?.clubInfo?.roleType
+                        ?: 0)
+                roleTagTv.text = model.userInfoModel?.clubInfo?.roleDesc
+                ClubRoleUtils.getClubRoleTextColor(model.userInfoModel?.clubInfo?.roleType
+                        ?: 0)?.let {
                     roleTagTv.setTextColor(it)
                 }
             } else {
@@ -84,7 +87,7 @@ class ClubMemberListAdapter(var myRoleType: Int, var listener: Listener) : Recyc
             }
 
             if ((myRoleType == EClubMemberRoleType.ECMRT_Founder.value || myRoleType == EClubMemberRoleType.ECMRT_CoFounder.value)
-                    && myRoleType < model.clubInfo.roleType) {
+                    && myRoleType < (model.userInfoModel?.clubInfo?.roleType ?: 0)) {
                 // 族长或副族长，只能操作权限低的人
                 removeTv.visibility = View.VISIBLE
                 titleTv.visibility = View.VISIBLE
@@ -93,7 +96,7 @@ class ClubMemberListAdapter(var myRoleType: Int, var listener: Listener) : Recyc
                 titleTv.visibility = View.GONE
             }
 
-            if (model.userId == MyUserInfoManager.uid.toInt() || model.clubInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value) {
+            if (model.userInfoModel?.userId == MyUserInfoManager.uid.toInt() || model.userInfoModel?.clubInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value) {
                 removeTv.visibility = View.GONE
                 titleTv.visibility = View.GONE
             }
@@ -101,8 +104,8 @@ class ClubMemberListAdapter(var myRoleType: Int, var listener: Listener) : Recyc
     }
 
     interface Listener {
-        fun onClickAvatar(position: Int, model: UserInfoModel?)
-        fun onClickRemove(position: Int, model: UserInfoModel?)
-        fun onClickTitle(position: Int, model: UserInfoModel?)
+        fun onClickAvatar(position: Int, model: ClubMemberInfoModel?)
+        fun onClickRemove(position: Int, model: ClubMemberInfoModel?)
+        fun onClickTitle(position: Int, model: ClubMemberInfoModel?)
     }
 }
