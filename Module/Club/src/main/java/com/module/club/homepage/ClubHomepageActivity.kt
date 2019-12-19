@@ -29,6 +29,7 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.view.MarqueeTextView
 import com.component.person.view.PersonTagView
 import com.facebook.drawee.view.SimpleDraweeView
+import com.imagebrowse.big.BigImageBrowseFragment
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
@@ -209,6 +210,10 @@ class ClubHomepageActivity : BaseActivity() {
     }
 
     private fun initTopArea() {
+        clubAvatarSdv?.setDebounceViewClickListener {
+            BigImageBrowseFragment.open(false, this, clubMemberInfo?.club?.logo)
+        }
+
         ivBack?.setDebounceViewClickListener { finish() }
 
         moreBtn?.setDebounceViewClickListener {

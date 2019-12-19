@@ -167,7 +167,9 @@ class ClubMemberListActivity : BaseActivity() {
             }
             if (result.errno == 0) {
                 // 设置成功，更新下身份
+                val roleDesc = result.data.getString("roleDesc")
                 model.clubInfo?.roleType = role
+                model.clubInfo?.roleDesc = roleDesc
                 adapter.notifyItemChanged(position)
             } else {
                 U.getToastUtil().showShort(result.errmsg)
