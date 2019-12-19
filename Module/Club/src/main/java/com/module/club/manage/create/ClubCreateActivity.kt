@@ -42,6 +42,7 @@ import com.module.club.homepage.event.ClubInfoChangeEvent
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
 import com.respicker.model.ImageItem
+import com.respicker.view.CropImageView
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -243,13 +244,11 @@ class ClubCreateActivity : BaseActivity() {
 
     private fun goAddPhotoFragment() {
         ResPicker.getInstance().params = ResPicker.newParamsBuilder()
-                .setMultiMode(true)
-                .setShowCamera(true)
-                .setIncludeGif(false)
-                .setCrop(false)
+                .setMultiMode(false)
                 .setSelectLimit(1)
+                .setCropStyle(CropImageView.Style.RECTANGLE)
+                .setIncludeGif(false)
                 .build()
-
         ResPickerActivity.open(this, ArrayList<ImageItem>(mImageItemArrayList))
     }
 
