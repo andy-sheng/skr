@@ -33,7 +33,7 @@ class ClubServiceImpl : IClubModuleService {
                     intent.putExtra("clubMemberInfo", clubMemberInfo)
                     U.getActivityUtils().topActivity.startActivity(intent)
                 } else {
-
+                    U.getToastUtil().showShort(result.errmsg)
                 }
             }
 
