@@ -742,7 +742,8 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
                 mAudioPlayerCapture.setEnableLowLatency(false);
             }
-            mLocalAudioMixer.setDelay(1, mConfig.getAccompanyMixingLatency());
+            int mixingLatency = mHeadSetPlugged ? mConfig.getAccMixingLatencyOnHeadset() : mConfig.getAccMixingLatencyOnSpeaker();
+            mLocalAudioMixer.setDelay(1, mixingLatency);
             mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
             mRemoteAudioPreview.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
             mAudioPlayerCapture.setPlayoutVolume(mConfig.getAudioMixingPlayoutVolume() / 100.f);
