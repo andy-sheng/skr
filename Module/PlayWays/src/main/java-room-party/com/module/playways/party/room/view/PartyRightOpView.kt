@@ -7,6 +7,7 @@ import android.view.View
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -41,11 +42,11 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
 
     var listener: Listener? = null
 
-    val mic_status_unapply = 1 // 未申请
-    val mic_status_wating = 2  // 申请中
-    val mic_status_online = 3  // 在麦上
+    val MIC_STATUS_UNAPPLY = 1 // 未申请
+    val MIC_STATUS_WATING = 2  // 申请中
+    val MIC_STATUS_ONLINE = 3  // 在麦上
 
-    var micStatus = mic_status_online  // 默认
+    var micStatus = MIC_STATUS_ONLINE  // 默认
 
     private val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
 
@@ -66,10 +67,10 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
         opMicTv.setDebounceViewClickListener {
             // 申请 取消 下麦
             when (micStatus) {
-                mic_status_unapply -> {
+                MIC_STATUS_UNAPPLY -> {
                     applyForGuest(false)
                 }
-                mic_status_wating -> {
+                MIC_STATUS_WATING -> {
                     applyForGuest(true)
                 }
                 else -> {
@@ -92,11 +93,11 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
             }
             if (result.errno == 0) {
                 micStatus = if (cancel) {
-                    mic_status_unapply
+                    MIC_STATUS_UNAPPLY
                 } else {
-                    mic_status_wating
+                    MIC_STATUS_WATING
                 }
-                refreshMicStatus()
+                refreshMicStatus("applyForGuest")
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }
@@ -115,8 +116,8 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
                 roomServerApi.backSeat(body)
             }
             if (result.errno == 0) {
-                micStatus = mic_status_unapply
-                refreshMicStatus()
+                micStatus = MIC_STATUS_UNAPPLY
+                refreshMicStatus("backSeat")
             } else {
 
             }
@@ -129,13 +130,13 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
         when {
             myInfo?.isHost() == true -> {
                 // 主持人
-                micStatus = mic_status_unapply
+                micStatus = MIC_STATUS_UNAPPLY
                 applyList.visibility = View.VISIBLE
                 opMicTv.visibility = View.GONE
             }
             myInfo?.isGuest() == true -> {
                 // 嘉宾
-                micStatus = mic_status_online
+                micStatus = MIC_STATUS_ONLINE
                 opMicTv.visibility = View.VISIBLE
                 if (myInfo?.isAdmin()) {
                     applyList.visibility = View.VISIBLE
@@ -145,7 +146,7 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
             }
             else -> {
                 // 观众
-                micStatus = mic_status_unapply
+                micStatus = MIC_STATUS_UNAPPLY
                 opMicTv.visibility = View.VISIBLE
                 if (myInfo?.isAdmin() == true) {
                     applyList.visibility = View.VISIBLE
@@ -155,18 +156,19 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
             }
         }
         applyList.text = "申请${H.partyRoomData?.applyUserCnt}人"
-        refreshMicStatus()
+        refreshMicStatus("bindData")
     }
 
-    private fun refreshMicStatus() {
+    private fun refreshMicStatus(from:String) {
+        MyLog.d("PartyRightOpView", "refreshMicStatus from = $from")
         when (micStatus) {
-            mic_status_unapply -> {
+            MIC_STATUS_UNAPPLY -> {
                 opMicTv.text = "申请上麦"
             }
-            mic_status_wating -> {
+            MIC_STATUS_WATING -> {
                 opMicTv.text = "取消申请"
             }
-            mic_status_online -> {
+            MIC_STATUS_ONLINE -> {
                 opMicTv.text = "下麦"
             }
         }
@@ -180,8 +182,8 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyHostChangeEvent) {
         if (H.partyRoomData?.hostId == 0) {
-            micStatus = mic_status_unapply
-            refreshMicStatus()
+            micStatus = MIC_STATUS_UNAPPLY
+            refreshMicStatus("PartyHostChangeEvent")
         }
     }
 
