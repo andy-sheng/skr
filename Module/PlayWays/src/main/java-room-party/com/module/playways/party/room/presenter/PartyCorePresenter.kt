@@ -16,11 +16,13 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
+import com.module.playways.BuildConfig
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.*
@@ -34,7 +36,9 @@ import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.GiftPresentEvent
 import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.PartyRoomMsgManager
+import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
+import com.module.playways.room.room.comment.model.CommentTextModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.zq.live.proto.Common.EClubMemberRoleType
 import com.zq.live.proto.PartyRoom.*
@@ -543,15 +547,15 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             startHeartbeat()
         } else if (mRoomData.myUserInfo?.isGuest() == true) {
             // 我是嘉宾了 开麦闭麦交给座位事件处理
-        }else if (mRoomData.myUserInfo?.isAdmin() == true) {
+        } else if (mRoomData.myUserInfo?.isAdmin() == true) {
             //我是管理员了
         }
-        if(mRoomData.myUserInfo?.isHost() == true  ||  this.mRoomData.myUserInfo?.isGuest()==true){
+        if (mRoomData.myUserInfo?.isHost() == true || this.mRoomData.myUserInfo?.isGuest() == true) {
             if (!ZqEngineKit.getInstance().params.isAnchor) {
                 ZqEngineKit.getInstance().setClientRole(true)
                 mRoomData.isMute = false
             }
-        }else{
+        } else {
             if (ZqEngineKit.getInstance().params.isAnchor) {
                 ZqEngineKit.getInstance().setClientRole(false)
             }
@@ -798,11 +802,29 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         roomView.joinNotice(playerInfoModel)
         mRoomData.updateUser(playerInfoModel, seatInfoModel)
 
-        if (mRoomData.isClubHome()) {
-            pretendSystemMsg("${getIdentityName(event.user.userInfo.clubInfo.roleType.value)}${UserInfoManager.getInstance().getRemarkName(event.user.userInfo.userID, event.user.userInfo.nickName)} 加入房间")
-        } else {
-            pretendSystemMsg("${UserInfoManager.getInstance().getRemarkName(event.user.userInfo.userID, event.user.userInfo.nickName)} 加入房间")
+        pretendEnterRoomMsg(playerInfoModel)
+    }
+
+    private fun pretendEnterRoomMsg(playerInfoModel: PartyPlayerInfoModel) {
+        val commentModel = CommentTextModel()
+        commentModel.userInfo = playerInfoModel.userInfo
+        commentModel.avatarColor = CommentModel.AVATAR_COLOR
+        val nameBuilder = when {
+            mRoomData.isClubHome() -> {
+                SpanUtils().append("${getIdentityName(playerInfoModel.userInfo.clubInfo.roleType)}${playerInfoModel.userInfo.nicknameRemark} ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                        .create()
+            }
+            else -> {
+                SpanUtils().append(playerInfoModel.userInfo.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                        .create()
+            }
         }
+        commentModel.nameBuilder = nameBuilder
+        val stringBuilder = SpanUtils()
+                .append("加入了房间").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                .create()
+        commentModel.stringBuilder = stringBuilder
+        EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
     }
 
     private fun getIdentityName(roleType: Int): String {
