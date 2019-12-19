@@ -31,6 +31,7 @@ import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.ClubMemberInfo;
 import com.common.core.userinfo.model.ScoreStateModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -63,6 +64,7 @@ import com.component.person.view.RequestCallBack;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
+import com.module.club.IClubModuleService;
 import com.module.feeds.IFeedsModuleService;
 import com.module.feeds.IPersonFeedsWall;
 import com.module.home.R;
@@ -112,6 +114,7 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
 
     ImageView mBusinessIv;
     GuardView mGuardView;
+    TextView mPersonClubName;
 
     CommonAudioView mAudioView;
     ExTextView mEditAudio;
@@ -141,6 +144,8 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
     ProducationWallView mProducationWallView;
 
     int srollDivider = U.getDisplayUtils().dip2px(122);  // 滑到分界线的时候
+
+    int bottomTopMargin = 0;  // 底部背景距离顶部距离的初始值
 
     int mFriendNum = 0;
     int mFansNum = 0;
@@ -224,6 +229,10 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
 
             srollDivider = srollDivider - U.getStatusBarUtil().getStatusBarHeight(U.app());
         }
+
+        // 得到底部距离顶部的初始值
+        RelativeLayout.LayoutParams bottomParams = (RelativeLayout.LayoutParams) mBottomBg.getLayoutParams();
+        bottomTopMargin = bottomParams.topMargin;
     }
 
 
@@ -380,6 +389,8 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
         mBusinessIv = getRootView().findViewById(R.id.business_iv);
         mGuardView = getRootView().findViewById(R.id.guard_view);
 
+        mPersonClubName = getRootView().findViewById(R.id.person_club_name);
+
         mAudioView = getRootView().findViewById(R.id.audio_view);
         mEditAudio = getRootView().findViewById(R.id.edit_audio);
 
@@ -488,6 +499,14 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
                         .greenChannel().navigation();
+            }
+        });
+
+        mPersonClubName.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                IClubModuleService clubServices = (IClubModuleService) ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation();
+                clubServices.tryGoClubHomePage(MyUserInfoManager.INSTANCE.getMyUserInfo().getClubInfo().getClub().getClubID());
             }
         });
     }
@@ -876,6 +895,23 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
             } else {
                 mLevelBg.setVisibility(View.GONE);
                 mLevelDesc.setVisibility(View.GONE);
+            }
+
+            ClubMemberInfo clubMemberInfo = MyUserInfoManager.INSTANCE.getMyUserInfo().getClubInfo();
+            if (clubMemberInfo != null && clubMemberInfo.getClub() != null
+                    && !TextUtils.isEmpty(clubMemberInfo.getClub().getName())) {
+                mPersonClubName.setVisibility(View.VISIBLE);
+                mPersonClubName.setText("【" + MyUserInfoManager.INSTANCE.getMyUserInfo().getClubInfo().getClub().getName() + "】");
+                // 适配下背景
+                RelativeLayout.LayoutParams bottomParams = (RelativeLayout.LayoutParams) mBottomBg.getLayoutParams();
+                bottomParams.topMargin = bottomTopMargin + U.getDisplayUtils().dip2px(36);
+                mBottomBg.setLayoutParams(bottomParams);
+            } else {
+                mPersonClubName.setVisibility(View.GONE);
+                // 适配下背景
+                RelativeLayout.LayoutParams bottomParams = (RelativeLayout.LayoutParams) mBottomBg.getLayoutParams();
+                bottomParams.topMargin = bottomTopMargin;
+                mBottomBg.setLayoutParams(bottomParams);
             }
         }
     }
