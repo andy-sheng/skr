@@ -332,7 +332,7 @@ class PartyGameTabView : ExConstraintLayout {
 
                 delaySingJob?.cancel()
                 delaySingJob = launch {
-                    delay(2000)
+                    delay(3000)
                     textScrollView.visibility = View.GONE
                     partySelfSingLyricView?.setVisibility(View.VISIBLE)
                     singingTv.text = "演唱中..."
