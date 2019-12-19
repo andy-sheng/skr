@@ -810,7 +810,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             EClubMemberRoleType.ECMRT_Invalid.value -> return ""
             EClubMemberRoleType.ECMRT_Founder.value -> return "【族长】"
             EClubMemberRoleType.ECMRT_CoFounder.value -> return "【副族长】"
-            EClubMemberRoleType.ECMRT_Hostman.value -> return "【主持人】"
+            EClubMemberRoleType.ECMRT_Hostman.value -> return "【家族主持人】"
             EClubMemberRoleType.ECMRT_Common.value -> return "【族员】"
             else -> return ""
         }
