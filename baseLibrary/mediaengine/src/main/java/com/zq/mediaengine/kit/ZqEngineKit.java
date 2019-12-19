@@ -626,6 +626,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioPlayerCapture.setOnPreparedListener(new AudioPlayerCapture.OnPreparedListener() {
                 @Override
                 public void onPrepared(AudioPlayerCapture audioPlayerCapture) {
+                    MyLog.i(TAG, "AudioPlayerCapture onPrepared");
                     // TODO: 预加载完成通知
                     onAudioMixingStateChanged(710, 0);
                 }
@@ -633,6 +634,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioPlayerCapture.setOnCompletionListener(new AudioPlayerCapture.OnCompletionListener() {
                 @Override
                 public void onCompletion(AudioPlayerCapture audioPlayerCapture) {
+                    MyLog.i(TAG, "AudioPlayerCapture onCompletion");
                     onAudioMixingFinished();
                 }
             });
@@ -1560,9 +1562,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         startAudioMixing(0, filePath, midiPath, mixMusicBeginOffset, loopback, replace, cycle);
     }
 
-    public void startAudioMixing(final int uid, String path, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
-//        final String filePath = "/sdcard/yindiao.m4a";
-        final String filePath = path;
+    public void startAudioMixing(final int uid, final String filePath, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle) {
                 @Override
