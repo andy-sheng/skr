@@ -1011,11 +1011,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PClubChangeHostMsg) {
         MyLog.d(TAG, "onEvent event = $event")
-        val fromModel = PartyPlayerInfoModel.parseFromPb(event.fromUser)
-        mRoomData.updateUser(fromModel, null)
+        // 先更新主持人
         if (event.hasToUser() && (event.toUser.userInfo?.userID ?: 0) > 0) {
             mRoomData.updateUser(PartyPlayerInfoModel.parseFromPb(event.toUser), null)
         }
+        val fromModel = PartyPlayerInfoModel.parseFromPb(event.fromUser)
+        mRoomData.updateUser(fromModel, null)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

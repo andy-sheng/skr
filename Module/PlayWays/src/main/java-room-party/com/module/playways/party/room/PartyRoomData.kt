@@ -261,12 +261,12 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
      * 更新用户信息，传入一个列表
      */
     fun updateUsers(list: ArrayList<PartyPlayerInfoModel>?) {
+        var hasMy = false
+        var hasHost = false
+        users.clear()
+        usersMap.clear()
         if (list?.isNotEmpty() == true) {
-            var hasMy = false
-            var hasHost = false
-            users.clear()
             users.addAll(list)
-            usersMap.clear()
             for (info in users) {
                 usersMap[info.userID] = info
                 if (info.userID == MyUserInfoManager.uid.toInt()) {
@@ -281,12 +281,12 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 //                    hostId = 0
 //                }
             }
-            if (!hasMy) {
-                myUserInfo = null
-            }
-            if(!hasHost){
-                hostId = 0
-            }
+        }
+        if (!hasMy) {
+            myUserInfo = null
+        }
+        if(!hasHost){
+            hostId = 0
         }
     }
 
