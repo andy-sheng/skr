@@ -15,7 +15,7 @@ interface ClubServerApi {
     /**
      * 检查能否创建家族
      */
-    @GET("http://dev.api.inframe.mobi/v1/club/permission-to-create")
+    @GET("http://dev.api.inframe.mobi/v1/club/check-permisson-before-create")
     fun checkCreatePermission(): Call<ApiResult>
 
     /** 创建家族

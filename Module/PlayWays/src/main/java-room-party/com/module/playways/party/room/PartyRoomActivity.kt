@@ -782,7 +782,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun quitGame() {
         dismissDialog()
         mTipsDialogView = TipsDialogView.Builder(this)
-                .setMessageTip("确定要退出小剧场吗")
+                .setMessageTip("确定要退出派对吗")
                 .setConfirmTip("确定")
                 .setCancelTip("取消")
                 .setConfirmBtnClickListener {
