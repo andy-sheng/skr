@@ -72,7 +72,6 @@ import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.zq.live.proto.PartyRoom.PClubGameStopMsg
 import com.zq.live.proto.PartyRoom.PKickoutUserMsg
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -825,7 +824,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
      * 没有游戏了
      */
     override fun showWaiting() {
-        mPartyGameMainView?.toWaitingState()
+        if (mRoomData.hostId > 0) {
+            mPartyGameMainView?.toWaitingState()
+        } else {
+            mPartyGameMainView?.toNoAnchorState()
+        }
     }
 
     override fun joinNotice(model: PartyPlayerInfoModel?) {
