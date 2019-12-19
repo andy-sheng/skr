@@ -6,19 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.module.club.R
 import com.module.club.homepage.utils.ClubRoleUtils
+import com.module.club.member.ClubMemberInfoModel
 
 class ClubMemberAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var mDataList = ArrayList<UserInfoModel>()
+    var mDataList = ArrayList<ClubMemberInfoModel>()
     var mTotal = 0
 
-    var listener: ((position: Int, model: UserInfoModel?) -> Unit)? = null
+    var listener: ((position: Int, model: ClubMemberInfoModel?) -> Unit)? = null
 
     private val ITEM_TYPE_NORMAL = 1
     private val ITEM_TYPE_LAST = 2
@@ -63,7 +63,7 @@ class ClubMemberAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val roleTagTv: TextView = item.findViewById(R.id.role_tag_tv)
 
         var mPos = -1
-        var mModel: UserInfoModel? = null
+        var mModel: ClubMemberInfoModel? = null
 
         init {
             avatarView?.setDebounceViewClickListener {
@@ -71,16 +71,19 @@ class ClubMemberAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
-        fun bindData(position: Int, model: UserInfoModel) {
+        fun bindData(position: Int, model: ClubMemberInfoModel) {
             this.mPos = position
             this.mModel = model
 
-            avatarView.bindData(model)
-            if (ClubRoleUtils.getClubRoleBackground(model.clubInfo.roleType) != null) {
+            avatarView.bindData(model.userInfoModel)
+            if (ClubRoleUtils.getClubRoleBackground(model.userInfoModel?.clubInfo?.roleType
+                            ?: 0) != null) {
                 roleTagTv.visibility = View.VISIBLE
-                roleTagTv.background = ClubRoleUtils.getClubRoleBackground(model.clubInfo.roleType)
-                roleTagTv.text = model.clubInfo.roleDesc
-                ClubRoleUtils.getClubRoleTextColor(model.clubInfo.roleType)?.let {
+                roleTagTv.background = ClubRoleUtils.getClubRoleBackground(model.userInfoModel?.clubInfo?.roleType
+                        ?: 0)
+                roleTagTv.text = model.userInfoModel?.clubInfo?.roleDesc
+                ClubRoleUtils.getClubRoleTextColor(model.userInfoModel?.clubInfo?.roleType
+                        ?: 0)?.let {
                     roleTagTv.setTextColor(it)
                 }
             } else {

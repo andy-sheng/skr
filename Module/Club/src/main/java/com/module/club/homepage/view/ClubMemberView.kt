@@ -17,6 +17,7 @@ import com.common.rxretrofit.subscribe
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
+import com.module.club.member.ClubMemberInfoModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -45,7 +46,7 @@ class ClubMemberView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         recyclerView.adapter = adapter
 
         adapter.listener = { position, model ->
-            model?.userId?.let {
+            model?.userInfoModel?.userId?.let {
                 val bundle = Bundle()
                 bundle.putInt("bundle_user_id", it)
                 ARouter.getInstance()
@@ -62,7 +63,7 @@ class ClubMemberView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
                 clubServerApi.getClubMemberList(clubID, 0, cnt)
             }
             if (result.errno == 0) {
-                val list = JSON.parseArray(result.data.getString("items"), UserInfoModel::class.java)
+                val list = JSON.parseArray(result.data.getString("items"), ClubMemberInfoModel::class.java)
                 adapter.mTotal = memberCnt
                 adapter.mDataList.clear()
                 if (!list.isNullOrEmpty()) {
