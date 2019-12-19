@@ -10,8 +10,9 @@ import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.module.club.R
+import com.zq.live.proto.Common.EClubMemberRoleType
 
-class ClubApplyListAdapter(var hasManager: Boolean, var listener: Listener) : RecyclerView.Adapter<ClubApplyListAdapter.ClubApplyViewHolder>() {
+class ClubApplyListAdapter(var myRoleType: Int, var listener: Listener) : RecyclerView.Adapter<ClubApplyListAdapter.ClubApplyViewHolder>() {
 
     var mDataList = ArrayList<ClubApplyInfoModel>()
 
@@ -65,7 +66,8 @@ class ClubApplyListAdapter(var hasManager: Boolean, var listener: Listener) : Re
             avatarView.bindData(model.user)
             nameTv.text = model.user?.nicknameRemark
             statusTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.applyTimeMs, System.currentTimeMillis())
-            if (hasManager) {
+            if ((myRoleType == EClubMemberRoleType.ECMRT_Founder.value || myRoleType == EClubMemberRoleType.ECMRT_CoFounder.value)) {
+                // 族长和副族长才有操作权限
                 agreeTv.visibility = View.VISIBLE
                 refuseTv.visibility = View.VISIBLE
             } else {

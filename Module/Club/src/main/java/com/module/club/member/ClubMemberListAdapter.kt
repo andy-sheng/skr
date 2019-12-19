@@ -14,7 +14,7 @@ import com.module.club.R
 import com.module.club.homepage.utils.ClubRoleUtils
 import com.zq.live.proto.Common.EClubMemberRoleType
 
-class ClubMemberListAdapter(var hasManager: Boolean, var listener: Listener) : RecyclerView.Adapter<ClubMemberListAdapter.ClubMemberViewHolder>() {
+class ClubMemberListAdapter(var myRoleType: Int, var listener: Listener) : RecyclerView.Adapter<ClubMemberListAdapter.ClubMemberViewHolder>() {
 
     var mDataList = ArrayList<UserInfoModel>()
 
@@ -83,7 +83,9 @@ class ClubMemberListAdapter(var hasManager: Boolean, var listener: Listener) : R
                 roleTagTv.visibility = View.INVISIBLE
             }
 
-            if (hasManager) {
+            if ((myRoleType == EClubMemberRoleType.ECMRT_Founder.value || myRoleType == EClubMemberRoleType.ECMRT_CoFounder.value)
+                    && myRoleType < model.clubInfo.roleType) {
+                // 族长或副族长，只能操作权限低的人
                 removeTv.visibility = View.VISIBLE
                 titleTv.visibility = View.VISIBLE
             } else {

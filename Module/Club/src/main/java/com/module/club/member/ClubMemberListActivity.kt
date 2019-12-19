@@ -63,13 +63,7 @@ class ClubMemberListActivity : BaseActivity() {
         refreshLayout = findViewById(R.id.refreshLayout)
         contentRv = findViewById(R.id.content_rv)
 
-        var hasManage = false
-        if (clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value
-                || clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_CoFounder.value) {
-            hasManage = true
-        }
-
-        adapter = ClubMemberListAdapter(hasManage, object : ClubMemberListAdapter.Listener {
+        adapter = ClubMemberListAdapter(clubMemberInfo?.roleType ?: 0, object : ClubMemberListAdapter.Listener {
             override fun onClickAvatar(position: Int, model: UserInfoModel?) {
                 model?.userId?.let {
                     val bundle = Bundle()

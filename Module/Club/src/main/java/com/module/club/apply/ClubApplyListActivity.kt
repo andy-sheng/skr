@@ -59,13 +59,7 @@ class ClubApplyListActivity : BaseActivity() {
         refreshLayout = findViewById(R.id.refreshLayout)
         contentRv = findViewById(R.id.content_rv)
 
-        var hasManage = false
-        if (clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value
-                || clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_CoFounder.value) {
-            hasManage = true
-        }
-
-        adapter = ClubApplyListAdapter(hasManage, object : ClubApplyListAdapter.Listener {
+        adapter = ClubApplyListAdapter(clubMemberInfo?.roleType ?: 0, object : ClubApplyListAdapter.Listener {
             override fun onClickAgree(position: Int, model: ClubApplyInfoModel?) {
                 auditMemberJoin(position, model, true)
             }
