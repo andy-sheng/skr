@@ -227,6 +227,7 @@ class ClubHomepageActivity : BaseActivity() {
             U.getPreferenceUtils().setSettingLong(SP_KEY_APPLY_WATER_LEVEL, applyTimeMs)
             applyRedIv?.visibility = View.GONE
             ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_APPLY_CLUB)
+                    .withSerializable("clubMemberInfo", clubMemberInfo)
                     .navigation()
         }
 
