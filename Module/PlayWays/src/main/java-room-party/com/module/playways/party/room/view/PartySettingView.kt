@@ -18,6 +18,7 @@ import com.module.playways.room.data.H
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
@@ -25,7 +26,6 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var soundSettingTv: TextView
     lateinit var muteSettingTv: TextView
 
-    var isAllMute = false
     var listener: Listener? = null
 
     private val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
@@ -44,7 +44,8 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
 
         muteSettingTv.setAnimateDebounceViewClickListener {
-            setAllMicMute(!isAllMute)
+            var  b = (H.partyRoomData?.isAllMute==true)
+            setAllMicMute(!b)
         }
     }
 
@@ -61,7 +62,7 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 roomServerApi.setAllMicStatus(body)
             }
             if (result.errno == 0) {
-                isAllMute = muteStatus
+                H.partyRoomData?.isAllMute = muteStatus
                 refreshAllMute()
             } else {
 
@@ -80,7 +81,7 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     private fun refreshAllMute() {
         var drawable = U.getDrawable(R.drawable.party_setting_all_unmute)
-        if (isAllMute) {
+        if (H.partyRoomData?.isAllMute==true) {
             muteSettingTv.text = "全员开麦"
         } else {
             drawable = U.getDrawable(R.drawable.party_setting_all_mute)

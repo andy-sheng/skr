@@ -865,8 +865,10 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     fun onEvent(event: PSetAllMemberMicMsg) {
         MyLog.d(TAG, "onEvent event = $event")
         if (event.micStatus.value == EMicStatus.MS_CLOSE.value) {
+            mRoomData.isAllMute = true
             pretendSystemMsg("主持人已设置全员禁麦")
         } else if (event.micStatus.value == EMicStatus.MS_OPEN.value) {
+            mRoomData.isAllMute = false
             pretendSystemMsg("主持人已解除全员禁麦")
         }
         mRoomData.updateSeats(PartySeatInfoModel.parseFromPb(event.seatsList))
@@ -1019,6 +1021,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PClubGameStopMsg) {
         MyLog.d(TAG, "onEvent event = $event")
+        mRoomData.expectRoundInfo = null
+        mRoomData.checkRoundInEachMode()
     }
     // TODO sync
     /**

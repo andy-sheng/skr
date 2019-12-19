@@ -20,6 +20,14 @@ import org.greenrobot.eventbus.EventBus
 
 class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
+    var isAllMute = false // 是否设置了全员禁麦
+        //房间名称
+        set(value) {
+            if (value != field) {
+                field = value
+                EventBus.getDefault().post(PartyRoomAllMuteEvent())
+            }
+        }
     var roomName = ""
         //房间名称
         set(value) {
@@ -82,6 +90,9 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             if (field != value) {
                 field = value
                 EventBus.getDefault().post(PartyHostChangeEvent(field))
+                if(field==0){
+                    isAllMute = false
+                }
             }
         }
     /**
