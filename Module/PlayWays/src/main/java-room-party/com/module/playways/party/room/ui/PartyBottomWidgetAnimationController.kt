@@ -81,6 +81,7 @@ class PartyBottomWidgetAnimationController(internal var mF: PartyRoomActivity) {
             mF.mBottomContainerView.emojiOpen = false
             mF.mPartyEmojiView?.setVisibility(View.GONE)
             mF.mPartySettingView?.setVisibility(View.VISIBLE)
+            mF.mPartySettingView?.bindData()
         }
     }
 
