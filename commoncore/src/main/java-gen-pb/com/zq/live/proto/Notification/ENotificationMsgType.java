@@ -104,7 +104,12 @@ public enum ENotificationMsgType implements WireEnum {
   /**
    * 小剧场邀请用户
    */
-  NM_INVITE_PARTY(18);
+  NM_INVITE_PARTY(18),
+
+  /**
+   * 家族信息变更
+   */
+  NM_CLUBINFO_CHANGE(19);
 
   public static final ProtoAdapter<ENotificationMsgType> ADAPTER = new ProtoAdapter_ENotificationMsgType();
 
@@ -138,6 +143,7 @@ public enum ENotificationMsgType implements WireEnum {
       case 16: return NM_SPFOLLOW_UPDATEALBUM;
       case 17: return NM_GIFT_RECEIVES;
       case 18: return NM_INVITE_PARTY;
+      case 19: return NM_CLUBINFO_CHANGE;
       default: return null;
     }
   }

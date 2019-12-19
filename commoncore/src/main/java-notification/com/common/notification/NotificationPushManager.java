@@ -132,6 +132,8 @@ public class NotificationPushManager {
             EventBus.getDefault().post(msg.getGiftReceivesMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_INVITE_PARTY) {
             EventBus.getDefault().post(msg.getInvitePartyMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_CLUBINFO_CHANGE) {
+            EventBus.getDefault().post(msg.getClubInfoChangeMsg());
         }
     }
 

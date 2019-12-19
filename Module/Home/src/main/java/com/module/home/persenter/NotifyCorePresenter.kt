@@ -9,12 +9,14 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.core.global.event.ShowDialogInHomeEvent
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
 import com.common.core.scheme.SchemeSdkActivity
 import com.common.core.scheme.event.*
 import com.common.core.userinfo.ResultCallback
 import com.common.core.userinfo.UserInfoManager
+import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.floatwindow.FloatWindow
 import com.common.floatwindow.MoveType
@@ -146,6 +148,13 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ClubInfoChangeMsg) {
+        // 我自己家族信息的改变
+        MyUserInfoManager.myUserInfo?.clubInfo = ClubMemberInfo.parseFromPB(event.clubInfo)
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: GrabInviteFromSchemeEvent) {
         // TODO: 2019/3/20   一场到底邀请 口令
         if (event.ask == 1) {
@@ -268,7 +277,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                         confirmDialog.setListener {
                             Observable.timer(500, TimeUnit.MILLISECONDS)
                                     .compose(this@NotifyCorePresenter.bindUntilEvent(PresenterEvent.DESTROY))
-                                    .subscribe { tryGoPartyRoom( event.ownerId, event.roomId) }
+                                    .subscribe { tryGoPartyRoom(event.ownerId, event.roomId) }
                         }
                         confirmDialog.show()
                     }
@@ -277,7 +286,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
             })
         } else {
             // 不需要直接进
-            tryGoPartyRoom( event.ownerId, event.roomId)
+            tryGoPartyRoom(event.ownerId, event.roomId)
         }
     }
 
@@ -510,7 +519,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     internal fun tryGoPartyRoom(ownerId: Int, roomID: Int) {
         mSkrAudioPermission!!.ensurePermission({
             val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-            iRankingModeService.tryGoPartyRoom(roomID, 2,0)
+            iRankingModeService.tryGoPartyRoom(roomID, 2, 0)
         }, true)
     }
 
@@ -773,7 +782,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         mUiHandler.removeMessages(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW)
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW, 5000)
         val notifyView = NormalInviteNotifyView(U.app())
-        notifyView.bindData(userInfoModel,"邀请你加入小K房")
+        notifyView.bindData(userInfoModel, "邀请你加入小K房")
         notifyView.setListener {
             mUiHandler.removeMessages(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW)
             FloatWindow.destroy(TAG_MIC_ROOM_INVITE_FOALT_WINDOW)
@@ -809,7 +818,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         mUiHandler.removeMessages(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW)
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW, 5000)
         val notifyView = NormalInviteNotifyView(U.app())
-        notifyView.bindData(userInfoModel,"邀请你加入派对房")
+        notifyView.bindData(userInfoModel, "邀请你加入派对房")
         notifyView.setListener {
             mUiHandler.removeMessages(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW)
             FloatWindow.destroy(TAG_PARTY_ROOM_INVITE_FOALT_WINDOW)

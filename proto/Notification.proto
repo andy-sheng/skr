@@ -44,7 +44,15 @@ message NotificationMsg {
 
     GiftReceivesMsg giftReceivesMsg = 26; //收到礼物的信息
     InvitePartyMsg invitePartyMsg   = 27; //小剧场邀请用户
+
+    ClubInfoChangeMsg clubInfoChangeMsg = 28; //家族信息发生变更
 }
+
+message ClubInfoChangeMsg
+{
+    Common.UserClubInfo clubInfo = 1;
+}
+
 
 message SpFollowNewPostMsg {
     uint32 userID = 1;
@@ -211,6 +219,8 @@ enum ENotificationMsgType {
     NM_GIFT_RECEIVES = 17; //收到礼物的小红点消息
 
     NM_INVITE_PARTY         = 18; //小剧场邀请用户
+
+    NM_CLUBINFO_CHANGE = 19; //家族信息变更
 }
 
 message FollowMsg {

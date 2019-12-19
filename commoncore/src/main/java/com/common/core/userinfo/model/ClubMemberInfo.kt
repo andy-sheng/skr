@@ -22,6 +22,14 @@ class ClubMemberInfo : Serializable {
             return result
         }
 
+        fun parseFromPB(userClubInfo: com.zq.live.proto.Common.UserClubInfo): ClubMemberInfo {
+            val result = ClubMemberInfo()
+            result.club = ClubInfo.parseFromPB(userClubInfo.club)
+            result.roleType = userClubInfo.roleType.value
+            result.roleDesc = userClubInfo.roleDesc
+            return result
+        }
+
         fun toUClubInfoPB(memberInfo: ClubMemberInfo?): com.zq.live.proto.Common.UClubInfo? {
             return if (memberInfo != null) {
                 com.zq.live.proto.Common.UClubInfo.Builder()
