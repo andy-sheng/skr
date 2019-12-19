@@ -16,6 +16,7 @@ import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.PartyApplyUserCntChangeEvent
+import com.module.playways.party.room.event.PartyHostChangeEvent
 import com.module.playways.party.room.event.PartyMySeatInfoChangeEvent
 import com.module.playways.party.room.event.PartyMyUserInfoChangeEvent
 import com.module.playways.room.data.H
@@ -79,7 +80,7 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
     }
 
     // 申请或取消申请上麦 cancel为true，取消申请 cancel为false，为申请嘉宾
-     fun applyForGuest(cancel: Boolean) {
+    fun applyForGuest(cancel: Boolean) {
         launch {
             val map = mutableMapOf(
                     "cancel" to cancel,
@@ -174,6 +175,14 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyMyUserInfoChangeEvent) {
         bindData()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyHostChangeEvent) {
+        if (H.partyRoomData?.hostId == 0) {
+            micStatus = mic_status_unapply
+            refreshMicStatus()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
