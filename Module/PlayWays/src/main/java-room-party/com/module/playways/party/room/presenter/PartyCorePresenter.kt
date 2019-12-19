@@ -837,10 +837,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PSetRoomAdminMsg) {
         MyLog.d(TAG, "onEvent event = $event")
+
         if (event.setType == ESetAdminType.SAT_ADD) {
-            pretendSystemMsg("${event.user.userInfo.nickName} 被 ${event.opUser.userInfo.nickName} 设置为管理员")
+            pretendSystemMsg("${event.user.userInfo.nickName} 被主持人设置为管理员")
         } else {
-            pretendSystemMsg("${event.user.userInfo.nickName} 被 ${event.opUser.userInfo.nickName} 删除了管理员")
+            pretendSystemMsg("${event.user.userInfo.nickName} 被主持人删除了管理员")
         }
         val p = PartyPlayerInfoModel.parseFromPb(event.user)
         mRoomData.updateUser(p, null)
@@ -876,6 +877,14 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                 }
             }
         }
+    }
+
+    private fun opCommentName(userID: Int): String {
+        mRoomData.getPlayerInfoById(userID)?.let {
+            return if (it.isHost()) "主持人" else "管理员"
+        }
+
+        return ""
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
