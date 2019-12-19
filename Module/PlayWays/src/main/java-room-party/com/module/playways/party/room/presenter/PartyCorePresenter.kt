@@ -540,15 +540,21 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     fun onEvent(event: PartyMyUserInfoChangeEvent) {
         DebugLogView.println(TAG, "PartyMyUserInfoChangeEvent 我是${mRoomData.myUserInfo?.role} 座位 ${mRoomData.mySeatInfo}")
         if (mRoomData.myUserInfo?.isHost() == true) {
+            startHeartbeat()
+        } else if (mRoomData.myUserInfo?.isGuest() == true) {
+            // 我是嘉宾了 开麦闭麦交给座位事件处理
+        }else if (mRoomData.myUserInfo?.isAdmin() == true) {
+            //我是管理员了
+        }
+        if(mRoomData.myUserInfo?.isHost() == true  ||  this.mRoomData.myUserInfo?.isGuest()==true){
             if (!ZqEngineKit.getInstance().params.isAnchor) {
                 ZqEngineKit.getInstance().setClientRole(true)
                 mRoomData.isMute = false
             }
-            startHeartbeat()
-        } else if (mRoomData.myUserInfo?.isAdmin() == true) {
-            //我是管理员了
-        } else if (mRoomData.myUserInfo?.isGuest() == true) {
-            // 我是嘉宾了 开麦闭麦交给座位事件处理
+        }else{
+            if (ZqEngineKit.getInstance().params.isAnchor) {
+                ZqEngineKit.getInstance().setClientRole(false)
+            }
         }
     }
 
