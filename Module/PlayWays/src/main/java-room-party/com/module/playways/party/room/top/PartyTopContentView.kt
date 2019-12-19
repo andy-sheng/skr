@@ -114,11 +114,7 @@ class PartyTopContentView : ExConstraintLayout {
         moreArrow.setDebounceViewClickListener { listener?.showRoomMember() }
         onlineNum.setDebounceViewClickListener { listener?.showRoomMember() }
         audienceIv.setDebounceViewClickListener { listener?.showRoomMember() }
-
-        clubIconIv.setDebounceViewClickListener {
-            val clubServices = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
-            clubServices.tryGoClubHomePage(H.partyRoomData?.clubInfo?.clubID ?: 0)
-        }
+        clubIconIv.setDebounceViewClickListener { listener?.showClubInfoCard() }
     }
 
     fun getClubIdentify(clubID: Int, call: ((ClubMemberInfo?) -> Unit)) {
@@ -227,5 +223,6 @@ class PartyTopContentView : ExConstraintLayout {
         fun showPartyBeHostConfirm()
         fun showPartyOpHost()
         fun showPartySelfOpHost()
+        fun showClubInfoCard()
     }
 }

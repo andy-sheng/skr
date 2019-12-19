@@ -23,6 +23,7 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
+import com.component.dialog.ClubCardDialogView
 import com.component.dialog.ConfirmDialog
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
@@ -136,6 +137,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private var mPartyApplyPanelView: PartyApplyPanelView? = null
     private var mPartyMemberPanelView: PartyMemberPanelView? = null
     private var mConfirmDialog: ConfirmDialog? = null
+    private var mClubCardDialogView: ClubCardDialogView? = null
 
     private var mVipEnterPresenter: VipEnterPresenter? = null
 
@@ -551,6 +553,12 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                     }
                 }.showByDialog()
             }
+
+            override fun showClubInfoCard() {
+                dismissDialog()
+                mClubCardDialogView = ClubCardDialogView(this@PartyRoomActivity, mRoomData.clubInfo?.clubID ?: 0)
+                mClubCardDialogView?.showByDialog()
+            }
         }
     }
 
@@ -807,9 +815,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mTipsDialogView?.dismiss(false)
         mVoiceControlPanelView?.dismiss(false)
         mPartyManageDialogView?.dismiss(false)
+        mPartyManageHostDialogView?.dismiss(false)
         mPartyApplyPanelView?.dismiss(false)
         mPartyMemberPanelView?.dismiss(false)
         mConfirmDialog?.dismiss(false)
+        mClubCardDialogView?.dismiss(false)
     }
 
     /**

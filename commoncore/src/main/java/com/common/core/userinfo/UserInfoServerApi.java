@@ -419,4 +419,11 @@ public interface UserInfoServerApi {
      */
     @GET("http://dev.api.inframe.mobi/v1/club/check-member-info")
     Observable<ApiResult> getClubMemberInfo(@Query("userID") int userID, @Query("clubID") int clubID);
+
+
+    /**
+     * 申请加入家族 {"clubID": 0,"text": "string"}
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/club/member-join")
+    Observable<ApiResult> applyJoinClub(@Body RequestBody body);
 }

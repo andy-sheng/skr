@@ -133,6 +133,10 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         }
         followIv.setDebounceViewClickListener { clickListener?.onClickFollow(mUserId, mUserInfoModel.isFriend, mUserInfoModel.isFollow) }
 
+        personClubName.setDebounceViewClickListener {
+            clickListener?.showClubInfoCard(mUserInfoModel.clubInfo?.club?.clubID ?: 0)
+        }
+
         guardView.clickListener = {
             if (it == null) {
                 // 去守护
