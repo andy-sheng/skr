@@ -103,6 +103,10 @@ class PartyTopContentView : ExConstraintLayout {
                         EventBus.getDefault().post(ShowPersonCardEvent(H.partyRoomData?.hostId!!))
                     }
                 }
+            } else {
+                if (H.partyRoomData?.hostId!! > 0) {
+                    EventBus.getDefault().post(ShowPersonCardEvent(H.partyRoomData?.hostId!!))
+                }
             }
 
         }
