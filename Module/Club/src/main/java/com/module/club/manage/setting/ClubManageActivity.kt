@@ -22,6 +22,7 @@ import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
+import com.module.club.homepage.ClubHomepageActivity
 import com.zq.live.proto.Common.ClubInfo
 import com.zq.live.proto.Common.EClubMemberRoleType
 import kotlinx.coroutines.launch
@@ -149,6 +150,11 @@ class ClubManageActivity : BaseActivity() {
             if (result.errno == 0) {
                 // 解散成功
                 U.getToastUtil().showShort("家族解散成功")
+                for (activity in U.getActivityUtils().activityList) {
+                    if (activity is ClubHomepageActivity) {
+                        activity.finish()
+                    }
+                }
                 finish()
             } else {
                 U.getToastUtil().showShort(result.errmsg)
@@ -165,6 +171,11 @@ class ClubManageActivity : BaseActivity() {
             if (result.errno == 0) {
                 // 退出成功
                 U.getToastUtil().showShort("家族退出成功")
+                for (activity in U.getActivityUtils().activityList) {
+                    if (activity is ClubHomepageActivity) {
+                        activity.finish()
+                    }
+                }
                 finish()
             } else {
                 U.getToastUtil().showShort(result.errmsg)
