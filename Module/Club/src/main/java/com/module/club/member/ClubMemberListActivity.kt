@@ -1,15 +1,12 @@
 package com.module.club.member
 
 import android.os.Bundle
-import android.support.v4.net.ConnectivityManagerCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
-import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.userinfo.model.ClubInfo
 import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
@@ -17,7 +14,6 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
 import com.dialog.view.TipsDialogView
@@ -68,8 +64,8 @@ class ClubMemberListActivity : BaseActivity() {
         contentRv = findViewById(R.id.content_rv)
 
         var hasManage = false
-        if (MyUserInfoManager.myUserInfo?.clubInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value
-                || MyUserInfoManager.myUserInfo?.clubInfo?.roleType == EClubMemberRoleType.ECMRT_CoFounder.value) {
+        if (clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value
+                || clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_CoFounder.value) {
             hasManage = true
         }
 
