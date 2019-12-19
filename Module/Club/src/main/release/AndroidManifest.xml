@@ -16,7 +16,7 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".manage.create.CreateClubActivity"
+            android:name=".manage.create.ClubCreateActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
