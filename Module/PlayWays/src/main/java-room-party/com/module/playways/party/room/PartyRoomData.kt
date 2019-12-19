@@ -252,6 +252,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     fun updateUsers(list: ArrayList<PartyPlayerInfoModel>?) {
         if (list?.isNotEmpty() == true) {
             var hasMy = false
+            var hasHost = false
             users.clear()
             users.addAll(list)
             usersMap.clear()
@@ -263,13 +264,17 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                 }
                 if (info.isHost()) {
                     hostId = info.userID
+                    hasHost = true
                 }
-                if (info.userID == hostId && !info.isHost()) {
-                    hostId = 0
-                }
+//                if (info.userID == hostId && !info.isHost()) {
+//                    hostId = 0
+//                }
             }
             if (!hasMy) {
                 myUserInfo = null
+            }
+            if(!hasHost){
+                hostId = 0
             }
         }
     }
