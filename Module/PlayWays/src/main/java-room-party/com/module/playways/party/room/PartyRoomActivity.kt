@@ -729,11 +729,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             val opUser = PartyPlayerInfoModel.parseFromPb(event.opUser)
             val stringBuilder = StringBuilder()
             if (opUser.isHost()) {
-                stringBuilder.append("【主持人】")
+                stringBuilder.append("主持人")
             } else if (opUser.isAdmin()) {
-                stringBuilder.append("【管理员】")
+                stringBuilder.append("管理员")
             }
-            stringBuilder.append(opUser.userInfo?.nicknameRemark ?: "")
+
             val kickUser = PartyPlayerInfoModel.parseFromPb(event.kickUser)
             stringBuilder.append("将${kickUser.userInfo?.nicknameRemark}踢出了房间")
             mCorePresenter.pretendSystemMsg(stringBuilder.toString())
