@@ -89,6 +89,9 @@ public class AudioPlayerCapture {
     private int mLoopCount;
     private int mLoopedCount;
 
+    // 播放完成事件精确测量时的超时保护
+    private long mCompletionCheckDelayed;
+
     // 混音的延迟测试
     private boolean mEnableLatencyTest;
     private long mStartTime;
@@ -265,16 +268,18 @@ public class AudioPlayerCapture {
             long tm = mAudioFileCapture.getPosition() - mAudioFileCapture.getBasePosition();
             long pos = mPcmPlayer.getPosition();
             long delay = tm - pos;
-            if (VERBOSE) {
-                Log.d(TAG, "check completion: " + tm + " - " + pos + " = " + delay);
-            }
-            if (delay < 10) {
+            Log.d(TAG, "check completion: " + tm + " - " + pos + " = " + delay);
+
+            // 等待超过300ms时也发送播放完成事件
+            if (delay < 10 || mCompletionCheckDelayed >= 300) {
+                mCompletionCheckDelayed = 0;
                 if (mLoopCount < 0 || ++mLoopedCount < mLoopCount) {
                     seek(0);
                 } else {
                     postOnCompletion();
                 }
             } else {
+                mCompletionCheckDelayed += delay;
                 mAudioFileCapture.getWorkHandler().postDelayed(mCheckCompletionRunnable, delay);
             }
         }
@@ -304,6 +309,7 @@ public class AudioPlayerCapture {
         mAudioFileCapture.setOnCompletionListener(new AudioFileCapture.OnCompletionListener() {
             @Override
             public void onCompletion(AudioFileCapture audioFileCapture) {
+                mCompletionCheckDelayed = 0;
                 mAudioFileCapture.getWorkHandler().post(mCheckCompletionRunnable);
             }
         });
@@ -611,7 +617,7 @@ public class AudioPlayerCapture {
         if (!mPlayerTypeChanged) {
             return;
         }
-        // TODO: 支持动态切换audiotrack和opensles播放
+        // 支持动态切换audiotrack和opensles播放
         mPlayerTypeChanged = false;
         if ((mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES &&
                 mPcmPlayer instanceof AudioTrackPlayer) ||

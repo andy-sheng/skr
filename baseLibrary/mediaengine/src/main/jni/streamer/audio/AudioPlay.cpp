@@ -513,7 +513,7 @@ int64_t AudioPlay::getPosition() {
              writtenPos, enqueuePos, slPlayPos, mZeroSamplesEnqueue * 1000 / mSampleRate, playPos);
     }
 
-    return playPos < 0 ? 0 : playPos;
+    return enqueuePos;
 }
 
 void AudioPlay::release() {
