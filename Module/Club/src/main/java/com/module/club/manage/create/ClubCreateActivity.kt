@@ -49,7 +49,7 @@ import org.greenrobot.eventbus.EventBus
 
 // 创建和编辑吧
 @Route(path = RouterConstants.ACTIVITY_CREATE_CLUB)
-class CreateClubActivity : BaseActivity() {
+class ClubCreateActivity : BaseActivity() {
     lateinit var titlebar: CommonTitleBar
     lateinit var bgIv: ImageView
     lateinit var iconIvBg: ExImageView
@@ -152,7 +152,10 @@ class CreateClubActivity : BaseActivity() {
                         .setLoadingDrawable(U.app().resources.getDrawable(com.component.busilib.R.drawable.loading_place_holder_img))
                         .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_320.w).build())
                         .build())
+                clubNameEt.setTextColor(U.getColor(R.color.black_trans_30))
                 clubNameEt.setText("${clubMemberInfo?.club?.name}")
+                clubNameEt.isFocusable = false
+                clubNameEt.isFocusableInTouchMode = false
                 clubIntroductionEt.setText("${clubMemberInfo?.club?.desc}")
             }
         }
