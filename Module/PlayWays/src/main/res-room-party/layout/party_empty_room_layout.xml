@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_12_dp"
-        android:text="暂无剧场，尝试创建一个吧"
+        android:text="暂无派对，尝试创建一个吧"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"
         app:layout_constraintLeft_toLeftOf="parent"
