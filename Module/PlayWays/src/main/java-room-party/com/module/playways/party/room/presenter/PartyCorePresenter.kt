@@ -366,6 +366,14 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         // 不想 destroy 时被取消
         GlobalScope.launch {
+            if (mRoomData.isClubHome() && mRoomData.hostId == MyUserInfoManager.uid.toInt()) {
+                val map = HashMap<String, Any?>()
+                map["roomID"] = mRoomData.gameId
+                map["getHostUserID"] = 0
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                subscribe { mRoomServerApi.giveClubHost(body) }
+            }
+
             var result = subscribe { mRoomServerApi.exitRoom(body) }
             if (result.errno == 0) {
 
