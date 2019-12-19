@@ -850,9 +850,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     fun onEvent(event: PSetAllMemberMicMsg) {
         MyLog.d(TAG, "onEvent event = $event")
         if (event.micStatus.value == EMicStatus.MS_CLOSE.value) {
-            pretendSystemMsg("${getIdentityName(event.opUser.userInfo.clubInfo.roleType.value)} 设置为 全员禁麦")
+            pretendSystemMsg("主持人已设置全员禁麦")
         } else if (event.micStatus.value == EMicStatus.MS_OPEN.value) {
-            pretendSystemMsg("${getIdentityName(event.opUser.userInfo.clubInfo.roleType.value)} 设置为 解除全员禁麦")
+            pretendSystemMsg("主持人已解除全员禁麦")
         }
         mRoomData.updateSeats(PartySeatInfoModel.parseFromPb(event.seatsList))
     }
@@ -868,10 +868,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         mRoomData.updateSeat(partySeatInfoModel)
 
         if (event.userID == MyUserInfoManager.uid.toInt()) {
-            if (event.micStatus.value == EMicStatus.MS_OPEN.value) {
-                pretendSystemMsg("${getIdentityName(event.opUser.userInfo.clubInfo.roleType.value)} 已将你的麦克风权限开启")
-            } else {
-                pretendSystemMsg("${getIdentityName(event.opUser.userInfo.clubInfo.roleType.value)} 已将你的麦关闭")
+            mRoomData.getPlayerInfoById(event.opUser.userInfo.userID)?.let {
+                if (event.micStatus.value == EMicStatus.MS_OPEN.value) {
+                    pretendSystemMsg("${if (it.isHost()) "主持人" else "管理员"} 已将你的麦克风权限开启")
+                } else {
+                    pretendSystemMsg("${if (it.isHost()) "主持人" else "管理员"} 已将你的麦关闭")
+                }
             }
         }
     }
@@ -926,7 +928,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         if (event.opUser.userInfo.userID != event.user.userInfo.userID) {
             if (event.user.userInfo.userID == MyUserInfoManager.uid.toInt()) {
                 // 不是自己主动下麦的
-                pretendSystemMsg("${getIdentityName(event.opUser.userInfo.clubInfo.roleType.value)} 已将你抱下麦")
+                mRoomData.getPlayerInfoById(event.opUser.userInfo.userID)?.let {
+                    pretendSystemMsg("${if (it.isHost()) "主持人" else "管理员"} 已将你抱下麦")
+                }
             }
         }
     }
