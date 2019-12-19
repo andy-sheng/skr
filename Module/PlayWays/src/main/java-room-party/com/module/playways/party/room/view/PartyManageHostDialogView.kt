@@ -18,11 +18,13 @@ import com.orhanobut.dialogplus.ViewHolder
 class PartyManageHostDialogView(context: Context) : ExConstraintLayout(context) {
     private var mDialogPlus: DialogPlus? = null
     var function1: ExTextView
+    var function2: ExTextView
     var cancel: ExTextView
 
     init {
         View.inflate(context, R.layout.party_manage_host_dialog_view_layout, this)
         function1 = rootView.findViewById(R.id.function_1)
+        function2 = rootView.findViewById(R.id.function_2)
         cancel = rootView.findViewById(R.id.cancel)
 
         cancel.setDebounceViewClickListener {

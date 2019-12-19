@@ -73,6 +73,7 @@ import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.PartyRoom.PKickoutUserMsg
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -514,6 +515,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                         mCorePresenter.becomeClubHost()
                         dismiss(false)
                     }
+
+                    function2.visibility = View.GONE
                 }.showByDialog()
             }
 
@@ -524,6 +527,12 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                         mCorePresenter.takeClubHost()
                         dismiss(false)
                     }
+
+                    function2.visibility = View.VISIBLE
+                    function2.setDebounceViewClickListener {
+                        dismiss(false) // 2个对话框
+                        EventBus.getDefault().post(ShowPersonCardEvent(mRoomData.hostId))
+                    }
                 }.showByDialog()
             }
 
@@ -533,6 +542,12 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                     function1.setDebounceViewClickListener {
                         mCorePresenter.giveClubHost()
                         dismiss(false)
+                    }
+
+                    function2.visibility = View.VISIBLE
+                    function2.setDebounceViewClickListener {
+                        dismiss(false) // 2个对话框
+                        EventBus.getDefault().post(ShowPersonCardEvent(mRoomData.hostId))
                     }
                 }.showByDialog()
             }
