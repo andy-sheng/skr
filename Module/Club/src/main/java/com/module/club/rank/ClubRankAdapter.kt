@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.core.view.setDebounceViewClickListener
 import com.component.busilib.view.AvatarView
 import com.component.person.utils.StringFromatUtils
 import com.module.club.R
 import com.module.club.homepage.utils.ClubRoleUtils
 
-class ClubRankAdapter : RecyclerView.Adapter<ClubRankAdapter.ClubRankViewHolder>() {
+class ClubRankAdapter(val listener: Listener) : RecyclerView.Adapter<ClubRankAdapter.ClubRankViewHolder>() {
 
     var mDataList = ArrayList<ClubRankModel>()
 
@@ -39,6 +40,12 @@ class ClubRankAdapter : RecyclerView.Adapter<ClubRankAdapter.ClubRankViewHolder>
         var mPos = -1
         var mModel: ClubRankModel? = null
 
+        init {
+            item.setDebounceViewClickListener {
+                listener.onClickAvatar(mPos, mModel)
+            }
+        }
+
         fun bindData(position: Int, model: ClubRankModel) {
             this.mPos = position
             this.mModel = model
@@ -62,5 +69,9 @@ class ClubRankAdapter : RecyclerView.Adapter<ClubRankAdapter.ClubRankViewHolder>
                 roleTagTv.visibility = View.INVISIBLE
             }
         }
+    }
+
+    interface Listener {
+        fun onClickAvatar(position: Int, model: ClubRankModel?)
     }
 }

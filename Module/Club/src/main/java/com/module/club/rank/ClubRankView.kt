@@ -1,15 +1,18 @@
 package com.module.club.rank
 
 import android.content.Context
+import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -30,7 +33,7 @@ class ClubRankView(context: Context, val clubID: Int, val model: ClubTagModel) :
     private val refreshLayout: SmartRefreshLayout
     private val recyclerView: RecyclerView
 
-    private val adapter: ClubRankAdapter = ClubRankAdapter()
+    private val adapter: ClubRankAdapter
 
     init {
         View.inflate(context, R.layout.club_rank_list_view_layout, this)
@@ -39,6 +42,15 @@ class ClubRankView(context: Context, val clubID: Int, val model: ClubTagModel) :
         recyclerView = this.findViewById(R.id.recycler_view)
 
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        adapter = ClubRankAdapter(object : ClubRankAdapter.Listener {
+            override fun onClickAvatar(position: Int, model: ClubRankModel?) {
+                val bundle = Bundle()
+                bundle.putInt("bundle_user_id", model?.userInfoModel?.userId ?: 0)
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                        .with(bundle)
+                        .navigation()
+            }
+        })
         recyclerView.adapter = adapter
 
         refreshLayout.apply {
