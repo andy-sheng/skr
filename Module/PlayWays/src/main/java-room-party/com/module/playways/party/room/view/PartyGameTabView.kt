@@ -21,6 +21,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.ImageUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
@@ -304,6 +305,7 @@ class PartyGameTabView : ExConstraintLayout {
                     AvatarUtils.loadAvatarByUrl(gamePicImg, AvatarUtils.newParamsBuilder(it.question?.questionInfo?.questionPic?.get(0))
                             .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                             .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                            .setSizeType(ImageUtils.SIZE.SIZE_320)
                             .setBorderColor(Color.WHITE)
                             .build())
                 } else {
