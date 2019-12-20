@@ -52,7 +52,6 @@ import org.greenrobot.eventbus.EventBus
 @Route(path = RouterConstants.ACTIVITY_CREATE_CLUB)
 class ClubCreateActivity : BaseActivity() {
     lateinit var titlebar: CommonTitleBar
-    lateinit var bgIv: ImageView
     lateinit var iconIvBg: ExImageView
     lateinit var iconIv: BaseImageView
     lateinit var divider: View
@@ -76,7 +75,6 @@ class ClubCreateActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         titlebar = findViewById(R.id.titlebar)
-        bgIv = findViewById(R.id.bg_iv)
         iconIvBg = findViewById(R.id.icon_iv_bg)
         iconIv = findViewById(R.id.icon_iv)
         divider = findViewById(R.id.divider)
@@ -387,10 +385,6 @@ class ClubCreateActivity : BaseActivity() {
 
     override fun useEventBus(): Boolean {
         return false
-    }
-
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
-        return true
     }
 
     override fun canSlide(): Boolean {
