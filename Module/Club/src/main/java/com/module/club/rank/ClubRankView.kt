@@ -2,6 +2,7 @@ package com.module.club.rank
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.alibaba.fastjson.JSON
@@ -36,6 +37,9 @@ class ClubRankView(context: Context, val clubID: Int, val model: ClubTagModel) :
 
         refreshLayout = this.findViewById(R.id.refreshLayout)
         recyclerView = this.findViewById(R.id.recycler_view)
+
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = adapter
 
         refreshLayout.apply {
             setEnableLoadMore(true)
