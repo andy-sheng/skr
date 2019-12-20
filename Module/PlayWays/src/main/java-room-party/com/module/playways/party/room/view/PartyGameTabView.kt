@@ -424,7 +424,7 @@ class PartyGameTabView : ExConstraintLayout {
             if (it.rule?.ruleType == EPGameType.PGT_Play.value) {
                 gameTagTitle = it.play?.palyInfo?.playName ?: ""
             } else if (it.rule?.ruleType == EPGameType.PGT_Question.value) {
-                gameTagTitle = ""
+                gameTagTitle = it.rule?.ruleName ?: ""
             }
         }
 
