@@ -130,7 +130,7 @@ class ClubCreateActivity : BaseActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val str = s.toString()
                 val length = str.length
-                if (length > 8) {
+                if (length > 10) {
                     val selectIndex = preString.length
                     clubNameEt.setText(preString)
                     clubNameEt.setSelection(selectIndex)
