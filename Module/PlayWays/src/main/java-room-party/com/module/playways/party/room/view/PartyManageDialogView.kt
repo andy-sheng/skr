@@ -127,7 +127,7 @@ class PartyManageDialogView(context: Context, model: PartyActorInfoModel?) : ExC
                 function1.visibility = View.VISIBLE
                 function1.text = "关闭座位"
                 function2.visibility = View.VISIBLE
-                function2.text = "邀请上麦"
+                function2.text = "邀请好友"
                 function2.setDebounceViewClickListener {
                     mDialogPlus?.dismiss()
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
