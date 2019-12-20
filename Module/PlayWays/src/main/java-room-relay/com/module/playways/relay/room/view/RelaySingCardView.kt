@@ -115,7 +115,7 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         configParams.needScore = false
         // 间隔 是否第一个唱
         lyricAndAccMatchManager!!.setArgs(configParams)
-        lyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener {
+        lyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener() {
 
             override fun onLyricParseSuccess(reader: LyricsReader) {
                 var lineNum = 0
@@ -147,6 +147,7 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                             if (!jixu) {
                                 break
                             }
+                            //MyLog.d(TAG,"1lineLyrics=${lineInfo?.lineLyrics} singByMe=${lineInfo?.singByMe}")
                         }
                     }
                     var singByMe = true
@@ -164,17 +165,11 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                                 fisrtLine = l
                             }
                         }
+                        //MyLog.d(TAG,"2lineLyrics=${lineInfo?.lineLyrics} singByMe=${lineInfo?.singByMe}")
                     }
                     fisrtLine?.spilit = true
                 }
 //                mSvlyric?.visibility = View.GONE
-            }
-
-            override fun onLyricParseFailed() {
-//                playWithNoAcc(songModel)
-            }
-
-            override fun onLyricEventPost(lineNum: Int) {
             }
         })
 //        LyricsManager

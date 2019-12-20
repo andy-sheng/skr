@@ -143,7 +143,7 @@ class DoubleDemoTestActivity : com.common.base.BaseActivity() {
         configParams.accEndTs = 4 * 60 * 1000
 //        configParams.authorName = songModel.uploaderName
         lyricAndAccMatchManager!!.setArgs(configParams)
-        lyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener {
+        lyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener() {
 
             override fun onLyricParseSuccess(reader: LyricsReader) {
 //                mSvlyric?.visibility = View.GONE

@@ -449,6 +449,7 @@ public class ManyLyricsView extends AbstractLrcView {
         int[] paintHLColors;
 
         if (mPaintHLColorsForOthers != null) {
+            //MyLog.d(TAG,"lyricsLineInfo.singByMe="+lyricsLineInfo.singByMe);
             if (lyricsLineInfo.singByMe) {
                 paintHLColors = mPaintHLColors;
             } else {
@@ -461,7 +462,7 @@ public class ManyLyricsView extends AbstractLrcView {
         if (lyricsLineInfo.spilit) {
             newCenterY = drawWhoTurns(lyricsLineInfo.singByMe, canvas, mCentreY, false);
         }
-
+//        MyLog.d(TAG,"paintHLColors="+paintHLColors[0]+" "+paintHLColors[1]);
         // 画当前演唱那行的歌词
         float lineBottomY = drawDownLyrics("drawManyLrcView1", canvas, mPaint, subPaintHLColors, mPaintHL, paintHLColors, splitLyricsLineInfos, mSplitLyricsLineNum, mSplitLyricsWordIndex, mSpaceLineHeight, mLyricsWordHLTime, mCentreY);
 

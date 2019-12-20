@@ -134,7 +134,7 @@ class LyricAndAccMatchManager {
 
     private fun parseReader(lyricsReader: LyricsReader) {
         DebugLogView.println(TAG, "onEventMainThread " + "play")
-
+        mListener?.onLyricParseSuccess(lyricsReader)
         params?.manyLyricsView?.visibility = View.VISIBLE
         params?.manyLyricsView?.initLrcData()
         lyricsReader.cut(params?.lyricBeginTs?.toLong()
@@ -144,7 +144,8 @@ class LyricAndAccMatchManager {
         set.add(lyricsReader.getLineInfoIdByStartTs(params?.lyricBeginTs?.toLong()
                 ?: 0))
         params?.manyLyricsView?.needCountDownLine = set
-        if (params?.manyLyricsView?.lrcStatus == AbstractLrcView.LRCSTATUS_LRC && params?.manyLyricsView?.lrcPlayerStatus != LRCPLAYERSTATUS_PLAY) {
+        if (params?.manyLyricsView?.lrcStatus == AbstractLrcView.LRCSTATUS_LRC
+                && params?.manyLyricsView?.lrcPlayerStatus != LRCPLAYERSTATUS_PLAY) {
             //                            mManyLyricsView.play(mAccBeginTs);
             params?.manyLyricsView?.seekTo(params?.accBeginTs ?: 0)
             params?.manyLyricsView?.pause()
@@ -165,7 +166,7 @@ class LyricAndAccMatchManager {
             //                            int lineNum = mLyricEventLauncher.postLyricEvent(lyricsReader, lrcBeginTs - GrabRoomData.ACC_OFFSET_BY_LYRIC, lrcBeginTs + totalMs - GrabRoomData.ACC_OFFSET_BY_LYRIC, null);
             //                            mRoomData.setSongLineNum(lineNum);
         }
-        mListener?.onLyricParseSuccess(lyricsReader)
+        mListener?.onLyricBindSuccess(lyricsReader)
     }
 
     //发射歌词事件
@@ -323,12 +324,14 @@ class LyricAndAccMatchManager {
         mListener = l
     }
 
-    interface Listener {
-        fun onLyricParseSuccess(reader: LyricsReader)
+    abstract class Listener {
+        open fun onLyricParseSuccess(reader: LyricsReader){}
 
-        fun onLyricParseFailed()
+        open fun onLyricParseFailed(){}
 
-        fun onLyricEventPost(lineNum: Int)
+        open fun onLyricEventPost(lineNum: Int){}
+
+        open fun onLyricBindSuccess(lyricsReader: LyricsReader?){}
 
         //void onScoreResult(String from,int melpScore, int acrScore, int line);
     }

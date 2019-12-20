@@ -83,23 +83,12 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
 
         mLyricAndAccMatchManager!!.setArgs(configParams)
         val finalCurSong = curSong
-        mLyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener {
-
-            override fun onLyricParseSuccess(reader: LyricsReader) {
-//                mSvlyric.visibility = View.GONE
+        mLyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener() {
+            override fun onLyricBindSuccess(lyricsReader: LyricsReader?) {
                 if (offset > 0) {
                     configParams.manyLyricsView?.seekTo(curSong.beginMs + offset)
                 }
             }
-
-            override fun onLyricParseFailed() {
-//                playWithNoAcc(finalCurSong)
-            }
-
-            override fun onLyricEventPost(lineNum: Int) {
-                //                mRoomData.setSongLineNum(lineNum);
-            }
-
         })
 
         ZqEngineKit.getInstance().setRecognizeListener { result, list, targetSongInfo, lineNo -> mLyricAndAccMatchManager!!.onAcrResult(result, list, targetSongInfo, lineNo) }
