@@ -544,11 +544,11 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         js.put("accLoadingOk", ok)
         msgService?.sendSpecialDebugMessage("${mRoomData?.peerUser?.userID}", 3, js.toJSONString(), object : ICallback {
             override fun onSucess(obj: Any) {
-                U.getToastUtil().showLong("请求成功,稍等看该用户是否有返回")
+                //U.getToastUtil().showLong("请求成功,稍等看该用户是否有返回")
             }
 
             override fun onFailed(obj: Any, errcode: Int, message: String) {
-                U.getToastUtil().showLong("请求失败")
+                //U.getToastUtil().showLong("请求失败")
             }
         })
     }
