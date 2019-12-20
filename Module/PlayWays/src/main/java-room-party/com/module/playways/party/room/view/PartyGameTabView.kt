@@ -317,7 +317,6 @@ class PartyGameTabView : ExConstraintLayout {
         } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Free.ordinal) {
             textScrollView.visibility = View.VISIBLE
             setMainText("", "自由麦模式，大家畅所欲言吧～")
-
             EventBus.getDefault().post(PartyFinishSongManageFragmentEvent())
         } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
             if (partyGameInfoModel?.ktv?.userID ?: 0 > 0) {
@@ -334,18 +333,8 @@ class PartyGameTabView : ExConstraintLayout {
 
                 delaySingJob?.cancel()
                 delaySingJob = launch {
-                    delay(3000)
-                    textScrollView.visibility = View.GONE
-                    partySelfSingLyricView?.setVisibility(View.VISIBLE)
-                    singingTv.text = "演唱中..."
-
+                    // 先开始加载伴奏
                     if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
-                        partySelfSingLyricView?.startFly(0, true) {
-                            MyLog.d(mTag, "partySelfSingLyricView?.startFly end")
-                            endQuestion()
-                            ZqEngineKit.getInstance().stopAudioMixing()
-                        }
-
                         val songModel = partyGameInfoModel?.ktv?.music
                         // 开始开始混伴奏，开始解除引擎mute
                         val accFile = SongResUtils.getAccFileByUrl(songModel?.acc)
@@ -359,6 +348,25 @@ class PartyGameTabView : ExConstraintLayout {
                         } else {
                             ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel?.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
                         }
+                    }
+                    // 未开始，等待着
+                    var ts = roomData?.getSingCurPosition() ?:0
+                    if(ts<0){
+                        delay(-ts)
+                        ts = 0
+                    }else{
+
+                    }
+                    ZqEngineKit.getInstance().resumeAudioMixing()
+                    textScrollView.visibility = View.GONE
+                    partySelfSingLyricView?.setVisibility(View.VISIBLE)
+                    singingTv.text = "演唱中..."
+                    if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
+                        partySelfSingLyricView?.startFly(ts.toInt(), true) {
+                            MyLog.d(mTag, "partySelfSingLyricView?.startFly end")
+                            endQuestion()
+                            ZqEngineKit.getInstance().stopAudioMixing()
+                        }
                     } else {
                         var elapsedTimeMs = roomData?.realRoundInfo?.elapsedTimeMs ?: 0
                         if (elapsedTimeMs < 0) {
@@ -366,7 +374,7 @@ class PartyGameTabView : ExConstraintLayout {
                         }
 
                         MyLog.d(mTag, "elapsedTimeMs is $elapsedTimeMs")
-                        partySelfSingLyricView?.startFly(elapsedTimeMs, false) {
+                        partySelfSingLyricView?.startFly(ts.toInt(), false) {
 
                         }
                     }

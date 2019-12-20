@@ -1,6 +1,7 @@
 package com.module.playways.party.room.model
 
 import com.common.log.MyLog
+import com.module.playways.BaseRoomData
 import com.module.playways.party.room.event.PartyRoundStatusChangeEvent
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.zq.live.proto.PartyRoom.EPRoundStatus
@@ -17,10 +18,13 @@ class PartyRoundInfoModel : BaseRoundInfoModel() {
     //！！！这个不是服务器返回的，是中途进来的时候从roomData里面设置的
     var elapsedTimeMs: Int = 0
 
+    var roundStartTimeMs = System.currentTimeMillis()
+
+    var accLoadingOk = false
+
     override fun getType(): Int {
         return TYPE_PARTY
     }
-
 
     fun updateStatus(notify: Boolean, statusGrab: Int) {
         if (getStatusPriority(status) < getStatusPriority(statusGrab)) {
@@ -79,6 +83,7 @@ class PartyRoundInfoModel : BaseRoundInfoModel() {
 //                ", singBeginMs=" + singBeginMs +
                 ", sceneInfo=" + sceneInfo +
 //                ", overReason=" + overReason +
+                ", roundStartTimeMs=" + roundStartTimeMs +
                 '}'.toString()
     }
 
@@ -94,6 +99,7 @@ class PartyRoundInfoModel : BaseRoundInfoModel() {
                 roundInfoModel.sceneInfo = PartyGameInfoModel.parseFromItemInfo(roundInfo.sceneInfo)
             }
             roundInfoModel.status = roundInfo.status.value
+            roundInfoModel.roundStartTimeMs = roundInfo.roundStartTimeMs
             return roundInfoModel
         }
     }

@@ -1,5 +1,7 @@
 package com.module.playways.room.prepare.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 public abstract class BaseRoundInfoModel implements Serializable {
@@ -30,7 +32,6 @@ public abstract class BaseRoundInfoModel implements Serializable {
      * 4
      */
     protected int overReason; // 结束的原因
-
 
     public BaseRoundInfoModel() {
 

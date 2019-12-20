@@ -195,6 +195,7 @@ message PRoundInfo {
     uint32 endMs             = 3; //结束相对时间（相对于createdTimeMs时间）
     EPRoundStatus status     = 4; //轮次状态
     PGameSceneInfo sceneInfo = 5; //场景信息
+    sint64 roundStartTimeMs  = 6; //轮次开始绝对时间
 }
 
 enum EPRoundStatus {

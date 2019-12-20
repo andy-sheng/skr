@@ -11,6 +11,7 @@ import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -29,6 +30,8 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
   public static final Integer DEFAULT_ENDMS = 0;
 
   public static final EPRoundStatus DEFAULT_STATUS = EPRoundStatus.PRS_UNKNOWN;
+
+  public static final Long DEFAULT_ROUNDSTARTTIMEMS = 0L;
 
   /**
    * 轮次序号
@@ -75,19 +78,29 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
   )
   private final PGameSceneInfo sceneInfo;
 
+  /**
+   * 轮次开始绝对时间
+   */
+  @WireField(
+      tag = 6,
+      adapter = "com.squareup.wire.ProtoAdapter#SINT64"
+  )
+  private final Long roundStartTimeMs;
+
   public PRoundInfo(Integer roundSeq, Integer beginMs, Integer endMs, EPRoundStatus status,
-      PGameSceneInfo sceneInfo) {
-    this(roundSeq, beginMs, endMs, status, sceneInfo, ByteString.EMPTY);
+      PGameSceneInfo sceneInfo, Long roundStartTimeMs) {
+    this(roundSeq, beginMs, endMs, status, sceneInfo, roundStartTimeMs, ByteString.EMPTY);
   }
 
   public PRoundInfo(Integer roundSeq, Integer beginMs, Integer endMs, EPRoundStatus status,
-      PGameSceneInfo sceneInfo, ByteString unknownFields) {
+      PGameSceneInfo sceneInfo, Long roundStartTimeMs, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundSeq = roundSeq;
     this.beginMs = beginMs;
     this.endMs = endMs;
     this.status = status;
     this.sceneInfo = sceneInfo;
+    this.roundStartTimeMs = roundStartTimeMs;
   }
 
   @Override
@@ -98,6 +111,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
     builder.endMs = endMs;
     builder.status = status;
     builder.sceneInfo = sceneInfo;
+    builder.roundStartTimeMs = roundStartTimeMs;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -112,7 +126,8 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
         && Internal.equals(beginMs, o.beginMs)
         && Internal.equals(endMs, o.endMs)
         && Internal.equals(status, o.status)
-        && Internal.equals(sceneInfo, o.sceneInfo);
+        && Internal.equals(sceneInfo, o.sceneInfo)
+        && Internal.equals(roundStartTimeMs, o.roundStartTimeMs);
   }
 
   @Override
@@ -125,6 +140,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
       result = result * 37 + (endMs != null ? endMs.hashCode() : 0);
       result = result * 37 + (status != null ? status.hashCode() : 0);
       result = result * 37 + (sceneInfo != null ? sceneInfo.hashCode() : 0);
+      result = result * 37 + (roundStartTimeMs != null ? roundStartTimeMs.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -138,6 +154,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
     if (endMs != null) builder.append(", endMs=").append(endMs);
     if (status != null) builder.append(", status=").append(status);
     if (sceneInfo != null) builder.append(", sceneInfo=").append(sceneInfo);
+    if (roundStartTimeMs != null) builder.append(", roundStartTimeMs=").append(roundStartTimeMs);
     return builder.replace(0, 2, "PRoundInfo{").append('}').toString();
   }
 
@@ -202,6 +219,16 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
   }
 
   /**
+   * 轮次开始绝对时间
+   */
+  public Long getRoundStartTimeMs() {
+    if(roundStartTimeMs==null){
+        return DEFAULT_ROUNDSTARTTIMEMS;
+    }
+    return roundStartTimeMs;
+  }
+
+  /**
    * 轮次序号
    */
   public boolean hasRoundSeq() {
@@ -236,6 +263,13 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
     return sceneInfo!=null;
   }
 
+  /**
+   * 轮次开始绝对时间
+   */
+  public boolean hasRoundStartTimeMs() {
+    return roundStartTimeMs!=null;
+  }
+
   public static final class Builder extends Message.Builder<PRoundInfo, Builder> {
     private Integer roundSeq;
 
@@ -246,6 +280,8 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
     private EPRoundStatus status;
 
     private PGameSceneInfo sceneInfo;
+
+    private Long roundStartTimeMs;
 
     public Builder() {
     }
@@ -290,9 +326,17 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
       return this;
     }
 
+    /**
+     * 轮次开始绝对时间
+     */
+    public Builder setRoundStartTimeMs(Long roundStartTimeMs) {
+      this.roundStartTimeMs = roundStartTimeMs;
+      return this;
+    }
+
     @Override
     public PRoundInfo build() {
-      return new PRoundInfo(roundSeq, beginMs, endMs, status, sceneInfo, super.buildUnknownFields());
+      return new PRoundInfo(roundSeq, beginMs, endMs, status, sceneInfo, roundStartTimeMs, super.buildUnknownFields());
     }
   }
 
@@ -308,6 +352,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.endMs)
           + EPRoundStatus.ADAPTER.encodedSizeWithTag(4, value.status)
           + PGameSceneInfo.ADAPTER.encodedSizeWithTag(5, value.sceneInfo)
+          + ProtoAdapter.SINT64.encodedSizeWithTag(6, value.roundStartTimeMs)
           + value.unknownFields().size();
     }
 
@@ -318,6 +363,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.endMs);
       EPRoundStatus.ADAPTER.encodeWithTag(writer, 4, value.status);
       PGameSceneInfo.ADAPTER.encodeWithTag(writer, 5, value.sceneInfo);
+      ProtoAdapter.SINT64.encodeWithTag(writer, 6, value.roundStartTimeMs);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -339,6 +385,7 @@ public final class PRoundInfo extends Message<PRoundInfo, PRoundInfo.Builder> {
             break;
           }
           case 5: builder.setSceneInfo(PGameSceneInfo.ADAPTER.decode(reader)); break;
+          case 6: builder.setRoundStartTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

@@ -5,11 +5,14 @@ import android.view.ViewStub
 import android.widget.ScrollView
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.DebugLogView
+import com.common.log.MyLog
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.ExViewStub
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.engine.EngineEvent
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.event.PartyHostChangeEvent
@@ -17,13 +20,17 @@ import com.module.playways.party.room.event.PartyMyUserInfoChangeEvent
 import com.module.playways.party.room.event.PartyNoticeChangeEvent
 import com.module.playways.party.room.model.PartyGameInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
+import com.module.playways.relay.room.presenter.RelayCorePresenter
 import com.zq.live.proto.PartyRoom.EPGameType
 import com.zq.live.proto.PartyRoom.EPRoundStatus
+import com.zq.mediaengine.kit.ZqEngineKit
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import kotlin.math.abs
 
 class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomData) : ExViewStub(viewStub) {
+    val TAG = "PartyGameMainView"
     lateinit var contentBg: ExImageView
     lateinit var gameTv: ExTextView
     lateinit var handCardTv: ExTextView
@@ -168,6 +175,30 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
             }
         } else {
             toEmptyState()
+        }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    fun onEvent(event: EngineEvent) {
+        if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_STATE_CHANGE) {
+            var state = event.obj as EngineEvent.MusicStateChange
+            if (state.isPlayOk && mRoomData.realRoundInfo?.accLoadingOk == false) {
+                mRoomData.realRoundInfo?.accLoadingOk = true
+                var progress = mRoomData.getSingCurPosition()
+                DebugLogView.println(TAG, "伴奏加载ok progress=${progress}")
+                if (progress != Long.MAX_VALUE) {
+                    if (progress > 0) {
+                        DebugLogView.println(TAG, "EngineEvent 超时上车了")
+                        ZqEngineKit.getInstance().setAudioMixingPosition(progress.toInt())
+                    } else {
+                        DebugLogView.println(TAG, "EngineEvent 先暂停 ${-progress}ms后 resume")
+                        ZqEngineKit.getInstance().pauseAudioMixing()
+                    }
+                } else {
+                    MyLog.e(TAG, "当前播放进度非法2")
+                }
+            }
         }
     }
 

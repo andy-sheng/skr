@@ -3,12 +3,17 @@ package com.module.playways
 import android.util.LruCache
 import com.common.core.userinfo.model.ClubInfo
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent
 import com.module.playways.race.match.pbLocalModel.LocalRGameConfigMsg
+import com.module.playways.relay.room.RelayRoomServerApi
 import com.module.playways.room.gift.event.UpdateHZEvent
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.module.playways.room.song.model.SongModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import java.io.Serializable
 
@@ -19,6 +24,7 @@ import java.io.Serializable
  */
 abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
     val TAG = "RoomData"
+
 
     var gameId: Int = 0 // 房间id
 
@@ -186,6 +192,20 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
         val ROOM_SPECAIL_EMOJI_AIXIN = "http://res-static.inframe.mobi/app/emoji_love.svga"
         val AUDIO_FOR_AI_PATH = "audioforai.aac"
         val MATCHING_SCORE_FOR_AI_PATH = "matchingscore.json"
+
+        var shiftTsForRelay = 0
+        fun syncServerTs() {
+            var serverApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
+            GlobalScope.launch {
+                var t1 = System.currentTimeMillis()
+                val result = subscribe { serverApi.timestamp(0) }
+                if (result.errno == 0) {
+                    var t2 = System.currentTimeMillis()
+                    var serverTs = result.data.getIntValue("timestamp")
+                    shiftTsForRelay = (t1 + (t2 - t1) / 2 - serverTs).toInt()
+                }
+            }
+        }
     }
 
 }

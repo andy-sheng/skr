@@ -172,7 +172,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
 
     init {
-
+        syncServerTs()
     }
 
     /**
@@ -471,6 +471,19 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             realRoundInfo = expectRoundInfo
             EventBus.getDefault().post(PartyRoundChangeEvent(lastRoundInfoModel, realRoundInfo))
         }
+    }
+
+    /**
+     * 返回当前歌曲应该到达的进度
+     * 如果是负数则说明还在准备阶段 未开始播放
+     */
+    fun getSingCurPosition(): Long {
+        realRoundInfo?.roundStartTimeMs?.let {
+            if (it > 0) {
+                return (System.currentTimeMillis() - shiftTsForRelay) - it - 3000
+            }
+        }
+        return Long.MAX_VALUE
     }
 
     fun loadFromRsp(rsp: JoinPartyRoomRspModel) {
