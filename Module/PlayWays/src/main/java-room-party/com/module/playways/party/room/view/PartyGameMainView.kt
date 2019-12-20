@@ -161,13 +161,13 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     fun onEvent(event: PartyHostChangeEvent) {
         if (event.hostId > 0) {
             if (mRoomData?.realRoundInfo?.sceneInfo == null) {
-                toWaitingState()
+                toEmptyState()
             } else {
                 partyGameTabView.updateIdentity()
                 tagChange()
             }
         } else {
-            toWaitingState()
+            toEmptyState()
         }
     }
 
@@ -278,9 +278,9 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         }
     }
 
-    fun toWaitingState() {
+    fun toEmptyState() {
         gameTv.isSelected = true
-        partyGameTabView.toWaitingState()
+        partyGameTabView.toEmptyState()
 
         gameTv.visibility = View.VISIBLE
         handCardTv.visibility = View.GONE

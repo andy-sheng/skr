@@ -197,7 +197,7 @@ class PartyGameTabView : ExConstraintLayout {
         bottomRightOpTv.visibility = View.GONE
 
         if ((roomData?.hostId ?: 0) <= 0 || roomData?.realRoundInfo?.sceneInfo == null) {
-            toWaitingState()
+            toEmptyState()
             return
         }
 
@@ -455,7 +455,8 @@ class PartyGameTabView : ExConstraintLayout {
         textGameTv.gravity = Gravity.CENTER_VERTICAL
     }
 
-    fun toWaitingState() {
+    //空状态，无房主和无游戏
+    fun toEmptyState() {
         hideAllTypeView()
         textScrollView.visibility = View.VISIBLE
 

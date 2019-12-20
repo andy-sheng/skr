@@ -338,7 +338,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun initGameMainView() {
         mPartyGameMainView = PartyGameMainView(findViewById(R.id.party_game_main_view_layout_viewStub), mRoomData)
         mPartyGameMainView?.tryInflate()
-        mPartyGameMainView?.toWaitingState()
+        mPartyGameMainView?.toEmptyState()
     }
 
     private fun initVipEnterView() {
@@ -840,7 +840,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
      * 没有游戏了
      */
     override fun showWaiting() {
-        mPartyGameMainView?.toWaitingState()
+        mPartyGameMainView?.toEmptyState()
 
     }
 
