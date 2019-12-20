@@ -15,6 +15,7 @@ import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.EPRoundStatus
 import com.zq.live.proto.PartyRoom.EPUserRole
+import com.zq.live.proto.PartyRoom.ESeatStatus
 import org.greenrobot.eventbus.EventBus
 
 
@@ -423,6 +424,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         seatsUserIdMap.clear()
         for (info in seats) {
             info.userID = 0
+            info.seatStatus = ESeatStatus.SS_OPEN.value
             seatsSeatIdMap[info.seatSeq] = info
         }
         mySeatInfo = null
