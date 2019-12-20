@@ -5,7 +5,6 @@ import android.os.Message
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.userinfo.UserInfoManager
 import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
@@ -22,7 +21,6 @@ import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
-import com.module.playways.BuildConfig
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.*
@@ -906,7 +904,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         partySeatInfoModel.seatStatus = ESeatStatus.SS_OPEN.value
         mRoomData.updateSeat(partySeatInfoModel)
 
-        if (event.userID == MyUserInfoManager.uid.toInt()) {
+        if (event.userID == MyUserInfoManager.uid.toInt() && event.opUser.userInfo.userID != MyUserInfoManager.uid.toInt()) {
             mRoomData.getPlayerInfoById(event.opUser.userInfo.userID)?.let {
                 if (event.micStatus.value == EMicStatus.MS_OPEN.value) {
                     pretendSystemMsg("${if (it.isHost()) "主持人" else "管理员"} 已将你的麦克风权限开启")
