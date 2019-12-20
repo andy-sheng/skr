@@ -333,7 +333,9 @@ class PartyGameTabView : ExConstraintLayout {
 
                 delaySingJob?.cancel()
                 delaySingJob = launch {
-                    // 先开始加载伴奏
+                    /**
+                     * 伴奏先加载 ，一旦加载成功 在 PartyGameMainView 的引擎 onEvent 中 pause 住，时间一到 再 resume
+                     */
                     if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
                         val songModel = partyGameInfoModel?.ktv?.music
                         // 开始开始混伴奏，开始解除引擎mute
