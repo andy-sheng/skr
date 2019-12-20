@@ -9,7 +9,6 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
-import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
@@ -60,7 +59,7 @@ class ClubCreateActivity : BaseActivity() {
     lateinit var progressView: SkrProgressView
     lateinit var placeHolder: View
     lateinit var textCount: ExTextView
-
+    var isWork: Boolean = false
 
     internal var mImageItemArrayList: MutableList<ImageItem> = java.util.ArrayList()
 
@@ -162,6 +161,10 @@ class ClubCreateActivity : BaseActivity() {
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
 
         titlebar.rightTextView.setDebounceViewClickListener {
+            if (isWork) {
+                return@setDebounceViewClickListener
+            }
+
             if ("create" == from) {
                 if (mImageItemArrayList == null || mImageItemArrayList.size == 0) {
                     U.getToastUtil().showShort("请添加图片")
@@ -178,6 +181,7 @@ class ClubCreateActivity : BaseActivity() {
                     return@setDebounceViewClickListener
                 }
 
+                isWork = true
                 editFinish()
             } else if ("change" == from) {
                 if (TextUtils.isEmpty(clubNameEt.text.toString().trim())) {
@@ -189,6 +193,8 @@ class ClubCreateActivity : BaseActivity() {
                     U.getToastUtil().showShort("请填写简介")
                     return@setDebounceViewClickListener
                 }
+
+                isWork = true
                 changeFinish()
             }
 
@@ -272,6 +278,7 @@ class ClubCreateActivity : BaseActivity() {
                 progressView.visibility = View.GONE
                 photoModel.status = PhotoModel.STATUS_FAILED
                 U.getToastUtil().showShort(msg)
+                isWork = false
             }
         })
 
@@ -316,6 +323,7 @@ class ClubCreateActivity : BaseActivity() {
                         progressView.visibility = View.GONE
                         photoModel.status = PhotoModel.STATUS_FAILED
                         U.getToastUtil().showShort(msg)
+                        isWork = false
                     }
                 })
 
@@ -352,6 +360,8 @@ class ClubCreateActivity : BaseActivity() {
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }
+
+            isWork = false
         }
     }
 
@@ -375,6 +385,7 @@ class ClubCreateActivity : BaseActivity() {
                 U.getToastUtil().showShort(result.errmsg)
             }
 
+            isWork = false
         }
     }
 
