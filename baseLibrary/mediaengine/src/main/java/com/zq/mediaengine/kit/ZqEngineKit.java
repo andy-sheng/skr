@@ -564,6 +564,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private void initModules() {
         MyLog.i(TAG, "Latency test ProductModel: " + U.getDeviceUtils().getProductModel() +
                 " brand: " + U.getDeviceUtils().getProp("ro.product.brand") +
+                " manufacturer: " + U.getDeviceUtils().getProp("ro.product.manufacturer") +
                 " name: " + U.getDeviceUtils().getProp("ro.product.name") +
                 " device: " + U.getDeviceUtils().getProp("ro.product.device"));
         MyLog.i(TAG, "isUseExternalAudio: " + mConfig.isUseExternalAudio() +
