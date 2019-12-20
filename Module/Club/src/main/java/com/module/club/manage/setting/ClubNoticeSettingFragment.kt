@@ -1,7 +1,9 @@
 package com.module.club.manage.setting
 
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.userinfo.model.ClubMemberInfo
@@ -27,7 +29,10 @@ class ClubNoticeSettingFragment : BaseFragment() {
 
     lateinit var titlebar: CommonTitleBar
     lateinit var editText: NoLeakEditText
+    lateinit var noticeTextSize: ExTextView
     lateinit var saveTv: ExTextView
+
+    internal var before: Int = 0  // 记录之前的位置
 
     private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
     private var clubMemberInfo: ClubMemberInfo? = null
@@ -50,16 +55,39 @@ class ClubNoticeSettingFragment : BaseFragment() {
 
         titlebar = rootView.findViewById(R.id.titlebar)
         editText = rootView.findViewById(R.id.edit_text)
+        noticeTextSize = rootView.findViewById(R.id.notice_text_size)
         saveTv = rootView.findViewById(R.id.save_tv)
-
-        editText.setText(clubMemberInfo?.club?.notice)
-        editText.setSelection(clubMemberInfo?.club?.notice?.length ?: 0)
 
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
 
         saveTv.setDebounceViewClickListener {
             setNotice(editText.text.toString().trim())
         }
+
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                before = i
+            }
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+                val length = editable.length
+                noticeTextSize.text = "$length/100"
+                val selectionEnd = editText.getSelectionEnd()
+                if (length > 100) {
+                    editable.delete(before, selectionEnd)
+                    editText.setText(editable.toString())
+                    val selection = editable.length
+                    editText.setSelection(selection)
+                }
+            }
+        })
+
+        editText.setText(clubMemberInfo?.club?.notice)
+        editText.setSelection(clubMemberInfo?.club?.notice?.length ?: 0)
     }
 
     private fun setNotice(notice: String) {
@@ -92,5 +120,10 @@ class ClubNoticeSettingFragment : BaseFragment() {
 
     override fun useEventBus(): Boolean {
         return false
+    }
+
+    override fun destroy() {
+        super.destroy()
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
     }
 }
