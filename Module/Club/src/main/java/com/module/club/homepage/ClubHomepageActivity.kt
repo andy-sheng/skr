@@ -51,7 +51,8 @@ import kotlin.math.abs
 
 class ClubHomepageActivity : BaseActivity() {
 
-    private val SP_KEY_APPLY_WATER_LEVEL = "sp_key_apply_water_level"
+    private val SP_KEY_APPLY_WATER_LEVEL = "sp_key_apply_water_level"               // 申请水位
+    private val SP_KEY_APPLY_WATER_LEVEL_CLUBID = "sp_key_apply_water_level_clubid" // 申请水位对应的clubID
 
     private var imageBg: SimpleDraweeView? = null
     private var smartRefresh: SmartRefreshLayout? = null
@@ -364,6 +365,12 @@ class ClubHomepageActivity : BaseActivity() {
     }
 
     private fun checkApplyRed() {
+        if (U.getPreferenceUtils().getSettingInt(SP_KEY_APPLY_WATER_LEVEL_CLUBID, 0) != clubID) {
+            // clubID变了，重置一下数据
+            U.getPreferenceUtils().setSettingInt(SP_KEY_APPLY_WATER_LEVEL_CLUBID, clubID)
+            U.getPreferenceUtils().setSettingLong(SP_KEY_APPLY_WATER_LEVEL, 0)
+        }
+
         launch {
             val lastTimeMs = U.getPreferenceUtils().getSettingLong(SP_KEY_APPLY_WATER_LEVEL, 0)
             val result = subscribe(RequestControl("getCountMemberApply", ControlType.CancelThis)) {
