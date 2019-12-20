@@ -3,6 +3,7 @@ package com.module.playways
 import android.util.LruCache
 import com.common.core.userinfo.model.ClubInfo
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent
@@ -195,6 +196,10 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
         var shiftTsForRelay = 0
         fun syncServerTs() {
+            if(shiftTsForRelay!=0){
+                MyLog.d("BaseRoomData","shiftTsForRelay=$shiftTsForRelay")
+                return
+            }
             var serverApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
             GlobalScope.launch {
                 var t1 = System.currentTimeMillis()
