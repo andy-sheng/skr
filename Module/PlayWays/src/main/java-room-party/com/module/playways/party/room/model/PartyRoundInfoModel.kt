@@ -90,7 +90,9 @@ class PartyRoundInfoModel : BaseRoundInfoModel() {
             roundInfoModel.setRoundSeq(roundInfo.roundSeq!!)
             roundInfoModel.beginMs = roundInfo.beginMs
             roundInfoModel.endMs = roundInfo.endMs
-            roundInfoModel.sceneInfo = PartyGameInfoModel.parseFromItemInfo(roundInfo.sceneInfo)
+            if (roundInfo.hasSceneInfo()) {
+                roundInfoModel.sceneInfo = PartyGameInfoModel.parseFromItemInfo(roundInfo.sceneInfo)
+            }
             roundInfoModel.status = roundInfo.status.value
             return roundInfoModel
         }
