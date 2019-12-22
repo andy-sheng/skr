@@ -1103,7 +1103,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                 MyLog.w(TAG, "sync 回来的轮次大，要替换 roundInfo 了")
                 // 主轮次结束
                 if(fromPush && thisRound?.sceneInfo == null && thisRound?.status == EPRoundStatus.PRS_PLAY_GAME.value){
-                    MyLog.w(TAG, "pushSync游戏详情,走短链接sync")
+                    MyLog.w(TAG, "pushSync里没有游戏详情,走短链接sync")
                     syncGameStatusInner()
                 }else{
                     launch {
