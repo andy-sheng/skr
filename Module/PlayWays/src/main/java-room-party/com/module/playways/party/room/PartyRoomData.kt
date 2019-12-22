@@ -91,7 +91,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             if (field != value) {
                 field = value
                 EventBus.getDefault().post(PartyHostChangeEvent(field))
-                if(field==0){
+                if (field == 0) {
                     isAllMute = false
                 }
             }
@@ -264,32 +264,76 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     fun updateUsers(list: ArrayList<PartyPlayerInfoModel>?) {
         var hasMy = false
         var hasHost = false
+
         users.clear()
-        usersMap.clear()
         if (list?.isNotEmpty() == true) {
-            users.addAll(list)
-            for (info in users) {
-                usersMap[info.userID] = info
-                if (info.userID == MyUserInfoManager.uid.toInt()) {
-                    myUserInfo = info
-                    hasMy = true
+            for (info in list) {
+                var oldUser = usersMap[info.userID]
+                if (oldUser == null) {
+                    oldUser = info
+                } else {
+                    oldUser.tryUpdate(info)
                 }
-                if (info.isHost()) {
-                    hostId = info.userID
-                    hasHost = true
-                }
+                users.add(oldUser)
+            }
+        }
+        usersMap.clear()
+        for (info in users) {
+            usersMap[info.userID] = info
+
+            if (info.userID == MyUserInfoManager.uid.toInt()) {
+                myUserInfo = info
+                hasMy = true
+            }
+            if (info.isHost()) {
+                hostId = info.userID
+                hasHost = true
+            }
 //                if (info.userID == hostId && !info.isHost()) {
 //                    hostId = 0
 //                }
-            }
         }
         if (!hasMy) {
             myUserInfo = null
         }
-        if(!hasHost){
+        if (!hasHost) {
             hostId = 0
         }
     }
+
+//    /**
+//     * 更新用户信息，传入一个列表
+//     */
+//    fun updateUsers1(list: ArrayList<PartyPlayerInfoModel>?) {
+//        var hasMy = false
+//        var hasHost = false
+//        users.clear()
+//        usersMap.clear()
+//        if (list?.isNotEmpty() == true) {
+//            users.addAll(list)
+//            for (info in users) {
+//                usersMap[info.userID] = info
+//
+//                if (info.userID == MyUserInfoManager.uid.toInt()) {
+//                    myUserInfo = info
+//                    hasMy = true
+//                }
+//                if (info.isHost()) {
+//                    hostId = info.userID
+//                    hasHost = true
+//                }
+////                if (info.userID == hostId && !info.isHost()) {
+////                    hostId = 0
+////                }
+//            }
+//        }
+//        if (!hasMy) {
+//            myUserInfo = null
+//        }
+//        if(!hasHost){
+//            hostId = 0
+//        }
+//    }
 
     /**
      * 更新用户信息
@@ -297,39 +341,36 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
      */
     fun updateUser(playerInfoModel: PartyPlayerInfoModel, seatInfoModel: PartySeatInfoModel?) {
         // 判断是否要更新用户
-        var hasUserChange = false
         if (playerInfoModel.isNotOnlyAudience()) {
             var uu = usersMap[playerInfoModel.userID]
             if (uu != null) {
-                if (uu.same(playerInfoModel)) {
-                } else {
-                    users.remove(uu)
-                    users.add(playerInfoModel)
-                    usersMap[playerInfoModel.userID] = playerInfoModel
-                    hasUserChange = true
-                }
+//                if (uu.same(playerInfoModel)) {
+//                } else {
+//                    users.remove(uu)
+//                    users.add(playerInfoModel)
+//                    usersMap[playerInfoModel.userID] = playerInfoModel
+                uu.tryUpdate(playerInfoModel)
+//                }
             } else {
                 users.add(playerInfoModel)
                 usersMap[playerInfoModel.userID] = playerInfoModel
-                hasUserChange = true
             }
         } else {
             // 是观众了 去除信息
+            users.remove(playerInfoModel)
             usersMap.remove(playerInfoModel.userID)
 
         }
         updateSeat(seatInfoModel)
-        if (hasUserChange) {
-            // 座位信息有变化
-            if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {
-                myUserInfo = playerInfoModel
-            }
-            if (playerInfoModel.isHost()) {
-                hostId = playerInfoModel.userID
-            }
-            if (playerInfoModel.userID == hostId && !playerInfoModel.isHost()) {
-                hostId = 0
-            }
+        // 座位信息有变化
+        if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {
+            myUserInfo = playerInfoModel
+        }
+        if (playerInfoModel.isHost()) {
+            hostId = playerInfoModel.userID
+        }
+        if (playerInfoModel.userID == hostId && !playerInfoModel.isHost()) {
+            hostId = 0
         }
         if (!playerInfoModel.isNotOnlyAudience()) {
             if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {

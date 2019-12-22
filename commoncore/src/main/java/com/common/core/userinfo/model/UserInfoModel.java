@@ -11,6 +11,8 @@ import com.common.utils.U;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -340,6 +342,83 @@ public class UserInfoModel implements Serializable, Cloneable {
         return userInfoModel;
     }
 
+    /**
+     * 比如你有属性 A B C 有值， info 有属性 C D E 有值。
+     * 调用此方法后 你有属性 A B C D E ，且 C 的值以 info 的为准
+     * @param info
+     */
+    public void tryUpdate(@Nullable UserInfoModel info) {
+        if(!TextUtils.isEmpty(info.nickname)){
+            this.nickname = info.nickname;
+        }
+        if(info.sex>0){
+            this.sex = info.sex;
+        }
+        if(!TextUtils.isEmpty(info.birthday)){
+            this.birthday = info.birthday;
+        }
+        if(!TextUtils.isEmpty(info.avatar)){
+            this.avatar = info.avatar;
+        }
+        if(!TextUtils.isEmpty(info.signature)){
+            this.signature = info.signature;
+        }
+        if(!TextUtils.isEmpty(info.signature)){
+            this.signature = info.signature;
+        }
+        if(info.location!=null){
+            this.location = info.location;
+        }
+        if(info.location2!=null){
+            this.location2 = info.location2;
+        }
+        if(!TextUtils.isEmpty(info.letter)){
+            this.letter = info.letter;
+        }
+        if(info.mIsSystem == true){
+            this.mIsSystem = true;
+        }
+        if(info.isFriend == true){
+            this.isFriend = true;
+        }
+        if(info.isFollow == true){
+            this.isFollow = true;
+        }
+        if(info.isSPFollow == true){
+            this.isSPFollow = true;
+        }
+        if(info.mainLevel > 0){
+            this.mainLevel = info.mainLevel;
+        }
+        if(info.status > 0){
+            this.status = info.status;
+        }
+        if(info.statusTs > 0){
+            this.statusTs = info.statusTs;
+        }
+        if(!TextUtils.isEmpty(info.statusDesc)){
+            this.statusDesc = info.statusDesc;
+        }
+        if(info.ageStage > 0){
+            this.ageStage = info.ageStage;
+        }
+        if(info.vipInfo != null){
+            this.vipInfo = info.vipInfo;
+        }
+        if(info.ranking != null){
+            this.ranking = info.ranking;
+        }
+        if(info.honorInfo != null){
+            this.honorInfo = info.honorInfo;
+        }
+        if(info.clubInfo != null){
+            this.clubInfo = info.clubInfo;
+        }
+        if(info.intimacy != -1){
+            this.intimacy = info.intimacy;
+        }
+    }
+
     public static List<UserInfoModel> parseFromPB(List<UserInfo> userInfoList) {
         ArrayList<UserInfoModel> modelArrayList = new ArrayList<>();
         if (userInfoList == null) {
@@ -481,4 +560,6 @@ public class UserInfoModel implements Serializable, Cloneable {
                 ", nickname='" + nickname + '\'' +
                 '}';
     }
+
+
 }

@@ -49,7 +49,7 @@ class PartyRoundInfoModel : BaseRoundInfoModel() {
     //    /**
 //     * 一唱到底使用
 //     */
-    override fun tryUpdateRoundInfoModel(round: BaseRoundInfoModel?, notify: Boolean) {
+    override fun  tryUpdateRoundInfoModel(round: BaseRoundInfoModel?, notify: Boolean) {
         if (round == null) {
             MyLog.e("JsonRoundInfo RoundInfo == null")
             return

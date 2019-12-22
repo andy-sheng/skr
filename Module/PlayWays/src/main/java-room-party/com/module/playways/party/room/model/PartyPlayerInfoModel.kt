@@ -150,6 +150,15 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
         return result
     }
 
+    // 又一个较为完整的user 更新一个 不完整的user ，但又不是完全覆盖
+    fun tryUpdate(info: PartyPlayerInfoModel) {
+        if(!info.role.isEmpty()){
+            this.role = info.role
+        }
+        this.popularity = info.popularity
+        this.userInfo?.tryUpdate(info.userInfo)
+    }
+
     companion object {
         fun parseFromPb(pb: POnlineInfo): PartyPlayerInfoModel {
             var info = PartyPlayerInfoModel()

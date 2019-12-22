@@ -425,6 +425,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         syncJob = launch {
             while (true) {
                 delay(10 * 1000)
+                syncGameStatusInner()
                 val result = subscribe { mRoomServerApi.syncStatus(mRoomData.gameId.toLong()) }
                 if (result.errno == 0) {
                     val syncStatusTimeMs = result.data.getLongValue("syncStatusTimeMs")
@@ -445,6 +446,29 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             }
         }
     }
+
+    private fun syncGameStatusInner() {
+        launch {
+            val result = subscribe { mRoomServerApi.syncStatus(mRoomData.gameId.toLong()) }
+            if (result.errno == 0) {
+                val syncStatusTimeMs = result.data.getLongValue("syncStatusTimeMs")
+                if (syncStatusTimeMs > mRoomData.lastSyncTs) {
+                    mRoomData.lastSyncTs = syncStatusTimeMs
+                    val thisRound = JSON.parseObject(result.data.getString("currentRound"), PartyRoundInfoModel::class.java)
+                    val onlineUserCnt = result.data.getIntValue("onlineUserCnt")
+                    val applyUserCnt = result.data.getIntValue("applyUserCnt")
+                    val seats = JSON.parseArray(result.data.getString("seats"), PartySeatInfoModel::class.java)
+                    var users = JSON.parseArray(result.data.getString("users"), PartyPlayerInfoModel::class.java)
+                    val gameOverTimeMs = result.data.getLongValue("gameOverTimeMs")
+                    // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
+                    processSyncResult(gameOverTimeMs, onlineUserCnt, applyUserCnt, seats, users, thisRound)
+                }
+            } else {
+
+            }
+        }
+    }
+
 
     /**
      * 为了方便服务器亲密度结算
@@ -1095,9 +1119,14 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             } else if ((thisRound?.roundSeq ?: 0) > mRoomData.realRoundSeq) {
                 MyLog.w(TAG, "sync 回来的轮次大，要替换 roundInfo 了")
                 // 主轮次结束
-                launch {
-                    mRoomData.expectRoundInfo = thisRound
-                    mRoomData.checkRoundInEachMode()
+                if(thisRound?.sceneInfo == null && thisRound?.status == EPRoundStatus.PRS_PLAY_GAME.value){
+                    MyLog.w(TAG, "pushSync游戏详情,走短链接sync")
+                    syncGameStatusInner()
+                }else{
+                    launch {
+                        mRoomData.expectRoundInfo = thisRound
+                        mRoomData.checkRoundInEachMode()
+                    }
                 }
             }
         }
