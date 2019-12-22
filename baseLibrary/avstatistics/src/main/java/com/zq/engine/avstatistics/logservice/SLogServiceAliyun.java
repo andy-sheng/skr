@@ -111,16 +111,12 @@ class SLogServiceAliyun extends SLogServiceBase{
         try {
 //            jsObj.put("comeFrom", "liveSDK");
             jsObj.put("SkrID", mParam.skrUid);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            Log log = new Log();
+            log.PutContent(itemOp.getKey(), jsObj.toString());
+            mLogGroup.PutLog(log);
+        } catch (Exception e) {
+            MyLog.e(e);
         }
-
-        Log log = new Log();
-        log.PutContent(itemOp.getKey(), jsObj.toString());
-
-//        android.util.Log.d(TAG, "Key is: "+itemOp.getKey());
-
-        mLogGroup.PutLog(log);
     }
 
     @Override
