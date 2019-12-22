@@ -1039,8 +1039,13 @@ public class ManyLyricsView extends AbstractLrcView {
             MyLog.d(TAG, "updateManyLrcView " + " lrcLineInfos为null");
             return;
         }
-
-        int newLyricsLineNum = LyricsUtils.getLineNumber(mLyricsReader.getLyricsType(), mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
+        int newLyricsLineNum = 0;
+        if (mEnableVerbatim) {
+            newLyricsLineNum = LyricsUtils.getLineNumber(mLyricsReader.getLyricsType(), mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
+        } else {
+            // 逐行的歌词下一行展示优化下
+            newLyricsLineNum = LyricsUtils.getLineNumber3(mLyricsReader.getLyricsType(), mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
+        }
         if (newLyricsLineNum != mLyricsLineNum) {
             if (mTouchEventStatus == TOUCHEVENTSTATUS_INIT && !mIsTouchIntercept) {
                 //初始状态
