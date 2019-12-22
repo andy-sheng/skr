@@ -18,7 +18,7 @@ public class SDataManager {
 
     private String TAG = "[SLS]SDATA_MANAGER";
 
-    private String LOG_PREFIX = "[SDM]"; //"[SDATA_MANAGER FLUSHED]"
+//    private String LOG_PREFIX = "[SDM]"; //"[SDATA_MANAGER FLUSHED]"
 
     private SDataMgrBasicInfo mBasicInfo = null;
 
@@ -28,7 +28,7 @@ public class SDataManager {
     private SDataManager() {
         mBasicInfo = new SDataMgrBasicInfo();
         mADHolder = new SDataHolderEx();
-        mADHolder.setLinePrefix(LOG_PREFIX);
+//        mADHolder.setLinePrefix(LOG_PREFIX);
         mLS = SLogServiceAgent.getService(SLogServiceAgent.LS_PROVIDER_ALIYUN);
     }
 
@@ -130,7 +130,7 @@ public class SDataManager {
     public SDataManager flush(int flushMode) {//flush mode暂时留了个口子，目前是文件log和上传都处理
 
         StringBuilder logStr1 = new StringBuilder();
-        logStr1.append(LOG_PREFIX).append(" userID=").append(mBasicInfo.userID).append(", channelID=").append(mBasicInfo.channelID)
+        logStr1.append(" userID=").append(mBasicInfo.userID).append(", channelID=").append(mBasicInfo.channelID)
                 .append(", channelJoinElapsed=").append(mBasicInfo.channelJoinElapsed).append("\n");
         logStr1.append(mADHolder.toString());
         MyLog.w(logStr1.toString());
