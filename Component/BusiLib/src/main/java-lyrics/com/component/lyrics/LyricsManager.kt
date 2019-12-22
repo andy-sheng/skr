@@ -67,6 +67,7 @@ object LyricsManager {
      * @return
      */
     fun loadStandardLyric(url: String?, processReader: ((reader: LyricsReader) -> Unit)?): Observable<LyricsReader> {
+        var b = System.currentTimeMillis()
         return Observable.create(ObservableOnSubscribe<File> { emitter ->
             if(TextUtils.isEmpty(url)){
                 if(MyLog.isDebugLogOpen()){
@@ -86,13 +87,13 @@ object LyricsManager {
             if (isSuccess) {
                 emitter.onNext(newName)
             } else {
-                MyLog.d(TAG, "使用服务器代理下载")
+                MyLog.w(TAG, "使用服务器代理下载")
                 val call = mResServerApi.getLyricByUrl(url)
                 try {
                     val response = call.execute()
                     val jsonObject = response.body()
                     if (jsonObject != null) {
-                        MyLog.d(TAG, "body=$jsonObject")
+                        MyLog.w(TAG, "body=$jsonObject")
                         val content = jsonObject.getString("body")
                         U.getIOUtils().writeFile(content, newName)
                         emitter.onNext(newName)
@@ -106,7 +107,6 @@ object LyricsManager {
                     emitter.onError(IgnoreException("代理下载失败"))
                     return@ObservableOnSubscribe
                 }
-
             }
             emitter.onComplete()
         }).map { file ->
@@ -126,7 +126,7 @@ object LyricsManager {
             } catch (e: Exception) {
                 Log.e("LyricsManager", "" + e.toString())
             }
-
+            MyLog.w(TAG,"stand歌词parse完毕,耗时${System.currentTimeMillis()-b}")
             lyricsReader
         }
                 .subscribeOn(U.getThreadUtils().urgentIO())
@@ -163,7 +163,7 @@ object LyricsManager {
                         emitter.onNext("歌词buffer读取失败")
                     }
                 } else {
-                    MyLog.d(TAG, "使用服务器代理下载")
+                    MyLog.w(TAG, "使用服务器代理下载")
                     val call = mResServerApi.getLyricByUrl(url)
                     try {
                         val response = call.execute()

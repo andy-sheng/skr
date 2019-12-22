@@ -159,7 +159,7 @@ class SongManagerActivity : BaseActivity() {
         fun open(activity: FragmentActivity?, roomData: RaceRoomData) {
             val intent = Intent(activity, SongManagerActivity::class.java)
             intent.putExtra("from", TYPE_FROM_RACE)
-            intent.putExtra("room_data", roomData)
+            //intent.putExtra("room_data", roomData)
             activity?.startActivity(intent)
         }
 

@@ -194,7 +194,7 @@ class PartyMemberPanelView(context: Context) : ConstraintLayout(context), Corout
                 this.mModel = model
 
                 avatarSdv.bindData(model.userInfo)
-                nameTv.text = model.userInfo.nicknameRemark
+                nameTv.text = model.userInfo?.nicknameRemark
                 if (!TextUtils.isEmpty(model.getRoleDesc())) {
                     roleDescTv.text = model.getRoleDesc()
                 } else {

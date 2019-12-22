@@ -133,7 +133,7 @@ class LyricAndAccMatchManager {
     }
 
     private fun parseReader(lyricsReader: LyricsReader) {
-        DebugLogView.println(TAG, "onEventMainThread " + "play")
+        DebugLogView.println(TAG, "lyricsReader parse ok")
         mListener?.onLyricParseSuccess(lyricsReader)
         params?.manyLyricsView?.visibility = View.VISIBLE
         params?.manyLyricsView?.initLrcData()
