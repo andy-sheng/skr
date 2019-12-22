@@ -27,10 +27,8 @@ public class SDataManager {
 
     private SDataManager() {
         mBasicInfo = new SDataMgrBasicInfo();
-
         mADHolder = new SDataHolderEx();
         mADHolder.setLinePrefix(LOG_PREFIX);
-
         mLS = SLogServiceAgent.getService(SLogServiceAgent.LS_PROVIDER_ALIYUN);
     }
 
@@ -131,49 +129,34 @@ public class SDataManager {
 
     public SDataManager flush(int flushMode) {//flush mode暂时留了个口子，目前是文件log和上传都处理
 
-        StringBuilder logStr = new StringBuilder();
-
-        logStr.append(LOG_PREFIX).append(" userID=").append(mBasicInfo.userID).append(", channelID=").append(mBasicInfo.channelID)
+        StringBuilder logStr1 = new StringBuilder();
+        logStr1.append(LOG_PREFIX).append(" userID=").append(mBasicInfo.userID).append(", channelID=").append(mBasicInfo.channelID)
                 .append(", channelJoinElapsed=").append(mBasicInfo.channelJoinElapsed).append("\n");
-        logStr.append(mADHolder.toString());
-        MyLog.w(logStr.toString());
-
-
-        logStr.delete(LOG_PREFIX.length()+1, logStr.length()); //+1是给空格留的
+        logStr1.append(mADHolder.toString());
+        MyLog.w(logStr1.toString());
 
         List<ILogItem> itemList = mADHolder.getItemList();
         int listSize = 0;
-
         long logLen = 0;
-
         if (null != itemList && (listSize = itemList.size()) > 0) {
             for (int i=0; i<listSize; i++) {
                 ILogItem e = itemList.get(i);
-                if(e!=null){
-                    logStr.append(e.toString());
-                }
-                MyLog.w(logStr.toString());//MyLog的flush行为由其自己控制
-                logStr.delete(LOG_PREFIX.length()+1, logStr.length()); //+1是给空格留的
-
+//                if(e!=null){
+//                    logStr.append(e.toString());
+//                }
+                MyLog.w(e.toString());//MyLog的flush行为由其自己控制
+//                logStr.delete(LOG_PREFIX.length()+1, logStr.length()); //+1是给空格留的
                 mLS.appendLog(e);
-
                 if (dbgMode) {
                     logLen += (e.toJSONObject().toString().length());
                 }
-
             }
-
             if (dbgMode) {
                 MyLog.e(TAG, "SDataManager.flush() once flush string length="+logLen);
             }
-
             mLS.flushLog(true);
         }
-
-
-
         mADHolder.reset();
-
 //        MyLog.flushLog();
 
         return this;

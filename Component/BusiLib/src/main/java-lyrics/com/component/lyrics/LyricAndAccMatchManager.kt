@@ -210,7 +210,7 @@ class LyricAndAccMatchManager {
     fun onEvent(event: EngineEvent) {
         if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
             val `in` = event.getObj<EngineEvent.MixMusicTimeInfo>()
-            MyLog.w(TAG, "伴奏 ts=" + `in`!!.current)
+//            MyLog.w(TAG, "伴奏 ts=" + `in`!!.current)
             if (`in` != null && `in`.current > 0) {
                 if (params?.accLoadOk == false) {
                     DebugLogView.println(TAG, "伴奏加载ready")

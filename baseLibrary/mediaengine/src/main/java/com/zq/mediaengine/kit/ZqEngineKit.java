@@ -1493,7 +1493,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                     @Override
                     public void accept(Long aLong) throws Exception {
                         int currentPosition = getAudioMixingCurrentPosition();
-                        MyLog.i(TAG, "PlayTimeListener accept timerTs=" + aLong + " currentPosition=" + currentPosition);
+                        MyLog.d(TAG, "PlayTimeListener accept timerTs=" + aLong + " currentPosition=" + currentPosition);
                         mConfig.setCurrentMusicTs(currentPosition);
                         mConfig.setRecordCurrentMusicTsTs(System.currentTimeMillis());
                         if (duration < 0) {
