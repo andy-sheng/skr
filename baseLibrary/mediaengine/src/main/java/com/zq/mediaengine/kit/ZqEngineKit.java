@@ -29,18 +29,16 @@ import com.engine.Params;
 import com.engine.UserStatus;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
+import com.engine.api.EngineServerApi;
 import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.score.Score2Callback;
-import com.engine.token.AgoraTokenApi;
 import com.zq.engine.avstatistics.SDataManager;
 import com.zq.mediaengine.capture.AudioCapture;
 import com.zq.mediaengine.capture.AudioPlayerCapture;
 import com.zq.mediaengine.capture.CameraCapture;
 import com.zq.mediaengine.encoder.MediaCodecAudioEncoder;
 import com.zq.mediaengine.filter.audio.APMFilter;
-import com.zq.mediaengine.filter.audio.AudioCopyFilter;
-import com.zq.mediaengine.filter.audio.AudioFilterBase;
 import com.zq.mediaengine.filter.audio.AudioFilterMgt;
 import com.zq.mediaengine.filter.audio.AudioMixer;
 import com.zq.mediaengine.filter.audio.AudioPreview;
@@ -537,8 +535,9 @@ public class ZqEngineKit implements AgoraOutCallback {
         mConfig = params;
         mContext = U.app().getApplicationContext();
 
-        mConfig.setUseExternalAudio(true);
-        mConfig.setEnableInEarMonitoring(true);
+        // 使用config里的默认值
+//        mConfig.setUseExternalAudio(true);
+//        mConfig.setEnableInEarMonitoring(true);
         mConfig.setUseLocalAPM(false);
 
         // TODO: engine代码合并后，采样率初始值在Params初始化时获取
@@ -965,7 +964,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private String getToken(String roomId) {
         MyLog.i(TAG, "getToken" + " roomId=" + roomId);
-        AgoraTokenApi agoraTokenApi = ApiManager.getInstance().createService(AgoraTokenApi.class);
+        EngineServerApi agoraTokenApi = ApiManager.getInstance().createService(EngineServerApi.class);
         if (agoraTokenApi != null) {
             Call<ApiResult> apiResultCall = agoraTokenApi.getToken(roomId);
             if (apiResultCall != null) {

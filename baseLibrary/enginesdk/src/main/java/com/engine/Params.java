@@ -35,8 +35,6 @@ public class Params implements Serializable {
     @JSONField(serialize = false)
     private boolean useExternalVideo = true; // 自采集视频
     @JSONField(serialize = false)
-    private boolean useExternalAudio = false; // 自采集音频
-    @JSONField(serialize = false)
     private boolean useExternalAudioRecord = true; // 自定义音频录制
     @JSONField(serialize = false)
     private boolean useLocalAPM = false; // 自采集时是否使用本地的APM处理模块，而不是声网的
@@ -102,13 +100,9 @@ public class Params implements Serializable {
     private int recordingSignalVolume = 200;// 0-400 默认100，最多放大4倍
     private AudioEffect styleEnum = AudioEffect.none;// 混响style
 
-    // 低延迟音频相关
-    private boolean enableAudioLowLatency = true;
-    // 伴奏人声对齐校正参数
-    private int accMixingLatencyOnSpeaker = 0;  // 外放校正参数
-    private int accMixingLatencyOnHeadset = 0;  // 有线耳机校正参数
     @JSONField(serialize = false)
-    private boolean enableAudioPreviewLatencyTest = false;
+    private  ConfigFromServer configFromServer =  ConfigFromServer.getDefault();
+
     @JSONField(serialize = false)
     private boolean enableAudioMixLatencyTest = false;
 
@@ -186,11 +180,7 @@ public class Params implements Serializable {
     }
 
     public boolean isUseExternalAudio() {
-        return useExternalAudio;
-    }
-
-    public void setUseExternalAudio(boolean useExternalAudio) {
-        this.useExternalAudio = useExternalAudio;
+        return configFromServer.useExternalAudio;
     }
 
     public boolean isUseExternalVideo() {
@@ -708,36 +698,21 @@ public class Params implements Serializable {
         this.audioMixingPublishVolume = audioMixingPublishVolume;
     }
 
-    public void setEnableAudioLowLatency(boolean enableAudioLowLatency) {
-        this.enableAudioLowLatency = enableAudioLowLatency;
-    }
-
     public boolean isEnableAudioLowLatency() {
-        return enableAudioLowLatency;
+        return configFromServer.enableAudioLowLatency;
     }
 
-    public void setAccMixingLatencyOnSpeaker(int accMixingLatencyOnSpeaker) {
-        this.accMixingLatencyOnSpeaker = accMixingLatencyOnSpeaker;
-    }
 
     public int getAccMixingLatencyOnSpeaker() {
-        return accMixingLatencyOnSpeaker;
-    }
-
-    public void setAccMixingLatencyOnHeadset(int accMixingLatencyOnHeadset) {
-        this.accMixingLatencyOnHeadset = accMixingLatencyOnHeadset;
+        return configFromServer.accMixingLatencyOnSpeaker;
     }
 
     public int getAccMixingLatencyOnHeadset() {
-        return accMixingLatencyOnHeadset;
-    }
-
-    public void setEnableAudioPreviewLatencyTest(boolean enableAudioPreviewLatencyTest) {
-        this.enableAudioPreviewLatencyTest = enableAudioPreviewLatencyTest;
+        return configFromServer.accMixingLatencyOnHeadset;
     }
 
     public boolean isEnableAudioPreviewLatencyTest() {
-        return enableAudioPreviewLatencyTest;
+        return configFromServer.enableAudioPreviewLatencyTest;
     }
 
     public void setEnableAudioMixLatencyTest(boolean enableAudioMixLatencyTest) {
@@ -746,6 +721,18 @@ public class Params implements Serializable {
 
     public boolean isEnableAudioMixLatencyTest() {
         return enableAudioMixLatencyTest;
+    }
+
+    public void setEnableAudioLowLatency(boolean enable) {
+        configFromServer.setEnableAudioLowLatency(enable);
+    }
+
+    public void setEnableAudioPreviewLatencyTest(boolean enable) {
+        configFromServer.setEnableAudioPreviewLatencyTest(enable);
+    }
+
+    public void setUseExternalAudio(boolean b) {
+        configFromServer.setUseExternalAudio(b);
     }
 
     public static class Builder {
@@ -760,7 +747,7 @@ public class Params implements Serializable {
         }
 
         public Builder setUseExternalAudio(boolean useExternalAudio) {
-            mParams.setUseExternalAudio(useExternalAudio);
+            mParams.configFromServer.setUseExternalAudio(useExternalAudio);
             return this;
         }
 
@@ -929,6 +916,7 @@ public class Params implements Serializable {
             String s = JSON.toJSONString(params);
             MyLog.w(TAG, "save2Pref " + s);
             U.getPreferenceUtils().setSettingString("engine_pref_params4", s);
+            //params.getConfigFromServer().save2Pref();
         }
     }
 
