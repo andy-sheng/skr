@@ -257,13 +257,17 @@ public class UserInfoModel implements Serializable, Cloneable {
     public String getAgeStageString() {
         if (ageStage != 0) {
             if (ageStage == 1) {
-                return "小学党";
+                return "05后";
             } else if (ageStage == 2) {
-                return "中学党";
+                return "00后";
             } else if (ageStage == 3) {
-                return "大学党";
+                return "95后";
             } else if (ageStage == 4) {
-                return "工作党";
+                return "90后";
+            } else if (ageStage == 5) {
+                return "80后";
+            } else if (ageStage == 6) {
+                return "80前";
             }
         }
         return "";
@@ -345,76 +349,77 @@ public class UserInfoModel implements Serializable, Cloneable {
     /**
      * 比如你有属性 A B C 有值， info 有属性 C D E 有值。
      * 调用此方法后 你有属性 A B C D E ，且 C 的值以 info 的为准
+     *
      * @param info
      */
     public void tryUpdate(@Nullable UserInfoModel info) {
-        if(!TextUtils.isEmpty(info.nickname)){
+        if (!TextUtils.isEmpty(info.nickname)) {
             this.nickname = info.nickname;
         }
-        if(info.sex>0){
+        if (info.sex > 0) {
             this.sex = info.sex;
         }
-        if(!TextUtils.isEmpty(info.birthday)){
+        if (!TextUtils.isEmpty(info.birthday)) {
             this.birthday = info.birthday;
         }
-        if(!TextUtils.isEmpty(info.avatar)){
+        if (!TextUtils.isEmpty(info.avatar)) {
             this.avatar = info.avatar;
         }
-        if(!TextUtils.isEmpty(info.signature)){
+        if (!TextUtils.isEmpty(info.signature)) {
             this.signature = info.signature;
         }
-        if(!TextUtils.isEmpty(info.signature)){
+        if (!TextUtils.isEmpty(info.signature)) {
             this.signature = info.signature;
         }
-        if(info.location!=null){
+        if (info.location != null) {
             this.location = info.location;
         }
-        if(info.location2!=null){
+        if (info.location2 != null) {
             this.location2 = info.location2;
         }
-        if(!TextUtils.isEmpty(info.letter)){
+        if (!TextUtils.isEmpty(info.letter)) {
             this.letter = info.letter;
         }
-        if(info.mIsSystem == true){
+        if (info.mIsSystem == true) {
             this.mIsSystem = true;
         }
-        if(info.isFriend == true){
+        if (info.isFriend == true) {
             this.isFriend = true;
         }
-        if(info.isFollow == true){
+        if (info.isFollow == true) {
             this.isFollow = true;
         }
-        if(info.isSPFollow == true){
+        if (info.isSPFollow == true) {
             this.isSPFollow = true;
         }
-        if(info.mainLevel > 0){
+        if (info.mainLevel > 0) {
             this.mainLevel = info.mainLevel;
         }
-        if(info.status > 0){
+        if (info.status > 0) {
             this.status = info.status;
         }
-        if(info.statusTs > 0){
+        if (info.statusTs > 0) {
             this.statusTs = info.statusTs;
         }
-        if(!TextUtils.isEmpty(info.statusDesc)){
+        if (!TextUtils.isEmpty(info.statusDesc)) {
             this.statusDesc = info.statusDesc;
         }
-        if(info.ageStage > 0){
+        if (info.ageStage > 0) {
             this.ageStage = info.ageStage;
         }
-        if(info.vipInfo != null){
+        if (info.vipInfo != null) {
             this.vipInfo = info.vipInfo;
         }
-        if(info.ranking != null){
+        if (info.ranking != null) {
             this.ranking = info.ranking;
         }
-        if(info.honorInfo != null){
+        if (info.honorInfo != null) {
             this.honorInfo = info.honorInfo;
         }
-        if(info.clubInfo != null){
+        if (info.clubInfo != null) {
             this.clubInfo = info.clubInfo;
         }
-        if(info.intimacy != -1){
+        if (info.intimacy != -1) {
             this.intimacy = info.intimacy;
         }
     }
