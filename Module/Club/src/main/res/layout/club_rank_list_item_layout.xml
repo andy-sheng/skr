@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:avatarView="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_70_dp">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/seq_base_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/view_25_dp" />
+
+    <TextView
+        android:id="@+id/seq_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_24_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/seq_base_line"
+        app:layout_constraintRight_toRightOf="@id/seq_base_line"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.component.busilib.view.AvatarView
+        android:id="@+id/avatar_view"
+        android:layout_width="@dimen/view_42_dp"
+        android:layout_height="@dimen/view_42_dp"
+        android:layout_marginLeft="@dimen/view_52_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        avatarView:borderColor="@color/white"
+        avatarView:borderWidth="@dimen/view_1_dp" />
+
+    <TextView
+        android:id="@+id/hot_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_20_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_16_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/avatar_view"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toRightOf="@id/avatar_view"
+        app:layout_constraintRight_toLeftOf="@id/role_tag_tv"
+        app:layout_constraintTop_toTopOf="@id/avatar_view" />
+
+    <TextView
+        android:id="@+id/role_tag_tv"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center"
+        android:textSize="@dimen/textsize_10_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/name_tv"
+        app:layout_constraintLeft_toRightOf="@id/name_tv"
+        app:layout_constraintRight_toLeftOf="@id/hot_tv"
+        app:layout_constraintTop_toTopOf="@id/name_tv" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

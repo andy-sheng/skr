@@ -526,7 +526,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         val model: UserInfoModel = playerInfoModel.clone() as UserInfoModel
         model.nickname = RoomDataUtils.getRaceDisplayNickName(mRoomData, playerInfoModel)
         model.avatar = RoomDataUtils.getRaceDisplayAvatar(mRoomData, playerInfoModel)
-        mVIPEnterView?.enter(model, finishCall)
+        mVIPEnterView?.enter(model, finishCall, false)
     }
 
     private fun showPersonInfoView(userID: Int) {

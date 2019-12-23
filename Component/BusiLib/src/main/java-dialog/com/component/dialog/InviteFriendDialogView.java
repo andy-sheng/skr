@@ -21,6 +21,7 @@ import static com.component.dialog.InviteFriendDialog.INVITE_DOUBLE_GAME;
 import static com.component.dialog.InviteFriendDialog.INVITE_GRAB_FRIEND;
 import static com.component.dialog.InviteFriendDialog.INVITE_GRAB_GAME;
 import static com.component.dialog.InviteFriendDialog.INVITE_MIC_GAME;
+import static com.component.dialog.InviteFriendDialog.INVITE_PARTY_GAME;
 
 public class InviteFriendDialogView extends ConstraintLayout {
     public final String TAG = "InviteFriendDialogView";
@@ -87,7 +88,7 @@ public class InviteFriendDialogView extends ConstraintLayout {
                     MyLog.w(TAG, "init" + " context=" + context + "mGameId = 0");
                     return;
                 }
-                SkrKouLingUtils.genDoubleJoinGrabGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, mMediaType, new ICallback() {
+                SkrKouLingUtils.genJoinDoubleGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, mMediaType, new ICallback() {
                     @Override
                     public void onSucess(Object obj) {
                         if (obj != null) {
@@ -137,6 +138,23 @@ public class InviteFriendDialogView extends ConstraintLayout {
                         U.getToastUtil().showShort("口令生成失败");
                     }
                 });
+            }else if (mType == INVITE_PARTY_GAME) {
+                SkrKouLingUtils.genJoinPartyGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId,mMediaType, new ICallback() {
+                    @Override
+                    public void onSucess(Object obj) {
+                        if (obj != null) {
+                            mKouLingToken = (String) obj;
+                            mTvKouling.setText(mKouLingToken);
+                        } else {
+                            U.getToastUtil().showShort("口令生成失败");
+                        }
+                    }
+
+                    @Override
+                    public void onFailed(Object obj, int errcode, String message) {
+                        U.getToastUtil().showShort("口令生成失败");
+                    }
+                });
             }
         }
 
@@ -153,6 +171,8 @@ public class InviteFriendDialogView extends ConstraintLayout {
                         text = SkrKouLingUtils.genJoinDoubleGameKouling(mKouLingToken);
                     } else if (mType == INVITE_MIC_GAME) {
                         text = SkrKouLingUtils.genJoinMicRoomText(mKouLingToken);
+                    }else if (mType == INVITE_PARTY_GAME) {
+                        text = SkrKouLingUtils.genJoinPartyRoomText(mKouLingToken);
                     }
 
                     mListener.onClickQQShare(text);
@@ -173,6 +193,8 @@ public class InviteFriendDialogView extends ConstraintLayout {
                         text = SkrKouLingUtils.genJoinDoubleGameKouling(mKouLingToken);
                     } else if (mType == INVITE_MIC_GAME) {
                         text = SkrKouLingUtils.genJoinMicRoomText(mKouLingToken);
+                    }else if (mType == INVITE_PARTY_GAME) {
+                        text = SkrKouLingUtils.genJoinPartyRoomText(mKouLingToken);
                     }
 
                     mListener.onClickWeixinShare(text);

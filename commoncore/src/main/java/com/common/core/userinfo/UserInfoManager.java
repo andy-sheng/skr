@@ -696,13 +696,18 @@ public class UserInfoManager {
     }
 
     public void getMyFriends(final int pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
-        getMyFriends(pullOnlineStatus, 0, 0, userInfoListCallback);
+        getMyFriends(pullOnlineStatus, 0, 0, true, userInfoListCallback);
     }
 
     /**
      * 获取我的好友
+     * @param pullOnlineStatus  是否拉取在线状态
+     * @param roomID  房间ID
+     * @param gameModel  房间类型
+     * @param needIntimacy  是否需要亲密度
+     * @param userInfoListCallback
      */
-    public void getMyFriends(final int pullOnlineStatus, int roomID, int gameModel, final UserInfoListCallback userInfoListCallback) {
+    public void getMyFriends(final int pullOnlineStatus, int roomID, int gameModel, boolean needIntimacy, final UserInfoListCallback userInfoListCallback) {
         //先从数据库里取我的关注
         getMyFollow(ONLINE_PULL_NONE, false, roomID, gameModel, new UserInfoListCallback() {
             @Override
@@ -736,7 +741,7 @@ public class UserInfoManager {
                     userInfoListCallback.onSuccess(from, resultList.size(), resultList);
                 }
             }
-        }, true);
+        }, needIntimacy);
     }
 
     /**
@@ -1001,72 +1006,102 @@ public class UserInfoManager {
             @Override
             public int compare(UserInfoModel u1, UserInfoModel u2) {
                 //MyLog.d(TAG, "compare" + " u1=" + u1 + " u2=" + u2);
-                // todo 产品的神奇需求 我也不知道为什么要两套排序
-                if (isFromFollow) {
-                    if (u1.isSPFollow() == u2.isSPFollow()) {
-                        // 两者都是特别关注 或 非特别关注
-                        if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
-                            // 两者都是离线
-                            // 按离线时间排序
-                            if (u1.getStatusTs() > u2.getStatusTs()) {
-                                return -1;
-                            } else if (u1.getStatusTs() < u2.getStatusTs()) {
-                                return 1;
-                            } else {
-                                return 0;
+                // todo 产品的神奇需求 我也不知道为什么要三套排序
+                if (needIntimacy) {
+                    // 通讯录里面的排序
+                    if (isFromFollow) {
+                        if (u1.isSPFollow() == u2.isSPFollow()) {
+                            // 两者都是特别关注 或 非特别关注
+                            if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
+                                // 两者都是离线
+                                // 按离线时间排序
+                                if (u1.getStatusTs() > u2.getStatusTs()) {
+                                    return -1;
+                                } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
                             }
-                        }
-                        if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
-                            // 两者都是在线
-                            // 按在线时间排序
-                            if (u1.getStatusTs() > u2.getStatusTs()) {
-                                return -1;
-                            } else if (u1.getStatusTs() < u2.getStatusTs()) {
-                                return 1;
-                            } else {
-                                return 0;
+                            if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
+                                // 两者都是在线
+                                // 按在线时间排序
+                                if (u1.getStatusTs() > u2.getStatusTs()) {
+                                    return -1;
+                                } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
                             }
+                            int r = u2.getStatus() - u1.getStatus();
+                            return r;
+                        } else if (u1.isSPFollow()) {
+                            return -1;
+                        } else {
+                            return 1;
                         }
-                        int r = u2.getStatus() - u1.getStatus();
-                        return r;
-                    } else if (u1.isSPFollow()) {
-                        return -1;
                     } else {
-                        return 1;
+                        // 好友 之间 先按亲密度 再按离线时间排序
+                        if (u1.getIntimacy() > u2.getIntimacy()) {
+                            return -1;
+                        } else if (u1.getIntimacy() < u2.getIntimacy()) {
+                            return 1;
+                        } else {
+                            if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
+                                // 两者都是离线
+                                if (u1.getStatusTs() > u2.getStatusTs()) {
+                                    return -1;
+                                } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            }
+
+                            if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
+                                // 两者都是在线
+
+                                if (u1.getStatusTs() > u2.getStatusTs()) {
+                                    return -1;
+                                } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+
+                            }
+                            int r = u2.getStatus() - u1.getStatus();
+                            return r;
+                        }
                     }
                 } else {
-                    // 好友 之间 先按亲密度 再按离线时间排序
-                    if (u1.getIntimacy() > u2.getIntimacy()) {
-                        return -1;
-                    } else if (u1.getIntimacy() < u2.getIntimacy()) {
-                        return 1;
-                    } else {
-                        if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
-                            // 两者都是离线
-                            if (u1.getStatusTs() > u2.getStatusTs()) {
-                                return -1;
-                            } else if (u1.getStatusTs() < u2.getStatusTs()) {
-                                return 1;
-                            } else {
-                                return 0;
-                            }
+                    // 游戏里面的排序,只按照状态排序
+                    if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
+                        // 两者都是离线
+                        if (u1.getStatusTs() > u2.getStatusTs()) {
+                            return -1;
+                        } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                            return 1;
+                        } else {
+                            return 0;
                         }
-
-                        if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
-                            // 两者都是在线
-
-                            if (u1.getStatusTs() > u2.getStatusTs()) {
-                                return -1;
-                            } else if (u1.getStatusTs() < u2.getStatusTs()) {
-                                return 1;
-                            } else {
-                                return 0;
-                            }
-
-                        }
-                        int r = u2.getStatus() - u1.getStatus();
-                        return r;
                     }
+
+                    if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
+                        // 两者都是在线
+
+                        if (u1.getStatusTs() > u2.getStatusTs()) {
+                            return -1;
+                        } else if (u1.getStatusTs() < u2.getStatusTs()) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+
+                    }
+                    int r = u2.getStatus() - u1.getStatus();
+                    return r;
                 }
             }
         });

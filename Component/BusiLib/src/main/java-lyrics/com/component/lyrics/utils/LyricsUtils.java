@@ -862,6 +862,38 @@ public class LyricsUtils {
      * @param playOffset        时间补偿值
      * @return
      */
+    public static int getLineNumber3(int lyricsType, TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap, long curPlayingTime, long playOffset) {
+        if (lyricsLineTreeMap == null) {
+            MyLog.e(TAG, "getLineNumber lyricsLineTreeMap 为null，为什么？？？");
+            return 0;
+        }
+        //添加歌词增量
+        long newPlayingTime = curPlayingTime + playOffset;
+
+        int r = lyricsLineTreeMap.size() - 1;
+        //动感歌词
+        for (int i = 0; i < lyricsLineTreeMap.size(); i++) {
+            if (newPlayingTime <= lyricsLineTreeMap.get(i).getStartTime()) {
+                r = i-1;
+                break;
+            }
+        }
+
+        if(r<0){
+            r = 0;
+        }
+        return r;
+    }
+
+    /**
+     * 通过播放的进度，获取所唱歌词行数
+     *
+     * @param lyricsType        歌词类型 LyricsInfo.LRC OR LyricsInfo.DYNAMIC
+     * @param lyricsLineTreeMap 歌词集合
+     * @param curPlayingTime    当前播放进度
+     * @param playOffset        时间补偿值
+     * @return
+     */
     public static int getLineNumber2(int lyricsType, TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap, long curPlayingTime, long playOffset) {
         if (lyricsLineTreeMap == null) {
             MyLog.e(TAG, "getLineNumber lyricsLineTreeMap 为null，为什么？？？");

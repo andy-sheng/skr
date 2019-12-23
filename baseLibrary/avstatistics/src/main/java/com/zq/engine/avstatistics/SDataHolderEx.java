@@ -16,177 +16,164 @@ import static io.agora.rtc.Constants.AUDIO_ROUTE_HEADSET;
 import static io.agora.rtc.Constants.AUDIO_ROUTE_HEADSETBLUETOOTH;
 import static io.agora.rtc.Constants.AUDIO_ROUTE_SPEAKERPHONE;
 
-public class SDataHolderEx
-{
+public class SDataHolderEx {
     private final static String TAG = "[SLS]SDataHolderEx";
 
-    private String mLinePrefix = "";
 
-
-    private List<ILogItem> mItemList = null;
+    private List<ILogItem> mItemList = new ArrayList<ILogItem>();
+    ;
 
     public SDataHolderEx() {
-        mItemList = new ArrayList<ILogItem>();
+
     }
 
-    public SDataHolderEx setLinePrefix(String prefix) {
-        if (null != prefix && 0 != prefix.length())
-            mLinePrefix = prefix;
+    int numRtcStats = 0;
 
-        return this;
-    }
-
-
-
-    public void addRtcStats(IRtcEngineEventHandler.RtcStats s ) {
-        SAgora.SRTCStats n = new SAgora.SRTCStats();
-        n.timeStamp = System.currentTimeMillis();
-
-        n.cpuAppUsage = s.cpuAppUsage;
-        n.cpuTotalUsage = s.cpuTotalUsage;
-        n.totalDuration = s.totalDuration;
-        n.txBytes = s.txBytes;
-        n.rxBytes = s.rxBytes;
-        n.txKBitRate = s.txKBitRate;
-        n.rxKBitRate = s.rxKBitRate;
-        n.txAudioKBitRate = s.txAudioKBitRate;
-        n.rxAudioKBitRate = s.rxAudioKBitRate;
-        n.users = s.users;
-        n.lastmileDelay = s.lastmileDelay;
-        n.txPacketLossRate = s.txPacketLossRate;
-        n.rxPacketLossRate = s.rxPacketLossRate;
-
-        mItemList.add(n);
+    public void addRtcStats(IRtcEngineEventHandler.RtcStats s) {
+        if (numRtcStats <= 2) {
+            SAgora.SRTCStats n = new SAgora.SRTCStats();
+            n.timeStamp = System.currentTimeMillis();
+            n.cpuAppUsage = s.cpuAppUsage;
+            n.cpuTotalUsage = s.cpuTotalUsage;
+            n.totalDuration = s.totalDuration;
+            n.txBytes = s.txBytes;
+            n.rxBytes = s.rxBytes;
+            n.txKBitRate = s.txKBitRate;
+            n.rxKBitRate = s.rxKBitRate;
+            n.txAudioKBitRate = s.txAudioKBitRate;
+            n.rxAudioKBitRate = s.rxAudioKBitRate;
+            n.users = s.users;
+            n.lastmileDelay = s.lastmileDelay;
+            n.txPacketLossRate = s.txPacketLossRate;
+            n.rxPacketLossRate = s.rxPacketLossRate;
+            mItemList.add(n);
+            numRtcStats++;
+        }
         return;
     }
 
+    int numLocalVideoStats = 0;
 
     public void addLocalVideoStats(IRtcEngineEventHandler.LocalVideoStats s) {
-        SAgora.SLocalVideoStats n = new SAgora.SLocalVideoStats();
-
-        n.timeStamp = System.currentTimeMillis();
-        n.sentBitrate = s.sentBitrate;
-        n.sentFrameRate = s.sentFrameRate;
-        n.encoderOutputFrameRate = s.encoderOutputFrameRate;
-        n.rendererOutputFrameRate = s.rendererOutputFrameRate;
-        n.targetBitrate = s.targetBitrate;
-        n.targetFrameRate = s.targetFrameRate;
-        n.qualityAdaptIndication = s.qualityAdaptIndication;
-
-        mItemList.add(n);
+        if (numLocalVideoStats <= 2) {
+            SAgora.SLocalVideoStats n = new SAgora.SLocalVideoStats();
+            n.timeStamp = System.currentTimeMillis();
+            n.sentBitrate = s.sentBitrate;
+            n.sentFrameRate = s.sentFrameRate;
+            n.encoderOutputFrameRate = s.encoderOutputFrameRate;
+            n.rendererOutputFrameRate = s.rendererOutputFrameRate;
+            n.targetBitrate = s.targetBitrate;
+            n.targetFrameRate = s.targetFrameRate;
+            n.qualityAdaptIndication = s.qualityAdaptIndication;
+            mItemList.add(n);
+            numLocalVideoStats++;
+        }
         return;
     }
 
-
+    int numRemoteAudioStats = 0;
 
     public void addRemoteAudioStats(IRtcEngineEventHandler.RemoteAudioStats s) {
-        SAgora.SRemoteAudioStats n = new SAgora.SRemoteAudioStats();
-
-        n.timeStamp = System.currentTimeMillis();
-
-        n.uid = s.uid;
-        n.quality = s.quality;
+        if (numRemoteAudioStats <= 2) {
+            SAgora.SRemoteAudioStats n = new SAgora.SRemoteAudioStats();
+            n.timeStamp = System.currentTimeMillis();
+            n.uid = s.uid;
+            n.quality = s.quality;
 //        n.strQuality =  transNetQuality(s.quality);
-        n.networkTransportDelay = s.networkTransportDelay;
-        n.jitterBufferDelay = s.jitterBufferDelay;
-        n.audioLossRate = s.audioLossRate;
-
-        mItemList.add(n);
+            n.networkTransportDelay = s.networkTransportDelay;
+            n.jitterBufferDelay = s.jitterBufferDelay;
+            n.audioLossRate = s.audioLossRate;
+            mItemList.add(n);
+            numRemoteAudioStats++;
+        }
         return;
     }
 
-
+    int numRemoteVideoStats = 0;
 
     public void addRemoteVideoStats(IRtcEngineEventHandler.RemoteVideoStats s) {
-        SAgora.SRemoteVideoStats n = new SAgora.SRemoteVideoStats();
-
-        n.timeStamp = System.currentTimeMillis();
-        n.uid = s.uid;
-        n.width = s.width;
-        n.height = s.height;
-        n.receivedBitrate = s.receivedBitrate;
-        n.decoderOutputFrameRate = s.decoderOutputFrameRate;
-        n.rendererOutputFrameRate = s.rendererOutputFrameRate;
-        n.rxStreamType = s.rxStreamType;
-
-        mItemList.add(n);
+        if (numRemoteVideoStats <= 2) {
+            SAgora.SRemoteVideoStats n = new SAgora.SRemoteVideoStats();
+            n.timeStamp = System.currentTimeMillis();
+            n.uid = s.uid;
+            n.width = s.width;
+            n.height = s.height;
+            n.receivedBitrate = s.receivedBitrate;
+            n.decoderOutputFrameRate = s.decoderOutputFrameRate;
+            n.rendererOutputFrameRate = s.rendererOutputFrameRate;
+            n.rxStreamType = s.rxStreamType;
+            mItemList.add(n);
+            numRemoteVideoStats++;
+        }
         return;
     }
+
+    int numNetQualityStats = 0;
 
     public void addNetQualityStats(int uid, int txQuality, int rxQuality) {
-        SAgora.SNetworkQuality n = new SAgora.SNetworkQuality();
-
-        n.timeStamp = System.currentTimeMillis();
-        n.uid = uid;
-        n.txQuality = txQuality;
-        n.rxQuality = rxQuality;
-
-        mItemList.add(n);
+        if (numNetQualityStats <= 2) {
+            SAgora.SNetworkQuality n = new SAgora.SNetworkQuality();
+            n.timeStamp = System.currentTimeMillis();
+            n.uid = uid;
+            n.txQuality = txQuality;
+            n.rxQuality = rxQuality;
+            mItemList.add(n);
+            numNetQualityStats++;
+        }
         return;
     }
 
+    int numRemoteAudioTransStats = 0;
 
     public void addRemoteAudioTransStats(int uid, int delay, int lost, int rxKBitRate) {
-        SAgora.SRemoteAudioTransportStats n = new SAgora.SRemoteAudioTransportStats();
-
-        n.timeStamp = System.currentTimeMillis();
-        n.uid = uid;
-        n.delay = delay;
-        n.lost = lost;
-        n.rxKBitRate = rxKBitRate;
-
-        mItemList.add(n);
+        if (numRemoteAudioTransStats <= 2) {
+            SAgora.SRemoteAudioTransportStats n = new SAgora.SRemoteAudioTransportStats();
+            n.timeStamp = System.currentTimeMillis();
+            n.uid = uid;
+            n.delay = delay;
+            n.lost = lost;
+            n.rxKBitRate = rxKBitRate;
+            mItemList.add(n);
+            numRemoteAudioTransStats++;
+        }
         return;
     }
+
+    int numRemoteVideoTransStata = 0;
 
     public void addRemoteVideoTransStata(int uid, int delay, int lost, int rxKBitRate) {
-        SAgora.SRemoteVideoTransportStat n = new SAgora.SRemoteVideoTransportStat();
-
-        n.timeStamp = System.currentTimeMillis();
-        n.uid = uid;
-        n.delay = delay;
-        n.lost = lost;
-        n.rxKBitRate = rxKBitRate;
-
-        mItemList.add(n);
+        if (numRemoteVideoTransStata <= 2) {
+            SAgora.SRemoteVideoTransportStat n = new SAgora.SRemoteVideoTransportStat();
+            n.timeStamp = System.currentTimeMillis();
+            n.uid = uid;
+            n.delay = delay;
+            n.lost = lost;
+            n.rxKBitRate = rxKBitRate;
+            mItemList.add(n);
+            numRemoteVideoTransStata++;
+        }
         return;
     }
 
-    public void addAudioSamplingInfo(SAgora.SAudioSamplingInfo o, long curTs) {
-        if (null == o) return;
-
-        SAgora.SAudioSamplingInfo n = new SAgora.SAudioSamplingInfo();
-
-        n.timeStamp = System.currentTimeMillis();
-
-
-        n.meanAbsPCM = o.meanAbsPCM;
-        n.maxAbsPCM = o.maxAbsPCM;
-        n.smpCnt = o.smpCnt;
-        n.chCnt = o.chCnt;
-        n.smpRate = o.smpRate;
-        n.pcmDuration = o.pcmDuration;
-        n.statisticSpan = o.statisticSpan;
-
-        mItemList.add(n);
-
-        return;
-    }
-
+    int numPlayerInfo = 0;
 
     public void addPlayerInfo(final int uid, final String filePath, final String midiPath,
                               final long mixMusicBeginOffset, final boolean loopback,
                               final boolean replace, final int cycle) {
-        SAgora.SPlayerInfo n = new SAgora.SPlayerInfo();
-        n.ts = System.currentTimeMillis();
-        n.uid = uid;
-        n.filePath = filePath;
-        n.midiPath = midiPath;
-        n.mixMusicBeginOffset = mixMusicBeginOffset;
-        n.loopback = loopback;
-        n.replace = replace;
-        n.cycle = cycle;
-        mItemList.add(n);
+
+        if (numPlayerInfo <= 2) {
+            SAgora.SPlayerInfo n = new SAgora.SPlayerInfo();
+            n.ts = System.currentTimeMillis();
+            n.uid = uid;
+            n.filePath = filePath;
+            n.midiPath = midiPath;
+            n.mixMusicBeginOffset = mixMusicBeginOffset;
+            n.loopback = loopback;
+            n.replace = replace;
+            n.cycle = cycle;
+            mItemList.add(n);
+            numPlayerInfo++;
+        }
         return;
     }
 
@@ -198,24 +185,34 @@ public class SDataHolderEx
         return;
     }
 
+    int numPingInfo = 0;
+
     public void addPingInfo(Skr.PingInfo e) {
         if (null == e) return;
-
-        e.ts = System.currentTimeMillis();
-        mItemList.add(e);
+        if (numPingInfo <= 2) {
+            e.ts = System.currentTimeMillis();
+            mItemList.add(e);
+            numPingInfo++;
+        }
         return;
     }
 
+    int numNetworkInfo = 0;
+
     public void addNetworkInfo(Skr.NetworkInfo e) {
         if (null == e) return;
-        e.ts = System.currentTimeMillis();
-        mItemList.add(e);
+        if (numNetworkInfo <= 2) {
+            e.ts = System.currentTimeMillis();
+            mItemList.add(e);
+            numNetworkInfo++;
+        }
         return;
     }
 
     public final static int AR_PHONE_SPEAKER = 1;
     public final static int AR_BLUETOOTH = 2;
     public final static int AR_HEADSET = 3;
+
     public void addAudioRoutine(int type) {//服用SAgoraUserEvent，一起统计
         SAgoraUserEvent n = new SAgoraUserEvent();
         n.ts = System.currentTimeMillis();
@@ -248,11 +245,16 @@ public class SDataHolderEx
         mItemList.add(n);
     }
 
-    public void addSAudioSamplingInfoGroup(SAgora.SAudioSamplingInfoGroup e) {
-        if (0 == e.ts)
-            e.ts = System.currentTimeMillis();
+    int numSAudioSamplingInfoGroup = 0;
 
-        mItemList.add(e);
+    public void addSAudioSamplingInfoGroup(SAgora.SAudioSamplingInfoGroup e) {
+        if (numSAudioSamplingInfoGroup <= 2) {
+            if (0 == e.ts) {
+                e.ts = System.currentTimeMillis();
+            }
+            mItemList.add(e);
+            numSAudioSamplingInfoGroup++;
+        }
         return;
     }
 
@@ -263,18 +265,29 @@ public class SDataHolderEx
 
     public SDataHolderEx reset() {
         mItemList.clear();
+        numRtcStats = 0;
+        numLocalVideoStats = 0;
+        numRemoteAudioStats = 0;
+        numRemoteVideoStats = 0;
+        numNetQualityStats = 0;
+        numRemoteAudioTransStats = 0;
+        numRemoteVideoTransStata = 0;
+        numPlayerInfo = 0;
+        numPingInfo = 0;
+        numNetworkInfo = 0;
+        numSAudioSamplingInfoGroup = 0;
         return this;
     }
 
 
-    private final static int LIST_COUNT_THRESHOLD = 30;
+    private final static int LIST_COUNT_THRESHOLD = 20;
+
     public boolean need2Flush() {
-        if (mItemList.size() >= LIST_COUNT_THRESHOLD )
+         if (mItemList.size() >= LIST_COUNT_THRESHOLD)
             return true;
         else
             return false;
     }
-
 
 
 }

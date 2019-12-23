@@ -13,6 +13,7 @@ import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.model.MicConfigModel
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
+import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.MicRoom.EMRoundStatus
 import com.zq.live.proto.MicRoom.EMUserRole
 import com.zq.live.proto.MicRoom.ERoomMatchStatus
@@ -128,6 +129,10 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
             l.addAll(expectRoundInfo!!.getPlayUsers())
         }
         return l
+    }
+
+    override fun getCanGiveGiftList(): List<PlayerInfoModel> {
+        return getInSeatPlayerInfoList()
     }
 
     /**

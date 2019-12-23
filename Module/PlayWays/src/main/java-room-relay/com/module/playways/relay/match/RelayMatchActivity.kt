@@ -27,6 +27,7 @@ import com.kingja.loadsir.core.LoadSir
 import com.module.ModuleServiceManager
 import com.module.RouterConstants
 import com.module.common.ICallback
+import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.relay.match.adapter.RelayRoomAdapter
@@ -135,7 +136,7 @@ class RelayMatchActivity : BaseActivity() {
 
         startMatch()
         startTimerRoom(0)
-        RelayRoomData.syncServerTs()
+        BaseRoomData.syncServerTs()
 
         val mLoadSir = LoadSir.Builder()
                 .addCallback(RelayEmptyRoomCallback())

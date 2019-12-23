@@ -803,7 +803,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioRecordResampleFilter.setOutFormat(format);
             mAudioRecordResampleFilter.setEnableLowLatency(false);
             // TODO: 非主播模式下, 需要用远端音频驱动录制
-            mRecordAudioMixer.setMainSinkPinIndex(mConfig.isAnchor() ? 0 : 1);
+            mRecordAudioMixer.setMainSinkPinIndex((mConfig.isAnchor() || !mConfig.isJoinChannelSuccess()) ? 0 : 1);
             mAudioSendSrcPin.connect(mRecordAudioMixer.getSinkPin(0));
             mAudioRemoteSrcPin.connect(mRecordAudioMixer.getSinkPin(1));
             mRecordAudioMixer.getSrcPin().connect(mAudioRecordResampleFilter.getSinkPin());
@@ -884,6 +884,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         MyLog.i(TAG, "destroy" + " from=" + from);
         if (!"force".equals(from)) {
             if (mInitFrom != null && !mInitFrom.equals(from)) {
+                MyLog.i(TAG, "mInitFrom="+mInitFrom+  " from=" + from +" cancel");
                 return;
             }
         }
@@ -1006,11 +1007,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                 if (mConfig.getChannelProfile() == Params.CHANNEL_TYPE_LIVE_BROADCASTING) {
                     mConfig.setAnchor(isAnchor);
                     mAgoraRTCAdapter.setClientRole(isAnchor);
-                    if(isAnchor){
+                    if (isAnchor) {
                         mCustomHandlerThread.removeMessage(MSG_ROLE_CHANGE_TIMEOUT);
                         Message msg = mCustomHandlerThread.obtainMessage();
                         msg.what = MSG_ROLE_CHANGE_TIMEOUT;
-                        mCustomHandlerThread.sendMessageDelayed(msg,3000);
+                        mCustomHandlerThread.sendMessageDelayed(msg, 3000);
                     }
                 }
                 joinRoomInner(roomid, userId, token);
@@ -1389,8 +1390,6 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new LogRunnable("setAudioEffectStyle") {
                 @Override
                 public void realRun() {
-                    //Params.AudioEffect styleEnum = Params.AudioEffect.none;//TODO 产品讨论结构先把混响都关了
-
                     doSetAudioEffect(styleEnum, false);
                 }
             });
@@ -1636,7 +1635,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private void tryPlayPendingMixingMusic(String from) {
         MyLog.i(TAG, "tryPlayPengdingMixingMusic" + " from=" + from);
-        if(mCustomHandlerThread!=null){
+        if (mCustomHandlerThread != null) {
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {
@@ -1755,7 +1754,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                     @Override
                     public void accept(Long aLong) throws Exception {
                         int currentPosition = getAudioMixingCurrentPosition();
-                        MyLog.i(TAG, "PlayTimeListener accept timerTs=" + aLong + " currentPosition=" + currentPosition);
+                        MyLog.d(TAG, "PlayTimeListener accept timerTs=" + aLong + " currentPosition=" + currentPosition);
                         mConfig.setCurrentMusicTs(currentPosition);
                         mConfig.setRecordCurrentMusicTsTs(System.currentTimeMillis());
                         if (duration < 0) {
@@ -2046,9 +2045,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                 } else {
                     EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_RECORD_START);
                     EventBus.getDefault().post(engineEvent);
-                    if (mConfig.isUseExternalAudioRecord() || recordHumanVoice) {
+                    if (mConfig.isUseExternalAudioRecord() || mConfig.isUseExternalAudio() || recordHumanVoice) {
                         // 未加入房间时需要先开启音频采集
-                        if (mConfig.isUseExternalAudioRecord()) {
+                        if (mConfig.isUseExternalAudio()) {
                             if (!mConfig.isJoinChannelSuccess() && mAudioCapture != null) {
                                 mAudioCapture.start();
                             }

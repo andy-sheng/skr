@@ -69,7 +69,10 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
     }
 
     public void buyGift(BaseGift baseGift, long roomId, int seq, UserInfoModel userInfoModel, int scene) {
-        MyLog.w(TAG, "buyGift" + " giftId=" + baseGift.getGiftID() + " roomId=" + roomId + " userID=" + userInfoModel.getUserId());
+        if(baseGift.getGiftID()>1){
+            // 小于等于1是免费的玫瑰花 不刷了
+            MyLog.w(TAG, "buyGift" + " giftId=" + baseGift.getGiftID() + " roomId=" + roomId + " userID=" + userInfoModel.getUserId());
+        }
 
         final int[] continueCount = new int[1];
         final long[] continueId = new long[1];

@@ -75,16 +75,19 @@ class PartyBottomWidgetAnimationController(internal var mF: PartyRoomActivity) {
             mF.mBottomContainerView.settingOpen = false
             mF.mPartySettingView?.setVisibility(View.GONE)
             mF.mPartyEmojiView?.setVisibility(View.VISIBLE)
+            mF.mPartyEmojiView?.bindData()
         } else if (openType == OPEN_TYPE_SETTING) {
             mF.mBottomContainerView.settingOpen = true
             mF.mBottomContainerView.emojiOpen = false
             mF.mPartyEmojiView?.setVisibility(View.GONE)
             mF.mPartySettingView?.setVisibility(View.VISIBLE)
+            mF.mPartySettingView?.bindData()
         }
     }
 
     private fun fillView(viewList: MutableList<View?>) {
         viewList.add(mF.mBottomContainerView)
+        viewList.add(mF.mRightOpView)
     }
 
     /**

@@ -22,6 +22,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
     public static int MIC_MODE = 3;              //排麦房模式 和 一唱到底保持一致就好
     public static int RACE_MODE = 4;             //排位赛模式 和 一唱到底保持一致就好
     public static int RELAY_MODE = 5;            //接唱模式 和 一唱到底保持一致就好
+    public static int PARTY_MODE = 6;            //剧场模式 和一唱到底保持一致就好
 
     Boolean mHasFooterBack = false;     //是否含底部搜索反馈
 
@@ -53,7 +54,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == SEARCH_ITEM_TYPE) {
-            if (mode == GRAB_MODE || mode == DOUBLE_MODE || mode == MIC_MODE || mode == RACE_MODE || mode == RELAY_MODE) {
+            if (mode == GRAB_MODE || mode == DOUBLE_MODE || mode == MIC_MODE || mode == RACE_MODE || mode == RELAY_MODE || mode== PARTY_MODE) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_search_footer_view, parent, false);
                 SongSearchFooter songSearchFooter = new SongSearchFooter(view, mRecyclerOnItemClickListener);
                 return songSearchFooter;
@@ -63,7 +64,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
                 return songSearchFooter;
             }
         } else {
-            if (mode == GRAB_MODE || mode == MIC_MODE || mode == RACE_MODE || mode == RELAY_MODE) {
+            if (mode == GRAB_MODE || mode == MIC_MODE || mode == RACE_MODE || mode == RELAY_MODE || mode == PARTY_MODE) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_view_holder_item, parent, false);
                 GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mRecyclerOnItemClickListener, isOwner);
                 return viewHolder;

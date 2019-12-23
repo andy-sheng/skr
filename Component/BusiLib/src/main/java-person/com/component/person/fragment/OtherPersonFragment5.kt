@@ -30,6 +30,7 @@ import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -53,6 +54,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.module.ModuleServiceManager
 import com.module.RouterConstants
+import com.module.club.IClubModuleService
 import com.module.feeds.IPersonFeedsWall
 import com.module.home.IHomeService
 import com.module.post.IPersonPostsWall
@@ -91,6 +93,8 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mLevelBg: ImageView
     lateinit var mLevelDesc: TextView
     lateinit var mGuardView: GuardView
+    lateinit var mPersonClubName: TextView
+
     lateinit var mQinmiTv: TextView
     lateinit var mNameTv: ExTextView
     lateinit var mBusinessIv: ImageView
@@ -129,6 +133,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     private var mBusinessCardDialogView: BusinessCardDialogView? = null
 
     internal var srollDivider = U.getDisplayUtils().dip2px(150f)  // 滑到分界线的时候
+    internal var bottomTopMargin = 0  // 底部背景距离顶部距离的初始值
 
     var uploadHomePageFlag = false
 
@@ -164,6 +169,10 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
         }
         SinglePlayer.addCallback(playTag, playCallback!!)
+
+        // 得到底部距离顶部的初始值
+        val bottomParams = mBottomBg.layoutParams as RelativeLayout.LayoutParams
+        bottomTopMargin = bottomParams.topMargin
     }
 
     private fun bindData() {
@@ -405,6 +414,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mLevelBg = rootView.findViewById(R.id.level_bg)
         mLevelDesc = rootView.findViewById(R.id.level_desc)
         mGuardView = rootView.findViewById(R.id.guard_view)
+        mPersonClubName = rootView.findViewById(R.id.person_club_name)
 
         mQinmiTv = rootView.findViewById(R.id.qinmi_tv)
         mNameTv = rootView.findViewById(R.id.name_tv)
@@ -477,6 +487,11 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         })
 
         mQinmiTv.setDebounceViewClickListener { showQinmiTips() }
+
+        mPersonClubName.setDebounceViewClickListener {
+            val clubServices = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
+            clubServices.tryGoClubHomePage(mUserInfoModel.clubInfo?.club?.clubID ?: 0)
+        }
     }
 
 //    private fun setAppBarCanScroll(canScroll: Boolean) {
@@ -782,6 +797,23 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
             mHonorIv.visibility = View.VISIBLE
         } else {
             mHonorIv.visibility = View.GONE
+        }
+
+
+        if (!TextUtils.isEmpty(model.clubInfo?.club?.name)) {
+            mPersonClubName.visibility = View.VISIBLE
+            mPersonClubName.text = "【${model.clubInfo?.club?.name}】"
+            // 适配下背景
+            val bottomParams = mBottomBg.layoutParams as RelativeLayout.LayoutParams
+            bottomParams.topMargin = bottomTopMargin + 36.dp()
+            mBottomBg.layoutParams = bottomParams
+        } else {
+            mPersonClubName.visibility = View.GONE
+            // 适配下背景
+            val bottomParams = mBottomBg.layoutParams as RelativeLayout.LayoutParams
+            bottomParams.topMargin = bottomTopMargin
+            mBottomBg.layoutParams = bottomParams
+
         }
     }
 

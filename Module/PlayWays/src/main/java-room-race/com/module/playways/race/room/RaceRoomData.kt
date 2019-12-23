@@ -10,6 +10,7 @@ import com.module.playways.race.room.event.RaceRoundChangeEvent
 import com.module.playways.race.room.model.FakeUserInfoModel
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
+import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import org.greenrobot.eventbus.EventBus
@@ -140,6 +141,10 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
     override fun getInSeatPlayerInfoList(): List<RacePlayerInfoModel> {
         return getPlayerAndWaiterInfoList()
+    }
+
+    override fun getCanGiveGiftList(): List<PlayerInfoModel> {
+        return getInSeatPlayerInfoList()
     }
 
 //    fun getChoiceInfoById(choiceID: Int): SongModel? {

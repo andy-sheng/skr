@@ -1,5 +1,6 @@
 package com.module.playways.room.room.comment
 
+//import com.module.playways.voice.activity.VoiceRoomActivity
 import android.content.Context
 import android.os.Handler
 import android.os.Message
@@ -17,10 +18,10 @@ import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
 import com.common.player.PlayerCallbackAdapter
 import com.common.utils.U
-import com.zq.mediaengine.kit.ZqEngineKit
 import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.grab.room.event.SwitchRoomEvent
+import com.module.playways.party.room.PartyRoomData
 import com.module.playways.room.msg.event.AudioMsgEvent
 import com.module.playways.room.msg.event.CommentMsgEvent
 import com.module.playways.room.msg.event.DynamicEmojiMsgEvent
@@ -33,7 +34,8 @@ import com.module.playways.room.room.comment.model.CommentTextModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.module.playways.songmanager.event.MuteAllVoiceEvent
 import com.module.playways.view.EdgeTransparentView
-//import com.module.playways.voice.activity.VoiceRoomActivity
+import com.zq.live.proto.Common.EClubMemberRoleType
+import com.zq.mediaengine.kit.ZqEngineKit
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -253,8 +255,49 @@ class CommentView : EdgeTransparentView {
         if (event.type == CommentMsgEvent.MSG_TYPE_SEND) {
             setOnBottom("CommentMsgEvent", true)
         }
-        val commentTextModel = CommentTextModel.parseFromEvent(event, roomData)
-        processCommentModel(commentTextModel)
+
+        val roomData = this.roomData
+        if (roomData != null && roomData is PartyRoomData) {
+            val partyPlayerInfoModel = roomData.getPlayerInfoById(event.info.sender.userID)
+            val commentTextModel = CommentTextModel.parseFromEvent(event, roomData)
+            when {
+                partyPlayerInfoModel != null -> {
+                    when {
+                        partyPlayerInfoModel.isHost() -> commentTextModel.nameBuilder?.insert(0, "【主持人】")
+                        partyPlayerInfoModel.isAdmin() -> commentTextModel.nameBuilder?.insert(0, "【管理员】")
+                        else -> {
+                            if (event.info.sender?.hasClubInfo() == true) {
+                                commentTextModel.nameBuilder?.insert(0, getIdentityName(event.info.sender.clubInfo?.roleType?.value
+                                        ?: 0))
+                            }
+                        }
+                    }
+                    processCommentModel(commentTextModel)
+                }
+                roomData.isClubHome() -> {
+                    if (event.info.sender?.clubInfo?.clubID == roomData.clubInfo?.clubID && event.info.sender?.hasClubInfo() == true) {
+                        commentTextModel.nameBuilder?.insert(0, getIdentityName(event.info.sender.clubInfo?.roleType?.value
+                                ?: 0))
+                    }
+                    processCommentModel(commentTextModel)
+                }
+                else -> processCommentModel(commentTextModel)
+            }
+        } else {
+            val commentTextModel = CommentTextModel.parseFromEvent(event, roomData)
+            processCommentModel(commentTextModel)
+        }
+    }
+
+    private fun getIdentityName(roleType: Int): String {
+        when (roleType) {
+            EClubMemberRoleType.ECMRT_Invalid.value -> return ""
+            EClubMemberRoleType.ECMRT_Founder.value -> return "【族长】"
+            EClubMemberRoleType.ECMRT_CoFounder.value -> return "【副族长】"
+            EClubMemberRoleType.ECMRT_Hostman.value -> return "【家族主持人】"
+            EClubMemberRoleType.ECMRT_Common.value -> return "【族员】"
+            else -> return ""
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

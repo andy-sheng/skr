@@ -24,17 +24,6 @@ import org.greenrobot.eventbus.EventBus
 class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
     companion object {
         var MUSIC_PUBLISH_VOLUME = 85
-        var shiftTsForRelay = 0
-        fun syncServerTs() {
-            var serverApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
-            GlobalScope.launch {
-                var t1 = System.currentTimeMillis()
-                val result = subscribe { serverApi.timestamp(0) }
-                var t2 = System.currentTimeMillis()
-                var serverTs = result.data.getIntValue("timestamp")
-                shiftTsForRelay = (t1 + (t2 - t1) / 2 - serverTs).toInt()
-            }
-        }
     }
 
     override fun getPlayerAndWaiterInfoList(): List<PlayerInfoModel> {
@@ -43,6 +32,10 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
 
     override fun getInSeatPlayerInfoList(): List<PlayerInfoModel> {
         return listOf(peerUser) as List<PlayerInfoModel>
+    }
+
+    override fun getCanGiveGiftList(): List<PlayerInfoModel> {
+        return getInSeatPlayerInfoList()
     }
 
     var lastSingerID: Int? = null

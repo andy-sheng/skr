@@ -33,7 +33,6 @@ public interface RouterConstants {
     String ACTIVITY_INCOME = "/home/InComeActivity";
     String ACTIVITY_WITH_DRAW = "/home/WithDrawActivity";
     String ACTIVITY_SMS_AUTH = "/home/SmsAuthActivity";
-    String ACTIVITY_MUSIC_TEST = "/home/MusicTestActivity";
     String ACTIVITY_SETTING = "/home/SettingActivity";
     String ACTIVITY_RANKED = "/home/RankedActivity";
 
@@ -104,6 +103,7 @@ public interface RouterConstants {
     String SERVICE_POSTS = "/posts/service1";
     String SERVICE_GRAB_SERVICE = "/game/grab_service1";
     String SERVICE_DOUBLE_PLAY = "/game/double_play_service";
+    String SERVICE_CLUB = "/club/service1";
 
     String ACTIVITY_FOR_TEST = "/test/ForTestActivity";
 
@@ -141,4 +141,11 @@ public interface RouterConstants {
     String ACTIVITY_CREATE_PARTY_ROOM = "/party/PartyRoomCreateActivity";
     String ACTIVITY_PARTY_ROOM = "/party/PartyRoomActivity";
     String ACTIVITY_PARTY_SELECT_GAME = "/party/PartySelectGameActivity";
+
+
+    String ACTIVITY_CREATE_CLUB = "/club/CreateClubActivity";
+    String ACTIVITY_LIST_CLUB = "/club/ClubListActivity";
+    String ACTIVITY_LIST_MEMBER = "/club/ClubMemberListActivity";
+    String ACTIVITY_LIST_APPLY_CLUB = "/club/ClubApplyListActivity";
+    String ACTIVITY_LIST_CLUB_RANK = "/club/ClubRankListActivity";
 }

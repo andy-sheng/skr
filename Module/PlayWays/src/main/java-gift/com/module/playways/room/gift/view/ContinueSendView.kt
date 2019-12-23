@@ -32,7 +32,10 @@ class ContinueSendView : FrameLayout, IContinueSendView {
 
     enum class EGameScene(val scene: Int) {
         GS_Stand(0),
-        GS_Race(1);
+        GS_Race(1),
+        GS_Mic(2), // 排麦房送礼
+        GS_Relay(3), // 双人接唱房送礼
+        GS_Party(4); // 小剧场送礼
 
         val value: Int
             get() = scene

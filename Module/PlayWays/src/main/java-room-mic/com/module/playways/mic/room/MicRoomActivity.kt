@@ -614,7 +614,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mGiftPanelView = findViewById<View>(R.id.gift_panel_view) as GiftPanelView
         mGiftPanelView.setRoomData(mRoomData)
         mContinueSendView = findViewById<View>(R.id.continue_send_view) as ContinueSendView
-        mContinueSendView.mScene = ContinueSendView.EGameScene.GS_Race
+        mContinueSendView.mScene = ContinueSendView.EGameScene.GS_Mic
         mContinueSendView.setRoomData(mRoomData)
         mContinueSendView.setObserver(object : ContinueSendView.OnVisibleStateListener {
             override fun onVisible(isVisible: Boolean) {
@@ -758,7 +758,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicWantInviteEvent) {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
-                .withInt("from", InviteFriendFragment2.FROM_MIC_ROOM)
+                .withInt("from", GameModeType.GAME_MODE_MIC)
                 .withInt("roomId", mRoomData!!.gameId)
                 .navigation()
     }

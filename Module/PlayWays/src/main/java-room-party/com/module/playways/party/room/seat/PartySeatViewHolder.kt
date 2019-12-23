@@ -1,21 +1,29 @@
 package com.module.playways.party.room.seat
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.support.constraint.Group
 import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
 import android.view.View
+import android.view.animation.CycleInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
+import com.common.image.fresco.FrescoWorker
+import com.common.image.model.ImageFactory
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.component.busilib.view.SpeakingTipsAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.party.room.model.PartyActorInfoModel
+import com.module.playways.party.room.model.PartyEmojiInfoModel
 import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.ESeatStatus
 
@@ -28,13 +36,16 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
     private val muteArea: Group = item.findViewById(R.id.mute_area)
     private val muteBg: ExImageView = item.findViewById(R.id.mute_bg)
     private val muteIv: ImageView = item.findViewById(R.id.mute_iv)
+    private val speakerAnimationIv: SpeakingTipsAnimationView = item.findViewById(R.id.speaker_animation_iv)
+
     private val emojiSdv: SimpleDraweeView = item.findViewById(R.id.emoji_sdv)
 
+    var animation: ObjectAnimator? = null
     var mModel: PartyActorInfoModel? = null
     var mPos: Int = -1
 
     init {
-        item.setDebounceViewClickListener {
+        avatarSdv.setDebounceViewClickListener {
             listener?.onClickItem(mPos, mModel)
         }
     }
@@ -42,7 +53,6 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
     fun bindData(position: Int, model: PartyActorInfoModel?) {
         this.mModel = model
         this.mPos = position
-
 
         AvatarUtils.loadAvatarByUrl(avatarSdv,
                 AvatarUtils.newParamsBuilder(model?.player?.userInfo?.avatar)
@@ -53,18 +63,47 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
         nameTv.text = "${model?.player?.userInfo?.nicknameRemark}"
         refreshHot()
         refreshMute()
+        stopSpeakAnimation()
     }
 
     fun refreshMute() {
         if (mModel?.seat?.micStatus == EMicStatus.MS_CLOSE.value) {
             muteArea.visibility = View.VISIBLE
         } else {
+            stopSpeakAnimation()
             muteArea.visibility = View.GONE
         }
     }
 
     fun refreshHot() {
-        hotTv.text = "{mModel?.player?.popularity?:0}"
+        hotTv.text = "${mModel?.player?.popularity ?: 0}"
+    }
+
+    fun playSpeakAnimation() {
+        stopSpeakAnimation()
+        speakerAnimationIv.show(1000)
+    }
+
+    fun stopSpeakAnimation() {
+        speakerAnimationIv.hide()
+    }
+
+    fun playEmojiAnimation(model: PartyEmojiInfoModel) {
+        emojiSdv.visibility = View.VISIBLE
+        FrescoWorker.loadImage(emojiSdv, ImageFactory.newPathImage(model.bigEmojiURL)
+                .build())
+        animation?.removeAllListeners()
+        animation?.cancel()
+        animation = ObjectAnimator.ofFloat(emojiSdv, View.TRANSLATION_Y, -10.dp().toFloat(), 0f)
+        animation?.interpolator = CycleInterpolator(3f)
+        animation?.duration = 2000
+        animation?.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?) {
+                super.onAnimationEnd(animation)
+                emojiSdv.visibility = View.GONE
+            }
+        })
+        animation?.start()
     }
 }
 
@@ -79,7 +118,7 @@ class EmptySeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) 
     var mModel: PartyActorInfoModel? = null
 
     init {
-        item.setDebounceViewClickListener {
+        emptyBg.setDebounceViewClickListener {
             listener?.onClickItem(mPos, mModel)
         }
     }

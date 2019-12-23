@@ -27,9 +27,9 @@ open class ExConstraintLayout(context: Context, attrs: AttributeSet?, defStyleAt
 
     private var mLifecycleSubject: BehaviorSubject<ViewEvent>? = null
 
-    constructor(context: Context) : this(context, null, 0) {}
+    constructor(context: Context) : this(context, null, 0)
 
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0) {}
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     init {
         attrs?.let {

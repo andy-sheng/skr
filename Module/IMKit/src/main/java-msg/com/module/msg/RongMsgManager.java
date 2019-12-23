@@ -23,9 +23,9 @@ import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
+import com.component.notification.PartyPeerAccStatusEvent;
 import com.module.common.ICallback;
 import com.module.msg.activity.ConversationActivity;
-import com.module.msg.custom.MyGIFMessageItemProvider;
 import com.module.msg.custom.MyPrivateConversationProvider;
 import com.module.msg.listener.MyConversationClickListener;
 import com.module.msg.model.BroadcastRoomMsg;
@@ -51,13 +51,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
+import io.rong.common.rlog.RLog;
 import io.rong.imkit.DefaultExtensionModule;
 import io.rong.imkit.IExtensionModule;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.manager.IUnReadMessageObserver;
-import io.rong.imkit.widget.provider.PrivateConversationProvider;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -296,6 +296,13 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     event.date = jsonObject.getString("date");
                     event.extra = jsonObject.getString("extra");
                     EventBus.getDefault().post(event);
+                }else if(specailOpMsg.getMessageType() == 3){
+                    JSONObject jsonObject = JSON.parseObject(specailOpMsg.getContentJsonStr());
+                    PartyPeerAccStatusEvent event = new PartyPeerAccStatusEvent();
+                    event.setUserID(jsonObject.getIntValue("userID"));
+                    event.setRoundSeq(jsonObject.getIntValue("roundSeq"));
+                    event.setAccLoadingOk(jsonObject.getBooleanValue("accLoadingOk"));
+                    EventBus.getDefault().post(event);
                 }
             }
             // TODO: 2019/5/19  收到消息是否处理完成，true 表示自己处理铃声和后台通知，false 走融云默认处理方式。
@@ -461,8 +468,13 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             } else {
                 rongKey = "e5t4ouvpec57a";
             }
-            RongIM.getInstance().disconnect();
+            if(MyLog.isDebugLogOpen()){
 
+            }else{
+                RLog.setLogLevel(RLog.I);
+            }
+
+            RongIM.getInstance().disconnect();
             PushConfig config = new PushConfig.Builder()
                     .enableHWPush(true)  // 配置华为推送
                     .enableMiPush("2882303761517932750", "5701793259750")

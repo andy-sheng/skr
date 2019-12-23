@@ -91,7 +91,42 @@ public enum EPartyRoomMsgType implements WireEnum {
   /**
    * 发送表情
    */
-  PRT_DYNAMIC_EMOJI(25);
+  PRT_DYNAMIC_EMOJI(25),
+
+  /**
+   * 游戏结束
+   */
+  PRT_GAME_OVER(26),
+
+  /**
+   * 修改房间主题
+   */
+  PRT_CHANGE_ROOM_TOPIC(27),
+
+  /**
+   * 修改房间进入权限
+   */
+  PRT_CHANGE_ROOM_ENTER_PERMISSION(28),
+
+  /**
+   * 更新人气值
+   */
+  PRT_UPDATE_POPULARITY(29),
+
+  /**
+   * 家族派对房游戏停止
+   */
+  PRT_CLUB_GAME_STOP(30),
+
+  /**
+   * 家族派对房游戏新增主持人
+   */
+  PRT_CLUB_BECOME_HOST(31),
+
+  /**
+   * 家族派对房游戏更改主持人
+   */
+  PRT_CLUB_CHANGE_HOST(32);
 
   public static final ProtoAdapter<EPartyRoomMsgType> ADAPTER = new ProtoAdapter_EPartyRoomMsgType();
 
@@ -123,6 +158,13 @@ public enum EPartyRoomMsgType implements WireEnum {
       case 23: return PRT_EXIT_GAME;
       case 24: return PRT_SYNC;
       case 25: return PRT_DYNAMIC_EMOJI;
+      case 26: return PRT_GAME_OVER;
+      case 27: return PRT_CHANGE_ROOM_TOPIC;
+      case 28: return PRT_CHANGE_ROOM_ENTER_PERMISSION;
+      case 29: return PRT_UPDATE_POPULARITY;
+      case 30: return PRT_CLUB_GAME_STOP;
+      case 31: return PRT_CLUB_BECOME_HOST;
+      case 32: return PRT_CLUB_CHANGE_HOST;
       default: return null;
     }
   }

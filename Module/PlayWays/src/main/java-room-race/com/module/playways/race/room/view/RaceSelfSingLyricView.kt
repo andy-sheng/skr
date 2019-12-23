@@ -103,7 +103,7 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
         configParams.authorName = curSong.uploaderName
         mLyricAndAccMatchManager!!.setArgs(configParams)
         val finalCurSong = curSong
-        mLyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener {
+        mLyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener() {
 
             override fun onLyricParseSuccess(reader: LyricsReader) {
                 mSvlyric.visibility = View.GONE

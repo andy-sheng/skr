@@ -87,6 +87,16 @@ public interface SongSelectServerApi {
     @GET("/v1/playbook/search-magpie-item")
     Observable<ApiResult> searchDoubleMusicItems(@Query("keyword") String keyword);
 
+
+    /**
+     * 剧场搜歌
+     *
+     * @param keyword
+     * @return
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partygame/search")
+    Observable<ApiResult> searchPartyMusicItems(@Query("keyword") String keyword);
+
     /**
      * 排麦房搜歌
      *

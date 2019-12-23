@@ -13,255 +13,353 @@ java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-de
 */
 
 // 接唱房信令消息
-message PartyRoomMsg
-{
-    sint64 timeMs             = 1; //房间消息产生时间，单位毫秒
+message PartyRoomMsg {
+    sint64 timeMs = 1; //房间消息产生时间，单位毫秒
     EPartyRoomMsgType msgType = 2; //消息类型
-    uint32 roomID             = 3; //房间ID
+    uint32 roomID = 3; //房间ID
 
-    PJoinNoticeMsg pJoinNoticeMsg           = 10; //加入游戏通知消息
-    PFixRoomNoticeMsg pFixRoomNoticeMsg     = 11; //修改公告
-    PSetRoomAdminMsg pSetRoomAdminMsg       = 12; //设置管理员
+    PJoinNoticeMsg pJoinNoticeMsg = 10; //加入游戏通知消息
+    PFixRoomNoticeMsg pFixRoomNoticeMsg = 11; //修改公告
+    PSetRoomAdminMsg pSetRoomAdminMsg = 12; //设置管理员
     PSetAllMemberMicMsg pSetAllMemberMicMsg = 13; //全员禁麦、全员解除禁麦
-    PSetUserMicMsg pSetUserMicMsg           = 14; //用户开闭麦
-    PSetSeatStatusMsg pSetSeatStatusMsg     = 15; //设置席位状态：关闭席位、打开席位
-    PApplyForGuest pApplyForGuest           = 16; //申请嘉宾
-    PGetSeatMsg pGetSeatMsg                 = 17; //获得席位:上麦
-    PBackSeatMsg pBackSeatMsg               = 18; //还回席位:下麦
-    PInviteUserMsg pInviteUserMsg           = 19; //邀请用户
-    PChangeSeatMsg pChangeSeatMsg           = 20; //换座位
-    PKickoutUserMsg pKickoutUserMsg         = 21; //踢人
-    PNextRoundMsg pNextRoundMsg             = 22; //加载下个轮次
-    PExitGameMsg pPExitGameMsg              = 23; //用户退出房间
-    PSyncMsg pSyncMsg                       = 24; //同步状态
-    PDynamicEmojiMsg pDynamicEmojiMsg       = 25; //发送表情
+    PSetUserMicMsg pSetUserMicMsg = 14; //用户开闭麦
+    PSetSeatStatusMsg pSetSeatStatusMsg = 15; //设置席位状态：关闭席位、打开席位
+    PApplyForGuest pApplyForGuest = 16; //申请嘉宾
 
-    //TODO: 发送表情
+    PGetSeatMsg pGetSeatMsg = 17; //获得席位:上麦
+    PBackSeatMsg pBackSeatMsg = 18; //还回席位:下麦
+
+
+    PInviteUserMsg pInviteUserMsg = 19; //邀请用户
+    PChangeSeatMsg pChangeSeatMsg = 20; //换座位
+
+
+    PKickoutUserMsg pKickoutUserMsg = 21; //踢人
+    PNextRoundMsg pNextRoundMsg = 22; //加载下个轮次
+    PExitGameMsg pPExitGameMsg = 23; //用户退出房间
+    PSyncMsg pSyncMsg = 24; //同步状态
+    PDynamicEmojiMsg pDynamicEmojiMsg = 25; //发送表情
+    PGameOverMsg pGameOverMsg = 26; //游戏结束
+    PChangeRoomTopicMsg pChangeRoomTopicMsg                     = 27; //修改房间主题
+    PChangeRoomEnterPermissionMsg pChangeRoomEnterPermissionMsg = 28; //修改房间进入权限
+    PUpdatePopularityMsg pUpdatePopularityMsg                   = 29; //更新人气值
+    PClubGameStopMsg pClubGameStopMsg                           = 30; //家族派对房游戏停止
+    PClubBecomeHostMsg pClubBecomeHostMsg                       = 31; //家族派对房游戏新增主持人
+    PClubChangeHostMsg pClubChangeHostMsg                       = 32; //家族派对房游戏移交主持人
 }
 
 enum EPartyRoomMsgType {
-    PRT_UNKNOWN            = 0; //未知消息
-    PRT_JOIN_NOTICE        = 10; //加入游戏通知消息
-    PRT_FIX_ROOM_NOTICE    = 11; //修改公告
-    PRT_SET_ROOM_ADMIN     = 12; //设置管理员
+    PRT_UNKNOWN = 0; //未知消息
+    PRT_JOIN_NOTICE = 10; //加入游戏通知消息
+    PRT_FIX_ROOM_NOTICE = 11; //修改公告
+    PRT_SET_ROOM_ADMIN = 12; //设置管理员
     PRT_SET_ALL_MEMBER_MIC = 13; //全员禁麦、全员开麦
-    PRT_SET_USER_MIC       = 14; //用户禁麦、解除禁麦
-    PRT_SET_SEAT_STATUS    = 15; //设置席位状态：关闭席位、打开席位
-    PRT_APPLY_FOR_GUEST    = 16; //申请嘉宾
-    PRT_GET_SEAT           = 17; //获得席位:上麦
-    PRT_BACK_SEAT          = 18; //还回席位:下麦
-    PRT_INVITE_USER        = 19; //邀请用户
-    PRT_CHANGE_SEAT        = 20; //换座位
-    PRT_KICK_OUT_USER      = 21; //踢人
-    PRT_NEXT_ROUND         = 22; //加载下个轮次
-    PRT_EXIT_GAME          = 23; //用户退出房间
-    PRT_SYNC               = 24; //同步状态
-    PRT_DYNAMIC_EMOJI      = 25; //发送表情
+    PRT_SET_USER_MIC = 14; //用户禁麦、解除禁麦
+    PRT_SET_SEAT_STATUS = 15; //设置席位状态：关闭席位、打开席位
+    PRT_APPLY_FOR_GUEST = 16; //申请嘉宾
+    PRT_GET_SEAT = 17; //获得席位:上麦
+    PRT_BACK_SEAT = 18; //还回席位:下麦
+    PRT_INVITE_USER = 19; //邀请用户
+    PRT_CHANGE_SEAT = 20; //换座位
+    PRT_KICK_OUT_USER = 21; //踢人
+    PRT_NEXT_ROUND = 22; //加载下个轮次
+    PRT_EXIT_GAME = 23; //用户退出房间
+    PRT_SYNC = 24; //同步状态
+    PRT_DYNAMIC_EMOJI = 25; //发送表情
+    PRT_GAME_OVER = 26; //游戏结束
+    PRT_CHANGE_ROOM_TOPIC            = 27; //修改房间主题
+    PRT_CHANGE_ROOM_ENTER_PERMISSION = 28; //修改房间进入权限
+    PRT_UPDATE_POPULARITY            = 29; //更新人气值
+    PRT_CLUB_GAME_STOP               = 30; //家族派对房游戏停止
+        PRT_CLUB_BECOME_HOST             = 31; //家族派对房游戏新增主持人
+        PRT_CLUB_CHANGE_HOST             = 32; //家族派对房游戏更改主持人
+
 }
 
-message PDynamicEmojiMsg
+enum EEnterPermissionType {
+    EPT_UNKNOWNS = 0; //
+    EPT_INVITE   = 1; //
+    EPT_ALL      = 2; //
+}
+
+message PClubGameStopMsg
 {
-    uint32 id            = 1; //表情包id
+    sint64 gameStopTimeMs           = 1; //家族房游戏停止时间戳
+    EPClubGameStopReason stopReason = 2; //游戏停止原因
+}
+
+enum EPClubGameStopReason {
+    PCGSR_UNKNOWN = 0; //未知
+    PCGSR_NO_HOST = 1; //不存在主持人,停止游戏
+}
+
+message PClubBecomeHostMsg
+{
+    POnlineInfo user = 1; //新增的主持人信息
+}
+
+message PClubChangeHostMsg
+{
+    POnlineInfo fromUser           = 1; //主持身份移交人
+    POnlineInfo toUser             = 2; //主持身份接收人
+    EClubChangeHostType changeType = 3; //更改方式
+}
+
+enum EClubChangeHostType {
+    ECCHT_UNKNOWN = 0; //未知
+    ECCHT_GIVE    = 1; //主动移交主持人
+    ECCHT_TAKE    = 2; //被动获取主持人
+}
+
+message PUpdatePopularityMsg
+{
+    uint32 userID     = 1; //用户id
+    uint32 popularity = 2; //最新的人气值
+}
+
+
+message PChangeRoomEnterPermissionMsg
+{
+    EEnterPermissionType permission = 1; //新的权限
+}
+
+message PChangeRoomTopicMsg
+{
+    string newTopic = 1; //新的房间主题
+}
+
+message PGameOverMsg {
+    sint64 gameOverTimeMs = 1; //本轮次结束的毫秒时间戳
+    EPGameOverReason overReason = 2; //游戏结束原因
+}
+
+enum EPGameOverReason {
+    POR_UNKNOWN = 0; //未知
+    POR_NO_HOST = 1; //不存在主持人,结束游戏
+}
+
+message PDynamicEmojiMsg {
+    PDynamicEmoji emoji = 1; //表情
+    POnlineInfo user = 2; //发送用户信息
+}
+
+message PDynamicEmoji {
+    uint32 id = 1; //表情包id
     string smallEmojiURL = 2; //小图
-    string bigEmojiURL   = 3; //大图
-    POnlineInfo user     = 4; //发送用户信息
+    string bigEmojiURL = 3; //大图
+    string desc = 4; //描述
 }
 
-message PGetSeatMsg
-{
-    POnlineInfo user  = 1; //用户信息
+message PGetSeatMsg {
+    POnlineInfo user = 1; //用户信息
     SeatInfo seatInfo = 2; //座位信息
 }
 
-message PBackSeatMsg
-{
+message PBackSeatMsg {
     POnlineInfo user = 1; //用户信息
-    uint32 seatSeq   = 2; //座位顺序
+    uint32 seatSeq = 2; //座位顺序
+    POnlineInfo opUser = 3; //执行者
 }
 
-message PApplyForGuest
-{
-    POnlineInfo user    = 1; //用户信息
+message PApplyForGuest {
+    POnlineInfo user = 1; //用户信息
     uint32 applyUserCnt = 2; //申请人数
+    bool cancel         = 3; //是否取消申请
 }
 
-message PExitGameMsg
-{
-    POnlineInfo user     = 1; //用户信息
+message PExitGameMsg {
+    POnlineInfo user = 1; //用户信息
     uint32 onlineUserCnt = 2; //在线人数
-    uint32 applyUserCnt  = 3; //申请人数
+    uint32 applyUserCnt = 3; //申请人数
 }
 
-message PSyncMsg
-{
-    sint64 syncStatusTimeMs    = 1; //状态同步时的毫秒时间戳
-    sint64 passedTimeMs        = 2; //房间已经经历的毫秒数
-    uint32 onlineUserCnt       = 3; //在线人数
-    uint32 applyUserCnt        = 4; //申请人数
-    repeated SeatInfo seats    = 5; //座位最新信息
-    PRoundInfo currentRound    = 6; //当前结束轮次的信息
+message PSyncMsg {
+    sint64 syncStatusTimeMs = 1; //状态同步时的毫秒时间戳
+    sint64 passedTimeMs = 2; //房间已经经历的毫秒数
+    uint32 onlineUserCnt = 3; //在线人数
+    uint32 applyUserCnt = 4; //申请人数
+    repeated SeatInfo seats = 5; //座位最新信息
+    PRoundInfo currentRound = 6; //当前结束轮次的信息
     repeated POnlineInfo users = 7; //用户列表[主持人、管理员、嘉宾]
 }
 
-message PNextRoundMsg
-{
-    sint64 roundOverTimeMs  = 1; //本轮次结束的毫秒时间戳
+message PNextRoundMsg {
+    sint64 roundOverTimeMs = 1; //本轮次结束的毫秒时间戳
     PRoundInfo currentRound = 2; //当前结束轮次的信息
-    PRoundInfo nextRound    = 3; //下个加载轮次的信息
+    PRoundInfo nextRound = 3; //下个加载轮次的信息
 }
 
-message PRoundInfo
-{
-    uint32 roundSeq        = 1; //轮次序号
-    uint32 beginMs         = 2; //开始相对时间（相对于createdTimeMs时间）
-    uint32 endMs           = 3; //结束相对时间（相对于createdTimeMs时间）
-    EPRoundStatus status   = 4; //轮次状态
-    PGameItemInfo itemInfo = 5; //游戏信息
-    bool hasNextItem       = 6; //是否存在下一个游戏
+message PRoundInfo {
+    uint32 roundSeq          = 1; //轮次序号
+    uint32 beginMs           = 2; //开始相对时间（相对于createdTimeMs时间）
+    uint32 endMs             = 3; //结束相对时间（相对于createdTimeMs时间）
+    EPRoundStatus status     = 4; //轮次状态
+    PGameSceneInfo sceneInfo = 5; //场景信息
+    sint64 roundStartTimeMs  = 6; //轮次开始绝对时间
 }
 
 enum EPRoundStatus {
-    PRS_UNKNOWN   = 0; //轮次状态未知
-    PRS_WAITING   = 1; //等待阶段
+    PRS_UNKNOWN = 0; //轮次状态未知
+    PRS_WAITING = 1; //等待阶段
     PRS_PLAY_GAME = 2; //剧本游戏、题目游戏阶段
-    PRS_END       = 3; //轮次已结束
+    PRS_END = 3; //轮次已结束
 }
 
-message PGameItemInfo
+message PGameSceneInfo
 {
-    PGameRule gameRule     = 1; //游戏规则
-    EPGameType gameType    = 2; //游戏类型
-    PGamePlay play         = 3; //剧本类游戏数据
-    PGameQuestion question = 4; //问答类游戏数据
+    string sceneTag         = 1; //场景标识
+    PGameRule rule          = 2; //游戏规则
+    PPlayScene play         = 3; //剧本类游戏数据
+    PQuestionScene question = 4; //问答类游戏数据
+    PFreeScene free         = 5; //自由主持类游戏
+    PKTVScene ktv           = 6; //ktv唱歌类游戏
 }
 
-message PGameRule
+
+message PPlayScene
 {
-    uint32 ruleID   = 1; //游戏规则标识
-    string ruleName = 2; //游戏规则名称
-    string ruleDesc = 3; //游戏规则描述
+    PGamePlay palyInfo = 1;
 }
+
+message PQuestionScene
+{
+    PGameQuestion questionInfo = 1;
+    bool hasNextquestion       = 2; //是否存在下一个游戏
+    uint32 questionSeq         = 3; //题目序号
+}
+
+
+message PFreeScene
+{
+}
+
+message PKTVScene
+{
+    Common.MusicInfo music   = 1;
+    bool hasNextMusic = 2;
+    uint32 musicCnt   = 3;
+    uint32 userID     = 4; //演唱者id
+    uint32 singTimeMs = 5; //演唱时长
+}
+
+    message PGameRule
+    {
+        uint32 ruleID       = 1; //游戏规则标识
+        string ruleName     = 2; //游戏规则名称
+        string ruleDesc     = 3; //游戏规则描述
+        EPGameType ruleType = 4; //游戏类型
+    }
 
 enum EPGameType {
     PGT_Unknown  = 0; //未知场景
     PGT_Play     = 1; //剧本类游戏
     PGT_Question = 2; //题库类游戏
+    PGT_Free     = 3; //自由主持类游戏
+    PGT_KTV      = 4; //ktv唱歌类游戏
 }
 
-message PGameQuestion
-{
-    uint32 questionID           = 1; //问题标识
-    string questionContent      = 2; //问题内容
+
+message PGameQuestion {
+    uint32 questionID = 1; //问题标识
+    string questionContent = 2; //问题内容
     repeated string questionPic = 3; //问题图片
-    string answerContent        = 4; //问题答案
+    string answerContent = 4; //问题答案
 }
 
-message PGamePlay
-{
-    uint32 playID      = 1; //剧本标识
-    string playName    = 2; //剧本名称
+message PGamePlay {
+    uint32 playID = 1; //剧本标识
+    string playName = 2; //剧本名称
     string playContent = 3; //剧本内容
-    string playCard    = 4; //剧本手卡
+    string playCard = 4; //剧本手卡
 }
 
-message PKickoutUserMsg
-{
-    POnlineInfo kickUser     = 1; //被踢用户信息
+message PKickoutUserMsg {
+    POnlineInfo kickUser = 1; //被踢用户信息
     string kickResultContent = 2; //系统弹幕文案
-    POnlineInfo opUser       = 3; //执行者
+    POnlineInfo opUser = 3; //执行者
 }
 
-message SeatInfo
-{
-    uint32 seatSeq         = 1; //席位顺序
+message SeatInfo {
+    uint32 seatSeq = 1; //席位顺序
     ESeatStatus seatStatus = 2; //座位状态
-    uint32 userID          = 3; //发起邀请的用户详情
-    EMicStatus micStatus   = 4; //麦状态
+    uint32 userID = 3; //发起邀请的用户详情
+    EMicStatus micStatus = 4; //麦状态
 }
 
-message PChangeSeatMsg
-{
-    POnlineInfo user        = 1; //用户信息
+message PChangeSeatMsg {
+    POnlineInfo user = 1; //用户信息
     SeatInfo beforeSeatInfo = 2; //换前座位信息
-    SeatInfo afterSeatInfo  = 3; //换后座位信息
+    SeatInfo afterSeatInfo = 3; //换后座位信息
 }
 
-message PInviteUserMsg
-{
+message PInviteUserMsg {
     Common.UserInfo user = 1; //发起邀请的用户详情
     uint32 roomID = 2; //房间id
 }
 
-message POnlineInfo
-{
-    Common.UserInfo userInfo        = 1; //用户信息
+message POnlineInfo {
+    Common.UserInfo userInfo = 1; //用户信息
     repeated EPUserRole role = 2; //用户角色
-    uint32 popularity        = 3; //人气
+    uint32 popularity = 3; //人气
 }
 
 enum EPUserRole {
-    EPUR_UNKNOWN  = 0; //未知角色
-    EPUR_HOST     = 1; //主持人
-    EPUR_ADMIN    = 2; //管理员
-    EPUR_GUEST    = 3; //嘉宾
+    EPUR_UNKNOWN = 0; //未知角色
+    EPUR_HOST = 1; //主持人
+    EPUR_ADMIN = 2; //管理员
+    EPUR_GUEST = 3; //嘉宾
     EPUR_AUDIENCE = 4; //观众
 }
 
-message PJoinNoticeMsg
-{
-    POnlineInfo user  = 1; //加入用户
+message PJoinNoticeMsg {
+    POnlineInfo user = 1; //加入用户
     sint64 joinTimeMs = 2; //加入时间
-    SeatInfo seat     = 3; //以嘉宾身份进入时，占用席位信息;其他身份加入，此字段为空
+    SeatInfo seat = 3; //以嘉宾身份进入时，占用席位信息;其他身份加入，此字段为空
 }
 
-message PSetAllMemberMicMsg
-{
-    EMicStatus micStatus    = 1; //麦状态
-    POnlineInfo opUser      = 2; //执行者
+message PSetAllMemberMicMsg {
+    EMicStatus micStatus = 1; //麦状态
+    POnlineInfo opUser = 2; //执行者
     repeated SeatInfo seats = 3; //座位最新信息
 }
 
-message PFixRoomNoticeMsg
-{
+message PFixRoomNoticeMsg {
     string newRoomNotice = 1; //新的公告信息
 }
 
-message PSetRoomAdminMsg
-{
-    POnlineInfo user      = 1; //管理员信息
-    POnlineInfo opUser    = 2; //执行者信息
+message PSetRoomAdminMsg {
+    POnlineInfo user = 1; //管理员信息
+    POnlineInfo opUser = 2; //执行者信息
     ESetAdminType setType = 3; //设置类型
 }
 
-message PSetUserMicMsg
-{
-    uint32 userID        = 1; //用户id
-    uint32 seatSeq       = 2; //席位顺序
+message PSetUserMicMsg {
+    uint32 userID = 1; //用户id
+    uint32 seatSeq = 2; //席位顺序
     EMicStatus micStatus = 3; //麦状态
-    POnlineInfo opUser   = 4; //执行者
+    POnlineInfo opUser = 4; //执行者
 }
 
-message PSetSeatStatusMsg
-{
-    uint32 seatSeq         = 1; //座位序号
+message PSetSeatStatusMsg {
+    uint32 seatSeq = 1; //座位序号
     ESeatStatus seatStatus = 2; //座位状态
-    POnlineInfo opUser     = 3; //执行者
+    POnlineInfo opUser = 3; //执行者
 }
 
 enum ESetAdminType {
     SAT_UNKNOWN = 0; //未知
-    SAT_ADD     = 1; //添加管理员
-    SAT_DEL     = 2; //删除管理员
+    SAT_ADD = 1; //添加管理员
+    SAT_DEL = 2; //删除管理员
 }
 
 enum ESeatStatus {
     SS_UNKNOWN = 0; //未知
-    SS_OPEN    = 1; //打开
-    SS_CLOSE   = 2; //关闭
+    SS_OPEN = 1; //打开
+    SS_CLOSE = 2; //关闭
 }
 
 enum EMicStatus {
     MS_UNKNOWN = 0; //未知
-    MS_OPEN    = 1; //开麦
-    MS_CLOSE   = 2; //闭麦
+    MS_OPEN = 1; //开麦
+    MS_CLOSE = 2; //闭麦
 }

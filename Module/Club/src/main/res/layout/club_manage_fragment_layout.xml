@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#7187FF">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="家族设置"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightText=""
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_14_dp"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#7187FF"
+        app:titleBarColor="#7187FF" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/bg_iv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_18_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_enabled_drawable="@drawable/common_gradient_top_corners_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titlebar" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/club_info_setting_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_70_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/view_23_dp"
+        android:text="家族资料"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bg_iv" />
+
+    <View
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/club_info_setting_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/club_notice_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_70_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/view_23_dp"
+        android:text="编辑公告"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/club_info_setting_tv" />
+
+    <View
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/club_notice_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/club_transfer_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_70_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/view_23_dp"
+        android:text="转让家族"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/club_notice_tv" />
+
+    <View
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/club_transfer_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/club_dissolve_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_70_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/view_23_dp"
+        android:text="解散家族"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/club_transfer_tv" />
+
+    <View
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/club_dissolve_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/club_exit_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_70_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/view_23_dp"
+        android:text="退出家族"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/club_dissolve_tv" />
+
+    <View
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/club_exit_tv" />
+
+</android.support.constraint.ConstraintLayout>

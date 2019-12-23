@@ -30,7 +30,7 @@ import com.module.playways.songmanager.SongManagerActivity
 import com.module.playways.songmanager.SongManagerServerApi
 import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.model.RecommendTagModel
-import com.module.playways.songmanager.view.MicRelayExistSongManageView
+import com.module.playways.songmanager.view.ExistSongManageView
 import com.module.playways.songmanager.view.RecommendSongView
 import com.zq.live.proto.Common.StandPlayType
 import com.zq.live.proto.MicRoom.EMWantSingType
@@ -53,7 +53,7 @@ class MicSongManageFragment : BaseFragment() {
     lateinit var mPagerAdapter: PagerAdapter
 
     private var mRoomData: MicRoomData? = null
-    private var micSongManageView: MicRelayExistSongManageView? = null
+    private var micSongManageView: ExistSongManageView? = null
 
     val mSongManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
     var mTagModelList: List<RecommendTagModel>? = null
@@ -181,7 +181,7 @@ class MicSongManageFragment : BaseFragment() {
                 if (view != null) {
                     if (view is RecommendSongView) {
                         view.tryLoad()
-                    } else if (view is MicRelayExistSongManageView) {
+                    } else if (view is ExistSongManageView) {
                         view.tryLoad()
                     }
                 }
@@ -203,7 +203,7 @@ class MicSongManageFragment : BaseFragment() {
 
         if (position == 0) {
             if (micSongManageView == null) {
-                micSongManageView = MicRelayExistSongManageView(context!!, mRoomData?.gameId
+                micSongManageView = ExistSongManageView(context!!, mRoomData?.gameId
                         ?: 0, GameModeType.GAME_MODE_MIC)
             }
             micSongManageView?.tag = position

@@ -44,13 +44,25 @@ object PartyRoomMsgManager : BaseMsgManager<EPartyRoomMsgType, PartyRoomMsg>() {
             msg.msgType == EPartyRoomMsgType.PRT_APPLY_FOR_GUEST -> EventBus.getDefault().post(msg.pApplyForGuest)
             msg.msgType == EPartyRoomMsgType.PRT_GET_SEAT -> EventBus.getDefault().post(msg.pGetSeatMsg)
             msg.msgType == EPartyRoomMsgType.PRT_BACK_SEAT -> EventBus.getDefault().post(msg.pBackSeatMsg)
-            msg.msgType == EPartyRoomMsgType.PRT_INVITE_USER -> EventBus.getDefault().post(msg.pInviteUserMsg)
+//            msg.msgType == EPartyRoomMsgType.PRT_INVITE_USER -> {
+//                var e = PartyRoomInviteEvent()
+//                e.roomID = msg.pInviteUserMsg.roomID
+//                e.userInfoModel = UserInfoModel.parseFromPB(msg.pInviteUserMsg.user)
+//                EventBus.getDefault().post(e)
+//            }
             msg.msgType == EPartyRoomMsgType.PRT_CHANGE_SEAT -> EventBus.getDefault().post(msg.pChangeSeatMsg)
             msg.msgType == EPartyRoomMsgType.PRT_KICK_OUT_USER -> EventBus.getDefault().post(msg.pKickoutUserMsg)
             msg.msgType == EPartyRoomMsgType.PRT_NEXT_ROUND -> EventBus.getDefault().post(msg.pNextRoundMsg)
             msg.msgType == EPartyRoomMsgType.PRT_EXIT_GAME -> EventBus.getDefault().post(msg.ppExitGameMsg)
             msg.msgType == EPartyRoomMsgType.PRT_SYNC -> EventBus.getDefault().post(msg.pSyncMsg)
             msg.msgType == EPartyRoomMsgType.PRT_DYNAMIC_EMOJI -> EventBus.getDefault().post(msg.pDynamicEmojiMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_GAME_OVER -> EventBus.getDefault().post(msg.pGameOverMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_CHANGE_ROOM_TOPIC -> EventBus.getDefault().post(msg.pChangeRoomTopicMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_CHANGE_ROOM_ENTER_PERMISSION -> EventBus.getDefault().post(msg.pChangeRoomEnterPermissionMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_UPDATE_POPULARITY -> EventBus.getDefault().post(msg.pUpdatePopularityMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_CLUB_GAME_STOP -> EventBus.getDefault().post(msg.pClubGameStopMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_CLUB_BECOME_HOST -> EventBus.getDefault().post(msg.pClubBecomeHostMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_CLUB_CHANGE_HOST -> EventBus.getDefault().post(msg.pClubChangeHostMsg)
         }
     }
 }

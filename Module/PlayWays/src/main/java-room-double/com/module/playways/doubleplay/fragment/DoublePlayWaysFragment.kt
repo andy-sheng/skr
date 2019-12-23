@@ -36,6 +36,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
+import com.component.busilib.constans.GameModeType
 import com.component.dialog.PersonInfoDialog
 import com.component.report.fragment.QuickFeedbackFragment
 import com.dialog.view.TipsDialogView
@@ -184,7 +185,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
                             .setAddToBackStack(true)
                             .setHasAnimation(true)
-                            .addDataBeforeAdd(0, InviteFriendFragment2.FROM_DOUBLE_ROOM)
+                            .addDataBeforeAdd(0, GameModeType.GAME_MODE_DOUBLE)
                             .addDataBeforeAdd(1, mRoomData!!.gameId)
                             .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
                             .build()
@@ -251,7 +252,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
                             .setAddToBackStack(true)
                             .setHasAnimation(true)
-                            .addDataBeforeAdd(0, InviteFriendFragment2.FROM_DOUBLE_ROOM)
+                            .addDataBeforeAdd(0, GameModeType.GAME_MODE_DOUBLE)
                             .addDataBeforeAdd(1, mRoomData!!.gameId)
                             .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
                             .build())

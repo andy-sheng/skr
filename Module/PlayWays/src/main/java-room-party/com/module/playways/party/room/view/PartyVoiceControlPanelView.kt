@@ -3,6 +3,7 @@ package com.module.playways.party.room.view
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.view.Gravity
+import android.view.View
 import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.SeekBar
@@ -42,9 +43,9 @@ class PartyVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) 
         super.init(context)
         mPeopleVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                if(roomData?.isMute ==true){
+                if (roomData?.isMute == true) {
                     ZqEngineKit.getInstance().params.recordingSignalVolume = progress
-                }else{
+                } else {
                     ZqEngineKit.getInstance().adjustRecordingSignalVolume(progress)
                 }
             }

@@ -103,7 +103,7 @@ open class GiftPanelView : FrameLayout {
 
     private val firstPlayerInfo: PlayerInfoModel?
         get() {
-            val grabPlayerInfoModelList = getGrabRoomData()?.getInSeatPlayerInfoList()
+            val grabPlayerInfoModelList = getGrabRoomData()?.getCanGiveGiftList()
                     ?: ArrayList()
 
             for (grabPlayerInfoModel in grabPlayerInfoModelList) {
@@ -117,7 +117,7 @@ open class GiftPanelView : FrameLayout {
 
     protected val playerInfoListExpectSelf: List<PlayerInfoModel>
         get() {
-            val grabPlayerInfoModelList = ArrayList(getGrabRoomData()?.getInSeatPlayerInfoList()
+            val grabPlayerInfoModelList = ArrayList(getGrabRoomData()?.getCanGiveGiftList()
                     ?: ArrayList())
 
             val it = grabPlayerInfoModelList.iterator()
@@ -493,6 +493,7 @@ open class GiftPanelView : FrameLayout {
 
             bindSelectedPlayerData()
         } else {
+            mCurMicroMan = null
             mGiftAllPlayersAdapter.setSelectedGrabPlayerInfoModel(null)
             mGiftAllPlayersAdapter.update(grabPlayerInfoModel)
         }

@@ -1,18 +1,10 @@
 package com.module.playways.party.match.model
 
 import com.alibaba.fastjson.annotation.JSONField
-import com.common.core.userinfo.model.UserInfoModel
-import com.component.busilib.model.EffectModel
-import com.component.busilib.model.GameBackgroundEffectModel
-import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
+import com.common.core.userinfo.model.ClubInfo
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.model.PartySeatInfoModel
-import com.module.playways.relay.room.model.RelayConfigModel
-import com.module.playways.relay.room.model.RelayRoundInfoModel
-import com.module.playways.relay.room.model.RelayUserLockModel
-import com.zq.live.proto.GrabRoom.AgoraTokenInfo
-import com.zq.live.proto.RelayRoom.RUserEnterMsg
 import java.io.Serializable
 
 class JoinPartyRoomRspModel : Serializable {
@@ -22,6 +14,9 @@ class JoinPartyRoomRspModel : Serializable {
     @JSONField(name = "agoraToken")
     var agoraToken: String? = null
 
+    @JSONField(name = "clubInfo")
+    var clubInfo: ClubInfo? = null
+
     @JSONField(name = "applyUserCnt")
     var applyUserCnt: Int? = null
 
@@ -29,7 +24,7 @@ class JoinPartyRoomRspModel : Serializable {
     var currentRound: PartyRoundInfoModel? = null
 
     @JSONField(name = "gameStartTimeMs")
-    var gameStartTimeMs: Int? = null
+    var gameStartTimeMs: Long? = null
 
     @JSONField(name = "notice")
     var notice: String? = null
@@ -49,6 +44,13 @@ class JoinPartyRoomRspModel : Serializable {
     @JSONField(name = "users")
     var users: ArrayList<PartyPlayerInfoModel>? = null
 
+    @JSONField(name = "enterPermission")
+    var enterPermission = 2
 
+    @JSONField(name = "elapsedTimeMs")
+    var elapsedTimeMs: Int? = 0
 
+    //[ RT_UNKNOWN, RT_PERSONAL, RT_FAMILY ]
+    @JSONField(name = "roomType")
+    var roomType: Int? = 0
 }

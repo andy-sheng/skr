@@ -42,14 +42,25 @@ public final class PBackSeatMsg extends Message<PBackSeatMsg, PBackSeatMsg.Build
   )
   private final Integer seatSeq;
 
-  public PBackSeatMsg(POnlineInfo user, Integer seatSeq) {
-    this(user, seatSeq, ByteString.EMPTY);
+  /**
+   * 执行者
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.PartyRoom.POnlineInfo#ADAPTER"
+  )
+  private final POnlineInfo opUser;
+
+  public PBackSeatMsg(POnlineInfo user, Integer seatSeq, POnlineInfo opUser) {
+    this(user, seatSeq, opUser, ByteString.EMPTY);
   }
 
-  public PBackSeatMsg(POnlineInfo user, Integer seatSeq, ByteString unknownFields) {
+  public PBackSeatMsg(POnlineInfo user, Integer seatSeq, POnlineInfo opUser,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.user = user;
     this.seatSeq = seatSeq;
+    this.opUser = opUser;
   }
 
   @Override
@@ -57,6 +68,7 @@ public final class PBackSeatMsg extends Message<PBackSeatMsg, PBackSeatMsg.Build
     Builder builder = new Builder();
     builder.user = user;
     builder.seatSeq = seatSeq;
+    builder.opUser = opUser;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -68,7 +80,8 @@ public final class PBackSeatMsg extends Message<PBackSeatMsg, PBackSeatMsg.Build
     PBackSeatMsg o = (PBackSeatMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(user, o.user)
-        && Internal.equals(seatSeq, o.seatSeq);
+        && Internal.equals(seatSeq, o.seatSeq)
+        && Internal.equals(opUser, o.opUser);
   }
 
   @Override
@@ -78,6 +91,7 @@ public final class PBackSeatMsg extends Message<PBackSeatMsg, PBackSeatMsg.Build
       result = unknownFields().hashCode();
       result = result * 37 + (user != null ? user.hashCode() : 0);
       result = result * 37 + (seatSeq != null ? seatSeq.hashCode() : 0);
+      result = result * 37 + (opUser != null ? opUser.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -88,6 +102,7 @@ public final class PBackSeatMsg extends Message<PBackSeatMsg, PBackSeatMsg.Build
     StringBuilder builder = new StringBuilder();
     if (user != null) builder.append(", user=").append(user);
     if (seatSeq != null) builder.append(", seatSeq=").append(seatSeq);
+    if (opUser != null) builder.append(", opUser=").append(opUser);
     return builder.replace(0, 2, "PBackSeatMsg{").append('}').toString();
   }
 
@@ -122,6 +137,16 @@ public final class PBackSeatMsg extends Message<PBackSeatMsg, PBackSeatMsg.Build
   }
 
   /**
+   * 执行者
+   */
+  public POnlineInfo getOpUser() {
+    if(opUser==null){
+        return new POnlineInfo.Builder().build();
+    }
+    return opUser;
+  }
+
+  /**
    * 用户信息
    */
   public boolean hasUser() {
@@ -135,10 +160,19 @@ public final class PBackSeatMsg extends Message<PBackSeatMsg, PBackSeatMsg.Build
     return seatSeq!=null;
   }
 
+  /**
+   * 执行者
+   */
+  public boolean hasOpUser() {
+    return opUser!=null;
+  }
+
   public static final class Builder extends Message.Builder<PBackSeatMsg, Builder> {
     private POnlineInfo user;
 
     private Integer seatSeq;
+
+    private POnlineInfo opUser;
 
     public Builder() {
     }
@@ -159,9 +193,17 @@ public final class PBackSeatMsg extends Message<PBackSeatMsg, PBackSeatMsg.Build
       return this;
     }
 
+    /**
+     * 执行者
+     */
+    public Builder setOpUser(POnlineInfo opUser) {
+      this.opUser = opUser;
+      return this;
+    }
+
     @Override
     public PBackSeatMsg build() {
-      return new PBackSeatMsg(user, seatSeq, super.buildUnknownFields());
+      return new PBackSeatMsg(user, seatSeq, opUser, super.buildUnknownFields());
     }
   }
 
@@ -174,6 +216,7 @@ public final class PBackSeatMsg extends Message<PBackSeatMsg, PBackSeatMsg.Build
     public int encodedSize(PBackSeatMsg value) {
       return POnlineInfo.ADAPTER.encodedSizeWithTag(1, value.user)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.seatSeq)
+          + POnlineInfo.ADAPTER.encodedSizeWithTag(3, value.opUser)
           + value.unknownFields().size();
     }
 
@@ -181,6 +224,7 @@ public final class PBackSeatMsg extends Message<PBackSeatMsg, PBackSeatMsg.Build
     public void encode(ProtoWriter writer, PBackSeatMsg value) throws IOException {
       POnlineInfo.ADAPTER.encodeWithTag(writer, 1, value.user);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.seatSeq);
+      POnlineInfo.ADAPTER.encodeWithTag(writer, 3, value.opUser);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -192,6 +236,7 @@ public final class PBackSeatMsg extends Message<PBackSeatMsg, PBackSeatMsg.Build
         switch (tag) {
           case 1: builder.setUser(POnlineInfo.ADAPTER.decode(reader)); break;
           case 2: builder.setSeatSeq(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: builder.setOpUser(POnlineInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -207,6 +252,7 @@ public final class PBackSeatMsg extends Message<PBackSeatMsg, PBackSeatMsg.Build
     public PBackSeatMsg redact(PBackSeatMsg value) {
       Builder builder = value.newBuilder();
       if (builder.user != null) builder.user = POnlineInfo.ADAPTER.redact(builder.user);
+      if (builder.opUser != null) builder.opUser = POnlineInfo.ADAPTER.redact(builder.opUser);
       builder.clearUnknownFields();
       return builder.build();
     }

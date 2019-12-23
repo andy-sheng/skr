@@ -63,7 +63,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
     private int mRoomID;
     private int mFrom;
     private int mTagID;
-    private int mGameMode;
+//    private int mGameMode;
 
     RelativeLayout mSearchArea;
     TextView mCancleTv;
@@ -100,25 +100,20 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
             mTagID = bundle.getInt(INVITE_TAG_ID);
         }
 
-        if (mFrom == InviteFriendFragment2.FROM_MIC_ROOM) {
-            mGameMode = GameModeType.GAME_MODE_MIC;
-        } else if (mFrom == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
-            mGameMode = GameModeType.GAME_MODE_DOUBLE;
-        } else {
-            mGameMode = GameModeType.GAME_MODE_GRAB;
-        }
 
         mPresenter = new InviteSearchPresenter(this);
         addPresent(mPresenter);
         mInviteFirendAdapter = new InviteFirendAdapter(new InviteFirendAdapter.OnInviteClickListener() {
             @Override
             public void onClick(UserInfoModel model, ExTextView view) {
-                if (mFrom == InviteFriendFragment2.FROM_GRAB_ROOM) {
+                if (mFrom == GameModeType.GAME_MODE_GRAB) {
                     mPresenter.inviteFriend(mRoomID, mTagID, model, view);
-                } else if (mFrom == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
+                } else if (mFrom == GameModeType.GAME_MODE_DOUBLE) {
                     mPresenter.inviteDoubleFriend(mRoomID, model, view);
-                } else if (mFrom == InviteFriendFragment2.FROM_MIC_ROOM) {
+                } else if (mFrom == GameModeType.GAME_MODE_MIC) {
                     mPresenter.inviteMicFriend(mRoomID, model, view);
+                }else if(mFrom == GameModeType.GAME_MODE_PARTY){
+                    mPresenter.invitePartyriend(mRoomID, model, view);
                 }
             }
 
@@ -210,7 +205,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
                 public ObservableSource<ApiResult> apply(SearchModel model) {
                     isAutoSearch = model.isAutoSearch();
                     GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
-                    return grabRoomServerApi.searchFans(model.getSearchContent(), mRoomID, mGameMode);
+                    return grabRoomServerApi.searchFans(model.getSearchContent(), mRoomID, mFrom);
                 }
             }), new ApiObserver<ApiResult>() {
                 @Override
@@ -235,7 +230,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
                     // TODO: 2019/5/23 区分好友和关注
                     isAutoSearch = model.isAutoSearch();
                     List<UserInfoModel> userInfoModels = UserInfoLocalApi.searchFollow(model.getSearchContent());
-                    UserInfoManager.getInstance().fillUserOnlineStatus(userInfoModels, true, false, mRoomID, mGameMode);
+                    UserInfoManager.getInstance().fillUserOnlineStatus(userInfoModels, true, false, mRoomID, mFrom);
                     return Observable.just(userInfoModels);
                 }
             }), new ApiObserver<List<UserInfoModel>>() {

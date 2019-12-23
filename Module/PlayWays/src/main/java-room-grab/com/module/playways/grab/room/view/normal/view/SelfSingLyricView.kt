@@ -91,7 +91,7 @@ open class SelfSingLyricView(viewStub: ViewStub) : ExViewStub(viewStub) {
         configParams.accEndTs = songModel.beginMs + totalTs
         configParams.authorName = songModel.uploaderName
         mLyricAndAccMatchManager!!.setArgs(configParams)
-        mLyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener {
+        mLyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener() {
 
             override fun onLyricParseSuccess(reader: LyricsReader) {
                 mSvlyric?.visibility = View.GONE

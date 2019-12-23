@@ -68,7 +68,8 @@ class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
         honorArea?.visibility = View.GONE
     }
 
-    fun enter(playerInfoModel: UserInfoModel, finishCall: (() -> Unit)?) {
+    @JvmOverloads
+    fun enter(playerInfoModel: UserInfoModel, finishCall: (() -> Unit)?, needShowRemark: Boolean = true) {
         enterJob = launch(Dispatchers.Main) {
             tryInflate()
             normalArea?.visibility = View.GONE
@@ -83,7 +84,7 @@ class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
                         .build())
 
                 val spanUtils = SpanUtils()
-                        .append(UserInfoManager.getInstance().getRemarkName(playerInfoModel.userId, playerInfoModel.nickname)).setForegroundColor(Color.parseColor("#FFCF80"))
+                        .append(if (needShowRemark) UserInfoManager.getInstance().getRemarkName(playerInfoModel.userId, playerInfoModel.nickname) else playerInfoModel.nickname).setForegroundColor(Color.parseColor("#FFCF80"))
                         .append(" 进入了房间").setForegroundColor(U.getColor(R.color.white))
                 val stringBuilder = spanUtils.create()
                 honorName?.text = stringBuilder
@@ -97,7 +98,7 @@ class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 honorArea?.visibility = View.VISIBLE
             } else {
                 //不是VIP
-                nameTv?.text = UserInfoManager.getInstance().getRemarkName(playerInfoModel.userId, playerInfoModel.nickname)
+                nameTv?.text = if (needShowRemark) UserInfoManager.getInstance().getRemarkName(playerInfoModel.userId, playerInfoModel.nickname) else playerInfoModel.nickname
                 if (LevelConfigUtils.getImageResoucesLevel(playerInfoModel.ranking.mainRanking) != 0) {
                     vipLevelIv?.visibility = View.VISIBLE
                     vipLevelIv?.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(playerInfoModel.ranking.mainRanking))

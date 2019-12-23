@@ -6,3 +6,5 @@ class PartyTopicNameChangeEvent {}
 class PartyNoticeChangeEvent{}
 class PartyOnlineUserCntChangeEvent{}
 class PartyApplyUserCntChangeEvent{}
+class PartyEnterPermissionEvent{}
+class PartyRoomAllMuteEvent{}

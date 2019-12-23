@@ -68,7 +68,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AgoraRTCAdapter {
     public final String TAG = "AgoraRTCAdapter";
-    public final String TAG_SLS = "[SLS]"+TAG;
+    public final String TAG_SLS = "[SLS]" + TAG;
     private final static boolean VERBOSE = false && MyLog.isDebugLogOpen();
 
     private static AgoraRTCAdapter sInstance;
@@ -133,30 +133,26 @@ public class AgoraRTCAdapter {
         }
     }
 
-    public void initLogService(SSTSCredentialHolder scHolder)
-    {
+    public void initLogService(SSTSCredentialHolder scHolder) {
         int skrUid = mConfig.getSelfUid();
         Context ctx = U.app().getApplicationContext();
         SDataManager.getInstance().setAppContext(ctx).setUserID(skrUid);
         SDataManager.getInstance().setSTSCredentialHolder(scHolder).enableLogService(true);
 
         String channel = U.getChannelUtils().getChannel();
-        MyLog.w(TAG_SLS, "initLogService() app channel="+channel);
+        MyLog.w(TAG_SLS, "initLogService() app channel=" + channel);
 
         if (MyLog.isDebugLogOpen()) {
             SDataManager.getInstance().useMainLogProject(false);
-        }
-        else {
+        } else {
             SDataManager.getInstance().useMainLogProject(true);
         }
 
         if (U.getDeviceUtils().getHeadsetPlugOn()) {
             SDataManager.getInstance().getDataHolder().addAudioRoutine(SDataHolderEx.AR_HEADSET);
-        }
-        else if (U.getDeviceUtils().getBlueToothHeadsetOn()) {
+        } else if (U.getDeviceUtils().getBlueToothHeadsetOn()) {
             SDataManager.getInstance().getDataHolder().addAudioRoutine(SDataHolderEx.AR_BLUETOOTH);
-        }
-        else {
+        } else {
             SDataManager.getInstance().getDataHolder().addAudioRoutine(SDataHolderEx.AR_PHONE_SPEAKER);
         }
 
@@ -218,7 +214,7 @@ public class AgoraRTCAdapter {
                             }
 
                             if (mRunStatistic) {
-                                mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 2000);
+                                mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 5000);
                             }
                         }
                         break;
@@ -243,14 +239,15 @@ public class AgoraRTCAdapter {
 
     public void flushCachedAudioSmpInfoGroup() {
         if (null != mAudioSmpInfoGroup && mAudioSmpInfoGroup.hasData()) {
-            SDataManager.getInstance().getDataHolder().addSAudioSamplingInfoGroup(mAudioSmpInfoGroup);            
+            SDataManager.getInstance().getDataHolder().addSAudioSamplingInfoGroup(mAudioSmpInfoGroup);
         }
-		
-		if (null != mAudioSmpInfoGroup)
-			mAudioSmpInfoGroup = null;
 
-		return;
+        if (null != mAudioSmpInfoGroup)
+            mAudioSmpInfoGroup = null;
+
+        return;
     }
+
     public void stopStatistics() {//考虑到退出房间的时候，以标志量的方式更好。
         mRunStatistic = false;
         flushCachedAudioSmpInfoGroup();//补上数据
@@ -451,7 +448,7 @@ public class AgoraRTCAdapter {
         public void onAudioMixingStateChanged(int state, int errorCode) {
             super.onAudioMixingStateChanged(state, errorCode);
             if (mOutCallback != null) {
-                mOutCallback.onAudioMixingStateChanged(state,errorCode);
+                mOutCallback.onAudioMixingStateChanged(state, errorCode);
             }
         }
 
@@ -528,7 +525,7 @@ public class AgoraRTCAdapter {
 
 
         if (!mInAudioStatistic) {
-            mAudioStatisticTS =  curTs;
+            mAudioStatisticTS = curTs;
 //            mAgoraAduioSmpInfo.smpCnt += numOfSamples;
 
             mInAudioStatistic = true;
@@ -544,7 +541,7 @@ public class AgoraRTCAdapter {
         long totalValue = 0;
         if (2 == bytesPerSample) {
             for (int i = 0; i < bytes.length; i += 4) {
-                short v = (short)( ((bytes[i+1] & 0x00FF) << 8)  |  (bytes[i] & 0x00FF) );
+                short v = (short) (((bytes[i + 1] & 0x00FF) << 8) | (bytes[i] & 0x00FF));
                 long absV = (v >= 0) ? v : (-v);
                 if (absV > mAgoraAduioSmpInfo.maxAbsPCM) {
                     mAgoraAduioSmpInfo.maxAbsPCM = absV;
@@ -573,8 +570,7 @@ public class AgoraRTCAdapter {
 
 
     private SAgora.SAudioSamplingInfoGroup makeAudioSamplingInfoGroup(byte bytes[], int numOfSamples, int bytesPerSample, int channels,
-                                                                      int samplesPerSec)
-    {
+                                                                      int samplesPerSec) {
         long curTS = System.currentTimeMillis();
         SAgora.SAudioSamplingInfo shadowInfo = makeAudioSamplingInfo(bytes, numOfSamples, bytesPerSample, channels, samplesPerSec, curTS);
         SAgora.SAudioSamplingInfo e = null;
@@ -631,7 +627,7 @@ public class AgoraRTCAdapter {
                     break;
                 case voice:
                 default:
-                     break;
+                    break;
             }
             MyLog.i(TAG, "setAudioProfile " + profile + " scenario " + scenario);
             mRtcEngine.setAudioProfile(profile, scenario);
@@ -764,7 +760,7 @@ public class AgoraRTCAdapter {
 //                        SDataManager.getInstance().getDataHolder().addAudioSamplingInfo(smpInfo, curTime);
 //                        smpInfo.reset();
 //                    }
-                    SAgora.SAudioSamplingInfoGroup ASIGroup = makeAudioSamplingInfoGroup(samples,numOfSamples,bytesPerSample,channels,samplesPerSec);
+                    SAgora.SAudioSamplingInfoGroup ASIGroup = makeAudioSamplingInfoGroup(samples, numOfSamples, bytesPerSample, channels, samplesPerSec);
                     if (null != ASIGroup) {
                         SDataManager.getInstance().getDataHolder().addSAudioSamplingInfoGroup(ASIGroup);
                     }

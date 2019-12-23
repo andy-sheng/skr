@@ -38,6 +38,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.busilib.beauty.FROM_IN_GRAB_ROOM
+import com.component.busilib.constans.GameModeType
 import com.component.busilib.constans.GrabRoomType
 import com.component.busilib.manager.BgMusicManager
 import com.component.busilib.view.GameEffectBgView
@@ -817,7 +818,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
-                .addDataBeforeAdd(0, InviteFriendFragment2.FROM_GRAB_ROOM)
+                .addDataBeforeAdd(0, GameModeType.GAME_MODE_GRAB)
                 .addDataBeforeAdd(1, mRoomData!!.gameId)
                 .addDataBeforeAdd(2, if (mRoomData!!.isVideoRoom) EMsgRoomMediaType.EMR_VIDEO.value else EMsgRoomMediaType.EMR_AUDIO.value)
                 .addDataBeforeAdd(3, mRoomData!!.tagId)

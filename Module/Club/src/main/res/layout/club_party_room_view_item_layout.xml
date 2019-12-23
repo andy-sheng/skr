@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/view_12_dp"
+    android:orientation="vertical"
+    android:textColor="@color/white_trans_80"
+    android:textSize="@dimen/textsize_14_dp">
+
+    <TextView
+        android:id="@+id/top_tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:text="家族派对"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_14_dp" />
+
+    <include
+        android:id="@+id/room_info_content"
+        layout="@layout/club_party_room_common_layout" />
+
+</LinearLayout>

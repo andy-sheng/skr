@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_160_dp">
+
+    <ViewStub
+        android:id="@+id/party_self_sing_lyric_layout_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_160_dp"
+        android:layout="@layout/party_self_sing_lyric_layout"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/bottom_left_op_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/textsize_19_dp"
+        android:layout_marginBottom="@dimen/textsize_13_dp"
+        android:text="切游戏"
+        android:textColor="#DEA243"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/game_pic_img"
+        android:layout_width="@dimen/view_92_dp"
+        android:layout_height="@dimen/view_92_dp"
+        android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/text_scrollView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_92_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:paddingLeft="@dimen/view_18_dp"
+        android:paddingRight="@dimen/view_18_dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toRightOf="@+id/game_pic_img"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/text_game_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="@dimen/view_5_dp"
+            android:minHeight="@dimen/view_92_dp"
+            android:text="" />
+    </ScrollView>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/bottom_right_op_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/textsize_19_dp"
+        android:layout_marginBottom="@dimen/textsize_13_dp"
+        android:text="下一题"
+        android:textColor="#DEA243"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_26_dp"
+        android:layout_height="@dimen/view_26_dp"
+        android:layout_marginLeft="@dimen/view_13_dp"
+        android:layout_marginBottom="@dimen/view_9_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/singing_tv"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/singing_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:text="演唱中..."
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/avatar_iv"
+        app:layout_constraintTop_toTopOf="@+id/avatar_iv" />
+
+    <android.support.constraint.Group
+        android:id="@+id/singing_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="avatar_iv, singing_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/select_song_tv"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_11_dp"
+        android:gravity="center"
+        android:text="点歌"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_gradient_endColor="#6047D3"
+        app:bl_gradient_startColor="#835DFD"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

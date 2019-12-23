@@ -23,6 +23,7 @@ public class ConfirmDialog {
     public static final int TYPE_OWNER_KICK_CONFIRM = 4;// 房主发起踢人确认
     public static final int TYPE_DOUBLE_INVITE_CONFIRM = 5; //双人房邀请确认
     public static final int TYPE_MIC_INVITE_CONFIRM = 6; //排麦房口令邀请确认
+    public static final int TYPE_PARTY_INVITE_CONFIRM = 7; //排麦房口令邀请确认
 
     DialogPlus mDialogPlus;
     UserInfoModel mUserInfoModel;

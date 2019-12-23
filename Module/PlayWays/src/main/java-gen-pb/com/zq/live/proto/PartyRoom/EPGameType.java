@@ -21,7 +21,17 @@ public enum EPGameType implements WireEnum {
   /**
    * 题库类游戏
    */
-  PGT_Question(2);
+  PGT_Question(2),
+
+  /**
+   * 自由主持类游戏
+   */
+  PGT_Free(3),
+
+  /**
+   * ktv唱歌类游戏
+   */
+  PGT_KTV(4);
 
   public static final ProtoAdapter<EPGameType> ADAPTER = new ProtoAdapter_EPGameType();
 
@@ -39,6 +49,8 @@ public enum EPGameType implements WireEnum {
       case 0: return PGT_Unknown;
       case 1: return PGT_Play;
       case 2: return PGT_Question;
+      case 3: return PGT_Free;
+      case 4: return PGT_KTV;
       default: return null;
     }
   }

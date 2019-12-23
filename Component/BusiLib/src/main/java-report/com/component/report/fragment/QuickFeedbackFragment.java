@@ -70,7 +70,7 @@ public class QuickFeedbackFragment extends BaseFragment {
     public static final int FROM_RACE_ROOM = 4;
     public static final int FROM_MIC_ROOM = 5;
     public static final int FROM_RELAY_ROOM = 6;
-    public static final int FROM_PARTY_ROOM = 6;
+    public static final int FROM_PARTY_ROOM = 7;
 
     private int mFrom;  //标记举报来源
     int mActionType;
@@ -296,6 +296,8 @@ public class QuickFeedbackFragment extends BaseFragment {
             map.put("source", 11);
         } else if (mFrom == FROM_RELAY_ROOM) {
             map.put("source", 12);
+        } else if (mFrom == FROM_PARTY_ROOM) {
+            map.put("source", 13);
         }
         map.put("type", typeList);
         map.put("content", content);
@@ -353,6 +355,8 @@ public class QuickFeedbackFragment extends BaseFragment {
             map.put("source", 3);
         } else if (mFrom == FROM_RELAY_ROOM) {
             map.put("source", 12);
+        } else if (mFrom == FROM_PARTY_ROOM) {
+            map.put("source", 13);
         }
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));

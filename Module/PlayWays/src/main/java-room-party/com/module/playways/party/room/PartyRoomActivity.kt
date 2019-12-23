@@ -3,6 +3,7 @@ package com.module.playways.party.room
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.text.TextUtils
 import android.view.*
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -12,17 +13,22 @@ import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
+import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
+import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
+import com.component.dialog.ClubCardDialogView
+import com.component.dialog.ConfirmDialog
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
+import com.component.toast.CommonToastView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.IHomeService
@@ -32,12 +38,16 @@ import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
-import com.module.playways.mic.room.top.RoomInviteView
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
+import com.module.playways.party.room.actor.PartyApplyPanelView
+import com.module.playways.party.room.actor.PartyMemberPanelView
 import com.module.playways.party.room.bottom.PartyBottomContainerView
+import com.module.playways.party.room.event.PartyHostChangeEvent
+import com.module.playways.party.room.event.PartySelectSongEvent
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
-import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.model.PartyActorInfoModel
+import com.module.playways.party.room.model.PartyPlayerInfoModel
+import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.presenter.PartyCorePresenter
 import com.module.playways.party.room.seat.PartySeatView
 import com.module.playways.party.room.top.PartyTopContentView
@@ -52,14 +62,19 @@ import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
+import com.module.playways.room.room.comment.CommentView
+import com.module.playways.room.room.comment.listener.CommentViewItemListener
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup
 import com.module.playways.room.room.gift.GiftBigContinuousView
 import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.room.view.InputContainerView
+import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.live.proto.PartyRoom.PKickoutUserMsg
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -94,58 +109,44 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     internal lateinit var mInputContainerView: InputContainerView
     internal lateinit var mBottomContainerView: PartyBottomContainerView
     internal lateinit var mVoiceRecordTipsView: VoiceRecordTipsView
-    //    internal lateinit var mCommentView: CommentView
+    internal lateinit var mCommentView: CommentView
     internal lateinit var mGiftPanelView: GiftPanelView
     internal lateinit var mContinueSendView: ContinueSendView
     internal lateinit var mTopOpView: PartyTopOpView
     internal lateinit var mTopContentView: PartyTopContentView
-    internal lateinit var mSeatView: PartySeatView
 
     internal lateinit var mGameEffectBgView: GameEffectBgView
 
-    internal var mRoomInviteView: RoomInviteView? = null
-
-    //var othersSingCardView:NormalOthersSingCardView?=null
-
-
-    // 专场ui组件
-//    lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
-    //    lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
-//    lateinit var mSelfSingCardView: SelfSingCardView // 自己演唱卡片
-//    lateinit var mSingBeginTipsCardView: MicSingBeginTipsCardView// 演唱开始提示
-//    lateinit var mRoundOverCardView: RoundOverCardView// 结果页
-//    lateinit var mGrabScoreTipsView: GrabScoreTipsView // 打分提示
+    var mRightOpView: PartyRightOpView? = null
+    var mPartyGameMainView: PartyGameMainView? = null
+    var mSeatView: PartySeatView? = null
+    var mPartySettingView: PartySettingView? = null
+    var mPartyEmojiView: PartyEmojiView? = null
 
     lateinit var mAddSongIv: ImageView
     lateinit var mChangeSongIv: ImageView
-//    private lateinit var mGiveUpView: GrabGiveupView
 
     private var mVIPEnterView: VIPEnterView? = null
-//    lateinit var mHasSelectSongNumTv: ExTextView
-
     // 都是dialogplus
     private var mPersonInfoDialog: PersonInfoDialog? = null
-    //    private var mGrabKickDialog: ConfirmDialog? = null
-    private var mVoiceControlPanelView: PartyVoiceControlPanelView? = null
-    //    private var mMicSettingView: MicSettingView? = null
     private var mGameRuleDialog: DialogPlus? = null
     private var mTipsDialogView: TipsDialogView? = null
+    private var mVoiceControlPanelView: PartyVoiceControlPanelView? = null
+    private var mPartyManageDialogView: PartyManageDialogView? = null
+    private var mPartyManageHostDialogView: PartyManageHostDialogView? = null
+    private var mPartyApplyPanelView: PartyApplyPanelView? = null
+    private var mPartyMemberPanelView: PartyMemberPanelView? = null
+    private var mConfirmDialog: ConfirmDialog? = null
+    private var mClubCardDialogView: ClubCardDialogView? = null
 
-    internal var mVipEnterPresenter: VipEnterPresenter? = null
+    private var mVipEnterPresenter: VipEnterPresenter? = null
 
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
+
     val mWidgetAnimationController = PartyWidgetAnimationController(this)
     val mBottomWidgetAnimationController = PartyBottomWidgetAnimationController(this)
+
     internal var mSkrAudioPermission = SkrAudioPermission()
-
-    var mPartyGameMainView: PartyGameMainView? = null
-    var mPartySettingView: PartySettingView? = null
-    var mPartyEmojiView: PartyEmojiView? = null
-//    lateinit var relaySingCardView: RelaySingCardView
-
-//    var mFlyCommentView: FlyCommentView? = null
-
-    private var mPartyManageDialogView: PartyManageDialogView? = null
 
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
@@ -160,37 +161,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     override fun initData(savedInstanceState: Bundle?) {
         ensureActivtyTop()
         var rspModel = intent.getSerializableExtra("JoinPartyRoomRspModel") as JoinPartyRoomRspModel?
-//        if (joinRaceRoomRspModel == null) {
-//            // 构造假数据 用于测试
-//            var joinRaceRoomRspModel1 = JoinPartyRoomRspModel()
-//            joinRaceRoomRspModel1?.roomID = 10001
-//            joinRaceRoomRspModel1?.createTimeMs = (System.currentTimeMillis() / 30000) * 30000
-//            val list = ArrayList<UserInfoModel>()
-//            if (MyUserInfoManager.uid.toInt() == 1705476) {
-//                var userInfoModel = UserInfoModel()
-//                userInfoModel.userId = 1985618
-//                list.add(userInfoModel)
-//            } else {
-//                var userInfoModel = UserInfoModel()
-//                userInfoModel.userId = 1705476
-//                list.add(userInfoModel)
-//            }
-//            joinRaceRoomRspModel1.users = list
-//            var roundInfoModel = RelayRoundInfoModel()
-//            roundInfoModel.status = ERRoundStatus.RRS_SING.value
-//            roundInfoModel.singBeginMs = 30 * 1000
-//            roundInfoModel.userID = 1705476
-//            var music = SongModel()
-//            music.itemName = "告白气球"
-//            music.acc = "http://song-static.inframe.mobi/bgm/e3b214d337f1301420dad255230fe085.mp3"
-//            music.lyric = "http://song-static.inframe.mobi/lrc/4ee4ac0711c74d6f333fcac10c113239.zrce"
-//            music.beginMs = 0
-//            music.endMs = 4 * 60 * 1000
-//            music.relaySegments = arrayListOf(43 * 1000, 65 * 1000, 87 * 1000)
-//            roundInfoModel.music = music
-//            joinRaceRoomRspModel1.currentRound = roundInfoModel
-//            joinRaceRoomRspModel = joinRaceRoomRspModel1
-//        }
         rspModel?.let {
             mRoomData.loadFromRsp(it)
             MyLog.d(TAG, "initData mRoomData=$mRoomData")
@@ -202,7 +172,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         addPresent(mCorePresenter)
         mVipEnterPresenter = VipEnterPresenter(this, mRoomData)
         addPresent(mVipEnterPresenter)
-//        addPresent(mDoubleRoomInvitePresenter)
         // 请保证从下面的view往上面的view开始初始化
         findViewById<View>(R.id.main_act_container).setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -212,17 +181,17 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
 
         initBgEffectView()
+        initTopView()
         initInputView()
         initBottomView()
         initCommentView()
         initGiftPanelView()
         initGiftDisplayView()
-        initTopView()
-        initTurnSenceView()
 
-        initVipEnterView()
-        initMicSeatView()
         initGameMainView()
+        initMicSeatView()
+        initRightOpView()
+        initVipEnterView()
 
         mCorePresenter.onOpeningAnimationOver()
 
@@ -243,8 +212,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             debugLogView.tryInflate()
         }
 
-        if (U.getPreferenceUtils().getSettingBoolean("is_first_enter_relay_room", true)) {
-            U.getPreferenceUtils().setSettingBoolean("is_first_enter_relay_room", false)
+        if (U.getPreferenceUtils().getSettingBoolean("is_first_enter_party_room", true)) {
+            U.getPreferenceUtils().setSettingBoolean("is_first_enter_party_room", false)
             showGameRuleDialog()
         }
 
@@ -269,10 +238,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
         super.destroy()
         dismissDialog()
-//        mFlyCommentView?.destory()
+        mPartyApplyPanelView?.destory()
+        mPartyMemberPanelView?.destory()
+        mWidgetAnimationController.destroy()
+        mBottomWidgetAnimationController.destroy()
         mGiftPanelView?.destroy()
-//        relaySingCardView?.destroy()
-//        mSelfSingCardView?.destroy()
         H.reset("PartyRoomActivity")
     }
 
@@ -312,19 +282,63 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     }
 
     private fun initMicSeatView() {
-//        mHasSelectSongNumTv = findViewById(R.id.has_select_song_num_tv)
-//        mMicSeatView = MicSeatView(findViewById(R.id.mic_seat_view_layout_view_stub))
-//        mMicSeatView.hasSelectSongNumTv = mHasSelectSongNumTv
-//        mMicSeatView.mRoomData = mRoomData
-//        mHasSelectSongNumTv.setDebounceViewClickListener {
-//            mMicSeatView.show()
-//        }
+        mSeatView = findViewById(R.id.seat_view)
+        mSeatView?.bindData(mRoomData)
+        mSeatView?.listener = object : PartySeatView.Listener {
+            override fun onClickAvatar(position: Int, model: PartyActorInfoModel?) {
+                if (mRoomData.getMyUserInfoInParty().isAdmin() || mRoomData.getMyUserInfoInParty().isHost()) {
+                    if (model?.player?.userID == MyUserInfoManager.uid.toInt()) {
+                        // 点开的是自己
+                        showPersonInfoView(model?.player?.userID ?: 0, null)
+                    } else {
+                        showPartyManageView(model)
+                    }
+                } else {
+                    // 非管理人员
+                    if (model?.player?.userID != null) {
+                        showPersonInfoView(model?.player?.userID ?: 0, null)
+                    } else {
+                        if (mRoomData.myUserInfo?.isGuest() == true) {
+                            // 嘉宾 点了个空座位 没反应
+                        } else {
+                            // 观众
+                            dismissDialog()
+                            mTipsDialogView = TipsDialogView.Builder(this@PartyRoomActivity)
+                                    .setMessageTip("是否申请上麦")
+                                    .setConfirmTip("是")
+                                    .setCancelTip("取消")
+                                    .setConfirmBtnClickListener {
+                                        mTipsDialogView?.dismiss(false)
+                                        mRightOpView?.applyForGuest(false)
+                                    }
+                                    .setCancelBtnClickListener {
+                                        mTipsDialogView?.dismiss()
+                                    }
+                                    .build()
+                            mTipsDialogView?.showByDialog()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initRightOpView() {
+        mRightOpView = findViewById(R.id.right_op_view)
+        mRightOpView?.bindData()
+        mRightOpView?.listener = object : PartyRightOpView.Listener {
+            override fun onClickApplyList() {
+                dismissDialog()
+                mPartyApplyPanelView = PartyApplyPanelView(this@PartyRoomActivity)
+                mPartyApplyPanelView?.showByDialog()
+            }
+        }
     }
 
     private fun initGameMainView() {
         mPartyGameMainView = PartyGameMainView(findViewById(R.id.party_game_main_view_layout_viewStub), mRoomData)
         mPartyGameMainView?.tryInflate()
-        mPartyGameMainView?.updateGameContent(null)
+        mPartyGameMainView?.toEmptyState()
     }
 
     private fun initVipEnterView() {
@@ -341,45 +355,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     }
 
 
-    private fun initTurnSenceView() {
-//        mWaitingCardView = findViewById(R.id.wait_card_view)
-//        mWaitingCardView.visibility = View.GONE
-        var rootView = findViewById<View>(R.id.main_act_container)
-        // 下一首
-//        mTurnInfoCardView = findViewById(R.id.turn_card_view)
-//        mTurnInfoCardView.visibility = View.GONE
-//         演唱开始名片
-//        mSingBeginTipsCardView = MicSingBeginTipsCardView(rootView)
-//        // 自己演唱
-//        mSelfSingCardView = SelfSingCardView(rootView)
-//        mSelfSingCardView?.setListener {
-//            //            removeNoAccSrollTipsView()
-////            removeGrabSelfSingTipView()
-//            mCorePresenter?.sendRoundOverInfo()
-//        }
-//        // 他人演唱
-////        mSelfSingCardView?.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
-//        mOthersSingCardView = OthersSingCardView(rootView)
-//        // 结果页面
-//        mRoundOverCardView = RoundOverCardView(rootView)
-
-        // 打分
-//        mGrabScoreTipsView = rootView.findViewById(R.id.grab_score_tips_view)
-
-//        relaySingCardView = RelaySingCardView(rootView.findViewById(R.id.relay_sing_card_view_layout_stub))
-//        relaySingCardView.setVisibility(View.VISIBLE)
-//        relaySingCardView.roomData = mRoomData
-//        relaySingCardView.othersSingCardView = NormalOthersSingCardView(rootView.findViewById(R.id.normal_other_sing_card_view_stub))
-//        relaySingCardView.effectBgView = GameEffectBgView(rootView.findViewById(R.id.game_effect_bg_view_layout_viewStub))
-    }
-
     private fun initBottomView() {
-//        mGiveUpView = findViewById<GrabGiveupView>(R.id.give_up_view)
-//        mGiveUpView.mGiveUpListener = { _ ->
-//            mCorePresenter.giveUpSing {
-//                mGiveUpView.hideWithAnimation(true)
-//            }
-//        }
         mChangeSongIv = findViewById(R.id.change_song_tv)
         mChangeSongIv.setAnimateDebounceViewClickListener {
             mCorePresenter.giveUpSing { }
@@ -396,12 +372,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             val voiceStub = findViewById<ViewStub>(R.id.voice_record_tip_view_stub)
             mVoiceRecordTipsView = VoiceRecordTipsView(voiceStub)
         }
-//        mBottomBgVp = findViewById<ViewGroup>(R.id.bottom_bg_vp)
-//        val lp = mBottomBgVp.getLayoutParams() as RelativeLayout.LayoutParams
-//        /**
-//         * 按比例适配手机
-//         */
-//        lp.height = U.getDisplayUtils().screenHeight * 284 / 667
 
         mBottomContainerView = findViewById(R.id.bottom_container_view)
         mBottomContainerView.setRoomData(mRoomData)
@@ -445,15 +415,12 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mPartySettingView = PartySettingView(findViewById(R.id.party_bottom_setting_viewStub))
         mPartySettingView?.listener = object : PartySettingView.Listener {
             override fun onClickGameSetting() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_SELECT_GAME)
+                        .navigation()
             }
 
             override fun onClickGameSound() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
 
-            override fun onClickAllMute(isMute: Boolean) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         }
 
@@ -462,15 +429,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     }
 
     private fun showPanelView() {
-        if (mRoomData!!.realRoundInfo != null) {
-            val now = mRoomData!!.realRoundInfo
-            if (now != null) {
-//                mGiftPanelView?.show(mRoomData.peerUser)
-            } else {
-                mGiftPanelView?.show(null)
-            }
+        if (mRoomData.hostId == MyUserInfoManager.uid.toInt()) {
+            mGiftPanelView?.show(mRoomData.getPlayerInfoBySeq(1))
         } else {
-            mGiftPanelView?.show(null)
+            mGiftPanelView?.show(mRoomData.getPlayerInfoById(mRoomData.hostId))
         }
     }
 
@@ -511,6 +473,12 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             }
 
             override fun onClickSetting() {
+                if (mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt()) == null
+                        || mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == false) {
+                    U.getToastUtil().showShort("只有主持人才能进行房间设置哦～")
+                    return
+                }
+
                 U.getFragmentUtils().addFragment(
                         FragmentUtils.newAddParamsBuilder(this@PartyRoomActivity, PartyRoomSettingFragment::class.java)
                                 .setAddToBackStack(true)
@@ -522,12 +490,16 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 quitGame()
             }
         })
+
         mTopContentView = findViewById(R.id.top_content_view)
         mTopContentView.roomData = mRoomData
         mTopContentView.bindData()
         mTopContentView.listener = object : PartyTopContentView.Listener {
-            override fun clickMore() {
-                // 点击更多
+            override fun showRoomMember() {
+                // 查看房间所有人
+                dismissDialog()
+                mPartyMemberPanelView = PartyMemberPanelView(this@PartyRoomActivity)
+                mPartyMemberPanelView?.showByDialog()
             }
 
             override fun clickArrow(open: Boolean) {
@@ -537,30 +509,55 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                     mWidgetAnimationController.close()
                 }
             }
-        }
 
-        mRoomInviteView = RoomInviteView(findViewById(R.id.mic_invite_view_stub))
-        mRoomInviteView?.agreeInviteListener = {
-            mSkrAudioPermission.ensurePermission({
-                mRoomInviteView?.agreeInvite()
-            }, true)
-        }
-
-        mSeatView = findViewById(R.id.seat_view)
-        mSeatView.bindData(mRoomData)
-        mSeatView.listener = object : PartySeatView.Listener {
-            override fun onClikAvatar(position: Int, model: PartyActorInfoModel?) {
-                if (mRoomData.getMyInfoInParty().isAdmin() || mRoomData.getMyInfoInParty().isHost()) {
-                    // 我是管理人员
-                    showPartyManageView(model)
-                } else {
-                    // 非管理人员
-                    if (model?.player?.userID != null) {
-                        showPersonInfoView(model?.player?.userID ?: 0)
-                    } else {
-                        // 点了个空座位
+            override fun showPartyBeHostConfirm() {
+                getPartyManageHostDialogView().apply {
+                    function1.text = "上麦"
+                    function1.setDebounceViewClickListener {
+                        mCorePresenter.becomeClubHost()
+                        dismiss(false)
                     }
-                }
+
+                    function2.visibility = View.GONE
+                }.showByDialog()
+            }
+
+            override fun showPartyOpHost() {
+                getPartyManageHostDialogView().apply {
+                    function1.text = "上麦"
+                    function1.setDebounceViewClickListener {
+                        mCorePresenter.takeClubHost()
+                        dismiss(false)
+                    }
+
+                    function2.visibility = View.VISIBLE
+                    function2.setDebounceViewClickListener {
+                        dismiss(false) // 2个对话框
+                        EventBus.getDefault().post(ShowPersonCardEvent(mRoomData.hostId))
+                    }
+                }.showByDialog()
+            }
+
+            override fun showPartySelfOpHost() {
+                getPartyManageHostDialogView().apply {
+                    function1.text = "下麦"
+                    function1.setDebounceViewClickListener {
+                        mCorePresenter.giveClubHost()
+                        dismiss(false)
+                    }
+
+                    function2.visibility = View.VISIBLE
+                    function2.setDebounceViewClickListener {
+                        dismiss(false) // 2个对话框
+                        EventBus.getDefault().post(ShowPersonCardEvent(mRoomData.hostId))
+                    }
+                }.showByDialog()
+            }
+
+            override fun showClubInfoCard() {
+                dismissDialog()
+                mClubCardDialogView = ClubCardDialogView(this@PartyRoomActivity, mRoomData.clubInfo?.clubID ?: 0)
+                mClubCardDialogView?.showByDialog()
             }
         }
     }
@@ -568,7 +565,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun showGameRuleDialog() {
         dismissDialog()
         mGameRuleDialog = DialogPlus.newDialog(this)
-                .setContentHolder(ViewHolder(R.layout.relay_game_rule_view_layout))
+                .setContentHolder(ViewHolder(R.layout.party_game_rule_view_layout))
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
                 .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
@@ -579,21 +576,18 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     }
 
     private fun initCommentView() {
-//        mCommentView = findViewById(R.id.comment_view)
-//        mCommentView.setListener(CommentViewItemListener { userId ->
-//            showPersonInfoView(userId)
-//        })
-//        mCommentView.roomData = mRoomData
-//        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
-//        mFlyCommentView = findViewById(R.id.fly_comment_view)
-//        mFlyCommentView?.roomData = mRoomData
+        mCommentView = findViewById(R.id.comment_view)
+        mCommentView.setListener(CommentViewItemListener { userId ->
+            showPersonInfoView(userId, null)
+        })
+        mCommentView.roomData = mRoomData
     }
 
     private fun initGiftPanelView() {
         mGiftPanelView = findViewById<View>(R.id.gift_panel_view) as GiftPanelView
         mGiftPanelView.setRoomData(mRoomData)
         mContinueSendView = findViewById<View>(R.id.continue_send_view) as ContinueSendView
-        mContinueSendView.mScene = ContinueSendView.EGameScene.GS_Race
+        mContinueSendView.mScene = ContinueSendView.EGameScene.GS_Party
         mContinueSendView.setRoomData(mRoomData)
         mContinueSendView.setObserver(object : ContinueSendView.OnVisibleStateListener {
             override fun onVisible(isVisible: Boolean) {
@@ -622,19 +616,42 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mVIPEnterView?.enter(playerInfoModel, finishCall)
     }
 
-    private fun showPersonInfoView(userID: Int) {
+    private fun showPersonInfoView(userID: Int, isShowKick: Boolean?) {
         if (!U.getNetworkUtils().hasNetwork()) {
             U.getToastUtil().showShort("网络异常，请检查网络后重试!")
             return
         }
         dismissDialog()
         mInputContainerView.hideSoftInput()
-        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_RELAY_ROOM, userID, false, false)
+        var showKick = false
+        if (isShowKick != null) {
+            showKick = isShowKick
+        } else if (mRoomData.myUserInfo?.isHost() == true) {
+            // 主持人 能踢所有人
+            showKick = mRoomData.getPlayerInfoById(userID)?.isHost() != true
+        } else if (mRoomData.myUserInfo?.isAdmin() == true) {
+            // 管理员能踢 嘉宾 观众
+            showKick = !(mRoomData.getPlayerInfoById(userID)?.isAdmin() == true || mRoomData.getPlayerInfoById(userID)?.isHost() == true)
+        }
+
+        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_PARTY_ROOM, userID, showKick, false)
                 .setRoomID(mRoomData.gameId)
+                .setKickListener {
+                    showKickConfirmDialog(it)
+                }
                 .build()
         mPersonInfoDialog?.show()
     }
 
+    private fun showKickConfirmDialog(model: UserInfoModel) {
+        dismissDialog()
+        mConfirmDialog = ConfirmDialog(U.getActivityUtils().topActivity, model, ConfirmDialog.TYPE_OWNER_KICK_CONFIRM, 0)
+        mConfirmDialog?.setListener { userInfoModel ->
+            // 发起踢人请求
+            mCorePresenter.kickOut(userInfoModel.userId)
+        }
+        mConfirmDialog?.show()
+    }
 
     private fun showPartyManageView(model: PartyActorInfoModel?) {
         dismissDialog()
@@ -645,7 +662,20 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
-        showPersonInfoView(event.uid)
+        showPersonInfoView(event.uid, event.showKick)
+    }
+
+    private fun getPartyManageHostDialogView(): PartyManageHostDialogView {
+        if (mPartyManageHostDialogView == null) {
+            mPartyManageHostDialogView = PartyManageHostDialogView(this)
+        }
+
+        return mPartyManageHostDialogView!!
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartySelectSongEvent) {
+        SongManagerActivity.open(this@PartyRoomActivity, mRoomData)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -654,6 +684,67 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             mContinueSendView.startBuy(event.baseGift, event.receiver)
         } else {
             U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyHostChangeEvent) {
+        if (mRoomData.isClubHome()) {
+            if (mRoomData.hostId > 0) {
+                val model = mRoomData.getPlayerInfoById(mRoomData.hostId)
+                mCorePresenter?.pretendSystemMsg("${UserInfoManager.getInstance().getRemarkName(model?.userInfo?.userId
+                        ?: 0, model?.userInfo?.nickname)} 已成为新的主持人")
+                if ((model?.userInfo?.userId ?: 0) == MyUserInfoManager.uid.toInt()) {
+                    finishTopActivity("您已成为主持人")
+                }
+            } else {
+                mCorePresenter?.pretendSystemMsg("主持人已下麦，已自动结束所有游戏")
+            }
+        }
+    }
+
+    private fun finishTopActivity(str: String) {
+        var hasActivity = false
+        for (i in U.getActivityUtils().activityList.size - 1 downTo 0) {
+            val activity = U.getActivityUtils().activityList[i]
+            if (activity is PartyRoomActivity) {
+                break
+            }
+            if (U.getActivityUtils().isHomeActivity(activity)) {
+                continue
+            }
+            activity.finish()
+            hasActivity = true
+        }
+
+        if (!TextUtils.isEmpty(str) && hasActivity) {
+            U.getToastUtil().showShort(str)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PKickoutUserMsg) {
+        //todo 需不需要让被踢人游戏直接结束
+        MyLog.d(TAG, "onEvent event = $event")
+        if (event.kickUser.userInfo.userID == MyUserInfoManager.uid.toInt()) {
+            // 我被踢出去了
+            U.getToastUtil().showSkrCustomLong(CommonToastView.Builder(U.app())
+                    .setImage(R.drawable.touxiangshezhishibai_icon)
+                    .setText("管理员已将你踢出房间")
+                    .build())
+            finish()
+        } else {
+            val opUser = PartyPlayerInfoModel.parseFromPb(event.opUser)
+            val stringBuilder = StringBuilder()
+            if (opUser.isHost()) {
+                stringBuilder.append("主持人")
+            } else if (opUser.isAdmin()) {
+                stringBuilder.append("管理员")
+            }
+
+            val kickUser = PartyPlayerInfoModel.parseFromPb(event.kickUser)
+            stringBuilder.append("将${kickUser.userInfo?.nicknameRemark}踢出了房间")
+            mCorePresenter.pretendSystemMsg(stringBuilder.toString())
         }
     }
 
@@ -704,12 +795,12 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun quitGame() {
         dismissDialog()
         mTipsDialogView = TipsDialogView.Builder(this)
-                .setMessageTip("确定要退出小剧场吗")
+                .setMessageTip("确定要退出派对吗")
                 .setConfirmTip("确定")
                 .setCancelTip("取消")
                 .setConfirmBtnClickListener {
                     mTipsDialogView?.dismiss(false)
-//                    gameOver()
+                    finish()
                 }
                 .setCancelBtnClickListener {
                     mTipsDialogView?.dismiss()
@@ -719,32 +810,51 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     }
 
     private fun dismissDialog() {
-//        mRaceActorPanelView?.dismiss(false)
         mPersonInfoDialog?.dismiss(false)
-//        mRaceVoiceControlPanelView?.dismiss(false)
         mGameRuleDialog?.dismiss(false)
         mTipsDialogView?.dismiss(false)
+        mVoiceControlPanelView?.dismiss(false)
         mPartyManageDialogView?.dismiss(false)
-//        mGrabKickDialog?.dismiss(false)
+        mPartyManageHostDialogView?.dismiss(false)
+        mPartyApplyPanelView?.dismiss(false)
+        mPartyMemberPanelView?.dismiss(false)
+        mConfirmDialog?.dismiss(false)
+        mClubCardDialogView?.dismiss(false)
     }
 
     /**
      * 某个轮次结束了
      */
     override fun showRoundOver(lastRoundInfo: PartyRoundInfoModel?, continueOp: (() -> Unit)?) {
+        continueOp?.invoke()
     }
 
     /**
      * 某个游戏开始了 信息在 realRoundInfo里取
      */
-    override fun gameBegin() {
+    override fun gameBegin(thisRound: PartyRoundInfoModel?) {
+        mPartyGameMainView?.updateRound(thisRound)
     }
 
     /**
      * 没有游戏了
      */
     override fun showWaiting() {
-        mPartyGameMainView?.toWaitingState()
+        mPartyGameMainView?.toEmptyState()
+
+    }
+
+    override fun joinNotice(model: PartyPlayerInfoModel?) {
+        model?.let {
+            if (it.userID != MyUserInfoManager.myUserInfo?.userId?.toInt()) {
+                mVipEnterPresenter?.addNotice(it.userInfo)
+            }
+        }
+    }
+
+    override fun gameOver() {
+        finish()
+        U.getToastUtil().showShort("房间已解散")
     }
 
 }

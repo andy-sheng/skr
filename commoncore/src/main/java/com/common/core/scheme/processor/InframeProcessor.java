@@ -16,6 +16,7 @@ import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.scheme.event.MicInviteFromSchemeEvent;
+import com.common.core.scheme.event.PartyInviteFromSchemeEvent;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.RouterConstants;
@@ -327,6 +328,23 @@ public class InframeProcessor implements ISchemeProcessor {
             IHomeService service = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
             if (service != null) {
                 service.goRaceMatchByAudience();
+            }
+        }else if ("/joinparty".equals(path)) {
+            int ownerId = SchemeUtils.getInt(uri, "owner", 0);
+            int roomId = SchemeUtils.getInt(uri, "gameId", 0);
+            int ask = SchemeUtils.getInt(uri, "ask", 0);
+            int mediaType = SchemeUtils.getInt(uri, "mediaType", 0);
+            if (ownerId > 0 && roomId > 0) {
+                if (ownerId == MyUserInfoManager.INSTANCE.getUid()) {
+                    MyLog.d(TAG, "processRoomUrl 房主id是自己，可能从口令粘贴板过来的，忽略");
+                    return;
+                }
+                PartyInviteFromSchemeEvent event = new PartyInviteFromSchemeEvent();
+                event.ask = ask;
+                event.ownerId = ownerId;
+                event.roomId = roomId;
+                event.mediaType = mediaType;
+                EventBus.getDefault().post(event);
             }
         }
     }

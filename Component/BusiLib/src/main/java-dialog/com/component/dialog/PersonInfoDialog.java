@@ -166,6 +166,14 @@ public class PersonInfoDialog {
                 }
                 showConfirmSpFollowDialog(userID, isSpFollow);
             }
+
+            @Override
+            public void showClubInfoCard(int clubID) {
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss(false);
+                }
+                showClubInfoCardDialog(clubID);
+            }
         });
 
         mDialogPlus = DialogPlus.newDialog(mActivity)
@@ -177,6 +185,20 @@ public class PersonInfoDialog {
                 .setExpanded(false)
                 .setCancelable(true)
                 .create();
+    }
+
+    private void showClubInfoCardDialog(int clubID) {
+        ClubCardDialogView clubCardDialogView = new ClubCardDialogView(mActivity, clubID);
+        mDialogPlus = DialogPlus.newDialog(mActivity)
+                .setContentHolder(new ViewHolder(clubCardDialogView))
+                .setGravity(Gravity.CENTER)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
+                .setExpanded(false)
+                .setCancelable(true)
+                .create();
+        mDialogPlus.show();
     }
 
     public void show() {
@@ -498,6 +520,8 @@ public class PersonInfoDialog {
         void onClickDoubleInvite(UserInfoModel userInfoModel);
 
         void showSpFollowDialog(int userID, boolean isSpFollow);
+
+        void showClubInfoCard(int clubID);
     }
 
     public static final class Builder {

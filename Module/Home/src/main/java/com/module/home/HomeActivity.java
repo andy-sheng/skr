@@ -70,7 +70,8 @@ import org.greenrobot.eventbus.ThreadMode;
 @Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener, INotifyView {
 
-    public final static String PREF_KEY_RELAY_DIALOG = "pref_key_relay_flag";
+    public final static String PREF_KEY_PARTY_DIALOG = "pref_key_party_flag";
+
     public final String TAG = "HomeActivity";
     public final static String NOTIFY_CHANNEL_ID = "invite_notify";
 
@@ -232,8 +233,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_ROOM)
-                            .navigation();
                     return false;
                 }
             });
@@ -325,14 +324,14 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mPostBtn.callOnClick();
         }
 
-        showRelayTipsDialog();
+        showNewFunctionDialog();
     }
 
-    private void showRelayTipsDialog() {
-        if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_RELAY_DIALOG, false)) {
+    private void showNewFunctionDialog() {
+        if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_PARTY_DIALOG, false)) {
             if (mWaitingDialogPlus == null) {
                 mWaitingDialogPlus = DialogPlus.newDialog(this)
-                        .setContentHolder(new ViewHolder(R.layout.relay_first_tip_layout))
+                        .setContentHolder(new ViewHolder(R.layout.new_funcation_first_tip_layout))
                         .setContentBackgroundResource(R.color.transparent)
                         .setOverlayBackgroundResource(R.color.black_trans_50)
                         .setExpanded(false)
@@ -351,7 +350,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
 
             EventBus.getDefault().post(new ShowDialogInHomeEvent(mWaitingDialogPlus, 11));
-            U.getPreferenceUtils().setSettingBoolean(PREF_KEY_RELAY_DIALOG, true);
+            U.getPreferenceUtils().setSettingBoolean(PREF_KEY_PARTY_DIALOG, true);
         }
     }
 

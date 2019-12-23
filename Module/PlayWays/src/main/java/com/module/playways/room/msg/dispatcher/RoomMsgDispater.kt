@@ -77,7 +77,8 @@ object RoomMsgDispater : IPushMsgProcess {
                 CustomMsgType.MSG_TYPE_COMBINE_ROOM,
                 CustomMsgType.MSG_TYPE_RACE_ROOM,
                 CustomMsgType.MSG_TYPE_MIC_ROOM,
-                CustomMsgType.MSG_TYPE_RELAY_ROOM
+                CustomMsgType.MSG_TYPE_RELAY_ROOM,
+                CustomMsgType.MSG_TYPE_PARTY_ROOM
         )
     }
 

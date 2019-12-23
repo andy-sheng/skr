@@ -6,6 +6,7 @@ import android.animation.ValueAnimator
 import android.os.Handler
 import android.os.Message
 import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.jiguang.JiGuangPush
@@ -21,6 +22,7 @@ import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.component.lyrics.utils.SongResUtils
+import com.component.notification.PartyPeerAccStatusEvent
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
@@ -66,6 +68,8 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         internal val MSG_TURN_CHANGE = 22 // 到时间了 轮次切换
 
         internal val MSG_TURN_CHANGE_PREPARE = 23 // 快到时间了 准备切换
+
+        internal val MSG_MY_ACC_LOADING_FAILED = 24 // 我的伴奏下载失败
     }
 
     internal var mAbsenTimes = 0
@@ -85,13 +89,23 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                     ensureInRcRoom()
                 }
                 MSG_LAUNER_MUSIC -> {
-                    realSingBegin()
+                    realSingBegin("MSG_LAUNER_MUSIC")
                 }
                 MSG_TURN_CHANGE -> {
                     turnChange()
                 }
                 MSG_TURN_CHANGE_PREPARE -> {
                     turnChangePrepare()
+                }
+                MSG_MY_ACC_LOADING_FAILED -> {
+                    if (mRoomData.realRoundInfo?.roundSeq == msg.arg1) {
+                        MyLog.i(TAG, "我的伴奏下载失败了，通知对端")
+                        sendAccStatusToPeer(false)
+                        if (mRoomData?.realRoundInfo?.peerAccLoadingOk == true) {
+                            MyLog.i(TAG, "对端伴奏良好播放歌词")
+                            realSingBegin("MSG_MY_ACC_LOADING_FAILED")
+                        }
+                    }
                 }
             }
         }
@@ -258,10 +272,14 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             DebugLogView.println(TAG, "preOpWhenSelfRound 伴奏文件本地不存在${accFile.path}")
             ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), mRoomData?.realRoundInfo?.music?.acc, null, 0, false, false, 1)
         }
+        mUiHandler.removeMessages(MSG_MY_ACC_LOADING_FAILED)
+        var msg = mUiHandler.obtainMessage(MSG_MY_ACC_LOADING_FAILED)
+        msg.arg1 = mRoomData.realRoundInfo?.roundSeq ?: 0
+        mUiHandler.sendMessageDelayed(msg, 10 * 1000)
     }
 
-    private fun realSingBegin() {
-        DebugLogView.println(TAG, "realSingBegin 开始伴奏 progress=${mRoomData?.getSingCurPosition()}")
+    private fun realSingBegin(from:String) {
+        DebugLogView.println(TAG, "realSingBegin 开始伴奏 progress=${mRoomData?.getSingCurPosition()} from=${from}")
         ZqEngineKit.getInstance().resumeAudioMixing()
         if (mRoomData.isSingByMeNow()) {
             DebugLogView.println(TAG, "realSingBegin 当前是我唱 开启音量")
@@ -327,43 +345,47 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             mRoomData.lastSingerID = MyUserInfoManager.uid.toInt()
         } else {
             DebugLogView.println(TAG, "turnChange 当前不是我唱 关闭音量")
-            if (mRoomData?.lastSingerID == MyUserInfoManager.uid.toInt()) {
-                // 确实有切换，声音渐变处理
-                val animation1 = ValueAnimator.ofInt(ZqEngineKit.getInstance().params.audioMixingPlayoutVolume, 0)
-                animation1.addUpdateListener {
-                    var v = it.animatedValue as Int
-                    ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(v, false)
+            if (mRoomData.realRoundInfo?.peerAccLoadingOk == true) {
+                if (mRoomData?.lastSingerID == MyUserInfoManager.uid.toInt()) {
+                    // 确实有切换，声音渐变处理
+                    val animation1 = ValueAnimator.ofInt(ZqEngineKit.getInstance().params.audioMixingPlayoutVolume, 0)
+                    animation1.addUpdateListener {
+                        var v = it.animatedValue as Int
+                        ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(v, false)
+                    }
+
+                    val animation2 = ValueAnimator.ofInt(RelayRoomData.MUSIC_PUBLISH_VOLUME, 0)
+                    animation2.addUpdateListener {
+                        var v = it.animatedValue as Int
+                        ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(v, false)
+                    }
+                    val a = AnimatorSet()
+                    a.duration = 1000
+                    a.playTogether(animation1, animation2)
+                    a.addListener(object : Animator.AnimatorListener {
+                        override fun onAnimationRepeat(animation: Animator?) {
+                        }
+
+                        override fun onAnimationStart(animation: Animator?) {
+                        }
+
+                        override fun onAnimationEnd(animation: Animator?) {
+                            ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
+                            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
+                        }
+
+                        override fun onAnimationCancel(animation: Animator?) {
+                            ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
+                            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
+                        }
+                    })
+                    a.start()
+                } else {
+                    ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
+                    ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
                 }
-
-                val animation2 = ValueAnimator.ofInt(RelayRoomData.MUSIC_PUBLISH_VOLUME, 0)
-                animation2.addUpdateListener {
-                    var v = it.animatedValue as Int
-                    ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(v, false)
-                }
-                val a = AnimatorSet()
-                a.duration = 1000
-                a.playTogether(animation1, animation2)
-                a.addListener(object : Animator.AnimatorListener {
-                    override fun onAnimationRepeat(animation: Animator?) {
-                    }
-
-                    override fun onAnimationStart(animation: Animator?) {
-                    }
-
-                    override fun onAnimationEnd(animation: Animator?) {
-                        ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
-                        ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
-                    }
-
-                    override fun onAnimationCancel(animation: Animator?) {
-                        ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
-                        ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
-                    }
-                })
-                a.start()
             } else {
-                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
-                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
+                DebugLogView.println(TAG, "对端的伴奏坏了，我不做处理")
             }
             mRoomData.lastSingerID = mRoomData.peerUser?.userID
         }
@@ -376,9 +398,9 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         var nextTs = mRoomData.getNextTurnChangeTs()
         if (nextTs > 0) {
             DebugLogView.println(TAG, "${nextTs}ms 后进行轮次切换")
-            if(mRoomData.getSingerIdNow() == mRoomData.peerUser?.userID){
+            if (mRoomData.getSingerIdNow() == mRoomData.peerUser?.userID) {
                 mUiHandler.removeMessages(MSG_TURN_CHANGE_PREPARE)
-                mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE_PREPARE, nextTs-3000)
+                mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE_PREPARE, nextTs - 3000)
             }
             mUiHandler.removeMessages(MSG_TURN_CHANGE)
             mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE, nextTs)
@@ -512,6 +534,23 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
 
             }
         }
+    }
+
+    fun sendAccStatusToPeer(ok: Boolean) {
+        val msgService = ModuleServiceManager.getInstance().msgService
+        var js = JSONObject()
+        js.put("userID", MyUserInfoManager.uid.toInt())
+        js.put("roundSeq", mRoomData.realRoundInfo?.roundSeq)
+        js.put("accLoadingOk", ok)
+        msgService?.sendSpecialDebugMessage("${mRoomData?.peerUser?.userID}", 3, js.toJSONString(), object : ICallback {
+            override fun onSucess(obj: Any) {
+                //U.getToastUtil().showLong("请求成功,稍等看该用户是否有返回")
+            }
+
+            override fun onFailed(obj: Any, errcode: Int, message: String) {
+                //U.getToastUtil().showLong("请求失败")
+            }
+        })
     }
 
     var heartbeatJob: Job? = null
@@ -696,6 +735,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             mUiHandler.removeMessages(MSG_TURN_CHANGE)
             mUiHandler.removeMessages(MSG_TURN_CHANGE_PREPARE)
             mUiHandler.removeMessages(MSG_LAUNER_MUSIC)
+            mUiHandler.removeMessages(MSG_MY_ACC_LOADING_FAILED)
 //            ZqEngineKit.getInstance().stopAudioRecording()
 //            if (ZqEngineKit.getInstance().params.isAnchor) {
 //                ZqEngineKit.getInstance().setClientRole(false)
@@ -713,6 +753,8 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_STATE_CHANGE) {
             var state = event.obj as EngineEvent.MusicStateChange
             if (state.isPlayOk && mRoomData.realRoundInfo?.accLoadingOk == false) {
+                mUiHandler.removeMessages(MSG_MY_ACC_LOADING_FAILED)
+                sendAccStatusToPeer(true)
                 mRoomData.realRoundInfo?.accLoadingOk = true
                 var progress = mRoomData.getSingCurPosition()
                 DebugLogView.println(TAG, "伴奏加载ok progress=${progress}")
@@ -721,7 +763,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                         DebugLogView.println(TAG, "EngineEvent 超时上车了")
                         ZqEngineKit.getInstance().setAudioMixingPosition(progress.toInt())
                         mUiHandler.post {
-                            realSingBegin()
+                            realSingBegin("超时上车")
                         }
                     } else {
                         DebugLogView.println(TAG, "EngineEvent 先暂停 ${-progress}ms后 resume")
@@ -800,6 +842,29 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             //            }
         } else {
             // 可以考虑监听下房主的说话提示 做下容错
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyPeerAccStatusEvent) {
+        if (event.userID == mRoomData.peerUser?.userID && event.roundSeq == mRoomData.realRoundInfo?.roundSeq) {
+            MyLog.i(TAG, "对方伴奏情况ok=${event.accLoadingOk}")
+            if (mRoomData.realRoundInfo?.peerAccLoadingOk == true && event.accLoadingOk == false) {
+                MyLog.i(TAG, "收到对端伴奏播放失败的事件，替对方播伴奏")
+                mRoomData.realRoundInfo?.peerAccLoadingOk = false
+                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(RelayRoomData.MUSIC_PUBLISH_VOLUME, false)
+                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(ZqEngineKit.getInstance().params.playbackSignalVolume, false)
+            } else if (mRoomData.realRoundInfo?.peerAccLoadingOk == false && event.accLoadingOk == true) {
+                mRoomData.realRoundInfo?.peerAccLoadingOk = true
+                if (mRoomData.isSingByMeNow()) {
+                    ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(RelayRoomData.MUSIC_PUBLISH_VOLUME, false)
+                    ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(ZqEngineKit.getInstance().params.playbackSignalVolume, false)
+                } else {
+                    ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
+                    ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
+                }
+
+            }
         }
     }
 

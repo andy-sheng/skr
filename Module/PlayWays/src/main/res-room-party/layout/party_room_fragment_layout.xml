@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:gameType="http://schemas.android.com/tools"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/srf_haichang_bj">
+    app:bl_gradient_endColor="#1F1C47"
+    app:bl_gradient_startColor="#4C2669"
+    app:bl_shape="rectangle">
 
     <ViewStub
         android:id="@+id/game_effect_bg_view_layout_viewStub"
@@ -21,44 +23,6 @@
         app:showBottomLine="false"
         app:showMainView="false"
         app:statusBarColor="@color/transparent" />
-
-    <!--底部按钮区-->
-    <com.module.playways.party.room.bottom.PartyBottomContainerView
-        android:id="@+id/bottom_container_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_50_dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <!--底部功能区-->
-    <ViewStub
-        android:id="@+id/party_bottom_setting_viewStub"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_100_dp"
-        android:layout="@layout/party_setting_view_layout"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <!--底部表情区-->
-    <ViewStub
-        android:id="@+id/party_bottom_emoji_viewStub"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_100_dp"
-        android:layout="@layout/party_emoji_view_layout"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <com.module.playways.room.room.comment.CommentView
-        android:id="@+id/comment_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_0_dp"
-        android:layout_marginRight="@dimen/view_100_dp"
-        android:layout_marginBottom="@dimen/view_10_dp"
-        android:paddingLeft="@dimen/view_10_dp"
-        android:paddingBottom="@dimen/view_7_dp"
-        app:edge_position="top"
-        app:edge_width="30dp"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_container_view"
-        app:layout_goneMarginBottom="@dimen/view_50_dp"
-        gameType:type="party" />
 
     <!-- 包括 顶部操作菜单栏 -->
     <com.module.playways.party.room.top.PartyTopOpView
@@ -85,6 +49,18 @@
         android:layout_marginRight="@dimen/view_10_dp"
         android:layout="@layout/party_game_main_view_layout"
         app:layout_constraintTop_toBottomOf="@id/title_bar" />
+
+    <ViewStub
+        android:id="@+id/party_self_sing_lyric_view_stub"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_54_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout="@layout/party_self_sing_lyric_layout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
     <!--座位席-->
     <com.module.playways.party.room.seat.PartySeatView
@@ -116,35 +92,6 @@
         app:layout_constraintBottom_toTopOf="@+id/relay_sing_card_view_layout_stub"
         app:layout_constraintLeft_toLeftOf="@+id/relay_sing_card_view_layout_stub" />
 
-    <!--    <com.common.view.ex.ExTextView-->
-    <!--        android:id="@+id/has_select_song_num_tv"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="@dimen/view_24_dp"-->
-    <!--        android:layout_marginTop="@dimen/view_100_dp"-->
-    <!--        android:layout_marginRight="@dimen/view_14_dp"-->
-    <!--        android:gravity="center_vertical"-->
-    <!--        android:paddingLeft="@dimen/view_9_dp"-->
-    <!--        android:paddingRight="@dimen/view_9_dp"-->
-    <!--        android:text="已点0首"-->
-    <!--        android:textColor="@color/white_trans_80"-->
-    <!--        android:textSize="@dimen/textsize_13_dp"-->
-    <!--        android:textStyle="bold"-->
-    <!--        app:bl_corners_radius="12dp"-->
-    <!--        app:bl_gradient_endColor="#835DFD"-->
-    <!--        app:bl_gradient_startColor="#835DFD"-->
-    <!--        app:layout_constraintRight_toRightOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/title_bar" />-->
-
-    <!--    &lt;!&ndash;下一局&ndash;&gt;-->
-    <!--    <com.module.playways.mic.room.view.MicTurnInfoCardView-->
-    <!--        android:id="@+id/turn_card_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_centerHorizontal="true"-->
-    <!--        android:layout_marginTop="@dimen/view_156_dp"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/title_bar" />-->
-
     <!--演唱时两个主场景view-->
     <ViewStub
         android:id="@+id/normal_other_sing_card_view_stub"
@@ -166,44 +113,54 @@
         android:layout="@layout/relay_sing_card_view_layout"
         app:layout_constraintBottom_toTopOf="@+id/bottom_container_view" />
 
-    <!--    &lt;!&ndash;唱歌提示卡片场景&ndash;&gt;-->
-    <!--    <include layout="@layout/mic_sing_begin_card_layout" />-->
-    <!--    &lt;!&ndash;他人唱歌时场景&ndash;&gt;-->
-    <!--    <include layout="@layout/mic_other_sing_card_layout" />-->
-    <!--    &lt;!&ndash;自己唱歌场景&ndash;&gt;-->
-    <!--    <include layout="@layout/mic_self_sing_card_view_layout" />-->
-    <!--    &lt;!&ndash;轮次结束卡片&ndash;&gt;-->
-    <!--    <include layout="@layout/mic_round_over_card_layout" />-->
+    <!--底部右边操作区域-->
+    <com.module.playways.party.room.view.PartyRightOpView
+        android:id="@+id/right_op_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_marginBottom="@dimen/view_70_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
-    <!--    <com.module.playways.grab.room.view.GrabScoreTipsView-->
-    <!--        android:id="@+id/grab_score_tips_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="150dp"-->
-    <!--        android:layout_marginTop="@dimen/view_30_dp"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--    小k房邀请合唱，这里也有这个逻辑 -->
-    <ViewStub
-        android:id="@+id/mic_invite_view_stub"
+    <com.module.playways.room.room.comment.CommentView
+        android:id="@+id/comment_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_70_dp"
-        android:layout_marginTop="@dimen/view_60_dp"
-        android:inflatedId="@+id/mic_invite_view"
-        android:layout="@layout/mic_invite_view_stub_layout"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_bar" />
+        android:layout_height="@dimen/view_0_dp"
+        android:layout_marginRight="@dimen/view_100_dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:paddingLeft="@dimen/view_10_dp"
+        android:paddingBottom="@dimen/view_7_dp"
+        app:edge_position="top"
+        app:edge_width="30dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_container_view"
+        app:layout_constraintTop_toBottomOf="@id/seat_view"
+        app:layout_goneMarginBottom="@dimen/view_50_dp"
+        gameType:type="party" />
 
-    <!--点歌-->
-    <!--    <ImageView-->
-    <!--        android:id="@+id/add_song_iv"-->
-    <!--        android:layout_width="@dimen/view_61_dp"-->
-    <!--        android:layout_height="@dimen/view_61_dp"-->
-    <!--        android:layout_marginRight="@dimen/view_18_dp"-->
-    <!--        android:layout_marginBottom="@dimen/view_82_dp"-->
-    <!--        android:background="@drawable/mic_add_song_icon"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintRight_toRightOf="parent" />-->
+    <!--底部按钮区-->
+    <com.module.playways.party.room.bottom.PartyBottomContainerView
+        android:id="@+id/bottom_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_50_dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!--底部功能区-->
+    <ViewStub
+        android:id="@+id/party_bottom_setting_viewStub"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_100_dp"
+        android:layout="@layout/party_setting_view_layout"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!--底部表情区-->
+    <ViewStub
+        android:id="@+id/party_bottom_emoji_viewStub"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_100_dp"
+        android:layout="@layout/party_emoji_view_layout"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <!--礼物连送按钮-->
     <com.module.playways.room.gift.view.ContinueSendView
@@ -227,12 +184,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
-    <com.module.playways.room.room.comment.fly.FlyCommentView
-        android:id="@+id/fly_comment_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_120_dp"
-        android:layout_marginTop="@dimen/view_150_dp"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--    <com.module.playways.room.room.comment.fly.FlyCommentView-->
+    <!--        android:id="@+id/fly_comment_view"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="@dimen/view_120_dp"-->
+    <!--        android:layout_marginTop="@dimen/view_150_dp"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <!--中礼物展示-->
     <com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
@@ -267,16 +224,6 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <!--放弃演唱-->
-    <!--    <com.module.playways.grab.room.view.GrabGiveupView-->
-    <!--        android:id="@+id/give_up_view"-->
-    <!--        android:layout_width="@dimen/view_97_dp"-->
-    <!--        android:layout_height="@dimen/view_60_dp"-->
-    <!--        android:layout_marginBottom="@dimen/view_163_dp"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintRight_toRightOf="parent" />-->
-
     <!--礼物面板-->
     <com.module.playways.room.gift.view.GiftPanelView
         android:id="@+id/gift_panel_view"
@@ -299,18 +246,10 @@
         android:layout_marginBottom="@dimen/view_18_dp"
         android:layout="@layout/voice_record_tips_view_layout" />
 
-    <!-- 麦席-->
-    <!--    <ViewStub-->
-    <!--        android:id="@+id/mic_seat_view_layout_view_stub"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:layout="@layout/mic_seat_view_layout"-->
-    <!--        android:visibility="gone" />-->
-
     <ViewStub
         android:id="@+id/debug_log_view_stub"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:inflatedId="@+id/debug_log_view"
         android:layout="@layout/debug_log_view_stub_layout" />
-</android.support.constraint.ConstraintLayout>
+</com.common.view.ex.ExConstraintLayout>

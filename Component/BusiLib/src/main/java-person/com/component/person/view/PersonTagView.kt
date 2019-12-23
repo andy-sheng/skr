@@ -25,12 +25,18 @@ import java.util.HashMap
 // 个人页面和他人页面的标签
 class PersonTagView : ConstraintLayout {
 
+
     private val SEX_TAG = 1                //性别标签
     private val LOCATION_TAG = 2           //城市标签
     private val CHARM_TAG = 3              //魅力值标签
     private val USERID_TAG = 4             //撕歌ID标签
     private val FANS_NUM_TAG = 5           //粉丝数（他人中心才有）
     private val QINMI_TAG = 6              //亲密度 (信息卡片才有)
+    private val CLUB_ID_TAG = 7            //家族ID
+    private val CLUB_HOT_TAG = 8           //家族热度
+
+    private val min_tag_ID = 1
+    private val max_tag_ID = 8
 
     private var sex: Int = ESex.SX_UNKNOWN.value
 
@@ -61,6 +67,10 @@ class PersonTagView : ConstraintLayout {
                     tagModel.type == QINMI_TAG -> {
                         descIv.visibility = View.VISIBLE
                         descIv.background = U.getDrawable(R.drawable.game_qinmi_icon)
+                    }
+                    tagModel.type == CLUB_HOT_TAG -> {
+                        descIv.visibility = View.VISIBLE
+                        descIv.background = U.getDrawable(R.drawable.party_hot_icon)
                     }
                     tagModel.type == SEX_TAG -> {
                         descIv.visibility = View.VISIBLE
@@ -123,34 +133,26 @@ class PersonTagView : ConstraintLayout {
         refreshTag()
     }
 
+    fun setClubID(clubID: Int) {
+        mHashMap[CLUB_ID_TAG] = "ID:$clubID"
+        refreshTag()
+    }
+
+    fun setClubHot(hot: Int) {
+        mHashMap[CLUB_HOT_TAG] = "$hot"
+        refreshTag()
+    }
+
     private fun refreshTag() {
         mTags.clear()
         if (mHashMap != null) {
-            if (!TextUtils.isEmpty(mHashMap[SEX_TAG])) {
-                mTags.add(TagModel(SEX_TAG, mHashMap[SEX_TAG]!!))
-            }
-
-            if (!TextUtils.isEmpty(mHashMap[LOCATION_TAG])) {
-                mTags.add(TagModel(LOCATION_TAG, mHashMap[LOCATION_TAG]!!))
-            }
-
-            if (!TextUtils.isEmpty(mHashMap[CHARM_TAG])) {
-                mTags.add(TagModel(CHARM_TAG, mHashMap[CHARM_TAG]!!))
-            }
-
-            if (!TextUtils.isEmpty(mHashMap[USERID_TAG])) {
-                mTags.add(TagModel(USERID_TAG, mHashMap[USERID_TAG]!!))
-            }
-
-            if (!TextUtils.isEmpty(mHashMap[FANS_NUM_TAG])) {
-                mTags.add(TagModel(FANS_NUM_TAG, mHashMap[FANS_NUM_TAG]!!))
-            }
-
-            if (!TextUtils.isEmpty(mHashMap[QINMI_TAG])) {
-                mTags.add(TagModel(QINMI_TAG, mHashMap[QINMI_TAG]))
+            for (i in min_tag_ID..max_tag_ID) {
+                if (!TextUtils.isEmpty(mHashMap[i])) {
+                    mTags.add(TagModel(i, mHashMap[i]))
+                }
             }
         }
-        mTagAdapter!!.setTagDatas(mTags)
-        mTagAdapter!!.notifyDataChanged()
+        mTagAdapter?.setTagDatas(mTags)
+        mTagAdapter?.notifyDataChanged()
     }
 }

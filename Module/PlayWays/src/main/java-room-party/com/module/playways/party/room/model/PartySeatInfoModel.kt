@@ -21,8 +21,39 @@ class PartySeatInfoModel : Serializable {
     override fun toString(): String {
         return "PartySeatInfoModel(seatSeq=$seatSeq, seatStatus=$seatStatus, userID=$userID, micStatus=$micStatus)"
     }
-    companion object{
-        fun parseFromPb(pb:SeatInfo):PartySeatInfoModel{
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as PartySeatInfoModel
+
+        if (seatSeq != other.seatSeq) return false
+
+        return true
+    }
+
+
+    fun same(other: PartySeatInfoModel): Boolean {
+        if (seatSeq != other.seatSeq) return false
+        if (seatStatus != other.seatStatus) return false
+        if (userID != other.userID) return false
+        if (micStatus != other.micStatus) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = seatSeq
+        result = 31 * result + seatStatus
+        result = 31 * result + userID
+        result = 31 * result + micStatus
+        return result
+    }
+
+
+    companion object {
+        fun parseFromPb(pb: SeatInfo): PartySeatInfoModel {
             var info = PartySeatInfoModel()
             info.seatSeq = pb.seatSeq
             info.seatStatus = pb.seatStatus.value
@@ -31,9 +62,9 @@ class PartySeatInfoModel : Serializable {
             return info
         }
 
-        fun parseFromPb(pbs:List<SeatInfo>):List<PartySeatInfoModel>{
+        fun parseFromPb(pbs: List<SeatInfo>): ArrayList<PartySeatInfoModel> {
             var infos = ArrayList<PartySeatInfoModel>()
-            for(pb in pbs){
+            for (pb in pbs) {
                 infos.add(parseFromPb(pb))
             }
             return infos

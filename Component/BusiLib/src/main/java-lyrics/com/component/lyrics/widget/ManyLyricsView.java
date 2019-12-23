@@ -34,7 +34,6 @@ import com.component.lyrics.model.LyricsLineInfo;
 import com.component.lyrics.utils.LyricsUtils;
 import com.component.lyrics.utils.TimeUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -450,6 +449,7 @@ public class ManyLyricsView extends AbstractLrcView {
         int[] paintHLColors;
 
         if (mPaintHLColorsForOthers != null) {
+            //MyLog.d(TAG,"lyricsLineInfo.singByMe="+lyricsLineInfo.singByMe);
             if (lyricsLineInfo.singByMe) {
                 paintHLColors = mPaintHLColors;
             } else {
@@ -462,7 +462,7 @@ public class ManyLyricsView extends AbstractLrcView {
         if (lyricsLineInfo.spilit) {
             newCenterY = drawWhoTurns(lyricsLineInfo.singByMe, canvas, mCentreY, false);
         }
-
+//        MyLog.d(TAG,"paintHLColors="+paintHLColors[0]+" "+paintHLColors[1]);
         // 画当前演唱那行的歌词
         float lineBottomY = drawDownLyrics("drawManyLrcView1", canvas, mPaint, subPaintHLColors, mPaintHL, paintHLColors, splitLyricsLineInfos, mSplitLyricsLineNum, mSplitLyricsWordIndex, mSpaceLineHeight, mLyricsWordHLTime, mCentreY);
 
@@ -773,7 +773,11 @@ public class ManyLyricsView extends AbstractLrcView {
                 }
                 float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(mLyricsReader.getLyricsType(), paintHL, splitLyricsLineInfos.get(i), splitLyricsWordIndex, lyricsWordHLTime);
 
-                LyricsUtils.drawDynamicText(canvas, paint, paintHL, paintColor, paintHLColor, text, lineLyricsHLWidth, textX, lineBottomY, getMeasuredWidth());
+                if (mEnableVerbatim) {
+                    LyricsUtils.drawDynamicText(canvas, paint, paintHL, paintColor, paintHLColor, text, lineLyricsHLWidth, textX, lineBottomY, getMeasuredWidth());
+                } else {
+                    LyricsUtils.drawText(canvas, paint, mPaintColors, text, textX, lineBottomY, getMeasuredWidth());
+                }
 
                 //再把原来的大小设置进去
                 paint.setTextSize(paintOriginalTextSize);
@@ -1035,8 +1039,13 @@ public class ManyLyricsView extends AbstractLrcView {
             MyLog.d(TAG, "updateManyLrcView " + " lrcLineInfos为null");
             return;
         }
-
-        int newLyricsLineNum = LyricsUtils.getLineNumber(mLyricsReader.getLyricsType(), mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
+        int newLyricsLineNum = 0;
+        if (mEnableVerbatim) {
+            newLyricsLineNum = LyricsUtils.getLineNumber(mLyricsReader.getLyricsType(), mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
+        } else {
+            // 逐行的歌词下一行展示优化下
+            newLyricsLineNum = LyricsUtils.getLineNumber3(mLyricsReader.getLyricsType(), mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
+        }
         if (newLyricsLineNum != mLyricsLineNum) {
             if (mTouchEventStatus == TOUCHEVENTSTATUS_INIT && !mIsTouchIntercept) {
                 //初始状态

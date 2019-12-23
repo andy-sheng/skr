@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.component.busilib.constans.GameModeType;
 import com.module.playways.R;
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2;
 import com.module.playways.grab.room.invite.model.ShareModel;
@@ -72,7 +73,7 @@ public class InviteShareFriendView extends RelativeLayout {
     }
 
     private void initSharModel(int from) {
-        if (from == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
+        if (from == GameModeType.GAME_MODE_DOUBLE) {
             list.add(new ShareModel(ShareModel.SHARE_TYPE_CIPHER, R.drawable.yaoqing_anhao, "暗号邀请"));
             list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ, R.drawable.icon_qq, "QQ好友"));
             list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT, R.drawable.icon_weixin, "微信好友"));

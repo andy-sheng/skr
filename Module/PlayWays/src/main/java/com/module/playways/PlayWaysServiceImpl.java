@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.permission.SkrAudioPermission;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.notification.event.CRSyncInviteUserNotifyEvent;
@@ -37,6 +38,11 @@ import com.module.playways.mic.match.model.JoinMicRoomRspModel;
 import com.module.playways.mic.room.MicRoomActivity;
 import com.module.playways.mic.room.MicRoomServerApi;
 import com.module.playways.mic.room.event.MicChangeRoomEvent;
+import com.module.playways.party.home.PartyRoomView;
+import com.module.playways.party.match.model.JoinPartyRoomRspModel;
+import com.module.playways.party.room.PartyRoomActivity;
+import com.module.playways.party.room.PartyRoomServerApi;
+import com.module.playways.party.room.event.PartyChangeRoomEvent;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
@@ -76,6 +82,8 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     }
 
     Disposable mJoinRoomDisposable;
+
+    SkrAudioPermission skrAudioPermission = new SkrAudioPermission();
 
     SkrVerifyUtils skrVerifyUtils = new SkrVerifyUtils();
 
@@ -262,6 +270,65 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         return new FriendRoomGameView(context);
     }
 
+    @Override
+    public IPartyRoomView getPartyRoomView(Context context) {
+        return new PartyRoomView(context);
+    }
+
+    @Override
+    public void tryGoPartyRoom(int roomID, int joinSrc, int roomType) {
+        // 列表添加 JRS_LIST    = 1;  邀请添加 JRS_INVITE  = 2;
+        // roomType RT_PERSONAL = 1;普通房间  RT_FAMILY = 2;家族剧场
+        HashMap map = new HashMap();
+        map.put("platform", 20);
+        map.put("roomID", roomID);
+        map.put("joinSrc", joinSrc);
+        if (roomType != 0) {
+            map.put("roomType", roomType);
+        }
+        skrAudioPermission.ensurePermission(new Runnable() {
+            @Override
+            public void run() {
+                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                PartyRoomServerApi roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi.class);
+                ApiMethods.subscribe(roomServerApi.joinRoom(body), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+                        if (result.getErrno() == 0) {
+                            JoinPartyRoomRspModel rsp = JSON.parseObject(result.getData().toString(), JoinPartyRoomRspModel.class);
+                            if (rsp.getCurrentRound() != null) {
+                                rsp.getCurrentRound().setElapsedTimeMs(rsp.getElapsedTimeMs());
+                            }
+
+                            for (Activity activity : U.getActivityUtils().getActivityList()) {
+                                if (activity instanceof PartyRoomActivity) {
+                                    MyLog.d(TAG, " 存在派对房页面了，发event刷新view");
+                                    EventBus.getDefault().post(new PartyChangeRoomEvent(rsp));
+                                    return;
+                                }
+                            }
+                            ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_ROOM)
+                                    .withSerializable("JoinPartyRoomRspModel", rsp)
+                                    .navigation();
+                        } else {
+                            U.getToastUtil().showShort(result.getErrmsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        U.getToastUtil().showShort("网络错误");
+                    }
+
+                    @Override
+                    public void onNetworkError(ErrorType errorType) {
+                        U.getToastUtil().showShort("网络延迟");
+                    }
+                });
+            }
+        }, true);
+    }
+
     private void goMicRoom(HashMap map) {
         skrVerifyUtils.checkHasMicAudioPermission(new Runnable() {
             @Override
@@ -280,7 +347,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                                 if (activity instanceof MicRoomActivity) {
                                     MyLog.d(TAG, " 存在排麦房页面了，发event刷新view");
                                     EventBus.getDefault().post(new MicChangeRoomEvent(rsp));
-                                    return ;
+                                    return;
                                 }
                             }
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_ROOM)

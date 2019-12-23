@@ -4,7 +4,9 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.PartyRoom.EPUserRole
 import com.zq.live.proto.PartyRoom.POnlineInfo
-import com.zq.live.proto.PartyRoom.SeatInfo
+import java.util.*
+import kotlin.collections.ArrayList
+import java.lang.StringBuilder
 
 class PartyPlayerInfoModel : PlayerInfoModel() {
     //    enum EPUserRole {
@@ -15,7 +17,34 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
 //        EPUR_AUDIENCE = 4; //观众
 //    }
     var role = ArrayList<Int>() // 角色
+        set(value) {
+            field = value
+            field.sortWith(Comparator { o1, o2 ->
+                o1 - o2
+            })
+        }
+    
     var popularity = 0 // 人气
+
+    fun getRoleDesc(): String? {
+        var stringBuilder = StringBuilder()
+        if (isHost()) {
+            stringBuilder.append("主持人")
+        }
+        if (isAdmin()) {
+            if (isHost()) {
+                stringBuilder.append("/")
+            }
+            stringBuilder.append("管理员")
+        }
+        if (isGuest()) {
+            if (isHost() || isAdmin()) {
+                stringBuilder.append("/")
+            }
+            stringBuilder.append("嘉宾")
+        }
+        return stringBuilder.toString()
+    }
 
     /**
      * 是否是指定的某些角色
@@ -29,6 +58,13 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
             }
         }
         return false
+    }
+
+    /**
+     * 不仅仅是观众
+     */
+    fun isNotOnlyAudience(): Boolean {
+        return isRole(EPUserRole.EPUR_ADMIN.value, EPUserRole.EPUR_HOST.value, EPUserRole.EPUR_GUEST.value)
     }
 
     /**
@@ -71,20 +107,75 @@ class PartyPlayerInfoModel : PlayerInfoModel() {
         return "PartyPlayerInfoModel(userInfo=${userInfo.toSimpleString()}, role=$role)"
     }
 
-    companion object{
-        fun parseFromPb(pb: POnlineInfo):PartyPlayerInfoModel{
+    /**
+     * 判断两个model信息是否相同
+     */
+    fun same(playerInfoModel: PartyPlayerInfoModel): Boolean {
+        if (this.popularity != playerInfoModel.popularity) {
+            return false
+        }
+        if (this.role.size != playerInfoModel.role.size) {
+            return false
+        }
+        for ((index, r) in this.role.withIndex()) {
+            if (r != playerInfoModel.role[index]) {
+                return false
+            }
+        }
+        return true
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        if (!super.equals(other)) return false
+
+        other as PartyPlayerInfoModel
+
+        if (this.role.size != other.role.size) {
+            return false
+        }
+        for ((index, r) in this.role.withIndex()) {
+            if (r != other.role[index]) {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + role.hashCode()
+        return result
+    }
+
+    // 又一个较为完整的user 更新一个 不完整的user ，但又不是完全覆盖
+    fun tryUpdate(info: PartyPlayerInfoModel) {
+        if(!info.role.isEmpty()){
+            this.role = info.role
+        }
+        this.popularity = info.popularity
+        this.userInfo?.tryUpdate(info.userInfo)
+    }
+
+    companion object {
+        fun parseFromPb(pb: POnlineInfo): PartyPlayerInfoModel {
             var info = PartyPlayerInfoModel()
             info.popularity = pb.popularity
-            for(r in pb.roleList){
+            for (r in pb.roleList) {
                 info.role.add(r.value)
             }
+            info.role.sortWith(Comparator { o1, o2 ->
+                o1 - o2
+            })
             info.userInfo = UserInfoModel.parseFromPB(pb.userInfo)
             return info
         }
 
-        fun parseFromPb(pbs:List<POnlineInfo>):List<PartyPlayerInfoModel>{
+        fun parseFromPb(pbs: List<POnlineInfo>): ArrayList<PartyPlayerInfoModel> {
             var infos = ArrayList<PartyPlayerInfoModel>()
-            for(pb in pbs){
+            for (pb in pbs) {
                 infos.add(parseFromPb(pb))
             }
             return infos

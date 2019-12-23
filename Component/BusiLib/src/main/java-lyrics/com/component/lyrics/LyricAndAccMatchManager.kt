@@ -3,33 +3,23 @@ package com.component.lyrics
 import android.os.Handler
 import android.os.Message
 import android.view.View
-
 import com.common.engine.ScoreConfig
 import com.common.log.DebugLogView
 import com.common.log.MyLog
-import com.common.rx.RxRetryAssist
-import com.common.utils.U
-import com.engine.EngineEvent
-import com.engine.arccloud.SongInfo
 import com.component.lyrics.event.LrcEvent
 import com.component.lyrics.event.LyricEventLauncher
 import com.component.lyrics.widget.AbstractLrcView
+import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
 import com.component.lyrics.widget.ManyLyricsView
 import com.component.lyrics.widget.VoiceScaleView
+import com.engine.EngineEvent
+import com.engine.arccloud.SongInfo
 import com.zq.mediaengine.kit.ZqEngineKit
-
+import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-
-import java.util.ArrayList
-import java.util.HashSet
-
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-
-import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
+import java.util.*
 import kotlin.math.abs
 
 /**
@@ -143,7 +133,7 @@ class LyricAndAccMatchManager {
     }
 
     private fun parseReader(lyricsReader: LyricsReader) {
-        DebugLogView.println(TAG, "onEventMainThread " + "play")
+        DebugLogView.println(TAG, "lyricsReader parse ok")
         mListener?.onLyricParseSuccess(lyricsReader)
         params?.manyLyricsView?.visibility = View.VISIBLE
         params?.manyLyricsView?.initLrcData()
@@ -154,15 +144,21 @@ class LyricAndAccMatchManager {
         set.add(lyricsReader.getLineInfoIdByStartTs(params?.lyricBeginTs?.toLong()
                 ?: 0))
         params?.manyLyricsView?.needCountDownLine = set
-        if (params?.manyLyricsView?.lrcStatus == AbstractLrcView.LRCSTATUS_LRC && params?.manyLyricsView?.lrcPlayerStatus != LRCPLAYERSTATUS_PLAY) {
+        if (params?.manyLyricsView?.lrcStatus == AbstractLrcView.LRCSTATUS_LRC
+                && params?.manyLyricsView?.lrcPlayerStatus != LRCPLAYERSTATUS_PLAY) {
             //                            mManyLyricsView.play(mAccBeginTs);
             params?.manyLyricsView?.seekTo(params?.accBeginTs ?: 0)
             params?.manyLyricsView?.pause()
             mLyricsReader = lyricsReader
-            if (params?.accLoadOk == true) {
-                launchLyricEvent(ZqEngineKit.getInstance().audioMixingCurrentPosition)
+
+            if (params?.needWaitAAC == true) {
+                if (params?.accLoadOk == true) {
+                    launchLyricEvent(ZqEngineKit.getInstance().audioMixingCurrentPosition)
+                } else {
+                    mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_LAUNCHER, LAUNCHER_DELAY.toLong())
+                }
             } else {
-                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_LAUNCHER, LAUNCHER_DELAY.toLong())
+                params?.manyLyricsView?.resume()
             }
             mLrcLoadOk = true
             DebugLogView.println(TAG, "歌词加载ready")
@@ -170,6 +166,7 @@ class LyricAndAccMatchManager {
             //                            int lineNum = mLyricEventLauncher.postLyricEvent(lyricsReader, lrcBeginTs - GrabRoomData.ACC_OFFSET_BY_LYRIC, lrcBeginTs + totalMs - GrabRoomData.ACC_OFFSET_BY_LYRIC, null);
             //                            mRoomData.setSongLineNum(lineNum);
         }
+        mListener?.onLyricBindSuccess(lyricsReader)
     }
 
     //发射歌词事件
@@ -213,7 +210,7 @@ class LyricAndAccMatchManager {
     fun onEvent(event: EngineEvent) {
         if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
             val `in` = event.getObj<EngineEvent.MixMusicTimeInfo>()
-            MyLog.w(TAG, "伴奏 ts=" + `in`!!.current)
+//            MyLog.w(TAG, "伴奏 ts=" + `in`!!.current)
             if (`in` != null && `in`.current > 0) {
                 if (params?.accLoadOk == false) {
                     DebugLogView.println(TAG, "伴奏加载ready")
@@ -327,12 +324,14 @@ class LyricAndAccMatchManager {
         mListener = l
     }
 
-    interface Listener {
-        fun onLyricParseSuccess(reader: LyricsReader)
+    abstract class Listener {
+        open fun onLyricParseSuccess(reader: LyricsReader){}
 
-        fun onLyricParseFailed()
+        open fun onLyricParseFailed(){}
 
-        fun onLyricEventPost(lineNum: Int)
+        open fun onLyricEventPost(lineNum: Int){}
+
+        open fun onLyricBindSuccess(lyricsReader: LyricsReader?){}
 
         //void onScoreResult(String from,int melpScore, int acrScore, int line);
     }
@@ -354,7 +353,10 @@ class LyricAndAccMatchManager {
         var accEndTs: Int = 0
         var authorName: String? = null
         var accLoadOk: Boolean = false
+        // 是否需要打分
         var needScore: Boolean = true
+        //是否需要等待伴奏的回调
+        var needWaitAAC: Boolean = true
 //        var splitChorusArray:ArrayList<Int>? = null
 //        var firstSingByMe: Boolean = true
 

@@ -410,4 +410,20 @@ public interface UserInfoServerApi {
 
     @GET("/v1/msgbox/sp-follow-list")
     Call<ApiResult> getSPFollowRecordList(@Query("userID") int userID, @Query("offset") int offset, @Query("cnt") int cnt);
+
+    @GET("http://dev.api.inframe.mobi/v1/club/my-member-info")
+    Observable<ApiResult> getMyClubInfo(@Query("userID") int userID);
+
+    /**
+     * 查询指定家族的成员信息
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/check-member-info")
+    Observable<ApiResult> getClubMemberInfo(@Query("userID") int userID, @Query("clubID") int clubID);
+
+
+    /**
+     * 申请加入家族 {"clubID": 0,"text": "string"}
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/club/member-join")
+    Observable<ApiResult> applyJoinClub(@Body RequestBody body);
 }

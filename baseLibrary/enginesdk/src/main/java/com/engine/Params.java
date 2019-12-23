@@ -155,7 +155,7 @@ public class Params implements Serializable {
     @JSONField(serialize = false)
     private int audioChannels = 2; // 输出的音频声道数
     @JSONField(serialize = false)
-    private boolean joinChannelSuccess = true; // 加入频道成功
+    private boolean joinChannelSuccess = false; // 加入频道成功
 
     private int noSticker = -1;//  贴纸文件名
     private int noFilter = -1;// 滤镜文件名
