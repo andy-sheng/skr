@@ -33,7 +33,6 @@ public interface RouterConstants {
     String ACTIVITY_INCOME = "/home/InComeActivity";
     String ACTIVITY_WITH_DRAW = "/home/WithDrawActivity";
     String ACTIVITY_SMS_AUTH = "/home/SmsAuthActivity";
-    String ACTIVITY_MUSIC_TEST = "/home/MusicTestActivity";
     String ACTIVITY_SETTING = "/home/SettingActivity";
     String ACTIVITY_RANKED = "/home/RankedActivity";
 
