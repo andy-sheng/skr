@@ -161,6 +161,15 @@ class ClubHomepageActivity : BaseActivity() {
             functionArea?.visibility = View.VISIBLE
             applyArea?.visibility = View.GONE
             moreBtn?.visibility = View.VISIBLE
+
+            if (clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value
+                    || clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_CoFounder.value) {
+                applyTv?.visibility = View.VISIBLE
+                applyRedIv?.visibility = View.VISIBLE
+            } else {
+                applyTv?.visibility = View.GONE
+                applyRedIv?.visibility = View.GONE
+            }
         } else {
             clubNoticeTv?.visibility = View.GONE
             memberView?.visibility = View.VISIBLE
