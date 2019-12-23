@@ -15,7 +15,7 @@ import java.io.Serializable;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class ConfigFromServer implements Serializable {
+public class EngineConfigFromServer implements Serializable {
     @JSONField(name = "audioMixLatencyHeadSet")
     int accMixingLatencyOnHeadset = 0; //混音延迟（耳机），单位毫秒，-1表示未知
 
@@ -73,19 +73,17 @@ public class ConfigFromServer implements Serializable {
 
     @Override
     public String toString() {
-        return "ConfigFromServer{" +
-                "accMixingLatencyOnHeadset=" + accMixingLatencyOnHeadset +
-                ", accMixingLatencyOnSpeaker=" + accMixingLatencyOnSpeaker +
-                ", enableAudioPreviewLatencyTest=" + enableAudioPreviewLatencyTest +
-                ", useExternalAudio=" + useExternalAudio +
-                ", enableAudioLowLatency=" + enableAudioLowLatency +
-                '}';
+        return "accMixingLatencyOnHeadset=" + accMixingLatencyOnHeadset +
+                "\n accMixingLatencyOnSpeaker=" + accMixingLatencyOnSpeaker +
+                "\n enableAudioPreviewLatencyTest=" + enableAudioPreviewLatencyTest +
+                "\n useExternalAudio=" + useExternalAudio +
+                "\n enableAudioLowLatency=" + enableAudioLowLatency;
     }
 
     // 获得一个服务配置的config
-    public static ConfigFromServer getDefault() {
+    public static EngineConfigFromServer getDefault() {
         //只存服务器下发的原始数据
-        ConfigFromServer configFromServer = null;
+        EngineConfigFromServer configFromServer = null;
         long lastTs = U.getPreferenceUtils().getSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", 0);
         if (System.currentTimeMillis() - lastTs > 24 * 3600 * 1000) {
             // 请求服务器
@@ -101,7 +99,7 @@ public class ConfigFromServer implements Serializable {
                             if (obj != null) {
                                 // 请求成功
                                 if (obj.getErrno() == 0) {
-                                    configFromServer = JSON.parseObject(obj.getData().toString(), ConfigFromServer.class);
+                                    configFromServer = JSON.parseObject(obj.getData().toString(), EngineConfigFromServer.class);
                                     // 持久化
                                     U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", obj.getData().toString());
 
@@ -121,13 +119,13 @@ public class ConfigFromServer implements Serializable {
         } else {
             String json = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", "");
             if (!TextUtils.isEmpty(json)) {
-                configFromServer = JSON.parseObject(json, ConfigFromServer.class);
+                configFromServer = JSON.parseObject(json, EngineConfigFromServer.class);
             }
         }
         if (configFromServer == null) {
-            configFromServer = new ConfigFromServer();
+            configFromServer = new EngineConfigFromServer();
         }
-        MyLog.i("Params",configFromServer.toString());
+        MyLog.i("Params", configFromServer.toString());
         return configFromServer;
     }
 

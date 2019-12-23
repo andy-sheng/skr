@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.MessageQueue;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -46,6 +47,7 @@ import com.common.view.viewpager.NestViewPager;
 import com.component.busilib.event.PostsPublishSucessEvent;
 import com.component.busilib.event.PostsWatchTabRefreshEvent;
 import com.component.busilib.manager.WeakRedDotManager;
+import com.engine.EngineConfigFromServer;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
@@ -325,6 +327,15 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         }
 
         showNewFunctionDialog();
+
+        Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
+            @Override
+            public boolean queueIdle() {
+                // 触发提前获取引擎配置
+                EngineConfigFromServer.getDefault();
+                return false;
+            }
+        });
     }
 
     private void showNewFunctionDialog() {

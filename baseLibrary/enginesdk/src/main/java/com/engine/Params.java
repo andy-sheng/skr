@@ -101,7 +101,7 @@ public class Params implements Serializable {
     private AudioEffect styleEnum = AudioEffect.none;// 混响style
 
     @JSONField(serialize = false)
-    private  ConfigFromServer configFromServer =  ConfigFromServer.getDefault();
+    private EngineConfigFromServer configFromServer =  EngineConfigFromServer.getDefault();
 
     @JSONField(serialize = false)
     private boolean enableAudioMixLatencyTest = false;

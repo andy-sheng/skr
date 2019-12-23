@@ -11,6 +11,6 @@ public interface EngineServerApi {
     @GET("http://dev.api.inframe.mobi/v1/messenger/agora-token")
     Call<ApiResult> getToken(@Query("channelName") String channelName);
 
-    @GET("http://dev.api.inframe.mobi/v1/kconf/android-audio-cfg")
+    @GET("http://dev.kconf.inframe.mobi/v1/kconf/android-audio-cfg")
     Call<ApiResult> getAudioConfig(@Query("manufacturer") String manufacturer,@Query("OSVersion") String OSVersion);
 }

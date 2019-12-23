@@ -11,6 +11,7 @@ import com.common.view.DebounceViewClickListener;
 import com.didichuxing.doraemonkit.DoraemonKit;
 import com.didichuxing.doraemonkit.kit.sysinfo.ExtraInfoProvider;
 import com.didichuxing.doraemonkit.kit.sysinfo.SysInfoItem;
+import com.engine.EngineConfigFromServer;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.common.ICallback;
@@ -115,6 +116,13 @@ public class DoraemonManager {
                     }
                 }));
 
+                extras.add(new SysInfoItem("引擎动态配置", EngineConfigFromServer.getDefault().toString(), new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                .withString("url", "http://debugtbs.qq.com").navigation();
+                    }
+                }));
                 return extras;
             }
 
