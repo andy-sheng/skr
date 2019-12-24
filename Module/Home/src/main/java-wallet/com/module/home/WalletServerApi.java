@@ -209,6 +209,17 @@ public interface WalletServerApi {
     Observable<ApiResult> exChangeDiamond(@Body RequestBody body);
 
     /**
+     * 余额兑换钻石
+     * {
+     * "amount": long
+     * }
+     *
+     * @return
+     */
+    @PUT("/v2/wallet/dq-zs")
+    Observable<ApiResult> exChangeCashToDiamond(@Body RequestBody body);
+
+    /**
      * 点卷兑换现金
      * {
      * "amount": long
@@ -243,5 +254,5 @@ public interface WalletServerApi {
      */
     @GET("/v1/wallet/zs-list")
     Observable<ApiResult> getRechargeList(@Query("offset") int offset,
-                                    @Query("cnt") int cnt);
+                                          @Query("cnt") int cnt);
 }

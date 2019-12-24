@@ -40,6 +40,7 @@ public class InComeFragment extends BaseFragment implements IInComeView {
     ExTextView mTvCashDetail;
     ExTextView mTvCashNum;
     ExTextView mStvWithdraw;
+    ExTextView mBtnCashToDiamond;
     ExTextView mTvDqDetail;
     ExTextView mTvDqNum;
     ExTextView mBtnExchangeDiamond;
@@ -75,6 +76,7 @@ public class InComeFragment extends BaseFragment implements IInComeView {
         mTvCashDetail = getRootView().findViewById(R.id.tv_cash_detail);
         mTvCashNum = getRootView().findViewById(R.id.tv_cash_num);
         mStvWithdraw = getRootView().findViewById(R.id.stv_withdraw);
+        mBtnCashToDiamond = getRootView().findViewById(R.id.btn_cash_to_diamond);
         mTvDqDetail = getRootView().findViewById(R.id.tv_dq_detail);
         mTvDqNum = getRootView().findViewById(R.id.tv_dq_num);
         mBtnExchangeDiamond = getRootView().findViewById(R.id.btn_exchange_diamond);
@@ -146,6 +148,31 @@ public class InComeFragment extends BaseFragment implements IInComeView {
                     ARouter.getInstance()
                             .build(RouterConstants.ACTIVITY_WITH_DRAW)
                             .navigation();
+                }
+            }
+        });
+
+        mBtnCashToDiamond.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (balance <= 0) {
+                    U.getToastUtil().showShort("暂无可兑换余额");
+                } else if (mWithDrawInfoModel == null) {
+                    U.getToastUtil().showShort("正在加载数据");
+                    mInComePresenter.getWithDrawInfo(0);
+                } else {
+                    if (!U.getNetworkUtils().hasNetwork()) {
+                        U.getToastUtil().showShort("您网络异常！");
+                        return;
+                    }
+
+                    U.getFragmentUtils().addFragment(
+                            FragmentUtils.newAddParamsBuilder(getActivity(), ExChangeCashToDiamondFragment.class)
+                                    .setAddToBackStack(true)
+                                    .setHasAnimation(true)
+                                    .addDataBeforeAdd(0, balance)
+                                    .setFragmentDataListener(mFragmentDataListener)
+                                    .build());
                 }
             }
         });

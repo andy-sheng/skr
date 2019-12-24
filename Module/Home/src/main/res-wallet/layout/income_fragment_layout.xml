@@ -59,21 +59,46 @@
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
 
-        <com.common.view.ex.ExTextView
-            android:id="@+id/stv_withdraw"
-            android:layout_width="@dimen/view_120_dp"
-            android:layout_height="@dimen/view_32_dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_129_dp"
-            android:gravity="center"
-            android:text="提现"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_14_dp"
-            app:bl_corners_radius="@dimen/view_20_dp"
-            app:bl_shape="rectangle"
-            app:bl_solid_color="@color/transparent"
-            app:bl_stroke_color="@color/white"
-            app:bl_stroke_width="@dimen/view_1_dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/btn_cash_to_diamond"
+                android:layout_width="@dimen/view_120_dp"
+                android:layout_height="@dimen/view_32_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_129_dp"
+                android:background="@drawable/chongzuzuanshi_anniu"
+                android:gravity="center"
+                android:text="兑换钻石"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_16_dp"
+                app:bl_corners_radius="@dimen/view_20_dp"
+                app:bl_shape="rectangle"
+                app:bl_solid_color="@color/transparent"
+                app:bl_stroke_color="@color/white"
+                app:bl_stroke_width="@dimen/view_1_dp" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/stv_withdraw"
+                android:layout_width="@dimen/view_120_dp"
+                android:layout_height="@dimen/view_32_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:layout_marginTop="@dimen/view_129_dp"
+                android:background="@drawable/chongzuzuanshi_anniu"
+                android:gravity="center"
+                android:text="提现"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_16_dp"
+                app:bl_corners_radius="@dimen/view_20_dp"
+                app:bl_shape="rectangle"
+                app:bl_solid_color="@color/transparent"
+                app:bl_stroke_color="@color/white"
+                app:bl_stroke_width="@dimen/view_1_dp" />
+        </LinearLayout>
     </com.common.view.ex.ExRelativeLayout>
 
     <com.common.view.ex.ExRelativeLayout
