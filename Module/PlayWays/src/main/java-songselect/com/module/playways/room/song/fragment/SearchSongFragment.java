@@ -96,10 +96,13 @@ public class SearchSongFragment extends BaseFragment {
         mSearchResult.setLayoutManager(mLinearLayoutManager);
 
         int selectMode = SongSelectAdapter.GRAB_MODE;
+        String selectText = isOwner ? "点歌" : "想唱";
         if (mFrom == SongManagerActivity.TYPE_FROM_AUDITION) {
             selectMode = SongSelectAdapter.AUDITION_MODE;
+            selectText = "演唱";
         } else if (mFrom == SongManagerActivity.TYPE_FROM_DOUBLE) {
             selectMode = SongSelectAdapter.DOUBLE_MODE;
+            selectText = "点歌";
         } else if (mFrom == SongManagerActivity.TYPE_FROM_MIC) {
             selectMode = SongSelectAdapter.MIC_MODE;
         } else if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
@@ -132,7 +135,7 @@ public class SearchSongFragment extends BaseFragment {
 
 
             }
-        }, true, selectMode, isOwner);
+        }, true, selectMode, selectText);
         mSearchResult.setAdapter(mSongSelectAdapter);
 
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {

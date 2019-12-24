@@ -27,7 +27,7 @@ public class SongCardHolder extends RecyclerView.ViewHolder {
         mSongListView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if (mSongSelectAdapter == null) {
-            mSongSelectAdapter = new SongSelectAdapter(onItemClickListener);
+            mSongSelectAdapter = new SongSelectAdapter(onItemClickListener, false, SongSelectAdapter.AUDITION_MODE, "演唱");
         }
         mSongListView.setAdapter(mSongSelectAdapter);
     }

@@ -33,17 +33,13 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
     public static int SEARCH_ITEM_TYPE = 1;      // 底部搜索反馈
 
     int mode = DEFAULT_MODE;
-    boolean isOwner = false;
+    String selectText = "点歌";
 
-    public SongSelectAdapter(RecyclerOnItemClickListener onItemClickListener) {
-        this.mRecyclerOnItemClickListener = onItemClickListener;
-    }
-
-    public SongSelectAdapter(RecyclerOnItemClickListener onItemClickListener, boolean mHasFooterBack, int mode, boolean isOwner) {
+    public SongSelectAdapter(RecyclerOnItemClickListener onItemClickListener, boolean mHasFooterBack, int mode, String selectText) {
         this.mRecyclerOnItemClickListener = onItemClickListener;
         this.mHasFooterBack = mHasFooterBack;
         this.mode = mode;
-        this.isOwner = isOwner;
+        this.selectText = selectText;
     }
 
     @NonNull
@@ -64,20 +60,16 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
             // 展示的哥类型
             if (mode == GRAB_MODE || mode == MIC_MODE || mode == RACE_MODE || mode == PARTY_MODE) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_view_holder_item, parent, false);
-                GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mRecyclerOnItemClickListener, isOwner);
+                GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mRecyclerOnItemClickListener, selectText);
                 return viewHolder;
             } else if (mode == DOUBLE_MODE) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_view_holder_item, parent, false);
-                GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mRecyclerOnItemClickListener, true);
-                return viewHolder;
-            } else if (mode == AUDITION_MODE) {
-                // 练歌房
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.audition_song_view_holder_item, parent, false);
-                SongInfoHolder viewHolder = new SongInfoHolder(view, mRecyclerOnItemClickListener);
+                GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mRecyclerOnItemClickListener, selectText);
                 return viewHolder;
             } else {
+                // 练歌房(得区分搜索和普通展示)
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_view_holder_item, parent, false);
-                SongInfoHolder viewHolder = new SongInfoHolder(view, mRecyclerOnItemClickListener);
+                SongInfoHolder viewHolder = new SongInfoHolder(view, mRecyclerOnItemClickListener, selectText);
                 return viewHolder;
             }
         }
@@ -88,10 +80,10 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
         if (holder instanceof SongInfoHolder) {
             SongInfoHolder songInfoHolder = (SongInfoHolder) holder;
             SongModel songModel = mDataList.get(position);
-            if (mode == RELAY_MODE) {
-                songInfoHolder.bind(position, songModel, mDataList.size(), "合唱");
-            } else {
-                songInfoHolder.bind(position, songModel, mDataList.size(), "演唱");
+            songInfoHolder.bind(position, songModel, mDataList.size());
+            if ((mode == RELAY_MODE || mode == AUDITION_MODE) && mHasFooterBack) {
+                // 搜索的颜色变成白色
+                songInfoHolder.setTextColorWhite(true);
             }
         } else if (holder instanceof GrabSongInfoHolder) {
             GrabSongInfoHolder grabSongInfoHolder = (GrabSongInfoHolder) holder;

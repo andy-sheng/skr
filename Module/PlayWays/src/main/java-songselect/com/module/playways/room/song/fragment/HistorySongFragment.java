@@ -30,6 +30,7 @@ import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
 import com.module.playways.room.song.presenter.SongTagDetailsPresenter;
 import com.module.playways.room.song.view.ISongTagDetailView;
+import com.module.playways.songmanager.SongManagerActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -84,7 +85,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
             public void onItemClicked(View view, int position, Object model) {
                 jump((SongModel) model);
             }
-        });
+        }, false, SongSelectAdapter.AUDITION_MODE, "演唱");
         mHistoryRecycle.setAdapter(songSelectAdapter);
 
         presenter = new SongTagDetailsPresenter(this);

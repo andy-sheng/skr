@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -21,7 +22,7 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
     TextView mSongDesc;
     View mDivider;
 
-    public SongInfoHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener) {
+    public SongInfoHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener, String text) {
         super(itemView);
 
         mSongNameTv = itemView.findViewById(R.id.song_name_tv);
@@ -29,6 +30,7 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
         mSongDesc = itemView.findViewById(R.id.song_desc);
         mDivider = itemView.findViewById(R.id.divider);
 
+        mSongSelectTv.setText(text);
         mSongSelectTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -39,7 +41,17 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void bind(int position, SongModel songModel, int size, String text) {
+    public void setTextColorWhite(boolean colorWhite) {
+        if (colorWhite) {
+            mSongNameTv.setTextColor(U.getColor(R.color.white_trans_80));
+            mSongDesc.setTextColor(U.getColor(R.color.white_trans_50));
+        } else {
+            mSongNameTv.setTextColor(U.getColor(R.color.black_trans_80));
+            mSongDesc.setTextColor(U.getColor(R.color.black_trans_50));
+        }
+    }
+
+    public void bind(int position, SongModel songModel, int size) {
         this.position = position;
         this.mSongModel = songModel;
 
@@ -55,7 +67,6 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
             mSongDesc.setVisibility(View.VISIBLE);
             mSongDesc.setText(mSongModel.getSongDesc());
         }
-        mSongSelectTv.setText(text);
     }
 
 }
