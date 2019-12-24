@@ -35,6 +35,7 @@ import java.util.List;
 
 import static com.module.playways.PlayWaysActivity.KEY_GAME_TYPE;
 
+// 合唱首页和练歌房通用此页面
 public class SongSelectFragment extends BaseFragment implements ISongTagDetailView, SwipeFlingAdapterView.onFlingListener,
         SwipeFlingAdapterView.OnItemClickListener {
 
@@ -70,14 +71,14 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
-        mSwipeView = (SwipeFlingAdapterView) getRootView().findViewById(R.id.swipe_view);
+        mMainActContainer = getRootView().findViewById(R.id.main_act_container);
+        mSwipeView = getRootView().findViewById(R.id.swipe_view);
 
-        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
-        mSelectBackIv = (ExTextView) getRootView().findViewById(R.id.select_back_iv);
-        mSelectClickedIv = (ExTextView) getRootView().findViewById(R.id.select_clicked_iv);
-        mSelectBack = (ExImageView) getRootView().findViewById(R.id.select_back);
-        mSelectSelect = (ExImageView) getRootView().findViewById(R.id.select_select);
+        mMainActContainer = getRootView().findViewById(R.id.main_act_container);
+        mSelectBackIv = getRootView().findViewById(R.id.select_back_iv);
+        mSelectClickedIv = getRootView().findViewById(R.id.select_clicked_iv);
+        mSelectBack = getRootView().findViewById(R.id.select_back);
+        mSelectSelect = getRootView().findViewById(R.id.select_select);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -87,8 +88,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         int songCardHeight = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(205);
         DEFAULT_COUNT = songCardHeight / U.getDisplayUtils().dip2px(72);
         DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 5;
-
-//        U.getSoundUtils().preLoad(TAG, R.raw.normal_click, R.raw.normal_back, R.raw.rank_flipsonglist);
 
         mSelectBackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -110,7 +109,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSelectClickedIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-//                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_click, 500);
                 switchToClicked();
             }
         });
@@ -118,7 +116,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSelectBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-//                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_back, 500);
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
@@ -162,7 +159,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                             .withSerializable("songModel", songModel)
                             .navigation();
                 }
-            },true);
+            }, true);
             return;
         }
 
@@ -185,17 +182,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                     })
                     .build());
         }
-        //测试
-//                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), RankingRecordFragment.class)
-//                        .setAddToBackStack(true)
-//                        .setHasAnimation(true)
-//                        .setFragmentDataListener(new FragmentDataListener() {
-//                            @Override
-//                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-//
-//                            }
-//                        })
-//                        .build());
     }
 
     @Override

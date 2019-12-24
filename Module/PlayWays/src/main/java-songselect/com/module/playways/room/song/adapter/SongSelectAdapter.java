@@ -54,7 +54,8 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == SEARCH_ITEM_TYPE) {
-            if (mode == GRAB_MODE || mode == DOUBLE_MODE || mode == MIC_MODE || mode == RACE_MODE || mode == RELAY_MODE || mode== PARTY_MODE) {
+            // 搜索类型
+            if (mode == GRAB_MODE || mode == DOUBLE_MODE || mode == MIC_MODE || mode == RACE_MODE || mode == RELAY_MODE || mode == PARTY_MODE) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_search_footer_view, parent, false);
                 SongSearchFooter songSearchFooter = new SongSearchFooter(view, mRecyclerOnItemClickListener);
                 return songSearchFooter;
@@ -64,7 +65,8 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
                 return songSearchFooter;
             }
         } else {
-            if (mode == GRAB_MODE || mode == MIC_MODE || mode == RACE_MODE || mode == RELAY_MODE || mode == PARTY_MODE) {
+            // 展示的哥类型
+            if (mode == GRAB_MODE || mode == MIC_MODE || mode == RACE_MODE || mode == PARTY_MODE) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_view_holder_item, parent, false);
                 GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mRecyclerOnItemClickListener, isOwner);
                 return viewHolder;
@@ -73,6 +75,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
                 GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mRecyclerOnItemClickListener, true);
                 return viewHolder;
             } else {
+                // 默认练歌房和RELAY_MODE
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_view_holder_item, parent, false);
                 SongInfoHolder viewHolder = new SongInfoHolder(view, mRecyclerOnItemClickListener);
                 return viewHolder;
@@ -85,7 +88,11 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
         if (holder instanceof SongInfoHolder) {
             SongInfoHolder songInfoHolder = (SongInfoHolder) holder;
             SongModel songModel = mDataList.get(position);
-            songInfoHolder.bind(position, songModel);
+            if (mode == RELAY_MODE) {
+                songInfoHolder.bind(position, songModel, mDataList.size(), "合唱");
+            } else {
+                songInfoHolder.bind(position, songModel, mDataList.size(), "演唱");
+            }
         } else if (holder instanceof GrabSongInfoHolder) {
             GrabSongInfoHolder grabSongInfoHolder = (GrabSongInfoHolder) holder;
             SongModel songModel = mDataList.get(position);

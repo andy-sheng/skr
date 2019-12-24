@@ -19,6 +19,7 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
     ExTextView mSongNameTv;
     ExTextView mSongSelectTv;
     TextView mSongDesc;
+    View mDivider;
 
     public SongInfoHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener) {
         super(itemView);
@@ -26,6 +27,7 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
         mSongNameTv = itemView.findViewById(R.id.song_name_tv);
         mSongSelectTv = itemView.findViewById(R.id.song_select_tv);
         mSongDesc = itemView.findViewById(R.id.song_desc);
+        mDivider = itemView.findViewById(R.id.divider);
 
         mSongSelectTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -37,10 +39,15 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void bind(int position, SongModel songModel) {
+    public void bind(int position, SongModel songModel, int size, String text) {
         this.position = position;
         this.mSongModel = songModel;
 
+        if (position == size - 1) {
+            mDivider.setVisibility(View.GONE);
+        } else {
+            mDivider.setVisibility(View.VISIBLE);
+        }
         mSongNameTv.setText(mSongModel.getItemName());
         if (TextUtils.isEmpty(mSongModel.getSongDesc())) {
             mSongDesc.setVisibility(View.GONE);
@@ -48,6 +55,7 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
             mSongDesc.setVisibility(View.VISIBLE);
             mSongDesc.setText(mSongModel.getSongDesc());
         }
+        mSongSelectTv.setText(text);
     }
 
 }
