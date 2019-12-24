@@ -4,12 +4,15 @@ import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
+import android.widget.FrameLayout
 import com.common.log.MyLog
 import com.common.utils.SpanUtils
+import com.common.utils.U
 import com.common.view.ExViewStub
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.LyricsReader
 import com.component.lyrics.widget.ManyLyricsView
+import com.component.lyrics.widget.VoiceScaleView
 import com.module.playways.R
 import com.module.playways.grab.room.view.SingCountDownView2
 import com.module.playways.party.room.PartyRoomData
@@ -23,6 +26,7 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
 
     internal lateinit var mManyLyricsView: ManyLyricsView
     internal lateinit var mSingCountDownView2: SingCountDownView2
+    internal lateinit var mVoiceScaleView: VoiceScaleView
 
     internal var mDisposable: Disposable? = null
     internal var mSongModel: SongModel? = null
@@ -32,6 +36,7 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
         parentView?.let {
             mManyLyricsView = it.findViewById(R.id.many_lyrics_view)
             mSingCountDownView2 = it.findViewById(R.id.sing_count_down_view)
+            mVoiceScaleView = it.findViewById(R.id.voice_scale_view)
         }
     }
 
@@ -42,13 +47,14 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
     private fun initLyric() {
         mManyLyricsView?.visibility = View.GONE
         mManyLyricsView?.initLrcData()
+        mVoiceScaleView?.visibility = View.GONE
     }
 
     fun startFly(offset: Int, isSelf: Boolean, call: (() -> Unit)?) {
         tryInflate()
         val infoModel = mRoomData?.realRoundInfo
         val totalMs = mRoomData?.realRoundInfo?.sceneInfo?.ktv?.singTimeMs ?: 0
-        mSingCountDownView2.startPlay(0, totalMs, true)
+        mSingCountDownView2.startPlay(offset, totalMs - offset, true)
         mSingCountDownView2.setListener {
             call?.invoke()
         }
@@ -72,6 +78,7 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
         mManyLyricsView.setEnableVerbatim(isSelf)
         val configParams = LyricAndAccMatchManager.ConfigParams()
         configParams.manyLyricsView = mManyLyricsView
+        configParams.voiceScaleView = mVoiceScaleView
         configParams.lyricUrl = curSong.lyric
         configParams.lyricBeginTs = curSong.standLrcBeginT
         configParams.lyricEndTs = curSong.standLrcBeginT + totalTs
@@ -82,6 +89,19 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
         configParams.needWaitAAC = isSelf
 
         mLyricAndAccMatchManager!!.setArgs(configParams)
+
+        if (isSelf) {
+            (mManyLyricsView.layoutParams as FrameLayout.LayoutParams).topMargin = U.getDisplayUtils().dip2px(-38f)
+            mVoiceScaleView.visibility = View.VISIBLE
+            mManyLyricsView.setUpLineNum(0)
+            mManyLyricsView.setDownLineNum(1)
+        } else {
+            (mManyLyricsView.layoutParams as FrameLayout.LayoutParams).topMargin = U.getDisplayUtils().dip2px(10f)
+            mVoiceScaleView.visibility = View.GONE
+            mManyLyricsView.setUpLineNum(1)
+            mManyLyricsView.setDownLineNum(1)
+        }
+
         val finalCurSong = curSong
         mLyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener() {
             override fun onLyricBindSuccess(lyricsReader: LyricsReader?) {

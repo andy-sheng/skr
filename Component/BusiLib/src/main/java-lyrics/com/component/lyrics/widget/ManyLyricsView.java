@@ -280,6 +280,12 @@ public class ManyLyricsView extends AbstractLrcView {
             mDownLineNum = upLineNum;
         }
 
+        if (typedArray.hasValue(R.styleable.many_line_lrc_view_ly_down_line_num)) {
+            int upLineNum = typedArray.getInteger(R.styleable.many_line_lrc_view_ly_down_line_num, 2);
+            //上下一样
+            mDownLineNum = upLineNum;
+        }
+
         if (typedArray.hasValue(R.styleable.many_line_lrc_view_ly_show_author)) {
             mShowAuthor = typedArray.getBoolean(R.styleable.many_line_lrc_view_ly_show_author, false);
         }

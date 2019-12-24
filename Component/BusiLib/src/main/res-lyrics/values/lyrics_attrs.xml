@@ -33,6 +33,8 @@
 
     <attr name="ly_top_line_num" format="integer" />
 
+    <attr name="ly_down_line_num" format="integer" />
+
     <declare-styleable name="lrc_view">
         <attr name="ly_high_light_sub_paint_color" />
         <attr name="ly_high_light_paint_color_from" />
@@ -50,6 +52,7 @@
         <attr name="ly_enable_scroll" />
         <attr name="ly_show_author" />
         <attr name="ly_top_line_num" />
+        <attr name="ly_down_line_num" />
         <attr name="ly_show_song_name" />
         <attr name="custom_gravity" />
         <attr name="ly_high_light_paint_color_from2" />

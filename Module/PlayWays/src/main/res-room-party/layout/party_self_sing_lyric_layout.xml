@@ -11,16 +11,17 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_10_dp"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <com.component.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_130_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginTop="-38dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:visibility="visible"
+        app:ly_down_line_num="1"
         app:ly_enable_scroll="false"
         app:ly_enable_verbatim="true"
         app:ly_high_light_paint_color_from="#DB4D84"
@@ -32,5 +33,19 @@
         app:ly_paint_color_to="@color/white_trans_80"
         app:ly_paint_text_size="16.0"
         app:ly_show_author="true"
-        app:ly_top_line_num="2" />
+        app:ly_top_line_num="0" />
+
+    <com.component.lyrics.widget.VoiceScaleView
+        android:id="@+id/voice_scale_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginTop="77dp"
+        android:visibility="visible"
+        app:leftBgPaintColor="@color/black_trans_10"
+        app:leftPaintColor="@color/white"
+        app:redInnerpaintColor="#FFC15B"
+        app:redLinePaintColor="@color/black_trans_20"
+        app:redOutpaintColor="#FFC15B"
+        app:rightBgPaintColor="@color/black_trans_10"
+        app:rightPaintColor="#FFC15B" />
 </FrameLayout>

@@ -64,6 +64,7 @@ class PartyGameTabView : ExConstraintLayout {
     var partySelfSingLyricView: PartySelfSingLyricView? = null
 
     var delaySingJob: Job? = null
+    var countDownJob: Job? = null
 
     val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
 
@@ -284,6 +285,7 @@ class PartyGameTabView : ExConstraintLayout {
 
         partySelfSingLyricView?.reset()
         delaySingJob?.cancel()
+        countDownJob?.cancel()
 
         partyGameInfoModel = roomData?.realRoundInfo?.sceneInfo
 
@@ -352,17 +354,18 @@ class PartyGameTabView : ExConstraintLayout {
                         }
                     }
                     // 未开始，等待着
-                    var ts = roomData?.getSingCurPosition() ?:0
-                    if(ts<0){
+                    var ts = roomData?.getSingCurPosition() ?: 0
+                    if (ts < 0) {
                         delay(-ts)
                         ts = 0
-                    }else{
+                    } else {
 
                     }
                     ZqEngineKit.getInstance().resumeAudioMixing()
                     textScrollView.visibility = View.GONE
                     partySelfSingLyricView?.setVisibility(View.VISIBLE)
-                    singingTv.text = "演唱中..."
+                    val totalMs = roomData?.realRoundInfo?.sceneInfo?.ktv?.singTimeMs ?: 0
+                    startShowCountDown((totalMs - ts.toInt()) / 1000)
                     if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
                         partySelfSingLyricView?.startFly(ts.toInt(), true) {
                             MyLog.d(mTag, "partySelfSingLyricView?.startFly end")
@@ -408,11 +411,26 @@ class PartyGameTabView : ExConstraintLayout {
         }
     }
 
+    private fun startShowCountDown(s: Int) {
+        countDownJob?.cancel()
+        if (s <= 0) {
+            return
+        }
+
+        countDownJob = launch {
+            repeat(s) {
+                delay(1000)
+                singingTv.text = U.getDateTimeUtils().formatTimeStringForDate((s - it.toLong()) * 1000, "mm:ss")
+            }
+        }
+    }
+
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         ZqEngineKit.getInstance().stopAudioMixing()
         partySelfSingLyricView?.reset()
         delaySingJob?.cancel()
+        countDownJob?.cancel()
     }
 
     private fun hideAllTypeView() {
@@ -479,6 +497,7 @@ class PartyGameTabView : ExConstraintLayout {
         ZqEngineKit.getInstance().stopAudioMixing()
         partySelfSingLyricView?.reset()
         delaySingJob?.cancel()
+        countDownJob?.cancel()
         EventBus.getDefault().post(PartyFinishSongManageFragmentEvent())
     }
 }
