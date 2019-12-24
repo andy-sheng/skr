@@ -1,6 +1,10 @@
 package com.module.playways.room.song.fragment;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,28 +17,24 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
-import com.common.base.FragmentDataListener;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
-import com.module.playways.PlayWaysActivity;
-import com.module.playways.audition.AudioRoomActivity;
-import com.module.playways.room.prepare.fragment.PrepareResFragment;
 import com.module.playways.room.song.SongSelectServerApi;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;
-import com.module.playways.room.song.view.SearchFeedbackView;
 import com.module.playways.R;
+import com.module.playways.room.song.view.SearchFeedbackView;
+import com.module.playways.songmanager.SongManagerActivity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -43,15 +43,15 @@ import com.component.toast.CommonToastView;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
-
-import static com.module.playways.PlayWaysActivity.KEY_GAME_TYPE;
 
 public class SearchSongFragment extends BaseFragment {
 
@@ -61,79 +61,78 @@ public class SearchSongFragment extends BaseFragment {
     LinearLayoutManager mLinearLayoutManager;
     SongSelectAdapter mSongSelectAdapter;
 
-    int mGameType;
     String mKeyword;
     DialogPlus mSearchFeedbackDialog;
 
+    SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
+
+    CompositeDisposable mCompositeDisposable;
     PublishSubject<String> mPublishSubject;
     DisposableObserver<ApiResult> mDisposableObserver;
 
-    SkrAudioPermission skrAudioPermission = new SkrAudioPermission();
+    int mFrom;
+    boolean isOwner;
+
+    Handler mUihandler = new Handler(Looper.getMainLooper());
 
     @Override
     public int initView() {
-        return R.layout.search_song_fragment_layout;
+        return R.layout.grab_search_song_fragment_layout;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
-        mSearchResult = (RecyclerView) getRootView().findViewById(R.id.search_result);
+        mTitlebar = getRootView().findViewById(R.id.titlebar);
+        mSearchResult = getRootView().findViewById(R.id.search_result);
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            mGameType = bundle.getInt(KEY_GAME_TYPE);
-        }
+        Drawable drawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#576FE3"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(8f))
+                .build();
+        mTitlebar.setCenterSearchBgResource(drawable);
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mSearchResult.setLayoutManager(mLinearLayoutManager);
+
+        int selectMode = SongSelectAdapter.GRAB_MODE;
+        if (mFrom == SongManagerActivity.TYPE_FROM_AUDITION) {
+            selectMode = SongSelectAdapter.AUDITION_MODE;
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_DOUBLE) {
+            selectMode = SongSelectAdapter.DOUBLE_MODE;
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_MIC) {
+            selectMode = SongSelectAdapter.MIC_MODE;
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
+            selectMode = SongSelectAdapter.RACE_MODE;
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_RELAY_ROOM || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+            selectMode = SongSelectAdapter.RELAY_MODE;
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_PARTY) {
+            selectMode = SongSelectAdapter.PARTY_MODE;
+        }
         mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                if (model == null) {
-                    // 搜歌反馈
-                    showSearchFeedback();
-                    return;
-                }
-                SongModel songModel = (SongModel) model;
-                if (getActivity() instanceof AudioRoomActivity) {
-                    skrAudioPermission.ensurePermission(new Runnable() {
-                        @Override
-                        public void run() {
-                            ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDITION_ROOM)
-                                    .withSerializable("songModel", songModel)
-                                    .navigation();
-                        }
-                    }, true);
-                    return;
+                if (mFrom == SongManagerActivity.TYPE_FROM_RACE || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+                    if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                        mUihandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                clickItem(model);
+                            }
+                        }, 200);
+                    } else {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                        clickItem(model);
+                    }
+                } else {
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                    clickItem(model);
                 }
 
-                if (getActivity() instanceof PlayWaysActivity) {
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .setNotifyHideFragment(SongSelectFragment.class)
-                            .addDataBeforeAdd(0, songModel)
-                            .addDataBeforeAdd(1, mGameType)
-                            .addDataBeforeAdd(2, true)
-                            .setFragmentDataListener(new FragmentDataListener() {
-                                @Override
-                                public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
 
-                                }
-                            })
-                            .build());
-                    U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                            .setPopFragment(SearchSongFragment.this)
-                            .setHasAnimation(true)
-                            .setPopAbove(false)
-                            .setExitAnim(R.anim.slide_left_out)
-                            .build());
-                }
             }
-        }, true);
+        }, true, selectMode, isOwner);
         mSearchResult.setAdapter(mSongSelectAdapter);
 
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
@@ -141,7 +140,7 @@ public class SearchSongFragment extends BaseFragment {
             public void onClicked(View v, int action, String extra) {
                 switch (action) {
                     case CommonTitleBar.ACTION_SEARCH_SUBMIT:
-                        searchMusicItems(extra);
+                        searchGrabMusicItems(extra);
                         break;
                     case CommonTitleBar.ACTION_SEARCH_DELETE:
                         mTitlebar.getCenterSearchEditText().setText("");
@@ -153,8 +152,12 @@ public class SearchSongFragment extends BaseFragment {
         mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                U.getFragmentUtils().popFragment(SearchSongFragment.this);
+                if (mFrom == SongManagerActivity.TYPE_FROM_RACE || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+                    finishSongManageActivity();
+                } else {
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                    U.getFragmentUtils().popFragment(SearchSongFragment.this);
+                }
             }
         });
 
@@ -177,12 +180,77 @@ public class SearchSongFragment extends BaseFragment {
             }
         });
 
-        mTitlebar.postDelayed(new Runnable() {
+        mUihandler.removeCallbacksAndMessages(null);
+        mUihandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
             }
         }, 200);
+    }
+
+    private void clickItem(Object model) {
+        if (model == null) {
+            // 搜歌反馈
+            showSearchFeedback();
+            return;
+        }
+        SongModel songModel = (SongModel) model;
+        if (mFrom == SongManagerActivity.TYPE_FROM_AUDITION) {
+            SkrAudioPermission skrAudioPermission = new SkrAudioPermission();
+            skrAudioPermission.ensurePermission(new Runnable() {
+                @Override
+                public void run() {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDITION_ROOM)
+                            .withSerializable("songModel", songModel)
+                            .navigation();
+                }
+            }, true);
+        } else {
+            if (getFragmentDataListener() != null) {
+                getFragmentDataListener().onFragmentResult(0, 0, null, songModel);
+            }
+        }
+    }
+
+    private void searchGrabMusicItems(String keyword) {
+        mKeyword = keyword;
+        if (TextUtils.isEmpty(keyword)) {
+            U.getToastUtil().showShort("搜索内容为空");
+            return;
+        }
+
+        ApiMethods.subscribe(getServerSearch(keyword), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
+                    loadSongsDetailItems(list, true);
+                }
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                U.getToastUtil().showShort("网络异常，请检查网络后重试");
+                super.onNetworkError(errorType);
+            }
+        }, this);
+    }
+
+    public void loadSongsDetailItems(List<SongModel> list, boolean isSubmit) {
+        mSearchResult.setVisibility(View.VISIBLE);
+        if (list == null || list.size() == 0) {
+            return;
+        }
+
+        if (isSubmit) {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+        }
+        if (mSongSelectAdapter != null) {
+            mSongSelectAdapter.setDataList(list);
+            mSongSelectAdapter.notifyDataSetChanged();
+            mSearchResult.scrollToPosition(0);
+        }
     }
 
     private void showSearchFeedback() {
@@ -245,6 +313,7 @@ public class SearchSongFragment extends BaseFragment {
         }, this);
     }
 
+
     private void initPublishSubject() {
         mPublishSubject = PublishSubject.create();
         mDisposableObserver = new DisposableObserver<ApiResult>() {
@@ -273,57 +342,40 @@ public class SearchSongFragment extends BaseFragment {
             }
         }).switchMap(new Function<String, ObservableSource<ApiResult>>() {
             @Override
-            public ObservableSource<ApiResult> apply(String s) throws Exception {
-                SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
-                return songSelectServerApi.searchMusicItems(s).subscribeOn(Schedulers.io());
+            public ObservableSource<ApiResult> apply(String string) throws Exception {
+                return getServerSearch(string);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
+        mCompositeDisposable = new CompositeDisposable();
+        mCompositeDisposable.add(mDisposableObserver);
     }
 
-    private void searchMusicItems(String keyword) {
-        mKeyword = keyword;
-        if (TextUtils.isEmpty(keyword)) {
-            U.getToastUtil().showShort("搜索内容为空");
-            return;
-        }
-        SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
-        ApiMethods.subscribe(songSelectServerApi.searchMusicItems(keyword), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
-                    loadSongsDetailItems(list, true);
-                }
-            }
-
-            @Override
-            public void onNetworkError(ErrorType errorType) {
-                U.getToastUtil().showShort("网络异常，请检查网络后重试");
-                super.onNetworkError(errorType);
-            }
-        }, this);
-    }
-
-    public void loadSongsDetailItems(List<SongModel> list, boolean isSubmit) {
-        mSearchResult.setVisibility(View.VISIBLE);
-        if (list == null || list.size() == 0) {
-            return;
-        }
-
-        if (isSubmit) {
-            U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-        }
-        if (mSongSelectAdapter != null) {
-            mSongSelectAdapter.setDataList(list);
-            mSongSelectAdapter.notifyDataSetChanged();
-            mSearchResult.scrollToPosition(0);
+    private Observable<ApiResult> getServerSearch(String content) {
+        if (mFrom == SongManagerActivity.TYPE_FROM_GRAB) {
+            return songSelectServerApi.searchGrabMusicItems(content).subscribeOn(Schedulers.io());
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_MIC) {
+            return songSelectServerApi.searchMicMusicItems(content).subscribeOn(Schedulers.io());
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
+            return songSelectServerApi.searchRaceMusicItems(content).subscribeOn(Schedulers.io());
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME || mFrom == SongManagerActivity.TYPE_FROM_RELAY_ROOM) {
+            return songSelectServerApi.searchRelayMusicItems(content).subscribeOn(Schedulers.io());
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_PARTY) {
+            return songSelectServerApi.searchPartyMusicItems(content).subscribeOn(Schedulers.io());
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_AUDITION) {
+            return songSelectServerApi.searchMusicItems(content).subscribeOn(Schedulers.io());
+        } else {
+            return songSelectServerApi.searchDoubleMusicItems(content).subscribeOn(Schedulers.io());
         }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        skrAudioPermission.onBackFromPermisionManagerMaybe(getActivity());
+    public void setData(int type, @Nullable Object data) {
+        super.setData(type, data);
+        if (type == 0) {
+            mFrom = (Integer) data;
+        } else if (type == 1) {
+            isOwner = (Boolean) data;
+        }
     }
 
     @Override
@@ -334,12 +386,39 @@ public class SearchSongFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-        if (mDisposableObserver != null) {
-            mDisposableObserver.dispose();
+        if (mCompositeDisposable != null) {
+            mCompositeDisposable.clear();
         }
         if (mSearchFeedbackDialog != null) {
             mSearchFeedbackDialog.dismiss();
+        }
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if (mFrom == SongManagerActivity.TYPE_FROM_RACE || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+            finishSongManageActivity();
+            return true;
+        } else {
+            return super.onBackPressed();
+        }
+    }
+
+    private void finishSongManageActivity() {
+        if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+            mUihandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
+                }
+            }, 200);
+        } else {
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
         }
     }
 }

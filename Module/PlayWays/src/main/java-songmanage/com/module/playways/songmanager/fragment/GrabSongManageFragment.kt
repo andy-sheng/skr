@@ -21,7 +21,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.playways.R
 import com.module.playways.grab.room.GrabRoomData
-import com.module.playways.room.song.fragment.GrabSearchSongFragment
+import com.module.playways.room.song.fragment.SearchSongFragment
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
 import com.module.playways.songmanager.event.AddSongEvent
@@ -99,7 +99,7 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
 
         mSearchSongIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(context as BaseActivity?, GrabSearchSongFragment::class.java)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(context as BaseActivity?, SearchSongFragment::class.java)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .addDataBeforeAdd(0, SongManagerActivity.TYPE_FROM_GRAB)

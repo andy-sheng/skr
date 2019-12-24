@@ -8,7 +8,6 @@ import com.common.base.BaseActivity
 import com.common.base.FragmentDataListener
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
-import com.common.utils.PinyinUtils
 import com.common.utils.U
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
@@ -17,7 +16,7 @@ import com.module.playways.mic.room.MicRoomData
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.relay.room.RelayRoomData
-import com.module.playways.room.song.fragment.GrabSearchSongFragment
+import com.module.playways.room.song.fragment.SearchSongFragment
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.fragment.*
@@ -59,7 +58,7 @@ class SongManagerActivity : BaseActivity() {
                     .addDataBeforeAdd(0, mRoomData)
                     .build())
         } else if (from == TYPE_FROM_RACE) {
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabSearchSongFragment::class.java)
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SearchSongFragment::class.java)
                     .setAddToBackStack(true)
                     .setHasAnimation(false)
                     .addDataBeforeAdd(0, TYPE_FROM_RACE)
@@ -76,7 +75,7 @@ class SongManagerActivity : BaseActivity() {
                     })
                     .build())
         } else if (from == TYPE_FROM_RELAY_HOME) {
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabSearchSongFragment::class.java)
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SearchSongFragment::class.java)
                     .setAddToBackStack(true)
                     .setHasAnimation(false)
                     .addDataBeforeAdd(0, TYPE_FROM_RELAY_HOME)
@@ -134,6 +133,7 @@ class SongManagerActivity : BaseActivity() {
         const val TYPE_FROM_RELAY_HOME = 5   //接唱首页
         const val TYPE_FROM_RELAY_ROOM = 6   //接唱房间
         const val TYPE_FROM_PARTY = 7        //剧场房间
+        const val TYPE_FROM_AUDITION = 8     //练歌房
 
         fun open(activity: FragmentActivity?, roomData: GrabRoomData) {
             val intent = Intent(activity, SongManagerActivity::class.java)

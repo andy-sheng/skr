@@ -8,11 +8,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
-import com.common.base.FragmentDataListener;
 import com.common.core.permission.SkrAudioPermission;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -28,8 +25,6 @@ import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.module.RouterConstants;
 import com.module.playways.audition.AudioRoomActivity;
-import com.module.playways.PlayWaysActivity;
-import com.module.playways.room.prepare.fragment.PrepareResFragment;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
@@ -53,7 +48,6 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
 
     RelativeLayout mMainActContainer;
     ExImageView mHistoryBack;
-    ExImageView mSelectSelect;
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mHistoryRecycle;
 
@@ -75,7 +69,6 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
         mHistoryBack = (ExImageView) getRootView().findViewById(R.id.history_back);
-        mSelectSelect = (ExImageView) getRootView().findViewById(R.id.select_select);
         mRefreshLayout = (SmartRefreshLayout) getRootView().findViewById(R.id.refreshLayout);
         mHistoryRecycle = (RecyclerView) getRootView().findViewById(R.id.history_recycle);
 
@@ -89,7 +82,6 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         songSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 jump((SongModel) model);
             }
         });
@@ -118,24 +110,13 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         mHistoryBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getFragmentUtils().popFragment(HistorySongFragment.this);
-            }
-        });
-        mSelectSelect.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SearchSongFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .setBundle(bundle)
-                        .build());
             }
         });
 
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new LoadingCallback(R.drawable.wulishigedan, "数据正在努力加载中..."))
-                .addCallback(new EmptyCallback(R.drawable.wulishigedan, "你敢不敢唱首歌？",null))
+                .addCallback(new EmptyCallback(R.drawable.wulishigedan, "你敢不敢唱首歌？", null))
                 .addCallback(new ErrorCallback(R.drawable.wulishigedan, "请求出错了..."))
                 .setDefaultCallback(LoadingCallback.class)
                 .build();
@@ -165,33 +146,6 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
             return;
         }
 
-        if (getActivity() instanceof PlayWaysActivity) {
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
-                    .setAddToBackStack(true)
-                    .setNotifyHideFragment(SongSelectFragment.class)
-                    .setHasAnimation(true)
-                    .addDataBeforeAdd(0, songModel)
-                    .addDataBeforeAdd(1, mGameType)
-                    .addDataBeforeAdd(2, true)
-                    .setFragmentDataListener(new FragmentDataListener() {
-                        @Override
-                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                        }
-                    })
-                    .build());
-        }
-        //测试
-//                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), RankingRecordFragment.class)
-//                        .setAddToBackStack(true)
-//                        .setHasAnimation(true)
-//                        .setFragmentDataListener(new FragmentDataListener() {
-//                            @Override
-//                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-//
-//                            }
-//                        })
-//                        .build());
     }
 
     @Override

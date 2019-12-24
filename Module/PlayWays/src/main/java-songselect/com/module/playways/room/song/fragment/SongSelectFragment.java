@@ -29,6 +29,7 @@ import com.module.playways.room.song.model.SongModel;
 import com.module.playways.room.song.presenter.SongTagDetailsPresenter;
 import com.module.playways.room.song.view.ISongTagDetailView;
 import com.module.playways.R;
+import com.module.playways.songmanager.SongManagerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +102,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SearchSongFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
-                        .setBundle(bundle)
+                        .addDataBeforeAdd(0, SongManagerActivity.TYPE_FROM_AUDITION)
+                        .addDataBeforeAdd(1, false)
                         .build());
             }
         });
