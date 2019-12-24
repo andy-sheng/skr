@@ -570,9 +570,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                 " isUseExternalVideo: " + mConfig.isUseExternalVideo() +
                 " isUseExternalRecord: " + mConfig.isUseExternalAudioRecord() +
                 " isEnableAudioLowLatency: " + mConfig.isEnableAudioLowLatency() +
-                " isEnableAudioPreview: " + mConfig.isEnableAudioPreview() +
-                " accMixLatency: " + mConfig.getAccMixingLatencyOnSpeaker() +
-                " " + mConfig.getAccMixingLatencyOnHeadset());
+//                " isEnableAudioPreview: " + mConfig.isEnableAudioPreview() +
+                " accMixLatency: " + mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnSpeaker() +
+                " " + mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnHeadset());
 
         if (mConfig.isEnableAudio()) {
             initAudioModules();
@@ -751,7 +751,8 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
                 mAudioPlayerCapture.setEnableLowLatency(false);
             }
-            int mixingLatency = mHeadSetPlugged ? mConfig.getAccMixingLatencyOnHeadset() : mConfig.getAccMixingLatencyOnSpeaker();
+            int mixingLatency = mHeadSetPlugged ? mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnHeadset()
+                    : mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnSpeaker();
             mLocalAudioMixer.setDelay(1, mixingLatency);
             mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
             mRemoteAudioPreview.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
@@ -887,7 +888,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         MyLog.i(TAG, "destroy" + " from=" + from);
         if (!"force".equals(from)) {
             if (mInitFrom != null && !mInitFrom.equals(from)) {
-                MyLog.i(TAG, "mInitFrom="+mInitFrom+  " from=" + from +" cancel");
+                MyLog.i(TAG, "mInitFrom=" + mInitFrom + " from=" + from + " cancel");
                 return;
             }
         }
@@ -1248,6 +1249,10 @@ public class ZqEngineKit implements AgoraOutCallback {
             mConfig.setEnableInEarMonitoring(enable);
         }
         if (mConfig.isUseExternalAudio()) {
+            //TODO
+            if (mConfig.getConfigFromServerNotChange().isEnableAudioLowLatency()) {
+                // 服务器配置支持开启低延迟通路，则开启
+            }
             if (enable) {
                 if (shouldStartAudioPreview()) {
                     mLocalAudioPreview.start();

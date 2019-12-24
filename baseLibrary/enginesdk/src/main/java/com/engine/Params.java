@@ -101,7 +101,13 @@ public class Params implements Serializable {
     private AudioEffect styleEnum = AudioEffect.none;// 混响style
 
     @JSONField(serialize = false)
-    private EngineConfigFromServer configFromServer =  EngineConfigFromServer.getDefault();
+    private EngineConfigFromServer configFromServerNotChange =  EngineConfigFromServer.getDefault();
+
+    @JSONField(serialize = false)
+    boolean useExternalAudio = false;//是否开启自采集
+
+    @JSONField(serialize = false)
+    boolean enableAudioLowLatency = false;// 是否开启低延迟通道
 
     @JSONField(serialize = false)
     private boolean enableAudioPreviewLatencyTest = false;
@@ -165,9 +171,6 @@ public class Params implements Serializable {
     private float intensityChunse = 0.2f;// 唇色强度
     private float intensitySaihong = 0.2f;// 腮红强度
 
-    public static Builder newBuilder(int channelProfile) {
-        return new Builder().setChannelProfile(channelProfile);
-    }
 
     public int getAudioBitrate() {
         return audioChannels == 1 ? 64 * 1000 : 128 * 1000;
@@ -698,43 +701,44 @@ public class Params implements Serializable {
 
     @JSONField(serialize = false)
     public boolean isEnableAudioLowLatency() {
-        return configFromServer.enableAudioLowLatency;
+        return enableAudioLowLatency;
     }
-
-    @JSONField(serialize = false)
-    public int getAccMixingLatencyOnSpeaker() {
-        return configFromServer.accMixingLatencyOnSpeaker;
-    }
-
-    @JSONField(serialize = false)
-    public int getAccMixingLatencyOnHeadset() {
-        return configFromServer.accMixingLatencyOnHeadset;
-    }
-
-    @JSONField(serialize = false)
-    public boolean isEnableAudioPreview() {
-        return configFromServer.enableAudioPreview;
-    }
+//
+//    @JSONField(serialize = false)
+//    public int getAccMixingLatencyOnSpeaker() {
+//        return configFromServer.accMixingLatencyOnSpeaker;
+//    }
+//
+//    @JSONField(serialize = false)
+//    public int getAccMixingLatencyOnHeadset() {
+//        return configFromServer.accMixingLatencyOnHeadset;
+//    }
+//
+//    @JSONField(serialize = false)
+//    public boolean isEnableAudioPreview() {
+//        return configFromServer.enableAudioPreview;
+//    }
 
     @JSONField(serialize = false)
     public boolean isUseExternalAudio() {
-        return configFromServer.useExternalAudio;
-    }
-
-    @JSONField(serialize = false)
-    public void setEnableAudioLowLatency(boolean enable) {
-        configFromServer.setEnableAudioLowLatency(enable);
-    }
-
-    @JSONField(serialize = false)
-    public void setEnableAudioPreview(boolean enable) {
-        configFromServer.setEnableAudioPreview(enable);
+        return useExternalAudio;
     }
 
     @JSONField(serialize = false)
     public void setUseExternalAudio(boolean b) {
-        configFromServer.setUseExternalAudio(b);
+        useExternalAudio = b;
     }
+
+    @JSONField(serialize = false)
+    public void setEnableAudioLowLatency(boolean enable) {
+        enableAudioLowLatency = enable;
+    }
+//
+//    @JSONField(serialize = false)
+//    public void setEnableAudioPreview(boolean enable) {
+//        configFromServer.setEnableAudioPreview(enable);
+//    }
+
 
     public void setEnableAudioPreviewLatencyTest(boolean enable) {
         enableAudioPreviewLatencyTest = enable;
@@ -752,176 +756,180 @@ public class Params implements Serializable {
         return enableAudioMixLatencyTest;
     }
 
-    public static class Builder {
-        Params mParams = new Params();
-
-        Builder() {
-        }
-
-        public Builder setChannelProfile(int channelProfile) {
-            mParams.setChannelProfile(channelProfile);
-            return this;
-        }
-
-        public Builder setUseExternalAudio(boolean useExternalAudio) {
-            mParams.configFromServer.setUseExternalAudio(useExternalAudio);
-            return this;
-        }
-
-        public Builder setUseExternalVideo(boolean useExternalVideo) {
-            mParams.setUseExternalVideo(useExternalVideo);
-            return this;
-        }
-
-        public Builder setUseExternalAudioRecord(boolean useExternalAudioRecord) {
-            mParams.setUseExternalAudioRecord(useExternalAudioRecord);
-            return this;
-        }
-
-        public Builder setUseLocalAPM(boolean useLocalAPM) {
-            mParams.setUseLocalAPM(useLocalAPM);
-            return this;
-        }
-
-        public Builder setEnableVideo(boolean enableVideo) {
-            mParams.setEnableVideo(enableVideo);
-            return this;
-        }
-
-        public Builder setLocalVideoWidth(int localVideoWidth) {
-            mParams.setLocalVideoWidth(localVideoWidth);
-            return this;
-        }
-
-        public Builder setLocalVideoHeight(int localVideoHeight) {
-            mParams.setLocalVideoHeight(localVideoHeight);
-            return this;
-        }
-
-        public Builder setRateFps(VideoEncoderConfiguration.FRAME_RATE rateFps) {
-            mParams.setRateFps(rateFps);
-            return this;
-        }
-
-        public Builder setBitrate(int bitrate) {
-            mParams.setBitrate(bitrate);
-            return this;
-        }
-
-        public Builder setOrientationMode(VideoEncoderConfiguration.ORIENTATION_MODE orientationMode) {
-            mParams.setOrientationMode(orientationMode);
-            return this;
-        }
-
-        public Builder setEnableAudio(boolean enableAudio) {
-            mParams.setEnableAudio(enableAudio);
-            return this;
-        }
-
-        public Builder setEnableAudioQualityIndication(boolean enableAudioQualityIndication) {
-            mParams.setEnableAudioQualityIndication(enableAudioQualityIndication);
-            return this;
-        }
-
-        public Builder setVolumeIndicationInterval(int volumeIndicationInterval) {
-            mParams.setVolumeIndicationInterval(volumeIndicationInterval);
-            return this;
-        }
-
-        public Builder setVolumeIndicationSmooth(int volumeIndicationSmooth) {
-            mParams.setVolumeIndicationSmooth(volumeIndicationSmooth);
-            return this;
-        }
-
-        public Builder setCameraAutoFocusFaceModeEnabled(boolean cameraAutoFocusFaceModeEnabled) {
-            mParams.setCameraAutoFocusFaceModeEnabled(cameraAutoFocusFaceModeEnabled);
-            return this;
-        }
-
-        public Builder setLocalVoicePitch(double localVoicePitch) {
-            mParams.setLocalVoicePitch(localVoicePitch);
-            return this;
-        }
-
-        public Builder setBandFrequency(int bandFrequency) {
-            mParams.setBandFrequency(bandFrequency);
-            return this;
-        }
-
-        public Builder setBandGain(int bandGain) {
-            mParams.setBandGain(bandGain);
-            return this;
-        }
-
-        public Builder setAudioMixingVolume(int audioMixingVolume) {
-            mParams.setAudioMixingPlayoutVolume(audioMixingVolume);
-            return this;
-        }
-
-        public Builder setEnableInEarMonitoring(boolean enableInEarMonitoring) {
-            mParams.setEnableInEarMonitoring(enableInEarMonitoring);
-            return this;
-        }
-
-        public Builder setInEarMonitoringVolume(int inEarMonitoringVolume) {
-            mParams.setInEarMonitoringVolume(inEarMonitoringVolume);
-            return this;
-        }
-
-        public Builder setAllRemoteAudioStreamsMute(boolean allRemoteAudioStreamsMute) {
-            mParams.setAllRemoteAudioStreamsMute(allRemoteAudioStreamsMute);
-            return this;
-        }
-
-        public Builder setLocalVoiceReverb(int reverbKey, int value) {
-            mParams.setLocalVoiceReverb(reverbKey, value);
-            return this;
-        }
-
-        public Builder setLocalAudioStreamMute(boolean localAudioStreamMute) {
-            mParams.setLocalAudioStreamMute(localAudioStreamMute);
-            return this;
-        }
-
-        public Builder setPlaybackSignalVolume(int playbackSignalVolume) {
-            mParams.setPlaybackSignalVolume(playbackSignalVolume);
-            return this;
-        }
-
-        public Builder setRecordingSignalVolume(int recordingSignalVolume) {
-            mParams.setRecordingSignalVolume(recordingSignalVolume);
-            return this;
-        }
-
-        public Builder setEnableSpeakerphone(boolean enableSpeakerphone) {
-            mParams.setEnableSpeakerphone(enableSpeakerphone);
-            return this;
-        }
-
-        public Builder setStyleEnum(AudioEffect styleEnum) {
-            mParams.setStyleEnum(styleEnum);
-            return this;
-        }
-
-        public Builder setScene(Scene scene) {
-            mParams.setScene(scene);
-            return this;
-        }
-
-        public Builder setAudioSampleRate(int sampleRate) {
-            mParams.setAudioSampleRate(sampleRate);
-            return this;
-        }
-
-        public Builder setAudioChannels(int channels) {
-            mParams.setAudioChannels(channels);
-            return this;
-        }
-
-        public Params build() {
-            return mParams;
-        }
+    public EngineConfigFromServer getConfigFromServerNotChange() {
+        return configFromServerNotChange;
     }
+
+    //    public static class Builder {
+//        Params mParams = new Params();
+//
+//        Builder() {
+//        }
+//
+//        public Builder setChannelProfile(int channelProfile) {
+//            mParams.setChannelProfile(channelProfile);
+//            return this;
+//        }
+//
+////        public Builder setUseExternalAudio(boolean useExternalAudio) {
+////            mParams.configFromServer.setUseExternalAudio(useExternalAudio);
+////            return this;
+////        }
+//
+//        public Builder setUseExternalVideo(boolean useExternalVideo) {
+//            mParams.setUseExternalVideo(useExternalVideo);
+//            return this;
+//        }
+//
+//        public Builder setUseExternalAudioRecord(boolean useExternalAudioRecord) {
+//            mParams.setUseExternalAudioRecord(useExternalAudioRecord);
+//            return this;
+//        }
+//
+//        public Builder setUseLocalAPM(boolean useLocalAPM) {
+//            mParams.setUseLocalAPM(useLocalAPM);
+//            return this;
+//        }
+//
+//        public Builder setEnableVideo(boolean enableVideo) {
+//            mParams.setEnableVideo(enableVideo);
+//            return this;
+//        }
+//
+//        public Builder setLocalVideoWidth(int localVideoWidth) {
+//            mParams.setLocalVideoWidth(localVideoWidth);
+//            return this;
+//        }
+//
+//        public Builder setLocalVideoHeight(int localVideoHeight) {
+//            mParams.setLocalVideoHeight(localVideoHeight);
+//            return this;
+//        }
+//
+//        public Builder setRateFps(VideoEncoderConfiguration.FRAME_RATE rateFps) {
+//            mParams.setRateFps(rateFps);
+//            return this;
+//        }
+//
+//        public Builder setBitrate(int bitrate) {
+//            mParams.setBitrate(bitrate);
+//            return this;
+//        }
+//
+//        public Builder setOrientationMode(VideoEncoderConfiguration.ORIENTATION_MODE orientationMode) {
+//            mParams.setOrientationMode(orientationMode);
+//            return this;
+//        }
+//
+//        public Builder setEnableAudio(boolean enableAudio) {
+//            mParams.setEnableAudio(enableAudio);
+//            return this;
+//        }
+//
+//        public Builder setEnableAudioQualityIndication(boolean enableAudioQualityIndication) {
+//            mParams.setEnableAudioQualityIndication(enableAudioQualityIndication);
+//            return this;
+//        }
+//
+//        public Builder setVolumeIndicationInterval(int volumeIndicationInterval) {
+//            mParams.setVolumeIndicationInterval(volumeIndicationInterval);
+//            return this;
+//        }
+//
+//        public Builder setVolumeIndicationSmooth(int volumeIndicationSmooth) {
+//            mParams.setVolumeIndicationSmooth(volumeIndicationSmooth);
+//            return this;
+//        }
+//
+//        public Builder setCameraAutoFocusFaceModeEnabled(boolean cameraAutoFocusFaceModeEnabled) {
+//            mParams.setCameraAutoFocusFaceModeEnabled(cameraAutoFocusFaceModeEnabled);
+//            return this;
+//        }
+//
+//        public Builder setLocalVoicePitch(double localVoicePitch) {
+//            mParams.setLocalVoicePitch(localVoicePitch);
+//            return this;
+//        }
+//
+//        public Builder setBandFrequency(int bandFrequency) {
+//            mParams.setBandFrequency(bandFrequency);
+//            return this;
+//        }
+//
+//        public Builder setBandGain(int bandGain) {
+//            mParams.setBandGain(bandGain);
+//            return this;
+//        }
+//
+//        public Builder setAudioMixingVolume(int audioMixingVolume) {
+//            mParams.setAudioMixingPlayoutVolume(audioMixingVolume);
+//            return this;
+//        }
+//
+//        public Builder setEnableInEarMonitoring(boolean enableInEarMonitoring) {
+//            mParams.setEnableInEarMonitoring(enableInEarMonitoring);
+//            return this;
+//        }
+//
+//        public Builder setInEarMonitoringVolume(int inEarMonitoringVolume) {
+//            mParams.setInEarMonitoringVolume(inEarMonitoringVolume);
+//            return this;
+//        }
+//
+//        public Builder setAllRemoteAudioStreamsMute(boolean allRemoteAudioStreamsMute) {
+//            mParams.setAllRemoteAudioStreamsMute(allRemoteAudioStreamsMute);
+//            return this;
+//        }
+//
+//        public Builder setLocalVoiceReverb(int reverbKey, int value) {
+//            mParams.setLocalVoiceReverb(reverbKey, value);
+//            return this;
+//        }
+//
+//        public Builder setLocalAudioStreamMute(boolean localAudioStreamMute) {
+//            mParams.setLocalAudioStreamMute(localAudioStreamMute);
+//            return this;
+//        }
+//
+//        public Builder setPlaybackSignalVolume(int playbackSignalVolume) {
+//            mParams.setPlaybackSignalVolume(playbackSignalVolume);
+//            return this;
+//        }
+//
+//        public Builder setRecordingSignalVolume(int recordingSignalVolume) {
+//            mParams.setRecordingSignalVolume(recordingSignalVolume);
+//            return this;
+//        }
+//
+//        public Builder setEnableSpeakerphone(boolean enableSpeakerphone) {
+//            mParams.setEnableSpeakerphone(enableSpeakerphone);
+//            return this;
+//        }
+//
+//        public Builder setStyleEnum(AudioEffect styleEnum) {
+//            mParams.setStyleEnum(styleEnum);
+//            return this;
+//        }
+//
+//        public Builder setScene(Scene scene) {
+//            mParams.setScene(scene);
+//            return this;
+//        }
+//
+//        public Builder setAudioSampleRate(int sampleRate) {
+//            mParams.setAudioSampleRate(sampleRate);
+//            return this;
+//        }
+//
+//        public Builder setAudioChannels(int channels) {
+//            mParams.setAudioChannels(channels);
+//            return this;
+//        }
+//
+//        public Params build() {
+//            return mParams;
+//        }
+//    }
 
     /**
      * 存起引擎的偏好的信息到Pref
@@ -949,17 +957,49 @@ public class Params implements Serializable {
         if (!TextUtils.isEmpty(s)) {
             params = JSON.parseObject(s, Params.class);
         } else {
-            params = Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
-                    .setEnableVideo(true)
-                    .setEnableAudio(true)
-                    .setUseExternalAudio(true)
-                    .setUseExternalVideo(true)
-                    .setUseExternalAudioRecord(true)
-                    .setEnableInEarMonitoring(true)
-                    .setStyleEnum(AudioEffect.none)
-                    .build();
+            params = new Params();
+            params.setChannelProfile(Params.CHANNEL_TYPE_LIVE_BROADCASTING);
+            params.setEnableVideo(true);
+            params.setEnableAudio(true);
+            params.setUseExternalAudioRecord(true);
+            params.setEnableInEarMonitoring(true);
+            params.setStyleEnum(AudioEffect.none);
         }
-//        params.setAudioMixingVolume(0);
+        if(EngineConfigFromServer.getSelfCollectionSwitch()==0){
+            if(params.configFromServerNotChange.hasServerConfig){
+                // 服务端有配置，都按服务端的来
+                if(params.configFromServerNotChange.useExternalAudio){
+                    params.useExternalAudio = true;
+                    // 如果开启了自采集,设置低延迟
+                    params.enableAudioLowLatency = params.configFromServerNotChange.isEnableAudioLowLatency();
+                    // 是否开启耳返 不设置，因为用户会主动修改
+                    //params.enableInEarMonitoring = params.configFromServerNotChange.isEnableAudioPreview();
+                }else{
+                    params.useExternalAudio = false;
+                    params.enableAudioLowLatency = false;
+                    params.enableInEarMonitoring = false;
+                }
+            }else{
+                // 服务端没匹配 且用户没主动选择 ，全关了
+                params.useExternalAudio = false;
+                params.enableAudioLowLatency = false;
+                params.enableInEarMonitoring = false;
+            }
+        }else if(EngineConfigFromServer.getSelfCollectionSwitch()==1){
+            // 用户选择开启自采集
+            params.useExternalAudio = true;
+            if(params.enableInEarMonitoring){
+                // 如果开启耳返的，则开启低延迟
+                params.enableAudioLowLatency = true;
+            }else{
+                params.enableAudioLowLatency = false;
+            }
+        }else if(EngineConfigFromServer.getSelfCollectionSwitch()==2){
+            // 用户关闭了自采集，回到默认agora那一套
+            params.useExternalAudio = false;
+            params.enableAudioLowLatency = false;
+            params.enableInEarMonitoring = false;
+        }
         return params;
     }
 

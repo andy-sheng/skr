@@ -20,7 +20,15 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
+/**
+ * 这些值只代表服务器建议的值
+ * 不修改，持久化
+ * enableAudioPreview = true 只代表服务端的配置建议开启耳返，不代表耳返是否开启
+ */
 public class EngineConfigFromServer implements Serializable {
+
+    public boolean hasServerConfig = false; // 是否有服务端配置
+
     @JSONField(name = "audioMixLatencyHeadSet")
     int accMixingLatencyOnHeadset = 0; //混音延迟（耳机），单位毫秒，-1表示未知
 
@@ -28,7 +36,7 @@ public class EngineConfigFromServer implements Serializable {
     int accMixingLatencyOnSpeaker = 0; //混音延迟（外放），单位毫秒，-1表示未知
 
     @JSONField(name = "audioPreview")
-    boolean enableAudioPreview = false; //是否开启耳返
+    boolean enableAudioPreview = false; //是否开启耳返 只代表
 
     @JSONField(name = "externalAudio")
     boolean useExternalAudio = false;//是否开启自采集
@@ -78,7 +86,8 @@ public class EngineConfigFromServer implements Serializable {
 
     @Override
     public String toString() {
-        return "accMixingLatencyOnHeadset=" + accMixingLatencyOnHeadset +
+        return "hasServerConfig=" + hasServerConfig +
+                "\n accMixingLatencyOnHeadset=" + accMixingLatencyOnHeadset +
                 "\n accMixingLatencyOnSpeaker=" + accMixingLatencyOnSpeaker +
                 "\n enableAudioPreview=" + enableAudioPreview +
                 "\n useExternalAudio=" + useExternalAudio +
@@ -90,7 +99,7 @@ public class EngineConfigFromServer implements Serializable {
         //只存服务器下发的原始数据
         EngineConfigFromServer configFromServer = null;
         long lastTs = U.getPreferenceUtils().getSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", 0);
-        MyLog.i("Params", "configFromServer lastTs="+lastTs);
+        MyLog.i("Params", "configFromServer lastTs=" + lastTs);
         if (System.currentTimeMillis() - lastTs > 24 * 3600 * 1000) {
             // 请求服务器
             if (Looper.getMainLooper() == Looper.myLooper()) {
@@ -120,7 +129,7 @@ public class EngineConfigFromServer implements Serializable {
     }
 
     private static EngineConfigFromServer getFromServerInner(String from) {
-        MyLog.d("Params","getFromServerInner from="+from );
+        MyLog.d("Params", "getFromServerInner from=" + from);
         EngineServerApi api = ApiManager.getInstance().createService(EngineServerApi.class);
         Call<ApiResult> apiResultCall = api.getAudioConfig(U.getDeviceUtils().getProductModel()
                 , String.valueOf(android.os.Build.VERSION.SDK_INT));
@@ -130,19 +139,21 @@ public class EngineConfigFromServer implements Serializable {
                 if (resultResponse != null) {
                     ApiResult obj = resultResponse.body();
                     if (obj != null) {
-                        MyLog.d("Params","getFromServerInner obj="+obj);
+                        MyLog.d("Params", "getFromServerInner obj=" + obj);
                         // 请求成功
                         if (obj.getErrno() == 0) {
-                            MyLog.d("Params","getFromServerInner json="+obj.getData().toString() );
+                            MyLog.d("Params", "getFromServerInner json=" + obj.getData().toString());
                             EngineConfigFromServer configFromServer = JSON.parseObject(obj.getData().toString(), EngineConfigFromServer.class);
+                            configFromServer.hasServerConfig = true;
                             // 持久化
                             U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", obj.getData().toString());
                             U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", System.currentTimeMillis());
                             return configFromServer;
-                        } else if(obj.getErrno()==102){
+                        } else if (obj.getErrno() == 102) {
                             return null;
-                        }else if(obj.getErrno() == 1){
+                        } else if (obj.getErrno() == 1) {
                             // 该机型没有配置，也先算了
+                            U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", "");
                             U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", System.currentTimeMillis());
                         }
                     } else {
@@ -155,21 +166,20 @@ public class EngineConfigFromServer implements Serializable {
         return null;
     }
 
-    public static boolean configManual() {
-        long ts = U.getPreferenceUtils().getSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", 0);
-        if (ts == Long.MAX_VALUE) {
-            return true;
-        }
-        return false;
+    /**
+     * 0 是用户未设置
+     * 1 是用户设置使用自采集
+     * 2 是用户设置关闭自采集
+     *
+     * @return
+     */
+    public static int getSelfCollectionSwitch() {
+        int r = U.getPreferenceUtils().getSettingInt("engine_self_collection", 0);
+        return r;
     }
 
-    public void save2Pref() {
-        U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", JSON.toJSONString(this));
-        U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", Long.MAX_VALUE);
-    }
 
-    public static void clearManualConfig() {
-        //U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", JSON.toJSONString(this));
-        U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", 0);
+    public static void setSelfCollectionSwitch(int r) {
+        U.getPreferenceUtils().setSettingInt("engine_self_collection", r);
     }
 }
