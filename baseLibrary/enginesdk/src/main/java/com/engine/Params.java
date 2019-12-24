@@ -104,6 +104,8 @@ public class Params implements Serializable {
     private EngineConfigFromServer configFromServer =  EngineConfigFromServer.getDefault();
 
     @JSONField(serialize = false)
+    private boolean enableAudioPreviewLatencyTest = false;
+    @JSONField(serialize = false)
     private boolean enableAudioMixLatencyTest = false;
 
     @JSONField(serialize = false)
@@ -711,8 +713,12 @@ public class Params implements Serializable {
         return configFromServer.accMixingLatencyOnHeadset;
     }
 
+    public boolean isEnableAudioPreview() {
+        return configFromServer.enableAudioPreview;
+    }
+
     public boolean isEnableAudioPreviewLatencyTest() {
-        return configFromServer.enableAudioPreviewLatencyTest;
+        return enableAudioPreviewLatencyTest;
     }
 
     public void setEnableAudioMixLatencyTest(boolean enableAudioMixLatencyTest) {
@@ -727,8 +733,12 @@ public class Params implements Serializable {
         configFromServer.setEnableAudioLowLatency(enable);
     }
 
+    public void setEnableAudioPreview(boolean enable) {
+        configFromServer.setEnableAudioPreview(enable);
+    }
+
     public void setEnableAudioPreviewLatencyTest(boolean enable) {
-        configFromServer.setEnableAudioPreviewLatencyTest(enable);
+        enableAudioPreviewLatencyTest = enable;
     }
 
     public void setUseExternalAudio(boolean b) {

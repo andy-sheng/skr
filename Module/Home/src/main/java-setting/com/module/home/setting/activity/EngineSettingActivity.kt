@@ -68,7 +68,7 @@ class EngineSettingActivity : BaseActivity() {
             earMonitorSb.isEnabled = false
         }
         selfCollectionSb.isChecked = engineConfigFromServer.isUseExternalAudio
-        earMonitorSb.isChecked = engineConfigFromServer.isEnableAudioPreviewLatencyTest
+        earMonitorSb.isChecked = engineConfigFromServer.isEnableAudioPreview
         if (selfCollectionSb.isChecked) {
             earMonitorSb.isEnabled = true
         } else {
@@ -82,7 +82,7 @@ class EngineSettingActivity : BaseActivity() {
         if(configManualSb.isChecked){
             var a = EngineConfigFromServer.getDefault()
             a.isUseExternalAudio = selfCollectionSb.isChecked
-            a.isEnableAudioPreviewLatencyTest = earMonitorSb.isChecked
+            a.isEnableAudioPreview = earMonitorSb.isChecked
             a.save2Pref()
         }else{
             EngineConfigFromServer.clearManualConfig()

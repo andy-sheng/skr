@@ -16,7 +16,6 @@ import java.io.Serializable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -29,7 +28,7 @@ public class EngineConfigFromServer implements Serializable {
     int accMixingLatencyOnSpeaker = 0; //混音延迟（外放），单位毫秒，-1表示未知
 
     @JSONField(name = "audioPreview")
-    boolean enableAudioPreviewLatencyTest = false; //是否开启耳返
+    boolean enableAudioPreview = false; //是否开启耳返
 
     @JSONField(name = "externalAudio")
     boolean useExternalAudio = false;//是否开启自采集
@@ -53,12 +52,12 @@ public class EngineConfigFromServer implements Serializable {
         this.accMixingLatencyOnSpeaker = accMixingLatencyOnSpeaker;
     }
 
-    public boolean isEnableAudioPreviewLatencyTest() {
-        return enableAudioPreviewLatencyTest;
+    public boolean isEnableAudioPreview() {
+        return enableAudioPreview;
     }
 
-    public void setEnableAudioPreviewLatencyTest(boolean enableAudioPreviewLatencyTest) {
-        this.enableAudioPreviewLatencyTest = enableAudioPreviewLatencyTest;
+    public void setEnableAudioPreview(boolean enableAudioPreview) {
+        this.enableAudioPreview = enableAudioPreview;
     }
 
     public boolean isUseExternalAudio() {
@@ -81,7 +80,7 @@ public class EngineConfigFromServer implements Serializable {
     public String toString() {
         return "accMixingLatencyOnHeadset=" + accMixingLatencyOnHeadset +
                 "\n accMixingLatencyOnSpeaker=" + accMixingLatencyOnSpeaker +
-                "\n enableAudioPreviewLatencyTest=" + enableAudioPreviewLatencyTest +
+                "\n enableAudioPreview=" + enableAudioPreview +
                 "\n useExternalAudio=" + useExternalAudio +
                 "\n enableAudioLowLatency=" + enableAudioLowLatency;
     }
