@@ -124,7 +124,7 @@ public class ExChangeCashToDiamondFragment extends BaseFragment {
                     if (TextUtils.isEmpty(editString)) {
                         mIvExchangeBtn.setEnabled(false);
                         mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
-                        mTvTip.setText(String.format("余额%.1f", mDq));
+                        mTvTip.setText(String.format("余额%.1f元", mDq));
                         mTvExchangeWhole.setVisibility(View.VISIBLE);
                         mClearIv.setVisibility(View.GONE);
                         mEditCashNum.setTextSize(16);
@@ -163,9 +163,9 @@ public class ExChangeCashToDiamondFragment extends BaseFragment {
         }, 500);
 
         mDq = balance;
-        mMaxDiamond = mDq * 1;
-        toZSRadio = 1000;
-        mTvTip.setText(String.format("余额%.1f", mDq));
+        mMaxDiamond = mDq * 10;
+        toZSRadio = 10000;
+        mTvTip.setText(String.format("余额%.1f元", mDq));
     }
 
     public void exChangeSuccess() {
