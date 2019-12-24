@@ -47,6 +47,12 @@ public interface SongSelectServerApi {
     Observable<ApiResult> getRcomdMusicItems(@Query("offset") int offset,
                                              @Query("cnt") int cnt);
 
+    /**
+     * 列出可以接唱的曲目
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/list-playbook-items")
+    Observable<ApiResult> getRelayMusicItems(@Query("offset") int offset, @Query("cnt") int cnt, @Query("userID") long userID);
+
 
     /**
      * 获取已点的列表

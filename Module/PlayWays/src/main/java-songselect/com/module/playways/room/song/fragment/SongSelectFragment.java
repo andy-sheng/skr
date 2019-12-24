@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
@@ -23,6 +25,7 @@ import com.module.playways.audition.AudioRoomActivity;
 import com.module.playways.PlayWaysActivity;
 import com.module.playways.room.prepare.fragment.PrepareResFragment;
 import com.module.playways.room.song.adapter.SongCardSwipAdapter;
+import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.flingswipe.SwipeFlingAdapterView;
 import com.module.playways.room.song.model.SongCardModel;
 import com.module.playways.room.song.model.SongModel;
@@ -30,11 +33,12 @@ import com.module.playways.room.song.presenter.SongTagDetailsPresenter;
 import com.module.playways.room.song.view.ISongTagDetailView;
 import com.module.playways.R;
 import com.module.playways.songmanager.SongManagerActivity;
+import com.module.playways.songmanager.event.AddSongEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.module.playways.PlayWaysActivity.KEY_GAME_TYPE;
 
 // 合唱首页和练歌房通用此页面
 public class SongSelectFragment extends BaseFragment implements ISongTagDetailView, SwipeFlingAdapterView.onFlingListener,
@@ -43,27 +47,39 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     public final String TAG = "SongSelectFragment";
 
     public int DEFAULT_COUNT = 6;  // 从服务器拉去歌曲数，即每个页面默认个数
-    public int DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 5; // 第一次从推荐页面拉去歌曲数
+    public int DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 3; // 第一次从推荐页面拉去歌曲数
 
     RelativeLayout mMainActContainer;
 
     SwipeFlingAdapterView mSwipeView;
     SongCardSwipAdapter mSongCardSwipAdapter;
 
+    ImageView mTopIconIv;
+    TextView mTopTextTv;
     ExImageView mSelectBack;
-    ExImageView mSelectSelect;
-    ExTextView mSelectBackIv;
-    ExTextView mSelectClickedIv;
+    ExImageView mSelectSearch;
+    TextView mInviteTv;
+
+    ExTextView mBottomLeftTv;
+    ExTextView mBottomRightTv;
 
     SongTagDetailsPresenter presenter;
 
     List<SongCardModel> mDeleteList; // 已经滑走的数据
 
+    int mFrom;
     int offset; //当前偏移量
-    int mGameType;
     boolean hasMore = true; // 是否还有更多数据标记位
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
+
+    @Override
+    public void setData(int type, @org.jetbrains.annotations.Nullable Object data) {
+        super.setData(type, data);
+        if (type == 0) {
+            mFrom = (Integer) data;
+        }
+    }
 
     @Override
     public int initView() {
@@ -76,39 +92,70 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSwipeView = getRootView().findViewById(R.id.swipe_view);
 
         mMainActContainer = getRootView().findViewById(R.id.main_act_container);
-        mSelectBackIv = getRootView().findViewById(R.id.select_back_iv);
-        mSelectClickedIv = getRootView().findViewById(R.id.select_clicked_iv);
-        mSelectBack = getRootView().findViewById(R.id.select_back);
-        mSelectSelect = getRootView().findViewById(R.id.select_select);
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            mGameType = bundle.getInt(KEY_GAME_TYPE);
+        mTopIconIv = getRootView().findViewById(R.id.top_icon_iv);
+        mTopTextTv = getRootView().findViewById(R.id.top_text_tv);
+        mSelectBack = getRootView().findViewById(R.id.select_back);
+        mSelectSearch = getRootView().findViewById(R.id.select_search);
+        mInviteTv = getRootView().findViewById(R.id.invite_tv);
+
+        mBottomLeftTv = getRootView().findViewById(R.id.bottom_left_tv);
+        mBottomRightTv = getRootView().findViewById(R.id.bottom_right_tv);
+
+
+        int songCardHeight = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(84) - U.getDisplayUtils().dip2px(60)
+                - (U.getDeviceUtils().hasNotch(getActivity()) ? U.getStatusBarUtil().getStatusBarHeight(getActivity()) : 0);
+        DEFAULT_COUNT = songCardHeight / U.getDisplayUtils().dip2px(72);
+        DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 3;
+
+        if (mFrom == SongManagerActivity.TYPE_FROM_AUDITION) {
+            // 练歌房
+            mTopTextTv.setVisibility(View.GONE);
+            mSelectSearch.setVisibility(View.VISIBLE);
+            mInviteTv.setVisibility(View.GONE);
+            mBottomLeftTv.setText("上一页");
+        } else {
+            // 合唱
+            mTopTextTv.setText("选择合唱歌曲");
+            mTopTextTv.setVisibility(View.VISIBLE);
+            mSelectSearch.setVisibility(View.GONE);
+            mInviteTv.setVisibility(View.VISIBLE);
+            mBottomLeftTv.setText("搜歌");
         }
 
-        int songCardHeight = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(205);
-        DEFAULT_COUNT = songCardHeight / U.getDisplayUtils().dip2px(72);
-        DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 5;
-
-        mSelectBackIv.setOnClickListener(new DebounceViewClickListener() {
+        mBottomLeftTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                backToLastCard();
+                if (mFrom == SongManagerActivity.TYPE_FROM_AUDITION) {
+                    backToLastCard();
+                } else {
+                    goSearchFragment();
+                }
+
             }
         });
-        mSelectSelect.setOnClickListener(new DebounceViewClickListener() {
+
+        mSelectSearch.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                // todo 补充已点中合唱列表
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SearchSongFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
-                        .addDataBeforeAdd(0, SongManagerActivity.TYPE_FROM_AUDITION)
+                        .addDataBeforeAdd(0, mFrom)
                         .addDataBeforeAdd(1, false)
                         .build());
             }
         });
 
-        mSelectClickedIv.setOnClickListener(new DebounceViewClickListener() {
+        mInviteTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // todo 邀请弹窗
+            }
+        });
+
+        mBottomRightTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 switchToClicked();
@@ -125,22 +172,29 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         });
 
         mDeleteList = new ArrayList<>();
-
-        mSongCardSwipAdapter = new SongCardSwipAdapter(new RecyclerOnItemClickListener() {
+        mSongCardSwipAdapter = new SongCardSwipAdapter(new SongSelectAdapter.Listener() {
             @Override
-            public void onItemClicked(View view, int position, Object model) {
+            public void onClickSelect(int position, SongModel model) {
                 if (!U.getNetworkUtils().hasNetwork()) {
                     U.getToastUtil().showShort("无网络连接，请检查网络后重试");
                     return;
                 }
-                jump((SongModel) model);
+                jump(model);
             }
+
+            @Override
+            public void onClickSongName(int position, SongModel model) {
+                if (mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+                    // todo 做个展示歌曲的弹窗
+                }
+            }
+
         }, DEFAULT_COUNT);
 
         // 默认推荐
         presenter = new SongTagDetailsPresenter(this);
         addPresent(presenter);
-        presenter.getRcomdMusicItems(0, DEFAULT_FIRST_COUNT);
+        presenter.getRcomdMusicItems(0, DEFAULT_FIRST_COUNT, mFrom);
 
         if (mSwipeView != null) {
             mSwipeView.setIsNeedSwipe(true);
@@ -152,8 +206,26 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     }
 
+    private void goSearchFragment() {
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SearchSongFragment.class)
+                .setAddToBackStack(true)
+                .setHasAnimation(false)
+                .addDataBeforeAdd(0, mFrom)
+                .addDataBeforeAdd(1, false)
+                .setFragmentDataListener(new FragmentDataListener() {
+                    @Override
+                    public void onFragmentResult(int requestCode, int resultCode, @org.jetbrains.annotations.Nullable Bundle bundle, @org.jetbrains.annotations.Nullable Object obj) {
+                        if (requestCode == 0 && resultCode == 0 && obj != null) {
+                            SongModel model = (SongModel) obj;
+                            EventBus.getDefault().post(new AddSongEvent(model, mFrom));
+                        }
+                    }
+                })
+                .build());
+    }
+
     void jump(SongModel songModel) {
-        if (getActivity() instanceof AudioRoomActivity) {
+        if (mFrom == SongManagerActivity.TYPE_FROM_AUDITION) {
             mSkrAudioPermission.ensurePermission(new Runnable() {
                 @Override
                 public void run() {
@@ -163,26 +235,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 }
             }, true);
             return;
-        }
-
-        if (getActivity() instanceof PlayWaysActivity) {
-            if (U.getFragmentUtils().findFragment((BaseActivity) getActivity(), PrepareResFragment.class) != null) {
-                return;
-            }
-
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
-                    .setAddToBackStack(true)
-                    .setHasAnimation(true)
-                    .setNotifyHideFragment(SongSelectFragment.class)
-                    .addDataBeforeAdd(0, songModel)
-                    .addDataBeforeAdd(1, mGameType)
-                    .setFragmentDataListener(new FragmentDataListener() {
-                        @Override
-                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                        }
-                    })
-                    .build());
+        } else {
+            EventBus.getDefault().post(new AddSongEvent(songModel, mFrom));
         }
     }
 
@@ -217,13 +271,9 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     // TODO: 2018/12/17  切换到已点界面, 要不要保存当前记录的数据，取决从已点回来的逻辑 
     private void switchToClicked() {
-        Bundle bundle = new Bundle();
-        bundle.putInt(KEY_GAME_TYPE, mGameType);
-//        U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_click);
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), HistorySongFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
-                .setBundle(bundle)
                 .setEnterAnim(R.anim.slide_in_bottom)
                 .setExitAnim(R.anim.slide_out_bottom)
                 .setFragmentDataListener(new FragmentDataListener() {
@@ -304,7 +354,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     @Override
     public void removeFirstObjectInAdapter() {
         mSongCardSwipAdapter.remove(0);
-        presenter.getRcomdMusicItems(offset, DEFAULT_COUNT);
+        presenter.getRcomdMusicItems(offset, DEFAULT_COUNT, mFrom);
         MyLog.d(TAG, "removeFirstObjectInAdapter");
     }
 

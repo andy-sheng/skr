@@ -18,7 +18,7 @@ public class SongCardHolder extends RecyclerView.ViewHolder {
     SongCardRecycleView mSongListView;
     SongSelectAdapter mSongSelectAdapter;
 
-    public SongCardHolder(View itemView, RecyclerOnItemClickListener onItemClickListener, int defaultCount) {
+    public SongCardHolder(View itemView, SongSelectAdapter.Listener onItemClickListener, int defaultCount) {
         super(itemView);
         mSongListView = itemView.findViewById(R.id.song_list_recycle);
         ViewGroup.LayoutParams lp = mSongListView.getLayoutParams();

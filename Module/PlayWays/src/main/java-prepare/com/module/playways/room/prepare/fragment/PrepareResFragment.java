@@ -79,7 +79,6 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
         mIvTop = (ExImageView) getRootView().findViewById(R.id.iv_top);
-//        mSongIcon = (SimpleDraweeView) mRootView.findViewById(R.id.song_icon);
         mSongName = (ExTextView) getRootView().findViewById(R.id.song_name);
         mTvDuration = (ExTextView) getRootView().findViewById(R.id.tv_duration);
         mTvLyric = (ExTextView) getRootView().findViewById(R.id.tv_lyric);
@@ -101,7 +100,6 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         mOnDownloadProgress = new HttpUtils.OnDownloadProgress() {
             @Override
             public void onDownloaded(long downloaded, long totalLength) {
-//                MyLog.d(TAG, "onDownloaded" + " downloaded=" + downloaded + " totalLength=" + totalLength);
                 mUiHandler.post(() -> {
                     int progress = (int) ((((float) downloaded / (float) totalLength)) * 100);
                     songResProgressbar.setProgress(progress);
@@ -112,7 +110,6 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
             public void onCompleted(String localPath) {
                 MyLog.w(TAG, "onCompleted" + " localPath=" + localPath);
                 mUiHandler.post(() -> {
-//                    U.getToastUtil().showShort("歌曲资源已经准备好了");
                     songResProgressbar.setProgress(100);
                     mIsResPrepared = true;
                     tryEnableStartMatchBtn();
@@ -150,7 +147,6 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 onBackPressed();
             }
         });

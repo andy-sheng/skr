@@ -9,6 +9,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
 
@@ -22,7 +23,7 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
     TextView mSongDesc;
     View mDivider;
 
-    public SongInfoHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener, String text) {
+    public SongInfoHolder(View itemView, SongSelectAdapter.Listener recyclerOnItemClickListener, String text) {
         super(itemView);
 
         mSongNameTv = itemView.findViewById(R.id.song_name_tv);
@@ -35,7 +36,25 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
             @Override
             public void clickValid(View v) {
                 if (recyclerOnItemClickListener != null) {
-                    recyclerOnItemClickListener.onItemClicked(itemView, position, mSongModel);
+                    recyclerOnItemClickListener.onClickSelect(position, mSongModel);
+                }
+            }
+        });
+
+        mSongNameTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (recyclerOnItemClickListener != null) {
+                    recyclerOnItemClickListener.onClickSongName(position, mSongModel);
+                }
+            }
+        });
+
+        mSongDesc.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (recyclerOnItemClickListener != null) {
+                    recyclerOnItemClickListener.onClickSongName(position, mSongModel);
                 }
             }
         });

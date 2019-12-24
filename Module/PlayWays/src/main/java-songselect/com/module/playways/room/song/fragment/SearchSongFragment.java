@@ -112,10 +112,11 @@ public class SearchSongFragment extends BaseFragment {
         } else if (mFrom == SongManagerActivity.TYPE_FROM_PARTY) {
             selectMode = SongSelectAdapter.PARTY_MODE;
         }
-        mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
+
+        mSongSelectAdapter = new SongSelectAdapter(new SongSelectAdapter.Listener() {
             @Override
-            public void onItemClicked(View view, int position, Object model) {
-                if (mFrom == SongManagerActivity.TYPE_FROM_RACE || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+            public void onClickSelect(int position, SongModel model) {
+                if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
                     if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                         mUihandler.postDelayed(new Runnable() {
@@ -132,7 +133,10 @@ public class SearchSongFragment extends BaseFragment {
                     U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                     clickItem(model);
                 }
+            }
 
+            @Override
+            public void onClickSongName(int position, SongModel model) {
 
             }
         }, true, selectMode, selectText);
@@ -155,7 +159,7 @@ public class SearchSongFragment extends BaseFragment {
         mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mFrom == SongManagerActivity.TYPE_FROM_RACE || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+                if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
                     finishSongManageActivity();
                 } else {
                     U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
@@ -192,26 +196,25 @@ public class SearchSongFragment extends BaseFragment {
         }, 200);
     }
 
-    private void clickItem(Object model) {
+    private void clickItem(SongModel model) {
         if (model == null) {
             // 搜歌反馈
             showSearchFeedback();
             return;
         }
-        SongModel songModel = (SongModel) model;
         if (mFrom == SongManagerActivity.TYPE_FROM_AUDITION) {
             SkrAudioPermission skrAudioPermission = new SkrAudioPermission();
             skrAudioPermission.ensurePermission(new Runnable() {
                 @Override
                 public void run() {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDITION_ROOM)
-                            .withSerializable("songModel", songModel)
+                            .withSerializable("songModel", model)
                             .navigation();
                 }
             }, true);
         } else {
             if (getFragmentDataListener() != null) {
-                getFragmentDataListener().onFragmentResult(0, 0, null, songModel);
+                getFragmentDataListener().onFragmentResult(0, 0, null, model);
             }
         }
     }
@@ -399,7 +402,7 @@ public class SearchSongFragment extends BaseFragment {
 
     @Override
     public boolean onBackPressed() {
-        if (mFrom == SongManagerActivity.TYPE_FROM_RACE || mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+        if (mFrom == SongManagerActivity.TYPE_FROM_RACE) {
             finishSongManageActivity();
             return true;
         } else {

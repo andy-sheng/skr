@@ -17,10 +17,10 @@ public class SongCardSwipAdapter extends BaseAdapter {
 
     ArrayList<SongCardModel> mSongCardHolderArrayList = new ArrayList<>();
 
-    RecyclerOnItemClickListener mListener;
+    SongSelectAdapter.Listener mListener;
     int defaultCount;   // 每张卡片上多少个元素
 
-    public SongCardSwipAdapter(RecyclerOnItemClickListener listener, int defaultCount) {
+    public SongCardSwipAdapter(SongSelectAdapter.Listener listener, int defaultCount) {
         this.mListener = listener;
         this.defaultCount = defaultCount;
     }

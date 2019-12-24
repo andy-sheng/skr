@@ -24,7 +24,7 @@ public class GrabSongInfoHolder extends RecyclerView.ViewHolder {
     ExTextView mSongTag;
     TextView mSongDesc;
 
-    public GrabSongInfoHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener, String selectText) {
+    public GrabSongInfoHolder(View itemView, SongSelectAdapter.Listener recyclerOnItemClickListener, String selectText) {
         super(itemView);
 
         mSongSelectTv = itemView.findViewById(R.id.song_select_tv);
@@ -37,7 +37,7 @@ public class GrabSongInfoHolder extends RecyclerView.ViewHolder {
             @Override
             public void clickValid(View v) {
                 if (recyclerOnItemClickListener != null) {
-                    recyclerOnItemClickListener.onItemClicked(itemView, position, mSongModel);
+                    recyclerOnItemClickListener.onClickSelect(position, mSongModel);
                 }
             }
         });

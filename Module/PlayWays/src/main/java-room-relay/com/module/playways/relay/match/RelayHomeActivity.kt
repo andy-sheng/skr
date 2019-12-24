@@ -12,6 +12,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.*
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.recyclercardview.CardScaleHelper
@@ -19,6 +20,7 @@ import com.component.busilib.view.recyclercardview.SpeedRecyclerView
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.relay.match.adapter.RelayHomeSongAdapter
+import com.module.playways.room.song.fragment.SongSelectFragment
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
 import com.module.playways.songmanager.event.AddSongEvent
@@ -31,20 +33,10 @@ import org.greenrobot.eventbus.ThreadMode
 @Route(path = RouterConstants.ACTIVITY_RELAY_HOME)
 class RelayHomeActivity : BaseActivity() {
 
-    var titlebar: CommonTitleBar? = null
-    var speedRecyclerView: SpeedRecyclerView? = null
-
     val adapter: RelayHomeSongAdapter = RelayHomeSongAdapter()
     private var cardScaleHelper: CardScaleHelper? = null
 
-    private val relayMatchServerApi = ApiManager.getInstance().createService(RelayMatchServerApi::class.java)
-    var offset: Int = 0
-    var hasMore: Boolean = false
-    val cnt = 15
-
     //在滑动到最后的时候自动加载更多
-    var loadMore: Boolean = false
-    var currentPosition = -1
     var skrAudioPermission = SkrAudioPermission()
     /**
      * 存起该房间一些状态信息
@@ -54,47 +46,11 @@ class RelayHomeActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-
-        U.getStatusBarUtil().setTransparentBar(this, false)
-        titlebar = findViewById(R.id.titlebar)
-        speedRecyclerView = findViewById(R.id.speed_recyclerView)
-
-        speedRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        speedRecyclerView?.adapter = adapter
-
-
-        speedRecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    currentPosition = cardScaleHelper?.currentItemPos ?: 0
-                    if (!loadMore && currentPosition > (adapter.mDataList.size - 3)) {
-                        loadMore = true
-                        getPlayBookList(offset, false)
-                    }
-                }
-            }
-        })
-
-        cardScaleHelper = CardScaleHelper(8, 12)
-        cardScaleHelper?.attachToRecyclerView(speedRecyclerView)
-
-        titlebar?.leftTextView?.setDebounceViewClickListener { finish() }
-        titlebar?.rightTextView?.setDebounceViewClickListener {
-            SongManagerActivity.open(this)
-        }
-        adapter.listener = object : RelayHomeSongAdapter.RelayHomeListener {
-            override fun selectSong(position: Int, model: SongModel?) {
-                // 跳到匹配中到页面
-                goMatch(model)
-            }
-
-            override fun getRecyclerViewPosition(): Int {
-                return currentPosition
-            }
-        }
-
-        getPlayBookList(0, true)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SongSelectFragment::class.java)
+                .setAddToBackStack(false)
+                .addDataBeforeAdd(0, SongManagerActivity.TYPE_FROM_RELAY_HOME)
+                .setHasAnimation(false)
+                .build())
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -112,36 +68,7 @@ class RelayHomeActivity : BaseActivity() {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_MATCH)
                         .withSerializable("songModel", model)
                         .navigation()
-            },true)
-        }
-    }
-
-
-    fun getPlayBookList(off: Int, clean: Boolean) {
-        launch {
-            val result = subscribe(RequestControl("getPlayBookList", ControlType.CancelThis)) {
-                relayMatchServerApi.getPlayBookList(off, cnt, MyUserInfoManager.uid.toInt())
-            }
-            loadMore = false
-
-            if (result.errno == 0) {
-                hasMore = result.data.getBooleanValue("hasMore")
-                offset = result.data.getIntValue("offset")
-                val list = JSON.parseArray(result.data.getString("items"), SongModel::class.java)
-                addSongList(list, clean)
-            }
-        }
-    }
-
-    private fun addSongList(list: List<SongModel>?, clean: Boolean) {
-        if (clean) {
-            adapter.mDataList.clear()
-            adapter.addData(list)
-            adapter.notifyDataSetChanged()
-        } else {
-            if (!list.isNullOrEmpty()) {
-                adapter.addData(list)
-            }
+            }, true)
         }
     }
 

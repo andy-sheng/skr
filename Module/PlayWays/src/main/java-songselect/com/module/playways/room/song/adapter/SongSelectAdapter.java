@@ -27,7 +27,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
 
     Boolean mHasFooterBack = false;     //是否含底部搜索反馈
 
-    RecyclerOnItemClickListener mRecyclerOnItemClickListener;
+    Listener mListener;
 
     public static int NORMAL_ITEM_TYPE = 0;      // 正常view
     public static int SEARCH_ITEM_TYPE = 1;      // 底部搜索反馈
@@ -35,8 +35,8 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
     int mode = DEFAULT_MODE;
     String selectText = "点歌";
 
-    public SongSelectAdapter(RecyclerOnItemClickListener onItemClickListener, boolean mHasFooterBack, int mode, String selectText) {
-        this.mRecyclerOnItemClickListener = onItemClickListener;
+    public SongSelectAdapter(Listener onItemClickListener, boolean mHasFooterBack, int mode, String selectText) {
+        this.mListener = onItemClickListener;
         this.mHasFooterBack = mHasFooterBack;
         this.mode = mode;
         this.selectText = selectText;
@@ -49,27 +49,27 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
             // 搜索类型
             if (mode == GRAB_MODE || mode == DOUBLE_MODE || mode == MIC_MODE || mode == RACE_MODE || mode == RELAY_MODE || mode == PARTY_MODE || mode == AUDITION_MODE) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_search_footer_view, parent, false);
-                SongSearchFooter songSearchFooter = new SongSearchFooter(view, mRecyclerOnItemClickListener);
+                SongSearchFooter songSearchFooter = new SongSearchFooter(view, mListener);
                 return songSearchFooter;
             } else {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_search_footer_view, parent, false);
-                SongSearchFooter songSearchFooter = new SongSearchFooter(view, mRecyclerOnItemClickListener);
+                SongSearchFooter songSearchFooter = new SongSearchFooter(view, mListener);
                 return songSearchFooter;
             }
         } else {
             // 展示的哥类型
             if (mode == GRAB_MODE || mode == MIC_MODE || mode == RACE_MODE || mode == PARTY_MODE) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_view_holder_item, parent, false);
-                GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mRecyclerOnItemClickListener, selectText);
+                GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mListener, selectText);
                 return viewHolder;
             } else if (mode == DOUBLE_MODE) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_view_holder_item, parent, false);
-                GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mRecyclerOnItemClickListener, selectText);
+                GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mListener, selectText);
                 return viewHolder;
             } else {
                 // 练歌房(得区分搜索和普通展示)
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_view_holder_item, parent, false);
-                SongInfoHolder viewHolder = new SongInfoHolder(view, mRecyclerOnItemClickListener, selectText);
+                SongInfoHolder viewHolder = new SongInfoHolder(view, mListener, selectText);
                 return viewHolder;
             }
         }
@@ -120,5 +120,10 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
         }
 
         return NORMAL_ITEM_TYPE;
+    }
+
+    public interface Listener {
+        void onClickSelect(int position, SongModel model);
+        void onClickSongName(int position, SongModel model);
     }
 }

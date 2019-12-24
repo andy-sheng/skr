@@ -10,6 +10,7 @@ import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.room.song.fragment.SongSelectFragment;
 import com.module.playways.R;
+import com.module.playways.songmanager.SongManagerActivity;
 
 /**
  * 调音间
@@ -27,6 +28,7 @@ public class AudioRoomActivity extends BaseActivity {
         boolean selectSong = getIntent().getBooleanExtra("selectSong", false);
         if (selectSong) {
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SongSelectFragment.class)
+                    .addDataBeforeAdd(0, SongManagerActivity.TYPE_FROM_AUDITION)
                     .setAddToBackStack(false)
                     .setHasAnimation(false)
                     .build());

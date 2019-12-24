@@ -6,32 +6,66 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.common.view.ex.ExImageView
-        android:layout_width="@dimen/view_210_dp"
-        android:layout_height="@dimen/view_102_dp"
-        android:layout_alignParentTop="true"
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showBottomLine="false"
+        app:showMainView="false"
+        app:statusBarColor="@color/transparent" />
+
+    <ImageView
+        android:id="@+id/top_icon_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_24_dp"
-        android:src="@drawable/img_top_xuanzegequ_bg" />
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:src="@drawable/relay_top_icon" />
+
+    <TextView
+        android:id="@+id/top_text_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_icon_iv"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="选择合唱歌曲"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/select_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/title"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
         android:padding="@dimen/view_16_dp"
         android:src="@drawable/img_back" />
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/select_select"
+    <TextView
+        android:id="@+id/invite_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/title"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_25_dp"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:layout_marginRight="@dimen/view_24_dp"
+        android:text="邀请好友"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/select_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_4_dp"
         android:layout_marginRight="@dimen/view_20_dp"
         android:padding="@dimen/view_16_dp"
         android:src="@drawable/xuanzegequ_sousuo" />
@@ -40,34 +74,37 @@
         android:id="@+id/swipe_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/title"
         android:layout_centerHorizontal="true"
-        swipe:max_visible="4"
-        swipe:min_adapter_stack="5"
+        swipe:max_visible="2"
+        swipe:min_adapter_stack="3"
         swipe:y_offset_step="28dp" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/select_back_iv"
+        android:id="@+id/bottom_left_tv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_60_dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/view_93_dp"
+        android:gravity="center"
+        android:padding="@dimen/view_14_dp"
         android:text="上一页"
-        android:textStyle="bold"
-        android:textColor="#FFED61"
-        android:padding="@dimen/view_14_dp" />
+        android:textColor="#FFC15B"
+        android:textStyle="bold" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/select_clicked_iv"
+        android:id="@+id/bottom_right_tv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_60_dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/view_80_dp"
+        android:gravity="center"
+        android:padding="@dimen/view_14_dp"
         android:text="已唱歌单"
-        android:textStyle="bold"
-        android:textColor="#FFED61"
-        android:padding="@dimen/view_14_dp"/>
+        android:textColor="#FFC15B"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

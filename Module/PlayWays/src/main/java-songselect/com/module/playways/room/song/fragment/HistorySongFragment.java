@@ -30,7 +30,6 @@ import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
 import com.module.playways.room.song.presenter.SongTagDetailsPresenter;
 import com.module.playways.room.song.view.ISongTagDetailView;
-import com.module.playways.songmanager.SongManagerActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -55,8 +54,6 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     SongSelectAdapter songSelectAdapter;
     SongTagDetailsPresenter presenter;
 
-    int mGameType;
-
     LoadService mLoadService;
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
@@ -75,15 +72,15 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
 
         mHistoryRecycle.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            mGameType = bundle.getInt(KEY_GAME_TYPE);
-        }
-
-        songSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
+        songSelectAdapter = new SongSelectAdapter(new SongSelectAdapter.Listener() {
             @Override
-            public void onItemClicked(View view, int position, Object model) {
-                jump((SongModel) model);
+            public void onClickSelect(int position, SongModel model) {
+                jump(model);
+            }
+
+            @Override
+            public void onClickSongName(int position, SongModel model) {
+
             }
         }, false, SongSelectAdapter.AUDITION_MODE, "演唱");
         mHistoryRecycle.setAdapter(songSelectAdapter);

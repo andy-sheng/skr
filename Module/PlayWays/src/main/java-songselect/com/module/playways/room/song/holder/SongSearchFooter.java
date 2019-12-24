@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.R;
+import com.module.playways.room.song.adapter.SongSelectAdapter;
 
 public class SongSearchFooter extends RecyclerView.ViewHolder {
 
@@ -15,17 +16,17 @@ public class SongSearchFooter extends RecyclerView.ViewHolder {
     LinearLayout mFeedbackArea;
     int position;
 
-    public SongSearchFooter(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener) {
+    public SongSearchFooter(View itemView, SongSelectAdapter.Listener recyclerOnItemClickListener) {
         super(itemView);
 
         mSearchBackTv = (TextView) itemView.findViewById(R.id.search_back_tv);
-        mFeedbackArea = (LinearLayout)itemView.findViewById(R.id.feedback_area);
+        mFeedbackArea = (LinearLayout) itemView.findViewById(R.id.feedback_area);
 
         mFeedbackArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (recyclerOnItemClickListener != null) {
-                    recyclerOnItemClickListener.onItemClicked(itemView, position, null);
+                    recyclerOnItemClickListener.onClickSelect(position, null);
                 }
             }
         });
