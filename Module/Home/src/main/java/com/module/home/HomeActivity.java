@@ -331,6 +331,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
             @Override
             public boolean queueIdle() {
+                MyLog.i(TAG,"queueIdle");
                 // 触发提前获取引擎配置
                 EngineConfigFromServer.getDefault();
                 return false;

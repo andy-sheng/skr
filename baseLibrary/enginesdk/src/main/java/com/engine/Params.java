@@ -179,6 +179,7 @@ public class Params implements Serializable {
         this.channelProfile = channelProfile;
     }
 
+    @JSONField(serialize = false)
     public boolean isUseExternalAudio() {
         return configFromServer.useExternalAudio;
     }
@@ -698,19 +699,22 @@ public class Params implements Serializable {
         this.audioMixingPublishVolume = audioMixingPublishVolume;
     }
 
+    @JSONField(serialize = false)
     public boolean isEnableAudioLowLatency() {
         return configFromServer.enableAudioLowLatency;
     }
 
-
+    @JSONField(serialize = false)
     public int getAccMixingLatencyOnSpeaker() {
         return configFromServer.accMixingLatencyOnSpeaker;
     }
 
+    @JSONField(serialize = false)
     public int getAccMixingLatencyOnHeadset() {
         return configFromServer.accMixingLatencyOnHeadset;
     }
 
+    @JSONField(serialize = false)
     public boolean isEnableAudioPreviewLatencyTest() {
         return configFromServer.enableAudioPreviewLatencyTest;
     }
@@ -723,14 +727,17 @@ public class Params implements Serializable {
         return enableAudioMixLatencyTest;
     }
 
+    @JSONField(serialize = false)
     public void setEnableAudioLowLatency(boolean enable) {
         configFromServer.setEnableAudioLowLatency(enable);
     }
 
+    @JSONField(serialize = false)
     public void setEnableAudioPreviewLatencyTest(boolean enable) {
         configFromServer.setEnableAudioPreviewLatencyTest(enable);
     }
 
+    @JSONField(serialize = false)
     public void setUseExternalAudio(boolean b) {
         configFromServer.setUseExternalAudio(b);
     }

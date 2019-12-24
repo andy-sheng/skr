@@ -91,20 +91,21 @@ public class EngineConfigFromServer implements Serializable {
         //只存服务器下发的原始数据
         EngineConfigFromServer configFromServer = null;
         long lastTs = U.getPreferenceUtils().getSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", 0);
+        MyLog.i("Params", "configFromServer lastTs="+lastTs);
         if (System.currentTimeMillis() - lastTs > 24 * 3600 * 1000) {
             // 请求服务器
             if (Looper.getMainLooper() == Looper.myLooper()) {
                 Observable.create(new ObservableOnSubscribe<Object>() {
                     @Override
                     public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                        getFromServerInner();
+                        getFromServerInner("async");
                         emitter.onComplete();
                     }
                 })
                         .subscribeOn(Schedulers.io())
                         .subscribe();
             } else {
-                configFromServer = getFromServerInner();
+                configFromServer = getFromServerInner("sync");
             }
         } else {
             String json = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", "");
@@ -119,7 +120,8 @@ public class EngineConfigFromServer implements Serializable {
         return configFromServer;
     }
 
-    private static EngineConfigFromServer getFromServerInner() {
+    private static EngineConfigFromServer getFromServerInner(String from) {
+        MyLog.d("Params","getFromServerInner from="+from );
         EngineServerApi api = ApiManager.getInstance().createService(EngineServerApi.class);
         Call<ApiResult> apiResultCall = api.getAudioConfig(U.getDeviceUtils().getProductModel()
                 , String.valueOf(android.os.Build.VERSION.SDK_INT));
@@ -129,17 +131,21 @@ public class EngineConfigFromServer implements Serializable {
                 if (resultResponse != null) {
                     ApiResult obj = resultResponse.body();
                     if (obj != null) {
+                        MyLog.d("Params","getFromServerInner obj="+obj);
                         // 请求成功
                         if (obj.getErrno() == 0) {
+                            MyLog.d("Params","getFromServerInner json="+obj.getData().toString() );
                             EngineConfigFromServer configFromServer = JSON.parseObject(obj.getData().toString(), EngineConfigFromServer.class);
                             // 持久化
                             U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", obj.getData().toString());
+                            U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", System.currentTimeMillis());
                             return configFromServer;
-                        } else {
-
+                        } else if(obj.getErrno()==102){
+                            return null;
+                        }else if(obj.getErrno() == 1){
+                            // 该机型没有配置，也先算了
+                            U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", System.currentTimeMillis());
                         }
-                        // 记录时间戳
-                        U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", System.currentTimeMillis());
                     } else {
                     }
                 }
