@@ -1,5 +1,6 @@
 package com.engine;
 
+import android.os.Looper;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -12,6 +13,11 @@ import com.engine.api.EngineServerApi;
 
 import java.io.Serializable;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -87,34 +93,18 @@ public class EngineConfigFromServer implements Serializable {
         long lastTs = U.getPreferenceUtils().getSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", 0);
         if (System.currentTimeMillis() - lastTs > 24 * 3600 * 1000) {
             // 请求服务器
-            EngineServerApi api = ApiManager.getInstance().createService(EngineServerApi.class);
-            if (api != null) {
-                Call<ApiResult> apiResultCall = api.getAudioConfig(U.getDeviceUtils().getProductModel()
-                        , String.valueOf(android.os.Build.VERSION.SDK_INT));
-                if (apiResultCall != null) {
-                    try {
-                        Response<ApiResult> resultResponse = apiResultCall.execute();
-                        if (resultResponse != null) {
-                            ApiResult obj = resultResponse.body();
-                            if (obj != null) {
-                                // 请求成功
-                                if (obj.getErrno() == 0) {
-                                    configFromServer = JSON.parseObject(obj.getData().toString(), EngineConfigFromServer.class);
-                                    // 持久化
-                                    U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", obj.getData().toString());
-
-                                } else {
-
-                                }
-                                // 记录时间戳
-                                U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", System.currentTimeMillis());
-                            } else {
-                            }
-                        }
-                    } catch (Exception e) {
-                        MyLog.e(e);
+            if (Looper.getMainLooper() == Looper.myLooper()) {
+                Observable.create(new ObservableOnSubscribe<Object>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                        getFromServerInner();
+                        emitter.onComplete();
                     }
-                }
+                })
+                        .subscribeOn(Schedulers.io())
+                        .subscribe();
+            } else {
+                configFromServer = getFromServerInner();
             }
         } else {
             String json = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", "");
@@ -129,8 +119,52 @@ public class EngineConfigFromServer implements Serializable {
         return configFromServer;
     }
 
+    private static EngineConfigFromServer getFromServerInner() {
+        EngineServerApi api = ApiManager.getInstance().createService(EngineServerApi.class);
+        Call<ApiResult> apiResultCall = api.getAudioConfig(U.getDeviceUtils().getProductModel()
+                , String.valueOf(android.os.Build.VERSION.SDK_INT));
+        if (apiResultCall != null) {
+            try {
+                Response<ApiResult> resultResponse = apiResultCall.execute();
+                if (resultResponse != null) {
+                    ApiResult obj = resultResponse.body();
+                    if (obj != null) {
+                        // 请求成功
+                        if (obj.getErrno() == 0) {
+                            EngineConfigFromServer configFromServer = JSON.parseObject(obj.getData().toString(), EngineConfigFromServer.class);
+                            // 持久化
+                            U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", obj.getData().toString());
+                            return configFromServer;
+                        } else {
+
+                        }
+                        // 记录时间戳
+                        U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", System.currentTimeMillis());
+                    } else {
+                    }
+                }
+            } catch (Exception e) {
+                MyLog.e(e);
+            }
+        }
+        return null;
+    }
+
+    public static boolean configManual() {
+        long ts = U.getPreferenceUtils().getSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", 0);
+        if (ts == Long.MAX_VALUE) {
+            return true;
+        }
+        return false;
+    }
+
     public void save2Pref() {
         U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", JSON.toJSONString(this));
         U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", Long.MAX_VALUE);
+    }
+
+    public static void clearManualConfig() {
+        //U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", JSON.toJSONString(this));
+        U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", 0);
     }
 }

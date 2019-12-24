@@ -47,7 +47,8 @@
         android:paddingBottom="@dimen/view_5_dp"
         android:scrollbars="none">
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -521,6 +522,38 @@
 
             </RelativeLayout>
 
+            <!--自定义引擎配置-->
+            <RelativeLayout
+                android:id="@+id/engine_test"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_64_dp"
+                android:layout_below="@+id/service_agreen">
+
+                <com.common.view.ex.ExTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/view_15_dp"
+                    android:text="实验性音频功能"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="@dimen/textsize_16_dp"
+                    android:textStyle="bold" />
+
+                <com.common.view.ex.ExImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/view_17_dp"
+                    android:src="@drawable/icon_back" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/view_1_dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorDividerPrimary" />
+
+            </RelativeLayout>
 
             <!--客服联系方式-->
             <com.common.view.ex.ExTextView
@@ -542,7 +575,7 @@
                 android:layout_width="@dimen/view_132_dp"
                 android:layout_height="@dimen/view_40_dp"
                 android:layout_below="@+id/contact_way"
-                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/view_16_dp"
                 android:layout_marginBottom="@dimen/view_20_dp"
                 android:gravity="center"
@@ -554,7 +587,7 @@
                 app:bl_shape="rectangle"
                 app:bl_solid_color="#FF8AB6" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 
