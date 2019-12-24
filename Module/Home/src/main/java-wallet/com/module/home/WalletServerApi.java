@@ -216,7 +216,7 @@ public interface WalletServerApi {
      *
      * @return
      */
-    @PUT("/v2/wallet/dq-zs")
+    @PUT("/v1/wallet/exchange-zs")
     Observable<ApiResult> exChangeCashToDiamond(@Body RequestBody body);
 
     /**
