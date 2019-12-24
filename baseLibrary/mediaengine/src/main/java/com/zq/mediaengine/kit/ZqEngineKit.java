@@ -568,7 +568,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                 " device: " + U.getDeviceUtils().getProp("ro.product.device"));
         MyLog.i(TAG, "isUseExternalAudio: " + mConfig.isUseExternalAudio() +
                 " isUseExternalVideo: " + mConfig.isUseExternalVideo() +
-                " isUseExternalRecord: " + mConfig.isUseExternalAudioRecord());
+                " isUseExternalRecord: " + mConfig.isUseExternalAudioRecord() +
+                " isEnableAudioLowLatency: " + mConfig.isEnableAudioLowLatency() +
+                " isEnableAudioPreview: " + mConfig.isEnableAudioPreview() +
+                " accMixLatency: " + mConfig.getAccMixingLatencyOnSpeaker() +
+                " " + mConfig.getAccMixingLatencyOnHeadset());
 
         if (mConfig.isEnableAudio()) {
             initAudioModules();

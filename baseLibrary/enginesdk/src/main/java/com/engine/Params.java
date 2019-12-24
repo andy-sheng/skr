@@ -104,6 +104,8 @@ public class Params implements Serializable {
     private EngineConfigFromServer configFromServer =  EngineConfigFromServer.getDefault();
 
     @JSONField(serialize = false)
+    private boolean enableAudioPreviewLatencyTest = false;
+    @JSONField(serialize = false)
     private boolean enableAudioMixLatencyTest = false;
 
     @JSONField(serialize = false)
@@ -177,11 +179,6 @@ public class Params implements Serializable {
 
     public void setChannelProfile(int channelProfile) {
         this.channelProfile = channelProfile;
-    }
-
-    @JSONField(serialize = false)
-    public boolean isUseExternalAudio() {
-        return configFromServer.useExternalAudio;
     }
 
     public boolean isUseExternalVideo() {
@@ -715,16 +712,13 @@ public class Params implements Serializable {
     }
 
     @JSONField(serialize = false)
-    public boolean isEnableAudioPreviewLatencyTest() {
-        return configFromServer.enableAudioPreviewLatencyTest;
+    public boolean isEnableAudioPreview() {
+        return configFromServer.enableAudioPreview;
     }
 
-    public void setEnableAudioMixLatencyTest(boolean enableAudioMixLatencyTest) {
-        this.enableAudioMixLatencyTest = enableAudioMixLatencyTest;
-    }
-
-    public boolean isEnableAudioMixLatencyTest() {
-        return enableAudioMixLatencyTest;
+    @JSONField(serialize = false)
+    public boolean isUseExternalAudio() {
+        return configFromServer.useExternalAudio;
     }
 
     @JSONField(serialize = false)
@@ -733,13 +727,29 @@ public class Params implements Serializable {
     }
 
     @JSONField(serialize = false)
-    public void setEnableAudioPreviewLatencyTest(boolean enable) {
-        configFromServer.setEnableAudioPreviewLatencyTest(enable);
+    public void setEnableAudioPreview(boolean enable) {
+        configFromServer.setEnableAudioPreview(enable);
     }
 
     @JSONField(serialize = false)
     public void setUseExternalAudio(boolean b) {
         configFromServer.setUseExternalAudio(b);
+    }
+
+    public void setEnableAudioPreviewLatencyTest(boolean enable) {
+        enableAudioPreviewLatencyTest = enable;
+    }
+
+    public boolean isEnableAudioPreviewLatencyTest() {
+        return enableAudioPreviewLatencyTest;
+    }
+
+    public void setEnableAudioMixLatencyTest(boolean enableAudioMixLatencyTest) {
+        this.enableAudioMixLatencyTest = enableAudioMixLatencyTest;
+    }
+
+    public boolean isEnableAudioMixLatencyTest() {
+        return enableAudioMixLatencyTest;
     }
 
     public static class Builder {
