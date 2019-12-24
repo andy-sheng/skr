@@ -32,6 +32,7 @@ import com.module.playways.room.song.model.SongModel;
 import com.module.playways.room.song.presenter.SongTagDetailsPresenter;
 import com.module.playways.room.song.view.ISongTagDetailView;
 import com.module.playways.R;
+import com.module.playways.room.song.view.RelaySongInfoDialogView;
 import com.module.playways.songmanager.SongManagerActivity;
 import com.module.playways.songmanager.event.AddSongEvent;
 
@@ -72,6 +73,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     boolean hasMore = true; // 是否还有更多数据标记位
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
+
+    RelaySongInfoDialogView mRelaySongInfoDialogView;
 
     @Override
     public void setData(int type, @org.jetbrains.annotations.Nullable Object data) {
@@ -186,6 +189,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             public void onClickSongName(int position, SongModel model) {
                 if (mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
                     // todo 做个展示歌曲的弹窗
+                    mRelaySongInfoDialogView = new RelaySongInfoDialogView(model, getActivity());
+                    mRelaySongInfoDialogView.showByDialog(U.getDisplayUtils().getScreenHeight() - 2 * U.getDisplayUtils().dip2px(60));
                 }
             }
 
