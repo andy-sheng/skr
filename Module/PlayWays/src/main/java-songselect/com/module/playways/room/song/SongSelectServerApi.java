@@ -136,5 +136,8 @@ public interface SongSelectServerApi {
 
     @GET("http://dev.game.inframe.mobi/v1/relaygame/search")
     Observable<ApiResult> searchRelayMusicItems(@Query("keyword") String keyword);
+
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/room-create")
+    Observable<ApiResult> createRelayRoom(@Body RequestBody body);
 }
 

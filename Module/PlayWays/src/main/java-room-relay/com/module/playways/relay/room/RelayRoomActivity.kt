@@ -491,7 +491,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         mTopContentView.listener = object : RelayTopContentView.Listener {
             override fun countDownOver() {
                 // 时间到了 调退出
-                gameOver()
+                gameOver("countDownOver")
             }
 
             override fun clickArrow(open: Boolean) {
@@ -693,7 +693,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
                 .setCancelTip("取消")
                 .setConfirmBtnClickListener {
                     mTipsDialogView?.dismiss(false)
-                    gameOver()
+                    gameOver("Dialog")
                 }
                 .setCancelBtnClickListener {
                     mTipsDialogView?.dismiss()
@@ -745,7 +745,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         continueOp?.invoke()
     }
 
-    override fun gameOver() {
+    override fun gameOver(from: String) {
+        MyLog.d(TAG, "gameOver from = $from")
         if (!mRoomData.isHasExitGame) {
             ensureActivtyTop()
             mCorePresenter.exitRoom("gameOver")

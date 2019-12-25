@@ -1,5 +1,6 @@
 package com.module.playways.room.song.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
@@ -9,17 +10,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.RouterConstants;
+import com.module.playways.R;
+import com.module.playways.relay.match.model.JoinRelayRoomRspModel;
+import com.module.playways.relay.room.RelayRoomActivity;
+import com.module.playways.room.song.SongSelectServerApi;
 import com.module.playways.room.song.adapter.SongCardSwipAdapter;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.flingswipe.SwipeFlingAdapterView;
@@ -27,7 +37,6 @@ import com.module.playways.room.song.model.SongCardModel;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.room.song.presenter.SongTagDetailsPresenter;
 import com.module.playways.room.song.view.ISongTagDetailView;
-import com.module.playways.R;
 import com.module.playways.room.song.view.RelaySongInfoDialogView;
 import com.module.playways.songmanager.SongManagerActivity;
 import com.module.playways.songmanager.event.AddSongEvent;
@@ -35,7 +44,11 @@ import com.module.playways.songmanager.event.AddSongEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 // 合唱首页和练歌房通用此页面
 public class SongSelectFragment extends BaseFragment implements ISongTagDetailView, SwipeFlingAdapterView.onFlingListener,
@@ -151,7 +164,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mInviteTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                // todo 邀请弹窗
+                createRelayRoom();
             }
         });
 
@@ -325,6 +338,29 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             }
         }
 
+    }
+
+    private void createRelayRoom() {
+        SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
+        HashMap map = new HashMap();
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        ApiMethods.subscribe(songSelectServerApi.createRelayRoom(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    JoinRelayRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinRelayRoomRspModel.class);
+                    createSuccess(rsp);
+                } else {
+                    U.getToastUtil().showShort(result.getErrmsg());
+                }
+            }
+        }, this);
+    }
+
+    public void createSuccess(JoinRelayRoomRspModel joinRelayRoomRspModel) {
+        Intent intent = new Intent(getContext(), RelayRoomActivity.class);
+        intent.putExtra("JoinRelayRoomRspModel", joinRelayRoomRspModel);
+        startActivity(intent);
     }
 
     @Override

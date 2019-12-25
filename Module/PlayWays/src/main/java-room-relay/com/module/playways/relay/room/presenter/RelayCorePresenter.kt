@@ -694,7 +694,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         ZqEngineKit.getInstance().stopRecognize()
         if (thisRound == null) {
             // 游戏结束了
-            roomView.gameOver()
+            roomView.gameOver("thisRound == null")
             return
         }
         if (thisRound.status == ERRoundStatus.RRS_INTRO.value) {
@@ -997,7 +997,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RGameOverMsg) {
         ensureInRcRoom()
-        roomView.gameOver()
+        roomView.gameOver("RGameOverMsg")
     }
 
 

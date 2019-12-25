@@ -8,7 +8,7 @@ interface IRelayRoomView {
     fun showRoundOver(lastRoundInfo:RelayRoundInfoModel?,continueOp:(()->Unit)?)
     fun singPrepare(lastRoundInfo:RelayRoundInfoModel?,singCardShowListener:()->Unit)
     fun singBegin()
-    fun gameOver()
+    fun gameOver(from: String)
     fun showWaiting()
     fun turnChange()
     fun turnMyChangePrepare()
