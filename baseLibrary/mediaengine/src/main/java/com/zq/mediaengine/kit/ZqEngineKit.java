@@ -1637,7 +1637,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                             mAccPreparedSent = false;
                             mAccRecoverPosition = 0;
                             mAccRemainedLoopCount = cycle;
-                            mAudioPlayerCapture.start(filePath + ".err", cycle);
+                            mAudioPlayerCapture.start(filePath, cycle);
                         } else {
                             mAgoraRTCAdapter.startAudioMixing(filePath, midiPath, loopback, replace, cycle);
 
