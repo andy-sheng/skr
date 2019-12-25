@@ -212,7 +212,7 @@ open abstract class VoiceControlPanelView : ScrollView {
         if(ZqEngineKit.getInstance().params.isUseExternalAudio){
             mEarTv?.visibility = View.VISIBLE
             mEarSb?.visibility = View.VISIBLE
-            mEarSb?.isChecked = ZqEngineKit.getInstance().params.isEnableInEarMonitoring
+            mEarSb?.setCheckedNoEvent(ZqEngineKit.getInstance().params.isEnableInEarMonitoring)
         }else{
             mEarTv?.visibility = View.GONE
             mEarSb?.visibility = View.GONE
