@@ -17,6 +17,8 @@ class LevelResultModel : Serializable {
     var simpleSaveStates: List<SaveRankModel>? = null
     @JSONField(name = "vipSaveStates")
     var vipSaveStates: List<SaveRankModel>? = null
+    @JSONField(name = "moneySaveState")
+    var moneySaveState: SaveRankModel? = null  // 钻石保段状态
 
     // 最新状态
     fun getLastState(): ScoreStateModel? {
@@ -25,8 +27,6 @@ class LevelResultModel : Serializable {
         }
         return null
     }
-
-    //
 }
 
 class SaveRankModel : Serializable {
@@ -42,4 +42,6 @@ class SaveRankModel : Serializable {
     var curBar = 0
     @JSONField(name = "maxBar")
     var maxBar = 0
+    @JSONField(name = "zsAmount")
+    var zsAmount = 0
 }

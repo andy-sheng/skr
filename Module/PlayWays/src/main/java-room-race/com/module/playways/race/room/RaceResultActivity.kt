@@ -22,6 +22,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.CircleCountDownView
 import com.component.level.utils.LevelConfigUtils
+import com.dialog.view.TipsDialogView
 import com.glidebitmappool.BitmapFactoryAdapter
 import com.module.RouterConstants
 import com.module.playways.R
@@ -32,9 +33,12 @@ import com.module.playways.race.room.model.SaveRankModel
 import com.opensource.svgaplayer.*
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import kotlinx.android.synthetic.main.input_container_view_layout.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 
 @Route(path = RouterConstants.ACTIVITY_RACE_RESULT)
 class RaceResultActivity : BaseActivity() {
@@ -50,6 +54,7 @@ class RaceResultActivity : BaseActivity() {
     lateinit var subLevelSvga: SVGAImageView
     lateinit var countDownTv: TextView
     lateinit var playAgainTv: ExTextView
+    lateinit var zuanshiSaveTv: ExTextView
     lateinit var ivBack: ExImageView
 
     lateinit var levelSave: CircleCountDownView
@@ -63,9 +68,11 @@ class RaceResultActivity : BaseActivity() {
     lateinit var vipLevelDesc: TextView
 
     private var mGameRuleDialog: DialogPlus? = null
+    private var mTipsDialogView: TipsDialogView? = null
 
-    val raceRoomServerApi = ApiManager.getInstance().createService(RaceRoomServerApi::class.java)
+    private val raceRoomServerApi = ApiManager.getInstance().createService(RaceRoomServerApi::class.java)
 
+    var result: LevelResultModel? = null
     var roomID: Int = -1
     var roundSeq: Int = -1
 
@@ -92,6 +99,8 @@ class RaceResultActivity : BaseActivity() {
         descTv = findViewById(R.id.desc_tv)
         subLevelSvga = findViewById(R.id.sub_level_svga)
         countDownTv = findViewById(R.id.count_down_tv)
+
+        zuanshiSaveTv = findViewById(R.id.zuanshi_save_tv)
         playAgainTv = findViewById(R.id.play_again_tv)
         ivBack = findViewById(R.id.iv_back)
 
@@ -110,29 +119,71 @@ class RaceResultActivity : BaseActivity() {
         vipLevelMedia = findViewById(R.id.vip_level_media)
         vipLevelDesc = findViewById(R.id.vip_level_desc)
 
-        ivBack.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                finish()
-            }
-        })
+        ivBack.setDebounceViewClickListener { finish() }
 
-        playAgainTv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                goMatchPage()
-            }
-        })
+        playAgainTv.setDebounceViewClickListener { goMatchPage() }
 
-        descTv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                showGameRuleDialog()
-            }
-        })
+        descTv.setDebounceViewClickListener {
+            goMatchJob?.cancel()
+            showGameRuleDialog()
+        }
+
+        zuanshiSaveTv.setDebounceViewClickListener {
+            goMatchJob?.cancel()
+            showConfirmDialog(false)
+        }
 
         getResult()
         U.getSoundUtils().preLoad(mTag, R.raw.newrank_resultpage)
         launch {
             delay(200)
             U.getSoundUtils().play(mTag, R.raw.newrank_resultpage)
+        }
+    }
+
+    private fun showConfirmDialog(isRecharge: Boolean) {
+        mTipsDialogView?.dismiss(false)
+        mTipsDialogView = TipsDialogView.Builder(this)
+                .setMessageTip(if (isRecharge) "钻石余额不足" else "是否花费${result?.moneySaveState?.zsAmount
+                        ?: 0}钻石保段一次")
+                .setConfirmTip(if (isRecharge) "立即充值" else "确定")
+                .setCancelTip("取消")
+                .setConfirmBtnClickListener {
+                    mTipsDialogView?.dismiss(false)
+                    if (isRecharge) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_BALANCE)
+                                .navigation()
+                    } else {
+                        diamondSaveLevel()
+                    }
+                }
+                .setCancelBtnClickListener {
+                    mTipsDialogView?.dismiss()
+                }
+                .build()
+        mTipsDialogView?.showByDialog()
+    }
+
+    private fun diamondSaveLevel() {
+        launch {
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(null))
+            val result = subscribe { raceRoomServerApi.diamondSaveLevel(body) }
+            if (result.errno == 0) {
+                val raceResultModel = JSON.parseObject(result.data.getString("item"), LevelResultModel::class.java)
+                if (raceResultModel != null) {
+                    showResult(raceResultModel)
+                    return@launch
+                } else {
+                    MyLog.e(TAG, "getResult erro 服务器数据为空")
+                }
+            } else {
+                if (result.errno == 8412201) {
+                    // 钻石不足
+                    showConfirmDialog(true)
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                }
+            }
         }
     }
 
@@ -166,13 +217,36 @@ class RaceResultActivity : BaseActivity() {
         }
     }
 
+    fun initAnimation() {
+        circleView.cancelAnim()
+        levelSvga.callback = null
+        levelSvga.stopAnimation()
+        subLevelSvga.callback = null
+        subLevelSvga.stopAnimation()
+        levelSave.cancelAnim()
+        vipLevelSave.cancelAnim()
+    }
+
     private fun showResult(raceResultModel: LevelResultModel) {
+        this.result = raceResultModel
+        when (raceResultModel.moneySaveState?.status) {
+            SaveRankModel.ESRS_ENABLE -> {
+                // 服务器定的，已启用才是可点击
+                zuanshiSaveTv.visibility = View.VISIBLE
+                zuanshiSaveTv.text = "${raceResultModel.moneySaveState?.zsAmount}钻保段"
+            }
+            else -> {
+                zuanshiSaveTv.visibility = View.GONE
+            }
+        }
         descTv.text = "距离下次升段还需${raceResultModel.gap}经验"
         if (raceResultModel.get >= 0) {
             changeTv.text = "+${raceResultModel.get}"
         } else {
             changeTv.text = raceResultModel.get.toString()
         }
+
+        initAnimation()
 
         if (!raceResultModel.states.isNullOrEmpty() && raceResultModel.states?.size == 3) {
             // 初始化数据
@@ -181,7 +255,7 @@ class RaceResultActivity : BaseActivity() {
             val end = raceResultModel.states?.get(2)!!
 
 //            // todo 搞一个测试数据
-              // todo 段位结果数据
+            // todo 段位结果数据
 //            val begin = ScoreStateModel()
 //            begin.seq = 0
 //            begin.mainRanking = 1
@@ -203,7 +277,7 @@ class RaceResultActivity : BaseActivity() {
 //            end.currExp = 0
 //            end.maxExp = 5
 //            end.rankingDesc = "潜力新秀I"
-              // todo 普通保段数据
+            // todo 普通保段数据
 //            val beginSimple = SaveRankModel()
 //            beginSimple.status = 1
 //            beginSimple.curBar = 2
@@ -216,7 +290,7 @@ class RaceResultActivity : BaseActivity() {
 //            endSimple.status = 3
 //            endSimple.curBar = 6
 //            endSimple.maxBar = 6
-              // todo vip保段数据
+            // todo vip保段数据
 //            val beginVip = SaveRankModel()
 //            beginVip.status = 2
 //            beginVip.curBar = 0
@@ -635,6 +709,7 @@ class RaceResultActivity : BaseActivity() {
     override fun destroy() {
         super.destroy()
         mGameRuleDialog?.dismiss(false)
+        mTipsDialogView?.dismiss(false)
         U.getSoundUtils().release(mTag)
     }
 }
