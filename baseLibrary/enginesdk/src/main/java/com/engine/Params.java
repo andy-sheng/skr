@@ -101,7 +101,7 @@ public class Params implements Serializable {
     private AudioEffect styleEnum = AudioEffect.none;// 混响style
 
     @JSONField(serialize = false)
-    private EngineConfigFromServer configFromServerNotChange =  EngineConfigFromServer.getDefault();
+    private EngineConfigFromServer configFromServerNotChange = EngineConfigFromServer.getDefault();
 
     @JSONField(serialize = false)
     boolean useExternalAudio = false;//是否开启自采集
@@ -737,13 +737,13 @@ public class Params implements Serializable {
 
     @JSONField(serialize = false)
     public boolean isEnableInEarMonitoring() {
-        if(!useExternalAudio){
+        if (!useExternalAudio) {
             return false;
         }
-        if(earMonitoringSwitch==0){
+        if (earMonitoringSwitch == 0) {
             return configFromServerNotChange.isEnableAudioPreview();
         }
-        return earMonitoringSwitch==1;
+        return earMonitoringSwitch == 1;
     }
 
 //    @JSONField(serialize = false)
@@ -991,10 +991,10 @@ public class Params implements Serializable {
             params.setUseExternalAudioRecord(true);
             params.setStyleEnum(AudioEffect.none);
         }
-        if(EngineConfigFromServer.getSelfCollectionSwitch()==0){
-            if(params.configFromServerNotChange.hasServerConfig){
+        if (EngineConfigFromServer.getSelfCollectionSwitch() == 0) {
+            if (params.configFromServerNotChange.hasServerConfig) {
                 // 服务端有配置，都按服务端的来
-                if(params.configFromServerNotChange.useExternalAudio){
+                if (params.configFromServerNotChange.useExternalAudio) {
                     params.useExternalAudio = true;
                     // 如果开启了自采集,设置低延迟
                     params.enableAudioLowLatency = params.configFromServerNotChange.isEnableAudioLowLatency();
@@ -1007,7 +1007,7 @@ public class Params implements Serializable {
 //                       }
 //                    }
                     //params.enableInEarMonitoring = params.configFromServerNotChange.isEnableAudioPreview();
-                }else{
+                } else {
                     params.useExternalAudio = false;
                     params.enableAudioLowLatency = params.configFromServerNotChange.isEnableAudioLowLatency();
 //                    if(params.getEarMonitoringSwitch()==0){
@@ -1018,22 +1018,26 @@ public class Params implements Serializable {
 //                        }
 //                    }
                 }
-            }else{
+            } else {
                 // 服务端没匹配 且用户没主动选择 ，全关了
                 params.useExternalAudio = false;
                 params.enableAudioLowLatency = false;
                 params.setEarMonitoringSwitch(0);
             }
-        }else if(EngineConfigFromServer.getSelfCollectionSwitch()==1){
+        } else if (EngineConfigFromServer.getSelfCollectionSwitch() == 1) {
             // 用户选择开启自采集
             params.useExternalAudio = true;
-            if(params.isEnableInEarMonitoring()){
-                // 如果开启耳返的，则开启低延迟
-                params.enableAudioLowLatency = true;
-            }else{
-                params.enableAudioLowLatency = false;
+            if (params.configFromServerNotChange.hasServerConfig) {
+                params.enableAudioLowLatency = params.configFromServerNotChange.isEnableAudioLowLatency();
+            } else {
+                if (params.isEnableInEarMonitoring()) {
+                    // 如果开启耳返的，则开启低延迟
+                    params.enableAudioLowLatency = true;
+                } else {
+                    params.enableAudioLowLatency = false;
+                }
             }
-        }else if(EngineConfigFromServer.getSelfCollectionSwitch()==2){
+        } else if (EngineConfigFromServer.getSelfCollectionSwitch() == 2) {
             // 用户关闭了自采集，回到默认agora那一套
             params.useExternalAudio = false;
             params.enableAudioLowLatency = false;
