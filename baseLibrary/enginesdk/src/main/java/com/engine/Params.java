@@ -737,6 +737,12 @@ public class Params implements Serializable {
 
     @JSONField(serialize = false)
     public boolean isEnableInEarMonitoring() {
+        if(!useExternalAudio){
+            return false;
+        }
+        if(earMonitoringSwitch==0){
+            return configFromServerNotChange.isEnableAudioPreview();
+        }
         return earMonitoringSwitch==1;
     }
 
@@ -764,6 +770,21 @@ public class Params implements Serializable {
 
     public EngineConfigFromServer getConfigFromServerNotChange() {
         return configFromServerNotChange;
+    }
+
+    @Override
+    public String toString() {
+        return "Params{" +
+                "channelProfile=" + channelProfile +
+                ", scene=" + scene +
+                ", earMonitoringSwitch=" + earMonitoringSwitch +
+                ", styleEnum=" + styleEnum +
+                ", configFromServerNotChange=" + configFromServerNotChange +
+                ", useExternalAudio=" + useExternalAudio +
+                ", enableAudioLowLatency=" + enableAudioLowLatency +
+                ", enableAudioPreviewLatencyTest=" + enableAudioPreviewLatencyTest +
+                ", enableAudioMixLatencyTest=" + enableAudioMixLatencyTest +
+                '}';
     }
 
     //    public static class Builder {
@@ -978,24 +999,24 @@ public class Params implements Serializable {
                     // 如果开启了自采集,设置低延迟
                     params.enableAudioLowLatency = params.configFromServerNotChange.isEnableAudioLowLatency();
                     // 是否开启耳返 不设置，因为用户会主动修改
-                    if(params.getEarMonitoringSwitch()==0){
-                       if(params.configFromServerNotChange.isEnableAudioPreview()){
-                           params.setEarMonitoringSwitch(1);
-                       } else{
-                           params.setEarMonitoringSwitch(2);
-                       }
-                    }
+//                    if(params.getEarMonitoringSwitch()==0){
+//                       if(params.configFromServerNotChange.isEnableAudioPreview()){
+//                           params.setEarMonitoringSwitch(1);
+//                       } else{
+//                           params.setEarMonitoringSwitch(2);
+//                       }
+//                    }
                     //params.enableInEarMonitoring = params.configFromServerNotChange.isEnableAudioPreview();
                 }else{
                     params.useExternalAudio = false;
                     params.enableAudioLowLatency = params.configFromServerNotChange.isEnableAudioLowLatency();
-                    if(params.getEarMonitoringSwitch()==0){
-                        if(params.configFromServerNotChange.isEnableAudioPreview()){
-                            params.setEarMonitoringSwitch(1);
-                        } else{
-                            params.setEarMonitoringSwitch(2);
-                        }
-                    }
+//                    if(params.getEarMonitoringSwitch()==0){
+//                        if(params.configFromServerNotChange.isEnableAudioPreview()){
+//                            params.setEarMonitoringSwitch(1);
+//                        } else{
+//                            params.setEarMonitoringSwitch(2);
+//                        }
+//                    }
                 }
             }else{
                 // 服务端没匹配 且用户没主动选择 ，全关了
@@ -1006,7 +1027,7 @@ public class Params implements Serializable {
         }else if(EngineConfigFromServer.getSelfCollectionSwitch()==1){
             // 用户选择开启自采集
             params.useExternalAudio = true;
-            if(params.getEarMonitoringSwitch()==2){
+            if(params.isEnableInEarMonitoring()){
                 // 如果开启耳返的，则开启低延迟
                 params.enableAudioLowLatency = true;
             }else{
