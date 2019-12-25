@@ -113,4 +113,22 @@ interface MicRoomServerApi {
 
     @PUT("http://dev.game.inframe.mobi/v1/game/user-statistic")
     fun userStatistic(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 从外面邀请之后同意，调用这个接口查询房间信息
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/invite-user-enter")
+    fun relayInviteUserEnter(@Body body: RequestBody): Observable<ApiResult>
+
+    /**
+     * 从房间内邀请，邀请之后同意，调用这个接口查询房间信息
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/room-invite-user-enter")
+    fun relayRoomInviteUserEnter(@Body body: RequestBody): Observable<ApiResult>
+
+    /**
+     * 拒绝加入合唱房
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/refuse-enter")
+    fun relayRefuseEnter(@Body body: RequestBody): Observable<ApiResult>
 }

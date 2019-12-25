@@ -84,6 +84,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 MSG_DISMISS_STAND_FULL_STAR -> FloatWindow.destroy(TAG_STAND_FULL_STAR_FOALT_WINDOW, 2)
                 MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW -> FloatWindow.destroy(TAG_MIC_ROOM_INVITE_FOALT_WINDOW, 2)
                 MSG_DISMISS_GIFT_MALL_FOALT_WINDOW -> FloatWindow.destroy(TAG_GIFT_MALL_FOALT_WINDOW, 2)
+                MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW -> FloatWindow.destroy(TAG_RELAY_INVITE_FOALT_WINDOW, 2)
             }
         }
     }
@@ -117,6 +118,8 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 showGiftMallFloatWindow(floatWindowData)
             } else if (floatWindowData.mType == FloatWindowData.Type.PARTY_INVITE) {
                 showPartyInviteFromRoomFloatWindow(floatWindowData)
+            } else if (floatWindowData.mType == FloatWindowData.Type.RELAY_INVITE) {
+                showRelayInviteFromRoomFloatWindow(floatWindowData)
             }
         }
 
@@ -523,6 +526,13 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         }, true)
     }
 
+    internal fun tryToRelayRoom(ownerId: Int, roomID: Int) {
+        mSkrAudioPermission!!.ensurePermission({
+            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+            iRankingModeService.acceptRelayRoomInvite(ownerId, roomID)
+        }, true)
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FollowNotifyEvent) {
         val floatWindowData = FloatWindowData(FloatWindowData.Type.FOLLOW)
@@ -581,7 +591,8 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     //在外面（抢唱，party，小k房里面）邀请别人一起合唱之后当被邀请的人同意之后邀请人收到这个push
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: CNRelayEnterFromOuterInviteNotifyEvent) {
-
+        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+        iRankingModeService.tryToRelayRoomByOuterInvite(event)
     }
 
     //无论在哪里邀请（合唱房间，合唱房间外），都在这里展示被拒绝的toast
@@ -594,7 +605,13 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     //收到别人的合唱邀请，无论对方是在哪里邀请（合唱房间，合唱房间外），都在这里处理
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelayRoomInviteMsg) {
-
+        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+        if (iRankingModeService.canShowRelayInvite(event.user.userID)) {
+            val floatWindowData = FloatWindowData(FloatWindowData.Type.RELAY_INVITE)
+            floatWindowData.userInfoModel = UserInfoModel.parseFromPB(event.user)
+            floatWindowData.roomID = event.roomID
+            mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
+        }
     }
 
     /**
@@ -867,6 +884,47 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 .build()
     }
 
+    internal fun showRelayInviteFromRoomFloatWindow(floatWindowData: FloatWindowData) {
+        val userInfoModel = floatWindowData.userInfoModel
+
+        mUiHandler.removeMessages(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW)
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW, 5000)
+        val notifyView = RelayInviteNotifyView(U.app())
+        notifyView.bindData(userInfoModel, "邀请你加入合唱房")
+        notifyView.setListener {
+            mUiHandler.removeMessages(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW)
+            FloatWindow.destroy(TAG_RELAY_INVITE_FOALT_WINDOW)
+            tryToRelayRoom(userInfoModel!!.userId, floatWindowData.roomID)
+        }
+
+        FloatWindow.with(U.app())
+                .setView(notifyView)
+                .setMoveType(MoveType.canRemove)
+                .setWidth(Screen.width, 1f)                               //设置控件宽高
+                .setHeight(Screen.height, 0.2f)
+                .setViewStateListener(object : ViewStateListenerAdapter() {
+                    override fun onDismiss(dismissReason: Int) {
+                        if (dismissReason != 0) {
+                            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                            iRankingModeService.refuseJoinRelayRoom(userInfoModel?.userId ?: 0)
+                        }
+
+                        mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.endCurrent(floatWindowData)
+                    }
+
+                    override fun onPositionUpdate(x: Int, y: Int) {
+                        super.onPositionUpdate(x, y)
+                        mUiHandler.removeMessages(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW)
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW, 5000)
+                    }
+                })
+                .setDesktopShow(false)                        //桌面显示
+                .setCancelIfExist(false)
+                .setReqPermissionIfNeed(false)
+                .setTag(TAG_RELAY_INVITE_FOALT_WINDOW)
+                .build()
+    }
+
     internal fun showStandFullStarFloatWindow(floatWindowData: FloatWindowData) {
         mUiHandler.removeMessages(MSG_DISMISS_STAND_FULL_STAR)
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_STAND_FULL_STAR, 5000)
@@ -952,7 +1010,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
          * STAND_FULL_STAR 歌单战5星好评
          */
         enum class Type {
-            FOLLOW, GRABINVITE, DOUBLE_GRAB_INVITE, DOUBLE_ROOM_INVITE, STAND_FULL_STAR, MIC_INVITE, MALL_GIFT, PARTY_INVITE
+            FOLLOW, GRABINVITE, DOUBLE_GRAB_INVITE, DOUBLE_ROOM_INVITE, STAND_FULL_STAR, MIC_INVITE, MALL_GIFT, PARTY_INVITE, RELAY_INVITE
         }
     }
 
@@ -966,6 +1024,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         internal val TAG_MIC_ROOM_INVITE_FOALT_WINDOW = "TAG_MIC_ROOM_INVITE_FOALT_WINDOW"
         internal val TAG_PARTY_ROOM_INVITE_FOALT_WINDOW = "TAG_PARTY_ROOM_INVITE_FOALT_WINDOW"
         internal val TAG_GIFT_MALL_FOALT_WINDOW = "TAG_GIFT_MALL_FOALT_WINDOW"
+        internal val TAG_RELAY_INVITE_FOALT_WINDOW = "TAG_RELAY_INVITE_FOALT_WINDOW"
 
         internal val MSG_DISMISS_INVITE_FLOAT_WINDOW = 2
         internal val MSG_DISMISS_RELATION_FLOAT_WINDOW = 3
@@ -975,5 +1034,6 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         internal val MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW = 7
         internal val MSG_DISMISS_GIFT_MALL_FOALT_WINDOW = 8
         internal val MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW = 9
+        internal val MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW = 10      // 普通邀请
     }
 }

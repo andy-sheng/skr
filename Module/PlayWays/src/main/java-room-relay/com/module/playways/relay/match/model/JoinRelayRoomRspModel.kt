@@ -2,14 +2,15 @@ package com.module.playways.relay.match.model
 
 import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.userinfo.model.UserInfoModel
-import com.component.busilib.model.EffectModel
 import com.component.busilib.model.GameBackgroundEffectModel
 import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
 import com.module.playways.relay.room.model.RelayConfigModel
 import com.module.playways.relay.room.model.RelayRoundInfoModel
 import com.module.playways.relay.room.model.RelayUserLockModel
-import com.zq.live.proto.GrabRoom.AgoraTokenInfo
+import com.zq.live.proto.Notification.RelayRoomEnterMsg
+import com.zq.live.proto.RelayRoom.RRoundInfo
 import com.zq.live.proto.RelayRoom.RUserEnterMsg
+import com.zq.live.proto.RelayRoom.RUserLockInfo
 import java.io.Serializable
 
 class JoinRelayRoomRspModel : Serializable {
@@ -44,6 +45,26 @@ class JoinRelayRoomRspModel : Serializable {
             result.createTimeMs = msg.createdTimeMs
             result.config = RelayConfigModel.parseFromPB(msg.config)
             result.currentRound = RelayRoundInfoModel.parseFromRoundInfo(msg.currentRound)
+            result.enableNoLimitDuration = msg.enableNoLimitDuration
+            result.tokens = LocalAgoraTokenInfo.toLocalAgoraTokenInfo(msg.tokensList)
+            result.users = UserInfoModel.parseFromPB(msg.usersList)
+            result.showInfos.addAll(GameBackgroundEffectModel.parseToList(msg.showInfosList))
+
+            return result
+        }
+
+        fun parseFromPB(msg: RelayRoomEnterMsg): JoinRelayRoomRspModel {
+            val result = JoinRelayRoomRspModel()
+            result.roomID = msg.roomID
+            result.createTimeMs = msg.createdTimeMs
+            result.config = RelayConfigModel.parseFromPB(msg.config)
+            val round = RRoundInfo.parseFrom(msg.currentRound.toByteArray())
+            result.currentRound = RelayRoundInfoModel.parseFromRoundInfo(round)
+            val list: ArrayList<RUserLockInfo> = ArrayList()
+            for (str in msg.userLockInfoList) {
+                list.add(RUserLockInfo.parseFrom(str.toByteArray()))
+            }
+            result.userLockInfo = RelayUserLockModel.parseFromPB(list)
             result.enableNoLimitDuration = msg.enableNoLimitDuration
             result.tokens = LocalAgoraTokenInfo.toLocalAgoraTokenInfo(msg.tokensList)
             result.users = UserInfoModel.parseFromPB(msg.usersList)

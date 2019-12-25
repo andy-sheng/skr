@@ -2,6 +2,7 @@ package com.module.playways;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -11,6 +12,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.notification.event.CNRelayEnterFromOuterInviteNotifyEvent;
 import com.common.notification.event.CRSyncInviteUserNotifyEvent;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -43,6 +45,8 @@ import com.module.playways.party.match.model.JoinPartyRoomRspModel;
 import com.module.playways.party.room.PartyRoomActivity;
 import com.module.playways.party.room.PartyRoomServerApi;
 import com.module.playways.party.room.event.PartyChangeRoomEvent;
+import com.module.playways.relay.match.model.JoinRelayRoomRspModel;
+import com.module.playways.relay.room.RelayRoomActivity;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
@@ -327,6 +331,129 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 });
             }
         }, true);
+    }
+
+    @Override
+    public void tryToRelayRoomByOuterInvite(Object o) {
+        if (o instanceof CNRelayEnterFromOuterInviteNotifyEvent) {
+            Intent intent = new Intent(U.app(), RelayRoomActivity.class);
+            intent.putExtra("JoinRelayRoomRspModel", JoinRelayRoomRspModel.Companion.parseFromPB(((CNRelayEnterFromOuterInviteNotifyEvent) o).getRelayRoomEnterMsg()));
+            U.app().startActivity(intent);
+        }
+    }
+
+    @Override
+    public boolean canShowRelayInvite(int peerUserID) {
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if (activity instanceof RelayRoomActivity) {
+                refuseJoinRelayRoom(peerUserID);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void refuseJoinRelayRoom(int peerUserID) {
+        HashMap map = new HashMap();
+        map.put("peerUserID", peerUserID);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        MicRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi.class);
+
+        ApiMethods.subscribe(mRoomServerApi.relayRefuseEnter(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+
+                } else {
+                    U.getToastUtil().showShort(result.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                U.getToastUtil().showShort("网络错误");
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                U.getToastUtil().showShort("网络延迟");
+            }
+        });
+    }
+
+    //房间内和房间外同意的时候都调用这个，roomID > 0 的时候是房间内邀请
+    @Override
+    public void acceptRelayRoomInvite(int ownerId, int roomID) {
+        skrVerifyUtils.checkHasMicAudioPermission(new Runnable() {
+            @Override
+            public void run() {
+                HashMap map = new HashMap();
+                map.put("peerUserID", ownerId);
+                if (roomID > 0) {
+                    map.put("roomID", roomID);
+                }
+
+                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                MicRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi.class);
+
+                if (roomID > 0) {
+                    ApiMethods.subscribe(mRoomServerApi.relayRoomInviteUserEnter(body), new ApiObserver<ApiResult>() {
+                        @Override
+                        public void process(ApiResult result) {
+                            if (result.getErrno() == 0) {
+                                //先跳转
+                                JoinRelayRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinRelayRoomRspModel.class);
+
+                                Intent intent = new Intent(U.app(), RelayRoomActivity.class);
+                                intent.putExtra("JoinRelayRoomRspModel", rsp);
+                                U.app().startActivity(intent);
+                            } else {
+                                U.getToastUtil().showShort(result.getErrmsg());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            U.getToastUtil().showShort("网络错误");
+                        }
+
+                        @Override
+                        public void onNetworkError(ErrorType errorType) {
+                            U.getToastUtil().showShort("网络延迟");
+                        }
+                    });
+                } else {
+                    ApiMethods.subscribe(mRoomServerApi.relayInviteUserEnter(body), new ApiObserver<ApiResult>() {
+                        @Override
+                        public void process(ApiResult result) {
+                            if (result.getErrno() == 0) {
+                                //先跳转
+                                JoinRelayRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinRelayRoomRspModel.class);
+
+                                Intent intent = new Intent(U.app(), RelayRoomActivity.class);
+                                intent.putExtra("JoinRelayRoomRspModel", rsp);
+                                U.app().startActivity(intent);
+                            } else {
+                                U.getToastUtil().showShort(result.getErrmsg());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            U.getToastUtil().showShort("网络错误");
+                        }
+
+                        @Override
+                        public void onNetworkError(ErrorType errorType) {
+                            U.getToastUtil().showShort("网络延迟");
+                        }
+                    });
+                }
+            }
+        });
     }
 
     private void goMicRoom(HashMap map) {
