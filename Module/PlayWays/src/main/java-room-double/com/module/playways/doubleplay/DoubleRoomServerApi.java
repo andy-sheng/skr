@@ -212,7 +212,7 @@ public interface DoubleRoomServerApi {
 
     /**
      * {
-     * "peerUserID": 0
+     * "inviteUserID": 0
      * }
      * 邀请一个人合唱，房间外
      *
@@ -220,7 +220,7 @@ public interface DoubleRoomServerApi {
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.game.inframe.mobi/v1/relaygame/invite-user-enter")
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/send-invite-user")
     Observable<ApiResult> sendRelayInvite(@Body RequestBody body);
 
     /**
