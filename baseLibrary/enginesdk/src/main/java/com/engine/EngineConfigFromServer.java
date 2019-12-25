@@ -146,7 +146,7 @@ public class EngineConfigFromServer implements Serializable {
                             EngineConfigFromServer configFromServer = JSON.parseObject(obj.getData().toString(), EngineConfigFromServer.class);
                             configFromServer.hasServerConfig = true;
                             // 持久化
-                            U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", obj.getData().toString());
+                            U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "EngineConfigFromServer", JSON.toJSONString(configFromServer));
                             U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", System.currentTimeMillis());
                             return configFromServer;
                         } else if (obj.getErrno() == 102) {

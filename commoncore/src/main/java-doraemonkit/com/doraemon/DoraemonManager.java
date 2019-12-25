@@ -16,6 +16,7 @@ import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.common.ICallback;
 import com.module.msg.IMsgService;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -116,11 +117,11 @@ public class DoraemonManager {
                     }
                 }));
 
-                extras.add(new SysInfoItem("引擎动态配置", EngineConfigFromServer.getDefault().toString(), new DebounceViewClickListener() {
+                extras.add(new SysInfoItem("引擎动态配置", ZqEngineKit.getInstance().getParams().toString(), new DebounceViewClickListener() {
                     @Override
                     public void clickValid(View v) {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                .withString("url", "http://debugtbs.qq.com").navigation();
+//                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+//                                .withString("url", "http://debugtbs.qq.com").navigation();
                     }
                 }));
                 return extras;
