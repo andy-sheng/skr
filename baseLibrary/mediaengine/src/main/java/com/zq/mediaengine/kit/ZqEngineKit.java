@@ -191,6 +191,11 @@ public class ZqEngineKit implements AgoraOutCallback {
     private RawFrameWriter mCapRawFrameWriter;
     private RawFrameWriter mBgmRawFrameWriter;
 
+    // 伴奏状态相关
+    private boolean mAccPreparedSent = false;
+    private long mAccRecoverPosition = 0;
+    private int mAccRemainedLoopCount = 0;
+
     private HeadSetReceiver mHeadSetReceiver;
     protected boolean mHeadSetPlugged = false;
     protected boolean mBluetoothPlugged = false;
@@ -635,7 +640,10 @@ public class ZqEngineKit implements AgoraOutCallback {
                 public void onPrepared(AudioPlayerCapture audioPlayerCapture) {
                     MyLog.i(TAG, "AudioPlayerCapture onPrepared");
                     // TODO: 预加载完成通知
-                    onAudioMixingStateChanged(710, 0);
+                    if (!mAccPreparedSent) {
+                        mAccPreparedSent = true;
+                        onAudioMixingStateChanged(Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY, 0);
+                    }
                 }
             });
             mAudioPlayerCapture.setOnCompletionListener(new AudioPlayerCapture.OnCompletionListener() {
@@ -658,6 +666,24 @@ public class ZqEngineKit implements AgoraOutCallback {
                 @Override
                 public void onError(AudioPlayerCapture audioPlayerCapture, int type, long msg) {
                     MyLog.e(TAG, "AudioPlayerCapture error: " + type);
+
+                    if (mCustomHandlerThread != null) {
+                        if (mAccPreparedSent) {
+                            mAccRecoverPosition = mAudioPlayerCapture.getPosition();
+                            mAccRemainedLoopCount = mAudioPlayerCapture.getRemainedLoopCount();
+                        }
+                        mCustomHandlerThread.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (!mConfig.isMixMusicPlaying()) {
+                                    return;
+                                }
+                                MyLog.i(TAG, "retry acc playback with pos: " + mAccRecoverPosition + " remainLoopCount: " + mAccRemainedLoopCount);
+                                mAudioPlayerCapture.start(mConfig.getMixMusicFilePath(), mAccRecoverPosition, -1, mAccRemainedLoopCount);
+                            }
+                        }, 100);
+                    }
+
                     EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_ERROR);
                     engineEvent.setObj(type);
                     EventBus.getDefault().post(engineEvent);
@@ -1608,7 +1634,10 @@ public class ZqEngineKit implements AgoraOutCallback {
                         EventBus.getDefault().post(engineEvent);
 
                         if (mConfig.isUseExternalAudio()) {
-                            mAudioPlayerCapture.start(filePath, cycle);
+                            mAccPreparedSent = false;
+                            mAccRecoverPosition = 0;
+                            mAccRemainedLoopCount = cycle;
+                            mAudioPlayerCapture.start(filePath + ".err", cycle);
                         } else {
                             mAgoraRTCAdapter.startAudioMixing(filePath, midiPath, loopback, replace, cycle);
 

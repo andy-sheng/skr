@@ -435,6 +435,14 @@ public class AudioPlayerCapture {
         return mEnableLatencyTest;
     }
 
+    public int getRemainedLoopCount() {
+        if (mLoopCount <= 0) {
+            return mLoopCount;
+        } else {
+            return mLoopCount - mLoopedCount;
+        }
+    }
+
     /**
      * Sets on prepared listener.
      *
@@ -493,9 +501,24 @@ public class AudioPlayerCapture {
      * @param loopCount set loop count, <0 for infinity loop.
      */
     public void start(String url, int loopCount) {
+        start(url, 0, -1, loopCount);
+    }
+
+    /**
+     * Start audio player.
+     *
+     * @param url  the url.
+     *             prefix "file://" for absolute path,
+     *             and prefix "assets://" for resource in assets folder,
+     *             also prefix "http://", "https://"  supported.
+     * @param offset 配置当前音频文件的实际播放开始时间，小于0时按0计算
+     * @param end 配置当前音频文件的实际播放完成时间，小于0或者大于音频长度时，按音频长度计算
+     * @param loopCount set loop count, <0 for infinity loop.
+     */
+    public void start(String url, long offset, long end, int loopCount) {
         mLoopCount = loopCount;
         mLoopedCount = 0;
-        mAudioFileCapture.setDataSource(url);
+        mAudioFileCapture.setDataSource(url, offset, end);
         mAudioFileCapture.prepareAsync();
     }
 
