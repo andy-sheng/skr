@@ -1246,7 +1246,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private void enableInEarMonitoringInternal(boolean enable, boolean setConfig) {
         if (setConfig) {
-            mConfig.setEnableInEarMonitoring(enable);
+            mConfig.setEarMonitoringSwitch(enable?1:2);
         }
         if (mConfig.isUseExternalAudio()) {
             //TODO

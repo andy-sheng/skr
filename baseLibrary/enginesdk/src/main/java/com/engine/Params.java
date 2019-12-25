@@ -93,7 +93,7 @@ public class Params implements Serializable {
 
     private int audioMixingPlayoutVolume = 60; // 混音音量本地音量
     private int audioMixingPublishVolume = 60; // 推出去的音量大小
-    private boolean enableInEarMonitoring = false;// 耳返
+    private int earMonitoringSwitch = 0;// 耳返 0 为没设置 1为开启 2为关闭
     private int earMonitoringVolume = 100; // 耳返音量
     @JSONField(serialize = false)
     private int playbackSignalVolume = 100;// 0-400 默认100，最多放大4倍
@@ -336,12 +336,13 @@ public class Params implements Serializable {
         this.audioMixingPlayoutVolume = audioMixingPlayoutVolume;
     }
 
-    public void setEnableInEarMonitoring(boolean enableInEarMonitoring) {
-        this.enableInEarMonitoring = enableInEarMonitoring;
+    // 0 未设置 1开启 2关闭
+    public int getEarMonitoringSwitch() {
+        return earMonitoringSwitch;
     }
 
-    public boolean isEnableInEarMonitoring() {
-        return enableInEarMonitoring;
+    public void setEarMonitoringSwitch(int earMonitoringSwitch) {
+        this.earMonitoringSwitch = earMonitoringSwitch;
     }
 
     public void setInEarMonitoringVolume(int inEarMonitoringVolume) {
@@ -733,7 +734,12 @@ public class Params implements Serializable {
     public void setEnableAudioLowLatency(boolean enable) {
         enableAudioLowLatency = enable;
     }
-//
+
+    @JSONField(serialize = false)
+    public boolean isEnableInEarMonitoring() {
+        return earMonitoringSwitch==1;
+    }
+
 //    @JSONField(serialize = false)
 //    public void setEnableAudioPreview(boolean enable) {
 //        configFromServer.setEnableAudioPreview(enable);
@@ -962,7 +968,6 @@ public class Params implements Serializable {
             params.setEnableVideo(true);
             params.setEnableAudio(true);
             params.setUseExternalAudioRecord(true);
-            params.setEnableInEarMonitoring(true);
             params.setStyleEnum(AudioEffect.none);
         }
         if(EngineConfigFromServer.getSelfCollectionSwitch()==0){
@@ -973,22 +978,35 @@ public class Params implements Serializable {
                     // 如果开启了自采集,设置低延迟
                     params.enableAudioLowLatency = params.configFromServerNotChange.isEnableAudioLowLatency();
                     // 是否开启耳返 不设置，因为用户会主动修改
+                    if(params.getEarMonitoringSwitch()==0){
+                       if(params.configFromServerNotChange.isEnableAudioPreview()){
+                           params.setEarMonitoringSwitch(1);
+                       } else{
+                           params.setEarMonitoringSwitch(2);
+                       }
+                    }
                     //params.enableInEarMonitoring = params.configFromServerNotChange.isEnableAudioPreview();
                 }else{
                     params.useExternalAudio = false;
-                    params.enableAudioLowLatency = false;
-                    params.enableInEarMonitoring = false;
+                    params.enableAudioLowLatency = params.configFromServerNotChange.isEnableAudioLowLatency();
+                    if(params.getEarMonitoringSwitch()==0){
+                        if(params.configFromServerNotChange.isEnableAudioPreview()){
+                            params.setEarMonitoringSwitch(1);
+                        } else{
+                            params.setEarMonitoringSwitch(2);
+                        }
+                    }
                 }
             }else{
                 // 服务端没匹配 且用户没主动选择 ，全关了
                 params.useExternalAudio = false;
                 params.enableAudioLowLatency = false;
-                params.enableInEarMonitoring = false;
+                params.setEarMonitoringSwitch(0);
             }
         }else if(EngineConfigFromServer.getSelfCollectionSwitch()==1){
             // 用户选择开启自采集
             params.useExternalAudio = true;
-            if(params.enableInEarMonitoring){
+            if(params.getEarMonitoringSwitch()==2){
                 // 如果开启耳返的，则开启低延迟
                 params.enableAudioLowLatency = true;
             }else{
@@ -998,7 +1016,7 @@ public class Params implements Serializable {
             // 用户关闭了自采集，回到默认agora那一套
             params.useExternalAudio = false;
             params.enableAudioLowLatency = false;
-            params.enableInEarMonitoring = false;
+            params.setEarMonitoringSwitch(0);
         }
         return params;
     }
