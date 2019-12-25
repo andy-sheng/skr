@@ -66,6 +66,18 @@ public interface SongSelectServerApi {
     Observable<ApiResult> getClickedMusicItmes(@Query("offset") int offset,
                                                @Query("cnt") int cnt);
 
+
+    /**
+     * 获取已点的列表
+     *
+     * @param offset
+     * @param cnt
+     * @return 包含  歌曲信息 items（List）
+     * 偏移量 offset
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/list-history-playbook-items")
+    Observable<ApiResult> getRelayClickedMusicItmes(@Query("offset") int offset, @Query("cnt") int cnt, @Query("userID") int userID);
+
     /**
      * 普通搜索
      *

@@ -39,16 +39,12 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
                         List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
                         if (list != null && list.size() > 0) {
                             int offset = result.getData().getIntValue("offset");
-                            if (view != null) {
-                                view.loadSongsDetailItems(list, offset, true);
-                            }
+                            view.loadSongsDetailItems(list, offset, true);
                         } else {
                             view.loadSongsDetailItems(null, offset, false);
                         }
                     } else {
-                        if (view != null) {
-                            view.loadSongsDetailItemsFail();
-                        }
+                        view.loadSongsDetailItemsFail();
                     }
                 }
             }, this);
@@ -62,9 +58,7 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
                         boolean hasMore = result.getData().getBooleanValue("hasMore");
                         view.loadSongsDetailItems(list, offset, hasMore);
                     } else {
-                        if (view != null) {
-                            view.loadSongsDetailItemsFail();
-                        }
+                        view.loadSongsDetailItemsFail();
                     }
                 }
             }, this);
@@ -78,31 +72,41 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
      * @param offset
      * @param cnt
      */
-    public void getClickedMusicItmes(int offset, int cnt) {
+    public void getClickedMusicItmes(int offset, int cnt, int from) {
         SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
-        ApiMethods.subscribe(songSelectServerApi.getClickedMusicItmes(offset, cnt), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
-                    if (list != null && list.size() > 0) {
-                        int offset = result.getData().getIntValue("offset");
-                        if (view != null) {
+        if (from == SongManagerActivity.TYPE_FROM_AUDITION) {
+            ApiMethods.subscribe(songSelectServerApi.getClickedMusicItmes(offset, cnt), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
+                        if (list != null && list.size() > 0) {
+                            int offset = result.getData().getIntValue("offset");
                             view.loadSongsDetailItems(list, offset, true);
-                        }
-                    } else {
-                        if (view != null) {
+                        } else {
                             view.loadSongsDetailItems(null, offset, false);
                         }
-                    }
-
-                } else {
-                    if (view != null) {
+                    } else {
                         view.loadSongsDetailItemsFail();
                     }
                 }
-            }
-        }, this);
+            }, this);
+        } else {
+            ApiMethods.subscribe(songSelectServerApi.getRelayClickedMusicItmes(offset, cnt, (int) MyUserInfoManager.INSTANCE.getUid()), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
+                        int offset = result.getData().getIntValue("offset");
+                        boolean hasMore = result.getData().getBooleanValue("hasMore");
+                        view.loadSongsDetailItems(list, offset, hasMore);
+                    } else {
+                        view.loadSongsDetailItemsFail();
+                    }
+                }
+            }, this);
+        }
+
     }
 
 }

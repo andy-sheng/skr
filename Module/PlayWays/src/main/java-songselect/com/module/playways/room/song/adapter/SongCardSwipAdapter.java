@@ -19,10 +19,14 @@ public class SongCardSwipAdapter extends BaseAdapter {
 
     SongSelectAdapter.Listener mListener;
     int defaultCount;   // 每张卡片上多少个元素
+    int selectModel;
+    String selectText;
 
-    public SongCardSwipAdapter(SongSelectAdapter.Listener listener, int defaultCount) {
+    public SongCardSwipAdapter(SongSelectAdapter.Listener listener, int defaultCount, int selectModel, String selectText) {
         this.mListener = listener;
         this.defaultCount = defaultCount;
+        this.selectModel = selectModel;
+        this.selectText = selectText;
     }
 
     public void addAll(Collection<SongCardModel> collection) {
@@ -84,7 +88,7 @@ public class SongCardSwipAdapter extends BaseAdapter {
         SongCardHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_card_item_view, parent, false);
-            holder = new SongCardHolder(convertView, mListener, defaultCount);
+            holder = new SongCardHolder(convertView, mListener, defaultCount, selectModel, selectText);
             convertView.setTag(holder);
         } else {
             holder = (SongCardHolder) convertView.getTag();

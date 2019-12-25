@@ -19,11 +19,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.RouterConstants;
-import com.module.playways.audition.AudioRoomActivity;
-import com.module.playways.PlayWaysActivity;
-import com.module.playways.room.prepare.fragment.PrepareResFragment;
 import com.module.playways.room.song.adapter.SongCardSwipAdapter;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.flingswipe.SwipeFlingAdapterView;
@@ -69,6 +65,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     List<SongCardModel> mDeleteList; // 已经滑走的数据
 
     int mFrom;
+
     int offset; //当前偏移量
     boolean hasMore = true; // 是否还有更多数据标记位
 
@@ -175,6 +172,12 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         });
 
         mDeleteList = new ArrayList<>();
+        int selectModel = SongSelectAdapter.AUDITION_MODE;
+        String selectText = "演唱";
+        if (mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+            selectModel = SongSelectAdapter.RELAY_MODE;
+            selectText = "合唱";
+        }
         mSongCardSwipAdapter = new SongCardSwipAdapter(new SongSelectAdapter.Listener() {
             @Override
             public void onClickSelect(int position, SongModel model) {
@@ -194,7 +197,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 }
             }
 
-        }, DEFAULT_COUNT);
+        }, DEFAULT_COUNT, selectModel, selectText);
 
         // 默认推荐
         presenter = new SongTagDetailsPresenter(this);
@@ -279,6 +282,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), HistorySongFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
+                .addDataBeforeAdd(0, mFrom)
                 .setEnterAnim(R.anim.slide_in_bottom)
                 .setExitAnim(R.anim.slide_out_bottom)
                 .setFragmentDataListener(new FragmentDataListener() {

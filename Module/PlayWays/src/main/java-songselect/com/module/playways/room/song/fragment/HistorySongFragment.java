@@ -30,14 +30,16 @@ import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
 import com.module.playways.room.song.presenter.SongTagDetailsPresenter;
 import com.module.playways.room.song.view.ISongTagDetailView;
+import com.module.playways.songmanager.SongManagerActivity;
+import com.module.playways.songmanager.event.AddSongEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.module.playways.PlayWaysActivity.KEY_GAME_TYPE;
 
 public class HistorySongFragment extends BaseFragment implements ISongTagDetailView {
 
@@ -54,9 +56,19 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     SongSelectAdapter songSelectAdapter;
     SongTagDetailsPresenter presenter;
 
+    int mFrom;
+
     LoadService mLoadService;
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
+
+    @Override
+    public void setData(int type, @org.jetbrains.annotations.Nullable Object data) {
+        super.setData(type, data);
+        if (type == 0) {
+            mFrom = (Integer) data;
+        }
+    }
 
     @Override
     public int initView() {
@@ -65,13 +77,17 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
-        mHistoryBack = (ExImageView) getRootView().findViewById(R.id.history_back);
-        mRefreshLayout = (SmartRefreshLayout) getRootView().findViewById(R.id.refreshLayout);
-        mHistoryRecycle = (RecyclerView) getRootView().findViewById(R.id.history_recycle);
+        mMainActContainer = getRootView().findViewById(R.id.main_act_container);
+        mHistoryBack = getRootView().findViewById(R.id.history_back);
+        mRefreshLayout = getRootView().findViewById(R.id.refreshLayout);
+        mHistoryRecycle = getRootView().findViewById(R.id.history_recycle);
 
         mHistoryRecycle.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
+        int selectModel = SongSelectAdapter.AUDITION_MODE;
+        if (mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+            selectModel = SongSelectAdapter.RELAY_MODE;
+        }
         songSelectAdapter = new SongSelectAdapter(new SongSelectAdapter.Listener() {
             @Override
             public void onClickSelect(int position, SongModel model) {
@@ -82,12 +98,12 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
             public void onClickSongName(int position, SongModel model) {
 
             }
-        }, false, SongSelectAdapter.AUDITION_MODE, "演唱");
+        }, false, selectModel, "演唱");
         mHistoryRecycle.setAdapter(songSelectAdapter);
 
         presenter = new SongTagDetailsPresenter(this);
         addPresent(presenter);
-        presenter.getClickedMusicItmes(0, DEFAULT_SONG_COUNT);
+        presenter.getClickedMusicItmes(0, DEFAULT_SONG_COUNT, mFrom);
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);
@@ -96,7 +112,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                presenter.getClickedMusicItmes(offset, DEFAULT_SONG_COUNT);
+                presenter.getClickedMusicItmes(offset, DEFAULT_SONG_COUNT, mFrom);
             }
 
             @Override
@@ -121,7 +137,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         mLoadService = mLoadSir.register(mRefreshLayout, new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
-                presenter.getClickedMusicItmes(offset, DEFAULT_SONG_COUNT);
+                presenter.getClickedMusicItmes(offset, DEFAULT_SONG_COUNT, mFrom);
             }
         });
 
@@ -132,7 +148,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         if (songModel == null) {
             return;
         }
-        if (getActivity() instanceof AudioRoomActivity) {
+        if (mFrom == SongManagerActivity.TYPE_FROM_AUDITION) {
             mSkrAudioPermission.ensurePermission(new Runnable() {
                 @Override
                 public void run() {
@@ -142,6 +158,8 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
                 }
             }, true);
             return;
+        } else {
+            EventBus.getDefault().post(new AddSongEvent(songModel, mFrom));
         }
 
     }

@@ -18,7 +18,7 @@ public class SongCardHolder extends RecyclerView.ViewHolder {
     SongCardRecycleView mSongListView;
     SongSelectAdapter mSongSelectAdapter;
 
-    public SongCardHolder(View itemView, SongSelectAdapter.Listener onItemClickListener, int defaultCount) {
+    public SongCardHolder(View itemView, SongSelectAdapter.Listener onItemClickListener, int defaultCount, int selectModel, String selectText) {
         super(itemView);
         mSongListView = itemView.findViewById(R.id.song_list_recycle);
         ViewGroup.LayoutParams lp = mSongListView.getLayoutParams();
@@ -27,7 +27,7 @@ public class SongCardHolder extends RecyclerView.ViewHolder {
         mSongListView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if (mSongSelectAdapter == null) {
-            mSongSelectAdapter = new SongSelectAdapter(onItemClickListener, false, SongSelectAdapter.AUDITION_MODE, "演唱");
+            mSongSelectAdapter = new SongSelectAdapter(onItemClickListener, false, selectModel, selectText);
         }
         mSongListView.setAdapter(mSongSelectAdapter);
     }
