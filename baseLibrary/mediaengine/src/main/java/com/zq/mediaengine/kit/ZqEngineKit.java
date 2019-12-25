@@ -1249,9 +1249,9 @@ public class ZqEngineKit implements AgoraOutCallback {
             mConfig.setEarMonitoringSwitch(enable?1:2);
         }
         if (mConfig.isUseExternalAudio()) {
-            //TODO
-            if (mConfig.getConfigFromServerNotChange().isEnableAudioLowLatency()) {
-                // 服务器配置支持开启低延迟通路，则开启
+            if (!mConfig.getConfigFromServerNotChange().hasServerConfig) {
+                MyLog.i(TAG, "without server config, switch audio latency mode to " + enable);
+                doSetEnableAudioLowLatency(enable);
             }
             if (enable) {
                 if (shouldStartAudioPreview()) {
@@ -1468,7 +1468,6 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void doSetEnableAudioLowLatency(boolean enable) {
-        mConfig.setEnableAudioLowLatency(enable);
         if (mConfig.isUseExternalAudio()) {
             if (enable) {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
@@ -1488,6 +1487,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new LogRunnable("setEnableAudioLowLatency: " + enable) {
                 @Override
                 public void realRun() {
+                    mConfig.setEnableAudioLowLatency(enable);
                     doSetEnableAudioLowLatency(enable);
                 }
             });
