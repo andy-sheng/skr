@@ -12,6 +12,7 @@ import com.squareup.wire.internal.Internal;
 import com.zq.live.proto.Common.UserInfo;
 import java.io.IOException;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -28,6 +29,8 @@ public final class RelayRoomInviteMsg extends Message<RelayRoomInviteMsg, RelayR
   public static final String DEFAULT_INVITEMSG = "";
 
   public static final Integer DEFAULT_ROOMID = 0;
+
+  public static final Long DEFAULT_INVITETIMEMS = 0L;
 
   /**
    * 邀请类型
@@ -65,18 +68,28 @@ public final class RelayRoomInviteMsg extends Message<RelayRoomInviteMsg, RelayR
   )
   private final Integer roomID;
 
+  /**
+   * 邀请时间戳
+   */
+  @WireField(
+      tag = 6,
+      adapter = "com.squareup.wire.ProtoAdapter#SINT64"
+  )
+  private final Long inviteTimeMs;
+
   public RelayRoomInviteMsg(ERInviteType inviteType, UserInfo user, String inviteMsg,
-      Integer roomID) {
-    this(inviteType, user, inviteMsg, roomID, ByteString.EMPTY);
+      Integer roomID, Long inviteTimeMs) {
+    this(inviteType, user, inviteMsg, roomID, inviteTimeMs, ByteString.EMPTY);
   }
 
   public RelayRoomInviteMsg(ERInviteType inviteType, UserInfo user, String inviteMsg,
-      Integer roomID, ByteString unknownFields) {
+      Integer roomID, Long inviteTimeMs, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.inviteType = inviteType;
     this.user = user;
     this.inviteMsg = inviteMsg;
     this.roomID = roomID;
+    this.inviteTimeMs = inviteTimeMs;
   }
 
   @Override
@@ -86,6 +99,7 @@ public final class RelayRoomInviteMsg extends Message<RelayRoomInviteMsg, RelayR
     builder.user = user;
     builder.inviteMsg = inviteMsg;
     builder.roomID = roomID;
+    builder.inviteTimeMs = inviteTimeMs;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -99,7 +113,8 @@ public final class RelayRoomInviteMsg extends Message<RelayRoomInviteMsg, RelayR
         && Internal.equals(inviteType, o.inviteType)
         && Internal.equals(user, o.user)
         && Internal.equals(inviteMsg, o.inviteMsg)
-        && Internal.equals(roomID, o.roomID);
+        && Internal.equals(roomID, o.roomID)
+        && Internal.equals(inviteTimeMs, o.inviteTimeMs);
   }
 
   @Override
@@ -111,6 +126,7 @@ public final class RelayRoomInviteMsg extends Message<RelayRoomInviteMsg, RelayR
       result = result * 37 + (user != null ? user.hashCode() : 0);
       result = result * 37 + (inviteMsg != null ? inviteMsg.hashCode() : 0);
       result = result * 37 + (roomID != null ? roomID.hashCode() : 0);
+      result = result * 37 + (inviteTimeMs != null ? inviteTimeMs.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -123,6 +139,7 @@ public final class RelayRoomInviteMsg extends Message<RelayRoomInviteMsg, RelayR
     if (user != null) builder.append(", user=").append(user);
     if (inviteMsg != null) builder.append(", inviteMsg=").append(inviteMsg);
     if (roomID != null) builder.append(", roomID=").append(roomID);
+    if (inviteTimeMs != null) builder.append(", inviteTimeMs=").append(inviteTimeMs);
     return builder.replace(0, 2, "RelayRoomInviteMsg{").append('}').toString();
   }
 
@@ -177,6 +194,16 @@ public final class RelayRoomInviteMsg extends Message<RelayRoomInviteMsg, RelayR
   }
 
   /**
+   * 邀请时间戳
+   */
+  public Long getInviteTimeMs() {
+    if(inviteTimeMs==null){
+        return DEFAULT_INVITETIMEMS;
+    }
+    return inviteTimeMs;
+  }
+
+  /**
    * 邀请类型
    */
   public boolean hasInviteType() {
@@ -204,6 +231,13 @@ public final class RelayRoomInviteMsg extends Message<RelayRoomInviteMsg, RelayR
     return roomID!=null;
   }
 
+  /**
+   * 邀请时间戳
+   */
+  public boolean hasInviteTimeMs() {
+    return inviteTimeMs!=null;
+  }
+
   public static final class Builder extends Message.Builder<RelayRoomInviteMsg, Builder> {
     private ERInviteType inviteType;
 
@@ -212,6 +246,8 @@ public final class RelayRoomInviteMsg extends Message<RelayRoomInviteMsg, RelayR
     private String inviteMsg;
 
     private Integer roomID;
+
+    private Long inviteTimeMs;
 
     public Builder() {
     }
@@ -248,9 +284,17 @@ public final class RelayRoomInviteMsg extends Message<RelayRoomInviteMsg, RelayR
       return this;
     }
 
+    /**
+     * 邀请时间戳
+     */
+    public Builder setInviteTimeMs(Long inviteTimeMs) {
+      this.inviteTimeMs = inviteTimeMs;
+      return this;
+    }
+
     @Override
     public RelayRoomInviteMsg build() {
-      return new RelayRoomInviteMsg(inviteType, user, inviteMsg, roomID, super.buildUnknownFields());
+      return new RelayRoomInviteMsg(inviteType, user, inviteMsg, roomID, inviteTimeMs, super.buildUnknownFields());
     }
   }
 
@@ -265,6 +309,7 @@ public final class RelayRoomInviteMsg extends Message<RelayRoomInviteMsg, RelayR
           + UserInfo.ADAPTER.encodedSizeWithTag(2, value.user)
           + ProtoAdapter.STRING.encodedSizeWithTag(3, value.inviteMsg)
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.roomID)
+          + ProtoAdapter.SINT64.encodedSizeWithTag(6, value.inviteTimeMs)
           + value.unknownFields().size();
     }
 
@@ -274,6 +319,7 @@ public final class RelayRoomInviteMsg extends Message<RelayRoomInviteMsg, RelayR
       UserInfo.ADAPTER.encodeWithTag(writer, 2, value.user);
       ProtoAdapter.STRING.encodeWithTag(writer, 3, value.inviteMsg);
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.roomID);
+      ProtoAdapter.SINT64.encodeWithTag(writer, 6, value.inviteTimeMs);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -294,6 +340,7 @@ public final class RelayRoomInviteMsg extends Message<RelayRoomInviteMsg, RelayR
           case 2: builder.setUser(UserInfo.ADAPTER.decode(reader)); break;
           case 3: builder.setInviteMsg(ProtoAdapter.STRING.decode(reader)); break;
           case 4: builder.setRoomID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 6: builder.setInviteTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

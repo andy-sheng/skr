@@ -80,6 +80,7 @@ message RelayRoomInviteMsg
     Common.UserInfo user           = 2; //发起邀请的用户详情
     string inviteMsg        = 3; //邀请信息
     uint32 roomID           = 4; //房间id
+    sint64 inviteTimeMs     = 6; //邀请时间戳
 }
 
 enum ERInviteType {
