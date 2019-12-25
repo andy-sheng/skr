@@ -358,7 +358,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     public void refuseJoinRelayRoom(int peerUserID, int refuseType) {
         HashMap map = new HashMap();
         map.put("peerUserID", peerUserID);
-        //RT_ACTIVE_REFUSE = 1 : 主动拒绝 - RT_NO_RSP_REFUSE = 2 : 没响应拒绝
+        //RT_ACTIVE_REFUSE = 1 : 主动拒绝 - RT_NO_RSP_REFUSE = 2 : 没响应拒绝 RT_IN_ROOM = 3 : 已经在合唱房了
         map.put("refuseType", refuseType);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
