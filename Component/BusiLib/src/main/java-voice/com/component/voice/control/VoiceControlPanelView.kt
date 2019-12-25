@@ -99,7 +99,7 @@ open abstract class VoiceControlPanelView : ScrollView {
         setListener()
     }
 
-    protected open fun setListener() {
+     fun setListener() {
         mPeopleVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 //                ZqEngineKit.getInstance().adjustPlaybackSignalVolume(progress);

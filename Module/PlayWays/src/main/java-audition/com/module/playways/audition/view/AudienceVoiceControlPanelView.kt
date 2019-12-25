@@ -27,10 +27,6 @@ class AudienceVoiceControlPanelView(context: Context, attrs: AttributeSet) : Voi
         mMixSb = this.findViewById(com.component.busilib.R.id.mix_sb)
         mLowLatencyTv = this.findViewById(com.component.busilib.R.id.low_latency_tv)
         mLowLatencySb = this.findViewById(com.component.busilib.R.id.low_latency_sb)
-    }
-
-    override fun setListener() {
-        super.setListener()
         if (LATENCY_TEST_MODE) {
             mLowLatencySb?.setOnCheckedChangeListener { buttonView, isChecked ->
                 ZqEngineKit.getInstance().setEnableAudioLowLatency(isChecked)
