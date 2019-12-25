@@ -54,7 +54,7 @@ public class PersonInfoDialog {
     SkrVerifyUtils mRealNameVerifyUtils = new SkrVerifyUtils();
 
     KickListener mKickListener;
-    InviteDoubleListener mInviteDoubleListener;
+    InviteReplyListener mInviteDoubleListener;
     DialogPlus mDialogPlus;
 
     PersonInfoDialogView3 personInfoDialogView;
@@ -67,7 +67,7 @@ public class PersonInfoDialog {
         mShowInvite = builder.mShowInvite;
         mRoomID = builder.mRoomID;
         mKickListener = builder.mKickListener;
-        mInviteDoubleListener = builder.mInviteDoubleListener;
+        mInviteDoubleListener = builder.mInviteReplyListener;
 
         init();
     }
@@ -153,7 +153,7 @@ public class PersonInfoDialog {
                     mRealNameVerifyUtils.checkJoinDoubleRoomPermission(new Runnable() {
                         @Override
                         public void run() {
-                            mInviteDoubleListener.onClickDoubleInvite(userInfoModel);
+                            mInviteDoubleListener.onClickReplyInvite(userInfoModel);
                         }
                     });
                 }
@@ -498,8 +498,8 @@ public class PersonInfoDialog {
         void onClickKick(UserInfoModel userInfoModel);
     }
 
-    public interface InviteDoubleListener {
-        void onClickDoubleInvite(UserInfoModel userInfoModel);
+    public interface InviteReplyListener {
+        void onClickReplyInvite(UserInfoModel userInfoModel);
     }
 
     public interface PersonCardClickListener {
@@ -532,7 +532,7 @@ public class PersonInfoDialog {
         private boolean mShowInvite;
         private int mRoomID;
         private KickListener mKickListener;
-        private InviteDoubleListener mInviteDoubleListener;
+        private InviteReplyListener mInviteReplyListener;
 
         public Builder(Activity activity, int from, int userID, boolean showKick, boolean showInvite) {
             mActivity = activity;
@@ -552,8 +552,8 @@ public class PersonInfoDialog {
             return this;
         }
 
-        public Builder setInviteDoubleListener(InviteDoubleListener val) {
-            mInviteDoubleListener = val;
+        public Builder setInviteReplyListener(InviteReplyListener val) {
+            mInviteReplyListener = val;
             return this;
         }
 

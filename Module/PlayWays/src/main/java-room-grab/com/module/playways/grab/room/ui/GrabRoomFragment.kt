@@ -22,8 +22,6 @@ import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
-import com.common.core.userinfo.ResponseCallBack
-import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.log.DebugLogView
@@ -63,9 +61,9 @@ import com.module.playways.grab.room.inter.IGrabRoomView
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.model.GrabRoundInfoModel
-import com.module.playways.grab.room.presenter.DoubleRoomInvitePresenter
 import com.module.playways.grab.room.presenter.GrabCorePresenter
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter
+import com.module.playways.grab.room.presenter.ReplyRoomInvitePresenter
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.top.GrabTopContentView
 import com.module.playways.grab.room.top.GrabTopOpView
@@ -162,7 +160,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     internal var mGrabRedPkgPresenter: GrabRedPkgPresenter? = null
 
-    internal var mDoubleRoomInvitePresenter: DoubleRoomInvitePresenter? = null
+    internal var mReplyRoomInvitePresenter: ReplyRoomInvitePresenter? = null
 
     //    DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
@@ -347,8 +345,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         addPresent(mGrabRedPkgPresenter)
         mGrabRedPkgPresenter?.checkRedPkg()
         mCorePresenter?.setGrabRedPkgPresenter(mGrabRedPkgPresenter!!)
-        mDoubleRoomInvitePresenter = DoubleRoomInvitePresenter()
-        addPresent(mDoubleRoomInvitePresenter)
+        mReplyRoomInvitePresenter = ReplyRoomInvitePresenter()
+        addPresent(mReplyRoomInvitePresenter)
         mVipEnterPresenter = VipEnterPresenter(this, mRoomData!!)
         addPresent(mVipEnterPresenter)
 
@@ -855,41 +853,29 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
 
         mPersonInfoDialog?.dismiss(false)
-        mPersonInfoDialog = PersonInfoDialog.Builder(activity, QuickFeedbackFragment.FROM_GRAB_ROOM, userID, mShowKick, mRoomData?.roomType != GrabRoomType.ROOM_TYPE_PLAYBOOK)
+        mPersonInfoDialog = PersonInfoDialog.Builder(activity, QuickFeedbackFragment.FROM_GRAB_ROOM, userID, mShowKick, true)
                 .setRoomID(mRoomData!!.gameId)
-                .setInviteDoubleListener { userInfoModel ->
+                .setInviteReplyListener { userInfoModel ->
                     if (userInfoModel.isFriend) {
-                        mDoubleRoomInvitePresenter?.inviteToDoubleRoom(userInfoModel.userId)
+                        mReplyRoomInvitePresenter?.inviteToReplyRoom(userInfoModel.userId)
                     } else {
-                        UserInfoManager.getInstance().checkIsFans(MyUserInfoManager.uid.toInt(), userInfoModel.userId, object : ResponseCallBack<Boolean>() {
-                            override fun onServerSucess(isFans: Boolean?) {
-                                if (isFans!!) {
-                                    mDoubleRoomInvitePresenter?.inviteToDoubleRoom(userInfoModel.userId)
-                                } else {
-                                    mTipsDialogView = TipsDialogView.Builder(U.getActivityUtils().topActivity)
-                                            .setMessageTip("对方不是您的好友或粉丝\n要花2金币邀请ta加入双人唱聊房吗？")
-                                            .setConfirmTip("邀请")
-                                            .setCancelTip("取消")
-                                            .setConfirmBtnClickListener(object : AnimateClickListener() {
-                                                override fun click(view: View) {
-                                                    mDoubleRoomInvitePresenter?.inviteToDoubleRoom(userInfoModel.userId)
-                                                    mTipsDialogView?.dismiss()
-                                                }
-                                            })
-                                            .setCancelBtnClickListener(object : AnimateClickListener() {
-                                                override fun click(view: View) {
-                                                    mTipsDialogView?.dismiss()
-                                                }
-                                            })
-                                            .build()
-                                    mTipsDialogView?.showByDialog()
-                                }
-                            }
-
-                            override fun onServerFailed() {
-
-                            }
-                        })
+                        mTipsDialogView = TipsDialogView.Builder(U.getActivityUtils().topActivity)
+                                .setMessageTip("对方不是您的好友，要花钻石邀请ta一起心动合唱吗？")
+                                .setConfirmTip("邀请")
+                                .setCancelTip("取消")
+                                .setConfirmBtnClickListener(object : AnimateClickListener() {
+                                    override fun click(view: View) {
+                                        mReplyRoomInvitePresenter?.inviteToReplyRoom(userInfoModel.userId)
+                                        mTipsDialogView?.dismiss()
+                                    }
+                                })
+                                .setCancelBtnClickListener(object : AnimateClickListener() {
+                                    override fun click(view: View) {
+                                        mTipsDialogView?.dismiss()
+                                    }
+                                })
+                                .build()
+                        mTipsDialogView?.showByDialog()
                     }
                 }
                 .setKickListener { userInfoModel -> showKickConfirmDialog(userInfoModel) }

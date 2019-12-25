@@ -76,6 +76,14 @@ public interface DoubleRoomServerApi {
     Observable<ApiResult> getInviteEnterResult();
 
     /**
+     * 邀请完一个人之后需要轮询拉接口(合唱)
+     *
+     * @return
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/invite-result")
+    Observable<ApiResult> getRelayInviteEnterResult();
+
+    /**
      * 房间结束信息
      *
      * @return
@@ -201,6 +209,19 @@ public interface DoubleRoomServerApi {
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.game.inframe.mobi/v1/magpie/send-invite-user")
     Observable<ApiResult> sendInvite(@Body RequestBody body);
+
+    /**
+     * {
+     * "peerUserID": 0
+     * }
+     * 邀请一个人合唱，房间外
+     *
+     * @param body
+     * @return
+     */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/invite-user-enter")
+    Observable<ApiResult> sendRelayInvite(@Body RequestBody body);
 
     /**
      * 主动获取游戏状态

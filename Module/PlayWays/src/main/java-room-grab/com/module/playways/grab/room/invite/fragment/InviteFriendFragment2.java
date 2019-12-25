@@ -86,7 +86,7 @@ public class InviteFriendFragment2 extends BaseFragment {
             mTitleList.put(1, "粉丝");
             mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, mGameID, mTagID, UserInfoManager.RELATION.FRIENDS.getValue()));
             mTitleAndViewMap.put(1, new InviteFriendView(this, mFrom, mGameID, mTagID, UserInfoManager.RELATION.FANS.getValue()));
-        } else if(mFrom == GameModeType.GAME_MODE_PARTY || mFrom == GameModeType.GAME_MODE_DOUBLE){
+        } else if (mFrom == GameModeType.GAME_MODE_PARTY || mFrom == GameModeType.GAME_MODE_DOUBLE) {
             mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.transparent));
             mTitleList.put(0, "好友");
             mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, mGameID, mTagID, UserInfoManager.RELATION.FRIENDS.getValue()));
@@ -237,6 +237,8 @@ public class InviteFriendFragment2 extends BaseFragment {
 
                 }
             });
+        } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
+
         }
     }
 
@@ -308,7 +310,8 @@ public class InviteFriendFragment2 extends BaseFragment {
                 mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
             } else if (mFrom == GameModeType.GAME_MODE_MIC) {
                 mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_MIC_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
-            }if (mFrom == GameModeType.GAME_MODE_PARTY) {
+            }
+            if (mFrom == GameModeType.GAME_MODE_PARTY) {
                 mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_PARTY_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
             }
 

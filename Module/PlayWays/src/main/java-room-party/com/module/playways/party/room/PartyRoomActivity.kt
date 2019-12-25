@@ -21,6 +21,7 @@ import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.ClubCardDialogView
@@ -34,6 +35,7 @@ import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.R
 import com.module.playways.grab.room.inter.IGrabVipView
+import com.module.playways.grab.room.presenter.ReplyRoomInvitePresenter
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
@@ -104,7 +106,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
      */
     internal var mRoomData = PartyRoomData()
     private lateinit var mCorePresenter: PartyCorePresenter
-    //    internal var mDoubleRoomInvitePresenter = DoubleRoomInvitePresenter()
+    internal var mReplyRoomInvitePresenter = ReplyRoomInvitePresenter()
     //基础ui组件
     internal lateinit var mInputContainerView: InputContainerView
     internal lateinit var mBottomContainerView: PartyBottomContainerView
@@ -172,6 +174,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         addPresent(mCorePresenter)
         mVipEnterPresenter = VipEnterPresenter(this, mRoomData)
         addPresent(mVipEnterPresenter)
+        addPresent(mReplyRoomInvitePresenter)
         // 请保证从下面的view往上面的view开始初始化
         findViewById<View>(R.id.main_act_container).setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -556,7 +559,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
             override fun showClubInfoCard() {
                 dismissDialog()
-                mClubCardDialogView = ClubCardDialogView(this@PartyRoomActivity, mRoomData.clubInfo?.clubID ?: 0)
+                mClubCardDialogView = ClubCardDialogView(this@PartyRoomActivity, mRoomData.clubInfo?.clubID
+                        ?: 0)
                 mClubCardDialogView?.showByDialog()
             }
         }
@@ -634,8 +638,31 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             showKick = !(mRoomData.getPlayerInfoById(userID)?.isAdmin() == true || mRoomData.getPlayerInfoById(userID)?.isHost() == true)
         }
 
-        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_PARTY_ROOM, userID, showKick, false)
+        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_PARTY_ROOM, userID, showKick, true)
                 .setRoomID(mRoomData.gameId)
+                .setInviteReplyListener { userInfoModel ->
+                    if (userInfoModel.isFriend) {
+                        mReplyRoomInvitePresenter?.inviteToReplyRoom(userInfoModel.userId)
+                    } else {
+                        mTipsDialogView = TipsDialogView.Builder(U.getActivityUtils().topActivity)
+                                .setMessageTip("对方不是您的好友，要花钻石邀请ta一起心动合唱吗？")
+                                .setConfirmTip("邀请")
+                                .setCancelTip("取消")
+                                .setConfirmBtnClickListener(object : AnimateClickListener() {
+                                    override fun click(view: View) {
+                                        mReplyRoomInvitePresenter?.inviteToReplyRoom(userInfoModel.userId)
+                                        mTipsDialogView?.dismiss()
+                                    }
+                                })
+                                .setCancelBtnClickListener(object : AnimateClickListener() {
+                                    override fun click(view: View) {
+                                        mTipsDialogView?.dismiss()
+                                    }
+                                })
+                                .build()
+                        mTipsDialogView?.showByDialog()
+                    }
+                }
                 .setKickListener {
                     showKickConfirmDialog(it)
                 }

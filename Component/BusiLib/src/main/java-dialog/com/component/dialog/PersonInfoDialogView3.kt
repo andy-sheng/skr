@@ -239,9 +239,6 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
             divider.visibility = View.INVISIBLE
         }
 
-        // todo 禁所有的双人唱聊入口
-        inviteIv.visibility = View.GONE
-
         getHomePage(mUserId)
         getPhotos(0)
     }

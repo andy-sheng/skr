@@ -98,7 +98,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
      */
     internal var mRoomData = RelayRoomData()
     private lateinit var mCorePresenter: RelayCorePresenter
-    //    internal var mDoubleRoomInvitePresenter = DoubleRoomInvitePresenter()
+    //    internal var replyRoomInvitePresenter = DoubleRoomInvitePresenter()
     //基础ui组件
     internal lateinit var mInputContainerView: InputContainerView
     internal lateinit var mBottomContainerView: RelayBottomContainerView
@@ -206,7 +206,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         addPresent(mCorePresenter)
         mVipEnterPresenter = VipEnterPresenter(this, mRoomData)
         addPresent(mVipEnterPresenter)
-//        addPresent(mDoubleRoomInvitePresenter)
+//        addPresent(replyRoomInvitePresenter)
         // 请保证从下面的view往上面的view开始初始化
         findViewById<View>(R.id.main_act_container).setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {

@@ -193,7 +193,7 @@
         android:background="@drawable/common_red_button_icon"
         android:gravity="center"
         android:paddingBottom="@dimen/view_4_dp"
-        android:text="双人唱聊"
+        android:text="合唱邀请"
         android:textColor="#AF436B"
         android:textSize="@dimen/textsize_16_dp"
         app:layout_constrainedWidth="true"
