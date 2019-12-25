@@ -7,18 +7,23 @@ import android.view.View
 import android.widget.TextView
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
+import com.component.busilib.R
 
 
 class AgeTagView : ConstraintLayout {
 
-    private var mPrimaryIv: ExImageView
-    private var mSeniorIv: ExImageView
-    private var mCollegeIv: ExImageView
-    private var mWorksIv: ExImageView
-    private val mPrimaryTv: TextView
-    private val mSeniorTv: TextView
-    private val mCollegeTv: TextView
-    private val mWorksTv: TextView
+    private val age05Iv: ExImageView
+    private val age05Tv: TextView
+    private val age00Iv: ExImageView
+    private val age00Tv: TextView
+    private val age95Iv: ExImageView
+    private val age95Tv: TextView
+    private val age90Iv: ExImageView
+    private val age90Tv: TextView
+    private val age80Iv: ExImageView
+    private val age80Tv: TextView
+    private val age70Iv: ExImageView
+    private val age70Tv: TextView
 
     private var mListener: Listener? = null
     private var ageStage: Int = 0
@@ -30,76 +35,94 @@ class AgeTagView : ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
     init {
-        View.inflate(context, com.component.busilib.R.layout.person_age_tag_view_layout, this)
+        View.inflate(context, R.layout.person_age_tag_view_layout, this)
 
-        mPrimaryIv = findViewById(com.component.busilib.R.id.primary_iv)
-        mSeniorIv = findViewById(com.component.busilib.R.id.senior_iv)
-        mCollegeIv = findViewById(com.component.busilib.R.id.college_iv)
-        mWorksIv = findViewById(com.component.busilib.R.id.works_iv)
-        mPrimaryTv = findViewById(com.component.busilib.R.id.primary_tv)
-        mSeniorTv = findViewById(com.component.busilib.R.id.senior_tv)
-        mCollegeTv = findViewById(com.component.busilib.R.id.college_tv)
-        mWorksTv = findViewById(com.component.busilib.R.id.works_tv)
+        age05Iv = this.findViewById(R.id.age_05_iv)
+        age05Tv = this.findViewById(R.id.age_05_tv)
+        age00Iv = this.findViewById(R.id.age_00_iv)
+        age00Tv = this.findViewById(R.id.age_00_tv)
+        age95Iv = this.findViewById(R.id.age_95_iv)
+        age95Tv = this.findViewById(R.id.age_95_tv)
+        age90Iv = this.findViewById(R.id.age_90_iv)
+        age90Tv = this.findViewById(R.id.age_90_tv)
+        age80Iv = this.findViewById(R.id.age_80_iv)
+        age80Tv = this.findViewById(R.id.age_80_tv)
+        age70Iv = this.findViewById(R.id.age_70_iv)
+        age70Tv = this.findViewById(R.id.age_70_tv)
 
-        mPrimaryIv.setOnClickListener(object : DebounceViewClickListener() {
+        age05Iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 setSelectTag(1)
             }
         })
 
-        mSeniorIv.setOnClickListener(object : DebounceViewClickListener() {
+        age00Iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 setSelectTag(2)
             }
         })
 
-        mCollegeIv.setOnClickListener(object : DebounceViewClickListener() {
+        age95Iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 setSelectTag(3)
             }
         })
 
-        mWorksIv.setOnClickListener(object : DebounceViewClickListener() {
+        age90Iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 setSelectTag(4)
+            }
+        })
+
+        age80Iv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                setSelectTag(5)
+            }
+        })
+
+        age70Iv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                setSelectTag(6)
             }
         })
     }
 
     fun setTextColor(color: Int) {
-        mPrimaryTv.setTextColor(color)
-        mSeniorTv.setTextColor(color)
-        mCollegeTv.setTextColor(color)
-        mWorksTv.setTextColor(color)
+        age05Tv.setTextColor(color)
+        age00Tv.setTextColor(color)
+        age95Tv.setTextColor(color)
+        age90Tv.setTextColor(color)
+        age80Tv.setTextColor(color)
+        age70Tv.setTextColor(color)
     }
 
     fun setSelectTag(ageTag: Int) {
         ageStage = ageTag
+        age05Iv.isSelected = false
+        age00Iv.isSelected = false
+        age95Iv.isSelected = false
+        age90Iv.isSelected = false
+        age80Iv.isSelected = false
+        age70Iv.isSelected = false
         mListener?.onSelectedAge(ageTag)
         when (ageTag) {
             1 -> {
-                mPrimaryIv.isSelected = true
-                mSeniorIv.isSelected = false
-                mCollegeIv.isSelected = false
-                mWorksIv.isSelected = false
+                age05Iv.isSelected = true
             }
             2 -> {
-                mPrimaryIv.isSelected = false
-                mSeniorIv.isSelected = true
-                mCollegeIv.isSelected = false
-                mWorksIv.isSelected = false
+                age00Iv.isSelected = true
             }
             3 -> {
-                mPrimaryIv.isSelected = false
-                mSeniorIv.isSelected = false
-                mCollegeIv.isSelected = true
-                mWorksIv.isSelected = false
+                age95Iv.isSelected = true
             }
             4 -> {
-                mPrimaryIv.isSelected = false
-                mSeniorIv.isSelected = false
-                mCollegeIv.isSelected = false
-                mWorksIv.isSelected = true
+                age90Iv.isSelected = true
+            }
+            5 -> {
+                age80Iv.isSelected = true
+            }
+            6 -> {
+                age70Iv.isSelected = true
             }
         }
     }
