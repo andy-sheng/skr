@@ -138,11 +138,9 @@ public class NotificationPushManager {
         } else if (msg.getMsgType() == ENotificationMsgType.NM_CLUBINFO_CHANGE) {
             EventBus.getDefault().post(msg.getClubInfoChangeMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_RELAY_ENTER) {
-//            EventBus.getDefault().post(msg.getRelayRoomEnterMsg());
-            //TODO  这里需要区分邀请的
             if (msg.getRelayRoomEnterMsg().getInviteType() == ERInviteType.RIT_OUT_COMBINE_ROOM) {
                 EventBus.getDefault().post(new CNRelayEnterFromOuterInviteNotifyEvent(msg.getRelayRoomEnterMsg()));
-            } else {
+            } else if (msg.getRelayRoomEnterMsg().getInviteType() == ERInviteType.RIT_IN_COMBINE_ROOM) {
                 EventBus.getDefault().post(new CNRelayEnterFromRoomInviteNotifyEvent(msg.getRelayRoomEnterMsg()));
             }
         } else if (msg.getMsgType() == ENotificationMsgType.NM_RELAY_REFUSE) {
