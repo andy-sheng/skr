@@ -2,6 +2,7 @@ package com.common.notification;
 
 import com.common.log.MyLog;
 import com.common.notification.event.CNRelayEnterFromOuterInviteNotifyEvent;
+import com.common.notification.event.CNRelayEnterFromRoomInviteNotifyEvent;
 import com.common.notification.event.CRInviteInCreateRoomNotifyEvent;
 import com.common.notification.event.CRRefuseInviteNotifyEvent;
 import com.common.notification.event.CRSendInviteUserNotifyEvent;
@@ -26,6 +27,7 @@ import com.zq.live.proto.Notification.CombineRoomRefuseMsg;
 import com.zq.live.proto.Notification.ECombineRoomEnterType;
 import com.zq.live.proto.Notification.EInviteType;
 import com.zq.live.proto.Notification.ENotificationMsgType;
+import com.zq.live.proto.Notification.ERInviteType;
 import com.zq.live.proto.Notification.FeedCommentAddMsg;
 import com.zq.live.proto.Notification.FeedCommentLikeMsg;
 import com.zq.live.proto.Notification.FeedLikeMsg;
@@ -138,7 +140,11 @@ public class NotificationPushManager {
         } else if (msg.getMsgType() == ENotificationMsgType.NM_RELAY_ENTER) {
 //            EventBus.getDefault().post(msg.getRelayRoomEnterMsg());
             //TODO  这里需要区分邀请的
-            EventBus.getDefault().post(new CNRelayEnterFromOuterInviteNotifyEvent(msg.getRelayRoomEnterMsg()));
+            if (msg.getRelayRoomEnterMsg().getInviteType() == ERInviteType.RIT_OUT_COMBINE_ROOM) {
+                EventBus.getDefault().post(new CNRelayEnterFromOuterInviteNotifyEvent(msg.getRelayRoomEnterMsg()));
+            } else {
+                EventBus.getDefault().post(new CNRelayEnterFromRoomInviteNotifyEvent(msg.getRelayRoomEnterMsg()));
+            }
         } else if (msg.getMsgType() == ENotificationMsgType.NM_RELAY_REFUSE) {
             EventBus.getDefault().post(msg.getRelayRoomRefuseMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_RELAY_INVITE) {

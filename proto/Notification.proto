@@ -63,6 +63,7 @@ message RelayRoomEnterMsg
     bool enableNoLimitDuration            = 7; //开启没有限制的持续时间
     bytes currentRound               = 8; //当前轮次信息
     repeated Common.BackgroundShowInfo showInfos = 9; //背景效果
+    ERInviteType inviteType               = 10; //邀请进房类型
 }
 
 

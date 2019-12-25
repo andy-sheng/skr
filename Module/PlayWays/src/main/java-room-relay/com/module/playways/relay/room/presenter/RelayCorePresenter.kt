@@ -13,6 +13,7 @@ import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
+import com.common.notification.event.CNRelayEnterFromRoomInviteNotifyEvent
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -278,7 +279,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         mUiHandler.sendMessageDelayed(msg, 10 * 1000)
     }
 
-    private fun realSingBegin(from:String) {
+    private fun realSingBegin(from: String) {
         DebugLogView.println(TAG, "realSingBegin 开始伴奏 progress=${mRoomData?.getSingCurPosition()} from=${from}")
         ZqEngineKit.getInstance().resumeAudioMixing()
         if (mRoomData.isSingByMeNow()) {
@@ -1199,6 +1200,12 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 StatisticsAdapter.recordCountEvent("relay", "game_getgift", null)
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    fun onEvent(cnRelayEnterFromRoomInviteNotifyEvent: CNRelayEnterFromRoomInviteNotifyEvent) {
+        MyLog.d(TAG, "onEvent cnRelayEnterFromRoomInviteNotifyEvent=$cnRelayEnterFromRoomInviteNotifyEvent")
+
     }
 
     fun sendUnlock() {

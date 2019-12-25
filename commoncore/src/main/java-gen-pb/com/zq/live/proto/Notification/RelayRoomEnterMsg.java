@@ -37,6 +37,8 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
 
   public static final ByteString DEFAULT_CURRENTROUND = ByteString.EMPTY;
 
+  public static final ERInviteType DEFAULT_INVITETYPE = ERInviteType.RIT_UNKNOWN;
+
   /**
    * 房间ID
    */
@@ -122,16 +124,26 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
   )
   private final List<BackgroundShowInfo> showInfos;
 
+  /**
+   * 邀请进房类型
+   */
+  @WireField(
+      tag = 10,
+      adapter = "com.zq.live.proto.Notification.ERInviteType#ADAPTER"
+  )
+  private final ERInviteType inviteType;
+
   public RelayRoomEnterMsg(Integer roomID, Long createdTimeMs, List<UserInfo> users,
       RelayRoomConfig config, List<AgoraTokenInfo> tokens, List<ByteString> userLockInfo,
-      Boolean enableNoLimitDuration, ByteString currentRound, List<BackgroundShowInfo> showInfos) {
-    this(roomID, createdTimeMs, users, config, tokens, userLockInfo, enableNoLimitDuration, currentRound, showInfos, ByteString.EMPTY);
+      Boolean enableNoLimitDuration, ByteString currentRound, List<BackgroundShowInfo> showInfos,
+      ERInviteType inviteType) {
+    this(roomID, createdTimeMs, users, config, tokens, userLockInfo, enableNoLimitDuration, currentRound, showInfos, inviteType, ByteString.EMPTY);
   }
 
   public RelayRoomEnterMsg(Integer roomID, Long createdTimeMs, List<UserInfo> users,
       RelayRoomConfig config, List<AgoraTokenInfo> tokens, List<ByteString> userLockInfo,
       Boolean enableNoLimitDuration, ByteString currentRound, List<BackgroundShowInfo> showInfos,
-      ByteString unknownFields) {
+      ERInviteType inviteType, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roomID = roomID;
     this.createdTimeMs = createdTimeMs;
@@ -142,6 +154,7 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
     this.enableNoLimitDuration = enableNoLimitDuration;
     this.currentRound = currentRound;
     this.showInfos = Internal.immutableCopyOf("showInfos", showInfos);
+    this.inviteType = inviteType;
   }
 
   @Override
@@ -156,6 +169,7 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
     builder.enableNoLimitDuration = enableNoLimitDuration;
     builder.currentRound = currentRound;
     builder.showInfos = Internal.copyOf("showInfos", showInfos);
+    builder.inviteType = inviteType;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -174,7 +188,8 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
         && userLockInfo.equals(o.userLockInfo)
         && Internal.equals(enableNoLimitDuration, o.enableNoLimitDuration)
         && Internal.equals(currentRound, o.currentRound)
-        && showInfos.equals(o.showInfos);
+        && showInfos.equals(o.showInfos)
+        && Internal.equals(inviteType, o.inviteType);
   }
 
   @Override
@@ -191,6 +206,7 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
       result = result * 37 + (enableNoLimitDuration != null ? enableNoLimitDuration.hashCode() : 0);
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + showInfos.hashCode();
+      result = result * 37 + (inviteType != null ? inviteType.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -208,6 +224,7 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
     if (enableNoLimitDuration != null) builder.append(", enableNoLimitDuration=").append(enableNoLimitDuration);
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (!showInfos.isEmpty()) builder.append(", showInfos=").append(showInfos);
+    if (inviteType != null) builder.append(", inviteType=").append(inviteType);
     return builder.replace(0, 2, "RelayRoomEnterMsg{").append('}').toString();
   }
 
@@ -312,6 +329,16 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
   }
 
   /**
+   * 邀请进房类型
+   */
+  public ERInviteType getInviteType() {
+    if(inviteType==null){
+        return new ERInviteType.Builder().build();
+    }
+    return inviteType;
+  }
+
+  /**
    * 房间ID
    */
   public boolean hasRoomID() {
@@ -374,6 +401,13 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
     return showInfos!=null;
   }
 
+  /**
+   * 邀请进房类型
+   */
+  public boolean hasInviteType() {
+    return inviteType!=null;
+  }
+
   public static final class Builder extends Message.Builder<RelayRoomEnterMsg, Builder> {
     private Integer roomID;
 
@@ -392,6 +426,8 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
     private ByteString currentRound;
 
     private List<BackgroundShowInfo> showInfos;
+
+    private ERInviteType inviteType;
 
     public Builder() {
       users = Internal.newMutableList();
@@ -476,9 +512,17 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
       return this;
     }
 
+    /**
+     * 邀请进房类型
+     */
+    public Builder setInviteType(ERInviteType inviteType) {
+      this.inviteType = inviteType;
+      return this;
+    }
+
     @Override
     public RelayRoomEnterMsg build() {
-      return new RelayRoomEnterMsg(roomID, createdTimeMs, users, config, tokens, userLockInfo, enableNoLimitDuration, currentRound, showInfos, super.buildUnknownFields());
+      return new RelayRoomEnterMsg(roomID, createdTimeMs, users, config, tokens, userLockInfo, enableNoLimitDuration, currentRound, showInfos, inviteType, super.buildUnknownFields());
     }
   }
 
@@ -498,6 +542,7 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
           + ProtoAdapter.BOOL.encodedSizeWithTag(7, value.enableNoLimitDuration)
           + ProtoAdapter.BYTES.encodedSizeWithTag(8, value.currentRound)
           + BackgroundShowInfo.ADAPTER.asRepeated().encodedSizeWithTag(9, value.showInfos)
+          + ERInviteType.ADAPTER.encodedSizeWithTag(10, value.inviteType)
           + value.unknownFields().size();
     }
 
@@ -512,6 +557,7 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
       ProtoAdapter.BOOL.encodeWithTag(writer, 7, value.enableNoLimitDuration);
       ProtoAdapter.BYTES.encodeWithTag(writer, 8, value.currentRound);
       BackgroundShowInfo.ADAPTER.asRepeated().encodeWithTag(writer, 9, value.showInfos);
+      ERInviteType.ADAPTER.encodeWithTag(writer, 10, value.inviteType);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -530,6 +576,14 @@ public final class RelayRoomEnterMsg extends Message<RelayRoomEnterMsg, RelayRoo
           case 7: builder.setEnableNoLimitDuration(ProtoAdapter.BOOL.decode(reader)); break;
           case 8: builder.setCurrentRound(ProtoAdapter.BYTES.decode(reader)); break;
           case 9: builder.showInfos.add(BackgroundShowInfo.ADAPTER.decode(reader)); break;
+          case 10: {
+            try {
+              builder.setInviteType(ERInviteType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
