@@ -21,8 +21,8 @@ class FeedsMakeVoiceControlPanelView(context: Context?, attrs: AttributeSet?) : 
     }
 
 
-    override fun setListener() {
-        super.setListener()
+    override fun init(context: Context?) {
+        super.init(context)
         mPeopleVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 ZqEngineKit.getInstance().params.recordingSignalVolume = progress
