@@ -426,4 +426,12 @@ public interface UserInfoServerApi {
      */
     @PUT("http://dev.api.inframe.mobi/v1/club/member-join")
     Observable<ApiResult> applyJoinClub(@Body RequestBody body);
+
+
+    /**
+     * 查询指定家族的成员信息
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/check-member-info")
+    Call<ApiResult> getGuardList(@Query("userID") int userID, @Query("offset") int offset, @Query("limit") int limit);
+
 }

@@ -101,6 +101,12 @@ public class DateTimeUtils {
         return format.format(date) + "-00";
     }
 
+    public String formateTimeString(long time) {
+        Date date = new Date(time);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+        return format.format(date);
+    }
+
     /**
      * @param context
      * @param rowTime 某个时间戳
@@ -189,8 +195,7 @@ public class DateTimeUtils {
      * 格式化帖子时间(精确到分钟)
      *
      * @param videoTime 默认是毫秒单位
-     * @return  00:00
-     *
+     * @return 00:00
      */
     public String formatPostsRedMinuTime(long videoTime) {
         //MyLog.d(TAG, "formatVideoTime, videoTime = " + videoTime);
