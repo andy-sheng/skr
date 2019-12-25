@@ -6,10 +6,15 @@ import android.support.constraint.ConstraintLayout
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
+import com.alibaba.android.arouter.launcher.ARouter
+import com.common.core.permission.SkrAudioPermission
+import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.component.lyrics.LyricsManager
+import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.room.song.model.SongModel
 import com.orhanobut.dialogplus.DialogPlus
@@ -19,13 +24,36 @@ class RelaySongInfoDialogView(model: SongModel, context: Context) : ConstraintLa
 
     private var mDialogPlus: DialogPlus? = null
 
+    private val songNameTv: TextView
+    private val songAuthorTv: TextView
+    private val contentTv: TextView
+    private val startTv: TextView
+    private val exitIv: ImageView
+
+
     init {
         View.inflate(context, R.layout.relay_song_info_dialog_view_layout, this)
 
-        val songNameTv: TextView = this.findViewById(R.id.song_name_tv)
-        val songAuthorTv: TextView = this.findViewById(R.id.song_author_tv)
-        val contentTv: TextView = this.findViewById(R.id.content_tv)
-        val startTv: TextView = this.findViewById(R.id.start_tv)
+        songNameTv = this.findViewById(R.id.song_name_tv)
+        songAuthorTv = this.findViewById(R.id.song_author_tv)
+        contentTv = this.findViewById(R.id.content_tv)
+        startTv = this.findViewById(R.id.start_tv)
+        exitIv = this.findViewById(R.id.exit_iv)
+
+
+        exitIv.setDebounceViewClickListener {
+            mDialogPlus?.dismiss()
+        }
+
+        startTv.setDebounceViewClickListener {
+            mDialogPlus?.dismiss(false)
+            val skrAudioPermission = SkrAudioPermission()
+            skrAudioPermission.ensurePermission({
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_MATCH)
+                        .withSerializable("songModel", model)
+                        .navigation()
+            }, true)
+        }
 
         songNameTv.text = model.itemName
         songAuthorTv.text = model.songDesc
