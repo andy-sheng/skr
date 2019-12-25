@@ -526,10 +526,10 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         }, true)
     }
 
-    internal fun tryToRelayRoom(ownerId: Int, roomID: Int) {
+    internal fun tryToRelayRoom(ownerId: Int, roomID: Int, ts: Long) {
         mSkrAudioPermission!!.ensurePermission({
             val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-            iRankingModeService.acceptRelayRoomInvite(ownerId, roomID)
+            iRankingModeService.acceptRelayRoomInvite(ownerId, roomID, ts)
         }, true)
     }
 
@@ -609,7 +609,10 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         if (iRankingModeService.canShowRelayInvite(event.user.userID)) {
             val floatWindowData = FloatWindowData(FloatWindowData.Type.RELAY_INVITE)
             floatWindowData.userInfoModel = UserInfoModel.parseFromPB(event.user)
-            floatWindowData.roomID = event.roomID
+            if (event.hasRoomID()) {
+                floatWindowData.roomID = event.roomID
+            }
+            floatWindowData.extra = event.inviteTimeMs.toString()
             mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
         }
     }
@@ -894,7 +897,8 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         notifyView.setListener {
             mUiHandler.removeMessages(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW)
             FloatWindow.destroy(TAG_RELAY_INVITE_FOALT_WINDOW)
-            tryToRelayRoom(userInfoModel!!.userId, floatWindowData.roomID)
+            tryToRelayRoom(userInfoModel!!.userId, floatWindowData.roomID, floatWindowData.extra?.toLong()
+                    ?: 0L)
         }
 
         FloatWindow.with(U.app())

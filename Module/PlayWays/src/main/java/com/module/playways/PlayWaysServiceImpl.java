@@ -388,12 +388,13 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
     //房间内和房间外同意的时候都调用这个，roomID > 0 的时候是房间内邀请
     @Override
-    public void acceptRelayRoomInvite(int ownerId, int roomID) {
+    public void acceptRelayRoomInvite(int ownerId, int roomID, long ts) {
         skrVerifyUtils.checkHasMicAudioPermission(new Runnable() {
             @Override
             public void run() {
                 HashMap map = new HashMap();
                 map.put("peerUserID", ownerId);
+                map.put("inviteTimeMs", ts);
                 if (roomID > 0) {
                     map.put("roomID", roomID);
                 }
