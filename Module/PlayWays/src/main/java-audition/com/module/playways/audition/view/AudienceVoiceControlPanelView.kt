@@ -9,9 +9,9 @@ import com.kyleduo.switchbutton.SwitchButton
 import com.module.playways.R
 import com.zq.mediaengine.kit.ZqEngineKit
 
-class AudienceVoiceControlPanelView(context: Context, attrs: AttributeSet) : VoiceControlPanelView(context, attrs) {
-    private var mLatencyTestMode = false
+const val LATENCY_TEST_MODE = true
 
+class AudienceVoiceControlPanelView(context: Context, attrs: AttributeSet) : VoiceControlPanelView(context, attrs) {
     protected var mMixTv: TextView? = null
     protected var mMixSb: SwitchButton? = null
     protected var mLowLatencyTv: TextView? = null
@@ -31,7 +31,7 @@ class AudienceVoiceControlPanelView(context: Context, attrs: AttributeSet) : Voi
 
     override fun setListener() {
         super.setListener()
-        if (mLatencyTestMode) {
+        if (LATENCY_TEST_MODE) {
             mLowLatencySb?.setOnCheckedChangeListener { buttonView, isChecked ->
                 ZqEngineKit.getInstance().setEnableAudioLowLatency(isChecked)
             }
@@ -53,7 +53,7 @@ class AudienceVoiceControlPanelView(context: Context, attrs: AttributeSet) : Voi
     override fun bindData() {
         super.bindData()
         if (ZqEngineKit.getInstance().params != null) {
-            if (mLatencyTestMode) {
+            if (LATENCY_TEST_MODE) {
                 mEarSb?.setCheckedNoEvent(ZqEngineKit.getInstance().params.isEnableAudioPreviewLatencyTest)
                 mMixSb?.setCheckedNoEvent(ZqEngineKit.getInstance().params.isEnableAudioMixLatencyTest)
                 mLowLatencySb?.setCheckedNoEvent(ZqEngineKit.getInstance().params.isEnableAudioLowLatency)
