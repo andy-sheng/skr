@@ -14,20 +14,17 @@ import com.module.playways.R
 import com.zq.mediaengine.kit.ZqEngineKit
 
 class AudienceVoiceControlPanelView(context: Context, attrs: AttributeSet) : VoiceControlPanelView(context, attrs) {
-    protected var mMixSb: SwitchButton ?= null
-    protected var mLowLatencySb: SwitchButton ?= null
+    protected var mMixSb: SwitchButton? = null
+    protected var mLowLatencySb: SwitchButton? = null
 
     override fun getLayout(): Int {
-        return R.layout.voice_control_panel_layout
+        return R.layout.audition_voice_control_panel_layout
     }
 
     override fun init(context: Context?) {
         super.init(context)
-            View.inflate(getContext(), getLayout(), this)
-
-            mMixSb = this.findViewById(com.component.busilib.R.id.mix_sb)
-            mLowLatencySb = this.findViewById(com.component.busilib.R.id.low_latency_sb)
-
+        mMixSb = this.findViewById(com.component.busilib.R.id.mix_sb)
+        mLowLatencySb = this.findViewById(com.component.busilib.R.id.low_latency_sb)
     }
 
     override fun setListener() {
