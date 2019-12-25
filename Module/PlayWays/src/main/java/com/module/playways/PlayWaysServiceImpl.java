@@ -346,7 +346,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     public boolean canShowRelayInvite(int peerUserID) {
         for (Activity activity : U.getActivityUtils().getActivityList()) {
             if (activity instanceof RelayRoomActivity) {
-                refuseJoinRelayRoom(peerUserID);
+                refuseJoinRelayRoom(peerUserID, 3);
                 return false;
             }
         }
@@ -355,9 +355,11 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     }
 
     @Override
-    public void refuseJoinRelayRoom(int peerUserID) {
+    public void refuseJoinRelayRoom(int peerUserID, int refuseType) {
         HashMap map = new HashMap();
         map.put("peerUserID", peerUserID);
+        //RT_ACTIVE_REFUSE = 1 : 主动拒绝 - RT_NO_RSP_REFUSE = 2 : 没响应拒绝
+        map.put("refuseType", refuseType);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         MicRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi.class);

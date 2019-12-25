@@ -904,9 +904,11 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 .setHeight(Screen.height, 0.2f)
                 .setViewStateListener(object : ViewStateListenerAdapter() {
                     override fun onDismiss(dismissReason: Int) {
-                        if (dismissReason != 0) {
-                            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                            iRankingModeService.refuseJoinRelayRoom(userInfoModel?.userId ?: 0)
+                        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                        if (dismissReason == 2) {
+                            iRankingModeService.refuseJoinRelayRoom(userInfoModel?.userId ?: 0, 2)
+                        } else if (dismissReason == 1) {
+                            iRankingModeService.refuseJoinRelayRoom(userInfoModel?.userId ?: 0, 1)
                         }
 
                         mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.endCurrent(floatWindowData)
