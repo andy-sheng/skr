@@ -1,6 +1,5 @@
 package com.module.club.manage.list
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -8,20 +7,22 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.ClubInfo
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.IClubModuleService
 import com.module.club.R
+import com.module.club.manage.search.ClubSearchFragemnt
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
@@ -31,6 +32,7 @@ import kotlinx.coroutines.launch
 class ClubListActivity : BaseActivity() {
 
     lateinit var titlebar: CommonTitleBar
+    lateinit var searchClubTv: ExTextView
     lateinit var refreshLayout: SmartRefreshLayout
     lateinit var contentRv: RecyclerView
 
@@ -52,6 +54,7 @@ class ClubListActivity : BaseActivity() {
     override fun initData(savedInstanceState: Bundle?) {
 
         titlebar = findViewById(R.id.titlebar)
+        searchClubTv = findViewById(R.id.search_club_tv)
         refreshLayout = findViewById(R.id.refreshLayout)
         contentRv = findViewById(R.id.content_rv)
 
@@ -66,6 +69,15 @@ class ClubListActivity : BaseActivity() {
 
         contentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         contentRv.adapter = adapter
+
+        searchClubTv.setDebounceViewClickListener {
+            U.getFragmentUtils().addFragment(FragmentUtils
+                    .newAddParamsBuilder(this, ClubSearchFragemnt::class.java)
+                    .setUseOldFragmentIfExist(false)
+                    .setAddToBackStack(true)
+                    .setHasAnimation(true)
+                    .build())
+        }
 
         titlebar.leftTextView.setDebounceViewClickListener {
             finish()

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
@@ -17,19 +18,39 @@
         app:centerType="textView"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
-        app:rightType="textView"
         app:rightText="+创建"
         app:rightTextColor="@color/white"
         app:rightTextSize="@dimen/textsize_16_dp"
+        app:rightType="textView"
         app:showBottomLine="false"
         app:statusBarColor="@color/colorPrimary"
         app:titleBarColor="@color/colorPrimary" />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/search_club_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_38_dp"
+        android:layout_below="@id/titlebar"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:drawableLeft="@drawable/tianjia_sousuo"
+        android:drawablePadding="@dimen/view_10_dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/textsize_10_dp"
+        android:text="搜索家族名称或家族ID"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#576FE3"
+        app:layout_constraintTop_toBottomOf="@id/titlebar" />
+
     <com.common.view.ex.ExRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/titlebar"
+        android:layout_below="@id/search_club_tv"
         android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_16_dp"
         android:background="@drawable/common_gradient_top_corners_bg"
         android:paddingLeft="@dimen/view_3_dp"

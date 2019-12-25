@@ -1,9 +1,11 @@
 package com.module.club
 
 import com.common.rxretrofit.ApiResult
+import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
+import java.util.*
 
 interface ClubServerApi {
     /**
@@ -129,6 +131,13 @@ interface ClubServerApi {
     @GET("http://dev.api.inframe.mobi/v1/club/list-member-in-rank")
     fun getClubRankList(@Query("offset") offset: Int, @Query("cnt") cnt: Int,
                         @Query("rType") type: Int, @Query("clubID") clubID: Int): Call<ApiResult>
+
+    /**
+     * 搜索家族
+     *
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/search-club")
+    fun searchClub(@Query("keyword") keyword: String): Observable<ApiResult>
 
 
 }
