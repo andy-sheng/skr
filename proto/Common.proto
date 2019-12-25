@@ -302,6 +302,11 @@ message CombineRoomConfig
     string roomSignature    = 4; //房间描述签名
 }
 
+message RelayRoomConfig
+{
+    sint32 durationTimeMs = 1; //房间持续时间
+}
+
 message AgoraTokenInfo
 {
     uint32 userID = 1; //用户id

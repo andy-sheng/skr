@@ -255,6 +255,33 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
   )
   private final ClubInfoChangeMsg clubInfoChangeMsg;
 
+  /**
+   * 接唱房进房信令
+   */
+  @WireField(
+      tag = 29,
+      adapter = "com.zq.live.proto.Notification.RelayRoomEnterMsg#ADAPTER"
+  )
+  private final RelayRoomEnterMsg relayRoomEnterMsg;
+
+  /**
+   * 接唱房拒绝邀请信令
+   */
+  @WireField(
+      tag = 30,
+      adapter = "com.zq.live.proto.Notification.RelayRoomRefuseMsg#ADAPTER"
+  )
+  private final RelayRoomRefuseMsg relayRoomRefuseMsg;
+
+  /**
+   * 接唱房邀请信令
+   */
+  @WireField(
+      tag = 31,
+      adapter = "com.zq.live.proto.Notification.RelayRoomInviteMsg#ADAPTER"
+  )
+  private final RelayRoomInviteMsg relayRoomInviteMsg;
+
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
       EMsgPosType posType, UserInfo sender, FollowMsg followMsg, InviteStandMsg inviteStandMsg,
       SysWarningMsg sysWarningMsg, CombineRoomInviteMsg inviteMsg, CombineRoomEnterMsg enterMsg,
@@ -264,8 +291,9 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       PostsCommentAddMsg postsCommentAddMsg, InviteMicMsg inviteMicMsg,
       SpFollowNewPostMsg spFollowNewPostMsg, SpFollowUpdateAlbumMsg spFollowUpdateAlbumMsg,
       GiftReceivesMsg giftReceivesMsg, InvitePartyMsg invitePartyMsg,
-      ClubInfoChangeMsg clubInfoChangeMsg) {
-    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, feedLikeMsg, feedCommentLikeMsg, feedCommentAddMsg, postsLikeMsg, postsCommentLikeMsg, postsCommentAddMsg, inviteMicMsg, spFollowNewPostMsg, spFollowUpdateAlbumMsg, giftReceivesMsg, invitePartyMsg, clubInfoChangeMsg, ByteString.EMPTY);
+      ClubInfoChangeMsg clubInfoChangeMsg, RelayRoomEnterMsg relayRoomEnterMsg,
+      RelayRoomRefuseMsg relayRoomRefuseMsg, RelayRoomInviteMsg relayRoomInviteMsg) {
+    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, feedLikeMsg, feedCommentLikeMsg, feedCommentAddMsg, postsLikeMsg, postsCommentLikeMsg, postsCommentAddMsg, inviteMicMsg, spFollowNewPostMsg, spFollowUpdateAlbumMsg, giftReceivesMsg, invitePartyMsg, clubInfoChangeMsg, relayRoomEnterMsg, relayRoomRefuseMsg, relayRoomInviteMsg, ByteString.EMPTY);
   }
 
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
@@ -277,7 +305,9 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       PostsCommentAddMsg postsCommentAddMsg, InviteMicMsg inviteMicMsg,
       SpFollowNewPostMsg spFollowNewPostMsg, SpFollowUpdateAlbumMsg spFollowUpdateAlbumMsg,
       GiftReceivesMsg giftReceivesMsg, InvitePartyMsg invitePartyMsg,
-      ClubInfoChangeMsg clubInfoChangeMsg, ByteString unknownFields) {
+      ClubInfoChangeMsg clubInfoChangeMsg, RelayRoomEnterMsg relayRoomEnterMsg,
+      RelayRoomRefuseMsg relayRoomRefuseMsg, RelayRoomInviteMsg relayRoomInviteMsg,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -304,6 +334,9 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     this.giftReceivesMsg = giftReceivesMsg;
     this.invitePartyMsg = invitePartyMsg;
     this.clubInfoChangeMsg = clubInfoChangeMsg;
+    this.relayRoomEnterMsg = relayRoomEnterMsg;
+    this.relayRoomRefuseMsg = relayRoomRefuseMsg;
+    this.relayRoomInviteMsg = relayRoomInviteMsg;
   }
 
   @Override
@@ -334,6 +367,9 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     builder.giftReceivesMsg = giftReceivesMsg;
     builder.invitePartyMsg = invitePartyMsg;
     builder.clubInfoChangeMsg = clubInfoChangeMsg;
+    builder.relayRoomEnterMsg = relayRoomEnterMsg;
+    builder.relayRoomRefuseMsg = relayRoomRefuseMsg;
+    builder.relayRoomInviteMsg = relayRoomInviteMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -368,7 +404,10 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
         && Internal.equals(spFollowUpdateAlbumMsg, o.spFollowUpdateAlbumMsg)
         && Internal.equals(giftReceivesMsg, o.giftReceivesMsg)
         && Internal.equals(invitePartyMsg, o.invitePartyMsg)
-        && Internal.equals(clubInfoChangeMsg, o.clubInfoChangeMsg);
+        && Internal.equals(clubInfoChangeMsg, o.clubInfoChangeMsg)
+        && Internal.equals(relayRoomEnterMsg, o.relayRoomEnterMsg)
+        && Internal.equals(relayRoomRefuseMsg, o.relayRoomRefuseMsg)
+        && Internal.equals(relayRoomInviteMsg, o.relayRoomInviteMsg);
   }
 
   @Override
@@ -401,6 +440,9 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       result = result * 37 + (giftReceivesMsg != null ? giftReceivesMsg.hashCode() : 0);
       result = result * 37 + (invitePartyMsg != null ? invitePartyMsg.hashCode() : 0);
       result = result * 37 + (clubInfoChangeMsg != null ? clubInfoChangeMsg.hashCode() : 0);
+      result = result * 37 + (relayRoomEnterMsg != null ? relayRoomEnterMsg.hashCode() : 0);
+      result = result * 37 + (relayRoomRefuseMsg != null ? relayRoomRefuseMsg.hashCode() : 0);
+      result = result * 37 + (relayRoomInviteMsg != null ? relayRoomInviteMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -434,6 +476,9 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     if (giftReceivesMsg != null) builder.append(", giftReceivesMsg=").append(giftReceivesMsg);
     if (invitePartyMsg != null) builder.append(", invitePartyMsg=").append(invitePartyMsg);
     if (clubInfoChangeMsg != null) builder.append(", clubInfoChangeMsg=").append(clubInfoChangeMsg);
+    if (relayRoomEnterMsg != null) builder.append(", relayRoomEnterMsg=").append(relayRoomEnterMsg);
+    if (relayRoomRefuseMsg != null) builder.append(", relayRoomRefuseMsg=").append(relayRoomRefuseMsg);
+    if (relayRoomInviteMsg != null) builder.append(", relayRoomInviteMsg=").append(relayRoomInviteMsg);
     return builder.replace(0, 2, "NotificationMsg{").append('}').toString();
   }
 
@@ -689,6 +734,36 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
   }
 
   /**
+   * 接唱房进房信令
+   */
+  public RelayRoomEnterMsg getRelayRoomEnterMsg() {
+    if(relayRoomEnterMsg==null){
+        return new RelayRoomEnterMsg.Builder().build();
+    }
+    return relayRoomEnterMsg;
+  }
+
+  /**
+   * 接唱房拒绝邀请信令
+   */
+  public RelayRoomRefuseMsg getRelayRoomRefuseMsg() {
+    if(relayRoomRefuseMsg==null){
+        return new RelayRoomRefuseMsg.Builder().build();
+    }
+    return relayRoomRefuseMsg;
+  }
+
+  /**
+   * 接唱房邀请信令
+   */
+  public RelayRoomInviteMsg getRelayRoomInviteMsg() {
+    if(relayRoomInviteMsg==null){
+        return new RelayRoomInviteMsg.Builder().build();
+    }
+    return relayRoomInviteMsg;
+  }
+
+  /**
    * 消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -854,6 +929,27 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     return clubInfoChangeMsg!=null;
   }
 
+  /**
+   * 接唱房进房信令
+   */
+  public boolean hasRelayRoomEnterMsg() {
+    return relayRoomEnterMsg!=null;
+  }
+
+  /**
+   * 接唱房拒绝邀请信令
+   */
+  public boolean hasRelayRoomRefuseMsg() {
+    return relayRoomRefuseMsg!=null;
+  }
+
+  /**
+   * 接唱房邀请信令
+   */
+  public boolean hasRelayRoomInviteMsg() {
+    return relayRoomInviteMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<NotificationMsg, Builder> {
     private Long timeMs;
 
@@ -904,6 +1000,12 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     private InvitePartyMsg invitePartyMsg;
 
     private ClubInfoChangeMsg clubInfoChangeMsg;
+
+    private RelayRoomEnterMsg relayRoomEnterMsg;
+
+    private RelayRoomRefuseMsg relayRoomRefuseMsg;
+
+    private RelayRoomInviteMsg relayRoomInviteMsg;
 
     public Builder() {
     }
@@ -1099,9 +1201,33 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       return this;
     }
 
+    /**
+     * 接唱房进房信令
+     */
+    public Builder setRelayRoomEnterMsg(RelayRoomEnterMsg relayRoomEnterMsg) {
+      this.relayRoomEnterMsg = relayRoomEnterMsg;
+      return this;
+    }
+
+    /**
+     * 接唱房拒绝邀请信令
+     */
+    public Builder setRelayRoomRefuseMsg(RelayRoomRefuseMsg relayRoomRefuseMsg) {
+      this.relayRoomRefuseMsg = relayRoomRefuseMsg;
+      return this;
+    }
+
+    /**
+     * 接唱房邀请信令
+     */
+    public Builder setRelayRoomInviteMsg(RelayRoomInviteMsg relayRoomInviteMsg) {
+      this.relayRoomInviteMsg = relayRoomInviteMsg;
+      return this;
+    }
+
     @Override
     public NotificationMsg build() {
-      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, feedLikeMsg, feedCommentLikeMsg, feedCommentAddMsg, postsLikeMsg, postsCommentLikeMsg, postsCommentAddMsg, inviteMicMsg, spFollowNewPostMsg, spFollowUpdateAlbumMsg, giftReceivesMsg, invitePartyMsg, clubInfoChangeMsg, super.buildUnknownFields());
+      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, feedLikeMsg, feedCommentLikeMsg, feedCommentAddMsg, postsLikeMsg, postsCommentLikeMsg, postsCommentAddMsg, inviteMicMsg, spFollowNewPostMsg, spFollowUpdateAlbumMsg, giftReceivesMsg, invitePartyMsg, clubInfoChangeMsg, relayRoomEnterMsg, relayRoomRefuseMsg, relayRoomInviteMsg, super.buildUnknownFields());
     }
   }
 
@@ -1137,6 +1263,9 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           + GiftReceivesMsg.ADAPTER.encodedSizeWithTag(26, value.giftReceivesMsg)
           + InvitePartyMsg.ADAPTER.encodedSizeWithTag(27, value.invitePartyMsg)
           + ClubInfoChangeMsg.ADAPTER.encodedSizeWithTag(28, value.clubInfoChangeMsg)
+          + RelayRoomEnterMsg.ADAPTER.encodedSizeWithTag(29, value.relayRoomEnterMsg)
+          + RelayRoomRefuseMsg.ADAPTER.encodedSizeWithTag(30, value.relayRoomRefuseMsg)
+          + RelayRoomInviteMsg.ADAPTER.encodedSizeWithTag(31, value.relayRoomInviteMsg)
           + value.unknownFields().size();
     }
 
@@ -1167,6 +1296,9 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       GiftReceivesMsg.ADAPTER.encodeWithTag(writer, 26, value.giftReceivesMsg);
       InvitePartyMsg.ADAPTER.encodeWithTag(writer, 27, value.invitePartyMsg);
       ClubInfoChangeMsg.ADAPTER.encodeWithTag(writer, 28, value.clubInfoChangeMsg);
+      RelayRoomEnterMsg.ADAPTER.encodeWithTag(writer, 29, value.relayRoomEnterMsg);
+      RelayRoomRefuseMsg.ADAPTER.encodeWithTag(writer, 30, value.relayRoomRefuseMsg);
+      RelayRoomInviteMsg.ADAPTER.encodeWithTag(writer, 31, value.relayRoomInviteMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1215,6 +1347,9 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           case 26: builder.setGiftReceivesMsg(GiftReceivesMsg.ADAPTER.decode(reader)); break;
           case 27: builder.setInvitePartyMsg(InvitePartyMsg.ADAPTER.decode(reader)); break;
           case 28: builder.setClubInfoChangeMsg(ClubInfoChangeMsg.ADAPTER.decode(reader)); break;
+          case 29: builder.setRelayRoomEnterMsg(RelayRoomEnterMsg.ADAPTER.decode(reader)); break;
+          case 30: builder.setRelayRoomRefuseMsg(RelayRoomRefuseMsg.ADAPTER.decode(reader)); break;
+          case 31: builder.setRelayRoomInviteMsg(RelayRoomInviteMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1249,6 +1384,9 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       if (builder.giftReceivesMsg != null) builder.giftReceivesMsg = GiftReceivesMsg.ADAPTER.redact(builder.giftReceivesMsg);
       if (builder.invitePartyMsg != null) builder.invitePartyMsg = InvitePartyMsg.ADAPTER.redact(builder.invitePartyMsg);
       if (builder.clubInfoChangeMsg != null) builder.clubInfoChangeMsg = ClubInfoChangeMsg.ADAPTER.redact(builder.clubInfoChangeMsg);
+      if (builder.relayRoomEnterMsg != null) builder.relayRoomEnterMsg = RelayRoomEnterMsg.ADAPTER.redact(builder.relayRoomEnterMsg);
+      if (builder.relayRoomRefuseMsg != null) builder.relayRoomRefuseMsg = RelayRoomRefuseMsg.ADAPTER.redact(builder.relayRoomRefuseMsg);
+      if (builder.relayRoomInviteMsg != null) builder.relayRoomInviteMsg = RelayRoomInviteMsg.ADAPTER.redact(builder.relayRoomInviteMsg);
       builder.clearUnknownFields();
       return builder.build();
     }

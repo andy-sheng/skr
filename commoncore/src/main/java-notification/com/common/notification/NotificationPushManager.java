@@ -1,6 +1,7 @@
 package com.common.notification;
 
 import com.common.log.MyLog;
+import com.common.notification.event.CNRelayEnterFromOuterInviteNotifyEvent;
 import com.common.notification.event.CRInviteInCreateRoomNotifyEvent;
 import com.common.notification.event.CRRefuseInviteNotifyEvent;
 import com.common.notification.event.CRSendInviteUserNotifyEvent;
@@ -134,6 +135,14 @@ public class NotificationPushManager {
             EventBus.getDefault().post(msg.getInvitePartyMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_CLUBINFO_CHANGE) {
             EventBus.getDefault().post(msg.getClubInfoChangeMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_RELAY_ENTER) {
+//            EventBus.getDefault().post(msg.getRelayRoomEnterMsg());
+            //TODO  这里需要区分邀请的
+            EventBus.getDefault().post(new CNRelayEnterFromOuterInviteNotifyEvent(msg.getRelayRoomEnterMsg()));
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_RELAY_REFUSE) {
+            EventBus.getDefault().post(msg.getRelayRoomRefuseMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_RELAY_INVITE) {
+            EventBus.getDefault().post(msg.getRelayRoomInviteMsg());
         }
     }
 

@@ -578,6 +578,25 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         U.getToastUtil().showShort("" + remark + event.refuseMsg)
     }
 
+    //在外面（抢唱，party，小k房里面）邀请别人一起合唱之后当被邀请的人同意之后邀请人收到这个push
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: CNRelayEnterFromOuterInviteNotifyEvent) {
+
+    }
+
+    //无论在哪里邀请（合唱房间，合唱房间外），都在这里展示被拒绝的toast
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RelayRoomRefuseMsg) {
+        val remark = UserInfoManager.getInstance().getRemarkName(event.user.userID, event.user.nickName)
+        U.getToastUtil().showShort("" + remark + event.refuseMsg)
+    }
+
+    //收到别人的合唱邀请，无论对方是在哪里邀请（合唱房间，合唱房间外），都在这里处理
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RelayRoomInviteMsg) {
+
+    }
+
     /**
      * 5星全服通知
      */

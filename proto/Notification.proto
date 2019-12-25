@@ -46,6 +46,45 @@ message NotificationMsg {
     InvitePartyMsg invitePartyMsg   = 27; //小剧场邀请用户
 
     ClubInfoChangeMsg clubInfoChangeMsg = 28; //家族信息发生变更
+
+    RelayRoomEnterMsg relayRoomEnterMsg   = 29; //接唱房进房信令
+        RelayRoomRefuseMsg relayRoomRefuseMsg = 30; //接唱房拒绝邀请信令
+        RelayRoomInviteMsg relayRoomInviteMsg = 31; //接唱房邀请信令
+}
+
+message RelayRoomEnterMsg
+{
+    uint32 roomID                         = 1; //房间ID
+    sint64 createdTimeMs                  = 2; //房间创建的时间戳
+    repeated Common.UserInfo users               = 3; //玩家信息
+    Common.RelayRoomConfig config                = 4; //配置信息
+    repeated Common.AgoraTokenInfo tokens        = 5; //声网token
+    repeated bytes userLockInfo   = 6; //用户锁定信息
+    bool enableNoLimitDuration            = 7; //开启没有限制的持续时间
+    bytes currentRound               = 8; //当前轮次信息
+    repeated Common.BackgroundShowInfo showInfos = 9; //背景效果
+}
+
+
+message RelayRoomRefuseMsg
+{
+    Common.UserInfo user    = 1; //拒绝行为发出的用户信息
+    string refuseMsg = 2; //拒绝反馈文案
+}
+
+
+message RelayRoomInviteMsg
+{
+    ERInviteType inviteType = 1; //邀请类型
+    Common.UserInfo user           = 2; //发起邀请的用户详情
+    string inviteMsg        = 3; //邀请信息
+    uint32 roomID           = 4; //房间id
+}
+
+enum ERInviteType {
+    RIT_UNKNOWN          = 0; //未知
+    RIT_OUT_COMBINE_ROOM = 1; //在接唱房间外邀请
+    RIT_IN_COMBINE_ROOM  = 2; //在接唱房间内邀请
 }
 
 message ClubInfoChangeMsg
@@ -221,6 +260,10 @@ enum ENotificationMsgType {
     NM_INVITE_PARTY         = 18; //小剧场邀请用户
 
     NM_CLUBINFO_CHANGE = 19; //家族信息变更
+
+     NM_RELAY_ENTER  = 20; //接唱房进房信令
+        NM_RELAY_REFUSE = 21; //接唱房拒绝邀请信令
+        NM_RELAY_INVITE = 22; //接唱房邀请信令
 }
 
 message FollowMsg {

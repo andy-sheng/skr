@@ -109,7 +109,22 @@ public enum ENotificationMsgType implements WireEnum {
   /**
    * 家族信息变更
    */
-  NM_CLUBINFO_CHANGE(19);
+  NM_CLUBINFO_CHANGE(19),
+
+  /**
+   * 接唱房进房信令
+   */
+  NM_RELAY_ENTER(20),
+
+  /**
+   * 接唱房拒绝邀请信令
+   */
+  NM_RELAY_REFUSE(21),
+
+  /**
+   * 接唱房邀请信令
+   */
+  NM_RELAY_INVITE(22);
 
   public static final ProtoAdapter<ENotificationMsgType> ADAPTER = new ProtoAdapter_ENotificationMsgType();
 
@@ -144,6 +159,9 @@ public enum ENotificationMsgType implements WireEnum {
       case 17: return NM_GIFT_RECEIVES;
       case 18: return NM_INVITE_PARTY;
       case 19: return NM_CLUBINFO_CHANGE;
+      case 20: return NM_RELAY_ENTER;
+      case 21: return NM_RELAY_REFUSE;
+      case 22: return NM_RELAY_INVITE;
       default: return null;
     }
   }

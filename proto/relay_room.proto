@@ -56,7 +56,7 @@ message RUserEnterMsg
     uint32 roomID                       = 1; //房间ID
     sint64 createdTimeMs                = 2; //房间创建的时间戳
     repeated Common.UserInfo users             = 3; //玩家信息
-    RelayRoomConfig config              = 4; //配置信息
+    Common.RelayRoomConfig config              = 4; //配置信息
     repeated Common.AgoraTokenInfo tokens      = 5; //声网token
     repeated RUserLockInfo userLockInfo = 6; //用户锁定信息
     bool enableNoLimitDuration          = 7; //开启没有限制的持续时间
@@ -64,10 +64,6 @@ message RUserEnterMsg
     repeated Common.BackgroundShowInfo showInfos = 9; //背景效果
 }
 
-message RelayRoomConfig
-{
-    sint32 durationTimeMs = 1; //房间持续时间
-}
 
 message RGameOverMsg
 {
