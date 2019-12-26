@@ -1,6 +1,5 @@
 package com.module.playways
 
-import android.util.LruCache
 import com.common.core.userinfo.model.ClubInfo
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
@@ -12,7 +11,6 @@ import com.module.playways.relay.room.RelayRoomServerApi
 import com.module.playways.room.gift.event.UpdateHZEvent
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
-import com.module.playways.room.song.model.SongModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
@@ -196,8 +194,8 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
         var shiftTsForRelay = 0
         fun syncServerTs() {
-            if(shiftTsForRelay!=0){
-                MyLog.d("BaseRoomData","shiftTsForRelay=$shiftTsForRelay")
+            if (shiftTsForRelay != 0) {
+                MyLog.d("BaseRoomData", "shiftTsForRelay=$shiftTsForRelay")
                 return
             }
             var serverApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)

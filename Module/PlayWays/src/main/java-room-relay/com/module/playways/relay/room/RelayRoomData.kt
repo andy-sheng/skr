@@ -24,11 +24,19 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
     }
 
     override fun getPlayerAndWaiterInfoList(): List<PlayerInfoModel> {
-        return listOf(peerUser) as List<PlayerInfoModel>
+        if (!isPersonArrive()) {
+            return ArrayList()
+        } else {
+            return listOf(peerUser) as List<PlayerInfoModel>
+        }
     }
 
     override fun getInSeatPlayerInfoList(): List<PlayerInfoModel> {
-        return listOf(peerUser) as List<PlayerInfoModel>
+        if (!isPersonArrive()) {
+            return ArrayList()
+        } else {
+            return listOf(peerUser) as List<PlayerInfoModel>
+        }
     }
 
     override fun getCanGiveGiftList(): List<PlayerInfoModel> {
@@ -174,6 +182,7 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         return -1
     }
 
+    //房间人员到齐了没有
     fun isPersonArrive(): Boolean {
         return peerUser != null
     }

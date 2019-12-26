@@ -438,20 +438,26 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     }
 
     private fun showPanelView() {
-        if (mRoomData!!.realRoundInfo != null) {
-            val now = mRoomData!!.realRoundInfo
-            if (now != null) {
-                mGiftPanelView?.show(mRoomData.peerUser)
+        if (mRoomData.isPersonArrive()) {
+            if (mRoomData!!.realRoundInfo != null) {
+                val now = mRoomData!!.realRoundInfo
+                if (now != null) {
+                    mGiftPanelView?.show(mRoomData.peerUser)
+                } else {
+                    mGiftPanelView?.show(null)
+                }
             } else {
                 mGiftPanelView?.show(null)
             }
         } else {
-            mGiftPanelView?.show(null)
+//            U.getToastUtil().showShort("")
         }
     }
 
     private fun buyFlowerFromOuter() {
-        EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), mRoomData.peerUser?.userInfo))
+        if (mRoomData.isPersonArrive()) {
+            EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), mRoomData.peerUser?.userInfo))
+        }
     }
 
     private fun initTopView() {

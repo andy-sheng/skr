@@ -583,6 +583,12 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             MyLog.w(TAG, "游戏结束了，还特么Sync")
             return
         }
+
+        if (!mRoomData.isPersonArrive()) {
+            MyLog.w(TAG, "另一个人还没进来")
+            return
+        }
+
         syncJob?.cancel()
         syncJob = launch {
             while (true) {
@@ -1240,6 +1246,9 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
 
             roomView.startGameByInvite()
         }
+
+        //如果是邀请进来的需要在这里开启sync
+        startSyncGameStatus()
     }
 
     fun sendUnlock() {
