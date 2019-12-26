@@ -82,6 +82,12 @@ interface PartyRoomServerApi {
     fun allowGetSeat(@Body body: RequestBody): Call<ApiResult>
 
     /**
+     * 响应申请嘉宾，拒绝
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/del-apply-for-guest")
+    fun refuseGetSeat(@Body body: RequestBody): Call<ApiResult>
+
+    /**
      * 还回席位，下麦 {"roomID": 0, "seatSeq": 0,"seatUserID":0}
      */
     @PUT("http://dev.game.inframe.mobi/v1/partygame/back-seat")

@@ -20,7 +20,9 @@ import com.module.playways.party.room.event.PartyApplyUserCntChangeEvent
 import com.module.playways.party.room.event.PartyHostChangeEvent
 import com.module.playways.party.room.event.PartyMySeatInfoChangeEvent
 import com.module.playways.party.room.event.PartyMyUserInfoChangeEvent
+import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.room.data.H
+import com.zq.live.proto.PartyRoom.PApplyForGuest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -159,7 +161,7 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
         refreshMicStatus("bindData")
     }
 
-    private fun refreshMicStatus(from:String) {
+    private fun refreshMicStatus(from: String) {
         MyLog.d("PartyRightOpView", "refreshMicStatus from = $from")
         when (micStatus) {
             MIC_STATUS_UNAPPLY -> {
@@ -190,6 +192,15 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyApplyUserCntChangeEvent) {
         applyList.text = "申请${H.partyRoomData?.applyUserCnt}人"
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PApplyForGuest) {
+        if (event.cancel && event.user.userInfo.userID == MyUserInfoManager.uid.toInt()) {
+            // 自己申请被取消,不管是被谁取消的，都要重置一下
+            micStatus = MIC_STATUS_UNAPPLY
+            refreshMicStatus("PApplyForGuest")
+        }
     }
 
     override fun onAttachedToWindow() {

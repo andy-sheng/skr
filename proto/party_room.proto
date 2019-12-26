@@ -165,6 +165,7 @@ message PApplyForGuest {
     POnlineInfo user = 1; //用户信息
     uint32 applyUserCnt = 2; //申请人数
     bool cancel         = 3; //是否取消申请
+    POnlineInfo opUser  = 4; //执行者(若为空，则表示user自己执行)
 }
 
 message PExitGameMsg {

@@ -54,16 +54,27 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
   )
   private final Boolean cancel;
 
-  public PApplyForGuest(POnlineInfo user, Integer applyUserCnt, Boolean cancel) {
-    this(user, applyUserCnt, cancel, ByteString.EMPTY);
-  }
+  /**
+   * 执行者(若为空，则表示user自己执行)
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.zq.live.proto.PartyRoom.POnlineInfo#ADAPTER"
+  )
+  private final POnlineInfo opUser;
 
   public PApplyForGuest(POnlineInfo user, Integer applyUserCnt, Boolean cancel,
+      POnlineInfo opUser) {
+    this(user, applyUserCnt, cancel, opUser, ByteString.EMPTY);
+  }
+
+  public PApplyForGuest(POnlineInfo user, Integer applyUserCnt, Boolean cancel, POnlineInfo opUser,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.user = user;
     this.applyUserCnt = applyUserCnt;
     this.cancel = cancel;
+    this.opUser = opUser;
   }
 
   @Override
@@ -72,6 +83,7 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
     builder.user = user;
     builder.applyUserCnt = applyUserCnt;
     builder.cancel = cancel;
+    builder.opUser = opUser;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -84,7 +96,8 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(user, o.user)
         && Internal.equals(applyUserCnt, o.applyUserCnt)
-        && Internal.equals(cancel, o.cancel);
+        && Internal.equals(cancel, o.cancel)
+        && Internal.equals(opUser, o.opUser);
   }
 
   @Override
@@ -95,6 +108,7 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
       result = result * 37 + (user != null ? user.hashCode() : 0);
       result = result * 37 + (applyUserCnt != null ? applyUserCnt.hashCode() : 0);
       result = result * 37 + (cancel != null ? cancel.hashCode() : 0);
+      result = result * 37 + (opUser != null ? opUser.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -106,6 +120,7 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
     if (user != null) builder.append(", user=").append(user);
     if (applyUserCnt != null) builder.append(", applyUserCnt=").append(applyUserCnt);
     if (cancel != null) builder.append(", cancel=").append(cancel);
+    if (opUser != null) builder.append(", opUser=").append(opUser);
     return builder.replace(0, 2, "PApplyForGuest{").append('}').toString();
   }
 
@@ -150,6 +165,16 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
   }
 
   /**
+   * 执行者(若为空，则表示user自己执行)
+   */
+  public POnlineInfo getOpUser() {
+    if(opUser==null){
+        return new POnlineInfo.Builder().build();
+    }
+    return opUser;
+  }
+
+  /**
    * 用户信息
    */
   public boolean hasUser() {
@@ -170,12 +195,21 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
     return cancel!=null;
   }
 
+  /**
+   * 执行者(若为空，则表示user自己执行)
+   */
+  public boolean hasOpUser() {
+    return opUser!=null;
+  }
+
   public static final class Builder extends Message.Builder<PApplyForGuest, Builder> {
     private POnlineInfo user;
 
     private Integer applyUserCnt;
 
     private Boolean cancel;
+
+    private POnlineInfo opUser;
 
     public Builder() {
     }
@@ -204,9 +238,17 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
       return this;
     }
 
+    /**
+     * 执行者(若为空，则表示user自己执行)
+     */
+    public Builder setOpUser(POnlineInfo opUser) {
+      this.opUser = opUser;
+      return this;
+    }
+
     @Override
     public PApplyForGuest build() {
-      return new PApplyForGuest(user, applyUserCnt, cancel, super.buildUnknownFields());
+      return new PApplyForGuest(user, applyUserCnt, cancel, opUser, super.buildUnknownFields());
     }
   }
 
@@ -220,6 +262,7 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
       return POnlineInfo.ADAPTER.encodedSizeWithTag(1, value.user)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.applyUserCnt)
           + ProtoAdapter.BOOL.encodedSizeWithTag(3, value.cancel)
+          + POnlineInfo.ADAPTER.encodedSizeWithTag(4, value.opUser)
           + value.unknownFields().size();
     }
 
@@ -228,6 +271,7 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
       POnlineInfo.ADAPTER.encodeWithTag(writer, 1, value.user);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.applyUserCnt);
       ProtoAdapter.BOOL.encodeWithTag(writer, 3, value.cancel);
+      POnlineInfo.ADAPTER.encodeWithTag(writer, 4, value.opUser);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -240,6 +284,7 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
           case 1: builder.setUser(POnlineInfo.ADAPTER.decode(reader)); break;
           case 2: builder.setApplyUserCnt(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setCancel(ProtoAdapter.BOOL.decode(reader)); break;
+          case 4: builder.setOpUser(POnlineInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -255,6 +300,7 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
     public PApplyForGuest redact(PApplyForGuest value) {
       Builder builder = value.newBuilder();
       if (builder.user != null) builder.user = POnlineInfo.ADAPTER.redact(builder.user);
+      if (builder.opUser != null) builder.opUser = POnlineInfo.ADAPTER.redact(builder.opUser);
       builder.clearUnknownFields();
       return builder.build();
     }
