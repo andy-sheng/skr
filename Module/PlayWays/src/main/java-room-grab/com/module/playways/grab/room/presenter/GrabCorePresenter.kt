@@ -55,6 +55,7 @@ import com.module.playways.grab.room.inter.IGrabRoomView
 import com.module.playways.grab.room.model.*
 import com.module.playways.race.room.model.LevelResultModel
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
+import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.*
@@ -664,9 +665,10 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                                 .create()
                         mDialogPlus!!.show()
                     }
-                } else if (result.errno == 8346144) {
-                    MyLog.w(TAG, "grabThisRound failed 没有充足金币 ")
+                } else if (result.errno == 8346158) {
+                    MyLog.w(TAG, "grabThisRound failed 没有充足钻石 ")
                     U.getToastUtil().showShort(result.errmsg)
+                    EventBus.getDefault().post(ShowHalfRechargeFragmentEvent())
                 } else {
                     MyLog.w(TAG, "grabThisRound failed, " + result.traceId)
                 }
