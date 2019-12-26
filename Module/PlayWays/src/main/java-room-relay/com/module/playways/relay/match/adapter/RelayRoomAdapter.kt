@@ -1,5 +1,6 @@
 package com.module.playways.relay.match.adapter
 
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -12,7 +13,9 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.ex.ExTextView
+import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.view.AvatarLevelView
 import com.component.busilib.view.NickNameView
 import com.component.busilib.view.recyclercardview.CardAdapterHelper
@@ -22,12 +25,23 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.relay.match.model.RelayRecommendRoomInfo
 import com.module.playways.room.song.model.SongModel
+import com.zq.live.proto.Common.ESex
 
 class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHolder>() {
 
     var mDataList = ArrayList<RelayRecommendRoomInfo>()
     var listener: RelayRoomListener? = null
     private val cardAdapterHelper = CardAdapterHelper(8, 12)
+
+    val blueDrawable = DrawableCreator.Builder()
+            .setCornersRadius(16.dp().toFloat())
+            .setGradientColor(Color.parseColor("#FFFFFF"), Color.parseColor("#AFE1FF"))
+            .build()
+
+    val redDrawable = DrawableCreator.Builder()
+            .setCornersRadius(16.dp().toFloat())
+            .setGradientColor(Color.parseColor("#FFFFFF"), Color.parseColor("#FFD6E9"))
+            .build()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RelayRoomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.relay_room_card_item_layout, parent, false)
@@ -54,6 +68,7 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
 
     inner class RelayRoomViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
+        private val imageBg: ImageView = item.findViewById(R.id.image_bg)
         private val avatarLevel: AvatarLevelView = item.findViewById(R.id.avatar_level)
         private val nicknameView: NickNameView = item.findViewById(R.id.nickname_view)
         private val ageTv: ExTextView = item.findViewById(R.id.age_tv)
@@ -73,6 +88,12 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
         fun bindData(position: Int, model: RelayRecommendRoomInfo) {
             this.mPos = position
             this.mModel = model
+
+            if (model.user?.sex == ESex.SX_MALE.value) {
+                imageBg.background = blueDrawable
+            } else {
+                imageBg.background = redDrawable
+            }
 
             avatarLevel.bindData(model.user)
             nicknameView.setAllStateText(model.user)

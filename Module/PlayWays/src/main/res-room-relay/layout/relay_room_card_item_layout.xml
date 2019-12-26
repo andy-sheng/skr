@@ -7,9 +7,20 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/image_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:background="@drawable/common_gradient_bg" />
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        NickNameView:bl_shape="rectangle"
+        NickNameView:bl_corners_radius="@dimen/view_16_dp"
+        NickNameView:bl_gradient_angle="90"
+        NickNameView:bl_gradient_startColor="#AFE1FF"
+        NickNameView:bl_gradient_endColor="#FFFFFF"/>
 
     <com.component.busilib.view.AvatarLevelView
         android:id="@+id/avatar_level"
