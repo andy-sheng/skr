@@ -431,12 +431,12 @@ public interface UserInfoServerApi {
     /**
      * 查询指定家族的成员信息
      */
-    @GET("http://dev.api.inframe.mobi/v1/club/check-member-info")
+    @GET("http://dev.api.inframe.mobi/v1/mall/get-guard-from")
     Call<ApiResult> getGuardList(@Query("userID") int userID, @Query("offset") int offset, @Query("limit") int limit);
 
     /**
      * 查询指定家族的成员信息
      */
-    @GET("http://dev.api.inframe.mobi/v1/club/check-member-info")
+    @GET("http://dev.api.inframe.mobi/v1/mall/get-guard-info")
     Call<ApiResult> checkGuardInfo(@Query("userID") int userID);
 }

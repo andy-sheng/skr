@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
@@ -19,6 +20,7 @@ import com.common.view.ex.ExTextView
 import com.component.busilib.R
 import com.component.person.photo.model.PhotoModel
 import com.facebook.drawee.view.SimpleDraweeView
+import com.module.RouterConstants
 
 // 守护的view
 class GuardView : ConstraintLayout {
@@ -32,6 +34,8 @@ class GuardView : ConstraintLayout {
     val recyclerView: RecyclerView
     val adapter = GuardAdapter()
 
+    var userID: Int = 0
+
     var clickListener: ((model: UserInfoModel?) -> Unit)? = null
 
     init {
@@ -41,13 +45,22 @@ class GuardView : ConstraintLayout {
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
 
-        adapter.mOnClickItemListener = { _, model ->
-            clickListener?.invoke(model)
+        adapter.mOnClickItemListener = { position, model ->
+            if (position == 3) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_GUARD_LIST)
+                        .withInt("userID", userID)
+                        .navigation()
+            } else {
+                clickListener?.invoke(model)
+            }
+
         }
     }
 
-    fun bindData(list: List<UserInfoModel>?) {
+    fun bindData(userID: Int, list: List<UserInfoModel>?, total: Int) {
+        this.userID = userID
         adapter.mDataList.clear()
+        adapter.total = total
         if (!list.isNullOrEmpty()) {
             adapter.mDataList.addAll(list)
         }
@@ -58,6 +71,7 @@ class GuardView : ConstraintLayout {
 
 class GuardAdapter : RecyclerView.Adapter<GuardAdapter.GuardViewHolder>() {
 
+    var total: Int = 0
     var mDataList = ArrayList<UserInfoModel>()
     var mOnClickItemListener: ((position: Int, model: UserInfoModel?) -> Unit)? = null
 
@@ -67,14 +81,18 @@ class GuardAdapter : RecyclerView.Adapter<GuardAdapter.GuardViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return 3
+        return 4
     }
 
     override fun onBindViewHolder(holder: GuardViewHolder, position: Int) {
-        if (!mDataList.isNullOrEmpty() && position < mDataList.size) {
-            holder.bindData(position, mDataList[position])
+        if (position == 3) {
+            holder.bindData(position, null, "${total}人")
         } else {
-            holder.bindData(position, null)
+            if (!mDataList.isNullOrEmpty() && position < mDataList.size) {
+                holder.bindData(position, mDataList[position], null)
+            } else {
+                holder.bindData(position, null, "守护")
+            }
         }
     }
 
@@ -93,10 +111,11 @@ class GuardAdapter : RecyclerView.Adapter<GuardAdapter.GuardViewHolder>() {
             }
         }
 
-        fun bindData(position: Int, model: UserInfoModel?) {
+        fun bindData(position: Int, model: UserInfoModel?, text: String?) {
             this.mPos = position
             this.mModel = model
 
+            emptyTv.text = text
             if (model == null) {
                 avatarIv.visibility = View.GONE
                 emptyTv.visibility = View.VISIBLE

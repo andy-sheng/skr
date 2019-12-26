@@ -698,7 +698,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     override fun showHomePageInfo(userInfoModel: UserInfoModel,
                                   relationNumModels: List<RelationNumModel>?,
                                   meiLiCntTotal: Int, qinMiCntTotal: Int,
-                                  scoreDetailModel: ScoreDetailModel, voiceInfoModel: VoiceInfoModel?, guardUserList: List<UserInfoModel>?) {
+                                  scoreDetailModel: ScoreDetailModel, voiceInfoModel: VoiceInfoModel?, guardUserList: List<UserInfoModel>?, guardCntTotal: Int) {
         uploadHomePageFlag = false
         mSmartRefresh.finishRefresh()
         showUserInfo(userInfoModel)
@@ -707,7 +707,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         showScoreDetail(scoreDetailModel)
 
         this.mMeliTotal = meiLiCntTotal
-        mGuardView.bindData(guardUserList)
+        mGuardView.bindData(mUserId, guardUserList, guardCntTotal)
 
         if (userInfoModel.isFollow) {
             if (!U.getPreferenceUtils().getSettingBoolean(SP_KEY_HAS_SHOW_SPFOLLOW, false)) {

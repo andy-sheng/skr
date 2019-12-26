@@ -64,8 +64,9 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                     MyUserInfoManager.INSTANCE.setMyUserInfo(myUserInfo, true, "getHomePage");
 
                     int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
+                    int guardCnt = result.getData().getIntValue("guardCnt");
 
-                    mView.showHomePageInfo(relationNumModes, meiLiCntTotal, voiceInfoModel, guardUserList);
+                    mView.showHomePageInfo(relationNumModes, meiLiCntTotal, voiceInfoModel, guardUserList, guardCnt);
                 } else {
                     mView.loadHomePageFailed();
                 }

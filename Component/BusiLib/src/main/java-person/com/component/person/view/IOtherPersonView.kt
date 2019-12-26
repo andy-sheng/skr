@@ -13,7 +13,7 @@ interface IOtherPersonView {
                          meiLiCntTotal: Int, qinMiCntTotal: Int,
                          scoreDetailModel: ScoreDetailModel,
                          voiceInfoModel: VoiceInfoModel?,
-                         guardUserList: List<UserInfoModel>?)
+                         guardUserList: List<UserInfoModel>?, guardCntTotal: Int)
 
     fun getHomePageFail()
 

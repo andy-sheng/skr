@@ -10,7 +10,7 @@ import java.util.List;
 public interface IPersonView {
     // 展示homepage回来的结果
     void showHomePageInfo(List<RelationNumModel> relationNumModels,
-                          int meiLiCntTotal, VoiceInfoModel voiceInfoModel, List<UserInfoModel> guards);
+                          int meiLiCntTotal, VoiceInfoModel voiceInfoModel, List<UserInfoModel> guards, int guardCnt);
 
     void loadHomePageFailed();
 }

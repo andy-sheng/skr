@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
@@ -25,14 +27,16 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 // 守护列表
-class GuardListFragment : BaseFragment() {
+@Route(path = RouterConstants.ACTIVITY_GUARD_LIST)
+class GuardListActivity : BaseActivity() {
+    override fun initView(savedInstanceState: Bundle?): Int {
+        return R.layout.guard_list_activity_layout
+    }
 
     lateinit var titlebar: CommonTitleBar
     lateinit var refreshLayout: SmartRefreshLayout
@@ -49,26 +53,16 @@ class GuardListFragment : BaseFragment() {
     private var userID = 0
     private var isNeedRefresh = true
 
-    override fun setData(type: Int, data: Any?) {
-        super.setData(type, data)
-        if (type == 0) {
-            userID = (data as Int?) ?: 0
-        }
-    }
-
-    override fun initView(): Int {
-        return R.layout.guard_fragment_layout
-    }
-
     override fun initData(savedInstanceState: Bundle?) {
+        userID = intent.getIntExtra("userID", 0)
         if (userID == 0) {
             finish()
             return
         }
 
-        titlebar = rootView.findViewById(R.id.titlebar)
-        refreshLayout = rootView.findViewById(R.id.refreshLayout)
-        contentRv = rootView.findViewById(R.id.content_rv)
+        titlebar = findViewById(R.id.titlebar)
+        refreshLayout = findViewById(R.id.refreshLayout)
+        contentRv = findViewById(R.id.content_rv)
 
         if (userID == MyUserInfoManager.uid.toInt()) {
             titlebar.centerTextView.text = "我的守护"
@@ -80,7 +74,7 @@ class GuardListFragment : BaseFragment() {
         }
 
         titlebar.leftTextView.setDebounceViewClickListener {
-            U.getFragmentUtils().popFragment(this)
+            finish()
         }
 
         titlebar.rightTextView.setDebounceViewClickListener {
@@ -107,7 +101,7 @@ class GuardListFragment : BaseFragment() {
             })
         }
 
-        contentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        contentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         adapter = GuardListAdapter(userID == MyUserInfoManager.uid.toInt(), object : GuardListAdapter.Listener {
             override fun onClickAvatar(position: Int, model: GuardInfoModel?) {
                 model?.userInfoModel?.userId?.let {
@@ -129,8 +123,8 @@ class GuardListFragment : BaseFragment() {
         }
     }
 
-    override fun onFragmentVisible() {
-        super.onFragmentVisible()
+    override fun onResume() {
+        super.onResume()
         if (isNeedRefresh) {
             getGuardList(0, true)
             if (userID != MyUserInfoManager.uid.toInt()) {

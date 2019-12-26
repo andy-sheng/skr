@@ -327,6 +327,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
 
                     val meiLiCntTotal = result.data?.getIntValue("meiLiCntTotal") ?: 0
                     val qinMiCntTotal = result.data?.getIntValue("qinMiCntTotal") ?: 0
+                    val guardCntTotal = result.data?.getIntValue("guardCnt") ?: 0
 
                     userInfoModel.isFollow = isFollow
                     userInfoModel.isFriend = isFriend
@@ -338,7 +339,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
                     showUserLevel(scoreDetailModel)
                     showUserRelationNum(relationNumModes)
                     showCharmsAndQinMiTag(meiLiCntTotal, qinMiCntTotal)
-                    showGuardList(guardList)
+                    showGuardList(guardList, guardCntTotal)
                     refreshFollow()
                 } else {
                     uploadHomePageFlag = false
@@ -347,8 +348,8 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         }, mContext as BaseActivity)
     }
 
-    private fun showGuardList(guardList: List<UserInfoModel>?) {
-        guardView.bindData(guardList)
+    private fun showGuardList(guardList: List<UserInfoModel>?, guardCntTotal: Int) {
+        guardView.bindData(mUserId, guardList, guardCntTotal)
     }
 
     @JvmOverloads

@@ -799,17 +799,17 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
     }
 
     @Override
-    public void showHomePageInfo(List<RelationNumModel> relationNumModels, int meiLiCntTotal, VoiceInfoModel voiceInfoModel, List<UserInfoModel> guardsList) {
+    public void showHomePageInfo(List<RelationNumModel> relationNumModels, int meiLiCntTotal, VoiceInfoModel voiceInfoModel, List<UserInfoModel> guardsList, int guardCnt) {
         mSmartRefresh.finishRefresh();
         showRelationNum(relationNumModels);
         showVoiceInfo(voiceInfoModel);
-        showGuardView(guardsList);
+        showGuardView(guardsList, guardCnt);
         refreshUserInfoView();
         this.meiLiCntTotal = meiLiCntTotal;
     }
 
-    private void showGuardView(List<UserInfoModel> guardsList) {
-        mGuardView.bindData(guardsList);
+    private void showGuardView(List<UserInfoModel> guardsList, int guardCnt) {
+        mGuardView.bindData((int) MyUserInfoManager.INSTANCE.getUid(), guardsList, guardCnt);
     }
 
     private void showVoiceInfo(VoiceInfoModel voiceInfoModel) {
