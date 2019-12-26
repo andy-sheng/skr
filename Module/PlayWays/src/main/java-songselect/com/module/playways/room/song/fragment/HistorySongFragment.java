@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -15,6 +16,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.callback.EmptyCallback;
@@ -48,7 +50,9 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     boolean hasMore = true; // 是否还有更多数据标记位
     List<SongModel> datas; // 歌曲的数据源
 
-    RelativeLayout mMainActContainer;
+    RelativeLayout mainActContainer;
+    ImageView mTopIconIv;
+    TextView mTopTextTv;
     ExImageView mHistoryBack;
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mHistoryRecycle;
@@ -77,12 +81,25 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = getRootView().findViewById(R.id.main_act_container);
+        mainActContainer = getRootView().findViewById(R.id.main_act_container);
+        mTopIconIv = getRootView().findViewById(R.id.top_icon_iv);
+        mTopTextTv = getRootView().findViewById(R.id.top_text_tv);
         mHistoryBack = getRootView().findViewById(R.id.history_back);
         mRefreshLayout = getRootView().findViewById(R.id.refreshLayout);
         mHistoryRecycle = getRootView().findViewById(R.id.history_recycle);
 
-        mHistoryRecycle.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        if (mFrom == SongManagerActivity.TYPE_FROM_AUDITION) {
+            // 练歌房
+            mTopTextTv.setVisibility(View.INVISIBLE);
+            mTopIconIv.setBackground(U.getDrawable(R.drawable.audition_top_icon));
+            mainActContainer.setBackground(U.getDrawable(R.drawable.pipeichenggong_bj));
+        } else {
+            // 合唱
+            mTopTextTv.setText("选择合唱歌曲");
+            mTopTextTv.setVisibility(View.VISIBLE);
+            mTopIconIv.setBackground(U.getDrawable(R.drawable.relay_top_icon));
+            mainActContainer.setBackground(U.getDrawable(R.drawable.double_room_view_bg));
+        }
 
         int selectModel = SongSelectAdapter.AUDITION_MODE;
         if (mFrom == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
@@ -99,6 +116,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
 
             }
         }, false, selectModel, "演唱");
+        mHistoryRecycle.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mHistoryRecycle.setAdapter(songSelectAdapter);
 
         presenter = new SongTagDetailsPresenter(this);

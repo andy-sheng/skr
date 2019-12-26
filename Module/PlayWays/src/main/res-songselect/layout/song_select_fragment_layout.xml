@@ -22,7 +22,7 @@
         android:layout_below="@id/title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_4_dp"
-        android:src="@drawable/relay_top_icon" />
+        android:background="@drawable/relay_top_icon" />
 
     <TextView
         android:id="@+id/top_text_tv"

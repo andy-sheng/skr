@@ -128,6 +128,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             mSelectSearch.setVisibility(View.VISIBLE);
             mInviteTv.setVisibility(View.GONE);
             mBottomLeftTv.setText("上一页");
+            mTopIconIv.setBackground(U.getDrawable(R.drawable.audition_top_icon));
         } else {
             // 合唱
             mTopTextTv.setText("选择合唱歌曲");
@@ -135,6 +136,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             mSelectSearch.setVisibility(View.GONE);
             mInviteTv.setVisibility(View.VISIBLE);
             mBottomLeftTv.setText("搜歌");
+            mTopIconIv.setBackground(U.getDrawable(R.drawable.relay_top_icon));
         }
 
         mBottomLeftTv.setOnClickListener(new DebounceViewClickListener() {
