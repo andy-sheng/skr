@@ -48,4 +48,10 @@ interface RelayMatchServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/relaygame/enter-failed")
     fun enterRoomFailed(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 获取用户每日剩余开房次数
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/room-data")
+    fun getTotalResTimes(): Call<ApiResult>
 }

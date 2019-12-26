@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.WindowManager
+import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
@@ -14,6 +15,7 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.rxretrofit.*
 import com.common.utils.ActivityUtils
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
@@ -21,6 +23,7 @@ import com.component.busilib.callback.EmptyCallback
 import com.component.busilib.view.recyclercardview.CardScaleHelper
 import com.component.busilib.view.recyclercardview.SpeedRecyclerView
 import com.component.lyrics.utils.SongResUtils
+import com.dialog.view.TipsDialogView
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -53,6 +56,7 @@ class RelayMatchActivity : BaseActivity() {
 
     private var titlebar: CommonTitleBar? = null
     private var joinTipsTv: ExTextView? = null
+    private var quickTipsTv: TextView? = null
     private var speedRecyclerView: SpeedRecyclerView? = null
 
     var adapter: RelayRoomAdapter = RelayRoomAdapter()
@@ -75,6 +79,10 @@ class RelayMatchActivity : BaseActivity() {
 
     var mLoadService: LoadService<*>? = null
 
+    var todayResTimes: Int = 0
+
+    var mTipsDialogView: TipsDialogView? = null
+
     /**
      * 存起该房间一些状态信息
      */
@@ -91,6 +99,7 @@ class RelayMatchActivity : BaseActivity() {
         U.getStatusBarUtil().setTransparentBar(this, false)
         titlebar = findViewById(R.id.titlebar)
         joinTipsTv = findViewById(R.id.join_tips_tv)
+        quickTipsTv = findViewById(R.id.quick_tips_tv)
         speedRecyclerView = findViewById(R.id.speed_recyclerView)
 
         speedRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -116,8 +125,31 @@ class RelayMatchActivity : BaseActivity() {
 
         adapter.listener = object : RelayRoomAdapter.RelayRoomListener {
             override fun selectRoom(position: Int, model: RelayRecommendRoomInfo?) {
-                model?.let {
-                    choiceRoom(position, it)
+                if (todayResTimes <= 0) {
+                    if (MyUserInfoManager.myUserInfo?.honorInfo?.isHonor() == true) {
+                        U.getToastUtil().showShort("今日加入次数用完啦")
+                    } else {
+                        mTipsDialogView?.dismiss(false)
+                        mTipsDialogView = TipsDialogView.Builder(this@RelayMatchActivity)
+                                .setMessageTip("今日加入次数用完啦～开通VIP立享每日25次机会")
+                                .setCancelTip("取消")
+                                .setConfirmTip("开通VIP")
+                                .setConfirmBtnClickListener {
+                                    mTipsDialogView?.dismiss(false)
+                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                            .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
+                                            .greenChannel().navigation()
+                                }
+                                .setCancelBtnClickListener {
+                                    mTipsDialogView?.dismiss()
+                                }
+                                .build()
+                        mTipsDialogView?.showByDialog()
+                    }
+                } else {
+                    model?.let {
+                        choiceRoom(position, it)
+                    }
                 }
             }
 
@@ -136,6 +168,7 @@ class RelayMatchActivity : BaseActivity() {
 
         startMatch()
         startTimerRoom(0)
+        checkResTime()
         BaseRoomData.syncServerTs()
 
         val mLoadSir = LoadSir.Builder()
@@ -150,6 +183,28 @@ class RelayMatchActivity : BaseActivity() {
             // 先下载这个伴奏备用
             U.getHttpUtils().downloadFileAsync(model?.acc, accFile, true, null)
         }
+    }
+
+    private fun checkResTime() {
+        launch {
+            val result = subscribe(RequestControl("checkResTime", ControlType.CancelThis)) {
+                relayMatchServerApi.getTotalResTimes()
+            }
+            if (result.errno == 0) {
+                val todayResTimes = result.data.getIntValue("todayResTimes")
+                showTodayResTimes(todayResTimes)
+            }
+        }
+    }
+
+    private fun showTodayResTimes(todayResTimes: Int) {
+        this.todayResTimes = todayResTimes
+        val ss = SpanUtils()
+                .append("今日剩余").setForegroundColor(U.getColor(R.color.white_trans_50))
+                .append("${todayResTimes}次").setForegroundColor(U.getColor(R.color.white))
+                .append("快速合唱").setForegroundColor(U.getColor(R.color.white_trans_50))
+                .create()
+        quickTipsTv?.text = ss
     }
 
     // 定时自动刷新房间列表
