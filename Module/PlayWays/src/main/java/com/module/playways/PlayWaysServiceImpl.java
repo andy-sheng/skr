@@ -434,8 +434,8 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                         }
                     });
                 } else {
-                    RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                     map.put("inviteTimeMs", ts);
+                    RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
                     ApiMethods.subscribe(mRoomServerApi.relayInviteUserEnter(body), new ApiObserver<ApiResult>() {
                         @Override
