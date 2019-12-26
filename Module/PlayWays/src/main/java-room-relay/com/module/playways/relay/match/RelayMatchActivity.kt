@@ -20,6 +20,7 @@ import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.callback.EmptyCallback
+import com.component.busilib.manager.BgMusicManager
 import com.component.busilib.view.recyclercardview.CardScaleHelper
 import com.component.busilib.view.recyclercardview.SpeedRecyclerView
 import com.component.lyrics.utils.SongResUtils
@@ -183,6 +184,8 @@ class RelayMatchActivity : BaseActivity() {
             // 先下载这个伴奏备用
             U.getHttpUtils().downloadFileAsync(model?.acc, accFile, true, null)
         }
+
+        BgMusicManager.getInstance().starPlay(model?.acc, 0, "RelayMatchActivity")
     }
 
     private fun checkResTime() {
@@ -412,6 +415,7 @@ class RelayMatchActivity : BaseActivity() {
         roomJob?.cancel()
         matchJob?.cancel()
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        BgMusicManager.getInstance().destory()
     }
 
     override fun onBackPressedForActivity(): Boolean {
