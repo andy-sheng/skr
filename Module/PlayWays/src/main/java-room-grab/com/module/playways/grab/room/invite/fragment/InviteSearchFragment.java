@@ -10,7 +10,6 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -112,8 +111,10 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
                     mPresenter.inviteDoubleFriend(mRoomID, model, view);
                 } else if (mFrom == GameModeType.GAME_MODE_MIC) {
                     mPresenter.inviteMicFriend(mRoomID, model, view);
-                }else if(mFrom == GameModeType.GAME_MODE_PARTY){
+                } else if (mFrom == GameModeType.GAME_MODE_PARTY) {
                     mPresenter.invitePartyriend(mRoomID, model, view);
+                } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
+                    mPresenter.inviteRelayFriend(mRoomID, model, view);
                 }
             }
 
