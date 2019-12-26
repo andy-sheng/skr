@@ -533,6 +533,9 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         }
     }
 
+    /**
+     * 将本人的伴奏状态传给对端
+     */
     fun sendAccStatusToPeer(ok: Boolean) {
         val msgService = ModuleServiceManager.getInstance().msgService
         var js = JSONObject()
