@@ -2,8 +2,6 @@ package com.module.playways.relay.room
 
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.subscribe
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.model.GameBackgroundEffectModel
 import com.module.playways.BaseRoomData
@@ -12,12 +10,10 @@ import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.room.event.RelayLockChangeEvent
 import com.module.playways.relay.room.event.RelayRoundChangeEvent
 import com.module.playways.relay.room.model.RelayConfigModel
-import com.module.playways.relay.room.model.RelayRoundInfoModel
 import com.module.playways.relay.room.model.RelayPlayerInfoModel
+import com.module.playways.relay.room.model.RelayRoundInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.RelayRoom.ERRoundStatus
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 
 
@@ -49,11 +45,15 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
      */
     var configModel = RelayConfigModel()// 一唱到底配置
     var peerUser: RelayPlayerInfoModel? = null
+    var enableNoLimitDuration: Boolean? = null    // 开启没有限制的持续时间
 
     var unLockMe = false // 我是否解锁
         set(value) {
             if (value != field) {
                 field = value
+                if (field && unLockPeer) {
+                    enableNoLimitDuration = true
+                }
                 EventBus.getDefault().post(RelayLockChangeEvent())
             }
         }
@@ -61,6 +61,9 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         set(value) {
             if (value != field) {
                 field = value
+                if (field && unLockPeer) {
+                    enableNoLimitDuration = true
+                }
                 EventBus.getDefault().post(RelayLockChangeEvent())
             }
         }
@@ -157,6 +160,10 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         return -1
     }
 
+    fun isPersonArrive(): Boolean {
+        return peerUser != null
+    }
+
     /**
      * 当前是否是我唱
      */
@@ -212,20 +219,23 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
             }
         }
         this.configModel = rsp.config ?: RelayConfigModel()
-        this.peerUser = RelayPlayerInfoModel()
+
         rsp.users?.forEachIndexed { index, userInfoModel ->
             var a = rsp.showInfos.getOrNull(index)
             MyLog.w("chengsimin", "peerEffectModel1=${a} index=${index}")
             if (userInfoModel.userId != MyUserInfoManager.uid.toInt()) {
+                this.peerUser = RelayPlayerInfoModel()
                 this.peerUser?.userInfo = userInfoModel
                 this.peerEffectModel = a
                 this.leftSeat = index != 0
+                this.peerUser?.isOnline = true
             } else {
                 this.myEffectModel = a
             }
         }
-        this.peerUser?.isOnline = true
+
         this.expectRoundInfo = rsp.currentRound
+        this.enableNoLimitDuration = rsp.enableNoLimitDuration
         MyLog.w("chengsimin", "peerEffectModel2=${this.peerEffectModel}")
     }
 

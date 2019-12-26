@@ -29,6 +29,7 @@ import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.R
 import com.module.playways.grab.room.inter.IGrabVipView
+import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.view.normal.NormalOthersSingCardView
@@ -66,6 +67,7 @@ import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.RelayRoom.ERRoundStatus
 import com.zq.live.proto.RelayRoom.RAddMusicMsg
 import com.zq.live.proto.RelayRoom.RReqAddMusicMsg
@@ -389,6 +391,14 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             }, true)
         }
 
+        if (mRoomData?.enableNoLimitDuration == true) {
+            mChangeSongIv.visibility = View.VISIBLE
+            mAddSongIv.visibility = View.VISIBLE
+        } else {
+            mChangeSongIv.visibility = View.GONE
+            mAddSongIv.visibility = View.GONE
+        }
+
         run {
             val voiceStub = findViewById<ViewStub>(R.id.voice_record_tip_view_stub)
             mVoiceRecordTipsView = VoiceRecordTipsView(voiceStub)
@@ -504,6 +514,16 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
             override fun clickLove() {
                 mCorePresenter.sendUnlock()
+            }
+
+            override fun clickInvite() {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this@RelayRoomActivity, InviteFriendFragment2::class.java)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .addDataBeforeAdd(0, GameModeType.GAME_MODE_RELAY)
+                        .addDataBeforeAdd(1, mRoomData!!.gameId)
+                        .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
+                        .build())
             }
         }
 
@@ -720,7 +740,11 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     override fun singPrepare(lastRoundInfo: RelayRoundInfoModel?, singCardShowListener: () -> Unit) {
         hideAllSceneView(null)
         relaySingCardView.turnSingPrepare()
-        mTopContentView.launchCountDown()
+
+        if (!(mRoomData.enableNoLimitDuration == true)) {
+            mTopContentView.launchCountDown()
+        }
+
         singCardShowListener.invoke()
         if (mRoomData?.unLockMe && mRoomData?.unLockPeer) {
             mChangeSongIv.visibility = View.VISIBLE
@@ -750,9 +774,13 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         if (!mRoomData.isHasExitGame) {
             ensureActivtyTop()
             mCorePresenter.exitRoom("gameOver")
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_RESULT)
-                    .withSerializable("roomData", mRoomData)
-                    .navigation()
+
+            if (mRoomData.isPersonArrive()) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_RESULT)
+                        .withSerializable("roomData", mRoomData)
+                        .navigation()
+            }
+
             finish()
         }
     }

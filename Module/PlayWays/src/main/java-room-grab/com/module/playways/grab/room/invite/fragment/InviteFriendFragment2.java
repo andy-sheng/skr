@@ -80,7 +80,7 @@ public class InviteFriendFragment2 extends BaseFragment {
         mInviteTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(28));
         mInviteTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(14));
 
-        if (mFrom == GameModeType.GAME_MODE_GRAB || mFrom == GameModeType.GAME_MODE_MIC) {
+        if (mFrom == GameModeType.GAME_MODE_GRAB || mFrom == GameModeType.GAME_MODE_MIC || mFrom == GameModeType.GAME_MODE_RELAY) {
             mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
             mTitleList.put(0, "好友");
             mTitleList.put(1, "粉丝");
@@ -238,7 +238,19 @@ public class InviteFriendFragment2 extends BaseFragment {
                 }
             });
         } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
+            SkrKouLingUtils.genJoinRelayRoomKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameID, new ICallback() {
+                @Override
+                public void onSucess(Object obj) {
+                    if (obj != null) {
+                        mKouLingToken = (String) obj;
+                    }
+                }
 
+                @Override
+                public void onFailed(Object obj, int errcode, String message) {
+
+                }
+            });
         }
     }
 
@@ -275,6 +287,9 @@ public class InviteFriendFragment2 extends BaseFragment {
         } else if (mFrom == GameModeType.GAME_MODE_PARTY) {
             web.setTitle("派对已开，就等你来玩");
             web.setDescription("我在撕歌skr开了一个派对，快来一起耍呀～");
+        } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
+            web.setTitle("合唱房间已开，就等你来玩");
+            web.setDescription("我在撕歌skr开了一个合唱房间，快来一起耍呀～");
         }
 
         switch (sharePlatform) {
@@ -310,9 +325,10 @@ public class InviteFriendFragment2 extends BaseFragment {
                 mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
             } else if (mFrom == GameModeType.GAME_MODE_MIC) {
                 mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_MIC_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
-            }
-            if (mFrom == GameModeType.GAME_MODE_PARTY) {
+            } else if (mFrom == GameModeType.GAME_MODE_PARTY) {
                 mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_PARTY_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
+            } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
+                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_RELAY_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
             }
 
         }

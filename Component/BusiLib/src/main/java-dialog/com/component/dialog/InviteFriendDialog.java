@@ -20,6 +20,7 @@ public class InviteFriendDialog {
     public final static int INVITE_DOUBLE_GAME = 3;
     public final static int INVITE_MIC_GAME = 4;
     public final static int INVITE_PARTY_GAME = 5;
+    public final static int INVITE_RELAY_GAME = 6;
     DialogPlus mShareDialog;
 
     public InviteFriendDialog(Context context, int type, int gameId, int tagId, int mediaType, String kouLingToken) {

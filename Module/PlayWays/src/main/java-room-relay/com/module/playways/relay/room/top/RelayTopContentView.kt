@@ -11,11 +11,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
+import com.common.view.ex.ExTextView
 import com.component.person.event.ShowPersonCardEvent
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
@@ -48,6 +48,7 @@ class RelayTopContentView : ExConstraintLayout {
     private val loveBg: ImageView
     private val loveStatusIv: ImageView
     private val rightAvatarSdv: SimpleDraweeView
+    private val rightAvatarBg: ExTextView
     private val countTimeTv: TextView
     private val tipsIv: ImageView
     private var anim: ObjectAnimator? = null
@@ -72,6 +73,7 @@ class RelayTopContentView : ExConstraintLayout {
         loveBg = this.findViewById(R.id.love_bg)
         loveStatusIv = this.findViewById(R.id.love_status_iv)
         rightAvatarSdv = this.findViewById(R.id.right_avatar_sdv)
+        rightAvatarBg = this.findViewById(R.id.right_avatar_bg)
         countTimeTv = this.findViewById(R.id.count_time_tv)
         tipsIv = this.findViewById(R.id.tips_iv)
         unlimitIv = this.findViewById(R.id.unlimit_iv)
@@ -101,6 +103,10 @@ class RelayTopContentView : ExConstraintLayout {
                 EventBus.getDefault().post(ShowPersonCardEvent(MyUserInfoManager.uid.toInt()))
             }
         }
+
+        rightAvatarBg.setDebounceViewClickListener {
+            listener?.clickInvite()
+        }
     }
 
     fun setArrowIcon(open: Boolean) {
@@ -122,11 +128,20 @@ class RelayTopContentView : ExConstraintLayout {
                     .setBorderColor(Color.parseColor("#ffd8d8d8"))
                     .setBorderWidth(1.dp().toFloat())
                     .build())
-            AvatarUtils.loadAvatarByUrl(rightAvatarSdv, AvatarUtils.newParamsBuilder(roomData?.peerUser?.userInfo?.avatar)
-                    .setCircle(true)
-                    .setBorderColor(Color.parseColor("#ffd8d8d8"))
-                    .setBorderWidth(1.dp().toFloat())
-                    .build())
+
+            if (roomData?.isPersonArrive() == true) {
+                rightAvatarSdv.visibility = View.VISIBLE
+                rightAvatarSdv.isEnabled = true
+
+                AvatarUtils.loadAvatarByUrl(rightAvatarSdv, AvatarUtils.newParamsBuilder(roomData?.peerUser?.userInfo?.avatar)
+                        .setCircle(true)
+                        .setBorderColor(Color.parseColor("#ffd8d8d8"))
+                        .setBorderWidth(1.dp().toFloat())
+                        .build())
+            } else {
+                rightAvatarSdv.visibility = View.INVISIBLE
+                rightAvatarSdv.isEnabled = false
+            }
         } else {
             AvatarUtils.loadAvatarByUrl(rightAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                     .setCircle(true)
@@ -139,9 +154,16 @@ class RelayTopContentView : ExConstraintLayout {
                     .setBorderWidth(1.dp().toFloat())
                     .build())
         }
-        loveBg.setImageResource(R.drawable.normal_love_icon)
-        countTimeTv.text = U.getDateTimeUtils().formatVideoTime(5 * 60 * 1000)
-        tipsIv.visibility = View.VISIBLE
+
+        if (roomData?.enableNoLimitDuration == true) {
+            loveBg.visibility = View.GONE
+            countTimeTv.visibility = View.GONE
+            tipsIv.visibility = View.GONE
+        } else {
+            loveBg.setImageResource(R.drawable.normal_love_icon)
+            countTimeTv.text = U.getDateTimeUtils().formatVideoTime(5 * 60 * 1000)
+            tipsIv.visibility = View.VISIBLE
+        }
     }
 
     fun launchCountDown() {
@@ -303,5 +325,6 @@ class RelayTopContentView : ExConstraintLayout {
         fun clickArrow(open: Boolean)
         fun clickLove()
         fun countDownOver()
+        fun clickInvite()
     }
 }

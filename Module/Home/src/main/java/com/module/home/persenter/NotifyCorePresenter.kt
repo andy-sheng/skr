@@ -294,6 +294,39 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RelayInviteFromSchemeEvent) {
+        // 派对房间邀请口令
+        if (event.ask == 1) {
+            // 需要再次确认弹窗
+            UserInfoManager.getInstance().getUserInfoByUuid(event.ownerId, true, object : ResultCallback<UserInfoModel>() {
+                override fun onGetLocalDB(o: UserInfoModel): Boolean {
+                    return false
+                }
+
+                override fun onGetServer(userInfoModel: UserInfoModel?): Boolean {
+                    if (userInfoModel != null) {
+                        var activity = U.getActivityUtils().topActivity
+                        if (activity is SchemeSdkActivity) {
+                            activity = U.getActivityUtils().homeActivity
+                        }
+                        val confirmDialog = ConfirmDialog(activity, userInfoModel, ConfirmDialog.TYPE_PARTY_INVITE_CONFIRM)
+                        confirmDialog.setListener {
+                            Observable.timer(500, TimeUnit.MILLISECONDS)
+                                    .compose(this@NotifyCorePresenter.bindUntilEvent(PresenterEvent.DESTROY))
+                                    .subscribe { tryToRelayRoom(event.ownerId, event.roomId) }
+                        }
+                        confirmDialog.show()
+                    }
+                    return false
+                }
+            })
+        } else {
+            // 不需要直接进
+            tryToRelayRoom(event.ownerId, event.roomId)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BothRelationFromSchemeEvent) {
         // TODO: 2019/3/25 成为好友的的口令
         MyLog.d(TAG, "onEvent event=$event")
@@ -526,7 +559,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         }, true)
     }
 
-    internal fun tryToRelayRoom(ownerId: Int, roomID: Int, ts: Long) {
+    internal fun tryToRelayRoom(ownerId: Int, roomID: Int, ts: Long = 0) {
         mSkrAudioPermission!!.ensurePermission({
             val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
             iRankingModeService.acceptRelayRoomInvite(ownerId, roomID, ts)

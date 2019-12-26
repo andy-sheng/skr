@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.core.kouling.SkrKouLingUtils;
@@ -12,7 +11,6 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExConstraintLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.module.common.ICallback;
@@ -22,6 +20,7 @@ import static com.component.dialog.InviteFriendDialog.INVITE_GRAB_FRIEND;
 import static com.component.dialog.InviteFriendDialog.INVITE_GRAB_GAME;
 import static com.component.dialog.InviteFriendDialog.INVITE_MIC_GAME;
 import static com.component.dialog.InviteFriendDialog.INVITE_PARTY_GAME;
+import static com.component.dialog.InviteFriendDialog.INVITE_RELAY_GAME;
 
 public class InviteFriendDialogView extends ConstraintLayout {
     public final String TAG = "InviteFriendDialogView";
@@ -138,8 +137,25 @@ public class InviteFriendDialogView extends ConstraintLayout {
                         U.getToastUtil().showShort("口令生成失败");
                     }
                 });
-            }else if (mType == INVITE_PARTY_GAME) {
-                SkrKouLingUtils.genJoinPartyGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId,mMediaType, new ICallback() {
+            } else if (mType == INVITE_PARTY_GAME) {
+                SkrKouLingUtils.genJoinPartyGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, mMediaType, new ICallback() {
+                    @Override
+                    public void onSucess(Object obj) {
+                        if (obj != null) {
+                            mKouLingToken = (String) obj;
+                            mTvKouling.setText(mKouLingToken);
+                        } else {
+                            U.getToastUtil().showShort("口令生成失败");
+                        }
+                    }
+
+                    @Override
+                    public void onFailed(Object obj, int errcode, String message) {
+                        U.getToastUtil().showShort("口令生成失败");
+                    }
+                });
+            } else if (mType == INVITE_RELAY_GAME) {
+                SkrKouLingUtils.genJoinRelayRoomKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, new ICallback() {
                     @Override
                     public void onSucess(Object obj) {
                         if (obj != null) {
@@ -171,8 +187,10 @@ public class InviteFriendDialogView extends ConstraintLayout {
                         text = SkrKouLingUtils.genJoinDoubleGameKouling(mKouLingToken);
                     } else if (mType == INVITE_MIC_GAME) {
                         text = SkrKouLingUtils.genJoinMicRoomText(mKouLingToken);
-                    }else if (mType == INVITE_PARTY_GAME) {
+                    } else if (mType == INVITE_PARTY_GAME) {
                         text = SkrKouLingUtils.genJoinPartyRoomText(mKouLingToken);
+                    } else if (mType == INVITE_RELAY_GAME) {
+                        text = SkrKouLingUtils.genJoinRelayRoomText(mKouLingToken);
                     }
 
                     mListener.onClickQQShare(text);
@@ -193,8 +211,10 @@ public class InviteFriendDialogView extends ConstraintLayout {
                         text = SkrKouLingUtils.genJoinDoubleGameKouling(mKouLingToken);
                     } else if (mType == INVITE_MIC_GAME) {
                         text = SkrKouLingUtils.genJoinMicRoomText(mKouLingToken);
-                    }else if (mType == INVITE_PARTY_GAME) {
+                    } else if (mType == INVITE_PARTY_GAME) {
                         text = SkrKouLingUtils.genJoinPartyRoomText(mKouLingToken);
+                    } else if (mType == INVITE_RELAY_GAME) {
+                        text = SkrKouLingUtils.genJoinRelayRoomText(mKouLingToken);
                     }
 
                     mListener.onClickWeixinShare(text);

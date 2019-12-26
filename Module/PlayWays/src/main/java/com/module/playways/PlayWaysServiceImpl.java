@@ -394,15 +394,14 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
             public void run() {
                 HashMap map = new HashMap();
                 map.put("peerUserID", ownerId);
-                map.put("inviteTimeMs", ts);
                 if (roomID > 0) {
                     map.put("roomID", roomID);
                 }
 
-                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                 MicRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi.class);
 
                 if (roomID > 0) {
+                    RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                     ApiMethods.subscribe(mRoomServerApi.relayRoomInviteUserEnter(body), new ApiObserver<ApiResult>() {
                         @Override
                         public void process(ApiResult result) {
@@ -429,6 +428,9 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                         }
                     });
                 } else {
+                    RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                    map.put("inviteTimeMs", ts);
+
                     ApiMethods.subscribe(mRoomServerApi.relayInviteUserEnter(body), new ApiObserver<ApiResult>() {
                         @Override
                         public void process(ApiResult result) {

@@ -269,4 +269,7 @@ interface PartyRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partygame/club-give-host")
     fun giveClubHost(@Body body: RequestBody): Call<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/room-send-invite-user")
+    fun relayRoominvite(@Body body: RequestBody): Observable<ApiResult>
 }

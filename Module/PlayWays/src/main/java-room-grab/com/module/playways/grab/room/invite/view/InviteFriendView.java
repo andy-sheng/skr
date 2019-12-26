@@ -23,7 +23,6 @@ import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
 import com.module.playways.grab.room.inter.IGrabInviteView;
 import com.module.playways.grab.room.invite.adapter.InviteFirendAdapter;
-import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2;
 import com.module.playways.grab.room.invite.fragment.InviteSearchFragment;
 import com.module.playways.grab.room.invite.presenter.GrabInvitePresenter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -76,8 +75,10 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
                     mGrabInvitePresenter.inviteDoubleFriend(mRoomID, model, view);
                 } else if (mFrom == GameModeType.GAME_MODE_MIC) {
                     mGrabInvitePresenter.inviteMicFriend(mRoomID, model, view);
-                }else if(mFrom == GameModeType.GAME_MODE_PARTY){
+                } else if (mFrom == GameModeType.GAME_MODE_PARTY) {
                     mGrabInvitePresenter.invitePartyFriend(mRoomID, model, view);
+                } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
+                    mGrabInvitePresenter.inviteRelayFriend(mRoomID, model, view);
                 }
             }
 
@@ -100,7 +101,7 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mInviteFirendAdapter);
 
-            mGrabInvitePresenter = new GrabInvitePresenter(mBaseFragment, this, mRoomID, mFrom);
+        mGrabInvitePresenter = new GrabInvitePresenter(mBaseFragment, this, mRoomID, mFrom);
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);
