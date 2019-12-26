@@ -89,6 +89,9 @@ public class AudioPlayerCapture {
     private int mLoopCount;
     private int mLoopedCount;
 
+    // 动态切换播放器时的播放位置修正参数
+    private long mSwitchPositionOffset;
+
     // 播放完成事件精确测量时的超时保护
     private long mCompletionCheckDelayed;
 
@@ -181,6 +184,10 @@ public class AudioPlayerCapture {
                     mPcmPlayer = null;
                 }
 
+                // player switch position correction
+                mSwitchPositionOffset = mAudioFileCapture.getPosition() - mAudioFileCapture.getBasePosition();
+                Log.d(TAG, "mSwitchPositionOffset: " + mSwitchPositionOffset);
+
                 // open pcm player
                 if (mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES) {
                     mPcmPlayer = new AudioSLPlayer();
@@ -188,8 +195,9 @@ public class AudioPlayerCapture {
                     mPcmPlayer = new AudioTrackPlayer();
                 }
                 int atomSize = AudioUtil.getNativeBufferSize(mContext, mOutFormat.sampleRate);
+                // use big fifo size to avoid distortion caused by GC
                 int err = mPcmPlayer.config(mOutFormat.sampleFormat, mOutFormat.sampleRate,
-                        mOutFormat.channels, atomSize, 40);
+                        mOutFormat.channels, atomSize, 300);
                 if (err < 0) {
                     postError(ERROR_UNKNOWN, 0);
                 }
@@ -242,7 +250,7 @@ public class AudioPlayerCapture {
                     mSrcPin.onFrameAvailable(outFrame);
 
                     // 更新时钟
-                    long position = mAudioFileCapture.getBasePosition() + mPcmPlayer.getPosition();
+                    long position = mAudioFileCapture.getBasePosition() + mSwitchPositionOffset + mPcmPlayer.getPosition();
                     mStcMgt.updateStc(position, true);
 
                     if (VERBOSE) {
@@ -265,13 +273,13 @@ public class AudioPlayerCapture {
             if (mAudioFileCapture.getState() != AudioFileCapture.STATE_STARTED) {
                 return;
             }
-            long tm = mAudioFileCapture.getPosition() - mAudioFileCapture.getBasePosition();
+            long tm = mAudioFileCapture.getPosition() - mAudioFileCapture.getBasePosition() - mSwitchPositionOffset;
             long pos = mPcmPlayer.getPosition();
             long delay = tm - pos;
             Log.d(TAG, "check completion: " + tm + " - " + pos + " = " + delay);
 
-            // 等待超过300ms时也发送播放完成事件
-            if (delay < 10 || mCompletionCheckDelayed >= 300) {
+            // 等待超过600ms时也发送播放完成事件
+            if (delay < 10 || mCompletionCheckDelayed >= 600) {
                 mCompletionCheckDelayed = 0;
                 if (mLoopCount < 0 || ++mLoopedCount < mLoopCount) {
                     seek(0);
@@ -365,6 +373,7 @@ public class AudioPlayerCapture {
      * Set audio player should use low latency mode with type OPENSLES.
      */
     public void setEnableLowLatency(boolean enableLowLatency) {
+        mPlayerTypeChanged = (mEnableLowLatency != enableLowLatency);
         mEnableLowLatency = enableLowLatency;
     }
 
@@ -518,6 +527,7 @@ public class AudioPlayerCapture {
     public void start(String url, long offset, long end, int loopCount) {
         mLoopCount = loopCount;
         mLoopedCount = 0;
+        mSwitchPositionOffset = 0;
         mAudioFileCapture.setDataSource(url, offset, end);
         mAudioFileCapture.prepareAsync();
     }
@@ -642,8 +652,7 @@ public class AudioPlayerCapture {
         }
         // 支持动态切换audiotrack和opensles播放
         mPlayerTypeChanged = false;
-        if ((mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES &&
-                mPcmPlayer instanceof AudioTrackPlayer) ||
+        if ((mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES) ||
                 (mAudioPlayerType == AUDIO_PLAYER_TYPE_AUDIOTRACK &&
                         mPcmPlayer instanceof AudioSLPlayer)) {
             if (mOutFormat != null) {

@@ -334,7 +334,7 @@ public class AudioMixer {
         if (format.nativeModule != 0) {
             _attachTo(mInstance, idx, format.nativeModule, false);
         } else {
-            _config(mInstance, idx, format.sampleFormat, format.sampleRate, format.channels, 1024, 800);
+            _config(mInstance, idx, format.sampleFormat, format.sampleRate, format.channels, 1024, 1000);
         }
         if (idx == mMainSinkPinIndex) {
             mOutFormat = new AudioBufFormat(format.sampleFormat,
