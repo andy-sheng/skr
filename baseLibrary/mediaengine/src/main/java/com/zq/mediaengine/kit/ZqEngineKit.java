@@ -1145,8 +1145,12 @@ public class ZqEngineKit implements AgoraOutCallback {
                     if (mConfig.isUseExternalAudio() && mConfig.isJoinChannelSuccess()) {
                         if (isAnchor) {
                             mAudioCapture.start();
+                            if (mConfig.isEnableInEarMonitoring() && shouldStartAudioPreview()) {
+                                mLocalAudioPreview.start();
+                            }
                         } else {
                             mAudioCapture.stop();
+                            mLocalAudioPreview.stop();
                         }
                     }
                     mAgoraRTCAdapter.setClientRole(isAnchor);
