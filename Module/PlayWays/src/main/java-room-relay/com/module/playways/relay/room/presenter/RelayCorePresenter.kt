@@ -3,7 +3,6 @@ package com.module.playways.relay.room.presenter
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
-import android.content.Intent
 import android.os.Handler
 import android.os.Message
 import com.alibaba.fastjson.JSON
@@ -972,14 +971,8 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         ApiMethods.subscribe(doubleRoomServerApi.getRelayInviteEnterResult(), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0 && obj.data.getBooleanValue("hasInvitedRoom")) {
-                    val relayRoomData = RelayRoomData()
                     val joinRelayRoomRspModel = JSON.parseObject(obj.data.toJSONString(), JoinRelayRoomRspModel::class.java)
-                    relayRoomData.loadFromRsp(joinRelayRoomRspModel)
-                    joinRelayRoomRspModel.enterType = RelayRoomData.EnterType.INVITE
-
-                    val intent = Intent(U.app(), RelayRoomActivity::class.java)
-                    intent.putExtra("JoinRelayRoomRspModel", joinRelayRoomRspModel)
-                    U.app().startActivity(intent)
+                    startGameByEnterInvite(joinRelayRoomRspModel)
                 }
             }
         }, this)
@@ -1238,6 +1231,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         MyLog.d(TAG, "startGameByEnterInvite rsp = $rsp")
         val relayRoomData = RelayRoomData()
         relayRoomData.loadFromRsp(rsp)
+        relayRoomData.enterType = RelayRoomData.EnterType.INVITE
 
         launch(Dispatchers.Main) {
             mRoomData.peerUser = relayRoomData.peerUser
