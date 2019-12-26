@@ -233,6 +233,9 @@ public class AuditionFragment extends BaseFragment {
     }
 
     private void startRecord1() {
+        // 录制前进入主播模式
+        ZqEngineKit.getInstance().setClientRole(true);
+
         reset();
         if (mLyricsReader != null) {
             mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs());
@@ -325,6 +328,8 @@ public class AuditionFragment extends BaseFragment {
         isRecord = false;
         ZqEngineKit.getInstance().stopAudioRecording();
         ZqEngineKit.getInstance().stopAudioMixing();
+        // 录完后进入观众模式
+        ZqEngineKit.getInstance().setClientRole(false);
 
         // TODO: 2019/3/14 原来会自动播放，现在该为跳到PlayRecordFragment中去
 //        playLyrics(mSongModel, true, false);
