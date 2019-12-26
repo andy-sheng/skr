@@ -10,17 +10,17 @@
         android:id="@+id/image_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        android:background="@drawable/common_gradient_bg" />
+        android:background="@drawable/common_gradient_bg"
+        android:visibility="gone" />
 
     <com.common.view.ex.ExImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        NickNameView:bl_shape="rectangle"
         NickNameView:bl_corners_radius="@dimen/view_16_dp"
         NickNameView:bl_gradient_angle="90"
+        NickNameView:bl_gradient_endColor="#FFFFFF"
         NickNameView:bl_gradient_startColor="#AFE1FF"
-        NickNameView:bl_gradient_endColor="#FFFFFF"/>
+        NickNameView:bl_shape="rectangle" />
 
     <com.component.busilib.view.AvatarLevelView
         android:id="@+id/avatar_level"
@@ -45,8 +45,9 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/avatar_level" />
 
+
     <com.common.view.ex.ExTextView
-        android:id="@+id/age_tv"
+        android:id="@+id/level_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_8_dp"
@@ -57,8 +58,44 @@
         android:textSize="@dimen/textsize_12_dp"
         app:bl_corners_radius="@dimen/view_4_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#A6CDE5"
+        app:bl_solid_color="#F1BA5E"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/age_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nickname_view" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/age_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_5_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_10_dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/view_4_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#94CB57"
+        app:layout_constraintLeft_toRightOf="@id/level_tv"
+        app:layout_constraintRight_toLeftOf="@id/sex_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nickname_view" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/sex_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_5_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_10_dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toRightOf="@id/age_tv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nickname_view" />
 

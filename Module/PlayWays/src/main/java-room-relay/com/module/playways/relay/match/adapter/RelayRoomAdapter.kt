@@ -33,14 +33,24 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
     var listener: RelayRoomListener? = null
     private val cardAdapterHelper = CardAdapterHelper(8, 12)
 
-    val blueDrawable = DrawableCreator.Builder()
+    private val blueDrawable = DrawableCreator.Builder()
             .setCornersRadius(16.dp().toFloat())
             .setGradientColor(Color.parseColor("#FFFFFF"), Color.parseColor("#AFE1FF"))
             .build()
 
-    val redDrawable = DrawableCreator.Builder()
+    private val redDrawable = DrawableCreator.Builder()
             .setCornersRadius(16.dp().toFloat())
             .setGradientColor(Color.parseColor("#FFFFFF"), Color.parseColor("#FFD6E9"))
+            .build()
+
+    private val girlDrawable = DrawableCreator.Builder()
+            .setCornersRadius(4.dp().toFloat())
+            .setSolidColor(Color.parseColor("#FF71BE"))
+            .build()
+
+    private val boyDrawable = DrawableCreator.Builder()
+            .setCornersRadius(4.dp().toFloat())
+            .setSolidColor(Color.parseColor("#6AB1DC"))
             .build()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RelayRoomViewHolder {
@@ -71,7 +81,10 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
         private val imageBg: ImageView = item.findViewById(R.id.image_bg)
         private val avatarLevel: AvatarLevelView = item.findViewById(R.id.avatar_level)
         private val nicknameView: NickNameView = item.findViewById(R.id.nickname_view)
+        private val levelTv: ExTextView = item.findViewById(R.id.level_tv)
         private val ageTv: ExTextView = item.findViewById(R.id.age_tv)
+        private val sexTv: ExTextView = item.findViewById(R.id.sex_tv)
+
         private val songNameTv: TextView = item.findViewById(R.id.song_name_tv)
         private val recommendTagSdv: SimpleDraweeView = item.findViewById(R.id.recommend_tag_sdv)
         private val joinTv: TextView = item.findViewById(R.id.join_tv)
@@ -89,20 +102,33 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
             this.mPos = position
             this.mModel = model
 
-            if (model.user?.sex == ESex.SX_MALE.value) {
-                imageBg.background = blueDrawable
-            } else {
-                imageBg.background = redDrawable
+            when {
+                model.user?.sex == ESex.SX_MALE.value -> {
+                    imageBg.background = blueDrawable
+                    sexTv.visibility = View.VISIBLE
+                    sexTv.text = "男生"
+                    sexTv.background = boyDrawable
+                }
+                model.user?.sex == ESex.SX_FEMALE.value -> {
+                    imageBg.background = redDrawable
+                    sexTv.visibility = View.VISIBLE
+                    sexTv.text = "女生"
+                    sexTv.background = girlDrawable
+                }
+                else -> {
+                    sexTv.visibility = View.GONE
+                }
             }
 
+            levelTv.text = model.user?.ranking?.rankingDesc
             avatarLevel.bindData(model.user)
-            nicknameView.setAllStateText(model.user)
+            nicknameView.setHonorText(model.user?.nicknameRemark, model.user?.honorInfo)
             songNameTv.text = "《${model.item?.itemName}》"
             if (!TextUtils.isEmpty(model.user?.ageStageString)) {
                 ageTv.visibility = View.VISIBLE
                 ageTv.text = model.user?.ageStageString
             } else {
-                ageTv.visibility = View.INVISIBLE
+                ageTv.visibility = View.GONE
             }
             if (!TextUtils.isEmpty(model.recommendTag?.url)) {
                 recommendTagSdv.visibility = View.VISIBLE
