@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.userinfo.model.UserInfoModel
 import com.component.busilib.model.GameBackgroundEffectModel
 import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
+import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.relay.room.model.RelayConfigModel
 import com.module.playways.relay.room.model.RelayRoundInfoModel
 import com.module.playways.relay.room.model.RelayUserLockModel
@@ -33,6 +34,8 @@ class JoinRelayRoomRspModel : Serializable {
     var users: List<UserInfoModel>? = null  // 用户信息
     @JSONField(name = "showInfos")
     var showInfos = ArrayList<GameBackgroundEffectModel>()
+
+    var enterType: RelayRoomData.EnterType = RelayRoomData.EnterType.NORMAL
 
     override fun toString(): String {
         return "JoinRelayRoomRspModel(roomID=$roomID, createTimeMs=$createTimeMs, currentRound=$currentRound, enableNoLimitDuration=$enableNoLimitDuration, tokens=$tokens, userLockInfo=$userLockInfo, users=$users)"

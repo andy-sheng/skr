@@ -47,6 +47,7 @@ import com.module.playways.party.room.PartyRoomServerApi;
 import com.module.playways.party.room.event.PartyChangeRoomEvent;
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel;
 import com.module.playways.relay.room.RelayRoomActivity;
+import com.module.playways.relay.room.RelayRoomData;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
@@ -333,11 +334,15 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         }, true);
     }
 
+    //在外面（抢唱，party，小k房里面）邀请别人一起合唱之后当被邀请的人同意之后邀请人收到push之后调用的这个
     @Override
     public void tryToRelayRoomByOuterInvite(Object o) {
         if (o instanceof CNRelayEnterFromOuterInviteNotifyEvent) {
             Intent intent = new Intent(U.app(), RelayRoomActivity.class);
-            intent.putExtra("JoinRelayRoomRspModel", JoinRelayRoomRspModel.Companion.parseFromPB(((CNRelayEnterFromOuterInviteNotifyEvent) o).getRelayRoomEnterMsg()));
+            JoinRelayRoomRspModel rsp = JoinRelayRoomRspModel.Companion.parseFromPB(((CNRelayEnterFromOuterInviteNotifyEvent) o).getRelayRoomEnterMsg());
+            rsp.setEnterType(RelayRoomData.EnterType.INVITE);
+
+            intent.putExtra("JoinRelayRoomRspModel", rsp);
             U.app().startActivity(intent);
         }
     }
@@ -408,6 +413,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                             if (result.getErrno() == 0) {
                                 //先跳转
                                 JoinRelayRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinRelayRoomRspModel.class);
+                                rsp.setEnterType(RelayRoomData.EnterType.INVITE);
 
                                 Intent intent = new Intent(U.app(), RelayRoomActivity.class);
                                 intent.putExtra("JoinRelayRoomRspModel", rsp);
@@ -437,6 +443,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                             if (result.getErrno() == 0) {
                                 //先跳转
                                 JoinRelayRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinRelayRoomRspModel.class);
+                                rsp.setEnterType(RelayRoomData.EnterType.INVITE);
 
                                 Intent intent = new Intent(U.app(), RelayRoomActivity.class);
                                 intent.putExtra("JoinRelayRoomRspModel", rsp);

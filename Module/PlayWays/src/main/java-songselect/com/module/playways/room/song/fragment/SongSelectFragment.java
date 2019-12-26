@@ -29,6 +29,7 @@ import com.module.RouterConstants;
 import com.module.playways.R;
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel;
 import com.module.playways.relay.room.RelayRoomActivity;
+import com.module.playways.relay.room.RelayRoomData;
 import com.module.playways.room.song.SongSelectServerApi;
 import com.module.playways.room.song.adapter.SongCardSwipAdapter;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
@@ -349,6 +350,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     JoinRelayRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinRelayRoomRspModel.class);
+                    rsp.setEnterType(RelayRoomData.EnterType.INVITE);
                     createSuccess(rsp);
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg());

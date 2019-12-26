@@ -78,6 +78,7 @@ class ReplyRoomInvitePresenter() : RxLifeCyclePresenter() {
                     val relayRoomData = RelayRoomData()
                     val joinRelayRoomRspModel = JSON.parseObject(obj.data.toJSONString(), JoinRelayRoomRspModel::class.java)
                     relayRoomData.loadFromRsp(joinRelayRoomRspModel)
+                    joinRelayRoomRspModel.enterType = RelayRoomData.EnterType.INVITE
 
                     val intent = Intent(U.app(), RelayRoomActivity::class.java)
                     intent.putExtra("JoinRelayRoomRspModel", joinRelayRoomRspModel)

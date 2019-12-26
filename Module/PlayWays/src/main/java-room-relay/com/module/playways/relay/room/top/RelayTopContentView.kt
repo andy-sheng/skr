@@ -159,10 +159,12 @@ class RelayTopContentView : ExConstraintLayout {
             loveBg.visibility = View.GONE
             countTimeTv.visibility = View.GONE
             tipsIv.visibility = View.GONE
+            unlimitIv.visibility = View.VISIBLE
         } else {
             loveBg.setImageResource(R.drawable.normal_love_icon)
             countTimeTv.text = U.getDateTimeUtils().formatVideoTime(5 * 60 * 1000)
             tipsIv.visibility = View.VISIBLE
+            unlimitIv.visibility = View.GONE
         }
     }
 

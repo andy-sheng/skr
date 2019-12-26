@@ -15,6 +15,7 @@ import com.module.playways.relay.room.model.RelayRoundInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.RelayRoom.ERRoundStatus
 import org.greenrobot.eventbus.EventBus
+import java.io.Serializable
 
 
 class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
@@ -70,6 +71,8 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
     var leftSeat = true   // 我的未知是否在左边
     var myEffectModel: GameBackgroundEffectModel? = null
     var peerEffectModel: GameBackgroundEffectModel? = null
+
+    var enterType: EnterType = EnterType.NORMAL
 
     override val gameType: Int
         get() = GameModeType.GAME_MODE_RELAY
@@ -236,6 +239,7 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
 
         this.expectRoundInfo = rsp.currentRound
         this.enableNoLimitDuration = rsp.enableNoLimitDuration
+        this.enterType = rsp.enterType
         MyLog.w("chengsimin", "peerEffectModel2=${this.peerEffectModel}")
     }
 
@@ -243,5 +247,10 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         return "RelayRoomData(shiftTsForRelay=$shiftTsForRelay, configModel=$configModel, peerUser=$peerUser, unLockMe=$unLockMe, unLockPeer=$unLockPeer, leftSeat=$leftSeat, isHasExitGame=$isHasExitGame)"
     }
 
-
+    enum class EnterType : Serializable {
+        //NORMAL 第一个是匹配或者直接进入别人的房间
+        //INVITE 通过邀请玩的房间（自己创建房间再邀请也算）
+        NORMAL,
+        INVITE
+    }
 }
