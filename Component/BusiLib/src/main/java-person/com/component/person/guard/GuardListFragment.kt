@@ -17,6 +17,7 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.R
+import com.component.person.event.UploadHomePageEvent
 import com.kingja.loadsir.core.LoadService
 import com.module.RouterConstants
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -26,6 +27,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 // 守护列表
 class GuardListFragment : BaseFragment() {
@@ -43,6 +47,7 @@ class GuardListFragment : BaseFragment() {
     private val limit = 15
 
     private var userID = 0
+    private var isNeedRefresh = true
 
     override fun setData(type: Int, data: Any?) {
         super.setData(type, data)
@@ -74,8 +79,15 @@ class GuardListFragment : BaseFragment() {
             titlebar.rightTextView.visibility = View.VISIBLE
         }
 
-        titlebar.rightTextView.setDebounceViewClickListener {
+        titlebar.leftTextView.setDebounceViewClickListener {
+            U.getFragmentUtils().popFragment(this)
+        }
 
+        titlebar.rightTextView.setDebounceViewClickListener {
+            EventBus.getDefault().post(UploadHomePageEvent())
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                    .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$userID"))
+                    .navigation()
         }
 
         refreshLayout.apply {
@@ -111,16 +123,29 @@ class GuardListFragment : BaseFragment() {
         })
         contentRv.adapter = adapter
 
-
         getGuardList(0, true)
+        if (userID != MyUserInfoManager.uid.toInt()) {
+            checkGuardInfo()
+        }
     }
 
-    fun getGuardList(off: Int, isClean: Boolean) {
+    override fun onFragmentVisible() {
+        super.onFragmentVisible()
+        if (isNeedRefresh) {
+            getGuardList(0, true)
+            if (userID != MyUserInfoManager.uid.toInt()) {
+                checkGuardInfo()
+            }
+        }
+    }
+
+    private fun getGuardList(off: Int, isClean: Boolean) {
         launch {
             val result = subscribe(RequestControl("getGuardList", ControlType.CancelThis)) {
                 userServerApi.getGuardList(userID, off, limit)
             }
             if (result.errno == 0) {
+                isNeedRefresh = false
                 val list = JSON.parseArray(result.data.getString("list"), GuardInfoModel::class.java)
                 offset = result.data.getIntValue("offset")
                 hasMore = result.data.getBooleanValue("hasMore")
@@ -132,6 +157,28 @@ class GuardListFragment : BaseFragment() {
             refreshLayout.finishRefresh()
             refreshLayout.finishLoadMore()
             refreshLayout.setEnableLoadMore(hasMore)
+        }
+    }
+
+    private fun checkGuardInfo() {
+        launch {
+            val result = subscribe(RequestControl("checkGuardInfo", ControlType.CancelThis)) {
+                userServerApi.checkGuardInfo(userID)
+            }
+            if (result.errno == 0) {
+                val guardTimeInfo = JSON.parseObject(result.data.getString("guardInfo"), GuardTimeInfo::class.java)
+                isGuard(guardTimeInfo != null)
+            } else {
+                isGuard(false)
+            }
+        }
+    }
+
+    private fun isGuard(flag: Boolean) {
+        if (flag) {
+            titlebar.rightTextView.text = "续费守护"
+        } else {
+            titlebar.rightTextView.text = "开通守护"
         }
     }
 
@@ -152,7 +199,12 @@ class GuardListFragment : BaseFragment() {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: UploadHomePageEvent) {
+        isNeedRefresh = true
+    }
+
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 }
