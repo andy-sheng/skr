@@ -99,7 +99,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     Handler mUiHandler = new Handler(Looper.getMainLooper());
 
-    String mPengingSchemeUri; //想要跳转的scheme，但因为没登录被挂起了
+    String mPendingSchemeUri; //想要跳转的scheme，但因为没登录被挂起了
     boolean mFromCreate = false;
 
     int lastFollowRedDotValue;
@@ -328,6 +328,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     }
 
     private void showNewFunctionDialog() {
+        if(U.getChannelUtils().getChannel().startsWith("CHORUS")){
+            return;
+        }
         if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_PARTY_DIALOG, false)) {
             if (mWaitingDialogPlus == null) {
                 mWaitingDialogPlus = DialogPlus.newDialog(this)
@@ -428,8 +431,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 if (UserAccountManager.INSTANCE.hasAccount()) {
                     goSchemeActivity(scheme);
                 } else {
-                    MyLog.d(TAG, "挂起scheme mPengingSchemeUri:" + mPengingSchemeUri);
-                    mPengingSchemeUri = scheme;
+                    MyLog.d(TAG, "挂起scheme mPendingSchemeUri:" + mPendingSchemeUri);
+                    mPendingSchemeUri = scheme;
                 }
             }
         }
@@ -439,8 +442,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     @Override
     public void tryJumpSchemeIfNeed() {
         // 账号登录等信息都成功了，看看有没有悬而未全的scheme
-        if (!TextUtils.isEmpty(mPengingSchemeUri)) {
-            goSchemeActivity(mPengingSchemeUri);
+        if (!TextUtils.isEmpty(mPendingSchemeUri)) {
+            goSchemeActivity(mPendingSchemeUri);
         }
     }
 
@@ -464,7 +467,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
                 .withString("uri", scheme)
                 .navigation();
-        mPengingSchemeUri = null;
+        mPendingSchemeUri = null;
     }
 
     @Override
