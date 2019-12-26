@@ -34,6 +34,7 @@ public class SwipeFlingAdapterView extends BaseFlingAdapterView {
     //缩放层叠效果
     private int yOffsetStep; // view叠加垂直偏移量的步长
     private static final float SCALE_STEP = 0.08f; // view叠加缩放的步长
+    private static final float ALPHA_STEP = 0.4f;  // view叠加的透明度
     //缩放层叠效果
 
     private int MAX_VISIBLE = 4; // 值建议最小为4
@@ -253,6 +254,7 @@ public class SwipeFlingAdapterView extends BaseFlingAdapterView {
             child.offsetTopAndBottom(yOffsetStep * multiple);
             child.setScaleX(1 - SCALE_STEP * multiple);
             child.setScaleY(1 - SCALE_STEP * multiple);
+            child.setAlpha(1 - ALPHA_STEP * multiple);
         }
     }
 
@@ -275,6 +277,7 @@ public class SwipeFlingAdapterView extends BaseFlingAdapterView {
                 underTopView.offsetTopAndBottom(offset - underTopView.getTop() + initTop);
                 underTopView.setScaleX(1 - SCALE_STEP * multiple + SCALE_STEP * rate);
                 underTopView.setScaleY(1 - SCALE_STEP * multiple + SCALE_STEP * rate);
+                underTopView.setAlpha(1 - ALPHA_STEP * multiple + ALPHA_STEP * rate);
             }
         }
     }
