@@ -1,5 +1,6 @@
 package com.module.playways.room.song.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -92,7 +93,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
             // 练歌房
             mTopTextTv.setVisibility(View.INVISIBLE);
             mTopIconIv.setBackground(U.getDrawable(R.drawable.audition_top_icon));
-            mainActContainer.setBackground(U.getDrawable(R.drawable.pipeichenggong_bj));
+            mainActContainer.setBackgroundColor(Color.parseColor("#5F3C82"));
         } else {
             // 合唱
             mTopTextTv.setText("选择合唱歌曲");
