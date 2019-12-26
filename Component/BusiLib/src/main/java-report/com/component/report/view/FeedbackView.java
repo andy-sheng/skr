@@ -22,6 +22,7 @@ import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
 import com.respicker.model.ImageItem;
 import com.component.report.adapter.QuickFeedBackAdapter;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +139,7 @@ public class FeedbackView extends RelativeLayout {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {
+                    ZqEngineKit.getInstance().stopAudioRecording();
                     boolean hasLyricNoShowIv = false;
                     ArrayList<Integer> tags = new ArrayList<>();
                     for (ExImageView imageView : mSelectIvList) {
