@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/duihuan_dahongzuan"
+                android:background="@drawable/renminbi_exchange"
                 android:textColor="#ff41547e"
                 android:textSize="@dimen/textsize_20_dp"
                 android:textStyle="bold" />
@@ -64,7 +64,7 @@
                 android:layout_marginRight="@dimen/view_100_dp"
                 android:layout_toRightOf="@+id/big_diamond_iv"
                 android:background="@null"
-                android:hint="请输入兑换金额"
+                android:hint="输入金额"
                 android:inputType="numberDecimal"
                 android:maxLength="11"
                 android:textColor="#0C2275"

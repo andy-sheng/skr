@@ -124,7 +124,7 @@ public class ExChangeCashToDiamondFragment extends BaseFragment {
                     if (TextUtils.isEmpty(editString)) {
                         mIvExchangeBtn.setEnabled(false);
                         mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
-                        mTvTip.setText(String.format("余额%.1f元", mDq));
+                        mTvTip.setText(String.format("现金余额%.1f元", mDq));
                         mTvExchangeWhole.setVisibility(View.VISIBLE);
                         mClearIv.setVisibility(View.GONE);
                         mEditCashNum.setTextSize(16);
@@ -136,12 +136,12 @@ public class ExChangeCashToDiamondFragment extends BaseFragment {
                     if (inputNum > mDq) {
                         mIvExchangeBtn.setEnabled(false);
                         mTvTip.setTextColor(U.getColor(R.color.red));
-                        mTvTip.setText("已超过可兑换余额");
+                        mTvTip.setText("已超过可兑换现金余额");
                         mTvExchangeWhole.setVisibility(View.VISIBLE);
                         mClearIv.setVisibility(View.VISIBLE);
                     } else {
                         mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
-                        mTvTip.setText(String.format("预计可兑换%.1f钻石", inputNum * (float) toZSRadio / 1000f));
+                        mTvTip.setText(String.format("预计可兑换%.1f个钻石", inputNum * (float) toZSRadio / 1000f));
                         mTvExchangeWhole.setVisibility(View.VISIBLE);
                         mClearIv.setVisibility(View.VISIBLE);
                         if (inputNum == 0) {
@@ -165,7 +165,7 @@ public class ExChangeCashToDiamondFragment extends BaseFragment {
         mDq = balance;
         mMaxDiamond = mDq * 10;
         toZSRadio = 10000;
-        mTvTip.setText(String.format("余额%.1f元", mDq));
+        mTvTip.setText(String.format("现金余额%.1f元", mDq));
     }
 
     public void exChangeSuccess() {
