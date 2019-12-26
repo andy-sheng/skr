@@ -129,6 +129,7 @@ class RelayTopContentView : ExConstraintLayout {
                     .setBorderWidth(1.dp().toFloat())
                     .build())
 
+            //创建房间的人显示在昨天
             if (roomData?.isPersonArrive() == true) {
                 rightAvatarSdv.visibility = View.VISIBLE
                 rightAvatarSdv.isEnabled = true
@@ -155,7 +156,7 @@ class RelayTopContentView : ExConstraintLayout {
                     .build())
         }
 
-        if (roomData?.enableNoLimitDuration == true) {
+        if (roomData?.isEnterFromInvite() == true) {
             loveBg.visibility = View.GONE
             countTimeTv.visibility = View.GONE
             tipsIv.visibility = View.GONE

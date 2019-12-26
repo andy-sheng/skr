@@ -55,7 +55,10 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
                 if (field && unLockPeer) {
                     enableNoLimitDuration = true
                 }
-                EventBus.getDefault().post(RelayLockChangeEvent())
+
+                if (!isEnterFromInvite()) {
+                    EventBus.getDefault().post(RelayLockChangeEvent())
+                }
             }
         }
     var unLockPeer = false // 对方是否解锁
@@ -65,7 +68,10 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
                 if (field && unLockPeer) {
                     enableNoLimitDuration = true
                 }
-                EventBus.getDefault().post(RelayLockChangeEvent())
+
+                if (!isEnterFromInvite()) {
+                    EventBus.getDefault().post(RelayLockChangeEvent())
+                }
             }
         }
     var leftSeat = true   // 我的未知是否在左边
@@ -79,6 +85,11 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
 
     fun hasTimeLimit(): Boolean {
         return enableNoLimitDuration
+    }
+
+    //是否是邀请进来玩的房间
+    fun isEnterFromInvite(): Boolean {
+        return enterType == EnterType.INVITE
     }
 
     init {

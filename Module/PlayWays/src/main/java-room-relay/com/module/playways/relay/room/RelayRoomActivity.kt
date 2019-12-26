@@ -229,6 +229,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         initVipEnterView()
         initMicSeatView()
 
+        if (mRoomData.isEnterFromInvite() && mRoomData.isPersonArrive()) {
+            mAddSongIv.visibility = View.VISIBLE
+        }
+
         mCorePresenter.onOpeningAnimationOver()
 
         mUiHanlder.postDelayed(Runnable {
@@ -389,14 +393,6 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             mSkrAudioPermission.ensurePermission({
                 SongManagerActivity.open(this, mRoomData)
             }, true)
-        }
-
-        if (mRoomData?.enableNoLimitDuration == true) {
-            mChangeSongIv.visibility = View.VISIBLE
-            mAddSongIv.visibility = View.VISIBLE
-        } else {
-            mChangeSongIv.visibility = View.GONE
-            mAddSongIv.visibility = View.GONE
         }
 
         run {
@@ -741,20 +737,30 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         hideAllSceneView(null)
         relaySingCardView.turnSingPrepare()
 
-        if (!(mRoomData.enableNoLimitDuration == true)) {
+        if (!mRoomData.isEnterFromInvite()) {
             mTopContentView.launchCountDown()
         }
 
         singCardShowListener.invoke()
-        if (mRoomData?.unLockMe && mRoomData?.unLockPeer) {
-            mChangeSongIv.visibility = View.VISIBLE
-        }
+
+        updateChangeSongIv()
     }
 
     override fun singBegin() {
         hideAllSceneView(null)
         relaySingCardView.turnSingBegin()
-        if (mRoomData?.unLockMe && mRoomData?.unLockPeer) {
+
+        updateChangeSongIv()
+    }
+
+    private fun updateChangeSongIv() {
+        if (mRoomData.isEnterFromInvite()) {
+            if (mRoomData.realRoundInfo?.music != null) {
+                mChangeSongIv.visibility = View.VISIBLE
+            } else {
+                mChangeSongIv.visibility = View.GONE
+            }
+        } else if (mRoomData?.unLockMe && mRoomData?.unLockPeer) {
             mChangeSongIv.visibility = View.VISIBLE
         }
     }
@@ -791,5 +797,6 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     override fun startGameByInvite() {
         mTopContentView.bindData()
+        mAddSongIv.visibility = View.VISIBLE
     }
 }
