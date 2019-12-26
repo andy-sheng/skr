@@ -25,7 +25,7 @@ class JoinRelayRoomRspModel : Serializable {
     @JSONField(name = "currentRound")
     var currentRound: RelayRoundInfoModel? = null // 目前轮次
     @JSONField(name = "enableNoLimitDuration")
-    var enableNoLimitDuration: Boolean? = null    // 开启没有限制的持续时间
+    var enableNoLimitDuration: Boolean = false    // 开启没有限制的持续时间
     @JSONField(name = "tokens")
     var tokens: List<LocalAgoraTokenInfo>? = null    // 声网
     @JSONField(name = "userLockInfo")

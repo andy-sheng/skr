@@ -3,6 +3,7 @@ package com.module.playways.relay.room.presenter
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.os.Handler
 import android.os.Message
 import com.alibaba.fastjson.JSON
@@ -14,10 +15,7 @@ import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.notification.event.CNRelayEnterFromRoomInviteNotifyEvent
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ControlType
-import com.common.rxretrofit.RequestControl
-import com.common.rxretrofit.subscribe
+import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
@@ -28,6 +26,8 @@ import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
+import com.module.playways.doubleplay.DoubleRoomServerApi
+import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.room.RelayRoomActivity
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.relay.room.RelayRoomServerApi
@@ -46,10 +46,7 @@ import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.zq.live.proto.RelayRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -950,6 +947,11 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RSyncMsg) {
+        if (mRoomData.enterType == RelayRoomData.EnterType.INVITE && !mRoomData.isPersonArrive()) {
+            fetchRelayRoom()
+            return
+        }
+
         ensureInRcRoom()
         MyLog.w(TAG, "收到服务器 sync push更新状态 ,event=$event")
         var thisRound = RelayRoundInfoModel.parseFromRoundInfo(event.currentRound)
@@ -960,6 +962,27 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
         startSyncGameStatus()
         processSyncResult(thisRound)
+    }
+
+    /**
+     * 发出邀请之后轮询检查对方的进房情况，因为push有可能会丢
+     */
+    private fun fetchRelayRoom() {
+        val doubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi::class.java)
+        ApiMethods.subscribe(doubleRoomServerApi.getRelayInviteEnterResult(), object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult?) {
+                if (obj?.errno == 0 && obj.data.getBooleanValue("hasInvitedRoom")) {
+                    val relayRoomData = RelayRoomData()
+                    val joinRelayRoomRspModel = JSON.parseObject(obj.data.toJSONString(), JoinRelayRoomRspModel::class.java)
+                    relayRoomData.loadFromRsp(joinRelayRoomRspModel)
+                    joinRelayRoomRspModel.enterType = RelayRoomData.EnterType.INVITE
+
+                    val intent = Intent(U.app(), RelayRoomActivity::class.java)
+                    intent.putExtra("JoinRelayRoomRspModel", joinRelayRoomRspModel)
+                    U.app().startActivity(intent)
+                }
+            }
+        }, this)
     }
 
 //    @Subscribe
@@ -1205,7 +1228,24 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(cnRelayEnterFromRoomInviteNotifyEvent: CNRelayEnterFromRoomInviteNotifyEvent) {
         MyLog.d(TAG, "onEvent cnRelayEnterFromRoomInviteNotifyEvent=$cnRelayEnterFromRoomInviteNotifyEvent")
+        if (!mRoomData.isPersonArrive() && mRoomData.gameId == cnRelayEnterFromRoomInviteNotifyEvent.relayRoomEnterMsg.roomID) {
+            val rsp = JoinRelayRoomRspModel.parseFromPB(cnRelayEnterFromRoomInviteNotifyEvent.relayRoomEnterMsg)
+            startGameByEnterInvite(rsp)
+        }
+    }
 
+    private fun startGameByEnterInvite(rsp: JoinRelayRoomRspModel) {
+        MyLog.d(TAG, "startGameByEnterInvite rsp = $rsp")
+        val relayRoomData = RelayRoomData()
+        relayRoomData.loadFromRsp(rsp)
+
+        launch(Dispatchers.Main) {
+            mRoomData.peerUser = relayRoomData.peerUser
+            mRoomData.myEffectModel = relayRoomData.myEffectModel
+            mRoomData.peerEffectModel = relayRoomData.peerEffectModel
+
+            roomView.startGameByInvite()
+        }
     }
 
     fun sendUnlock() {

@@ -30,9 +30,9 @@
         android:id="@+id/left_avatar_sdv"
         android:layout_width="@dimen/view_42_dp"
         android:layout_height="@dimen/view_42_dp"
+        app:layout_constraintEnd_toStartOf="@+id/right_avatar_sdv"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/love_bg" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/left_mute_iv"
@@ -81,11 +81,12 @@
         app:layout_constraintTop_toTopOf="@+id/right_avatar_sdv" />
 
     <com.facebook.drawee.view.SimpleDraweeView
+        android:layout_marginLeft="@dimen/view_76_dp"
         android:id="@+id/right_avatar_sdv"
         android:layout_width="@dimen/view_42_dp"
         android:layout_height="@dimen/view_42_dp"
-        app:layout_constraintLeft_toRightOf="@id/love_bg"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/left_avatar_sdv" />
 
     <ImageView
         android:id="@+id/right_mute_iv"
@@ -106,8 +107,8 @@
         app:layout_constraintLeft_toLeftOf="@id/love_bg"
         app:layout_constraintRight_toRightOf="@id/love_bg" />
 
-
     <ImageView
+        app:layout_goneMarginBottom="@dimen/view_15_dp"
         android:id="@+id/unlimit_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

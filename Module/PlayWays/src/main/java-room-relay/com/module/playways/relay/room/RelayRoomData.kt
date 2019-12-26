@@ -46,7 +46,7 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
      */
     var configModel = RelayConfigModel()// 一唱到底配置
     var peerUser: RelayPlayerInfoModel? = null
-    var enableNoLimitDuration: Boolean? = null    // 开启没有限制的持续时间
+    var enableNoLimitDuration: Boolean = false    // 开启没有限制的持续时间
 
     var unLockMe = false // 我是否解锁
         set(value) {
@@ -78,7 +78,7 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         get() = GameModeType.GAME_MODE_RELAY
 
     fun hasTimeLimit(): Boolean {
-        return unLockMe && unLockPeer
+        return enableNoLimitDuration
     }
 
     init {

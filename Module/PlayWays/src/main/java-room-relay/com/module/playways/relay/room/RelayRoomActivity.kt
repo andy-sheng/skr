@@ -789,4 +789,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         relaySingCardView.turnMyChangePrepare()
     }
 
+    override fun startGameByInvite() {
+        mTopContentView.bindData()
+    }
 }
