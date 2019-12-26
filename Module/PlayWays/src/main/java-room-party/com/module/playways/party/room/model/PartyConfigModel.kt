@@ -10,9 +10,7 @@ import java.io.Serializable
 import java.util.ArrayList
 
 class PartyConfigModel : Serializable {
-    @JSONField(name = "durationTimeMs")
-    var durationTimeMs = 0
+    @JSONField(name = "SyncPullIntevalTimeMs")
+    var internalTs = 10*1000
 
-    companion object {
-    }
 }

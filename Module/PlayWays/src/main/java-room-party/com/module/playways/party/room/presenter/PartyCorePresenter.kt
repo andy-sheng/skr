@@ -424,7 +424,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         syncJob?.cancel()
         syncJob = launch {
             while (true) {
-                delay(10 * 1000)
+                delay(mRoomData.config.internalTs.toLong())
                 syncGameStatusInner()
             }
         }
@@ -444,7 +444,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                     var users = JSON.parseArray(result.data.getString("users"), PartyPlayerInfoModel::class.java)
                     val gameOverTimeMs = result.data.getLongValue("gameOverTimeMs")
                     // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
-                    processSyncResult(false,gameOverTimeMs, onlineUserCnt, applyUserCnt, seats, users, thisRound)
+                    processSyncResult(false, gameOverTimeMs, onlineUserCnt, applyUserCnt, seats, users, thisRound)
                 }
             } else {
 
@@ -526,10 +526,10 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             if (mRoomData.mySeatInfo?.micStatus == EMicStatus.MS_OPEN.value) {
                 // 我得开着麦
                 mRoomData.isMute = false
-                ZqEngineKit.getInstance().adjustRecordingSignalVolume(ZqEngineKit.getInstance().params.recordingSignalVolume,false)
+                ZqEngineKit.getInstance().adjustRecordingSignalVolume(ZqEngineKit.getInstance().params.recordingSignalVolume, false)
             } else {
                 mRoomData.isMute = true
-                ZqEngineKit.getInstance().adjustRecordingSignalVolume(0,false)
+                ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
             }
         } else {
             if (mRoomData.myUserInfo?.isHost() == true) {
@@ -1072,14 +1072,14 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             var thisRound = PartyRoundInfoModel.parseFromRoundInfo(event.currentRound)
             // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
             startSyncGameStatus()
-            processSyncResult(true,0, onlineUserCnt, applyUserCnt, seats, users, thisRound)
+            processSyncResult(true, 0, onlineUserCnt, applyUserCnt, seats, users, thisRound)
         }
     }
 
     /**
      * 明确数据可以刷新
      */
-    private fun processSyncResult(fromPush:Boolean,gameOverTimeMs: Long, onlineUserCnt: Int, applyUserCnt: Int, seats: List<PartySeatInfoModel>?, users: List<PartyPlayerInfoModel>?, thisRound: PartyRoundInfoModel?) {
+    private fun processSyncResult(fromPush: Boolean, gameOverTimeMs: Long, onlineUserCnt: Int, applyUserCnt: Int, seats: List<PartySeatInfoModel>?, users: List<PartyPlayerInfoModel>?, thisRound: PartyRoundInfoModel?) {
         mRoomData.gameOverTs = gameOverTimeMs
         mRoomData.onlineUserCnt = onlineUserCnt
         mRoomData.applyUserCnt = applyUserCnt
@@ -1102,10 +1102,10 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             } else if ((thisRound?.roundSeq ?: 0) > mRoomData.realRoundSeq) {
                 MyLog.w(TAG, "sync 回来的轮次大，要替换 roundInfo 了")
                 // 主轮次结束
-                if(fromPush && thisRound?.sceneInfo == null && thisRound?.status == EPRoundStatus.PRS_PLAY_GAME.value){
+                if (fromPush && thisRound?.sceneInfo == null && thisRound?.status == EPRoundStatus.PRS_PLAY_GAME.value) {
                     MyLog.w(TAG, "pushSync里没有游戏详情,走短链接sync")
                     syncGameStatusInner()
-                }else{
+                } else {
                     launch {
                         mRoomData.expectRoundInfo = thisRound
                         mRoomData.checkRoundInEachMode()

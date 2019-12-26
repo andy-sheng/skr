@@ -162,7 +162,6 @@ open abstract class VoiceControlPanelView : ScrollView {
 //            ZqEngineKit.getInstance().setEnableAudioLowLatency(isChecked)
 //        }
         mEarSb?.setOnCheckedChangeListener { buttonView, isChecked ->
-            // TODO: 测试用途
             ZqEngineKit.getInstance().enableInEarMonitoring(isChecked)
 //            if (isChecked) {
 //                mMixSb?.setCheckedNoEvent(false)

@@ -19,7 +19,7 @@ class GrabVoiceControlPanelView : VoiceControlPanelView {
     // 清唱与伴奏
     internal var mAccSb: SwitchButton?=null
 
-    internal var mGrabRoomData: GrabRoomData? = null
+    internal var roomData: GrabRoomData? = null
 
     protected override fun getMarginLeft(): Int {
         return U.getDisplayUtils().screenWidth - U.getDisplayUtils().dip2px((30 + 24).toFloat()) - U.getDisplayUtils().dip2px((44 * 5).toFloat())
@@ -32,27 +32,24 @@ class GrabVoiceControlPanelView : VoiceControlPanelView {
     override fun init(context: Context?) {
         super.init(context)
         mAccSb = findViewById(R.id.acc_sb)
-        mAccSb?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            val infoModel = mGrabRoomData!!.realRoundInfo
-            if (infoModel != null && infoModel.singBySelf()) {
+        mAccSb?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
+            if(roomData?.realRoundInfo?.singBySelf() == true){
                 U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式")
-                if (mGrabRoomData != null) {
-                    mAccSb?.isChecked = !mGrabRoomData!!.isAccEnable
-                }
+                mAccSb?.setCheckedNoEvent(!isChecked)
                 return@OnCheckedChangeListener
             }
-            if (mGrabRoomData != null) {
-                mGrabRoomData!!.isAccEnable = isChecked
+            if (roomData != null) {
+                roomData!!.isAccEnable = isChecked
             }
         })
     }
 
     override fun bindData() {
         super.bindData()
-        mAccSb?.isChecked = mGrabRoomData!!.isAccEnable
+        mAccSb?.setCheckedNoEvent(roomData!!.isAccEnable)
     }
 
     fun setRoomData(modelBaseRoomData: GrabRoomData) {
-        mGrabRoomData = modelBaseRoomData
+        roomData = modelBaseRoomData
     }
 }
