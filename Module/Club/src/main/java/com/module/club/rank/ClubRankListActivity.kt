@@ -6,7 +6,9 @@ import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.view.setDebounceViewClickListener
@@ -25,6 +27,7 @@ import kotlinx.coroutines.launch
 @Route(path = RouterConstants.ACTIVITY_LIST_CLUB_RANK)
 class ClubRankListActivity : BaseActivity() {
     lateinit var ivBack: ExImageView
+    lateinit var ruleTv: TextView
     lateinit var tagTab: SlidingTabLayout
     lateinit var viewpager: ViewPager
 
@@ -47,11 +50,18 @@ class ClubRankListActivity : BaseActivity() {
         }
 
         ivBack = this.findViewById(R.id.iv_back)
+        ruleTv = this.findViewById(R.id.rule_tv)
         tagTab = this.findViewById(R.id.tag_tab)
         viewpager = this.findViewById(R.id.viewpager)
 
         ivBack.setDebounceViewClickListener {
             finish()
+        }
+
+        ruleTv.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                    .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("http://dev.app.inframe.mobi/rules"))
+                    .navigation()
         }
 
         getClubRankTags()
