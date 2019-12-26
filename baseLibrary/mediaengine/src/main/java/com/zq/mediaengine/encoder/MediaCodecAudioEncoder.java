@@ -34,6 +34,7 @@ public class MediaCodecAudioEncoder extends MediaCodecEncoderBase<AudioBufFrame,
 
     @Override
     protected int doStart(Object encodeFormat) {
+        Log.d(TAG, "doStart");
         AudioCodecFormat format = (AudioCodecFormat) encodeFormat;
         MediaFormat mediaFormat = format.toMediaFormat();
         try {
@@ -58,6 +59,7 @@ public class MediaCodecAudioEncoder extends MediaCodecEncoderBase<AudioBufFrame,
 
     @Override
     protected void doStop() {
+        Log.d(TAG, "doStop");
         try {
             // signal eos
             fillEncoder(null, 0);

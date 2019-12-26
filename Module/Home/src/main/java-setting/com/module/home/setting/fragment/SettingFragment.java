@@ -126,6 +126,7 @@ public class SettingFragment extends BaseFragment {
         mUserFeedback = getRootView().findViewById(R.id.user_feedback);
         mComment = getRootView().findViewById(R.id.comment);
         mServiceAgreen = getRootView().findViewById(R.id.service_agreen);
+
         mExitLogin = getRootView().findViewById(R.id.exit_login);
 
         mRlExchange = getRootView().findViewById(R.id.Rl_exchange);
@@ -268,6 +269,13 @@ public class SettingFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 showMusicWeb();
+            }
+        });
+        getRootView().findViewById(R.id.engine_test).setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_ENGINE_SETTING)
+                        .navigation();
             }
         });
     }

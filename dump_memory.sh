@@ -59,7 +59,7 @@ sleep 10s
 rm -rf memory
 mkdir memory
 date1=`date +%Y_%m_%d-%H_%M_%S`
-outputfile="memory/$packageName$date1.hprof"
+outputfile="memory1/$packageName$date1.hprof"
 echo $outputfile
 
 pull_heap_dump
@@ -68,7 +68,7 @@ pull_heap_dump
 #convert
 sleep 2s
 fff=convert
-outputfile2="memory/$packageName$date1$fff.hprof"
+outputfile2="memory1/$packageName$date1$fff.hprof"
 $ANDROID_SDK/platform-tools/hprof-conv  $outputfile $outputfile2
 echo "$ANDROID_SDK/platform-tools/hprof-conv  $outputfile $outputfile2"
 open memory

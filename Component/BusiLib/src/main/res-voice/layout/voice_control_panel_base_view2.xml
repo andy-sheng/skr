@@ -3,7 +3,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_switch_container"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/view_40_dp"
     android:layout_marginTop="@dimen/view_30_dp"
@@ -43,21 +43,22 @@
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/ear_sb"
+        app:layout_constraintRight_toRightOf="parent"
+         />
 
     <com.kyleduo.switchbutton.SwitchButton
         android:id="@+id/ear_sb"
         android:layout_width="@dimen/view_83_dp"
         android:layout_height="@dimen/view_23_dp"
         android:checked="false"
-        android:visibility="gone"
         app:kswBackDrawable="@drawable/voice_control_switch_btn_bg"
         app:kswThumbDrawable="@drawable/ty_anniu_da"
         app:kswThumbMargin="@dimen/view_0_dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/ear_tv"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

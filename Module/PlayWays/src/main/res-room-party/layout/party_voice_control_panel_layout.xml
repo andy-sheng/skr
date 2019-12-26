@@ -1,0 +1,52 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.common.view.ex.ExRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#4C56AA">
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/ll_switch_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_40_dp"
+            android:layout_marginTop="@dimen/view_30_dp"
+            android:layout_marginRight="@dimen/view_38_dp">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/ear_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:text="耳返"
+                android:textColor="@color/white_trans_50"
+                android:textSize="@dimen/textsize_14_dp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                />
+
+            <com.kyleduo.switchbutton.SwitchButton
+                android:id="@+id/ear_sb"
+                android:layout_width="@dimen/view_83_dp"
+                android:layout_height="@dimen/view_23_dp"
+                android:checked="false"
+                app:kswBackDrawable="@drawable/voice_control_switch_btn_bg"
+                app:kswThumbDrawable="@drawable/ty_anniu_da"
+                app:kswThumbMargin="@dimen/view_0_dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/ear_tv"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+<!--        <include layout="@layout/voice_control_panel_base_view2" />-->
+        <include layout="@layout/voice_control_panel_base_view" />
+    </com.common.view.ex.ExRelativeLayout>
+</FrameLayout>

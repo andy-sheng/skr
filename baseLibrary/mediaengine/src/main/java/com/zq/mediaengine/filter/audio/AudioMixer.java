@@ -43,6 +43,7 @@ public class AudioMixer {
     private float mRightOutputVolume;
     private boolean mMute;
     private boolean mBlockingMode;
+    private boolean mEnableLatencyTest;
     private long[] mDelay;
 
     private AudioBufFormat mInFormats[];
@@ -95,6 +96,10 @@ public class AudioMixer {
     public final void setMainSinkPinIndex(int index) {
         mMainSinkPinIndex = index;
         _setMainIdx(mInstance, index);
+    }
+
+    public final int getMainSinkPinIndex() {
+        return mMainSinkPinIndex;
     }
 
     /**
@@ -285,11 +290,21 @@ public class AudioMixer {
         return mDelay[idx];
     }
 
+    public void setEnableLatencyTest(boolean enableLatencyTest) {
+        mEnableLatencyTest = enableLatencyTest;
+        _setEnableLatencyTest(mInstance, enableLatencyTest);
+    }
+
+    public boolean getEnableLatencyTest() {
+        return mEnableLatencyTest;
+    }
+
     synchronized public void release() {
         doRelease();
     }
 
     private void doRelease() {
+        Log.d(TAG, "doRelease");
         mSrcPin.disconnect(true);
         mSinkPins.clear();
         if (mInstance != INSTANCE_UNINIT) {
@@ -319,7 +334,7 @@ public class AudioMixer {
         if (format.nativeModule != 0) {
             _attachTo(mInstance, idx, format.nativeModule, false);
         } else {
-            _config(mInstance, idx, format.sampleFormat, format.sampleRate, format.channels, 1024, 300);
+            _config(mInstance, idx, format.sampleFormat, format.sampleRate, format.channels, 1024, 1000);
         }
         if (idx == mMainSinkPinIndex) {
             mOutFormat = new AudioBufFormat(format.sampleFormat,
@@ -356,6 +371,7 @@ public class AudioMixer {
 
         if ((frame.flags & AVConst.FLAG_DETACH_NATIVE_MODULE) != 0) {
             if (frame.format.nativeModule != 0) {
+                Log.d(TAG, "detach nativeModule " + frame.format.nativeModule);
                 _attachTo(mInstance, idx, frame.format.nativeModule, true);
             }
             // in blocking mode, do not flush cache
@@ -412,6 +428,8 @@ public class AudioMixer {
     private native void _setInputVolume(long instance, int idx, float leftVol, float rightVol);
 
     private native void _setDelay(long instance, int idx, long delay);
+
+    private native void _setEnableLatencyTest(long instance, boolean enable);
 
     private native void _attachTo(long instance, int idx, long ptr, boolean detach);
 

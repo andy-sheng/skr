@@ -54,6 +54,15 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrappe
  */
 JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1remove_1effects
         (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper
+ * Method:    native_apply_effects
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1apply_1effects
+        (JNIEnv *, jobject, jlong);
+
 /*
  * Class:     com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper
  * Method:    native_process

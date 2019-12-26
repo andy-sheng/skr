@@ -20,7 +20,7 @@ import com.zq.mediaengine.kit.ZqEngineKit
 
 class PartyVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) {
 
-    val TAG = "RelayVoiceControlPanelView"
+    val TAG = "PartyVoiceControlPanelView"
 
     private var mLlSwitchContainer: ConstraintLayout? = null
 

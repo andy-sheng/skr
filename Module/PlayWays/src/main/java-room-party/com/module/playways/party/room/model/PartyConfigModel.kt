@@ -4,9 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField
 import java.io.Serializable
 
 class PartyConfigModel : Serializable {
-    @JSONField(name = "durationTimeMs")
-    var durationTimeMs = 0
+    @JSONField(name = "SyncPullIntevalTimeMs")
+    var internalTs = 10*1000
 
-    companion object {
-    }
 }

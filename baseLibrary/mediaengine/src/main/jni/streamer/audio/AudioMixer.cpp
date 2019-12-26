@@ -4,10 +4,18 @@
 
 #include <assert.h>
 #include <include/log.h>
+#include <algorithm>
 #include "AudioMixer.h"
 
 #undef LOG_TAG
 #define LOG_TAG "AudioMixer"
+
+static inline int64_t getNsTimestamp() {
+    struct timespec stamp;
+    clock_gettime(CLOCK_MONOTONIC, &stamp);
+    int64_t nsec = (int64_t) stamp.tv_sec*1000000000LL + stamp.tv_nsec;
+    return nsec;
+}
 
 AudioMixer::AudioMixer() {
     mMainIdx = 0;
@@ -17,6 +25,9 @@ AudioMixer::AudioMixer() {
     mRightOutputVolume = 1.0f;
     mBuffer = NULL;
     mBufSize = 0;
+    mStatStartTime = 0;
+    mLatencyTest = false;
+    mLatencySamples = 0;
     pthread_mutex_init(&mLock, NULL);
     for (int i=0; i<CHN_NUM; i++) {
         mChannelParams[i] = NULL;
@@ -27,6 +38,7 @@ AudioMixer::AudioMixer() {
         mDelay[i] = 0;
         mDelaySamples[i] = 0;
         mDelayedSamples[i] = 0;
+        mDelayCorrectSamples[i] = 0;
     }
 
     // for blocking mode
@@ -71,6 +83,10 @@ void AudioMixer::fifoSwrInit(int idx) {
 void AudioMixer::fifoSwrRelease(int idx) {
     ChannelFifo* cf = mChannelFifos[idx];
     mChannelFifos[idx] = NULL;
+    if (cf) {
+        int flushSamples = audio_utils_fifo_get_remain(&cf->fifo);
+        LOGD("flush %d with %d samples", idx, flushSamples);
+    }
     fifoRelease(cf);
     if (mChannelSwrs[idx]) {
         ksy_swr_release(mChannelSwrs[idx]);
@@ -154,6 +170,7 @@ int AudioMixer::config(int idx, int sampleFmt, int sampleRate, int channels, int
             fifoSwrInit(i);
             mDelayedSamples[i] = 0;
             mDelaySamples[i] = mDelay[i] * cp->sampleRate / 1000;
+            mDelayCorrectSamples[i] = 0;
         }
 
         // init attached filter if needed
@@ -164,6 +181,7 @@ int AudioMixer::config(int idx, int sampleFmt, int sampleRate, int channels, int
         fifoSwrRelease(idx);
         fifoSwrInit(idx);
         mDelayedSamples[idx] = 0;
+        mDelayCorrectSamples[idx] = 0;
     }
     pthread_mutex_unlock(&mLock);
     return 0;
@@ -184,7 +202,7 @@ void AudioMixer::setDelay(int idx, int64_t delay) {
     mDelay[idx] = delay;
 
     pthread_mutex_lock(&mLock);
-    ChannelParam* cp = mChannelParams[0];
+    ChannelParam* cp = mChannelParams[mMainIdx];
     if (cp) {
         mDelaySamples[idx] = delay * cp->sampleRate / 1000;
     }
@@ -210,6 +228,7 @@ void AudioMixer::destroy(int idx) {
         fifoSwrRelease(idx);
     }
     pthread_mutex_unlock(&mLock);
+    LOGD("~destroy %d", idx);
 }
 
 int AudioMixer::init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples) {
@@ -217,7 +236,7 @@ int AudioMixer::init(int idx, int sampleFmt, int sampleRate, int channels, int b
 }
 
 int AudioMixer::process(int idx, uint8_t *inBuf, int inSize) {
-    process(idx, inBuf, inSize, true);
+    return process(idx, inBuf, inSize, true);
 }
 
 int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
@@ -243,6 +262,17 @@ int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
             result = filterProcess(cp->sampleFmt, cp->sampleRate, cp->channels, cp->bufferSamples,
                                    inBuf, inSize);
         }
+
+        int64_t now = getNsTimestamp() / 1000;
+        if ((now - mStatStartTime) >= 5000000) {
+            mStatStartTime = now;
+            for (int i = 0; i < CHN_NUM; i++) {
+                ChannelFifo* cf = mChannelFifos[i];
+                if (cf) {
+                    LOGD("idx %d remain %d samples", i, audio_utils_fifo_get_remain(&cf->fifo));
+                }
+            }
+        }
     } else {
         ChannelFifo* cf = mChannelFifos[idx];
         KSYSwr* swr = mChannelSwrs[idx];
@@ -262,12 +292,17 @@ int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
                 size = inSize;
             }
 
+//            // init delay when first audio frame came
+//            if (mDelaySamples[idx] == 0 && mDelay[idx] != 0) {
+//                mDelaySamples[idx] = mDelay[idx] * mChannelParams[mMainIdx]->sampleRate / 1000;
+//                LOGD("idx: %d init mDelaySamples with: %lld", idx, mDelaySamples[idx]);
+//            }
             // handle negative delay
             int64_t delayOffSamples = mDelaySamples[idx] - mDelayedSamples[idx];
-            if (mBlockingMode && delayOffSamples < 0) {
+            if (delayOffSamples < 0) {
                 ChannelParam* cp = mChannelParams[mMainIdx];
                 int64_t delayOffSize = -delayOffSamples * cp->frameSize;
-                LOGD("idx: %d delayOffSamples: %"PRId64" delayOffSize: %"PRId64" size: %d", idx, delayOffSamples, delayOffSize, size);
+                LOGD("idx: %d delayOffSamples: %" PRId64 " delayOffSize: %" PRId64 " size: %d", idx, delayOffSamples, delayOffSize, size);
                 if (delayOffSize < size) {
                     buf += delayOffSize;
                     size -= (int) delayOffSize;
@@ -302,7 +337,7 @@ int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
             } while (true);
             if (samples > 0) {
                 LOGD("mixer %d fifo full, try to write %d, remain %d",
-                     idx, size, samples * frameSize);
+                     idx, size / frameSize, samples);
             }
         }
     }
@@ -316,6 +351,8 @@ int AudioMixer::mixAll(uint8_t *inBuf, int inSize) {
     float rightMainVol = mInputVolume[mMainIdx][1];
     int frameSize = mChannelParams[mMainIdx]->frameSize;
     int sampleRate = mChannelParams[mMainIdx]->sampleRate;
+    int mainChannels = mChannelParams[mMainIdx]->channels;
+
     // set volume to main source input
     if(leftMainVol != 1.0f || rightMainVol != 1.0f) {
         short* data = (short*) inBuf;
@@ -333,6 +370,21 @@ int AudioMixer::mixAll(uint8_t *inBuf, int inSize) {
             }
         }
     }
+
+    // latency test
+    bool impulseFromMain = false;
+    if (mLatencyTest) {
+        short *tmpBuf = (short *) inBuf;
+        int tmpSize = inSize / 2;
+        short threshold = SHRT_MAX / 4;
+        for (int i = 0; i < tmpSize; i++) {
+            if (tmpBuf[i] >= threshold) {
+                impulseFromMain = true;
+                break;
+            }
+        }
+    }
+
     leftMainVol = 1.0f;
     rightMainVol = 1.0f;
     for (int i = 0; i < CHN_NUM; i++) {
@@ -352,9 +404,15 @@ int AudioMixer::mixAll(uint8_t *inBuf, int inSize) {
             uint8_t* buf = mBuffer;
             // handle positive delay
             int64_t delayOffSamples = mDelaySamples[i] - mDelayedSamples[i];
-            if (mBlockingMode && i != mMainIdx && delayOffSamples > 0) {
-                int64_t zeroSamples = (delayOffSamples < samples) ? delayOffSamples : samples;
-                LOGD("idx: %d delayOffSamples: %"PRId64" zeroSamples: %"PRId64, i, delayOffSamples, zeroSamples);
+            if (i != mMainIdx && delayOffSamples > 0) {
+                if (!mBlockingMode) {
+                    // ensure we take same samples as no delay
+                    int64_t fifoRemain = audio_utils_fifo_get_remain(&cf->fifo) + mDelayCorrectSamples[i];
+                    samples = std::min(samples, fifoRemain);
+                    mDelayCorrectSamples[i] -= samples;
+                }
+                int64_t zeroSamples = std::min(delayOffSamples, samples);
+                LOGD("idx: %d delayOffSamples: %" PRId64 " zeroSamples: %" PRId64, i, delayOffSamples, zeroSamples);
                 mDelayedSamples[i] += zeroSamples;
                 samples -= zeroSamples;
                 buf += zeroSamples * frameSize;
@@ -379,11 +437,35 @@ int AudioMixer::mixAll(uint8_t *inBuf, int inSize) {
             } while (true);
             if (samples > 0) {
                 LOGD("mixer %d fifo empty, try to read %d, remain %d",
-                     i, inSize, (int)samples * frameSize);
+                     i, inSize / frameSize, (int) samples);
             }
             mix((short *) inBuf, inSize / sizeof(short), leftMainVol, rightMainVol, (short *) mBuffer,
                 (inSize - (int)samples * frameSize) / sizeof(short), mInputVolume[i],
                 mChannelParams[i]->channels);
+        }
+    }
+
+    // latency measure
+    if (mLatencyTest) {
+        short *tmpBuf = (short *) inBuf;
+        int tmpSize = inSize / 2;
+        short threshold = SHRT_MAX / 4;
+        bool findImpulse = false;
+        for (int i = 0; i < tmpSize; i++) {
+            if (tmpBuf[i] >= threshold) {
+                mLatencySamples += i / mainChannels;
+                int latency = mLatencySamples * 1000 / sampleRate;
+                if (latency < 800) {
+                    latency *= impulseFromMain ? 1 : -1;
+                    LOGI("Latency measured : %d ms", latency);
+                }
+                mLatencySamples = (tmpSize - i) / mainChannels;
+                findImpulse = true;
+                break;
+            }
+        }
+        if (!findImpulse) {
+            mLatencySamples += tmpSize / mainChannels;
         }
     }
 

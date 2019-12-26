@@ -20,6 +20,7 @@ public class AudioTrackPlayer implements IPcmPlayer {
     private int mSampleRate;
     private short[] mPcm;
     private boolean mMute;
+    private float mVolume = 1.0f;
     private boolean mStart;
 
     @Override
@@ -55,6 +56,8 @@ public class AudioTrackPlayer implements IPcmPlayer {
 
         if (mMute) {
             mAudioTrack.setStereoVolume(0.0f, 0.0f);
+        } else if (mVolume != 1.0f) {
+            mAudioTrack.setStereoVolume(mVolume, mVolume);
         }
         if (mStart) {
             mAudioTrack.play();
@@ -65,10 +68,18 @@ public class AudioTrackPlayer implements IPcmPlayer {
     @Override
     public synchronized void setMute(boolean mute) {
         if (mAudioTrack != null) {
-            float vol = mute ? 0.0f : 1.0f;
+            float vol = mute ? 0.0f : mVolume;
             mAudioTrack.setStereoVolume(vol, vol);
         }
         mMute = mute;
+    }
+
+    @Override
+    public synchronized void setVolume(float volume) {
+        if (mAudioTrack != null && !mMute) {
+            mAudioTrack.setStereoVolume(volume, volume);
+        }
+        mVolume = volume;
     }
 
     @Override

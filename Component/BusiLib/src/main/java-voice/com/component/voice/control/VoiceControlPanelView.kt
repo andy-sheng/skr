@@ -1,16 +1,11 @@
 package com.component.voice.control
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.support.v7.widget.AppCompatRadioButton
 import android.util.AttributeSet
 import android.view.View
-import android.widget.CompoundButton
-import android.widget.RadioGroup
-import android.widget.ScrollView
-import android.widget.SeekBar
+import android.widget.*
 
-import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.component.busilib.R
@@ -25,8 +20,8 @@ import org.greenrobot.eventbus.ThreadMode
 
 open abstract class VoiceControlPanelView : ScrollView {
 
-    protected var mEarSb:SwitchButton?= null
-
+    protected var mEarSb: SwitchButton ?= null
+    protected var mEarTv:TextView? = null
     protected var mPeopleVoice: ExTextView? =null
     protected var mPeopleVoiceSeekbar: SeekBar? =null
     protected var mAccVoice: ExTextView? =null
@@ -73,7 +68,6 @@ open abstract class VoiceControlPanelView : ScrollView {
 
     open fun init(context: Context?) {
         View.inflate(getContext(), getLayout(), this)
-
         mPeopleVoice = this.findViewById(R.id.people_voice)
         mPeopleVoiceSeekbar = this.findViewById(R.id.people_voice_seekbar)
         mAccVoice = this.findViewById(R.id.acc_voice)
@@ -86,6 +80,7 @@ open abstract class VoiceControlPanelView : ScrollView {
         mKonglingSbtn = this.findViewById(R.id.kongling_sbtn)
 
         mEarSb = this.findViewById(R.id.ear_sb)
+        mEarTv = this.findViewById(R.id.ear_tv)
 
         var marginLeft = getMarginLeft()
         marginLeft = marginLeft / 6
@@ -104,7 +99,7 @@ open abstract class VoiceControlPanelView : ScrollView {
         setListener()
     }
 
-    protected open fun setListener() {
+     fun setListener() {
         mPeopleVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 //                ZqEngineKit.getInstance().adjustPlaybackSignalVolume(progress);
@@ -162,15 +157,23 @@ open abstract class VoiceControlPanelView : ScrollView {
                 }
             }
         }
+
+//        mLowLatencySb?.setOnCheckedChangeListener { buttonView, isChecked ->
+//            ZqEngineKit.getInstance().setEnableAudioLowLatency(isChecked)
+//        }
         mEarSb?.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(isChecked){
-                ZqEngineKit.getInstance().enableInEarMonitoring(true)
-            }else{
-                ZqEngineKit.getInstance().enableInEarMonitoring(false)
-            }
+            ZqEngineKit.getInstance().enableInEarMonitoring(isChecked)
+//            if (isChecked) {
+//                mMixSb?.setCheckedNoEvent(false)
+//            }
+//            ZqEngineKit.getInstance().setEnableAudioPreviewLatencyTest(isChecked)
         }
-
-
+//        mMixSb?.setOnCheckedChangeListener { buttonView, isChecked ->
+//            if (isChecked) {
+//                mEarSb?.setCheckedNoEvent(false)
+//            }
+//            ZqEngineKit.getInstance().setEnableAudioMixLatencyTest(isChecked)
+//        }
     }
 
     private fun setMarginLeft(view: AppCompatRadioButton?, marginLeft: Int) {
@@ -204,6 +207,15 @@ open abstract class VoiceControlPanelView : ScrollView {
         mAfterMode = styleEnum
         mAfterPeopleVoice = ZqEngineKit.getInstance().params.recordingSignalVolume
         mAfterMusicVoice = ZqEngineKit.getInstance().params.audioMixingPlayoutVolume
+
+        if(ZqEngineKit.getInstance().params.isUseExternalAudio){
+            mEarTv?.visibility = View.VISIBLE
+            mEarSb?.visibility = View.VISIBLE
+            mEarSb?.setCheckedNoEvent(ZqEngineKit.getInstance().params.isEnableInEarMonitoring)
+        }else{
+            mEarTv?.visibility = View.GONE
+            mEarSb?.visibility = View.GONE
+        }
     }
 
     override fun onDetachedFromWindow() {

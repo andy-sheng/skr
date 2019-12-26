@@ -424,7 +424,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         syncJob?.cancel()
         syncJob = launch {
             while (true) {
-                delay(10 * 1000)
+                delay(mRoomData.config.internalTs.toLong())
                 syncGameStatusInner()
             }
         }

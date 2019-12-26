@@ -116,6 +116,7 @@ int AudioResample::getDelay() {
 }
 
 int AudioResample::init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples) {
+    mOutBufferSamples = bufferSamples;
     int ret = config(sampleFmt, sampleRate, channels);
     if (!ret) {
         ret = filterInit(mOutSampleFmt, mOutSampleRate, mOutChannels, mOutBufferSamples);

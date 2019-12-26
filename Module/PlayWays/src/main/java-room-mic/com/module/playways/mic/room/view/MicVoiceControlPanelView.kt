@@ -39,21 +39,19 @@ class MicVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) {
         mLlSwitchContainer = findViewById(R.id.ll_switch_container)
         mAccSb = findViewById(R.id.acc_sb)
 
-        mAccSb?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            roomData?.realRoundInfo?.let {
-                if (it.singBySelf()) {
-                    U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式")
-                    mAccSb?.isChecked = !roomData!!.isAccEnable
-                    return@OnCheckedChangeListener
-                }
-                roomData?.isAccEnable = isChecked
+        mAccSb?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
+            if (roomData?.realRoundInfo?.singBySelf() == true) {
+                U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式")
+                mAccSb?.setCheckedNoEvent(!isChecked)
+                return@OnCheckedChangeListener
             }
+            roomData?.isAccEnable = isChecked
         })
     }
 
     override fun bindData() {
         super.bindData()
-        mAccSb?.isChecked = roomData!!.isAccEnable
+        mAccSb?.setCheckedNoEvent(roomData!!.isAccEnable)
     }
 
     fun setRoomData(raceRoomData: MicRoomData) {

@@ -29,6 +29,7 @@ import com.module.ModuleServiceManager
 import com.module.common.ICallback
 import com.module.playways.BuildConfig
 import com.module.playways.grab.room.event.SwitchRoomEvent
+import com.module.playways.pretendHeadSetSystemMsg
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.RaceRoomData
@@ -95,7 +96,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         //添加房间消息过滤器
         RaceRoomMsgManager.addFilter(mPushMsgFilter)
         pretendEnterRoomMsg()
-        pretendHeadSetSystemMsg()
+        pretendHeadSetSystemMsg(mRoomData.gameType)
 
         joinRoomAndInit(true)
     }
@@ -105,13 +106,13 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
 
-    private fun pretendHeadSetSystemMsg() {
-        val stringBuilder = SpanUtils()
-                .append(" 温馨提示：佩戴耳机能获得最佳演唱效果").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
-                .create()
-        val commentSysModel = CommentSysModel(mRoomData.gameType, stringBuilder)
-        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
-    }
+//    private fun pretendHeadSetSystemMsg() {
+//        val stringBuilder = SpanUtils()
+//                .append(" 温馨提示：佩戴耳机能获得最佳演唱效果").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
+//                .create()
+//        val commentSysModel = CommentSysModel(mRoomData.gameType, stringBuilder)
+//        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
+//    }
 
     /**
      * 加入引擎房间

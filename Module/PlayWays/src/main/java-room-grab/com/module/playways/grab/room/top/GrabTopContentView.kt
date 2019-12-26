@@ -652,7 +652,7 @@ class GrabTopContentView : ConstraintLayout {
     fun setRoomData(roomData: GrabRoomData) {
         mRoomData = roomData
         addChildView()
-        //        mGrabAudienceView.setRoomData(mRoomData);
+        //mGrabAudienceView.setRoomData(mRoomData);
         setInviteStatus(mRoomData?.getPlayerAndWaiterInfoList()?.size ?: 1)
         initData()
     }

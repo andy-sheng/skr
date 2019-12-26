@@ -12,4 +12,12 @@
             <corners android:radius="@dimen/view_13_dp" />
         </shape>
     </item>
+
+    <item android:state_enabled="false">
+        <shape>
+            <solid android:color="#000000" />
+            <corners android:radius="@dimen/view_13_dp" />
+        </shape>
+    </item>
+
 </selector>

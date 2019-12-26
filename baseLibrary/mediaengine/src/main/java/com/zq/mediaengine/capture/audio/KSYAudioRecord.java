@@ -103,7 +103,9 @@ public class KSYAudioRecord implements IKSYAudioRecord {
             // trigger impulse
             if ((now - mStartTime) >= 5000000L) {
                 mStartTime = now;
-                shortBuffer.put(0, Short.MAX_VALUE);
+                for (int i = 0; i < 4; i++) {
+                    shortBuffer.put(i, Short.MAX_VALUE);
+                }
             }
             shortBuffer.rewind();
         } else if (mVolume != 1.0f) {

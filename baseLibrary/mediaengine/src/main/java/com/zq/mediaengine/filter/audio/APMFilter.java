@@ -28,6 +28,7 @@ public class APMFilter extends AudioFilterBase {
     public final static int AEC_ROUTING_MODE_LOUD_SPEAKER_PHONE = APMWrapper.AEC_ROUTING_MODE_LOUD_SPEAKER_PHONE;
 
     private APMWrapper mApmWrapper;
+    private boolean mBypass;
 
     public APMFilter() {
         mApmWrapper = new APMWrapper();
@@ -35,6 +36,11 @@ public class APMFilter extends AudioFilterBase {
 
     public SinkPin<AudioBufFrame> getReverseSinkPin() {
         return mReverseSinkPin;
+    }
+
+    public int setBypass(boolean enable) {
+        mBypass = enable;
+        return mApmWrapper.setBypass(enable);
     }
 
     public int enableNs(boolean enable) {
@@ -72,6 +78,9 @@ public class APMFilter extends AudioFilterBase {
 
     @Override
     protected AudioBufFrame doFilter(AudioBufFrame frame) {
+        if (mBypass) {
+            return frame;
+        }
         ByteBuffer outBuffer = mApmWrapper.processStream(0, frame.buf);
         if (outBuffer == null){
             return frame;

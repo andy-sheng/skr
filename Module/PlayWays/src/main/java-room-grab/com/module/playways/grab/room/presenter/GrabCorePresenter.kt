@@ -53,6 +53,7 @@ import com.module.playways.grab.room.GrabRoomServerApi
 import com.module.playways.grab.room.event.*
 import com.module.playways.grab.room.inter.IGrabRoomView
 import com.module.playways.grab.room.model.*
+import com.module.playways.pretendHeadSetSystemMsg
 import com.module.playways.race.room.model.LevelResultModel
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
@@ -230,7 +231,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             } else {
                 pretendRoomNameSystemMsg(mRoomData.roomName, CommentSysModel.TYPE_ENTER_ROOM)
             }
-            pretendHeadSetSystemMsg()
+            pretendHeadSetSystemMsg(mRoomData.gameType)
         }
         if (mRoomData.hasGameBegin()) {
             startSyncGameStateTask(sSyncStateTaskInterval)
@@ -279,13 +280,13 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
 
-    private fun pretendHeadSetSystemMsg() {
-        val stringBuilder = SpanUtils()
-                .append(" 温馨提示：佩戴耳机能获得最佳演唱效果").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
-                .create()
-        val commentSysModel = CommentSysModel(mRoomData.gameType, stringBuilder)
-        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
-    }
+//    private fun pretendHeadSetSystemMsg() {
+//        val stringBuilder = SpanUtils()
+//                .append(" 温馨提示：佩戴耳机能获得最佳演唱效果").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
+//                .create()
+//        val commentSysModel = CommentSysModel(mRoomData.gameType, stringBuilder)
+//        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
+//    }
 
     override fun start() {
         super.start()

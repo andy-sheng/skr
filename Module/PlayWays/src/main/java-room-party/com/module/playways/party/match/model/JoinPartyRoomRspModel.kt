@@ -2,12 +2,14 @@ package com.module.playways.party.match.model
 
 import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.userinfo.model.ClubInfo
+import com.module.playways.party.room.model.PartyConfigModel
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.model.PartySeatInfoModel
 import java.io.Serializable
 
 class JoinPartyRoomRspModel : Serializable {
+
     @JSONField(name = "roomID")
     var roomID = 0
 
@@ -53,4 +55,7 @@ class JoinPartyRoomRspModel : Serializable {
     //[ RT_UNKNOWN, RT_PERSONAL, RT_FAMILY ]
     @JSONField(name = "roomType")
     var roomType: Int? = 0
+
+    @JSONField(name = "config")
+    var config: PartyConfigModel = PartyConfigModel()
 }

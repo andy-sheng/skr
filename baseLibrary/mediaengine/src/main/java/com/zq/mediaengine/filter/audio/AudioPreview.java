@@ -44,6 +44,10 @@ public class AudioPreview extends AudioFilterBase {
         mAudioSLPlayer.setMute(mute);
     }
 
+    public void setVolume(float volume) {
+        mAudioSLPlayer.setVolume(volume);
+    }
+
     /**
      * Set use blocking mode or not.
      *

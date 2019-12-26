@@ -71,7 +71,7 @@ class RelayVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) 
 
             }
         })
-        mScenesBtnGroup?.visibility = View.INVISIBLE
+//        mScenesBtnGroup?.visibility = View.INVISIBLE
     }
 
     override fun bindData() {

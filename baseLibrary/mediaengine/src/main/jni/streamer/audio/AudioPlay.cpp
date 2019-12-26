@@ -4,6 +4,7 @@
 
 #include <assert.h>
 #include <string.h>
+#include <math.h>
 #include <include/log.h>
 #include "AudioPlay.h"
 #include "thread_util.h"
@@ -16,6 +17,7 @@
 
 AudioPlay::AudioPlay():
     mMute(false),
+    mVolume(1.0f),
     mNonBlock(false),
     mTuneLatency(false),
     mFirstFrame(true),
@@ -107,6 +109,22 @@ void AudioPlay::setMute(bool mute) {
     mMute = mute;
     if (mState == STATE_PLAYING || mState == STATE_PAUSE) {
         mutePlayer(mute);
+    }
+}
+
+void AudioPlay::setVolume(float volume) {
+    mVolume = volume;
+    if (mState == STATE_PLAYING || mState == STATE_PAUSE) {
+        int mb = lroundf(2000.f * log10(volume));
+        if (mb < SL_MILLIBEL_MIN) {
+            mb = SL_MILLIBEL_MIN;
+        } else if (mb > 0) {
+            mb = 0;
+        }
+        SLresult result = (*mSLPlayer.volumeItf)->SetVolumeLevel(mSLPlayer.volumeItf, mb);
+        if (result != SL_RESULT_SUCCESS) {
+            LOGE("SetVolumeLevel %d failed:%d", mb, (int) result);
+        }
     }
 }
 
@@ -495,7 +513,7 @@ int64_t AudioPlay::getPosition() {
              writtenPos, enqueuePos, slPlayPos, mZeroSamplesEnqueue * 1000 / mSampleRate, playPos);
     }
 
-    return playPos < 0 ? 0 : playPos;
+    return enqueuePos;
 }
 
 void AudioPlay::release() {

@@ -1,32 +1,8 @@
 package com.module.playways.relay.room.presenter
 
-import android.animation.Animator
-import android.animation.AnimatorSet
-import android.animation.ValueAnimator
-import android.os.Handler
-import android.os.Message
-import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.JSONObject
-import com.common.core.account.UserAccountManager
-import com.common.core.myinfo.MyUserInfoManager
-import com.common.jiguang.JiGuangPush
-import com.common.log.DebugLogView
-import com.common.log.MyLog
-import com.common.mvp.RxLifeCyclePresenter
-import com.common.notification.event.CNRelayEnterFromRoomInviteNotifyEvent
-import com.common.rxretrofit.*
-import com.common.statistics.StatisticsAdapter
-import com.common.utils.ActivityUtils
-import com.common.utils.SpanUtils
-import com.common.utils.U
-import com.component.lyrics.utils.SongResUtils
-import com.component.notification.PartyPeerAccStatusEvent
-import com.engine.EngineEvent
-import com.engine.Params
-import com.module.ModuleServiceManager
-import com.module.common.ICallback
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
+import com.module.playways.pretendHeadSetSystemMsg
 import com.module.playways.relay.room.RelayRoomActivity
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.relay.room.RelayRoomServerApi
@@ -40,7 +16,6 @@ import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.GiftPresentEvent
 import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.RelayRoomMsgManager
-import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.zq.live.proto.RelayRoom.*
@@ -119,16 +94,16 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         RelayRoomMsgManager.addFilter(mPushMsgFilter)
         joinRoomAndInit(true)
         startSyncGameStatus()
-        pretendHeadSetSystemMsg()
+        pretendHeadSetSystemMsg(mRoomData.gameType)
     }
 
-    private fun pretendHeadSetSystemMsg() {
-        val stringBuilder = SpanUtils()
-                .append(" 温馨提示：佩戴耳机能获得最佳演唱效果").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
-                .create()
-        val commentSysModel = CommentSysModel(mRoomData.gameType, stringBuilder)
-        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
-    }
+//    private fun pretendHeadSetSystemMsg() {
+//        val stringBuilder = SpanUtils()
+//                .append(" 温馨提示：佩戴耳机能获得最佳演唱效果").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
+//                .create()
+//        val commentSysModel = CommentSysModel(mRoomData.gameType, stringBuilder)
+//        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
+//    }
 
     /**
      * 加入引擎房间

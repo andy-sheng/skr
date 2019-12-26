@@ -29,6 +29,7 @@ public class MediaMuxerPublisher extends Publisher {
 
     @Override
     protected int doStart(String uri) {
+        Log.d(TAG, "doStart");
         try {
             mMediaMuxer = new MediaMuxer(uri, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
         } catch (IOException e) {

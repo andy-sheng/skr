@@ -26,6 +26,8 @@ public class KSYAudioEffectFilter extends AudioFilterBase {
     public static int AUDIO_PITCH_LEVEL_6 = 2;
     public static int AUDIO_PITCH_LEVEL_7 = 3;
 
+    // bypass
+    public static int AUDIO_EFFECT_TYPE_NONE = 0;
     //变调
     public static int AUDIO_EFFECT_TYPE_PITCH = 9;
     //萝莉
@@ -56,6 +58,7 @@ public class KSYAudioEffectFilter extends AudioFilterBase {
      */
     public void setAudioEffectType(int type) {
         this.mAudioEffectType = type;
+        mWrapper.setEffectType(type);
     }
 
     public int getAudioEffectType() {
@@ -85,13 +88,17 @@ public class KSYAudioEffectFilter extends AudioFilterBase {
      */
     public void addEffect(String name, int argc, String[] argv) throws IllegalArgumentException{
         if(argv == null) {
-            throw new IllegalArgumentException("argv must not been null");
+            throw new IllegalArgumentException("argv must not be null");
         }
         mWrapper.addEffects(name, argc, argv);
     }
 
     public void removeEffects() {
         mWrapper.removeEffects();
+    }
+
+    public void applyEffects() {
+        mWrapper.applyEffects();
     }
 
     @Override

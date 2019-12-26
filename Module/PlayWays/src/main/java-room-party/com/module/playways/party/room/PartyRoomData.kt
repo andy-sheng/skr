@@ -7,10 +7,7 @@ import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.event.*
-import com.module.playways.party.room.model.PartyActorInfoModel
-import com.module.playways.party.room.model.PartyPlayerInfoModel
-import com.module.playways.party.room.model.PartyRoundInfoModel
-import com.module.playways.party.room.model.PartySeatInfoModel
+import com.module.playways.party.room.model.*
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.EPRoundStatus
@@ -20,6 +17,8 @@ import org.greenrobot.eventbus.EventBus
 
 
 class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
+
+    var config = PartyConfigModel()
 
     var isAllMute = false // 是否设置了全员禁麦
         //房间名称
@@ -542,6 +541,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         this.expectRoundInfo = rsp.currentRound
         this.enterPermission = rsp.enterPermission
         this.roomType = rsp.roomType
+        this.config = rsp.config
         if (getMySeatInfoInParty()?.micStatus == EMicStatus.MS_CLOSE.value) {
             isMute = true
         }

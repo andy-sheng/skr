@@ -11,6 +11,7 @@
 
 APMWrapper::APMWrapper() :
         mAPM(NULL),
+        mBypass(false),
         mHasVoice(true),
         mAnalogLevel(30),
         mSamplesPerFrame{0, 0},
@@ -28,6 +29,7 @@ APMWrapper::APMWrapper() :
 }
 
 APMWrapper::~APMWrapper() {
+    LOGD("destroy");
     if (mAPM != NULL) {
         delete mAPM;
         mAPM = NULL;
@@ -50,17 +52,18 @@ APMWrapper::~APMWrapper() {
         }
     }
 
-    for(int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         if (mFifoBuffer[i]) {
             audio_utils_fifo_deinit(&mFifo[i]);
             free(mFifoBuffer[i]);
             mFifoBuffer[i] = NULL;
         }
     }
+    LOGD("~destroy");
 }
 
 int APMWrapper::Create() {
-    mAPM = AudioProcessing::Create();
+    mAPM = AudioProcessingBuilder().Create();
     if (mAPM == NULL) {
         LOGE("[APM][Create] createAPM failed!");
         return -1;
@@ -90,12 +93,25 @@ int APMWrapper::Initialize() {
     return mAPM->Initialize();
 }
 
+int APMWrapper::SetBypass(bool bypass) {
+    mBypass = bypass;
+}
+
 /**
  * Processes a 10 ms |frame| of the primary audio stream. On the client-side,
  * this is the near-end (or captured) audio.
  */
 int APMWrapper::ProcessStream(int16_t **out, int16_t *data, int len) {
     // LOGD("ProcessStream data=0x%p len=%d", data, len);
+    if (data == NULL || len <= 0) {
+        return 0;
+    }
+
+    if (mBypass) {
+        *out = data;
+        return len;
+    }
+
     int idx = 0;
     int start = 0, size = 0, outSize = 0, ret = 0;
     audio_utils_fifo_write(&mFifo[0], (char *) data, (size_t)(len / mFrameSize[idx]));
@@ -108,12 +124,18 @@ int APMWrapper::ProcessStream(int16_t **out, int16_t *data, int len) {
         mOutData[idx] = (int16_t*)realloc(mOutData[idx], (size_t)mOutDataSize[idx]);
     }
 
+    int delay_ms = 100;
     while (audio_utils_fifo_get_remain(&mFifo[idx]) >= mConfig[idx].num_frames()) {
         audio_utils_fifo_read(&mFifo[idx], mInData[idx], mConfig[idx].num_frames());
         size = mConfig[idx].num_samples() * getBytesPerSample(mInSampleFmt[idx]);
         ret = ksy_swr_convert(mResample[idx], (uint8_t***) &mTempData[idx], (uint8_t**) &mInData[idx], size);
         if (ret <= 0) {
             LOGE("apm %d resample to FLTP failed, err=%d", idx, ret);
+        }
+
+        if (mAPMConfig.echo_canceller.enabled) {
+            mAPM->set_stream_delay_ms(delay_ms);
+            delay_ms -= 10;
         }
 
         ret = mAPM->ProcessStream(mTempData[idx], mConfig[idx], mConfig[idx], mTempData[idx]);
@@ -143,11 +165,16 @@ int APMWrapper::ProcessStream(int16_t **out, int16_t *data, int len) {
  * A filtering component which removes DC offset and low-frequency noise.
  */
 int APMWrapper::EnableHighPassFilter(bool enable) {
-    return mAPM->high_pass_filter()->Enable(enable);
+    mAPMConfig.high_pass_filter.enabled = enable;
+    mAPM->ApplyConfig(mAPMConfig);
+    return 0;
 }
 
 int APMWrapper::EnableNs(bool enable) {
-    return mAPM->noise_suppression()->Enable(enable);
+    LOGD("EnableNs %d", enable);
+    mAPMConfig.noise_suppression.enabled = enable;
+    mAPM->ApplyConfig(mAPMConfig);
+    return 0;
 }
 
 int APMWrapper::SetNsLevel(int level) {
@@ -155,11 +182,15 @@ int APMWrapper::SetNsLevel(int level) {
         return -1;
     }
 
-    return mAPM->noise_suppression()->set_level((NoiseSuppression::Level) level);
+    mAPMConfig.noise_suppression.level = (AudioProcessing::Config::NoiseSuppression::Level) level;
+    mAPM->ApplyConfig(mAPMConfig);
+    return 0;
 }
 
 int APMWrapper::EnableVAD(bool enable) {
-    return mAPM->voice_detection()->Enable(enable);
+    mAPMConfig.voice_detection.enabled = enable;
+    mAPM->ApplyConfig(mAPMConfig);
+    return 0;
 }
 
 int APMWrapper::SetVADLikelihood(int likelihood) {
@@ -172,22 +203,29 @@ int APMWrapper::SetVADLikelihood(int likelihood) {
 }
 
 int APMWrapper::EnableAECM(bool enable) {
-    return mAPM->echo_control_mobile()->Enable(enable);
+    mAPMConfig.echo_canceller.enabled = enable;
+    mAPMConfig.echo_canceller.use_legacy_aec = enable;
+    mAPMConfig.echo_canceller.mobile_mode = false;
+    mAPM->ApplyConfig(mAPMConfig);
+    return 0;
 }
 
 int APMWrapper::EnableAEC(bool enable) {
-    if (enable) {
-        mAPM->echo_cancellation()->enable_drift_compensation(false);
-    }
-    return mAPM->echo_cancellation()->Enable(true);
+    LOGD("EnableAEC %d", enable);
+    mAPMConfig.echo_canceller.enabled = enable;
+    mAPMConfig.echo_canceller.mobile_mode = false;
+    mAPM->ApplyConfig(mAPMConfig);
+    return 0;
 }
 
 int APMWrapper::SetRoutingMode(int mode) {
-    if (mode < EchoControlMobile::kQuietEarpieceOrHeadset ||
-        mode > EchoControlMobile::kLoudSpeakerphone) {
-        return -1;
-    }
-    return mAPM->echo_control_mobile()->set_routing_mode((EchoControlMobile::RoutingMode) mode);
+    return 0;
+
+//    if (mode < EchoControlMobile::kQuietEarpieceOrHeadset ||
+//        mode > EchoControlMobile::kLoudSpeakerphone) {
+//        return -1;
+//    }
+//    return mAPM->echo_control_mobile()->set_routing_mode((EchoControlMobile::RoutingMode) mode);
 }
 
 int APMWrapper::SetStreamDelay(int delay) {
@@ -195,7 +233,15 @@ int APMWrapper::SetStreamDelay(int delay) {
 }
 
 int APMWrapper::AnalyzeReverseStream(int16_t *data, int len) {
-    // LOGE("AnalyzeReverseStream data=0x%p len=%d", data, len);
+    // LOGD("AnalyzeReverseStream data=0x%p len=%d", data, len);
+    if (data == NULL || len <= 0) {
+        return 0;
+    }
+
+    if (mBypass) {
+        return 0;
+    }
+
     int idx = 1;
     int ret = 0, size = 0;
     audio_utils_fifo_write(&mFifo[1], (char *) data, len / mFrameSize[idx]);
@@ -251,6 +297,7 @@ int APMWrapper::Config(int idx, int sampleFmt, int samplerate, int channels) {
 }
 
 int APMWrapper::init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples) {
+    LOGD("init bufferSamples=%d", bufferSamples);
     mBufferSamples[idx] = bufferSamples;
     Config(idx, sampleFmt, sampleRate, channels);
     filterInit(sampleFmt, sampleRate, channels, bufferSamples);

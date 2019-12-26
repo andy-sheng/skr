@@ -36,6 +36,8 @@ public abstract class AudioFilterBase {
     private long mTotalInputSize;
     private long mTotalReadSize;
 
+    private boolean mEnableLowLatency = true;
+
     public AudioFilterBase() {
         mSinkPin = new AudioFilterSinkPin();
         mSrcPin = new AudioBufSrcPin();
@@ -57,6 +59,10 @@ public abstract class AudioFilterBase {
      */
     public SrcPin<AudioBufFrame> getSrcPin() {
         return mSrcPin;
+    }
+
+    public void setEnableLowLatency(boolean enableLowLatency) {
+        mEnableLowLatency = enableLowLatency;
     }
 
     /**
@@ -135,7 +141,7 @@ public abstract class AudioFilterBase {
             mInFormat = (AudioBufFormat) format;
             Log.d(TAG, "doFormatChanged nativeModule=" + mInFormat.nativeModule);
 
-            if (mInFormat.nativeModule != 0 && getNativeInstance() != 0) {
+            if (mEnableLowLatency && mInFormat.nativeModule != 0 && getNativeInstance() != 0) {
                 // fill data by native
                 attachTo(0, mInFormat.nativeModule, false);
                 AudioBufFormat outFormat = getOutFormat(mInFormat);
@@ -169,7 +175,7 @@ public abstract class AudioFilterBase {
             }
 
             AudioBufFrame outFrame = frame;
-            if (frame.format.nativeModule != 0 && getNativeInstance() != 0) {
+            if (mEnableLowLatency && frame.format.nativeModule != 0 && getNativeInstance() != 0) {
                 if (frame.buf != null) {
                     AudioBufFormat format = frame.format;
                     mTotalInputSize += frame.buf.limit();

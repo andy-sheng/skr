@@ -5,7 +5,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.zq.mediaengine.filter.audio.AudioBufSrcPin;
 import com.zq.mediaengine.filter.audio.AudioFilterMgt;
+import com.zq.mediaengine.filter.audio.AudioResampleFilter;
 import com.zq.mediaengine.filter.audio.AudioSLPlayer;
 import com.zq.mediaengine.filter.audio.AudioTrackPlayer;
 import com.zq.mediaengine.filter.audio.IPcmPlayer;
@@ -16,6 +18,9 @@ import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
 import com.zq.mediaengine.util.StcMgt;
 import com.zq.mediaengine.util.audio.AudioUtil;
+
+import java.nio.ByteBuffer;
+import java.nio.ShortBuffer;
 
 /**
  * Audio player capture.
@@ -64,6 +69,7 @@ public class AudioPlayerCapture {
     public static final int ERROR_UNSUPPORTED = AudioFileCapture.ERROR_UNSUPPORTED;
 
     private SrcPin<AudioBufFrame> mSrcPin;
+    private AudioResampleFilter mAudioResampleFilter;
     private AudioFilterMgt mAudioFilterMgt;
     private AudioFileCapture mAudioFileCapture;
 
@@ -72,13 +78,26 @@ public class AudioPlayerCapture {
     private StcMgt mStcMgt;
     private AudioBufFormat mOutFormat;
     private int mAudioPlayerType = AUDIO_PLAYER_TYPE_AUDIOTRACK;
+    private boolean mEnableLowLatency = false;
     private boolean mPlayerTypeChanged = false;
     private boolean mMute = false;
+    private float mPlayoutVolume = 1.0f;
     private boolean mMuteChanged = false;
+    private boolean mVolumeChanged = false;
 
     private Handler mMainHandler;
     private int mLoopCount;
     private int mLoopedCount;
+
+    // 动态切换播放器时的播放位置修正参数
+    private long mSwitchPositionOffset;
+
+    // 播放完成事件精确测量时的超时保护
+    private long mCompletionCheckDelayed;
+
+    // 混音的延迟测试
+    private boolean mEnableLatencyTest;
+    private long mStartTime;
 
     private OnPreparedListener mOnPreparedListener;
     private OnFirstAudioFrameDecodedListener mOnFirstAudioFrameDecodedListener;
@@ -143,12 +162,13 @@ public class AudioPlayerCapture {
      */
     public AudioPlayerCapture(Context context) {
         mContext = context;
-        mSrcPin = new SrcPin<>();
+        mSrcPin = new AudioBufSrcPin();
         mStcMgt = new StcMgt();
         mMainHandler = new Handler(Looper.getMainLooper());
         mAudioFileCapture = new AudioFileCapture(context);
         setupListeners();
 
+        mAudioResampleFilter = new AudioResampleFilter();
         mAudioFilterMgt = new AudioFilterMgt();
         SinkPin<AudioBufFrame> playerSinkPin = new SinkPin<AudioBufFrame>() {
             AudioBufFormat mPcmOutFormat = null;
@@ -164,6 +184,10 @@ public class AudioPlayerCapture {
                     mPcmPlayer = null;
                 }
 
+                // player switch position correction
+                mSwitchPositionOffset = mAudioFileCapture.getPosition() - mAudioFileCapture.getBasePosition();
+                Log.d(TAG, "mSwitchPositionOffset: " + mSwitchPositionOffset);
+
                 // open pcm player
                 if (mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES) {
                     mPcmPlayer = new AudioSLPlayer();
@@ -171,8 +195,9 @@ public class AudioPlayerCapture {
                     mPcmPlayer = new AudioTrackPlayer();
                 }
                 int atomSize = AudioUtil.getNativeBufferSize(mContext, mOutFormat.sampleRate);
+                // use big fifo size to avoid distortion caused by GC
                 int err = mPcmPlayer.config(mOutFormat.sampleFormat, mOutFormat.sampleRate,
-                        mOutFormat.channels, atomSize, 40);
+                        mOutFormat.channels, atomSize, 300);
                 if (err < 0) {
                     postError(ERROR_UNKNOWN, 0);
                 }
@@ -180,18 +205,43 @@ public class AudioPlayerCapture {
                 mPcmPlayer.start();
 
                 mPcmOutFormat = new AudioBufFormat(mOutFormat);
-                mPcmOutFormat.nativeModule = mPcmPlayer.getNativeInstance();
+                mPcmOutFormat.nativeModule = mEnableLowLatency ? mPcmPlayer.getNativeInstance() : 0;
                 mSrcPin.onFormatChanged(mPcmOutFormat);
             }
 
             @Override
             public void onFrameAvailable(AudioBufFrame frame) {
                 handlePlayerTypeChanged();
-                if (mMuteChanged) {
-                    mMuteChanged = false;
-                    mPcmPlayer.setMute(mMute);
-                }
                 if (frame.buf != null && frame.buf.limit() > 0) {
+                    if (mMuteChanged) {
+                        mMuteChanged = false;
+                        mPcmPlayer.setMute(mMute);
+                    }
+                    if (mVolumeChanged) {
+                        mVolumeChanged = false;
+                        mPcmPlayer.setVolume(mPlayoutVolume);
+                    }
+
+                    if (mEnableLatencyTest) {
+                        ByteBuffer buffer = frame.buf;
+                        long now = System.nanoTime() / 1000;
+                        ShortBuffer shortBuffer = buffer.asShortBuffer();
+
+                        // clear buffer
+                        for (int i = 0; i < shortBuffer.limit(); i++) {
+                            shortBuffer.put(i, (short) 0);
+                        }
+
+                        // trigger impulse
+                        if ((now - mStartTime) >= 5000000L) {
+                            mStartTime = now;
+                            for (int i = 0; i < 4; i++) {
+                                shortBuffer.put(i, Short.MAX_VALUE);
+                            }
+                        }
+                        shortBuffer.rewind();
+                    }
+
                     // write audio data in blocking mode
                     mPcmPlayer.write(frame.buf);
 
@@ -201,7 +251,7 @@ public class AudioPlayerCapture {
                     mSrcPin.onFrameAvailable(outFrame);
 
                     // 更新时钟
-                    long position = mAudioFileCapture.getBasePosition() + mPcmPlayer.getPosition();
+                    long position = mAudioFileCapture.getBasePosition() + mSwitchPositionOffset + mPcmPlayer.getPosition();
                     mStcMgt.updateStc(position, true);
 
                     if (VERBOSE) {
@@ -211,7 +261,10 @@ public class AudioPlayerCapture {
                 }
             }
         };
-        mAudioFileCapture.getSrcPin().connect(mAudioFilterMgt.getSinkPin());
+        // 默认不做resample
+        mAudioResampleFilter.setOutFormat(new AudioBufFormat(-1, -1, -1));
+        mAudioFileCapture.getSrcPin().connect(mAudioResampleFilter.getSinkPin());
+        mAudioResampleFilter.getSrcPin().connect(mAudioFilterMgt.getSinkPin());
         mAudioFilterMgt.getSrcPin().connect(playerSinkPin);
     }
 
@@ -221,19 +274,21 @@ public class AudioPlayerCapture {
             if (mAudioFileCapture.getState() != AudioFileCapture.STATE_STARTED) {
                 return;
             }
-            long tm = mAudioFileCapture.getPosition() - mAudioFileCapture.getBasePosition();
+            long tm = mAudioFileCapture.getPosition() - mAudioFileCapture.getBasePosition() - mSwitchPositionOffset;
             long pos = mPcmPlayer.getPosition();
             long delay = tm - pos;
-            if (VERBOSE) {
-                Log.d(TAG, "check completion: " + tm + " - " + pos + " = " + delay);
-            }
-            if (delay < 10) {
+            Log.d(TAG, "check completion: " + tm + " - " + pos + " = " + delay);
+
+            // 等待超过600ms时也发送播放完成事件
+            if (delay < 10 || mCompletionCheckDelayed >= 600) {
+                mCompletionCheckDelayed = 0;
                 if (mLoopCount < 0 || ++mLoopedCount < mLoopCount) {
                     seek(0);
                 } else {
                     postOnCompletion();
                 }
             } else {
+                mCompletionCheckDelayed += delay;
                 mAudioFileCapture.getWorkHandler().postDelayed(mCheckCompletionRunnable, delay);
             }
         }
@@ -263,6 +318,7 @@ public class AudioPlayerCapture {
         mAudioFileCapture.setOnCompletionListener(new AudioFileCapture.OnCompletionListener() {
             @Override
             public void onCompletion(AudioFileCapture audioFileCapture) {
+                mCompletionCheckDelayed = 0;
                 mAudioFileCapture.getWorkHandler().post(mCheckCompletionRunnable);
             }
         });
@@ -315,6 +371,25 @@ public class AudioPlayerCapture {
     }
 
     /**
+     * Set audio player should use low latency mode with type OPENSLES.
+     */
+    public void setEnableLowLatency(boolean enableLowLatency) {
+        mPlayerTypeChanged = (mEnableLowLatency != enableLowLatency);
+        mEnableLowLatency = enableLowLatency;
+    }
+
+    /**
+     * Set audio player output format
+     *
+     * @param format output format
+     */
+    public void setOutFormat(AudioBufFormat format) {
+        if (format != null) {
+            mAudioResampleFilter.setOutFormat(format);
+        }
+    }
+
+    /**
      * Sets mute.
      *
      * @param mute true to mute, false to unmute
@@ -350,6 +425,32 @@ public class AudioPlayerCapture {
      */
     public float getVolume() {
         return mAudioFileCapture.getVolume();
+    }
+
+    public void setPlayoutVolume(float volume) {
+        Log.d(TAG, "setPlayoutVolume: " + volume);
+        mVolumeChanged = (mPlayoutVolume != volume);
+        mPlayoutVolume = volume;
+    }
+
+    public float getPlayoutVolume() {
+        return mPlayoutVolume;
+    }
+
+    public void setEnableLatencyTest(boolean enableLatencyTest) {
+        mEnableLatencyTest = enableLatencyTest;
+    }
+
+    public boolean getEnableLatencyTest() {
+        return mEnableLatencyTest;
+    }
+
+    public int getRemainedLoopCount() {
+        if (mLoopCount <= 0) {
+            return mLoopCount;
+        } else {
+            return mLoopCount - mLoopedCount;
+        }
     }
 
     /**
@@ -410,9 +511,25 @@ public class AudioPlayerCapture {
      * @param loopCount set loop count, <0 for infinity loop.
      */
     public void start(String url, int loopCount) {
+        start(url, 0, -1, loopCount);
+    }
+
+    /**
+     * Start audio player.
+     *
+     * @param url  the url.
+     *             prefix "file://" for absolute path,
+     *             and prefix "assets://" for resource in assets folder,
+     *             also prefix "http://", "https://"  supported.
+     * @param offset 配置当前音频文件的实际播放开始时间，小于0时按0计算
+     * @param end 配置当前音频文件的实际播放完成时间，小于0或者大于音频长度时，按音频长度计算
+     * @param loopCount set loop count, <0 for infinity loop.
+     */
+    public void start(String url, long offset, long end, int loopCount) {
         mLoopCount = loopCount;
         mLoopedCount = 0;
-        mAudioFileCapture.setDataSource(url);
+        mSwitchPositionOffset = 0;
+        mAudioFileCapture.setDataSource(url, offset, end);
         mAudioFileCapture.prepareAsync();
     }
 
@@ -427,6 +544,11 @@ public class AudioPlayerCapture {
                 mPcmPlayer.release();
                 mPcmPlayer = null;
                 mStcMgt.reset();
+
+                // stop后发送 DETACH_NATIVE_MODULE 事件
+                AudioBufFrame frame = new AudioBufFrame(mOutFormat, null, 0);
+                frame.flags |= AVConst.FLAG_DETACH_NATIVE_MODULE;
+                mSrcPin.onFrameAvailable(frame);
             }
         });
     }
@@ -477,6 +599,10 @@ public class AudioPlayerCapture {
      * Release.
      */
     public void release() {
+        Log.d(TAG, "release");
+        // AudioFileCapture的release是异步的，这里先释放后面的模块
+        mSrcPin.disconnect(true);
+
         stop();
         mAudioFileCapture.release();
     }
@@ -525,10 +651,9 @@ public class AudioPlayerCapture {
         if (!mPlayerTypeChanged) {
             return;
         }
-        // TODO: 支持动态切换audiotrack和opensles播放
+        // 支持动态切换audiotrack和opensles播放
         mPlayerTypeChanged = false;
-        if ((mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES &&
-                mPcmPlayer instanceof AudioTrackPlayer) ||
+        if ((mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES) ||
                 (mAudioPlayerType == AUDIO_PLAYER_TYPE_AUDIOTRACK &&
                         mPcmPlayer instanceof AudioSLPlayer)) {
             if (mOutFormat != null) {

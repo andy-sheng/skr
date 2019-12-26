@@ -22,7 +22,8 @@ class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) 
         return R.layout.feeds_editor_voice_control_panel_layout
     }
 
-    override fun setListener() {
+    override fun init(context: Context?) {
+        super.init(context)
         mPeopleVoiceSeekbar?.max = 200
         mPeopleVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {

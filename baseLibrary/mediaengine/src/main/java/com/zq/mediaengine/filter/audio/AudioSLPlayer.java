@@ -39,6 +39,10 @@ public class AudioSLPlayer implements IPcmPlayer {
         _setMute(mInstance, mute);
     }
 
+    public void setVolume(float volume) {
+        _setVolume(mInstance, volume);
+    }
+
     public int start() {
         return _start(mInstance);
     }
@@ -94,6 +98,7 @@ public class AudioSLPlayer implements IPcmPlayer {
     private native void _attachTo(long instance, int idx, long ptr, boolean detach);
     private native void _setTuneLatency(long instance, boolean tuneLatency);
     private native void _setMute(long instance, boolean mute);
+    private native void _setVolume(long instance, float volume);
     private native long _getPosition(long instance);
     private native int _start(long instance);
     private native int _stop(long instance);
