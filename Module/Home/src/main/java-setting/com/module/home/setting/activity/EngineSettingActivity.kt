@@ -66,7 +66,7 @@ class EngineSettingActivity : BaseActivity() {
 //                if(configFromServer.hasServerConfig==true && configFromServer.isEnableAudioPreview==false){
 //
 //                }else{
-                    U.getToastUtil().showShort("开启后在部分机型上可能会引起卡顿")
+                    U.getToastUtil().showShort("可在调音面板开关耳返，开启后在部分机型上可能会引起卡顿")
 //                }
             }else{
                 EngineConfigFromServer.setSelfCollectionSwitch(2)

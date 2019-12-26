@@ -27,6 +27,7 @@ import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
+import com.module.playways.pretendHeadSetSystemMsg
 import com.module.playways.relay.room.RelayRoomActivity
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.relay.room.RelayRoomServerApi
@@ -122,16 +123,16 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         RelayRoomMsgManager.addFilter(mPushMsgFilter)
         joinRoomAndInit(true)
         startSyncGameStatus()
-        pretendHeadSetSystemMsg()
+        pretendHeadSetSystemMsg(mRoomData.gameType)
     }
 
-    private fun pretendHeadSetSystemMsg() {
-        val stringBuilder = SpanUtils()
-                .append(" 温馨提示：佩戴耳机能获得最佳演唱效果").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
-                .create()
-        val commentSysModel = CommentSysModel(mRoomData.gameType, stringBuilder)
-        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
-    }
+//    private fun pretendHeadSetSystemMsg() {
+//        val stringBuilder = SpanUtils()
+//                .append(" 温馨提示：佩戴耳机能获得最佳演唱效果").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
+//                .create()
+//        val commentSysModel = CommentSysModel(mRoomData.gameType, stringBuilder)
+//        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
+//    }
 
     /**
      * 加入引擎房间

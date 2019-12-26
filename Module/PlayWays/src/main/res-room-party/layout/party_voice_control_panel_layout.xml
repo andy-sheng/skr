@@ -10,7 +10,6 @@
         app:bl_corners_topRightRadius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="#4C56AA">
-
         <android.support.constraint.ConstraintLayout
             android:id="@+id/ll_switch_container"
             android:layout_width="match_parent"
