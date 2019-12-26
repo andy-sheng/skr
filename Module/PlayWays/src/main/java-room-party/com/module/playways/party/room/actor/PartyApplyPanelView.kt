@@ -104,15 +104,15 @@ class PartyApplyPanelView(context: Context) : ConstraintLayout(context), Corouti
                 if (result.errno == 0) {
                     // 只用拒绝即可，不用操作
                     // UI需要删除这个view 更新UI
-                    adapter?.mDataList?.remove(model)
-                    adapter?.notifyItemRemoved(position)//注意这里
-                    if (position != adapter?.mDataList?.size) {
-                        adapter?.notifyItemRangeChanged(position, (adapter?.mDataList?.size
-                                ?: 0) - position)
-                    }
+                    remove(position, model)
                 } else {
                     U.getToastUtil().showShort(result.errmsg)
-                    // todo 等一个错误码删除用户吧
+                    if (result.errno == 8348003 || result.errno == 8348027 || result.errno == 8348028) {
+                        //用户已经离开房间啦～
+                        //对方已取消上麦申请
+                        //对方已经在麦席上
+                        remove(position, model)
+                    }
                 }
             }
         }
@@ -132,19 +132,28 @@ class PartyApplyPanelView(context: Context) : ConstraintLayout(context), Corouti
                 if (result.errno == 0) {
                     // 只用同意即可，不用操作
                     // UI需要删除这个view 更新UI
-                    adapter?.mDataList?.remove(model)
-                    adapter?.notifyItemRemoved(position)//注意这里
-                    if (position != adapter?.mDataList?.size) {
-                        adapter?.notifyItemRangeChanged(position, (adapter?.mDataList?.size
-                                ?: 0) - position)
-                    }
+                    remove(position, model)
                 } else {
                     U.getToastUtil().showShort(result.errmsg)
-                    // todo 等一个错误码删除用户吧
+                    if (result.errno == 8348003 || result.errno == 8348005 || result.errno == 8348025) {
+                        //用户已经离开房间啦～
+                        //玩家不在申请中
+                        // 已成功上麦
+                        remove(position, model)
+                    }
                 }
             }
         }
 
+    }
+
+    fun remove(position: Int, model: PartyPlayerInfoModel) {
+        adapter?.mDataList?.remove(model)
+        adapter?.notifyItemRemoved(position)//注意这里
+        if (position != adapter?.mDataList?.size) {
+            adapter?.notifyItemRangeChanged(position, (adapter?.mDataList?.size
+                    ?: 0) - position)
+        }
     }
 
     private fun loadApplyListData(off: Int, isClean: Boolean) {
