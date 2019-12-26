@@ -212,15 +212,16 @@ public class AudioPlayerCapture {
             @Override
             public void onFrameAvailable(AudioBufFrame frame) {
                 handlePlayerTypeChanged();
-                if (mMuteChanged) {
-                    mMuteChanged = false;
-                    mPcmPlayer.setMute(mMute);
-                }
-                if (mVolumeChanged) {
-                    mVolumeChanged = false;
-                    mPcmPlayer.setVolume(mPlayoutVolume);
-                }
                 if (frame.buf != null && frame.buf.limit() > 0) {
+                    if (mMuteChanged) {
+                        mMuteChanged = false;
+                        mPcmPlayer.setMute(mMute);
+                    }
+                    if (mVolumeChanged) {
+                        mVolumeChanged = false;
+                        mPcmPlayer.setVolume(mPlayoutVolume);
+                    }
+
                     if (mEnableLatencyTest) {
                         ByteBuffer buffer = frame.buf;
                         long now = System.nanoTime() / 1000;
