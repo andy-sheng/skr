@@ -88,6 +88,20 @@ class ReplyRoomInvitePresenter() : RxLifeCyclePresenter() {
         }, this)
     }
 
+    /**
+     */
+    fun getInviteCostZs(userID: Int, call: ((Int) -> Unit)?) {
+        ApiMethods.subscribe(mDoubleRoomServerApi.getInviteCostZS(userID), object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult?) {
+                if (obj?.errno == 0) {
+                    call?.invoke(obj.data.getIntValue("zs"))
+                } else {
+                    U.getToastUtil().showShort(obj?.errmsg)
+                }
+            }
+        }, this)
+    }
+
     override fun destroy() {
         super.destroy()
         handlerTaskTimer?.dispose()

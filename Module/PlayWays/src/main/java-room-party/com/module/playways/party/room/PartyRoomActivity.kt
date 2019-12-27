@@ -644,23 +644,25 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                     if (userInfoModel.isFriend) {
                         mReplyRoomInvitePresenter?.inviteToReplyRoom(userInfoModel.userId)
                     } else {
-                        mTipsDialogView = TipsDialogView.Builder(U.getActivityUtils().topActivity)
-                                .setMessageTip("对方不是您的好友，要花钻石邀请ta一起心动合唱吗？")
-                                .setConfirmTip("邀请")
-                                .setCancelTip("取消")
-                                .setConfirmBtnClickListener(object : AnimateClickListener() {
-                                    override fun click(view: View) {
-                                        mReplyRoomInvitePresenter?.inviteToReplyRoom(userInfoModel.userId)
-                                        mTipsDialogView?.dismiss()
-                                    }
-                                })
-                                .setCancelBtnClickListener(object : AnimateClickListener() {
-                                    override fun click(view: View) {
-                                        mTipsDialogView?.dismiss()
-                                    }
-                                })
-                                .build()
-                        mTipsDialogView?.showByDialog()
+                        mReplyRoomInvitePresenter?.getInviteCostZs(userInfoModel.userId) {
+                            mTipsDialogView = TipsDialogView.Builder(U.getActivityUtils().topActivity)
+                                    .setMessageTip("对方不是您的好友，要花${it}钻石邀请ta一起心动合唱吗？")
+                                    .setConfirmTip("邀请")
+                                    .setCancelTip("取消")
+                                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                                        override fun click(view: View) {
+                                            mReplyRoomInvitePresenter?.inviteToReplyRoom(userInfoModel.userId)
+                                            mTipsDialogView?.dismiss()
+                                        }
+                                    })
+                                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                                        override fun click(view: View) {
+                                            mTipsDialogView?.dismiss()
+                                        }
+                                    })
+                                    .build()
+                            mTipsDialogView?.showByDialog()
+                        }
                     }
                 }
                 .setKickListener {

@@ -84,6 +84,13 @@ public interface DoubleRoomServerApi {
     Observable<ApiResult> getRelayInviteEnterResult();
 
     /**
+     *
+     * @return
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/invite-cost-zs")
+    Observable<ApiResult> getInviteCostZS(@Query("inviteUserID") int inviteUserID);
+
+    /**
      * 房间结束信息
      *
      * @return
