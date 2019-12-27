@@ -98,6 +98,7 @@ int AudioPlay::config(int sampleFmt, int sampleRate, int channels, int bufferSam
             LOGE("Auto start player failed!");
             return -1;
         }
+        setVolume(mVolume);
         if (mMute) {
             mutePlayer(mMute);
         }
@@ -106,6 +107,7 @@ int AudioPlay::config(int sampleFmt, int sampleRate, int channels, int bufferSam
 }
 
 void AudioPlay::setMute(bool mute) {
+    LOGD("setMute: %d", mute);
     mMute = mute;
     if (mState == STATE_PLAYING || mState == STATE_PAUSE) {
         mutePlayer(mute);
@@ -113,6 +115,7 @@ void AudioPlay::setMute(bool mute) {
 }
 
 void AudioPlay::setVolume(float volume) {
+    LOGD("setVolume: %f", volume);
     mVolume = volume;
     if (mState == STATE_PLAYING || mState == STATE_PAUSE) {
         int mb = lroundf(2000.f * log10(volume));
@@ -134,6 +137,7 @@ int AudioPlay::start() {
         if (startPlayer() != SL_RESULT_SUCCESS) {
             return -1;
         }
+        setVolume(mVolume);
         if (mMute) {
             mutePlayer(mMute);
         }

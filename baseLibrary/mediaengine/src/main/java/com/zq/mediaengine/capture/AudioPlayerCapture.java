@@ -202,6 +202,7 @@ public class AudioPlayerCapture {
                     postError(ERROR_UNKNOWN, 0);
                 }
                 mPcmPlayer.setMute(mMute);
+                mPcmPlayer.setVolume(mPlayoutVolume);
                 mPcmPlayer.start();
 
                 mPcmOutFormat = new AudioBufFormat(mOutFormat);
