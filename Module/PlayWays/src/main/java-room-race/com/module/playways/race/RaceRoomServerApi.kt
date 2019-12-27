@@ -265,7 +265,7 @@ interface RaceRoomServerApi {
                   @Query("userID") userID: Int,
                   @Query("roundSeq") roundSeq: Int): Call<ApiResult>
 
-    @GET("http://dev.game.inframe.mobi/v1/racegame/save-ranking")
+    @PUT("http://dev.game.inframe.mobi/v1/racegame/save-ranking")
     fun diamondSaveLevel(@Body body: RequestBody): Call<ApiResult>
 
     /*

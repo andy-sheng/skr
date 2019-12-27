@@ -130,6 +130,7 @@ class RaceResultActivity : BaseActivity() {
 
         zuanshiSaveTv.setDebounceViewClickListener {
             goMatchJob?.cancel()
+            countDownTv.visibility = View.GONE
             showConfirmDialog(false)
         }
 
@@ -171,6 +172,7 @@ class RaceResultActivity : BaseActivity() {
             if (result.errno == 0) {
                 val raceResultModel = JSON.parseObject(result.data.getString("item"), LevelResultModel::class.java)
                 if (raceResultModel != null) {
+                    U.getToastUtil().showShort("钻石保段成功")
                     showResult(raceResultModel)
                     return@launch
                 } else {
@@ -369,6 +371,7 @@ class RaceResultActivity : BaseActivity() {
         }
 
         goMatchJob?.cancel()
+        countDownTv.visibility = View.VISIBLE
         goMatchJob = launch {
             repeat(8) {
                 countDownTv.text = "${8 - it}s后自动进入下一场挑战"
