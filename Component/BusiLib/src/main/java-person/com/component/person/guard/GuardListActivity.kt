@@ -51,10 +51,12 @@ class GuardListActivity : BaseActivity() {
     private val limit = 15
 
     private var userID = 0
+    private var from = 0  //来源 0卡片 1个人中心 2他人中心
     private var isNeedRefresh = true
 
     override fun initData(savedInstanceState: Bundle?) {
         userID = intent.getIntExtra("userID", 0)
+        from = intent.getIntExtra("from", 0)
         if (userID == 0) {
             finish()
             return
@@ -105,12 +107,16 @@ class GuardListActivity : BaseActivity() {
         adapter = GuardListAdapter(userID == MyUserInfoManager.uid.toInt(), object : GuardListAdapter.Listener {
             override fun onClickAvatar(position: Int, model: GuardInfoModel?) {
                 model?.userInfoModel?.userId?.let {
-                    val bundle = Bundle()
-                    bundle.putInt("bundle_user_id", it)
-                    ARouter.getInstance()
-                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
-                            .with(bundle)
-                            .navigation()
+                    if (from == 0) {
+                        // todo 房间里面不让点击
+                    } else {
+                        val bundle = Bundle()
+                        bundle.putInt("bundle_user_id", it)
+                        ARouter.getInstance()
+                                .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                                .with(bundle)
+                                .navigation()
+                    }
                 }
 
             }

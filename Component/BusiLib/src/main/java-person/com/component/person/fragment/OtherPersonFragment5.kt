@@ -456,6 +456,13 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
         }
 
+        mGuardView.clickMore = {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_GUARD_LIST)
+                    .withInt("userID", it)
+                    .withInt("from", 2)
+                    .navigation()
+        }
+
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 BigImageBrowseFragment.open(false, activity, mUserInfoModel!!.avatar)

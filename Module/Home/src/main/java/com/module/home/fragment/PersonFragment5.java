@@ -422,6 +422,17 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
             }
         });
 
+        mGuardView.setClickMore(new Function1<Integer, Unit>() {
+            @Override
+            public Unit invoke(Integer userID) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_GUARD_LIST)
+                        .withInt("userID", userID)
+                        .withInt("from", 1)
+                        .navigation();
+                return null;
+            }
+        });
+
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {

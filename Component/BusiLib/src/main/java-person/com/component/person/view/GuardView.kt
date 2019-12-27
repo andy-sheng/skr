@@ -37,6 +37,7 @@ class GuardView : ConstraintLayout {
     var userID: Int = 0
 
     var clickListener: ((model: UserInfoModel?) -> Unit)? = null
+    var clickMore: ((userID: Int) -> Unit)? = null
 
     init {
         View.inflate(context, R.layout.guard_view_layout, this)
@@ -47,9 +48,7 @@ class GuardView : ConstraintLayout {
 
         adapter.mOnClickItemListener = { position, model ->
             if (position == 3) {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_GUARD_LIST)
-                        .withInt("userID", userID)
-                        .navigation()
+                clickMore?.invoke(userID)
             } else {
                 clickListener?.invoke(model)
             }

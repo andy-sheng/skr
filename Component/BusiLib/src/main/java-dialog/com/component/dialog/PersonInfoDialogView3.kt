@@ -158,6 +158,13 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
             }
         }
 
+        guardView.clickMore = {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_GUARD_LIST)
+                    .withInt("userID", it)
+                    .withInt("from", 0)
+                    .navigation()
+        }
+
         photoView.isFocusableInTouchMode = false
         photoView.layoutManager = GridLayoutManager(context, 3)
         photoAdapter = PhotoAdapter(PhotoAdapter.TYPE_PERSON_CARD)
