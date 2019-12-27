@@ -155,11 +155,12 @@ public class ConfirmMatchInfoView extends RelativeLayout {
     }
 
     private void initAgeTags() {
-        mAgeTags.add(new AgeTag(1, "小学党"));
-        mAgeTags.add(new AgeTag(2, "初中党"));
-        mAgeTags.add(new AgeTag(3, "高中党"));
-        mAgeTags.add(new AgeTag(4, "大学党"));
-        mAgeTags.add(new AgeTag(5, "工作党"));
+        mAgeTags.add(new AgeTag(1, "05后"));
+        mAgeTags.add(new AgeTag(2, "00后"));
+        mAgeTags.add(new AgeTag(3, "95后"));
+        mAgeTags.add(new AgeTag(4, "90后"));
+        mAgeTags.add(new AgeTag(5, "80后"));
+        mAgeTags.add(new AgeTag(6, "80前"));
         selectModel = mAgeTags.get(0);  // 默认第一个
     }
 
