@@ -150,7 +150,7 @@
         android:layout_height="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_16_dp"
         android:gravity="center"
-        android:text="70后"
+        android:text="80前"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/textsize_14_dp"
         app:layout_constraintLeft_toLeftOf="@id/age_70_iv"

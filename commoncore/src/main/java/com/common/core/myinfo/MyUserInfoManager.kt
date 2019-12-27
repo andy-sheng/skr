@@ -88,14 +88,13 @@ object MyUserInfoManager {
     val ageStageString: String
         get() {
             if (myUserInfo != null && myUserInfo!!.ageStage != 0) {
-                if (myUserInfo!!.ageStage == 1) {
-                    return "小学党"
-                } else if (myUserInfo!!.ageStage == 2) {
-                    return "中学党"
-                } else if (myUserInfo!!.ageStage == 3) {
-                    return "大学党"
-                } else if (myUserInfo!!.ageStage == 4) {
-                    return "工作党"
+                when {
+                    myUserInfo?.ageStage == 1 -> return "05后"
+                    myUserInfo?.ageStage == 2 -> return "00后"
+                    myUserInfo?.ageStage == 3 -> return "95后"
+                    myUserInfo?.ageStage == 4 -> return "90后"
+                    myUserInfo?.ageStage == 5 -> return "80后"
+                    myUserInfo?.ageStage == 6 -> return "80前"
                 }
             }
             return ""
