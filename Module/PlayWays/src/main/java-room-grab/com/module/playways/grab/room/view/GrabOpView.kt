@@ -25,7 +25,6 @@ import com.module.playways.R
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent
-import com.module.playways.grab.room.model.GrabConfigModel
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.Common.StandPlayType
 
@@ -50,7 +49,6 @@ class GrabOpView(context: Context, attrs: AttributeSet) : RelativeLayout(context
     internal val mGrab2Container: RelativeLayout
     internal val mGrab2Iv: ExImageView
     internal val mRrl2Progress: RoundRectangleView
-    internal val mCoinFlagIv: ExImageView
     internal var mIvLightOff: ExTextView
     internal var mIvBurst: ExImageView
 
@@ -87,7 +85,6 @@ class GrabOpView(context: Context, attrs: AttributeSet) : RelativeLayout(context
         mGrab2Iv = this.findViewById(R.id.grab2_iv)
         mRrl2Progress = findViewById(R.id.rrl2_progress)
         mGrab2Container = findViewById(R.id.grab2_container)
-        mCoinFlagIv = findViewById(R.id.coin_flag_iv)
 
         mGrab2Iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -261,8 +258,7 @@ class GrabOpView(context: Context, attrs: AttributeSet) : RelativeLayout(context
                     mGrab2Container.visibility = View.VISIBLE
                     mGrab2Iv.isEnabled = false
                     mGrab2Iv.setImageDrawable(null)
-                    mGrab2Iv.background = U.getDrawable(R.drawable.ycdd_tiaozhan_bg)
-                    mCoinFlagIv.visibility = View.GONE
+                    mGrab2Iv.background = U.getDrawable(R.drawable.ycdd_qiangchang_bj)
                     mListener?.showChallengeTipView()
                 }
 
@@ -322,7 +318,6 @@ class GrabOpView(context: Context, attrs: AttributeSet) : RelativeLayout(context
                                 .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_tiaozhan))
                                 .build()
                         mGrab2Iv.background = drawable
-                        mCoinFlagIv.visibility = View.VISIBLE
                         mGrab2Iv.setOnTouchListener { v, event ->
                             //MyLog.d(TAG, "onTouch" + " v=" + v + " event=" + event);
                             if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
