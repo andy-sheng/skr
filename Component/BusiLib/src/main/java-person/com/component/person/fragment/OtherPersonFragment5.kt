@@ -688,7 +688,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
         mInviteIv.setDebounceViewClickListener {
             val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-            iRankingModeService.tryInviteToRelay(mUserId)
+            iRankingModeService.tryInviteToRelay(mUserId, mUserInfoModel.isFriend)
         }
     }
 

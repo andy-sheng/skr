@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -21,11 +22,13 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.event.GrabJoinRoomFailEvent;
 import com.component.busilib.recommend.RA;
 import com.component.busilib.verify.SkrVerifyUtils;
 import com.component.toast.CommonToastView;
+import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.playways.doubleplay.DoublePlayActivity;
 import com.module.playways.doubleplay.DoubleRoomData;
@@ -51,6 +54,7 @@ import com.module.playways.relay.match.model.JoinRelayRoomRspModel;
 import com.module.playways.relay.room.RelayRoomActivity;
 import com.module.playways.relay.room.RelayRoomData;
 import com.module.playways.relay.room.RelayRoomServerApi;
+import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
@@ -96,6 +100,8 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     SkrVerifyUtils skrVerifyUtils = new SkrVerifyUtils();
 
     HandlerTaskTimer checkTimer;
+
+    TipsDialogView tipsDialogView;
 
     @Override
     public void tryGoGrabRoom(int roomID, int inviteType) {
@@ -398,34 +404,74 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
     // 个人中心或者个人卡片上的邀请合唱
     @Override
-    public void tryInviteToRelay(int userID) {
-        HashMap map = new HashMap();
-        map.put("inviteUserID", userID);
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+    public void tryInviteToRelay(int userID, boolean isFriend) {
         RelayRoomServerApi relayRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi.class);
-        ApiMethods.subscribe(relayRoomServerApi.sendRelayInvite(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult obj) {
-                if (obj.getErrno() == 0) {
-                    startCheckLoop();
-                    U.getToastUtil().showShort("邀请成功");
-                } else {
-                    U.getToastUtil().showShort(obj.getErrmsg());
+        if (isFriend) {
+            HashMap map = new HashMap();
+            map.put("inviteUserID", userID);
+            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+            ApiMethods.subscribe(relayRoomServerApi.sendRelayInvite(body), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult obj) {
+                    if (obj.getErrno() == 0) {
+                        startCheckLoop();
+                        U.getToastUtil().showShort("邀请成功");
+                    } else {
+                        if (obj.getErrno() == 8343024) {
+                            EventBus.getDefault().post(new ShowHalfRechargeFragmentEvent());
+                        }
+
+                        U.getToastUtil().showShort(obj.getErrmsg());
+                    }
                 }
-            }
 
-            @Override
-            public void onNetworkError(ErrorType errorType) {
-                super.onNetworkError(errorType);
-                U.getToastUtil().showShort("网络错误");
-            }
+                @Override
+                public void onNetworkError(ErrorType errorType) {
+                    super.onNetworkError(errorType);
+                    U.getToastUtil().showShort("网络错误");
+                }
 
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-                U.getToastUtil().showShort("请求错误");
-            }
-        });
+                @Override
+                public void onError(Throwable e) {
+                    super.onError(e);
+                    U.getToastUtil().showShort("请求错误");
+                }
+            });
+        } else {
+            ApiMethods.subscribe(relayRoomServerApi.getInviteCostZS(userID), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult obj) {
+                    if (obj.getErrno() == 0) {
+                        int zs = obj.getData().getIntValue("zs");
+                        if (tipsDialogView != null) {
+                            tipsDialogView.dismiss(false);
+                        }
+                        tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                                .setMessageTip("对方不是您的好友，要花" + zs + "钻石邀请ta一起心动合唱吗？")
+                                .setConfirmTip("邀请")
+                                .setCancelTip("取消")
+                                .setConfirmBtnClickListener(new DebounceViewClickListener() {
+                                    @Override
+                                    public void clickValid(View v) {
+                                        tipsDialogView.dismiss(false);
+                                        tryInviteToRelay(userID, true);
+                                    }
+                                })
+                                .setCancelBtnClickListener(new DebounceViewClickListener() {
+                                    @Override
+                                    public void clickValid(View v) {
+                                        tipsDialogView.dismiss();
+                                    }
+                                })
+                                .build();
+                        tipsDialogView.showByDialog();
+                    } else {
+
+                    }
+                }
+            });
+        }
+
     }
 
     private void startCheckLoop() {

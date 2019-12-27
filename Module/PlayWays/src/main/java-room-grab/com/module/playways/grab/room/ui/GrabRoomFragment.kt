@@ -31,7 +31,6 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.utils.dp
-import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -48,6 +47,7 @@ import com.component.toast.CommonToastView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.IHomeService
+import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
 import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.GrabRoomData
@@ -63,7 +63,6 @@ import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.grab.room.presenter.GrabCorePresenter
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter
-import com.module.playways.grab.room.presenter.ReplyRoomInvitePresenter
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.top.GrabTopContentView
 import com.module.playways.grab.room.top.GrabTopOpView
@@ -159,8 +158,6 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     internal var mVipEnterPresenter: VipEnterPresenter? = null
 
     internal var mGrabRedPkgPresenter: GrabRedPkgPresenter? = null
-
-    internal var mReplyRoomInvitePresenter: ReplyRoomInvitePresenter? = null
 
     //    DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
@@ -345,8 +342,6 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         addPresent(mGrabRedPkgPresenter)
         mGrabRedPkgPresenter?.checkRedPkg()
         mCorePresenter?.setGrabRedPkgPresenter(mGrabRedPkgPresenter!!)
-        mReplyRoomInvitePresenter = ReplyRoomInvitePresenter()
-        addPresent(mReplyRoomInvitePresenter)
         mVipEnterPresenter = VipEnterPresenter(this, mRoomData!!)
         addPresent(mVipEnterPresenter)
 
@@ -854,31 +849,10 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
         mPersonInfoDialog?.dismiss(false)
         mPersonInfoDialog = PersonInfoDialog.Builder(activity, QuickFeedbackFragment.FROM_GRAB_ROOM, userID, mShowKick, true)
-                .setRoomID(mRoomData!!.gameId)
+                .setRoomID(mRoomData?.gameId ?: 0)
                 .setInviteReplyListener { userInfoModel ->
-                    if (userInfoModel.isFriend) {
-                        mReplyRoomInvitePresenter?.inviteToReplyRoom(userInfoModel.userId)
-                    } else {
-                        mReplyRoomInvitePresenter?.getInviteCostZs(userInfoModel.userId) {
-                            mTipsDialogView = TipsDialogView.Builder(U.getActivityUtils().topActivity)
-                                    .setMessageTip("对方不是您的好友，要花${it}钻石邀请ta一起心动合唱吗？")
-                                    .setConfirmTip("邀请")
-                                    .setCancelTip("取消")
-                                    .setConfirmBtnClickListener(object : AnimateClickListener() {
-                                        override fun click(view: View) {
-                                            mReplyRoomInvitePresenter?.inviteToReplyRoom(userInfoModel.userId)
-                                            mTipsDialogView?.dismiss()
-                                        }
-                                    })
-                                    .setCancelBtnClickListener(object : AnimateClickListener() {
-                                        override fun click(view: View) {
-                                            mTipsDialogView?.dismiss()
-                                        }
-                                    })
-                                    .build()
-                            mTipsDialogView?.showByDialog()
-                        }
-                    }
+                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                    iRankingModeService.tryInviteToRelay(userInfoModel.userId, userInfoModel.isFriend)
                 }
                 .setKickListener { userInfoModel -> showKickConfirmDialog(userInfoModel) }
                 .build()

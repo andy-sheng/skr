@@ -22,7 +22,6 @@ import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
-import com.common.view.AnimateClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
@@ -34,10 +33,10 @@ import com.component.toast.CommonToastView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.IHomeService
+import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
 import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.inter.IGrabVipView
-import com.module.playways.grab.room.presenter.ReplyRoomInvitePresenter
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.GrabGiveupView
 import com.module.playways.grab.room.view.GrabScoreTipsView
@@ -125,7 +124,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     internal var mRoomData = MicRoomData()
 
     private lateinit var mCorePresenter: MicCorePresenter
-    internal var mReplyRoomInvitePresenter = ReplyRoomInvitePresenter()
     //基础ui组件
     internal lateinit var mInputContainerView: MicInputContainerView
     internal lateinit var mBottomContainerView: MicBottomContainerView
@@ -193,7 +191,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         addPresent(mCorePresenter)
         mVipEnterPresenter = VipEnterPresenter(this, mRoomData)
         addPresent(mVipEnterPresenter)
-        addPresent(mReplyRoomInvitePresenter)
         // 请保证从下面的view往上面的view开始初始化
         findViewById<View>(R.id.main_act_container).setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -662,29 +659,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_MIC_ROOM, userID, mShowKick, true)
                 .setRoomID(mRoomData.gameId)
                 .setInviteReplyListener { userInfoModel ->
-                    if (userInfoModel.isFriend) {
-                        mReplyRoomInvitePresenter?.inviteToReplyRoom(userInfoModel.userId)
-                    } else {
-                        mReplyRoomInvitePresenter?.getInviteCostZs(userInfoModel.userId) {
-                            mTipsDialogView = TipsDialogView.Builder(U.getActivityUtils().topActivity)
-                                    .setMessageTip("对方不是您的好友，要花${it}钻石邀请ta一起心动合唱吗？")
-                                    .setConfirmTip("邀请")
-                                    .setCancelTip("取消")
-                                    .setConfirmBtnClickListener(object : AnimateClickListener() {
-                                        override fun click(view: View) {
-                                            mReplyRoomInvitePresenter?.inviteToReplyRoom(userInfoModel.userId)
-                                            mTipsDialogView?.dismiss()
-                                        }
-                                    })
-                                    .setCancelBtnClickListener(object : AnimateClickListener() {
-                                        override fun click(view: View) {
-                                            mTipsDialogView?.dismiss()
-                                        }
-                                    })
-                                    .build()
-                            mTipsDialogView?.showByDialog()
-                        }
-                    }
+                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                    iRankingModeService.tryInviteToRelay(userInfoModel.userId, userInfoModel.isFriend)
                 }
                 .setKickListener { userInfoModel -> showKickConfirmDialog(userInfoModel) }
                 .build()
