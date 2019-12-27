@@ -1,5 +1,7 @@
 package com.zq.mediaengine.filter.audio;
 
+import android.util.Log;
+
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
 
@@ -25,6 +27,7 @@ public class AudioCopyFilter extends AudioFilterBase {
 
     @Override
     protected AudioBufFrame doFilter(AudioBufFrame frame) {
+        // TODO: frame.buf and mOutBuffer use the same native memory...😵
         if (mOutBuffer == null || mOutBuffer.capacity() < frame.buf.limit()) {
             mOutBuffer = ByteBuffer.allocateDirect(frame.buf.limit());
             mOutBuffer.order(ByteOrder.nativeOrder());

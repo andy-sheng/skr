@@ -39,6 +39,7 @@ import com.zq.mediaengine.capture.AudioPlayerCapture;
 import com.zq.mediaengine.capture.CameraCapture;
 import com.zq.mediaengine.encoder.MediaCodecAudioEncoder;
 import com.zq.mediaengine.filter.audio.APMFilter;
+import com.zq.mediaengine.filter.audio.AudioCopyFilter;
 import com.zq.mediaengine.filter.audio.AudioFilterMgt;
 import com.zq.mediaengine.filter.audio.AudioMixer;
 import com.zq.mediaengine.filter.audio.AudioPreview;
@@ -691,8 +692,11 @@ public class ZqEngineKit implements AgoraOutCallback {
             });
         } else {
             mAudioLocalSrcPin = mAgoraRTCAdapter.getLocalAudioSrcPin();
-            mAudioSendSrcPin = mAgoraRTCAdapter.getLocalAudioSrcPin();
-            mAudioRemoteSrcPin = mAgoraRTCAdapter.getRemoteAudioSrcPin();
+
+            AudioResampleFilter copyFilter = new AudioResampleFilter();
+            copyFilter.setOutFormat(new AudioBufFormat(-1, -1, -1), true);
+            mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(copyFilter.getSinkPin());
+            mAudioRemoteSrcPin = copyFilter.getSrcPin();
         }
 
         // 纯人声录制的连接
@@ -749,6 +753,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioPlayerCapture.getSrcPin().connect(mLocalAudioMixer.getSinkPin(1));
                 mLocalAudioMixer.getSrcPin().connect(mAgoraRTCAdapter.getAudioSinkPin());
                 mAudioSendSrcPin = mLocalAudioMixer.getSrcPin();
+            } else {
+                AudioResampleFilter copyFilter = new AudioResampleFilter();
+                copyFilter.setOutFormat(new AudioBufFormat(-1, -1, -1), true);
+                mAudioFilterMgt.getSrcPin().connect(copyFilter.getSinkPin());
+                mAudioSendSrcPin = copyFilter.getSrcPin();
             }
 
             // 录制功能
@@ -830,7 +839,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private void connectRecord(AudioBufFormat format) {
         if (mConfig.isUseExternalAudioRecord() || mConfig.isUseExternalAudio()) {
-            mAudioRecordResampleFilter.setOutFormat(format, true);
+            mAudioRecordResampleFilter.setOutFormat(format);
             mAudioRecordResampleFilter.setEnableLowLatency(false);
             // TODO: 非主播模式下, 需要用远端音频驱动录制
             mRecordAudioMixer.setMainSinkPinIndex((mConfig.isAnchor() || !mConfig.isJoinChannelSuccess()) ? 0 : 1);
