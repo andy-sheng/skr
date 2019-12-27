@@ -19,7 +19,6 @@ import com.common.view.ex.ExImageView;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
-import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.callback.EmptyCallback;
 import com.component.busilib.callback.ErrorCallback;
 import com.component.busilib.callback.LoadingCallback;
@@ -27,7 +26,6 @@ import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.module.RouterConstants;
-import com.module.playways.audition.AudioRoomActivity;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
@@ -204,29 +202,32 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     public void loadSongsDetailItems(List<SongModel> list, int offset, boolean hasMore) {
         this.offset = offset;
         this.hasMore = hasMore;
-        if (!hasMore) {
-            mRefreshLayout.setEnableLoadMore(false);
-            mRefreshLayout.finishLoadMore();
-            if (datas == null || datas.size() == 0) {
-                mLoadService.showCallback(EmptyCallback.class);
-            }
-            return;
-        }
-        mRefreshLayout.finishLoadMore();
         if (datas == null) {
             datas = new ArrayList<>();
         }
         if (songSelectAdapter != null && list != null) {
-            mLoadService.showSuccess();
             datas.addAll(list);
             songSelectAdapter.setDataList(datas);
             songSelectAdapter.notifyDataSetChanged();
         }
+
+        finishRefreshLoadMore();
     }
 
     @Override
     public void loadSongsDetailItemsFail() {
+        finishRefreshLoadMore();
+    }
+
+    private void finishRefreshLoadMore() {
         mRefreshLayout.finishLoadMore();
-        mLoadService.showCallback(ErrorCallback.class);
+        mRefreshLayout.finishRefresh();
+        mRefreshLayout.setEnableLoadMore(hasMore);
+
+        if (songSelectAdapter != null && songSelectAdapter.getDataList() != null && songSelectAdapter.getDataList().size() > 0) {
+            mLoadService.showSuccess();
+        } else {
+            mLoadService.showCallback(EmptyCallback.class);
+        }
     }
 }
