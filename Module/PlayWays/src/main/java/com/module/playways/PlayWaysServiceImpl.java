@@ -478,12 +478,6 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     }
 
     private void startCheckLoop() {
-        for (Activity activity : U.getActivityUtils().getActivityList()) {
-            if (activity instanceof RelayRoomActivity) {
-                return;
-            }
-        }
-
         if (checkTimer != null) {
             checkTimer.dispose();
         }
@@ -508,6 +502,12 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
      * 发出邀请之后轮询检查对方的进房情况，因为push有可能会丢
      */
     private void getInviteState() {
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if (activity instanceof RelayRoomActivity) {
+                return;
+            }
+        }
+
         RelayRoomServerApi relayRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi.class);
         ApiMethods.subscribe(relayRoomServerApi.getRelayInviteEnterResult(), new ApiObserver<ApiResult>() {
             @Override
