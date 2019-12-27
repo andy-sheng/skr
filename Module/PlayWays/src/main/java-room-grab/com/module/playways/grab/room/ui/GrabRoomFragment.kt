@@ -1406,6 +1406,10 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             singBeginTipsPlay { onSingBeginTipsPlayOver() }
         }
 
+        if (mRoomData?.realRoundInfo?.isChallengeRound == true) {
+            mGiftPanelView?.updateZS()
+        }
+
         showFlyCommentView()
         playBgEffect()
         StatisticsAdapter.recordCountEvent("grab", "game_sing", null)

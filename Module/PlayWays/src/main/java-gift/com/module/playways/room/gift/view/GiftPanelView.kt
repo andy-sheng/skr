@@ -329,8 +329,10 @@ open class GiftPanelView : FrameLayout {
     }
 
     fun updateZS() {
-        MyLog.d(TAG, "updateZS")
-        getZSBalance()
+        if (mHasInit) {
+            MyLog.d(TAG, "updateZS")
+            getZSBalance()
+        }
     }
 
     private fun getZSBalance() {
