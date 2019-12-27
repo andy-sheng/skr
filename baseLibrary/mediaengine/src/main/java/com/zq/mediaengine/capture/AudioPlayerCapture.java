@@ -367,7 +367,7 @@ public class AudioPlayerCapture {
      * @param type type in AUDIO_PLAYER_TYPE_AUDIOTRACK or AUDIO_PLAYER_TYPE_OPENSLES.
      */
     public void setAudioPlayerType(int type) {
-        mPlayerTypeChanged = (mAudioPlayerType != type);
+        mPlayerTypeChanged |= (mAudioPlayerType != type);
         mAudioPlayerType = type;
     }
 
@@ -375,7 +375,7 @@ public class AudioPlayerCapture {
      * Set audio player should use low latency mode with type OPENSLES.
      */
     public void setEnableLowLatency(boolean enableLowLatency) {
-        mPlayerTypeChanged = (mEnableLowLatency != enableLowLatency);
+        mPlayerTypeChanged |= (mEnableLowLatency != enableLowLatency);
         mEnableLowLatency = enableLowLatency;
     }
 
@@ -396,7 +396,7 @@ public class AudioPlayerCapture {
      * @param mute true to mute, false to unmute
      */
     public void setMute(boolean mute) {
-        mMuteChanged = (mMute != mute);
+        mMuteChanged |= (mMute != mute);
         mMute = mute;
     }
 
@@ -430,7 +430,7 @@ public class AudioPlayerCapture {
 
     public void setPlayoutVolume(float volume) {
         Log.d(TAG, "setPlayoutVolume: " + volume);
-        mVolumeChanged = (mPlayoutVolume != volume);
+        mVolumeChanged |= (mPlayoutVolume != volume);
         mPlayoutVolume = volume;
     }
 
