@@ -193,7 +193,7 @@ public class ExChangeCashToDiamondFragment extends BaseFragment {
         }
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("amount", (long) (diamondNum * 1000));
+        map.put("amount", (long) (diamondNum * 10_0000));
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mWalletServerApi.exChangeCashToDiamond(body), new ApiObserver<ApiResult>() {
