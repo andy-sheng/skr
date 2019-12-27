@@ -258,7 +258,7 @@ class GrabOpView(context: Context, attrs: AttributeSet) : RelativeLayout(context
                     mGrab2Container.visibility = View.VISIBLE
                     mGrab2Iv.isEnabled = false
                     mGrab2Iv.setImageDrawable(null)
-                    mGrab2Iv.background = U.getDrawable(R.drawable.ycdd_qiangchang_bj)
+                    mGrab2Iv.background = U.getDrawable(R.drawable.ycdd_tiaozha_bj)
                     mListener?.showChallengeTipView()
                 }
 
