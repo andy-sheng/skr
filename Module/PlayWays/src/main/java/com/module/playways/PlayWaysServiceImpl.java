@@ -349,6 +349,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     public void tryToRelayRoomByOuterInvite(Object o) {
         if (o instanceof CNRelayEnterFromOuterInviteNotifyEvent) {
             Intent intent = new Intent(U.app(), RelayRoomActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             JoinRelayRoomRspModel rsp = JoinRelayRoomRspModel.Companion.parseFromPB(((CNRelayEnterFromOuterInviteNotifyEvent) o).getRelayRoomEnterMsg());
             rsp.setEnterType(RelayRoomData.EnterType.INVITE);
 
@@ -520,6 +521,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                         checkTimer.dispose();
                     }
                     Intent intent = new Intent(U.app(), RelayRoomActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("JoinRelayRoomRspModel", joinRelayRoomRspModel);
                     U.app().startActivity(intent);
                 } else {
@@ -566,6 +568,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                                 rsp.setEnterType(RelayRoomData.EnterType.INVITE);
 
                                 Intent intent = new Intent(U.app(), RelayRoomActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra("JoinRelayRoomRspModel", rsp);
                                 U.app().startActivity(intent);
                             } else {
@@ -596,6 +599,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                                 rsp.setEnterType(RelayRoomData.EnterType.INVITE);
 
                                 Intent intent = new Intent(U.app(), RelayRoomActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra("JoinRelayRoomRspModel", rsp);
                                 U.app().startActivity(intent);
                             } else {
