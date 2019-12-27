@@ -1151,7 +1151,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             }
 
             override fun showChallengeTipView() {
-                tryShowChallengeTipView()
+//                tryShowChallengeTipView()
             }
 
             override fun hideChallengeTipView() {
