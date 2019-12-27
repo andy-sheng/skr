@@ -405,73 +405,77 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     // 个人中心或者个人卡片上的邀请合唱
     @Override
     public void tryInviteToRelay(int userID, boolean isFriend) {
-        RelayRoomServerApi relayRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi.class);
-        if (isFriend) {
-            HashMap map = new HashMap();
-            map.put("inviteUserID", userID);
-            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-            ApiMethods.subscribe(relayRoomServerApi.sendRelayInvite(body), new ApiObserver<ApiResult>() {
-                @Override
-                public void process(ApiResult obj) {
-                    if (obj.getErrno() == 0) {
-                        startCheckLoop();
-                        U.getToastUtil().showShort("邀请成功");
-                    } else {
-                        if (obj.getErrno() == 8343024) {
-                            EventBus.getDefault().post(new ShowHalfRechargeFragmentEvent());
+        skrAudioPermission.ensurePermission(new Runnable() {
+            @Override
+            public void run() {
+                RelayRoomServerApi relayRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi.class);
+                if (isFriend) {
+                    HashMap map = new HashMap();
+                    map.put("inviteUserID", userID);
+                    RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                    ApiMethods.subscribe(relayRoomServerApi.sendRelayInvite(body), new ApiObserver<ApiResult>() {
+                        @Override
+                        public void process(ApiResult obj) {
+                            if (obj.getErrno() == 0) {
+                                startCheckLoop();
+                                U.getToastUtil().showShort("邀请成功");
+                            } else {
+                                if (obj.getErrno() == 8343024) {
+                                    EventBus.getDefault().post(new ShowHalfRechargeFragmentEvent());
+                                }
+
+                                U.getToastUtil().showShort(obj.getErrmsg());
+                            }
                         }
 
-                        U.getToastUtil().showShort(obj.getErrmsg());
-                    }
-                }
-
-                @Override
-                public void onNetworkError(ErrorType errorType) {
-                    super.onNetworkError(errorType);
-                    U.getToastUtil().showShort("网络错误");
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    super.onError(e);
-                    U.getToastUtil().showShort("请求错误");
-                }
-            });
-        } else {
-            ApiMethods.subscribe(relayRoomServerApi.getInviteCostZS(userID), new ApiObserver<ApiResult>() {
-                @Override
-                public void process(ApiResult obj) {
-                    if (obj.getErrno() == 0) {
-                        int zs = obj.getData().getIntValue("zs");
-                        if (tipsDialogView != null) {
-                            tipsDialogView.dismiss(false);
+                        @Override
+                        public void onNetworkError(ErrorType errorType) {
+                            super.onNetworkError(errorType);
+                            U.getToastUtil().showShort("网络错误");
                         }
-                        tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                                .setMessageTip("对方不是您的好友，要花" + zs + "钻石邀请ta一起心动合唱吗？")
-                                .setConfirmTip("邀请")
-                                .setCancelTip("取消")
-                                .setConfirmBtnClickListener(new DebounceViewClickListener() {
-                                    @Override
-                                    public void clickValid(View v) {
-                                        tipsDialogView.dismiss(false);
-                                        tryInviteToRelay(userID, true);
-                                    }
-                                })
-                                .setCancelBtnClickListener(new DebounceViewClickListener() {
-                                    @Override
-                                    public void clickValid(View v) {
-                                        tipsDialogView.dismiss();
-                                    }
-                                })
-                                .build();
-                        tipsDialogView.showByDialog();
-                    } else {
 
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            super.onError(e);
+                            U.getToastUtil().showShort("请求错误");
+                        }
+                    });
+                } else {
+                    ApiMethods.subscribe(relayRoomServerApi.getInviteCostZS(userID), new ApiObserver<ApiResult>() {
+                        @Override
+                        public void process(ApiResult obj) {
+                            if (obj.getErrno() == 0) {
+                                int zs = obj.getData().getIntValue("zs");
+                                if (tipsDialogView != null) {
+                                    tipsDialogView.dismiss(false);
+                                }
+                                tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                                        .setMessageTip("对方不是您的好友，要花" + zs + "钻石邀请ta一起心动合唱吗？")
+                                        .setConfirmTip("邀请")
+                                        .setCancelTip("取消")
+                                        .setConfirmBtnClickListener(new DebounceViewClickListener() {
+                                            @Override
+                                            public void clickValid(View v) {
+                                                tipsDialogView.dismiss(false);
+                                                tryInviteToRelay(userID, true);
+                                            }
+                                        })
+                                        .setCancelBtnClickListener(new DebounceViewClickListener() {
+                                            @Override
+                                            public void clickValid(View v) {
+                                                tipsDialogView.dismiss();
+                                            }
+                                        })
+                                        .build();
+                                tipsDialogView.showByDialog();
+                            } else {
+
+                            }
+                        }
+                    });
                 }
-            });
-        }
-
+            }
+        }, true);
     }
 
     private void startCheckLoop() {
@@ -535,7 +539,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     //房间内和房间外同意的时候都调用这个，roomID > 0 的时候是房间内邀请
     @Override
     public void acceptRelayRoomInvite(int ownerId, int roomID, long ts) {
-        skrVerifyUtils.checkHasMicAudioPermission(new Runnable() {
+        skrAudioPermission.ensurePermission(new Runnable() {
             @Override
             public void run() {
                 HashMap map = new HashMap();
@@ -606,7 +610,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                     });
                 }
             }
-        });
+        }, true);
     }
 
     private void goMicRoom(HashMap map) {
