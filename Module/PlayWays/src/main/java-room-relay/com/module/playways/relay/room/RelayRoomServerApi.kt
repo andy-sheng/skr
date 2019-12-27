@@ -8,6 +8,33 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface RelayRoomServerApi {
+    /**
+     * {
+     * "inviteUserID": 0
+     * }
+     * 邀请一个人合唱，房间外
+     *
+     * @param body
+     * @return
+     */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/send-invite-user")
+    fun sendRelayInvite(@Body body: RequestBody): Observable<ApiResult>
+
+    /**
+     * 邀请完一个人之后需要轮询拉接口(合唱)
+     *
+     * @return
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/invite-result")
+    fun getRelayInviteEnterResult(): Observable<ApiResult>
+
+    /**
+     *
+     * @return
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/invite-cost-zs")
+    fun getInviteCostZS(@Query("inviteUserID") inviteUserID: Int): Observable<ApiResult>
 
     @PUT("http://dev.game.inframe.mobi/v1/relaygame/round-over")
     fun sendRoundOver(@Body body: RequestBody): Call<ApiResult>

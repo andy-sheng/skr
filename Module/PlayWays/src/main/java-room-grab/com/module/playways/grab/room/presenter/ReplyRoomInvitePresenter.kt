@@ -14,13 +14,14 @@ import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.room.RelayRoomActivity
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
+import com.module.playways.relay.room.RelayRoomServerApi
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 
 class ReplyRoomInvitePresenter() : RxLifeCyclePresenter() {
     private val mTag = "ReplyRoomInvitePresenter"
-    private var mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi::class.java)
+    private var mDoubleRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
     private var handlerTaskTimer: HandlerTaskTimer? = null
 
     /**
@@ -78,9 +79,7 @@ class ReplyRoomInvitePresenter() : RxLifeCyclePresenter() {
         ApiMethods.subscribe(mDoubleRoomServerApi.getRelayInviteEnterResult(), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0 && obj.data.getBooleanValue("hasInvitedRoom")) {
-                    val relayRoomData = RelayRoomData()
                     val joinRelayRoomRspModel = JSON.parseObject(obj.data.toJSONString(), JoinRelayRoomRspModel::class.java)
-                    relayRoomData.loadFromRsp(joinRelayRoomRspModel)
                     joinRelayRoomRspModel.enterType = RelayRoomData.EnterType.INVITE
 
                     val intent = Intent(U.app(), RelayRoomActivity::class.java)

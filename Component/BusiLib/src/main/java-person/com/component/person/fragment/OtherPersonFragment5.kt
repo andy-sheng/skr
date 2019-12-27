@@ -57,6 +57,7 @@ import com.module.RouterConstants
 import com.module.club.IClubModuleService
 import com.module.feeds.IPersonFeedsWall
 import com.module.home.IHomeService
+import com.module.playways.IPlaywaysModeService
 import com.module.post.IPersonPostsWall
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
@@ -115,8 +116,9 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     internal var mFeedsWallView: IPersonFeedsWall? = null
 
     lateinit var mFunctionArea: ConstraintLayout
-    lateinit var mFollowIv: ExTextView
+    lateinit var mInviteIv: ExTextView
     lateinit var mMessageIv: ExTextView
+    lateinit var mFollowIv: ExTextView
 
     private var mPersonMoreOpView: PersonMoreOpView? = null
     private var mTipsDialogView: TipsDialogView? = null
@@ -577,14 +579,12 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
 
             override fun getPageTitle(position: Int): CharSequence? {
-                if (position == 0) {
-                    return "相册"
-                } else if (position == 1) {
-                    return "帖子"
-                } else if (position == 2) {
-                    return "神曲"
+                when (position) {
+                    0 -> return "相册"
+                    1 -> return "帖子"
+                    2 -> return "神曲"
+                    else -> return ""
                 }
-                return ""
             }
 
             override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -655,39 +655,41 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     private fun initFunctionArea() {
         mFunctionArea = rootView.findViewById(R.id.function_area)
-        mFollowIv = rootView.findViewById(R.id.follow_iv)
+        mInviteIv = rootView.findViewById(R.id.invite_iv)
         mMessageIv = rootView.findViewById(R.id.message_iv)
+        mFollowIv = rootView.findViewById(R.id.follow_iv)
 
-        mFollowIv.setOnClickListener(object : AnimateClickListener() {
-            override fun click(view: View) {
-                if (!U.getNetworkUtils().hasNetwork()) {
-                    U.getToastUtil().showShort("网络异常，请检查网络后重试!")
-                    return
-                }
-                if (mUserInfoModel != null) {
-                    if (mUserInfoModel.isFollow) {
-                        unFollow(mUserInfoModel)
-                    } else {
-                        UserInfoManager.getInstance().mateRelation(mUserInfoModel.userId, UserInfoManager.RA_BUILD, mUserInfoModel.isFriend)
-                    }
+        mFollowIv.setDebounceViewClickListener {
+            if (!U.getNetworkUtils().hasNetwork()) {
+                U.getToastUtil().showShort("网络异常，请检查网络后重试!")
+                return@setDebounceViewClickListener
+            }
+            if (mUserInfoModel != null) {
+                if (mUserInfoModel.isFollow) {
+                    unFollow(mUserInfoModel)
+                } else {
+                    UserInfoManager.getInstance().mateRelation(mUserInfoModel.userId, UserInfoManager.RA_BUILD, mUserInfoModel.isFriend)
                 }
             }
-        })
+        }
 
-        mMessageIv.setOnClickListener(object : AnimateClickListener() {
-            override fun click(view: View) {
-                if (mUserInfoModel != null) {
-                    val needPop = ModuleServiceManager.getInstance().msgService.startPrivateChat(context,
-                            mUserInfoModel!!.userId.toString(),
-                            mUserInfoModel!!.nicknameRemark,
-                            mUserInfoModel!!.isFriend
-                    )
-                    if (needPop) {
-                        activity?.finish()
-                    }
+        mMessageIv.setDebounceViewClickListener {
+            if (mUserInfoModel != null) {
+                val needPop = ModuleServiceManager.getInstance().msgService.startPrivateChat(context,
+                        mUserInfoModel.userId.toString(),
+                        mUserInfoModel.nicknameRemark,
+                        mUserInfoModel.isFriend
+                )
+                if (needPop) {
+                    activity?.finish()
                 }
             }
-        })
+        }
+
+        mInviteIv.setDebounceViewClickListener {
+            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+            iRankingModeService.tryInviteToRelay(mUserId)
+        }
     }
 
     override fun useEventBus(): Boolean {

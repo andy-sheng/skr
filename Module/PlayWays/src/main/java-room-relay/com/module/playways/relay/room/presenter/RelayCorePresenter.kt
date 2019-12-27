@@ -975,8 +975,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
      * 发出邀请之后轮询检查对方的进房情况，因为push有可能会丢
      */
     private fun fetchRelayRoom() {
-        val doubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi::class.java)
-        ApiMethods.subscribe(doubleRoomServerApi.getRelayInviteEnterResult(), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mRoomServerApi.getRelayInviteEnterResult(), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0 && obj.data.getBooleanValue("hasInvitedRoom")) {
                     val joinRelayRoomRspModel = JSON.parseObject(obj.data.toJSONString(), JoinRelayRoomRspModel::class.java)
