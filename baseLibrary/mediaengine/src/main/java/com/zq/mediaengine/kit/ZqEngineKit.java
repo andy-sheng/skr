@@ -830,7 +830,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private void connectRecord(AudioBufFormat format) {
         if (mConfig.isUseExternalAudioRecord() || mConfig.isUseExternalAudio()) {
-            mAudioRecordResampleFilter.setOutFormat(format);
+            mAudioRecordResampleFilter.setOutFormat(format, true);
             mAudioRecordResampleFilter.setEnableLowLatency(false);
             // TODO: 非主播模式下, 需要用远端音频驱动录制
             mRecordAudioMixer.setMainSinkPinIndex((mConfig.isAnchor() || !mConfig.isJoinChannelSuccess()) ? 0 : 1);
