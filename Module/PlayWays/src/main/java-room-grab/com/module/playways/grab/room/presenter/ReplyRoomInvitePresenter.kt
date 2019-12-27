@@ -13,8 +13,10 @@ import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.room.RelayRoomActivity
 import com.module.playways.relay.room.RelayRoomData
+import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 class ReplyRoomInvitePresenter() : RxLifeCyclePresenter() {
     private val mTag = "ReplyRoomInvitePresenter"
@@ -37,9 +39,10 @@ class ReplyRoomInvitePresenter() : RxLifeCyclePresenter() {
                     startCheckLoop()
                     U.getToastUtil().showShort("邀请成功")
                 } else {
-//                    if (obj?.errno == 8376040) {
-//                        StatisticsAdapter.recordCountEvent("cp", "invite2_outchance", null)
-//                    }
+                    if (obj?.errno == 8343024) {
+                        EventBus.getDefault().post(ShowHalfRechargeFragmentEvent())
+                    }
+
                     U.getToastUtil().showShort(obj?.errmsg)
                 }
             }
