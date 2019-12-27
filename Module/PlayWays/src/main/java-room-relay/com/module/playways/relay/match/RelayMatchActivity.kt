@@ -410,6 +410,11 @@ class RelayMatchActivity : BaseActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
+    override fun finish() {
+        super.finish()
+        BgMusicManager.getInstance().destory()
+    }
+
     override fun destroy() {
         super.destroy()
         roomJob?.cancel()
