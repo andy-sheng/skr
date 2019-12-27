@@ -9,8 +9,6 @@
         android:id="@+id/song_list_recycle"
         android:layout_width="@dimen/view_332_dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/common_gradient_bg"
-        android:paddingTop="@dimen/view_12_dp"
-        android:paddingBottom="@dimen/view_12_dp" />
+        android:background="@drawable/common_gradient_bg" />
 
 </com.common.view.ex.ExLinearLayout>

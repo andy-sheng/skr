@@ -22,7 +22,7 @@ public class SongCardHolder extends RecyclerView.ViewHolder {
         super(itemView);
         mSongListView = itemView.findViewById(R.id.song_list_recycle);
         ViewGroup.LayoutParams lp = mSongListView.getLayoutParams();
-        lp.height = defaultCount * U.getDisplayUtils().dip2px(72) + U.getDisplayUtils().dip2px(24);
+        lp.height = defaultCount * U.getDisplayUtils().dip2px(72);
         mSongListView.setLayoutParams(lp);
         mSongListView.setLayoutManager(new LinearLayoutManager(getContext()));
 
