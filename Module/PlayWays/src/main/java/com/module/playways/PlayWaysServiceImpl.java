@@ -3,7 +3,6 @@ package com.module.playways;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -479,6 +478,12 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     }
 
     private void startCheckLoop() {
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if (activity instanceof RelayRoomActivity) {
+                return;
+            }
+        }
+
         if (checkTimer != null) {
             checkTimer.dispose();
         }
