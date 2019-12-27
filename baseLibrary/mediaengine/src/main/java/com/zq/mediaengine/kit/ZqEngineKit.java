@@ -920,14 +920,10 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
         // 销毁前清理掉其他的异步任务
         mCustomHandlerThread.removeCallbacksAndMessages(null);
-        // destroy前必须先停止所有录制
-        stopAudioRecordingInner("destroy");
         mCustomHandlerThread.post(new LogRunnable("destroy" + " from=" + from + " status=" + mStatus) {
             @Override
             public void realRun() {
                 if (from.equals(mInitFrom)) {
-                    MyLog.i(TAG, "destroy inner");
-                    mConfig.setAnchor(false);
                     destroyInner();
                 }
             }
@@ -935,6 +931,10 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void destroyInner() {
+        MyLog.i(TAG, "destroy inner");
+        // destroy前必须先停止所有录制
+        doStopAudioRecordingInner();
+        mConfig.setAnchor(false);
         MyLog.i(TAG, "destroyInner1");
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
@@ -2151,29 +2151,36 @@ public class ZqEngineKit implements AgoraOutCallback {
                     MyLog.e(TAG, "stopAudioRecordingInner in invalid state: " + mStatus);
                     return;
                 }
-                if (!RECORD_FOR_DEBUG) {
-                    if (mConfig.isUseExternalAudioRecord()) {
-                        mHumanVoiceAudioEncoder.stop();
-                        mAudioEncoder.stop();
-                        // 未加入房间时需要停止音频采集
-                        if (!mConfig.isJoinChannelSuccess() && mAudioCapture != null) {
-                            mAudioCapture.stop();
-                        }
-                    } else {
-                        mAgoraRTCAdapter.stopAudioRecording();
-                    }
-                } else {
-                    mRawFrameWriter.stop();
-                    EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_RECORD_FINISHED));
-                    if (mConfig.isUseExternalAudio()) {
-                        mCapRawFrameWriter.stop();
-                        mBgmRawFrameWriter.stop();
-                    }
-                }
-                // 录制完成断开连接
-                disconnectRecord();
+                doStopAudioRecordingInner();
             }
         });
+    }
+
+    private void doStopAudioRecordingInner() {
+        if (mStatus != STATUS_INITED) {
+            return;
+        }
+        if (!RECORD_FOR_DEBUG) {
+            if (mConfig.isUseExternalAudioRecord()) {
+                mHumanVoiceAudioEncoder.stop();
+                mAudioEncoder.stop();
+                // 未加入房间时需要停止音频采集
+                if (!mConfig.isJoinChannelSuccess() && mAudioCapture != null) {
+                    mAudioCapture.stop();
+                }
+            } else {
+                mAgoraRTCAdapter.stopAudioRecording();
+            }
+        } else {
+            mRawFrameWriter.stop();
+            EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_RECORD_FINISHED));
+            if (mConfig.isUseExternalAudio()) {
+                mCapRawFrameWriter.stop();
+                mBgmRawFrameWriter.stop();
+            }
+        }
+        // 录制完成断开连接
+        disconnectRecord();
     }
 
     public int getLineScore1() {
