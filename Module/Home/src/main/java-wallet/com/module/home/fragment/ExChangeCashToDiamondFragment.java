@@ -26,6 +26,7 @@ import com.dialog.view.StrokeTextView;
 import com.module.home.R;
 import com.module.home.WalletServerApi;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import okhttp3.MediaType;
@@ -92,7 +93,7 @@ public class ExChangeCashToDiamondFragment extends BaseFragment {
         mTvExchangeWhole.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                mEditCashNum.setText(String.valueOf(mDq));
+                mEditCashNum.setText(String.format("%.1f", mDq));
                 mEditCashNum.setSelection(mEditCashNum.length());
             }
         });
@@ -193,7 +194,7 @@ public class ExChangeCashToDiamondFragment extends BaseFragment {
         }
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("amount", (long) (diamondNum * 10_0000));
+        map.put("amount", new BigDecimal(String.valueOf(diamondNum)).multiply(new BigDecimal("100000")).longValue());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mWalletServerApi.exChangeCashToDiamond(body), new ApiObserver<ApiResult>() {
