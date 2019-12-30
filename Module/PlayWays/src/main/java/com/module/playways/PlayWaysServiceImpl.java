@@ -528,8 +528,6 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("JoinRelayRoomRspModel", joinRelayRoomRspModel);
                     U.app().startActivity(intent);
-                } else {
-                    U.getToastUtil().showShort(obj.getErrmsg());
                 }
             }
 

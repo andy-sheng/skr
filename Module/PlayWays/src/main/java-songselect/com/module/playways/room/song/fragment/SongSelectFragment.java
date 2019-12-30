@@ -167,6 +167,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mInviteTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                mInviteTv.setClickable(false);
                 createRelayRoom();
             }
         });
@@ -357,6 +358,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg());
                 }
+                mInviteTv.setClickable(false);
             }
         }, this);
     }
