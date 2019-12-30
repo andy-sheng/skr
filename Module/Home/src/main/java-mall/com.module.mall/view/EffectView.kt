@@ -104,6 +104,25 @@ class EffectView : ConstraintLayout {
         return ""
     }
 
+    fun showCoinEffect(productModel: ProductModel) {
+        reset()
+        bgSvga?.visibility = View.VISIBLE
+        bgSvga?.loops = 1
+
+        SvgaParserAdapter.parse(productModel?.effectModel?.items?.get(0)?.sourceUrl, object : SVGAParser.ParseCompletion {
+            override fun onComplete(@NotNull videoItem: SVGAVideoEntity) {
+                val drawable = SVGADrawable(videoItem)
+                bgSvga!!.loops = -1
+                bgSvga!!.setImageDrawable(drawable)
+                bgSvga!!.startAnimation()
+            }
+
+            override fun onError() {
+
+            }
+        })
+    }
+
     fun showLightEffect(productModel: ProductModel) {
         reset()
         bgSvga?.visibility = View.VISIBLE

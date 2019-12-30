@@ -195,6 +195,7 @@ class MallActivity : BaseActivity() {
         when (event.productModel.displayType) {
             4 -> effectView.showBgEffect(event.productModel)
             5 -> effectView.showLightEffect(event.productModel)
+            6 -> effectView.showCoinEffect(event.productModel)
         }
     }
 
