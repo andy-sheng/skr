@@ -151,6 +151,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     var mFlyCommentView: FlyCommentView? = null
 
+    var mEnterTime = System.currentTimeMillis()
+
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
@@ -709,18 +711,34 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     private fun quitGame() {
         dismissDialog()
-        mTipsDialogView = TipsDialogView.Builder(this)
-                .setMessageTip("确定要退出合唱吗")
-                .setConfirmTip("确定")
-                .setCancelTip("取消")
-                .setConfirmBtnClickListener {
-                    mTipsDialogView?.dismiss(false)
-                    gameOver("Dialog")
-                }
-                .setCancelBtnClickListener {
-                    mTipsDialogView?.dismiss()
-                }
-                .build()
+
+        if (mRoomData.isPersonArrive() && System.currentTimeMillis() - mEnterTime < 30000) {
+            mTipsDialogView = TipsDialogView.Builder(this)
+                    .setMessageTip("频繁秒退将会对您作出惩罚，试试再唱一会儿吧～")
+                    .setConfirmTip("再唱一会")
+                    .setCancelTip("退出")
+                    .setConfirmBtnClickListener {
+                        mTipsDialogView?.dismiss(false)
+                    }
+                    .setCancelBtnClickListener {
+                        mTipsDialogView?.dismiss(false)
+                        gameOver("Dialog")
+                    }
+                    .build()
+        } else {
+            mTipsDialogView = TipsDialogView.Builder(this)
+                    .setMessageTip("确定要退出合唱吗")
+                    .setConfirmTip("确定")
+                    .setCancelTip("取消")
+                    .setConfirmBtnClickListener {
+                        mTipsDialogView?.dismiss(false)
+                        gameOver("Dialog")
+                    }
+                    .setCancelBtnClickListener {
+                        mTipsDialogView?.dismiss(false)
+                    }
+                    .build()
+        }
         mTipsDialogView?.showByDialog()
     }
 
