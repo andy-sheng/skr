@@ -205,7 +205,7 @@ interface GrabRoomServerApi {
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.stand.inframe.mobi/v3/stand/want-sing-chance")
+    @PUT("http://dev.stand.inframe.mobi/v4/stand/want-sing-chance")
     fun wangSingChance(@Body body: RequestBody): Observable<ApiResult>
 
     //放弃演唱
