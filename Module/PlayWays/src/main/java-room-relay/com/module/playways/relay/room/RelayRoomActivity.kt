@@ -714,7 +714,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     private fun quitGame() {
         dismissDialog()
-        if (mRoomData.isPersonArrive() && System.currentTimeMillis() - mEnterTime < 30000) {
+        if (mRoomData.isPersonArrive() && System.currentTimeMillis() - mEnterTime < 30000 && !mRoomData.isEnterFromInvite()) {
             mTipsDialogView = TipsDialogView.Builder(this)
                     .setMessageTip("频繁秒退将会对您作出惩罚，试试再唱一会儿吧～")
                     .setConfirmTip("再唱一会")
