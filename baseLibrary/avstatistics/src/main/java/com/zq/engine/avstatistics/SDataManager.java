@@ -134,7 +134,6 @@ public class SDataManager {
                 .append(", channelJoinElapsed=").append(mBasicInfo.channelJoinElapsed).append("\n");
         logStr1.append(mADHolder.toString());
         MyLog.w(logStr1.toString());
-
         List<ILogItem> itemList = mADHolder.getItemList();
         int listSize = 0;
         long logLen = 0;
@@ -144,9 +143,11 @@ public class SDataManager {
 //                if(e!=null){
 //                    logStr.append(e.toString());
 //                }
-                MyLog.w(e.toString());//MyLog的flush行为由其自己控制
+                if(e!=null) {
+                    MyLog.w(e.toString());//MyLog的flush行为由其自己控制
+                    mLS.appendLog(e);
+                }
 //                logStr.delete(LOG_PREFIX.length()+1, logStr.length()); //+1是给空格留的
-                mLS.appendLog(e);
                 if (dbgMode) {
                     logLen += (e.toJSONObject().toString().length());
                 }

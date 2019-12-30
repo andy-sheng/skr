@@ -1403,7 +1403,7 @@ public class AgoraRTCAdapter {
                         filePath = location;
                     }
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 MyLog.d(TAG, e);
             } finally {
                 if (con != null) {
