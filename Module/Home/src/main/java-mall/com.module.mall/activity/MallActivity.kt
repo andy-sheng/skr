@@ -63,6 +63,10 @@ class MallActivity : BaseActivity() {
     val rankedServerApi = ApiManager.getInstance().createService(MallServerApi::class.java)
     val mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi::class.java)
 
+    companion object {
+        val supportDisplayTypeSet = hashSetOf(4, 5, 6)
+    }
+
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.mall_activity_layout
     }
@@ -177,7 +181,15 @@ class MallActivity : BaseActivity() {
             if (obj.errno == 0) {
                 val list = JSON.parseArray(obj.data.getString("tags"), MallTag::class.java)
                 if (list != null && list.size > 0) {
-                    initAdapter(list)
+                    val supportList = ArrayList<MallTag>()
+
+                    for (item in list) {
+                        if (supportDisplayTypeSet.contains(item.displayType)) {
+                            supportList.add(item)
+                        }
+                    }
+
+                    initAdapter(supportList)
                 }
             } else {
                 U.getToastUtil().showShort(obj.errmsg)

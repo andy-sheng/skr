@@ -169,6 +169,25 @@ class EffectView : ConstraintLayout {
         })
     }
 
+    fun showDefaultCoinEffect() {
+        reset()
+        bgSvga?.visibility = View.VISIBLE
+        bgSvga?.loops = 1
+
+        SvgaParserAdapter.parse(GRAB_BURST_BIG_SVGA, object : SVGAParser.ParseCompletion {
+            override fun onComplete(@NotNull videoItem: SVGAVideoEntity) {
+                val drawable = SVGADrawable(videoItem)
+                bgSvga!!.loops = -1
+                bgSvga!!.setImageDrawable(drawable)
+                bgSvga!!.startAnimation()
+            }
+
+            override fun onError() {
+
+            }
+        })
+    }
+
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         reset()
