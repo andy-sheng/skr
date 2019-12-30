@@ -232,7 +232,7 @@ void AudioMixer::destroy(int idx) {
 }
 
 int AudioMixer::init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples) {
-    return config(idx, sampleFmt, sampleRate, channels, bufferSamples, 160, true);
+    return config(idx, sampleFmt, sampleRate, channels, bufferSamples, 600, true);
 }
 
 int AudioMixer::process(int idx, uint8_t *inBuf, int inSize) {
