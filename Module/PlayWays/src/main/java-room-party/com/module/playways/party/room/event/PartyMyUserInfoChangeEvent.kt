@@ -1,3 +1,5 @@
 package com.module.playways.party.room.event
 
-class PartyMyUserInfoChangeEvent ()
+import com.module.playways.party.room.model.PartyPlayerInfoModel
+
+class PartyMyUserInfoChangeEvent(val oldUser: PartyPlayerInfoModel?)

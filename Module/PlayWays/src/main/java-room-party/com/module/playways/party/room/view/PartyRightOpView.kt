@@ -127,7 +127,7 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
     }
 
     // 身份改变需要重置
-    fun bindData() {
+    fun bindData(isInit: Boolean, oldUser: PartyPlayerInfoModel?) {
         val myInfo = H.partyRoomData?.getMyUserInfoInParty()
         when {
             myInfo?.isHost() == true -> {
@@ -147,9 +147,12 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
                 }
             }
             else -> {
-                // 观众
-                micStatus = MIC_STATUS_UNAPPLY
-                opMicTv.visibility = View.VISIBLE
+                if (!isInit && oldUser?.isNotOnlyAudience() != myInfo?.isNotOnlyAudience()) {
+                    // 不是初始化，只是我的身份角色在管理员和观众中发生改变
+                } else {
+                    micStatus = MIC_STATUS_UNAPPLY
+                    opMicTv.visibility = View.VISIBLE
+                }
                 if (myInfo?.isAdmin() == true) {
                     applyList.visibility = View.VISIBLE
                 } else {
@@ -158,7 +161,7 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
             }
         }
         applyList.text = "申请${H.partyRoomData?.applyUserCnt}人"
-        refreshMicStatus("bindData")
+        refreshMicStatus("bindData isInit=$isInit")
     }
 
     private fun refreshMicStatus(from: String) {
@@ -178,7 +181,7 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyMyUserInfoChangeEvent) {
-        bindData()
+        bindData(false, event.oldUser)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

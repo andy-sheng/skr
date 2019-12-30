@@ -107,12 +107,14 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                     if (field!!.same(value)) {
 
                     } else {
+                        val oldUser = field
                         field = value
-                        EventBus.getDefault().post(PartyMyUserInfoChangeEvent())
+                        EventBus.getDefault().post(PartyMyUserInfoChangeEvent(oldUser))
                     }
                 } else {
+                    val oldUser = field
                     field = value
-                    EventBus.getDefault().post(PartyMyUserInfoChangeEvent())
+                    EventBus.getDefault().post(PartyMyUserInfoChangeEvent(oldUser))
                 }
             }
         }
