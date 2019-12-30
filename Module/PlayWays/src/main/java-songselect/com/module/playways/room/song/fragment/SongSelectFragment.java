@@ -357,8 +357,22 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                     createSuccess(rsp);
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg());
+                    mInviteTv.setClickable(true);
                 }
-                mInviteTv.setClickable(false);
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                super.onNetworkError(errorType);
+                U.getToastUtil().showShort("网络异常");
+                mInviteTv.setClickable(true);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                U.getToastUtil().showShort(e.getMessage());
+                mInviteTv.setClickable(true);
             }
         }, this);
     }
