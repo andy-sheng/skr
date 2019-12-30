@@ -133,19 +133,29 @@ class PackageView : ExConstraintLayout {
             }
 
             if (obj.errno == 0) {
-                for (i in 0 until ((productAdapter?.dataList?.size) ?: 0)) {
-                    productAdapter?.dataList?.get(i)?.let {
-                        if (it.packetItemID == packageModel.packetItemID) {
-                            it.useStatus = 2
-                            selectedPackageItemId = it.packetItemID
-                            selectedIndex = i
-                            EventBus.getDefault().post(PackageShowEffectEvent(it.goodsInfo!!))
-                        } else {
-                            it.useStatus = 1
+                if (displayType == 6) {
+                    offset--
+                    productAdapter?.dataList?.remove(packageModel)
+                    productAdapter?.notifyDataSetChanged()
+
+                    if (productAdapter?.dataList?.size == 0) {
+                        mLoadService.showCallback(MallEmptyCallBack::class.java)
+                    }
+                } else {
+                    for (i in 0 until ((productAdapter?.dataList?.size) ?: 0)) {
+                        productAdapter?.dataList?.get(i)?.let {
+                            if (it.packetItemID == packageModel.packetItemID) {
+                                it.useStatus = 2
+                                selectedPackageItemId = it.packetItemID
+                                selectedIndex = i
+                                EventBus.getDefault().post(PackageShowEffectEvent(it.goodsInfo!!))
+                            } else {
+                                it.useStatus = 1
+                            }
                         }
                     }
+                    productAdapter?.notifyDataSetChanged()
                 }
-                productAdapter?.notifyDataSetChanged()
             } else {
                 U.getToastUtil().showShort(obj.errmsg)
             }
@@ -204,6 +214,13 @@ class PackageView : ExConstraintLayout {
             EventBus.getDefault().post(ShowDefaultEffectEvent(displayType))
         }
     }
+
+//    private fun clearAndLoad() {
+//        hasMore = true
+//        productAdapter?.dataList?.clear()
+//        offset = 0
+//        tryLoad()
+//    }
 
     private fun tryLoad() {
         if (!hasMore) {
