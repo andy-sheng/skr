@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.common.core.view.setDebounceViewClickListener
+import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
@@ -60,6 +61,8 @@ class PartyHasSelectedGameListRecyclerAdapter : DiffAdapter<PartySelectedGameMod
             upIv = itemView.findViewById(R.id.up_iv)
             delTv = itemView.findViewById(R.id.del_tv)
             playingTv = itemView.findViewById(R.id.playing_tv)
+
+            gameNameTv.maxWidth = U.getDisplayUtils().phoneWidth - U.getDisplayUtils().dip2px(170f)
 
             delTv.setDebounceViewClickListener {
                 mDelMethod?.invoke(dataList.indexOf(model!!), model!!)

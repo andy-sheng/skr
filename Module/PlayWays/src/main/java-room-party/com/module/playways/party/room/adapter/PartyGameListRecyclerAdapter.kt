@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.common.core.view.setDebounceViewClickListener
+import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
@@ -54,6 +55,8 @@ class PartyGameListRecyclerAdapter : RecyclerView.Adapter<PartyGameListRecyclerA
             detailIv = itemView.findViewById(R.id.detail_iv)
             addTv = itemView.findViewById(R.id.add_tv)
             moreTv = itemView.findViewById(R.id.more_tv)
+
+            gameNameTv.maxWidth = U.getDisplayUtils().phoneWidth - U.getDisplayUtils().dip2px(170f)
 
             addTv.setDebounceViewClickListener {
                 mAddMethod?.invoke(model!!)
