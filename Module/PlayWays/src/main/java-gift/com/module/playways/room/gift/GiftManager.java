@@ -101,6 +101,7 @@ public class GiftManager {
                 MyLog.w(TAG, "fetchGift process" + " obj=" + result);
                 if (result.getErrno() == 0) {
                     List<GiftServerModel> giftServerModelList = JSON.parseArray(result.getData().getString("list"), GiftServerModel.class);
+                    mGiftServerModelList.clear();
                     mGiftServerModelList.addAll(giftServerModelList);
 //                    cacheToDb(giftServerModelList);
                     toLocalGiftModel(mGiftServerModelList);
