@@ -355,6 +355,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                     JoinRelayRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinRelayRoomRspModel.class);
                     rsp.setEnterType(RelayRoomData.EnterType.INVITE);
                     createSuccess(rsp);
+                    mInviteTv.setClickable(true);
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg());
                     mInviteTv.setClickable(true);
