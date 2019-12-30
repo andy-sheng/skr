@@ -39,19 +39,14 @@ public class GiftViewPresenter extends RxLifeCyclePresenter {
     }
 
     public void loadData() {
-        //先从数据库拉数据
-        if (GiftManager.getInstance().isGiftReady()) {
-            formatGiftData(GiftManager.getInstance().getBaseGiftList());
-        } else {
-            GiftManager.getInstance().loadGift();
-        }
+        GiftManager.getInstance().loadGift();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GiftReadyEvent giftReadyEvent) {
         MyLog.w(getTAG(), "onEvent" + " giftReadyEvent=" + giftReadyEvent);
         if (giftReadyEvent.isGiftLoadSuccess()) {
-            loadData();
+            formatGiftData(GiftManager.getInstance().getBaseGiftList());
         } else {
             mIGiftView.getGiftListFaild();
         }

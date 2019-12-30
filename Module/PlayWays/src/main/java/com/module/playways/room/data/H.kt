@@ -36,12 +36,16 @@ object H {
         return curType == GameModeType.GAME_MODE_MIC
     }
 
-    fun isRelayRoom():Boolean{
+    fun isRelayRoom(): Boolean {
         return curType == GameModeType.GAME_MODE_RELAY
     }
 
-    fun isPartyRoom():Boolean{
+    fun isPartyRoom(): Boolean {
         return curType == GameModeType.GAME_MODE_PARTY
+    }
+
+    fun isRaceRoom(): Boolean {
+        return curType == GameModeType.GAME_MODE_RACE
     }
 
     public fun getSongModel(): SongModel? {

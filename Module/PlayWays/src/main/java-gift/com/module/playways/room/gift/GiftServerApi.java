@@ -19,7 +19,8 @@ public interface GiftServerApi {
      */
     @GET("/v2/gift/list")
     Observable<ApiResult> getGiftList(@Query("offset") int offset,
-                                      @Query("limit") int limit
+                                      @Query("limit") int limit,
+                                      @Query("gameScene") int scene
     );
 
     @PUT("/v3/gift/present-gift")
