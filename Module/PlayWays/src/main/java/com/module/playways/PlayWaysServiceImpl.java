@@ -422,9 +422,9 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                             } else {
                                 if (obj.getErrno() == 8343024) {
                                     EventBus.getDefault().post(new ShowHalfRechargeFragmentEvent());
+                                } else {
+                                    U.getToastUtil().showShort(obj.getErrmsg());
                                 }
-
-                                U.getToastUtil().showShort(obj.getErrmsg());
                             }
                         }
 
@@ -469,7 +469,11 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                                         .build();
                                 tipsDialogView.showByDialog();
                             } else {
-
+                                if (obj.getErrno() == 8343024) {
+                                    EventBus.getDefault().post(new ShowHalfRechargeFragmentEvent());
+                                } else {
+                                    U.getToastUtil().showShort(obj.getErrmsg());
+                                }
                             }
                         }
                     });
