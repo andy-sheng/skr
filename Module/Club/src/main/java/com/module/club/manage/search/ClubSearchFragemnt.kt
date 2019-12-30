@@ -66,6 +66,7 @@ class ClubSearchFragemnt : BaseFragment() {
         adapter = ClubListAdapter(object : ClubListAdapter.Listener {
             override fun onClickItem(position: Int, model: ClubInfo?) {
                 model?.let {
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
                     val clubServices = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
                     clubServices.tryGoClubHomePage(it.clubID)
                 }
