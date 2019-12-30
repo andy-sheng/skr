@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.base.FragmentDataListener
@@ -25,6 +24,7 @@ import com.module.home.R
 import com.module.home.WalletServerApi
 import com.module.home.fragment.HalfRechargeFragment
 import com.module.mall.MallServerApi
+import com.module.mall.activity.MallActivity.Companion.supportDisplayTypeSet
 import com.module.mall.event.PackageShowEffectEvent
 import com.module.mall.event.ShowDefaultEffectEvent
 import com.module.mall.model.MallTag
@@ -156,6 +156,7 @@ class PackageActivity : BaseActivity() {
         when (event.productModel.displayType) {
             4 -> effectView.showBgEffect(event.productModel)
             5 -> effectView.showLightEffect(event.productModel)
+            6 -> effectView.showCoinEffect(event.productModel)
         }
     }
 
@@ -164,6 +165,7 @@ class PackageActivity : BaseActivity() {
         when (event.displayType) {
             4 -> effectView.showDefaultBgEffect()
             5 -> effectView.showDefaultLightEffect()
+            6 -> effectView.showDefaultCoinEffect()
         }
     }
 
@@ -176,7 +178,15 @@ class PackageActivity : BaseActivity() {
             if (obj.errno == 0) {
                 val list = JSON.parseArray(obj.data.getString("tags"), MallTag::class.java)
                 if (list != null && list.size > 0) {
-                    initAdapter(list)
+                    val supportList = ArrayList<MallTag>()
+
+                    for (item in list) {
+                        if (supportDisplayTypeSet.contains(item.displayType)) {
+                            supportList.add(item)
+                        }
+                    }
+
+                    initAdapter(supportList)
                 }
             } else {
                 U.getToastUtil().showShort(obj.errmsg)

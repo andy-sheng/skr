@@ -169,6 +169,25 @@ class EffectView : ConstraintLayout {
         })
     }
 
+    fun showDefaultCoinEffect() {
+        reset()
+        bgSvga?.visibility = View.VISIBLE
+        bgSvga?.loops = 1
+
+        SvgaParserAdapter.parse(COMMON_COIN_BIG_SVGA, object : SVGAParser.ParseCompletion {
+            override fun onComplete(@NotNull videoItem: SVGAVideoEntity) {
+                val drawable = SVGADrawable(videoItem)
+                bgSvga!!.loops = -1
+                bgSvga!!.setImageDrawable(drawable)
+                bgSvga!!.startAnimation()
+            }
+
+            override fun onError() {
+
+            }
+        })
+    }
+
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         reset()
@@ -189,5 +208,6 @@ class EffectView : ConstraintLayout {
 
     companion object {
         val GRAB_BURST_BIG_SVGA = "http://res-static.inframe.mobi/app/grab_burst_big_animation.svga"
+        val COMMON_COIN_BIG_SVGA = "http://res-static.inframe.mobi/app/grab_burst_big_animation.svga"
     }
 }
