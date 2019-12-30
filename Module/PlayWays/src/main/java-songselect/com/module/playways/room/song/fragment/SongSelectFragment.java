@@ -20,6 +20,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -261,6 +262,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             }, true);
             return;
         } else {
+            StatisticsAdapter.recordCountEvent("chorus", "start", null);
             EventBus.getDefault().post(new AddSongEvent(songModel, mFrom));
         }
     }

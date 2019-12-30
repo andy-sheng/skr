@@ -14,6 +14,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.rxretrofit.*
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
@@ -126,6 +127,7 @@ class RelayMatchActivity : BaseActivity() {
 
         adapter.listener = object : RelayRoomAdapter.RelayRoomListener {
             override fun selectRoom(position: Int, model: RelayRecommendRoomInfo?) {
+                StatisticsAdapter.recordCountEvent("chorus", "join", null)
                 if (todayResTimes <= 0) {
                     if (MyUserInfoManager.myUserInfo?.honorInfo?.isHonor() == true) {
                         U.getToastUtil().showShort("今日加入次数用完啦")

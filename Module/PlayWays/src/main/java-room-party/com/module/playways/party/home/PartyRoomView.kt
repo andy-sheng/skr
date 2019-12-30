@@ -53,11 +53,14 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                     iRankingModeService.tryGoPartyRoom(it, 1, model.roomtype ?: 0)
 
-                    if (model.roomtype == 1) {
-                        StatisticsAdapter.recordCountEvent("party", "personal_room_recommend", null)
-                    } else if (model.roomtype == 2) {
-                        StatisticsAdapter.recordCountEvent("party", "family_room_recommend", null)
-                    }
+                    val map = HashMap<String, String>()
+                    map["roomType"] = model.roomtype.toString()
+                    StatisticsAdapter.recordCountEvent("party", "recommend", map)
+//                    if (model.roomtype == 1) {
+//                        StatisticsAdapter.recordCountEvent("party", "personal_room_recommend", null)
+//                    } else if (model.roomtype == 2) {
+//                        StatisticsAdapter.recordCountEvent("party", "family_room_recommend", null)
+//                    }
                 }
             }
 
