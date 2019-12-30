@@ -280,7 +280,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         for (info in users) {
             usersMap[info.userID] = info
 
-            if (info.userID == MyUserInfoManager.uid.toInt()) {
+            if (info.userID == MyUserInfoManager.uid.toInt() && info.isNotOnlyAudience()) {
                 myUserInfo = info
                 hasMy = true
             }
@@ -362,7 +362,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         }
         updateSeat(seatInfoModel)
         // 座位信息有变化
-        if (playerInfoModel.userID == MyUserInfoManager.uid.toInt()) {
+        if (playerInfoModel.userID == MyUserInfoManager.uid.toInt() && playerInfoModel.isNotOnlyAudience()) {
             myUserInfo = playerInfoModel
         }
         if (playerInfoModel.isHost()) {
