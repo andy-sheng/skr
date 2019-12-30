@@ -13,6 +13,8 @@ interface IRelayRoomView {
     //当另一个被邀请的人进来的时候
     fun startGameByInvite()
 
+    fun receiveScoreEvent(score: Int)
+
 //
 //    fun singByOthers(lastRoundInfo:MicRoundInfoModel?)
 //    fun joinNotice(model: MicPlayerInfoModel?)

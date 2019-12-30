@@ -31,6 +31,7 @@ import com.module.playways.R
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.presenter.VipEnterPresenter
+import com.module.playways.grab.room.view.GrabScoreTipsView
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.view.normal.NormalOthersSingCardView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
@@ -151,6 +152,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     var mFlyCommentView: FlyCommentView? = null
 
+    lateinit var mGrabScoreTipsView: GrabScoreTipsView // 打分提示
+
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
@@ -235,7 +238,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
         mCorePresenter.onOpeningAnimationOver()
 
-        mUiHanlder.postDelayed(Runnable {
+        mUiHanlder.postDelayed({
             var openOpBarTimes = U.getPreferenceUtils().getSettingInt("key_open_op_bar_times", 0)
             if (openOpBarTimes < 2) {
                 mWidgetAnimationController.open()
@@ -244,7 +247,6 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             } else {
                 mWidgetAnimationController.close()
             }
-
         }, 500)
         if (MyLog.isDebugLogOpen()) {
             val viewStub = findViewById<ViewStub>(R.id.debug_log_view_stub)
@@ -374,6 +376,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         relaySingCardView.roomData = mRoomData
         relaySingCardView.othersSingCardView = NormalOthersSingCardView(rootView.findViewById(R.id.normal_other_sing_card_view_stub))
         relaySingCardView.effectBgView = GameEffectBgView(rootView.findViewById(R.id.game_effect_bg_view_layout_viewStub))
+        // 打分
+        mGrabScoreTipsView = rootView.findViewById(R.id.grab_score_tips_view)
     }
 
     private fun initBottomView() {
@@ -805,4 +809,9 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         mTopContentView.bindData()
         mAddSongIv.visibility = View.VISIBLE
     }
+
+    override fun receiveScoreEvent(score: Int) {
+        mGrabScoreTipsView.updateScore(score, -1)
+    }
+
 }

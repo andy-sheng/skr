@@ -112,7 +112,7 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         configParams.accBeginTs = music?.beginMs!!
         configParams.accEndTs = music?.endMs!!
         configParams.voiceScaleView = voiceScaleView
-        configParams.needScore = false
+        configParams.needScore = true
         // 间隔 是否第一个唱
         lyricAndAccMatchManager!!.setArgs(configParams)
         lyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener() {
