@@ -534,7 +534,6 @@ public class AuditionFragment extends BaseFragment {
 
     @Override
     public boolean onBackPressed() {
-        Params.save2Pref(ZqEngineKit.getInstance().getParams());
         Activity activity = getActivity();
         if (activity != null) {
             activity.finish();
@@ -576,6 +575,7 @@ public class AuditionFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
+        Params.save2Pref(ZqEngineKit.getInstance().getParams());
         mLyricAndAccMatchManager.stop();
         mManyLyricsView.release();
         ZqEngineKit.getInstance().destroy("prepare");
