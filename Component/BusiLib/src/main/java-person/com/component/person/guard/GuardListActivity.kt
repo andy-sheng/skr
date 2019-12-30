@@ -167,7 +167,7 @@ class GuardListActivity : BaseActivity() {
             }
             if (result.errno == 0) {
                 val guardTimeInfo = JSON.parseObject(result.data.getString("guardInfo"), GuardTimeInfo::class.java)
-                isGuard(guardTimeInfo != null)
+                isGuard((guardTimeInfo?.expireTimeMs ?: 0) > 0)
             } else {
                 isGuard(false)
             }

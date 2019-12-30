@@ -18,7 +18,7 @@ class GrabScoreTipsView : RelativeLayout {
 
     val mTag = "GrabScoreTipsView"
 
-    private var mRoomData: GrabRoomData? = null
+//    private var mRoomData: GrabRoomData? = null
 
     private var mLastItem: ScoreTipsView.Item? = null
 
@@ -79,12 +79,13 @@ class GrabScoreTipsView : RelativeLayout {
                 item.num = mLastItem!!.num + 1
             }
             mLastItem = item
-            val now = mRoomData?.realRoundInfo
-            if (now != null && now.singBySelf()) {
-                ScoreTipsView.play(this, item, 1)
-            } else {
-                ScoreTipsView.play(this, item, 1)
-            }
+//            val now = mRoomData?.realRoundInfo
+//            if (now != null && now.singBySelf()) {
+//                ScoreTipsView.play(this, item, 1)
+//            } else {
+//
+//            }
+            ScoreTipsView.play(this, item, 1)
         }
     }
 

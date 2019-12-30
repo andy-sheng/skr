@@ -17,6 +17,7 @@ import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.recyclercardview.CardScaleHelper
 import com.component.busilib.view.recyclercardview.SpeedRecyclerView
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.relay.match.adapter.RelayHomeSongAdapter
@@ -36,8 +37,12 @@ class RelayHomeActivity : BaseActivity() {
     val adapter: RelayHomeSongAdapter = RelayHomeSongAdapter()
     private var cardScaleHelper: CardScaleHelper? = null
 
+    private val relayMatchServerApi = ApiManager.getInstance().createService(RelayMatchServerApi::class.java)
+
     //在滑动到最后的时候自动加载更多
     var skrAudioPermission = SkrAudioPermission()
+    var mTipsDialogView: TipsDialogView? = null
+
     /**
      * 存起该房间一些状态信息
      */
@@ -64,11 +69,34 @@ class RelayHomeActivity : BaseActivity() {
     fun goMatch(model: SongModel?) {
         // 先跳到匹配页面发起匹配
         model?.let {
-            skrAudioPermission.ensurePermission({
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_MATCH)
-                        .withSerializable("songModel", model)
-                        .navigation()
-            }, true)
+            launch {
+                val result = subscribe(RequestControl("checkEnterPermission", ControlType.CancelThis)) {
+                    relayMatchServerApi.checkEnterPermission()
+                }
+                if (result.errno == 0) {
+                    skrAudioPermission.ensurePermission({
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_MATCH)
+                                .withSerializable("songModel", model)
+                                .navigation()
+                    }, true)
+                } else {
+                    if (result.errno == 8343059) {
+                        // 多次恶意退出
+                        mTipsDialogView?.dismiss(false)
+                        mTipsDialogView = TipsDialogView.Builder(this@RelayHomeActivity)
+                                .setMessageTip(result.errmsg)
+                                .setOkBtnTip("我知道了")
+                                .setOkBtnClickListener {
+                                    mTipsDialogView?.dismiss(false)
+                                }
+                                .build()
+                        mTipsDialogView?.showByDialog()
+                    } else {
+                        U.getToastUtil().showShort(result.errmsg)
+                    }
+                }
+            }
+
         }
     }
 

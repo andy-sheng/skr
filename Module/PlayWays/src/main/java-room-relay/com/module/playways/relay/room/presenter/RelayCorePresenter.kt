@@ -1058,8 +1058,10 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MachineScoreEvent) {
+        MyLog.d(TAG, "onEvent MachineScoreEvent = $event")
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
         if (mRoomData.getSingerIdNow() == event.userId) {
+            DebugLogView.println(TAG,"对手 score=${event.score}")
             roomView.receiveScoreEvent(event.score)
         }
     }
@@ -1081,10 +1083,10 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         if (score < 0) {
             return
         }
-        if (mRoomData.isSingByMeNow()) {
+        if (!mRoomData.isSingByMeNow()) {
+            DebugLogView.println(TAG,"不是自己唱 score=${score}")
             return
         }
-        MyLog.d(TAG, "onEvent 得分=$score")
         val machineScoreItem = MachineScoreItem()
         machineScoreItem.score = score
         // 这有时是个耗时操作
@@ -1094,6 +1096,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         machineScoreItem.no = line
         // 打分信息传输给其他人
         sendScoreToOthers(machineScoreItem)
+        DebugLogView.println(TAG,"自己 score=${score}")
         roomView.receiveScoreEvent(score)
         //打分传给服务器
 //        val now = mRoomData.realRoundInfo

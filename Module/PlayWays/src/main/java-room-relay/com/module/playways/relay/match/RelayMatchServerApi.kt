@@ -11,6 +11,12 @@ import retrofit2.http.Query
 interface RelayMatchServerApi {
 
     /**
+     * 检查用户进入权限
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/enter-permission")
+    fun checkEnterPermission(): Call<ApiResult>
+
+    /**
      * 列出可以接唱的曲目
      */
     @GET("http://dev.game.inframe.mobi/v1/relaygame/list-playbook-items")
