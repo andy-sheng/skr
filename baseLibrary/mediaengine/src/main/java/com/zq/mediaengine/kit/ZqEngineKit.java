@@ -576,7 +576,6 @@ public class ZqEngineKit implements AgoraOutCallback {
                 " isUseExternalVideo: " + mConfig.isUseExternalVideo() +
                 " isUseExternalRecord: " + mConfig.isUseExternalAudioRecord() +
                 " isEnableAudioLowLatency: " + mConfig.isEnableAudioLowLatency() +
-//                " isEnableAudioPreview: " + mConfig.isEnableAudioPreview() +
                 " accMixLatency: " + mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnSpeaker() +
                 " " + mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnHeadset());
 
@@ -604,7 +603,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioCapture = new AudioCapture(mContext);
             mAudioCapture.setSampleRate(mConfig.getAudioSampleRate());
             mAudioPlayerCapture = new AudioPlayerCapture(mContext);
-            mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
+            //mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
             mAudioPlayerCapture.setOutFormat(new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16,
                     mConfig.getAudioSampleRate(), mConfig.getAudioChannels()));
             mRemoteAudioPreview = new AudioPreview(mContext);
@@ -781,9 +780,11 @@ public class ZqEngineKit implements AgoraOutCallback {
             // 初始参数配置
             if (mConfig.isEnableAudioLowLatency()) {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
+                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
                 mAudioPlayerCapture.setEnableLowLatency(true);
             } else {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
+                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_AUDIOTRACK);
                 mAudioPlayerCapture.setEnableLowLatency(false);
             }
             int mixingLatency = mHeadSetPlugged ? mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnHeadset()
@@ -792,7 +793,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
             mRemoteAudioPreview.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
             mAudioPlayerCapture.setPlayoutVolume(mConfig.getAudioMixingPlayoutVolume() / 100.f);
-            mLocalAudioMixer.setInputVolume(1, mConfig.getAudioMixingPublishVolume() / 100.f);
+            setAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume());
             if (mConfig.isEnableInEarMonitoring() && shouldStartAudioPreview()) {
                 mLocalAudioPreview.start();
             }
@@ -881,6 +882,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                     mAgoraRTCAdapter.setEnableAPM(true);
                 }
             }
+
+            // 调节伴奏混音音量
+            setAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume());
         }
     }
 
@@ -1484,6 +1488,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             if (enable) {
                 mLocalAudioPreview.stop();
             }
+            setAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume());
             mAudioPlayerCapture.setEnableLatencyTest(enable);
             mLocalAudioMixer.setEnableLatencyTest(enable);
         }
@@ -1510,9 +1515,11 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (mConfig.isUseExternalAudio()) {
             if (enable) {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
+                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
                 mAudioPlayerCapture.setEnableLowLatency(true);
             } else {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
+                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_AUDIOTRACK);
                 mAudioPlayerCapture.setEnableLowLatency(false);
             }
         }
@@ -1527,6 +1534,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                 @Override
                 public void realRun() {
                     mConfig.setEnableAudioLowLatency(enable);
+                    // 这里在延迟测试模式下会改变参数值
+                    mConfig.getConfigFromServerNotChange().setEnableAudioLowLatency(enable);
+                    mConfig.getConfigFromServerNotChange().save2Pref();
                     doSetEnableAudioLowLatency(enable);
                 }
             });
@@ -1859,6 +1869,26 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
+    private boolean shouldMixAcc() {
+        if (mHeadSetPlugged || mBluetoothPlugged) {
+            return true;
+        } else {
+            return (mConfig.getConfigFromServerNotChange().hasServerConfig &&
+                    mConfig.isEnableAudioLowLatency() == mConfig.getConfigFromServerNotChange().isEnableAudioLowLatency() &&
+                    mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnSpeaker() > 0);
+        }
+    }
+
+    // 自采集下伴奏声音发送大小(对于未测定机型，外放模式下不进行混音，伴奏使用外放回采的声音)
+    private void setAudioMixingPublishVolume(int volume) {
+        if (mConfig.isUseExternalAudio()) {
+            float val = shouldMixAcc() ? volume / 100.f : 0;
+            val = mConfig.isEnableAudioMixLatencyTest() ? 1.0f : val;
+            MyLog.i(TAG, "setAudioMixingPublishVolume to: " + val);
+            mLocalAudioMixer.setInputVolume(1, val);
+        }
+    }
+
     /**
      * 调节音乐远端播放音量大小
      *
@@ -1873,7 +1903,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         mConfig.setAudioMixingPublishVolume(volume);
                     }
                     if (mConfig.isUseExternalAudio()) {
-                        mLocalAudioMixer.setInputVolume(1, volume / 100.f);
+                        setAudioMixingPublishVolume(volume);
                     } else {
                         mAgoraRTCAdapter.adjustAudioMixingPublishVolume(volume);
                     }

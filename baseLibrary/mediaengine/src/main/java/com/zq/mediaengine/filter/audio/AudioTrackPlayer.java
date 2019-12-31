@@ -47,9 +47,11 @@ public class AudioTrackPlayer implements IPcmPlayer {
                 AudioFormat.CHANNEL_OUT_STEREO;
         int minBufferSize = AudioTrack.getMinBufferSize(sampleRate, channel,
                 AudioFormat.ENCODING_PCM_16BIT);
-        Log.i(TAG, "minBufferSize: " + minBufferSize);
+        int fifoSize = (int)((long) fifoSizeInMs * sampleRate * channels * 2 / 1000);
+        int bufferSize = Math.max(fifoSize, minBufferSize);
+        Log.i(TAG, "minBufferSize: " + minBufferSize + " fifoSize: " + fifoSize);
         mAudioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate, channel,
-                AudioFormat.ENCODING_PCM_16BIT, minBufferSize, AudioTrack.MODE_STREAM);
+                AudioFormat.ENCODING_PCM_16BIT, bufferSize, AudioTrack.MODE_STREAM);
         if (!checkState()) {
             return -1;
         }
