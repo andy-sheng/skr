@@ -7,6 +7,7 @@ import android.view.Gravity
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.core.global.event.ShowDialogInHomeEvent
 import com.common.core.myinfo.MyUserInfoManager
@@ -645,7 +646,10 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
             if (event.hasRoomID()) {
                 floatWindowData.roomID = event.roomID
             }
-            floatWindowData.extra = event.inviteTimeMs.toString()
+            val json = JSONObject()
+            json["inviteTimeMs"] = event.inviteTimeMs
+            json["inviteMsg"] = event.inviteMsg
+            floatWindowData.extra = json.toJSONString()
             mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
         }
     }
@@ -926,12 +930,14 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         mUiHandler.removeMessages(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW)
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW, 5000)
         val notifyView = RelayInviteNotifyView(U.app())
-        notifyView.bindData(userInfoModel, "邀请你加入合唱房")
+        val jsonObject = JSONObject.parseObject(floatWindowData.extra, JSONObject::class.java)
+        val inviteTimeMs = jsonObject.getLongValue("inviteTimeMs")
+        val inviteMsg = jsonObject.getString("inviteMsg")
+        notifyView.bindData(userInfoModel, inviteMsg)
         notifyView.setListener {
             mUiHandler.removeMessages(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW)
             FloatWindow.destroy(TAG_RELAY_INVITE_FOALT_WINDOW)
-            tryToRelayRoom(userInfoModel!!.userId, floatWindowData.roomID, floatWindowData.extra?.toLong()
-                    ?: 0L)
+            tryToRelayRoom(userInfoModel?.userId ?: 0, floatWindowData.roomID, inviteTimeMs)
         }
 
         FloatWindow.with(U.app())
