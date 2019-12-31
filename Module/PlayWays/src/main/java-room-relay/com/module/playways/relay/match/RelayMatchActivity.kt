@@ -82,6 +82,7 @@ class RelayMatchActivity : BaseActivity() {
     var mLoadService: LoadService<*>? = null
 
     var todayResTimes: Int = 0
+    var needAlert: Boolean = false  // 是否需要在次数不足显示充值弹窗
 
     var mTipsDialogView: TipsDialogView? = null
 
@@ -129,9 +130,8 @@ class RelayMatchActivity : BaseActivity() {
             override fun selectRoom(position: Int, model: RelayRecommendRoomInfo?) {
                 StatisticsAdapter.recordCountEvent("chorus", "join", null)
                 if (todayResTimes <= 0) {
-                    if (MyUserInfoManager.myUserInfo?.honorInfo?.isHonor() == true) {
-                        U.getToastUtil().showShort("今日加入次数用完啦")
-                    } else {
+                    if (needAlert) {
+                        // 提示充值
                         mTipsDialogView?.dismiss(false)
                         mTipsDialogView = TipsDialogView.Builder(this@RelayMatchActivity)
                                 .setMessageTip("今日加入次数用完啦～开通VIP立享每日25次机会")
@@ -148,6 +148,8 @@ class RelayMatchActivity : BaseActivity() {
                                 }
                                 .build()
                         mTipsDialogView?.showByDialog()
+                    } else {
+                        U.getToastUtil().showShort("今日加入次数用完啦")
                     }
                 } else {
                     model?.let {
@@ -196,14 +198,14 @@ class RelayMatchActivity : BaseActivity() {
                 relayMatchServerApi.getTotalResTimes()
             }
             if (result.errno == 0) {
-                val todayResTimes = result.data.getIntValue("todayResTimes")
-                showTodayResTimes(todayResTimes)
+                todayResTimes = result.data.getIntValue("todayResTimes")
+                needAlert = result.data.getBooleanValue("needAlert")
+                showTodayResTimes()
             }
         }
     }
 
-    private fun showTodayResTimes(todayResTimes: Int) {
-        this.todayResTimes = todayResTimes
+    private fun showTodayResTimes() {
         val ss = SpanUtils()
                 .append("今日剩余").setForegroundColor(U.getColor(R.color.white_trans_50))
                 .append("${todayResTimes}次").setForegroundColor(U.getColor(R.color.white))
