@@ -80,7 +80,11 @@ class GuardAdapter : RecyclerView.Adapter<GuardAdapter.GuardViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return 4
+        return if (mDataList.size >= 3) {
+            4
+        } else {
+            3
+        }
     }
 
     override fun onBindViewHolder(holder: GuardViewHolder, position: Int) {
