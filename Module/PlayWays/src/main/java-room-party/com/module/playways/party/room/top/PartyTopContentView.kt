@@ -23,14 +23,18 @@ import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
+import com.component.busilib.view.SpeakingTipsAnimationView
 import com.component.person.event.ShowPersonCardEvent
+import com.engine.EngineEvent
 import com.module.RouterConstants
 import com.module.club.IClubModuleService
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.event.PartyHostChangeEvent
 import com.module.playways.party.room.event.PartyOnlineUserCntChangeEvent
+import com.module.playways.party.room.seat.PartySeatAdapter
 import com.module.playways.room.data.H
+import com.zq.live.proto.PartyRoom.EMicStatus
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -44,14 +48,16 @@ class PartyTopContentView : ExConstraintLayout {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    val arrowIv: ImageView
-    val avatarIv: BaseImageView
-    val nameTv: TextView
-    val compereTv: TextView
-    val moreArrow: ExImageView
-    val onlineNum: TextView
-    val audienceIv: ImageView
-    val clubIconIv: ImageView
+    private val arrowIv: ImageView
+    private val avatarIv: BaseImageView
+    private val nameTv: TextView
+    private val compereTv: TextView
+    private val moreArrow: ExImageView
+    private val onlineNum: TextView
+    private val audienceIv: ImageView
+    private val clubIconIv: ImageView
+
+    private val speakerAnimationIv: SpeakingTipsAnimationView
 
     var listener: Listener? = null
     var mIsOpen = true
@@ -69,6 +75,8 @@ class PartyTopContentView : ExConstraintLayout {
         onlineNum = this.findViewById(R.id.online_num)
         audienceIv = this.findViewById(R.id.audience_iv)
         clubIconIv = this.findViewById(R.id.club_icon_iv)
+        speakerAnimationIv = this.findViewById(R.id.speaker_animation_iv)
+
         (this.findViewById(R.id.avatar_iv_bg) as View).setOnClickListener {
             avatarIv.callOnClick()
         }
@@ -117,7 +125,7 @@ class PartyTopContentView : ExConstraintLayout {
         clubIconIv.setDebounceViewClickListener { listener?.showClubInfoCard() }
     }
 
-    fun getClubIdentify(clubID: Int, call: ((ClubMemberInfo?) -> Unit)) {
+    private fun getClubIdentify(clubID: Int, call: ((ClubMemberInfo?) -> Unit)) {
         val userServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
         ApiMethods.subscribe(userServerApi.getClubMemberInfo(MyUserInfoManager.uid.toInt(), clubID), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
@@ -201,6 +209,29 @@ class PartyTopContentView : ExConstraintLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyHostChangeEvent) {
         bindData()
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: EngineEvent) {
+        if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
+            var list = event.getObj<List<EngineEvent.UserVolumeInfo>>()
+            for (uv in list) {
+                //    MyLog.d(TAG, "UserVolumeInfo uv=" + uv);
+                if (uv != null) {
+                    var uid = uv.uid
+                    if (uid == 0) {
+                        uid = MyUserInfoManager.uid.toInt()
+                    }
+                    var volume = uv.volume
+                    if (volume > 20) {
+                        if (uid == H.partyRoomData?.hostId) {
+                            speakerAnimationIv.show(1000)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onAttachedToWindow() {

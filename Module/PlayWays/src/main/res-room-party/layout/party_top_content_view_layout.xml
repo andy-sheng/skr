@@ -1,6 +1,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:speaking="http://schemas.android.com/apk/res-auto"
     android:background="@color/black"
     tools:parentTag="android.support.constraint.ConstraintLayout">
 
@@ -16,6 +17,7 @@
 
 
     <com.common.view.ex.ExConstraintLayout
+        android:id="@+id/user_info_area"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_32_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
@@ -90,6 +92,15 @@
             app:layout_constraintLeft_toRightOf="@+id/barrier"
             app:layout_constraintTop_toTopOf="parent" />
     </com.common.view.ex.ExConstraintLayout>
+
+    <com.component.busilib.view.SpeakingTipsAnimationView
+        android:id="@+id/speaker_animation_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/arrow_iv"
+        speaking:animationtype="speak" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/more_arrow"
