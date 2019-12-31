@@ -37,6 +37,8 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
 
   public static final Integer DEFAULT_MAXUSERCNT = 0;
 
+  public static final Integer DEFAULT_MAXSINGPEOPLENUM = 0;
+
   /**
    * 轮次总数
    */
@@ -120,18 +122,28 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
   )
   private final Integer maxUserCnt;
 
+  /**
+   * 最大演唱用户数
+   */
+  @WireField(
+      tag = 10,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer maxSingPeopleNum;
+
   public QGameConfig(Integer TotalGameRoundSeq, Integer EnableShowBLightWaitTimeMs,
       Integer EnableShowMLightWaitTimeMs, Integer WantSingDelayTimeMs,
       List<QScoreTipMsg> qScoreTipMsg, Integer KickUserConsumCoinCnt,
-      List<PKScoreTipMsg> qPKScoreTipMsg, Integer challengeRoundCnt, Integer maxUserCnt) {
-    this(TotalGameRoundSeq, EnableShowBLightWaitTimeMs, EnableShowMLightWaitTimeMs, WantSingDelayTimeMs, qScoreTipMsg, KickUserConsumCoinCnt, qPKScoreTipMsg, challengeRoundCnt, maxUserCnt, ByteString.EMPTY);
+      List<PKScoreTipMsg> qPKScoreTipMsg, Integer challengeRoundCnt, Integer maxUserCnt,
+      Integer maxSingPeopleNum) {
+    this(TotalGameRoundSeq, EnableShowBLightWaitTimeMs, EnableShowMLightWaitTimeMs, WantSingDelayTimeMs, qScoreTipMsg, KickUserConsumCoinCnt, qPKScoreTipMsg, challengeRoundCnt, maxUserCnt, maxSingPeopleNum, ByteString.EMPTY);
   }
 
   public QGameConfig(Integer TotalGameRoundSeq, Integer EnableShowBLightWaitTimeMs,
       Integer EnableShowMLightWaitTimeMs, Integer WantSingDelayTimeMs,
       List<QScoreTipMsg> qScoreTipMsg, Integer KickUserConsumCoinCnt,
       List<PKScoreTipMsg> qPKScoreTipMsg, Integer challengeRoundCnt, Integer maxUserCnt,
-      ByteString unknownFields) {
+      Integer maxSingPeopleNum, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.TotalGameRoundSeq = TotalGameRoundSeq;
     this.EnableShowBLightWaitTimeMs = EnableShowBLightWaitTimeMs;
@@ -142,6 +154,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     this.qPKScoreTipMsg = Internal.immutableCopyOf("qPKScoreTipMsg", qPKScoreTipMsg);
     this.challengeRoundCnt = challengeRoundCnt;
     this.maxUserCnt = maxUserCnt;
+    this.maxSingPeopleNum = maxSingPeopleNum;
   }
 
   @Override
@@ -156,6 +169,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     builder.qPKScoreTipMsg = Internal.copyOf("qPKScoreTipMsg", qPKScoreTipMsg);
     builder.challengeRoundCnt = challengeRoundCnt;
     builder.maxUserCnt = maxUserCnt;
+    builder.maxSingPeopleNum = maxSingPeopleNum;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -174,7 +188,8 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
         && Internal.equals(KickUserConsumCoinCnt, o.KickUserConsumCoinCnt)
         && qPKScoreTipMsg.equals(o.qPKScoreTipMsg)
         && Internal.equals(challengeRoundCnt, o.challengeRoundCnt)
-        && Internal.equals(maxUserCnt, o.maxUserCnt);
+        && Internal.equals(maxUserCnt, o.maxUserCnt)
+        && Internal.equals(maxSingPeopleNum, o.maxSingPeopleNum);
   }
 
   @Override
@@ -191,6 +206,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
       result = result * 37 + qPKScoreTipMsg.hashCode();
       result = result * 37 + (challengeRoundCnt != null ? challengeRoundCnt.hashCode() : 0);
       result = result * 37 + (maxUserCnt != null ? maxUserCnt.hashCode() : 0);
+      result = result * 37 + (maxSingPeopleNum != null ? maxSingPeopleNum.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -208,6 +224,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     if (!qPKScoreTipMsg.isEmpty()) builder.append(", qPKScoreTipMsg=").append(qPKScoreTipMsg);
     if (challengeRoundCnt != null) builder.append(", challengeRoundCnt=").append(challengeRoundCnt);
     if (maxUserCnt != null) builder.append(", maxUserCnt=").append(maxUserCnt);
+    if (maxSingPeopleNum != null) builder.append(", maxSingPeopleNum=").append(maxSingPeopleNum);
     return builder.replace(0, 2, "QGameConfig{").append('}').toString();
   }
 
@@ -312,6 +329,16 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
   }
 
   /**
+   * 最大演唱用户数
+   */
+  public Integer getMaxSingPeopleNum() {
+    if(maxSingPeopleNum==null){
+        return DEFAULT_MAXSINGPEOPLENUM;
+    }
+    return maxSingPeopleNum;
+  }
+
+  /**
    * 轮次总数
    */
   public boolean hasTotalGameRoundSeq() {
@@ -374,6 +401,13 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     return maxUserCnt!=null;
   }
 
+  /**
+   * 最大演唱用户数
+   */
+  public boolean hasMaxSingPeopleNum() {
+    return maxSingPeopleNum!=null;
+  }
+
   public static final class Builder extends Message.Builder<QGameConfig, Builder> {
     private Integer TotalGameRoundSeq;
 
@@ -392,6 +426,8 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     private Integer challengeRoundCnt;
 
     private Integer maxUserCnt;
+
+    private Integer maxSingPeopleNum;
 
     public Builder() {
       qScoreTipMsg = Internal.newMutableList();
@@ -472,9 +508,17 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
       return this;
     }
 
+    /**
+     * 最大演唱用户数
+     */
+    public Builder setMaxSingPeopleNum(Integer maxSingPeopleNum) {
+      this.maxSingPeopleNum = maxSingPeopleNum;
+      return this;
+    }
+
     @Override
     public QGameConfig build() {
-      return new QGameConfig(TotalGameRoundSeq, EnableShowBLightWaitTimeMs, EnableShowMLightWaitTimeMs, WantSingDelayTimeMs, qScoreTipMsg, KickUserConsumCoinCnt, qPKScoreTipMsg, challengeRoundCnt, maxUserCnt, super.buildUnknownFields());
+      return new QGameConfig(TotalGameRoundSeq, EnableShowBLightWaitTimeMs, EnableShowMLightWaitTimeMs, WantSingDelayTimeMs, qScoreTipMsg, KickUserConsumCoinCnt, qPKScoreTipMsg, challengeRoundCnt, maxUserCnt, maxSingPeopleNum, super.buildUnknownFields());
     }
   }
 
@@ -494,6 +538,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
           + PKScoreTipMsg.ADAPTER.asRepeated().encodedSizeWithTag(7, value.qPKScoreTipMsg)
           + ProtoAdapter.UINT32.encodedSizeWithTag(8, value.challengeRoundCnt)
           + ProtoAdapter.UINT32.encodedSizeWithTag(9, value.maxUserCnt)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(10, value.maxSingPeopleNum)
           + value.unknownFields().size();
     }
 
@@ -508,6 +553,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
       PKScoreTipMsg.ADAPTER.asRepeated().encodeWithTag(writer, 7, value.qPKScoreTipMsg);
       ProtoAdapter.UINT32.encodeWithTag(writer, 8, value.challengeRoundCnt);
       ProtoAdapter.UINT32.encodeWithTag(writer, 9, value.maxUserCnt);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 10, value.maxSingPeopleNum);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -526,6 +572,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
           case 7: builder.qPKScoreTipMsg.add(PKScoreTipMsg.ADAPTER.decode(reader)); break;
           case 8: builder.setChallengeRoundCnt(ProtoAdapter.UINT32.decode(reader)); break;
           case 9: builder.setMaxUserCnt(ProtoAdapter.UINT32.decode(reader)); break;
+          case 10: builder.setMaxSingPeopleNum(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

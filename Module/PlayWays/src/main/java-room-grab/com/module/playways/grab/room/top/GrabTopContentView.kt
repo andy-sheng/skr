@@ -242,7 +242,7 @@ class GrabTopContentView : ConstraintLayout {
     }
 
     private fun getMaxCount(): Int {
-        return (mRoomData?.grabConfigModel?.maxUserCnt ?: 7)
+        return (mRoomData?.grabConfigModel?.maxSingPeopleNum ?: 7)
     }
 
     //刚进来的时候初始化灯
