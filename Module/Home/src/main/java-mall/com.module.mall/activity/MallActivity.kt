@@ -172,6 +172,18 @@ class MallActivity : BaseActivity() {
         viewList?.get(0)?.selected()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MallUseCoinEvent) {
+        viewList?.let {
+            for (view in it) {
+                if (view.displayType == 6) {
+                    view.clearAndLoad()
+                    break
+                }
+            }
+        }
+    }
+
     fun loadTags() {
         launch {
             val obj = subscribe {

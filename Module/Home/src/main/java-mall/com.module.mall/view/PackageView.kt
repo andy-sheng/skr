@@ -18,6 +18,7 @@ import com.kingja.loadsir.core.LoadSir
 import com.module.home.R
 import com.module.mall.MallServerApi
 import com.module.mall.adapter.PackageAdapter
+import com.module.mall.event.MallUseCoinEvent
 import com.module.mall.event.PackageShowEffectEvent
 import com.module.mall.event.ShowDefaultEffectEvent
 import com.module.mall.loadsir.MallEmptyCallBack
@@ -141,6 +142,8 @@ class PackageView : ExConstraintLayout {
                     if (productAdapter?.dataList?.size == 0) {
                         mLoadService.showCallback(MallEmptyCallBack::class.java)
                     }
+
+                    EventBus.getDefault().post(MallUseCoinEvent())
                 } else {
                     for (i in 0 until ((productAdapter?.dataList?.size) ?: 0)) {
                         productAdapter?.dataList?.get(i)?.let {
@@ -214,13 +217,6 @@ class PackageView : ExConstraintLayout {
             EventBus.getDefault().post(ShowDefaultEffectEvent(displayType))
         }
     }
-
-//    private fun clearAndLoad() {
-//        hasMore = true
-//        productAdapter?.dataList?.clear()
-//        offset = 0
-//        tryLoad()
-//    }
 
     private fun tryLoad() {
         if (!hasMore) {

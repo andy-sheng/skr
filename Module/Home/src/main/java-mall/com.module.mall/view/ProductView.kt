@@ -139,6 +139,16 @@ class ProductView : ExConstraintLayout {
         }
     }
 
+    fun clearAndLoad() {
+        post {
+            hasMore = true
+            productAdapter?.dataList?.clear()
+            offset = 0
+            productAdapter?.notifyDataSetChanged()
+            tryLoad()
+        }
+    }
+
     fun selected() {
         if (productAdapter?.dataList?.size == 0) {
             tryLoad()
