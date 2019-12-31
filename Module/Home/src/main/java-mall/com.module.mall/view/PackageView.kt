@@ -144,6 +144,7 @@ class PackageView : ExConstraintLayout {
                     }
 
                     EventBus.getDefault().post(MallUseCoinEvent())
+                    U.getToastUtil().showShort("金币到账成功")
                 } else {
                     for (i in 0 until ((productAdapter?.dataList?.size) ?: 0)) {
                         productAdapter?.dataList?.get(i)?.let {
