@@ -13,7 +13,6 @@ import com.common.utils.U;
 import java.util.LinkedHashSet;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -40,8 +39,8 @@ public class ApiManager {
     public static final String ALWAYS_LOG_TAG = "ALWAYS_LOG: true"; // 永远都有日志，不管什么版本
     public static final String NO_NEED_LOGIN_TAG = "NO_NEED_LOGIN: yes"; // 这个请求不需要登录也能发
 
-    private Retrofit mDefalutRetrofit;
-
+    private Retrofit mDefaultRetrofit;
+    private OkHttpClient okHttpClient;
     /**
      * cookie持久化，cookie相关应该在http层面做，不属于业务
      * http 的response 让 set-cookie 就 set-cookie
@@ -182,23 +181,27 @@ public class ApiManager {
         return url;
     }
 
+    OkHttpClient getHttpClient(){
+        return this.okHttpClient;
+    }
+
     /**
      * 其他module 在 application onCreate 时可以调用这个加入 Interceptor
      *
      * @param interceptor
      */
     public void addInterceptor(Interceptor interceptor) {
-        if (mDefalutRetrofit != null) {
-            throw new IllegalStateException("can't add interceptor when mDefalutRetrofit already init");
+        if (mDefaultRetrofit != null) {
+            throw new IllegalStateException("can't add interceptor when mDefaultRetrofit already init");
         } else {
             mOutInterceptors.add(interceptor);
         }
     }
 
     private void tryInit() {
-        if (mDefalutRetrofit == null) {
+        if (mDefaultRetrofit == null) {
             synchronized (this) {
-                if (mDefalutRetrofit == null) {
+                if (mDefaultRetrofit == null) {
 
                     //手动创建一个OkHttpClient并设置超时时间缓存等设置
                     OkHttpClient.Builder defaultClient = new OkHttpClient.Builder()
@@ -227,10 +230,10 @@ public class ApiManager {
                     });
                     httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
                     defaultClient.addInterceptor(httpLoggingInterceptor);
-
+                    this.okHttpClient = defaultClient.build();
                     /*创建retrofit对象*/
-                    mDefalutRetrofit = new Retrofit.Builder()
-                            .client(defaultClient.build())
+                    mDefaultRetrofit = new Retrofit.Builder()
+                            .client(this.okHttpClient)
                             .addConverterFactory(FastJsonConverterFactory.create())
                             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                             .baseUrl(mBaseUrl)
@@ -240,9 +243,10 @@ public class ApiManager {
         }
     }
 
+
     public <T> T createService(Class<T> cls) {
         tryInit();
-        return mDefalutRetrofit.create(cls);
+        return mDefaultRetrofit.create(cls);
     }
 
     public void clearCookies() {
