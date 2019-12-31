@@ -425,7 +425,7 @@ class RaceResultActivity : BaseActivity() {
                 vipLevelDesc.text = "开启VIP保段"
                 vipLevelDesc.setDebounceViewClickListener {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                            .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
+                            .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/newVip?title=1"))
                             .greenChannel().navigation()
                     finish()
                 }
