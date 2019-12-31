@@ -40,3 +40,5 @@ if(flutterEnable.toBoolean()){
 }
 
 
+
+include ':skr_flutter'
