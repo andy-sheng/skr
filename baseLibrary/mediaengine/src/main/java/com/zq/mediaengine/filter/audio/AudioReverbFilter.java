@@ -52,7 +52,9 @@ public class AudioReverbFilter extends AudioFilterBase {
     public void setReverbLevel(int revertLevel) {
         if (revertLevel != mReverbLevel) {
             mReverbLevel = revertLevel;
-            mAudioReverbWrap.setReverbLevel(mReverbLevel);
+            if (mAudioReverbWrap != null) {
+                mAudioReverbWrap.setReverbLevel(mReverbLevel);
+            }
         }
     }
 
