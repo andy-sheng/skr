@@ -40,19 +40,23 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/hint_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="@dimen/view_20_dp"
         android:layout_below="@+id/name_tv"
         android:layout_alignLeft="@+id/name_tv"
+        android:layout_marginTop="@dimen/view_3_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:maxLines="1"
         android:text="邀请你加入合唱房"
         android:textColor="#cc8B572A"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintStart_toStartOf="@+id/name_view"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/name_view"
+        app:layout_constraintRight_toLeftOf="@+id/agree_button"
         app:layout_constraintTop_toBottomOf="@id/name_view" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/agree_button"
-        android:layout_width="@dimen/view_88_dp"
+        android:layout_width="@dimen/view_80_dp"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center"

@@ -50,7 +50,7 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/agree_button"
-        android:layout_width="@dimen/view_88_dp"
+        android:layout_width="@dimen/view_80_dp"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center"
