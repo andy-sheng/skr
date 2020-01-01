@@ -44,5 +44,12 @@
                 android:resource="@xml/rc_file_path" />
         </provider>
 
+        <activity
+            android:name="com.common.BaseFlutterActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize"
+            />
+
     </application>
 </manifest>

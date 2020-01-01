@@ -115,6 +115,11 @@ android {
             // 传感器相关
             java.srcDirs += 'src/main/java-playcontrol'
 
+            // flutter相关
+            if(flutterEnable.toBoolean()){
+                java.srcDirs += 'src/main/java-flutter'
+            }
+
             if (UmengPushEnable.toBoolean()) {
                 // umengpush
                 java.srcDirs += 'src/main/java-push-umeng'

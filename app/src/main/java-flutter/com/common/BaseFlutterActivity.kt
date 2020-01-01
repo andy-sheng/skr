@@ -1,4 +1,4 @@
-package com.module.home.flutter
+package com.common
 
 import android.app.Activity
 import android.arch.lifecycle.Lifecycle
@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
@@ -13,6 +14,7 @@ import com.common.rxretrofit.ApiResult
 import com.common.rxretrofit.httpGet
 import com.common.utils.U
 import com.module.RouterConstants
+import com.module.playways.party.bgmusic.getLocalMusicInfo
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.SplashScreen
 import io.flutter.embedding.engine.FlutterEngine
@@ -65,22 +67,35 @@ class BaseFlutterActivity : io.flutter.embedding.android.FlutterActivity() {
                 }
         )
 
-        MethodChannel(flutterEngine.dartExecutor, "skr_flutter/method_channel")
-                .setMethodCallHandler { call, result ->
-                    MyLog.d(TAG, "threadId=" + Thread.currentThread())
-                    when {
-                        call.method == "getDeviceID" -> result.success(U.getDeviceUtils().deviceID)
-                        call.method == "getChannel" -> result.success(U.getChannelUtils().channel)
-                        call.method == "httpGet" -> {
-                            var url = call.argument<String>("url")
-                            var params = call.argument<HashMap<String, Any?>>("params")
-                            httpGet(url!!, params) { r ->
-                                result.success(r)
-                            }
-                        }
-                        else -> result.notImplemented()
+        val methodChannel = MethodChannel(flutterEngine.dartExecutor, "skr_flutter/method_channel")
+        methodChannel.setMethodCallHandler { call, result ->
+            MyLog.d(TAG, "threadId=" + Thread.currentThread())
+            when {
+                call.method == "getDeviceID" -> result.success(U.getDeviceUtils().deviceID)
+                call.method == "getChannel" -> result.success(U.getChannelUtils().channel)
+                call.method == "httpGet" -> {
+                    var url = call.argument<String>("url")
+                    var params = call.argument<HashMap<String, Any?>>("params")
+                    httpGet(url!!, params) { r ->
+                        result.success(r)
                     }
                 }
+                call.method == "loadLocalBGM" -> {
+                    var l = getLocalMusicInfo()
+                    result.success(JSON.toJSONString(l))
+                }
+                call.method == "finish" -> {
+                    if (call.hasArgument("data")) {
+                        val json = call.argument<String>("data")
+                        val intent = Intent()
+                        intent.putExtra("data", json)
+                        BaseFlutterActivity@ this.setResult(Activity.RESULT_OK, intent)
+                    }
+                    BaseFlutterActivity@ this.finish()
+                }
+                else -> result.notImplemented()
+            }
+        }
     }
 
 

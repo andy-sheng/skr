@@ -36,6 +36,7 @@ import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
+import com.common.flutter.FlutterRoute;
 import com.common.log.MyLog;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.utils.ActivityUtils;
@@ -52,7 +53,6 @@ import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.event.SkipGuideHomepageEvent;
-import com.module.home.flutter.BaseFlutterActivity;
 import com.module.home.fragment.PersonFragment5;
 import com.module.home.game.GameFragment3;
 import com.module.home.persenter.CheckInPresenter;
@@ -70,7 +70,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import io.flutter.embedding.android.FlutterActivity;
+import java.util.HashMap;
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener, INotifyView {
@@ -239,9 +239,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 @Override
                 public boolean onLongClick(View v) {
                     MyLog.w(TAG, "  mGameArea.setOnLongClickListener");
-                   ARouter.getInstance().build(RouterConstants.ACTIVITY_FLUTTER)
-                           .withString("initial_route","/LoginActivity")
-                           .navigation();
+                    HashMap map = new HashMap();
+                    map.put("key1",2);
+                    FlutterRoute.Companion.open("PartyBgMusicLocalPage",map);
                     return false;
                 }
             });

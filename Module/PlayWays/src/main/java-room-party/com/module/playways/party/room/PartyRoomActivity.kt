@@ -39,6 +39,7 @@ import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
+import com.module.playways.party.bgmusic.getLocalMusicInfo
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.actor.PartyApplyPanelView
 import com.module.playways.party.room.actor.PartyMemberPanelView
@@ -403,6 +404,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             }
 
             override fun showGiftPanel() {
+                MyLog.d(TAG,"${getLocalMusicInfo()}")
                 mContinueSendView.visibility = View.GONE
                 showPanelView()
             }
