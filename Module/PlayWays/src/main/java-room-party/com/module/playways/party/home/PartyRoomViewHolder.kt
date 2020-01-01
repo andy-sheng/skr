@@ -1,6 +1,7 @@
 package com.module.playways.party.home
 
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
@@ -10,6 +11,7 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.utils.dp
 import com.common.view.ex.ExTextView
+import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.model.PartyRoomInfoModel
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
@@ -54,11 +56,25 @@ class PartyRoomViewHolder(item: View, var listener: PartyRoomAdapter.Listener) :
         if (!TextUtils.isEmpty(model.topicName)) {
             tagTv.visibility = View.VISIBLE
             tagTv.text = model.topicName
+            var drawable: Drawable? = null
             when (position % 3) {
-                1 -> tagTv.background = PartyRoomAdapter.blueDrawable
-                2 -> tagTv.background = PartyRoomAdapter.redDrawable
-                0 -> tagTv.background = PartyRoomAdapter.greenDrawable
+                1 -> drawable = DrawableCreator.Builder()
+                        .setShape(DrawableCreator.Shape.Rectangle)
+                        .setSolidColor(Color.parseColor("#A5D7F4"))
+                        .setCornersRadius(4.dp().toFloat())
+                        .build()
+                2 -> drawable = DrawableCreator.Builder()
+                        .setShape(DrawableCreator.Shape.Rectangle)
+                        .setSolidColor(Color.parseColor("#F4B2E2"))
+                        .setCornersRadius(4.dp().toFloat())
+                        .build()
+                0 -> drawable = DrawableCreator.Builder()
+                        .setShape(DrawableCreator.Shape.Rectangle)
+                        .setSolidColor(Color.parseColor("#A1D299"))
+                        .setCornersRadius(4.dp().toFloat())
+                        .build()
             }
+            tagTv.background = drawable
         } else {
             tagTv.visibility = View.GONE
         }

@@ -20,27 +20,6 @@ class PartyRoomAdapter(var listener: Listener) : RecyclerView.Adapter<RecyclerVi
     private val ITEM_TYPE_ROOM = 2
     private val ITEM_TYPE_EMPTY_ROOM = 3
 
-    companion object {
-        val blueDrawable = DrawableCreator.Builder()
-                .setShape(DrawableCreator.Shape.Rectangle)
-                .setSolidColor(Color.parseColor("#A5D7F4"))
-                .setCornersRadius(4.dp().toFloat())
-                .build()
-
-        val redDrawable = DrawableCreator.Builder()
-                .setShape(DrawableCreator.Shape.Rectangle)
-                .setSolidColor(Color.parseColor("#F4B2E2"))
-                .setCornersRadius(4.dp().toFloat())
-                .build()
-
-        val greenDrawable = DrawableCreator.Builder()
-                .setShape(DrawableCreator.Shape.Rectangle)
-                .setSolidColor(Color.parseColor("#A1D299"))
-                .setCornersRadius(4.dp().toFloat())
-                .build()
-    }
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == ITEM_TYPE_ROOM) {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.party_room_view_item_layout, parent, false)
