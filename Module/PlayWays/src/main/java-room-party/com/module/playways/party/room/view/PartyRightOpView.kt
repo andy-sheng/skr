@@ -151,8 +151,8 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
                     // 不是初始化，只是我的身份角色在管理员和观众中发生改变
                 } else {
                     micStatus = MIC_STATUS_UNAPPLY
-                    opMicTv.visibility = View.VISIBLE
                 }
+                opMicTv.visibility = View.VISIBLE
                 if (myInfo?.isAdmin() == true) {
                     applyList.visibility = View.VISIBLE
                 } else {

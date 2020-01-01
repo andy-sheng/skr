@@ -479,6 +479,7 @@ message QGameConfig {
     repeated PKScoreTipMsg qPKScoreTipMsg = 7; //反馈分提示语
     uint32 challengeRoundCnt = 8; //一个挑战的轮次数量
     uint32 maxUserCnt        = 9; //最大用户数（座位数）
+    uint32 maxSingPeopleNum  = 10; //最大演唱用户数
 }
 // 加入指令
 message JoinActionMsg {

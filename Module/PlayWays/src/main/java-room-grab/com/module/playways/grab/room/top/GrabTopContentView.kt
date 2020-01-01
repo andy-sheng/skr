@@ -31,12 +31,13 @@ class GrabTopContentView : ConstraintLayout {
     private lateinit var mArrowIv: ImageView
     private lateinit var mInviteIv: ImageView
     private lateinit var mContentLl: LinearLayout
+    private lateinit var mGrabAudienceView: GrabAudienceView
 
     private val mInfoMap = LinkedHashMap<Int, VP>()
     private val mGrabTopItemViewArrayList = ArrayList<VP>()
     private var mRoomData: GrabRoomData? = null
     internal var mAnimatorAllSet: AnimatorSet? = null
-    //    GrabAudienceView mGrabAudienceView;
+
     internal var mIsOpen = true
 
 
@@ -66,7 +67,7 @@ class GrabTopContentView : ConstraintLayout {
         //        setClickable(true);
         horizontalScrollView = (this.findViewById<View>(R.id.scroll_view) as HorizontalScrollView)
         mContentLl = horizontalScrollView.getChildAt(0) as LinearLayout
-        //        mGrabAudienceView = (GrabAudienceView) this.findViewById(R.id.grab_audience_view);
+        mGrabAudienceView = this.findViewById(R.id.grab_audience_view)
         mArrowIv = this.findViewById<View>(R.id.arrow_iv) as ImageView
         mInviteIv = this.findViewById(R.id.invite_iv)
 //        addChildView()
@@ -241,7 +242,7 @@ class GrabTopContentView : ConstraintLayout {
     }
 
     private fun getMaxCount(): Int {
-        return (mRoomData?.grabConfigModel?.maxUserCnt ?: 7)
+        return (mRoomData?.grabConfigModel?.maxSingPeopleNum ?: 7)
     }
 
     //刚进来的时候初始化灯
@@ -495,7 +496,7 @@ class GrabTopContentView : ConstraintLayout {
         mHasBurst = true
         for (uId in mInfoMap.keys) {
             val vp = mInfoMap[uId]
-            if (vp != null && vp.grabTopItemView != null && !RoomDataUtils.isRoundSinger(mRoomData!!.realRoundInfo, uId.toLong())) {
+            if (vp?.grabTopItemView != null && !RoomDataUtils.isRoundSinger(mRoomData!!.realRoundInfo, uId.toLong())) {
                 vp.grabTopItemView?.startEvasive()
             }
         }
@@ -506,7 +507,7 @@ class GrabTopContentView : ConstraintLayout {
         if (now != null) {
             for (noPassingInfo in now.mLightInfos) {
                 val vp = mInfoMap[noPassingInfo.userID]
-                if (vp != null && vp.grabTopItemView != null) {
+                if (vp?.grabTopItemView != null) {
                     vp.grabTopItemView?.setLight(false)
                 }
             }
@@ -515,7 +516,7 @@ class GrabTopContentView : ConstraintLayout {
 
     private fun grap(wantSingerInfo: WantSingerInfo) {
         val vp = mInfoMap[wantSingerInfo.userID]
-        if (vp != null && vp.grabTopItemView != null) {
+        if (vp?.grabTopItemView != null) {
             vp.grabTopItemView?.setGrap(wantSingerInfo.wantSingType)
         }
     }
@@ -526,7 +527,7 @@ class GrabTopContentView : ConstraintLayout {
             return
         }
         val vp = mInfoMap[uid]
-        if (vp != null && vp.grabTopItemView != null) {
+        if (vp?.grabTopItemView != null) {
             //            setLightOffAnimation(vp);
             setLightOff(vp)
         }
@@ -652,7 +653,7 @@ class GrabTopContentView : ConstraintLayout {
     fun setRoomData(roomData: GrabRoomData) {
         mRoomData = roomData
         addChildView()
-        //mGrabAudienceView.setRoomData(mRoomData);
+        mGrabAudienceView.setRoomData(mRoomData)
         setInviteStatus(mRoomData?.getPlayerAndWaiterInfoList()?.size ?: 1)
         initData()
     }

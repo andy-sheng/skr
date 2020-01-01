@@ -172,6 +172,18 @@ class MallActivity : BaseActivity() {
         viewList?.get(0)?.selected()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MallUseCoinEvent) {
+        viewList?.let {
+            for (view in it) {
+                if (view.displayType == 6) {
+                    view.clearAndLoad()
+                    break
+                }
+            }
+        }
+    }
+
     fun loadTags() {
         launch {
             val obj = subscribe {
@@ -286,10 +298,13 @@ class MallActivity : BaseActivity() {
             }
 
             if (obj.errno == 0) {
-                if (event.price.buyType == 1) {
-                    event.productModel.buyStatus = 1
-                } else if (event.price.buyType == 2) {
-                    event.productModel.buyStatus = 2
+
+                if (event.productModel.displayType != 6) {
+                    if (event.price.buyType == 1) {
+                        event.productModel.buyStatus = 1
+                    } else if (event.price.buyType == 2) {
+                        event.productModel.buyStatus = 2
+                    }
                 }
 
                 EventBus.getDefault().post(BuyMallSuccessEvent(event.productModel))

@@ -260,7 +260,7 @@ public class ExChangeCashToDiamondFragment extends BaseFragment {
     @Override
     public void setData(int type, @org.jetbrains.annotations.Nullable Object data) {
         if (type == 0) {
-            balance = (float) data;
+            balance = (((int) ((float) data * 10f)) / 10f);
         }
     }
 

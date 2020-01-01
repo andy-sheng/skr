@@ -19,6 +19,8 @@ public class GrabConfigModel implements Serializable {
     int challengeRoundCnt = 18;
     @JSONField(name = "maxUserCnt")
     int maxUserCnt = 7;
+    @JSONField(name = "maxSingPeopleNum")
+    int maxSingPeopleNum = 7;
 
     public static GrabConfigModel parse(QGameConfig config) {
         GrabConfigModel grabConfigModel = new GrabConfigModel();
@@ -32,10 +34,22 @@ public class GrabConfigModel implements Serializable {
         }
         grabConfigModel.setKickUserConsumCoinCnt(config.getKickUserConsumCoinCnt());
         grabConfigModel.setChallengeRoundCnt(config.getChallengeRoundCnt());
-        if(config.getMaxUserCnt()>0){
+        if (config.getMaxUserCnt() > 0) {
             grabConfigModel.setMaxUserCnt(config.getMaxUserCnt());
         }
+
+        if (config.hasMaxSingPeopleNum()) {
+            grabConfigModel.setMaxSingPeopleNum(config.getMaxSingPeopleNum());
+        }
         return grabConfigModel;
+    }
+
+    public int getMaxSingPeopleNum() {
+        return maxSingPeopleNum;
+    }
+
+    public void setMaxSingPeopleNum(int maxSingPeopleNum) {
+        this.maxSingPeopleNum = maxSingPeopleNum;
     }
 
     public int getEnableShowBLightWaitTimeMs() {

@@ -136,7 +136,7 @@ public class GrabCreateRoomFragment extends BaseFragment {
                                             }
 
                                             ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                                    .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
+                                                    .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/newVip?title=1"))
                                                     .greenChannel().navigation();
                                         }
                                     })
