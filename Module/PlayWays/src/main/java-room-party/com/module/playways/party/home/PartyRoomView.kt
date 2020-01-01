@@ -2,6 +2,7 @@ package com.module.playways.party.home
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -79,7 +80,7 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
             }
 
         })
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = adapter
 
         refreshLayout.apply {

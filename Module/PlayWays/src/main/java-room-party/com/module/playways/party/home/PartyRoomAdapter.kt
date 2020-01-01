@@ -1,12 +1,10 @@
 package com.module.playways.party.home
 
-import android.graphics.Color
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.common.core.userinfo.model.ClubInfo
-import com.common.utils.dp
-import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.model.PartyRoomInfoModel
 import com.module.playways.R
 
@@ -53,6 +51,23 @@ class PartyRoomAdapter(var listener: Listener) : RecyclerView.Adapter<RecyclerVi
             holder.bindData(position, mDataList[position - 1])
         } else if (holder is PartyClubViewHolder) {
             holder.bindData(mClubList)
+        }
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        val manger = recyclerView.layoutManager
+        if (manger is GridLayoutManager) {
+            manger.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when (getItemViewType(position)) {
+                        // 总数是3:表示当前holder在3中占几个
+                        ITEM_TYPE_CLUB -> 2
+                        ITEM_TYPE_EMPTY_ROOM -> 2
+                        else -> 1
+                    }
+                }
+            }
         }
     }
 
