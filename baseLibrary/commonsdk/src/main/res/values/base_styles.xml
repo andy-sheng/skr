@@ -28,6 +28,7 @@
     <style name="AppTheme_Swipe" parent="AppTheme_Base">
         <!-- 默认不透明 不然会有桌面返回顶部有个透明界面盖住的bug -->
         <item name="android:windowIsTranslucent">false</item>
+        <!-- 特别注意，在设置windowIsTranslucent为true会导致windowAnimationStyle失效,所以在设置windowIsTranslucent为true要特别注意让windowAnimationStyle去继承@android:style/Animation.Translucent而不是Animation.Activity -->
 <!--        <item name="android:windowIsTranslucent">@bool/translucent_no_bug</item>-->
         <item name="android:windowAnimationStyle">@style/Activity_Animation</item>
     </style>

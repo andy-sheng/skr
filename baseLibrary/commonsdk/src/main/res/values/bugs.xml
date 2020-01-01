@@ -1,7 +1,7 @@
 <resources>
     <bool name="translucent_no_bug">true</bool>
 
-    <style name="Activity_Animation" parent="@android:style/Animation.Translucent">
+    <style name="Activity_Animation" parent="@android:style/Animation.Activity">
         <!--A 启动 B-->
         <!-- B 的进场-->
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
