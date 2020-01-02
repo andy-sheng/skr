@@ -5,20 +5,23 @@ import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.view.setDebounceViewClickListener
+import com.common.image.fresco.BaseImageView
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.FragmentUtils
 import com.common.utils.U
-import com.component.busilib.view.AvatarLevelView
+import com.common.view.ex.ExImageView
+import com.common.view.ex.ExTextView
+import com.common.view.titlebar.CommonTitleBar
 import com.component.report.fragment.QuickFeedbackFragment
 import com.module.RouterConstants
 import com.module.playways.R
@@ -31,19 +34,28 @@ import org.greenrobot.eventbus.ThreadMode
 @Route(path = RouterConstants.ACTIVITY_RELAY_RESULT)
 class RelayResultActivity : BaseActivity() {
 
-
-    lateinit var reportTv: TextView
-    lateinit var contentArea: ConstraintLayout
-    lateinit var avatarLevel: AvatarLevelView
-    lateinit var gameStatusTv: TextView
-    lateinit var gameTimeTv: TextView
-    lateinit var followTv: TextView
+    lateinit var followTv: ExImageView
     lateinit var backTv: TextView
 
     var roomData: RelayRoomData? = null
 
     var isFriend: Boolean? = null
     var isFollow: Boolean? = null
+
+    lateinit var mainActContainer: ConstraintLayout
+    lateinit var title: CommonTitleBar
+    lateinit var reportTv: TextView
+    lateinit var contentArea: ConstraintLayout
+    lateinit var avatarLeftIv: BaseImageView
+    lateinit var leftNameTv: ExTextView
+    lateinit var avatarRightIv: BaseImageView
+    lateinit var rightNameTv: ExTextView
+    lateinit var fenTv: ExTextView
+    lateinit var tipsTv: ExTextView
+    lateinit var xinIv: BaseImageView
+    lateinit var xinCountTv: ExTextView
+    lateinit var coinIv: BaseImageView
+    lateinit var coinCountTv: ExTextView
 
     private val relayRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
 
@@ -60,9 +72,21 @@ class RelayResultActivity : BaseActivity() {
         U.getStatusBarUtil().setTransparentBar(this, false)
         reportTv = findViewById(R.id.report_tv)
         contentArea = findViewById(R.id.content_area)
-        avatarLevel = findViewById(R.id.avatar_level)
-        gameStatusTv = findViewById(R.id.game_status_tv)
-        gameTimeTv = findViewById(R.id.game_time_tv)
+//        avatarLevel = findViewById(R.id.avatar_level)
+//        gameStatusTv = findViewById(R.id.game_status_tv)
+//        gameTimeTv = findViewById(R.id.game_time_tv)
+        followTv = findViewById(R.id.follow_tv)
+        backTv = findViewById(R.id.back_tv)
+        avatarLeftIv = findViewById(R.id.avatar_left_iv)
+        leftNameTv = findViewById(R.id.left_name_tv)
+        avatarRightIv = findViewById(R.id.avatar_right_iv)
+        rightNameTv = findViewById(R.id.right_name_tv)
+        fenTv = findViewById(R.id.fen_tv)
+        tipsTv = findViewById(R.id.tips_tv)
+        xinIv = findViewById(R.id.xin_iv)
+        xinCountTv = findViewById(R.id.xin_count_tv)
+        coinIv = findViewById(R.id.coin_iv)
+        coinCountTv = findViewById(R.id.coin_count_tv)
         followTv = findViewById(R.id.follow_tv)
         backTv = findViewById(R.id.back_tv)
 
@@ -95,6 +119,22 @@ class RelayResultActivity : BaseActivity() {
         }
 
         getGameResult()
+
+        AvatarUtils.loadAvatarByUrl(avatarLeftIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
+                .setCircle(true)
+                .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+                .setBorderColor(Color.WHITE)
+                .build())
+
+        AvatarUtils.loadAvatarByUrl(avatarRightIv, AvatarUtils.newParamsBuilder(roomData?.peerUser?.userInfo?.avatar)
+                .setCircle(true)
+                .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+                .setBorderColor(Color.WHITE)
+                .build())
+
+        leftNameTv.text = MyUserInfoManager.nickName
+        rightNameTv.text = UserInfoManager.getInstance().getRemarkName(roomData?.peerUser?.userInfo?.userId
+                ?: 0, roomData?.peerUser?.userInfo?.nickname)
     }
 
     private fun getGameResult() {
@@ -113,9 +153,9 @@ class RelayResultActivity : BaseActivity() {
 
     private fun showGameResult(model: RelayResultModel?) {
         model?.let {
-            avatarLevel.bindData(roomData?.peerUser?.userInfo)
-            gameStatusTv.text = it.gameEndReasonDesc
-            gameTimeTv.text = "你与${roomData?.peerUser?.userInfo?.nicknameRemark}合唱了${it.chatDurTime}分钟"
+            //            avatarLevel.bindData(roomData?.peerUser?.userInfo)
+//            gameStatusTv.text = it.gameEndReasonDesc
+//            gameTimeTv.text = "你与${roomData?.peerUser?.userInfo?.nicknameRemark}合唱了${it.chatDurTime}分钟"
             isFollow = it.isFollow
             isFriend = it.isFriend
             refreshFollow()
@@ -142,19 +182,19 @@ class RelayResultActivity : BaseActivity() {
     private fun refreshFollow() {
         when {
             isFriend == true -> {
-                followTv.text = "已互关"
-                followTv.setTextColor(Color.parseColor("#EBAC44"))
-                followTv.background = U.getDrawable(R.drawable.common_hollow_yellow_icon)
+//                followTv.text = "已互关"
+//                followTv.setTextColor(Color.parseColor("#EBAC44"))
+                followTv.background = U.getDrawable(R.drawable.reply_has_follow)
             }
             isFollow == true -> {
-                followTv.text = "已关注"
-                followTv.setTextColor(Color.parseColor("#EBAC44"))
-                followTv.background = U.getDrawable(R.drawable.common_hollow_yellow_icon)
+//                followTv.text = "已关注"
+//                followTv.setTextColor(Color.parseColor("#EBAC44"))
+                followTv.background = U.getDrawable(R.drawable.reply_has_follow)
             }
             else -> {
-                followTv.text = "关注Ta"
-                followTv.setTextColor(Color.parseColor("#8B572A"))
-                followTv.background = U.getDrawable(R.drawable.common_yellow_button_icon)
+//                followTv.text = "关注Ta"
+//                followTv.setTextColor(Color.parseColor("#8B572A"))
+                followTv.background = U.getDrawable(R.drawable.relay_follow)
             }
         }
     }
