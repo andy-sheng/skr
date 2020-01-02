@@ -7,13 +7,13 @@ import java.io.Serializable
 class MusicInfo : Serializable {
     var id: Long = 0
     var title: String? = null
-    var data: String? = null
+    var path: String? = null
     var album: String? = null
     var artist: String? = null
     var duration: Int = 0
     var size: Long = 0
     override fun toString(): String {
-        return "MusicInfo(id=$id, title=$title, data=$data, album=$album, artist=$artist, duration=$duration, size=$size)"
+        return "MusicInfo(id=$id, title=$title, path=$path, album=$album, artist=$artist, duration=$duration, size=$size)"
     }
 
 }
@@ -50,7 +50,7 @@ public fun getLocalMusicInfo(): List<MusicInfo> {
             var musicInfo = MusicInfo()
             musicInfo.id = cursor.getLong(indexID)
             musicInfo.title = cursor.getString(indexTitle)
-            musicInfo.data = cursor.getString(indexData)
+            musicInfo.path = cursor.getString(indexData)
             musicInfo.album = cursor.getString(indexAlbum)
             musicInfo.artist = cursor.getString(indexArtist)
             musicInfo.duration = cursor.getInt(indexDuration)

@@ -8,6 +8,7 @@ import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
+import com.common.flutter.FlutterRoute
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiResult
@@ -92,6 +93,9 @@ class BaseFlutterActivity : io.flutter.embedding.android.FlutterActivity() {
                         BaseFlutterActivity@ this.setResult(Activity.RESULT_OK, intent)
                     }
                     BaseFlutterActivity@ this.finish()
+                }
+                call.method == "goPartyImportBGMPage" -> {
+                    FlutterRoute.open("PartyBgMusicLocalPage", null)
                 }
                 else -> result.notImplemented()
             }
