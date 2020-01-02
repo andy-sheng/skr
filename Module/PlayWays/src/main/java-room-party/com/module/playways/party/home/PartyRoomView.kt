@@ -36,7 +36,8 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
     private val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
     private val adapter: PartyRoomAdapter
     private var offset = 0
-    private val cnt = 15
+    private var hasMore = true
+    private val cnt = 10
 
     private var roomJob: Job? = null
     private var lastLoadDateTime: Long = 0    //记录上次获取接口的时间
@@ -139,6 +140,7 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
             if (result.errno == 0) {
                 lastLoadDateTime = System.currentTimeMillis()
                 offset = result.data.getIntValue("offset")
+                hasMore = result.data.getBooleanValue("hasMore")
                 val list = JSON.parseArray(result.data.getString("roomInfo"), PartyRoomInfoModel::class.java)
                 addRoomList(list, isClean)
             }
@@ -153,6 +155,7 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
     private fun finishLoadMoreOrRefresh() {
         refreshLayout.finishLoadMore()
         refreshLayout.finishRefresh()
+        refreshLayout.setEnableLoadMore(hasMore)
     }
 
     private fun addRoomList(list: List<PartyRoomInfoModel>?, isClean: Boolean) {

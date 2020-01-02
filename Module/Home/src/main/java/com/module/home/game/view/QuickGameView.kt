@@ -85,6 +85,8 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         mGameAdapter = GameAdapter(fragment, object : ClickGameListener {
             override fun onPartyRoomListener() {
                 // 进入主题房
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_HOME)
+                        .navigation()
             }
 
             override fun onRelayRoomListener() {
