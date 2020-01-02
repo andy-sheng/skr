@@ -10,6 +10,15 @@ import retrofit2.http.*
 interface PartyRoomServerApi {
 
     /**
+     * 检查是否有创建权限 { null}
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partyroom/has-create-permission")
+    fun hasCreatePermission(@Body body: RequestBody): Call<ApiResult>
+
+    /**
      * 首页Party房间列表
      */
     @GET("http://dev.game.inframe.mobi/v1/partyroom/roomlist")

@@ -27,8 +27,13 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.*
 
-// 首页的剧场
-class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomView, CoroutineScope by MainScope() {
+// 首页的剧场(也包括一下主题房吧)
+class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context), IPartyRoomView, CoroutineScope by MainScope() {
+
+    companion object {
+        const val TYPE_GAME_HOME = 1  //首页
+        const val TYPE_PARTY_HOME = 2  //主题房首页
+    }
 
     private val refreshLayout: SmartRefreshLayout
     private val recyclerView: RecyclerView
@@ -80,7 +85,7 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
                         .navigation()
             }
 
-        })
+        }, type)
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = adapter
 
@@ -188,7 +193,9 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
             delay(delayTime)
             repeat(Int.MAX_VALUE) {
                 loadRoomListData(0, true)
-                loadClubListData()
+                if (type == TYPE_GAME_HOME) {
+                    loadClubListData()
+                }
                 delay(recommendInterval)
             }
         }
