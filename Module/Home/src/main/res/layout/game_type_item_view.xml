@@ -102,4 +102,27 @@
         app:layout_constraintRight_toRightOf="@id/level_bg"
         app:layout_constraintTop_toBottomOf="@id/level_desc_tv" />
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/party_bg"
+        android:layout_width="@dimen/view_150_dp"
+        android:layout_height="@dimen/view_44_dp"
+        android:layout_marginBottom="@dimen/view_12_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#b3AD70E8"
+        app:layout_constraintBottom_toBottomOf="@id/party_iv"
+        app:layout_constraintLeft_toLeftOf="@id/party_iv"
+        app:layout_constraintRight_toRightOf="@id/party_iv" />
+
+    <com.component.busilib.view.AutoPollRecyclerView
+        android:id="@+id/party_recycler"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_0_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="@id/party_bg"
+        app:layout_constraintLeft_toLeftOf="@id/party_bg"
+        app:layout_constraintRight_toRightOf="@id/party_bg"
+        app:layout_constraintTop_toTopOf="@id/party_bg" />
+
 </android.support.constraint.ConstraintLayout>

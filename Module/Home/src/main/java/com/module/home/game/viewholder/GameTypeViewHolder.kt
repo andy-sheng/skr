@@ -11,12 +11,18 @@ import android.widget.TextView
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.component.busilib.model.PartyRoomInfoModel
+import com.component.busilib.view.AutoPollRecyclerView
+import com.component.busilib.view.LooperLayoutManager
 import com.component.level.utils.LevelConfigUtils
 import com.component.person.model.UserRankModel
 import com.module.home.R
 import com.module.home.game.adapter.ClickGameListener
+import com.module.home.game.adapter.GamePartyAdapter
+import kotlinx.coroutines.newSingleThreadContext
+import java.lang.ref.WeakReference
 import java.util.regex.Pattern
 
 class GameTypeViewHolder(itemView: View,
@@ -30,6 +36,13 @@ class GameTypeViewHolder(itemView: View,
     private val levelIv: ImageView = itemView.findViewById(R.id.level_iv)
     private val levelDescTv: TextView = itemView.findViewById(R.id.level_desc_tv)
     private val diffDescTv: TextView = itemView.findViewById(R.id.diff_desc_tv)
+
+    private val partyBg: ExImageView = itemView.findViewById(R.id.party_bg)
+    private val partyRecycler: AutoPollRecyclerView = itemView.findViewById(R.id.party_recycler)
+
+    val looperLayoutManager = LooperLayoutManager(false)
+
+    private var adapter: GamePartyAdapter? = null
 
     init {
         grabIv.setAnimateDebounceViewClickListener {
@@ -47,10 +60,23 @@ class GameTypeViewHolder(itemView: View,
         levelBg.setDebounceViewClickListener {
             listener.onClickRankArea()
         }
+
+        looperLayoutManager.setLooperEnable(true)
     }
 
     fun bindPartyData(list: List<PartyRoomInfoModel>?) {
-
+        if (adapter == null) {
+            adapter = GamePartyAdapter()
+        }
+        partyRecycler.layoutManager = looperLayoutManager
+        partyRecycler.adapter = adapter
+        adapter?.mDataList?.clear()
+        if (!list.isNullOrEmpty()) {
+            adapter?.mDataList?.addAll(list)
+        }
+        adapter?.notifyDataSetChanged()
+        partyRecycler.itemHight = 44.dp()
+        partyRecycler.start()
     }
 
     fun bindRegionData(regionDiff: UserRankModel?) {
