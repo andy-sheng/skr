@@ -2,16 +2,11 @@ package com.module.home.game.viewholder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.TextView
 import com.common.core.view.setDebounceViewClickListener
 
-import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
-import com.common.view.ex.ExTextView
 import com.module.home.R
 import com.module.home.game.adapter.ClickGameListener
-import com.module.home.game.adapter.GameAdapter
-import com.module.home.game.model.FuncationModel
 
 class FuncationAreaViewHolder(itemView: View,
                               listener: ClickGameListener) : RecyclerView.ViewHolder(itemView) {
@@ -29,8 +24,8 @@ class FuncationAreaViewHolder(itemView: View,
         mMallIv.setDebounceViewClickListener { listener.onClickMallListner() }
     }
 
-    fun bindData(model: FuncationModel) {
-        if (model.isTaskHasRed) {
+    fun bindData(isTaskHasRed: Boolean) {
+        if (isTaskHasRed) {
             mTaskRedIv.visibility = View.VISIBLE
         } else {
             mTaskRedIv.visibility = View.GONE

@@ -143,4 +143,11 @@ public interface MainPageSlideApi {
     @PUT("http://dev.game.inframe.mobi/v1/partyroom/has-create-permission")
     Call<ApiResult> hasCreatePermission(@Body RequestBody body);
 
+
+    /**
+     * 首页Party房间列表
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partyroom/roomlist")
+    Observable<ApiResult> getPartyRoomList(@Query("offset") int offset, @Query("limit") int limit);
+
 }

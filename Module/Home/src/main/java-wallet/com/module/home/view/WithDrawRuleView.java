@@ -40,7 +40,7 @@ public class WithDrawRuleView extends FrameLayout {
 
     public void bindData(List<String> ruleList) {
         if(ruleList == null || ruleList.size() == 0){
-            MyLog.w(TAG, "bindData " + " ruleList is empty");
+            MyLog.w(TAG, "bindRegionData " + " ruleList is empty");
             return;
         }
 

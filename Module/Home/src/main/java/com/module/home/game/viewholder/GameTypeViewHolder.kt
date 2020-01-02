@@ -2,7 +2,6 @@ package com.module.home.game.viewholder
 
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -13,12 +12,11 @@ import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.U
 import com.common.view.ex.ExImageView
+import com.component.busilib.model.PartyRoomInfoModel
 import com.component.level.utils.LevelConfigUtils
+import com.component.person.model.UserRankModel
 import com.module.home.R
 import com.module.home.game.adapter.ClickGameListener
-import com.module.home.game.adapter.GrabGameAdapter
-import com.module.home.game.model.GameTypeModel
-import com.module.home.game.model.GrabSpecialModel
 import java.util.regex.Pattern
 
 class GameTypeViewHolder(itemView: View,
@@ -32,9 +30,6 @@ class GameTypeViewHolder(itemView: View,
     private val levelIv: ImageView = itemView.findViewById(R.id.level_iv)
     private val levelDescTv: TextView = itemView.findViewById(R.id.level_desc_tv)
     private val diffDescTv: TextView = itemView.findViewById(R.id.diff_desc_tv)
-
-
-    var mGameTypeModel: GameTypeModel? = null
 
     init {
         grabIv.setAnimateDebounceViewClickListener {
@@ -54,36 +49,38 @@ class GameTypeViewHolder(itemView: View,
         }
     }
 
-    fun bindData(gameTypeModel: GameTypeModel) {
-        this.mGameTypeModel = gameTypeModel
+    fun bindPartyData(list: List<PartyRoomInfoModel>?) {
 
-        levelDescTv.text = gameTypeModel.mReginDiff?.levelDesc
-        if (LevelConfigUtils.getImageResoucesLevel(gameTypeModel.mReginDiff?.mainRanking
+    }
+
+    fun bindRegionData(regionDiff: UserRankModel?) {
+        levelDescTv.text = regionDiff?.levelDesc
+        if (LevelConfigUtils.getImageResoucesLevel(regionDiff?.mainRanking
                         ?: 0) != 0) {
-            levelIv.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(gameTypeModel.mReginDiff?.mainRanking
+            levelIv.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(regionDiff?.mainRanking
                     ?: 0))
         }
 
         when {
-            gameTypeModel.mReginDiff == null -> {
+            regionDiff == null -> {
                 // 为空
                 diffDescTv.visibility = View.GONE
             }
-            gameTypeModel.mReginDiff?.diff == 0 -> {
+            regionDiff?.diff == 0 -> {
                 // 默认按照上升显示
                 diffDescTv.visibility = View.VISIBLE
-                diffDescTv.text = highlight(gameTypeModel.mReginDiff?.text
-                        ?: "", gameTypeModel.mReginDiff?.highlight ?: "", true)
+                diffDescTv.text = highlight(regionDiff?.text
+                        ?: "", regionDiff?.highlight ?: "", true)
             }
-            gameTypeModel.mReginDiff?.diff ?: 0 > 0 -> {
+            regionDiff?.diff ?: 0 > 0 -> {
                 diffDescTv.visibility = View.VISIBLE
-                diffDescTv.text = highlight(gameTypeModel.mReginDiff?.text
-                        ?: "", gameTypeModel.mReginDiff?.highlight ?: "", true)
+                diffDescTv.text = highlight(regionDiff?.text
+                        ?: "", regionDiff?.highlight ?: "", true)
             }
             else -> {
                 diffDescTv.visibility = View.VISIBLE
-                diffDescTv.text = highlight(gameTypeModel.mReginDiff?.text
-                        ?: "", gameTypeModel.mReginDiff?.highlight ?: "", false)
+                diffDescTv.text = highlight(regionDiff?.text
+                        ?: "", regionDiff?.highlight ?: "", false)
             }
         }
     }

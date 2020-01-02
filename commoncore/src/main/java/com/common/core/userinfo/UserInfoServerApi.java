@@ -208,7 +208,8 @@ public interface UserInfoServerApi {
      * @return
      */
     @GET("/v2/rank/region-diff")
-    Observable<ApiResult> getReginDiff();
+    Observable<ApiResult> getRegionDiff();
+
 
 
     /**

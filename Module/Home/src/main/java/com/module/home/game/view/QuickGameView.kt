@@ -20,6 +20,7 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExRelativeLayout
+import com.component.busilib.model.PartyRoomInfoModel
 import com.component.busilib.verify.SkrVerifyUtils
 import com.component.busilib.view.SelectSexDialogView
 import com.component.person.model.UserRankModel
@@ -29,10 +30,6 @@ import com.module.home.MainPageSlideApi
 import com.module.home.R
 import com.module.home.game.adapter.ClickGameListener
 import com.module.home.game.adapter.GameAdapter
-import com.module.home.game.model.BannerModel
-import com.module.home.game.model.FuncationModel
-import com.module.home.game.model.GameTypeModel
-import com.module.home.game.model.GrabSpecialModel
 import com.module.home.game.presenter.QuickGamePresenter
 import com.module.home.model.GameKConfigModel
 import com.module.home.model.SlideShowModel
@@ -185,18 +182,17 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
     fun initData(flag: Boolean) {
         mQuickGamePresenter.initOperationArea(flag)
-//        mQuickGamePresenter.initRecommendRoom(flag, mRecommendInterval)
-        //        mQuickGamePresenter.initQuickRoom(false)
         mQuickGamePresenter.checkTaskRedDot()
+        mQuickGamePresenter.getPartyRoomList()
         if (!flag) {
             if (mQuickGamePresenter.isUserInfoChange) {
                 mQuickGamePresenter.isUserInfoChange = false
-                mQuickGamePresenter.getReginDiff(true)
+                mQuickGamePresenter.getRegionDiff(true)
             } else {
-                mQuickGamePresenter.getReginDiff(false)
+                mQuickGamePresenter.getRegionDiff(false)
             }
         } else {
-            mQuickGamePresenter.getReginDiff(true)
+            mQuickGamePresenter.getRegionDiff(true)
         }
     }
 
@@ -237,29 +233,23 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
     override fun setBannerImage(slideShowModelList: List<SlideShowModel>?) {
         refreshLayout.finishRefresh()
-        if (slideShowModelList == null || slideShowModelList.isEmpty()) {
-            MyLog.w(TAG, "initOperationArea 为null")
-            mGameAdapter.updateBanner(null)
-            return
-        }
-        val bannerModel = BannerModel(slideShowModelList)
-        mGameAdapter.updateBanner(bannerModel)
+        mGameAdapter.updateBanner(slideShowModelList)
     }
 
     override fun showTaskRedDot(show: Boolean) {
-        var moFuncationModel = FuncationModel(show)
-        mGameAdapter.updateFuncation(moFuncationModel)
+        mGameAdapter.updateFunction(show)
     }
 
-    override fun setReginDiff(model: UserRankModel?) {
-        if (mGameAdapter.getGameTypeInfo() != null) {
-            mGameAdapter.getGameTypeInfo()?.mReginDiff = model
-            mGameAdapter.updateGameTypeInfo(mGameAdapter.getGameTypeInfo())
-        }
+    override fun setRegionDiff(model: UserRankModel?) {
+        mGameAdapter.updateRegionDiff(model)
     }
 
-    fun showRedOperationView(homepagesitefirstBean: GameKConfigModel.HomepagesitefirstBean?) {
-        FrescoWorker.loadImage(iv_red_pkg, ImageFactory.newPathImage(homepagesitefirstBean!!.getPic())
+    override fun setPartyRoomList(list: List<PartyRoomInfoModel>?) {
+        mGameAdapter.updatePartyList(list)
+    }
+
+    fun showRedOperationView(homepagesBean: GameKConfigModel.HomepagesitefirstBean?) {
+        FrescoWorker.loadImage(iv_red_pkg, ImageFactory.newPathImage(homepagesBean?.pic)
                 .setWidth(U.getDisplayUtils().dip2px(48f))
                 .setHeight(U.getDisplayUtils().dip2px(53f))
                 .build<BaseImage>()
@@ -269,7 +259,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         iv_red_pkg.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
-                        .withString("uri", homepagesitefirstBean.getSchema())
+                        .withString("uri", homepagesBean?.schema)
                         .navigation()
             }
         })
