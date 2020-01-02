@@ -42,27 +42,6 @@
         app:layout_constraintBottom_toBottomOf="@id/left_avatar_sdv"
         app:layout_constraintRight_toRightOf="@id/left_avatar_sdv" />
 
-    <ImageView
-        android:id="@+id/love_bg"
-        android:layout_width="@dimen/view_22_dp"
-        android:layout_height="@dimen/view_19_dp"
-        android:layout_marginLeft="@dimen/view_32_dp"
-        android:layout_marginRight="@dimen/view_32_dp"
-        android:background="@drawable/normal_love_icon"
-        app:layout_constraintBottom_toBottomOf="@id/left_avatar_sdv"
-        app:layout_constraintLeft_toRightOf="@id/left_avatar_sdv"
-        app:layout_constraintRight_toLeftOf="@id/right_avatar_sdv" />
-
-    <ImageView
-        android:id="@+id/love_status_iv"
-        android:layout_width="@dimen/view_22_dp"
-        android:layout_height="@dimen/view_19_dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/love_bg"
-        app:layout_constraintLeft_toLeftOf="@id/love_bg"
-        app:layout_constraintRight_toRightOf="@id/love_bg"
-        app:layout_constraintTop_toTopOf="@id/love_bg" />
-
     <com.common.view.ex.ExTextView
         android:id="@+id/right_avatar_bg"
         android:layout_width="@dimen/view_42_dp"
@@ -81,10 +60,10 @@
         app:layout_constraintTop_toTopOf="@+id/right_avatar_sdv" />
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:layout_marginLeft="@dimen/view_76_dp"
         android:id="@+id/right_avatar_sdv"
         android:layout_width="@dimen/view_42_dp"
         android:layout_height="@dimen/view_42_dp"
+        android:layout_marginLeft="@dimen/view_76_dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/left_avatar_sdv" />
 
@@ -103,30 +82,22 @@
         android:text="04:00"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_16_dp"
-        app:layout_constraintBottom_toTopOf="@id/love_bg"
-        app:layout_constraintLeft_toLeftOf="@id/love_bg"
-        app:layout_constraintRight_toRightOf="@id/love_bg" />
+        app:layout_constraintBottom_toBottomOf="@+id/left_avatar_sdv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/left_avatar_sdv" />
 
     <ImageView
-        app:layout_goneMarginBottom="@dimen/view_15_dp"
         android:id="@+id/unlimit_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_5_dp"
         android:src="@drawable/relay_unlimit"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/love_bg"
-        app:layout_constraintLeft_toLeftOf="@id/love_bg"
-        app:layout_constraintRight_toRightOf="@id/love_bg" />
-
-    <ImageView
-        android:id="@+id/tips_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_5_dp"
-        android:src="@drawable/relay_tips_icon"
-        app:layout_constraintLeft_toLeftOf="@id/love_bg"
-        app:layout_constraintRight_toRightOf="@id/love_bg"
-        app:layout_constraintTop_toBottomOf="@id/love_bg" />
+        app:layout_constraintBottom_toBottomOf="@+id/left_avatar_sdv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/left_avatar_sdv"
+        app:layout_goneMarginBottom="@dimen/view_15_dp" />
 
 </merge>

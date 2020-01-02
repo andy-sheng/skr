@@ -44,6 +44,7 @@ import com.module.playways.relay.room.bottom.RelayBottomContainerView
 import com.module.playways.relay.room.event.RelayLockChangeEvent
 import com.module.playways.relay.room.model.RelayRoundInfoModel
 import com.module.playways.relay.room.presenter.RelayCorePresenter
+import com.module.playways.relay.room.top.RelayContinueSingView
 import com.module.playways.relay.room.top.RelayTopContentView
 import com.module.playways.relay.room.top.RelayTopOpView
 import com.module.playways.relay.room.ui.IRelayRoomView
@@ -142,6 +143,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     //    private var mMicSettingView: MicSettingView? = null
     private var mGameRuleDialog: DialogPlus? = null
     private var mTipsDialogView: TipsDialogView? = null
+    private var mRelayContinueSingView: RelayContinueSingView? = null
 
     internal var mVipEnterPresenter: VipEnterPresenter? = null
 
@@ -229,6 +231,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         initGiftDisplayView()
         initTopView()
         initTurnSenceView()
+        initRelayContinueSingView()
 
         initVipEnterView()
         initMicSeatView()
@@ -264,6 +267,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             if (it.ranking != null) {
                 mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
             }
+        }
+
+        if (!mRoomData.isEnterFromInvite()) {
+            mRelayContinueSingView?.delayShowGiveUpView()
         }
 
         U.getStatusBarUtil().setTransparentBar(this, false)
@@ -344,6 +351,14 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     private fun initInputView() {
         mInputContainerView = findViewById(R.id.input_container_view)
         mInputContainerView.setRoomData(mRoomData)
+    }
+
+    private fun initRelayContinueSingView() {
+        mRelayContinueSingView = findViewById(R.id.relay_continue_sing_view)
+        mRelayContinueSingView?.roomData = mRoomData
+        mRelayContinueSingView?.mContinueListener = {
+            mCorePresenter.sendUnlock()
+        }
     }
 
 

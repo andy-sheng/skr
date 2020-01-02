@@ -1,6 +1,5 @@
 package com.module.playways.relay.room.top
 
-import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.content.Context
@@ -45,12 +44,10 @@ class RelayTopContentView : ExConstraintLayout {
     private val leftAvatarSdv: SimpleDraweeView
     private val leftMuteIv: ImageView
     private val rightMuteIv: ImageView
-    private val loveBg: ImageView
-    private val loveStatusIv: ImageView
+
     private val rightAvatarSdv: SimpleDraweeView
     private val rightAvatarBg: ExTextView
     private val countTimeTv: TextView
-    private val tipsIv: ImageView
     private var anim: ObjectAnimator? = null
     private var countTimeScaleAnimator: ObjectAnimator? = null
 
@@ -70,17 +67,14 @@ class RelayTopContentView : ExConstraintLayout {
         leftMuteIv = this.findViewById(R.id.left_mute_iv)
         rightMuteIv = this.findViewById(R.id.right_mute_iv)
 
-        loveBg = this.findViewById(R.id.love_bg)
-        loveStatusIv = this.findViewById(R.id.love_status_iv)
         rightAvatarSdv = this.findViewById(R.id.right_avatar_sdv)
         rightAvatarBg = this.findViewById(R.id.right_avatar_bg)
         countTimeTv = this.findViewById(R.id.count_time_tv)
-        tipsIv = this.findViewById(R.id.tips_iv)
         unlimitIv = this.findViewById(R.id.unlimit_iv)
 
-        loveBg.setDebounceViewClickListener {
-            listener?.clickLove()
-        }
+//        loveBg.setDebounceViewClickListener {
+//            listener?.clickLove()
+//        }
 
         arrowIv.setDebounceViewClickListener {
             listener?.clickArrow(!mIsOpen)
@@ -157,14 +151,10 @@ class RelayTopContentView : ExConstraintLayout {
         }
 
         if (roomData?.isEnterFromInvite() == true) {
-            loveBg.visibility = View.GONE
             countTimeTv.visibility = View.GONE
-            tipsIv.visibility = View.GONE
             unlimitIv.visibility = View.VISIBLE
         } else {
-            loveBg.setImageResource(R.drawable.normal_love_icon)
             countTimeTv.text = U.getDateTimeUtils().formatVideoTime(5 * 60 * 1000)
-            tipsIv.visibility = View.VISIBLE
             unlimitIv.visibility = View.GONE
         }
     }
@@ -208,52 +198,29 @@ class RelayTopContentView : ExConstraintLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelayLockChangeEvent) {
         if (roomData?.unLockMe == true && roomData?.unLockPeer == true) {
-            loveBg.isClickable = false
-            loveBg.setImageResource(R.drawable.light_love_icon)
             unlimitIv.visibility = View.VISIBLE
-            tipsIv.visibility = View.GONE
             countTimeTv.visibility = View.GONE
             countDownJob?.cancel()
         } else if (roomData?.unLockMe == false && roomData?.unLockPeer == false) {
-            loveBg.isClickable = true
-            loveBg.setImageResource(R.drawable.normal_love_icon)
+//            loveBg.isClickable = true
+//            loveBg.setImageResource(R.drawable.normal_love_icon)
         } else if (roomData?.unLockMe == true) {
-            loveBg.isClickable = false
-            tipsIv.visibility = View.GONE
-            if (roomData?.leftSeat == true) {
-                loveBg.setImageResource(R.drawable.light_left_love_icon)
-            } else {
-                loveBg.setImageResource(R.drawable.light_right_love_icon)
-            }
+//            loveBg.isClickable = false
+//            tipsIv.visibility = View.GONE
+//            if (roomData?.leftSeat == true) {
+//                loveBg.setImageResource(R.drawable.light_left_love_icon)
+//            } else {
+//                loveBg.setImageResource(R.drawable.light_right_love_icon)
+//            }
         } else if (roomData?.unLockPeer == true) {
-            loveBg.isClickable = true
-            tipsIv.visibility = View.VISIBLE
-            if (roomData?.leftSeat == true) {
-                loveBg.setImageResource(R.drawable.light_right_love_icon)
-            } else {
-                loveBg.setImageResource(R.drawable.light_left_love_icon)
-            }
+//            loveBg.isClickable = true
+//            tipsIv.visibility = View.VISIBLE
+//            if (roomData?.leftSeat == true) {
+//                loveBg.setImageResource(R.drawable.light_right_love_icon)
+//            } else {
+//                loveBg.setImageResource(R.drawable.light_left_love_icon)
+//            }
         }
-        anim = ObjectAnimator.ofPropertyValuesHolder(loveBg,
-                PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 1.3f, 1f),
-                PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1.3f, 1f))
-        anim?.duration = 500
-        anim?.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animator: Animator) {
-
-            }
-
-            override fun onAnimationEnd(animator: Animator) {
-            }
-
-            override fun onAnimationCancel(animator: Animator) {
-            }
-
-            override fun onAnimationRepeat(animator: Animator) {
-
-            }
-        })
-        anim?.start()
     }
 
 
