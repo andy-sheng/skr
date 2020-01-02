@@ -42,6 +42,9 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
     }
 
     fun getGameTypeInfo(): GameTypeModel? {
+        if (mObjArr[TYPE_GAMETYPE_HOLDER] == null) {
+            mObjArr[TYPE_GAMETYPE_HOLDER] = GameTypeModel()
+        }
         return mObjArr[TYPE_GAMETYPE_HOLDER] as GameTypeModel?
     }
 
@@ -56,18 +59,18 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when (viewType) {
+        return when (viewType) {
             TYPE_BANNER_HOLDER -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.game_banner_item_view, parent, false)
-                return BannerViewHolder(view)
+                BannerViewHolder(view)
             }
             TYPE_FUNCATION_HOLDER -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.game_funcation_item_view, parent, false)
-                return FuncationAreaViewHolder(view, listener)
+                FuncationAreaViewHolder(view, listener)
             }
             else -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.game_type_item_view, parent, false)
-                return GameTypeViewHolder(view, listener)
+                GameTypeViewHolder(view, listener)
             }
         }
     }
@@ -101,12 +104,13 @@ interface ClickGameListener {
     fun onClickMallListner()
 
     fun onCreateRoomListener()
-    fun onPkRoomListener()
+    fun onRaceRoomListener()
     fun onDoubleRoomListener()
     fun onRelayRoomListener()
     fun onBattleRoomListener()
     fun onGrabRoomListener()
     fun onMicRoomListener()
+    fun onPartyRoomListener()
 
     fun onClickRankArea()
 }

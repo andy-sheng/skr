@@ -101,46 +101,6 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
         }, this, RequestControl("getSlideList", ControlType.CancelThis))
     }
 
-    fun initGameTypeArea(isFlag: Boolean) {
-        val now = System.currentTimeMillis()
-        if (!isFlag) {
-            // 半个小时更新一次吧
-            if (now - mLastUpdateGameType < 30 * 60 * 1000) {
-                return
-            }
-        }
-
-        var spResult = ""
-        if (mIsFirstQuick) {
-            // 先用SP里面的
-            mIsFirstQuick = false
-            spResult = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "game_type_tags", "")
-            if (!TextUtils.isEmpty(spResult)) {
-                try {
-                    var jsonObject = JSON.parseObject(spResult, JSONObject::class.java)
-                    var list = JSON.parseArray(jsonObject.getString("items"), GrabSpecialModel::class.java)
-                    mIGameView3.setGameType(list, false)
-                } catch (e: Exception) {
-                }
-
-            }
-        }
-
-        val finalSpResult = spResult
-        ApiMethods.subscribe(mMainPageSlideApi.indexTabBlocks, object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult) {
-                if (obj.errno == 0) {
-                    mLastUpdateGameType = System.currentTimeMillis()
-                    if (obj.data!!.toJSONString() != finalSpResult) {
-                        U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "game_type_tags", obj.data!!.toJSONString())
-                        val list = JSON.parseArray(obj.data!!.getString("items"), GrabSpecialModel::class.java)
-                        mIGameView3.setGameType(list, true)
-                    }
-                }
-            }
-        }, this, RequestControl("getSepcialList", ControlType.CancelThis))
-    }
-
     fun getReginDiff(isFlag: Boolean) {
         val now = System.currentTimeMillis()
         if (!isFlag) {
@@ -171,7 +131,6 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AccountEvent.SetAccountEvent) {
         initOperationArea(true)
-        initGameTypeArea(true)
         getReginDiff(true)
         checkTaskRedDot()
     }

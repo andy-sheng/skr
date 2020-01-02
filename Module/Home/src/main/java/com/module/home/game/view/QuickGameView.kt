@@ -83,6 +83,10 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
             }
         })
         mGameAdapter = GameAdapter(fragment, object : ClickGameListener {
+            override fun onPartyRoomListener() {
+                // 进入主题房
+            }
+
             override fun onRelayRoomListener() {
                 // 进入双人接唱
                 StatisticsAdapter.recordCountEvent("game_express", "chorus", null)
@@ -129,7 +133,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                 StatisticsAdapter.recordCountEvent("game", "express_create", null)
             }
 
-            override fun onPkRoomListener() {
+            override fun onRaceRoomListener() {
                 StatisticsAdapter.recordCountEvent("game", "express_rank", null)
                 mRealNameVerifyUtils.checkAgeSettingState {
                     openRaceActivity(context, false)
@@ -185,14 +189,11 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         if (!flag) {
             if (mQuickGamePresenter.isUserInfoChange) {
                 mQuickGamePresenter.isUserInfoChange = false
-                mQuickGamePresenter.initGameTypeArea(true)
                 mQuickGamePresenter.getReginDiff(true)
             } else {
-                mQuickGamePresenter.initGameTypeArea(false)
                 mQuickGamePresenter.getReginDiff(false)
             }
         } else {
-            mQuickGamePresenter.initGameTypeArea(true)
             mQuickGamePresenter.getReginDiff(true)
         }
     }
@@ -246,47 +247,6 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
     override fun showTaskRedDot(show: Boolean) {
         var moFuncationModel = FuncationModel(show)
         mGameAdapter.updateFuncation(moFuncationModel)
-    }
-
-//    override fun setRecommendInfo(list: MutableList<RecommendModel>?) {
-//        refreshLayout.finishRefresh()
-//        if (list == null || list.size == 0) {
-//            // 清空好友派对列表
-//            mGameAdapter.updateRecommendRoomInfo(null)
-//            return
-//        }
-//        val recommendRoomModel = RecommendRoomModel(list)
-//        mGameAdapter.updateRecommendRoomInfo(recommendRoomModel)
-//    }
-
-    override fun setGameType(list: MutableList<GrabSpecialModel>?, fromServer: Boolean) {
-        refreshLayout.finishRefresh()
-        if (list != null && list.size > 0) {
-            val iterator = list.iterator()
-            while (iterator.hasNext()) {
-                val specialModel = iterator.next()
-                if (specialModel != null) {
-                    if (specialModel.type == null || specialModel.model == null
-                            || specialModel.model?.biggest == null) {
-                        iterator.remove()
-                    }
-                }
-            }
-        }
-
-        if (list == null || list.size == 0) {
-            mGameAdapter.updateGameTypeInfo(null)
-            return
-        }
-
-        if (mGameAdapter.getGameTypeInfo() != null) {
-            mGameAdapter.getGameTypeInfo()?.mSpecialModel = list
-            mGameAdapter.updateGameTypeInfo(mGameAdapter.getGameTypeInfo())
-        } else {
-            val gameTypeModel = GameTypeModel()
-            gameTypeModel.mSpecialModel = list
-            mGameAdapter.updateGameTypeInfo(gameTypeModel)
-        }
     }
 
     override fun setReginDiff(model: UserRankModel?) {
