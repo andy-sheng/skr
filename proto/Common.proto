@@ -304,7 +304,8 @@ message CombineRoomConfig
 
 message RelayRoomConfig
 {
-    sint32 durationTimeMs = 1; //房间持续时间
+    sint32 durationTimeMs   = 1; //房间持续时间
+    sint32 unLockWaitTimeMs = 2; //可以解锁需要等待时间
 }
 
 message AgoraTokenInfo

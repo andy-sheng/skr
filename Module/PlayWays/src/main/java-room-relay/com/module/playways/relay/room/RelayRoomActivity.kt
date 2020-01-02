@@ -270,7 +270,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         }
 
         if (!mRoomData.isEnterFromInvite()) {
-            mRelayContinueSingView?.delayShowGiveUpView()
+            mRelayContinueSingView?.delayShowContinueView(mRoomData.configModel.unLockWaitTimeMs?.toLong())
         }
 
         U.getStatusBarUtil().setTransparentBar(this, false)
