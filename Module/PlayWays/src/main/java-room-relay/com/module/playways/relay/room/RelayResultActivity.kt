@@ -192,16 +192,19 @@ class RelayResultActivity : BaseActivity() {
 //                followTv.text = "已互关"
 //                followTv.setTextColor(Color.parseColor("#EBAC44"))
                 followTv.background = U.getDrawable(R.drawable.reply_has_follow)
+                followTv.isEnabled = false
             }
             isFollow == true -> {
 //                followTv.text = "已关注"
 //                followTv.setTextColor(Color.parseColor("#EBAC44"))
                 followTv.background = U.getDrawable(R.drawable.reply_has_follow)
+                followTv.isEnabled = false
             }
             else -> {
 //                followTv.text = "关注Ta"
 //                followTv.setTextColor(Color.parseColor("#8B572A"))
                 followTv.background = U.getDrawable(R.drawable.relay_follow)
+                followTv.isEnabled = true
             }
         }
     }
