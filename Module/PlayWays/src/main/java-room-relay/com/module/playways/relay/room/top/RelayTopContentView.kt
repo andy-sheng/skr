@@ -163,7 +163,7 @@ class RelayTopContentView : ExConstraintLayout {
         if (countTimeTv.visibility == View.VISIBLE) {
             var music = roomData?.realRoundInfo?.music
             countDownJob = launch {
-                var t = roomData?.realRoundInfo?.singEndMs!! - roomData?.realRoundInfo?.singBeginMs!!
+                var t = roomData?.configModel?.durationTimeMs ?: 0
                 var i = 0
                 while (i <= t) {
                     i++

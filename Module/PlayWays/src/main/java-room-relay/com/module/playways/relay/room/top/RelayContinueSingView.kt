@@ -99,7 +99,7 @@ class RelayContinueSingView : ExRelativeLayout {
     fun delayShowContinueView(ts: Long) {
         hideWithAnimation(false)
 
-        var t = roomData?.realRoundInfo?.singEndMs!! - roomData?.realRoundInfo?.singBeginMs!!
+        var t = roomData?.configModel?.durationTimeMs ?: 0
 
         var leftTs = t - (roomData?.getSingCurPosition() ?: 0) - ts
         if (leftTs < 0) {
