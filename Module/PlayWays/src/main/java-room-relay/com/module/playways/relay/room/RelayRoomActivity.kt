@@ -3,6 +3,7 @@ package com.module.playways.relay.room
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.support.constraint.ConstraintLayout
 import android.view.*
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -67,12 +68,15 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
+import com.module.playways.view.ZanView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.RelayRoom.ERRoundStatus
 import com.zq.live.proto.RelayRoom.RAddMusicMsg
 import com.zq.live.proto.RelayRoom.RReqAddMusicMsg
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -113,6 +117,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     internal lateinit var mTopOpView: RelayTopOpView
     internal lateinit var mTopContentView: RelayTopContentView
     internal lateinit var mExitIv: ImageView
+    internal lateinit var mMainContainerView: ConstraintLayout
 
     internal lateinit var mGameEffectBgView: GameEffectBgView
 
@@ -216,7 +221,9 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         addPresent(mVipEnterPresenter)
 //        addPresent(replyRoomInvitePresenter)
         // 请保证从下面的view往上面的view开始初始化
-        findViewById<View>(R.id.main_act_container).setOnTouchListener { v, event ->
+        mMainContainerView = findViewById(R.id.main_act_container)
+
+        mMainContainerView.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 mInputContainerView.hideSoftInput()
             }
@@ -634,6 +641,18 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         if (mRoomData?.unLockMe && mRoomData?.unLockPeer) {
             mChangeSongIv.visibility = View.VISIBLE
             mAddSongIv.visibility = View.VISIBLE
+
+            val zanView = ZanView(this)
+            mMainContainerView.addView(zanView, ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+
+            launch {
+                delay(500)
+                zanView.addZanXin(30)
+                delay(8000)
+                if (!isFinishing && !isDestroyed) {
+                    mMainContainerView.removeView(zanView)
+                }
+            }
         }
     }
 
