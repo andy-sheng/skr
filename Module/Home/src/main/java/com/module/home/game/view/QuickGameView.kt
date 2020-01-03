@@ -46,7 +46,7 @@ import kotlinx.coroutines.launch
 /**
  * 快速游戏
  */
-class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.context), IQuickGameView3 {
+class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.context!!), IQuickGameView3 {
 
     val TAG: String = "QuickGameView"
 

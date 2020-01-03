@@ -12,10 +12,13 @@ import com.common.log.MyLog
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExRelativeLayout
+import com.common.view.ex.ExTextView
 import com.module.playways.R
-import com.module.playways.grab.room.view.RoundRectangleView
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.relay.room.event.RelayLockChangeEvent
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -30,11 +33,13 @@ class RelayContinueSingView : ExRelativeLayout {
     val MSG_ANIMATION_HIDE = 2
 
     private val mIvContinue: ExImageView
-    private val mRoundRectangleView: RoundRectangleView
+    private val mCountTv: ExTextView
 
     val countDownTime = 8000L
 
     var roomData: RelayRoomData? = null
+
+    var countDownJob: Job? = null
 
     internal var mContinueListener: (() -> Unit)? = null
 
@@ -71,13 +76,17 @@ class RelayContinueSingView : ExRelativeLayout {
             }
         })
 
-        mRoundRectangleView = findViewById<View>(R.id.rrl_progress) as RoundRectangleView
+        mCountTv = findViewById<View>(R.id.count_tv) as ExTextView
     }
 
     fun startCountDown() {
-        mUiHandler.postDelayed({
-            mRoundRectangleView?.startCountDown(countDownTime)
-        }, 500)
+        countDownJob?.cancel()
+        countDownJob = launch {
+            repeat(8) {
+                delay(1000)
+                mCountTv.text = "${7 - it}s"
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -107,13 +116,13 @@ class RelayContinueSingView : ExRelativeLayout {
         mUiHandler.removeMessages(MSG_ANIMATION_SHOW)
         clearAnimation()
         visibility = View.GONE
-        mRoundRectangleView.stopCountDown()
+        countDownJob?.cancel()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         mUiHandler.removeCallbacksAndMessages(null)
-        mRoundRectangleView.stopCountDown()
+        countDownJob?.cancel()
         EventBus.getDefault().unregister(this)
     }
 
