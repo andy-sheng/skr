@@ -2,6 +2,7 @@ package com.common.flutter.boost;
 
 import android.content.Context;
 
+import com.common.flutter.plugin.CommonFlutterPlugin;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.idlefish.flutterboost.*;
@@ -26,7 +27,6 @@ public class BoostInit {
                 String assembleUrl = Utils.assembleUrl(url, urlParams);
                 FlutterPageRouter.openPageByUrl(context, assembleUrl, urlParams);
             }
-
         };
 
         FlutterBoost.BoostPluginsRegister pluginsRegister = new FlutterBoost.BoostPluginsRegister() {
@@ -35,7 +35,9 @@ public class BoostInit {
             public void registerPlugins(PluginRegistry mRegistry) {
                 MyLog.d("FlutterBoost", "registerPlugins" + " mRegistry=" + mRegistry);
                 GeneratedPluginRegistrant.registerWith(mRegistry);
+                //用户自定义的插件也在这里注册
                 TextPlatformViewPlugin.register(mRegistry.registrarFor("TextPlatformViewPlugin"));
+                CommonFlutterPlugin.INSTANCE.registerWith(mRegistry.registrarFor("com.commonsdk.SkrFlutterPlugin"));
             }
         };
 

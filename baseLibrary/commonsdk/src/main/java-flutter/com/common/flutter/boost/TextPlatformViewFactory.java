@@ -14,6 +14,13 @@ public class TextPlatformViewFactory extends PlatformViewFactory {
         super(createArgsCodec);
     }
 
+    /**
+     * 新的组件叫做PlatformView,它允许开发者在flutter里面嵌入Android原生的view。
+     * @param context
+     * @param i
+     * @param o
+     * @return
+     */
     @Override
     public PlatformView create(Context context, int i, Object o) {
         return new TextPlatformView(context);

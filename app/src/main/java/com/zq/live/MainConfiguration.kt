@@ -19,10 +19,12 @@ import android.app.Application
 import android.content.Context
 import android.support.v4.app.FragmentManager
 import android.util.Log
+import com.common.SkrMethodChannelHandler
 
 import com.common.base.GlobalParams
 import com.common.base.delegate.AppLifecycles
 import com.common.base.ConfigModule
+import com.common.flutter.plugin.CommonFlutterPlugin
 
 
 /**
@@ -50,6 +52,7 @@ class MainConfiguration : ConfigModule {
             override fun onMainProcessCreate(application: Application) {
                 Log.d(TAG, "application onCreate")
                 GlobalEventReceiver.register()
+                CommonFlutterPlugin.addListener(SkrMethodChannelHandler())
             }
 
             override fun onOtherProcessCreate(application: Application) {

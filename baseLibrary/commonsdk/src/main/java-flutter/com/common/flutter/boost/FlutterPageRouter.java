@@ -35,6 +35,7 @@ public class FlutterPageRouter {
     public static boolean openPageByUrl(Context context, String url, Map params, int requestCode) {
         MyLog.d("FlutterBoost","openPageByUrl url=" + url + " params=" + params + " requestCode=" + requestCode);
         String path = url.split("\\?")[0];
+        // 这里也可能启动原生的界面
 //        Log.i("openPageByUrl",path);
         try {
                 Intent intent = BoostFlutterActivity.withNewEngine().url(path).params(params)
