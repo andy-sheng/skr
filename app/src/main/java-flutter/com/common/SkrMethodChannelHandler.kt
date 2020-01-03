@@ -1,10 +1,12 @@
 package com.common
 
 import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.flutter.plugin.MethodHandler
 import com.common.rxretrofit.httpGet
 import com.common.utils.U
 import com.module.playways.party.bgmusic.getLocalMusicInfo
+import com.zq.mediaengine.kit.ZqEngineKit
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
@@ -30,6 +32,17 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
             call.method == "loadLocalBGM" -> {
                 var l = getLocalMusicInfo()
                 result.success(JSON.toJSONString(l))
+                return true
+            }
+            call.method == "getEngineMusicPath" -> {
+                var l = ZqEngineKit.getInstance().params.mixMusicFilePath
+                result.success(l)
+                return true
+            }
+            call.method == "startAudioMixing" -> {
+                var filePath = call.argument<String>("filePath")
+                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), filePath, null, 0, false, false, 1)
+                result.success(null)
                 return true
             }
         }

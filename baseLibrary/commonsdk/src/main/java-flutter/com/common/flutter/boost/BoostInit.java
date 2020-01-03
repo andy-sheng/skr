@@ -24,8 +24,8 @@ public class BoostInit {
             @Override
             public void openContainer(Context context, String url, Map<String, Object> urlParams, int requestCode, Map<String, Object> exts) {
                 MyLog.d("FlutterBoost", "openContainer" + " context=" + context + " url=" + url + " urlParams=" + urlParams + " requestCode=" + requestCode + " exts=" + exts);
-                String assembleUrl = Utils.assembleUrl(url, urlParams);
-                FlutterPageRouter.openPageByUrl(context, assembleUrl, urlParams);
+//                String assembleUrl = Utils.assembleUrl(url, urlParams);
+                FlutterPageRouter.openPageByUrl(context, url, urlParams);
             }
         };
 

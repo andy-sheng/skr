@@ -118,6 +118,8 @@ android {
             // flutter相关
             if(flutterEnable.toBoolean()){
                 java.srcDirs += 'src/main/java-flutter'
+            }else{
+                java.srcDirs += 'src/main/java-flutter-noop'
             }
 
             if (UmengPushEnable.toBoolean()) {

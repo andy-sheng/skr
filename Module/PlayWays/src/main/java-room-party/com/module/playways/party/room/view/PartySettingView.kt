@@ -6,6 +6,7 @@ import android.view.ViewStub
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.common.core.view.setAnimateDebounceViewClickListener
+import com.common.flutter.boost.FlutterPageRouter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -25,6 +26,7 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var gameSettingTv: TextView
     lateinit var soundSettingTv: TextView
     lateinit var muteSettingTv: TextView
+    lateinit var bgmTv: TextView
 
     var listener: Listener? = null
 
@@ -34,6 +36,7 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
         gameSettingTv = parentView.findViewById(R.id.game_setting_tv)
         soundSettingTv = parentView.findViewById(R.id.sound_setting_tv)
         muteSettingTv = parentView.findViewById(R.id.mute_setting_tv)
+        bgmTv = parentView.findViewById(R.id.bgm_tv)
 
         gameSettingTv.setAnimateDebounceViewClickListener {
             listener?.onClickGameSetting()
@@ -46,6 +49,9 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
         muteSettingTv.setAnimateDebounceViewClickListener {
             var  b = (H.partyRoomData?.isAllMute==true)
             setAllMicMute(!b)
+        }
+        bgmTv.setAnimateDebounceViewClickListener {
+            FlutterPageRouter.openPageByUrl(realView?.context,FlutterPageRouter.FLUTTER_PAGE_MANAGER_BGM,null)
         }
     }
 

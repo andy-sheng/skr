@@ -212,6 +212,8 @@ android {
             if(flutterEnable.toBoolean()){
                 java.srcDirs += 'src/main/java-flutter'
                 res.srcDirs += 'src/main/res-flutter'
+            }else{
+                java.srcDirs += 'src/main/java-flutter-noop'
             }
         }
     }
