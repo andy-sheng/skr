@@ -1,6 +1,7 @@
 package com.zq.mediaengine.filter.audio;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
@@ -16,36 +17,54 @@ public class AudioPreview extends AudioFilterBase {
     private static final String TAG = "AudioPreview";
 
     private Context mContext;
-    private AudioSLPlayer mAudioSLPlayer;
+    private IPcmPlayer mPcmPlayer;
+    private boolean mEnableLowLatency;
     private boolean mBlockingMode;
 
     public AudioPreview(Context context) {
+        init(context, true);
+    }
+
+    public AudioPreview(Context context, boolean enableLowLatency) {
+        init(context, enableLowLatency);
+    }
+
+    private void init(Context context, boolean enableLowLatency) {
         mContext = context;
-        mAudioSLPlayer = new AudioSLPlayer();
+        mEnableLowLatency = enableLowLatency;
+        if (enableLowLatency) {
+            mPcmPlayer = new AudioSLPlayer();
+        } else {
+            mPcmPlayer = new AudioTrackPlayer();
+        }
+    }
+
+    public boolean isEnableLowLatency() {
+        return mEnableLowLatency;
     }
 
     public void start() {
-        mAudioSLPlayer.start();
+        mPcmPlayer.start();
     }
 
     public void stop() {
-        mAudioSLPlayer.stop();
+        mPcmPlayer.stop();
     }
 
     public void pause() {
-        mAudioSLPlayer.pause();
+        mPcmPlayer.pause();
     }
 
     public void resume() {
-        mAudioSLPlayer.resume();
+        mPcmPlayer.resume();
     }
 
     public void setMute(boolean mute) {
-        mAudioSLPlayer.setMute(mute);
+        mPcmPlayer.setMute(mute);
     }
 
     public void setVolume(float volume) {
-        mAudioSLPlayer.setVolume(volume);
+        mPcmPlayer.setVolume(volume);
     }
 
     /**
@@ -59,23 +78,23 @@ public class AudioPreview extends AudioFilterBase {
 
     @Override
     protected long getNativeInstance() {
-        return mAudioSLPlayer.getNativeInstance();
+        return mPcmPlayer.getNativeInstance();
     }
 
     @Override
     protected int readNative(ByteBuffer buffer, int size) {
-        return mAudioSLPlayer.read(buffer, size);
+        return mPcmPlayer.read(buffer, size);
     }
 
     @Override
     protected void attachTo(int idx, long ptr, boolean detach) {
-        mAudioSLPlayer.attachTo(idx, ptr, detach);
+        mPcmPlayer.attachTo(idx, ptr, detach);
     }
 
     @Override
     protected AudioBufFormat doFormatChanged(AudioBufFormat format) {
         int atomSize = AudioUtil.getNativeBufferSize(mContext, format.sampleRate);
-        int ret = mAudioSLPlayer.config(format.sampleFormat, format.sampleRate, format.channels, atomSize, 200);
+        int ret = mPcmPlayer.config(format.sampleFormat, format.sampleRate, format.channels, atomSize, 200);
         if (ret < 0) {
             return null;
         }
@@ -84,13 +103,14 @@ public class AudioPreview extends AudioFilterBase {
 
     @Override
     protected AudioBufFrame doFilter(AudioBufFrame frame) {
-        mAudioSLPlayer.write(frame.buf, !mBlockingMode);
+        mPcmPlayer.write(frame.buf, !mBlockingMode);
         return frame;
     }
 
     @Override
     protected void doRelease() {
-        mAudioSLPlayer.stop();
-        mAudioSLPlayer.release();
+        Log.i(TAG, "doRelease");
+        mPcmPlayer.stop();
+        mPcmPlayer.release();
     }
 }

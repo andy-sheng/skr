@@ -603,11 +603,10 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioCapture = new AudioCapture(mContext);
             mAudioCapture.setSampleRate(mConfig.getAudioSampleRate());
             mAudioPlayerCapture = new AudioPlayerCapture(mContext);
-            //mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
             mAudioPlayerCapture.setOutFormat(new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16,
                     mConfig.getAudioSampleRate(), mConfig.getAudioChannels()));
-            mRemoteAudioPreview = new AudioPreview(mContext);
-            mLocalAudioPreview = new AudioPreview(mContext);
+            mRemoteAudioPreview = new AudioPreview(mContext, mConfig.isEnableAudioLowLatency());
+            mLocalAudioPreview = new AudioPreview(mContext, mConfig.isEnableAudioLowLatency());
             mAPMFilter = new APMFilter();
 
             // debug录制的相关连接
@@ -622,7 +621,6 @@ public class ZqEngineKit implements AgoraOutCallback {
 
             if (mConfig.isUseLocalAPM()) {
                 mAudioCapture.getSrcPin().connect(mAPMFilter.getSinkPin());
-                mAudioRemoteSrcPin.connect(mRemoteAudioPreview.getSinkPin());
                 mAudioLocalSrcPin = mAPMFilter.getSrcPin();
 
                 // 开启降噪模块
@@ -792,6 +790,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mLocalAudioMixer.setDelay(1, mixingLatency);
             mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
             mRemoteAudioPreview.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
+            mLocalAudioPreview.setVolume(mConfig.getEarMonitoringVolume() / 100.f);
             mAudioPlayerCapture.setPlayoutVolume(mConfig.getAudioMixingPlayoutVolume() / 100.f);
             setAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume());
             if (mConfig.isEnableInEarMonitoring() && shouldStartAudioPreview()) {
@@ -1521,6 +1520,32 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
                 mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_AUDIOTRACK);
                 mAudioPlayerCapture.setEnableLowLatency(false);
+            }
+            if (mRemoteAudioPreview.isEnableLowLatency() != enable) {
+                MyLog.i(TAG, "recreate RemoteAudioPreview");
+                mAudioRemoteSrcPin.disconnect(mRemoteAudioPreview.getSinkPin(), false);
+                mRemoteAudioPreview.release();
+                mRemoteAudioPreview = new AudioPreview(mContext, enable);
+                mRemoteAudioPreview.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
+                if (mConfig.isJoinChannelSuccess()) {
+                    mRemoteAudioPreview.start();
+                }
+                mAudioRemoteSrcPin.connect(mRemoteAudioPreview.getSinkPin());
+            }
+            if (mLocalAudioPreview.isEnableLowLatency() != enable) {
+                MyLog.i(TAG, "recreate LocalAudioPreview");
+                mLocalAudioPreview.getSrcPin().disconnect(mAudioSendResampleFilter.getSinkPin(), false);
+                mAudioFilterMgt.getSrcPin().disconnect(mLocalAudioPreview.getSinkPin(), false);
+                mLocalAudioPreview.release();
+                mLocalAudioPreview = new AudioPreview(mContext, enable);
+                mLocalAudioPreview.setVolume(mConfig.getEarMonitoringVolume() / 100.f);
+                if (mConfig.isEnableInEarMonitoring() && shouldStartAudioPreview()) {
+                    if (mAudioCapture.isRecordingState()) {
+                        mLocalAudioPreview.start();
+                    }
+                }
+                mLocalAudioPreview.getSrcPin().connect(mAudioSendResampleFilter.getSinkPin());
+                mAudioFilterMgt.getSrcPin().connect(mLocalAudioPreview.getSinkPin());
             }
         }
     }
