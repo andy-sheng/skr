@@ -161,6 +161,11 @@ class RelayResultActivity : BaseActivity() {
             isFollow = it.isFollow
             isFriend = it.isFriend
             refreshFollow()
+
+            xinCountTv.text = "X${model.starCnt}"
+            coinCountTv.text = "X${model.coinCnt}"
+            fenTv.text = model.peerScore.toString()
+            tipsTv.text = model.peerComment
 //            if (it.reason == RelayResultModel.GER_USER_NO_RESPONSE) {
 //                // 对方掉线了
 //            } else if (it.reason == RelayResultModel.GER_USER_EXIT && it.exitUserID != MyUserInfoManager.uid.toInt()) {

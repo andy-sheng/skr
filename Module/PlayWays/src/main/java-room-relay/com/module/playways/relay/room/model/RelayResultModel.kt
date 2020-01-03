@@ -1,7 +1,7 @@
 package com.module.playways.relay.room.model
 
-import java.io.Serializable
 import com.alibaba.fastjson.annotation.JSONField
+import java.io.Serializable
 
 
 class RelayResultModel : Serializable {
@@ -26,4 +26,12 @@ class RelayResultModel : Serializable {
     var noResponseUserID: Int = 0           // 没有响应掉线的用户id
     @JSONField(name = "reason")
     var reason: Int = 0
+    @JSONField(name = "peerScore")
+    var peerScore: Int = 0  //同伴契合度值
+    @JSONField(name = "peerComment")
+    var peerComment: String? = null //peerScore对应的文字
+    @JSONField(name = "starCnt")
+    var starCnt: Int = 0  //获得星数
+    @JSONField(name = "coinCnt")
+    var coinCnt: Int = 0 //获得金币数
 }
