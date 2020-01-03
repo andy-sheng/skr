@@ -228,7 +228,7 @@ class FeedsTagDetailActivity : BaseActivity() {
             })
         }
 
-        appbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+        appbar.addOnOffsetChangedListener (AppBarLayout.OnOffsetChangedListener{ appBarLayout, verticalOffset ->
             // TODO: 2019-06-23 也可以加效果，看产品怎么说
             imageBg.translationY = verticalOffset.toFloat()
             if (lastVerticalOffset != verticalOffset) {
@@ -253,7 +253,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                     }
                 }
             }
-        }
+        })
 
         ivBack.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {

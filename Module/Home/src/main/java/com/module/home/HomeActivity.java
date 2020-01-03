@@ -36,7 +36,7 @@ import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
-import com.common.flutter.FlutterRoute;
+import com.common.flutter.boost.FlutterPageRouter;
 import com.common.log.MyLog;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.utils.ActivityUtils;
@@ -235,16 +235,16 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         });
 
 //        if (MyLog.isDebugLogOpen()) {
-            mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    MyLog.w(TAG, "  mGameArea.setOnLongClickListener");
-                    HashMap map = new HashMap();
-                    map.put("key1",2);
-                    FlutterRoute.Companion.open("PartyBgMusicManagerPage",map);
-                    return false;
-                }
-            });
+        mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                MyLog.w(TAG, "  mGameArea.setOnLongClickListener");
+                HashMap map = new HashMap();
+                map.put("key1", 2);
+                FlutterPageRouter.openPageByUrl(HomeActivity.this, "PartyBgMusicManagerPage", map);
+                return false;
+            }
+        });
 //        }
 
         mPostsArea.setOnClickListener(new DebounceViewClickListener(100) {
@@ -330,16 +330,17 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
             @Override
             public boolean queueIdle() {
-                MyLog.i(TAG,"queueIdle");
+                MyLog.i(TAG, "queueIdle");
                 // 触发提前获取引擎配置
                 EngineConfigFromServer.getDefault();
+//                FlutterRoute.Companion.pre();
                 return false;
             }
         });
     }
 
     private void showNewFunctionDialog() {
-        if(U.getChannelUtils().getChannel().startsWith("CHORUS")){
+        if (U.getChannelUtils().getChannel().startsWith("CHORUS")) {
             return;
         }
         if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_PARTY_DIALOG, false)) {

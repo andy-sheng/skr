@@ -325,8 +325,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                 mSmartRefresh.finishRefresh()
             }
         })
-
-        mAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+        mAppbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (lastVerticalOffset != verticalOffset) {
                 lastVerticalOffset = verticalOffset
                 if (verticalOffset == 0) {
@@ -349,7 +348,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                     }
                 }
             }
-        }
+        })
     }
 
     private fun initUserInfo() {

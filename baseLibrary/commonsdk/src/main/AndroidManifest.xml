@@ -273,6 +273,17 @@
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
         </service>
+
+
+        <activity
+            android:name="com.idlefish.flutterboost.containers.BoostFlutterActivity"
+            android:theme="@style/Theme.AppCompat"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize" >
+            <meta-data android:name="io.flutter.embedding.android.SplashScreenDrawable" android:resource="@drawable/loading_place_holder_img"/>
+
+        </activity>
     </application>
 
 </manifest>

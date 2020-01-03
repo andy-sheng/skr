@@ -246,7 +246,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
         })
 
-        mAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+        mAppbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             // TODO: 2019-06-23 也可以加效果，看产品怎么说
             mImageBg.translationY = verticalOffset.toFloat()
             if (verticalOffset < 0) {
@@ -280,7 +280,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
                     }
                 }
             }
-        }
+        })
     }
 
     private fun initTopArea() {

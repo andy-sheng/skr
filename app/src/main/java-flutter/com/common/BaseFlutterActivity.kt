@@ -8,7 +8,6 @@ import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
-import com.common.flutter.FlutterRoute
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiResult
@@ -35,13 +34,8 @@ import io.flutter.view.FlutterView
  */
 @Route(path = RouterConstants.ACTIVITY_FLUTTER)
 class BaseFlutterActivity : io.flutter.embedding.android.FlutterActivity() {
-    val TAG = "BaseFlutterActivity"
+    val TAG = "BaseFlutterActivity"+hashCode()
 
-    companion object {
-        fun goTest(activity: Activity) {
-
-        }
-    }
 //    val EXTRA_INITIAL_ROUTE = "initial_route"
 //    val EXTRA_BACKGROUND_MODE = "background_mode"
 //    val EXTRA_CACHED_ENGINE_ID = "cached_engine_id"
@@ -50,27 +44,10 @@ class BaseFlutterActivity : io.flutter.embedding.android.FlutterActivity() {
 //    .putExtra(EXTRA_DESTROY_ENGINE_WITH_ACTIVITY, destroyEngineWithActivity)
 //    .putExtra(EXTRA_BACKGROUND_MODE, backgroundMode);
 //    .putExtra(EXTRA_INITIAL_ROUTE, initialRoute)
-
-    /**
-     * 配置引擎
-     */
-    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
-        super.configureFlutterEngine(flutterEngine)
-        EventChannel(flutterEngine.dartExecutor, "skr_flutter/event_channel").setStreamHandler(
-                object : EventChannel.StreamHandler {
-                    override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
-                        MyLog.d(TAG, "onListen arguments = $arguments, events = $events")
-                    }
-
-                    override fun onCancel(arguments: Any?) {
-                        MyLog.d(TAG, "onCancel arguments = $arguments")
-                    }
-                }
-        )
-
-        val methodChannel = MethodChannel(flutterEngine.dartExecutor, "skr_flutter/method_channel")
-        methodChannel.setMethodCallHandler { call, result ->
-            MyLog.d(TAG, "threadId=" + Thread.currentThread())
+companion object{
+    init {
+         var l = { call: MethodCall, result: MethodChannel.Result ->
+            MyLog.d("BaseFlutterActivity companion", "call=${call.method}")
             when {
                 call.method == "getDeviceID" -> result.success(U.getDeviceUtils().deviceID)
                 call.method == "getChannel" -> result.success(U.getChannelUtils().channel)
@@ -90,18 +67,83 @@ class BaseFlutterActivity : io.flutter.embedding.android.FlutterActivity() {
                         val json = call.argument<String>("data")
                         val intent = Intent()
                         intent.putExtra("data", json)
-                        BaseFlutterActivity@ this.setResult(Activity.RESULT_OK, intent)
+                        U.getActivityUtils().topActivity.setResult(Activity.RESULT_OK, intent)
                     }
-                    BaseFlutterActivity@ this.finish()
+                    U.getActivityUtils().topActivity.finish()
+                    result.success(null)
                 }
                 call.method == "goPartyImportBGMPage" -> {
-                    FlutterRoute.open("PartyBgMusicLocalPage", null)
+//                    FlutterRoute.open("PartyBgMusicLocalPage", null)
+                    result.success(null)
+                }
+                call.method == "getPageName"->{
+                    result.success(U.getActivityUtils().topActivity.intent.getStringExtra("initial_route"))
                 }
                 else -> result.notImplemented()
             }
         }
+//        FlutterRoute.listeners.add(l)
+    }
+}
+
+            /**
+             * 配置引擎
+             */
+            override
+
+    fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+//        EventChannel(flutterEngine.dartExecutor, "skr_flutter/event_channel").setStreamHandler(
+//                object : EventChannel.StreamHandler {
+//                    override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+//                        MyLog.d(TAG, "onListen arguments = $arguments, events = $events")
+//                    }
+//
+//                    override fun onCancel(arguments: Any?) {
+//                        MyLog.d(TAG, "onCancel arguments = $arguments")
+//                    }
+//                }
+//        )
+//        val methodChannel = MethodChannel(flutterEngine.dartExecutor, "skr_flutter/method_channel")
+//        methodChannel.setMethodCallHandler { call, result ->
+//            MyLog.d(TAG, "threadId=" + Thread.currentThread())
+//            when {
+//                call.method == "getDeviceID" -> result.success(U.getDeviceUtils().deviceID)
+//                call.method == "getChannel" -> result.success(U.getChannelUtils().channel)
+//                call.method == "httpGet" -> {
+//                    var url = call.argument<String>("url")
+//                    var params = call.argument<HashMap<String, Any?>>("params")
+//                    httpGet(url!!, params) { r ->
+//                        result.success(r)
+//                    }
+//                }
+//                call.method == "loadLocalBGM" -> {
+//                    var l = getLocalMusicInfo()
+//                    result.success(JSON.toJSONString(l))
+//                }
+//                call.method == "finish" -> {
+//                    if (call.hasArgument("data")) {
+//                        val json = call.argument<String>("data")
+//                        val intent = Intent()
+//                        intent.putExtra("data", json)
+//                        BaseFlutterActivity@ this.setResult(Activity.RESULT_OK, intent)
+//                    }
+//                    BaseFlutterActivity@ this.finish()
+//                }
+//                call.method == "goPartyImportBGMPage" -> {
+//                    FlutterRoute.open("PartyBgMusicLocalPage", null)
+//                }
+//                else -> result.notImplemented()
+//            }
     }
 
+//    override fun provideFlutterEngine(context: Context): FlutterEngine? {
+//        return FlutterRoute.preWarm()
+//    }
+
+    override fun shouldDestroyEngineWithHost(): Boolean {
+        return false
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,10 +170,6 @@ class BaseFlutterActivity : io.flutter.embedding.android.FlutterActivity() {
         return super.getLifecycle()
     }
 
-    override fun provideFlutterEngine(context: Context): FlutterEngine? {
-        return super.provideFlutterEngine(context)
-    }
-
     override fun onPostResume() {
         super.onPostResume()
     }
@@ -140,9 +178,9 @@ class BaseFlutterActivity : io.flutter.embedding.android.FlutterActivity() {
         super.onTrimMemory(level)
     }
 
-    override fun onFlutterUiDisplayed() {
-        super.onFlutterUiDisplayed()
-    }
+//    override fun onFlutterUiDisplayed() {
+//        super.onFlutterUiDisplayed()
+//    }
 
     override fun providePlatformPlugin(activity: Activity?, flutterEngine: FlutterEngine): PlatformPlugin? {
         return super.providePlatformPlugin(activity, flutterEngine)
@@ -157,11 +195,9 @@ class BaseFlutterActivity : io.flutter.embedding.android.FlutterActivity() {
     }
 
     override fun onBackPressed() {
+        MyLog.d(TAG,"onBackPressed")
         super.onBackPressed()
-    }
-
-    override fun shouldDestroyEngineWithHost(): Boolean {
-        return super.shouldDestroyEngineWithHost()
+//        finish()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -176,13 +212,13 @@ class BaseFlutterActivity : io.flutter.embedding.android.FlutterActivity() {
         super.onStart()
     }
 
-    override fun onFlutterUiNoLongerDisplayed() {
-        super.onFlutterUiNoLongerDisplayed()
-    }
-
-    override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
-        super.cleanUpFlutterEngine(flutterEngine)
-    }
+//    override fun onFlutterUiNoLongerDisplayed() {
+//        super.onFlutterUiNoLongerDisplayed()
+//    }
+//
+//    override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
+//        super.cleanUpFlutterEngine(flutterEngine)
+//    }
 
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
@@ -235,4 +271,5 @@ class BaseFlutterActivity : io.flutter.embedding.android.FlutterActivity() {
     override fun getFlutterShellArgs(): FlutterShellArgs {
         return super.getFlutterShellArgs()
     }
+
 }

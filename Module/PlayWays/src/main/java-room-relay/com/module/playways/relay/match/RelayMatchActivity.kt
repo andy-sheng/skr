@@ -111,7 +111,7 @@ class RelayMatchActivity : BaseActivity() {
         cardScaleHelper = CardScaleHelper(8, 12)
         cardScaleHelper?.attachToRecyclerView(speedRecyclerView)
         speedRecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     currentPosition = cardScaleHelper?.currentItemPos ?: 0

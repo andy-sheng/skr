@@ -511,7 +511,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             //刚进入列表时统计当前屏幕可见views
             private var isFirstVisible = true
 
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (isFirstVisible) {
                     recordExposure("onScrolled isFirstVisible")
@@ -519,7 +519,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 }
             }
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 when (newState) {
                     AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {

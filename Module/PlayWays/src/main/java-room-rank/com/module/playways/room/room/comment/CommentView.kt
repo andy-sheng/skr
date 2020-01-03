@@ -73,7 +73,7 @@ class CommentView : EdgeTransparentView {
     }
 
     internal var mOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             MyLog.d(TAG, "onScrollStateChangd,newState:$newState,mOnBottom:$mOnBottom")
             if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                 // 闲置状态
@@ -97,7 +97,7 @@ class CommentView : EdgeTransparentView {
             }
         }
 
-        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             //            changeAlpha();
         }
     }

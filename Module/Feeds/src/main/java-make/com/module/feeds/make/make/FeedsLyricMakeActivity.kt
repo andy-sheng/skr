@@ -50,11 +50,11 @@ class FeedsLyricMakeActivity : BaseActivity() {
         lyricAdapter = FeedsLyricMakeAdapter()
         lyricRv.adapter = lyricAdapter
         lyricRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
             }
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     U.getKeyBoardUtils().hideSoftInputKeyBoard(this@FeedsLyricMakeActivity)

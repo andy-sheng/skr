@@ -440,11 +440,11 @@
 //            val cdHeight = 168.dp()   // 光盘高度
 //            val bottomHeight = 50.dp()  // 底部高度
 //
-//            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 //                super.onScrolled(recyclerView, dx, dy)
 //            }
 //
-//            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 //                super.onScrollStateChanged(recyclerView, newState)
 //                when (newState) {
 //                    AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {

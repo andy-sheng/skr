@@ -176,7 +176,7 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
         recycler_view.adapter = friendRoomAdapter
 
         mListener = object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == SCROLL_STATE_IDLE) {
                     if (friendRoomAdapter?.isPlay == false) {
@@ -188,11 +188,13 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
                 }
             }
 
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
             }
         }
-        recycler_view.addOnScrollListener(mListener)
+        mListener?.let {
+            recycler_view.addOnScrollListener(it)
+        }
 
         playCallback = object : SinglePlayerCallbackAdapter() {
             override fun onCompletion() {
@@ -414,7 +416,9 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
         mDisposable?.dispose()
         mCheckDisposable?.dispose()
         mInviteFriendDialog?.dismiss(false)
-        recycler_view.removeOnScrollListener(mListener)
+        mListener?.let {
+            recycler_view.removeOnScrollListener(it)
+        }
         mListener = null
     }
 }

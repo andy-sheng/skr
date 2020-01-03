@@ -453,7 +453,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mToolbar?.visibility = View.GONE
-        mAppbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+        mAppbar?.addOnOffsetChangedListener (AppBarLayout.OnOffsetChangedListener{ appBarLayout, verticalOffset ->
             if (lastVerticalOffset != verticalOffset) {
                 lastVerticalOffset = verticalOffset
                 var srollLimit = appBarLayout.totalScrollRange - U.getDisplayUtils().dip2px(95f)
@@ -483,7 +483,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     }
                 }
             }
-        }
+        })
 
         mCommonTitleBar?.leftTextView?.setDebounceViewClickListener {
             activity?.finish()

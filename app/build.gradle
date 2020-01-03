@@ -257,7 +257,8 @@ dependencies {
         //  tools
         kapt rootProject.ext.dependencies["arouter-compiler"]
         if(flutterEnable.toBoolean()){
-            implementation project(":flutter")
+            provided project(":flutter")
+//            provided project(":flutter_boost")
         }
     }
 }

@@ -553,11 +553,11 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             var maxPercent = 0f
             var isFound = false
 
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
             }
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 when (newState) {
                     AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {

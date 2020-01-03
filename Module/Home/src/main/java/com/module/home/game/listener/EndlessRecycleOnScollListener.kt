@@ -8,7 +8,7 @@ abstract class EndlessRecycleOnScollListener : RecyclerView.OnScrollListener() {
     // 用来标记是否正在向左滑动
     private var isSlidingToLeft = false
 
-    override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
         super.onScrollStateChanged(recyclerView, newState)
         val manager = recyclerView!!.layoutManager as LinearLayoutManager
         // 当不滑动时
@@ -25,7 +25,7 @@ abstract class EndlessRecycleOnScollListener : RecyclerView.OnScrollListener() {
         }
     }
 
-    override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
         // dx值大于0表示正在向左滑动，小于或等于0表示向右滑动或停止
         isSlidingToLeft = dx > 0
