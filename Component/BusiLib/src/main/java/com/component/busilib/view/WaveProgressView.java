@@ -35,13 +35,17 @@ public class WaveProgressView extends View {
      */
     private Path mPath;
     private Paint mPathPaint;
+    private Path mSecondPath;
+    private Paint mSecondPaint;
     /**
      * 波浪参数
      */
-    private float mWaveHight = 10f;
-    private float mWaveHalfWidth = 16f;
-    private String mWaveColor = "#FF8484";
-    private int mWaveSpeed = 30;
+    private float mWaveHight = 10f;    // 波峰高度
+    private float mWaveHalfWidth = 16f;     // 波峰的宽带
+    private String mWaveColor = "#FFB1B1";      // 第一个波峰的颜色
+    private String mSecondWaveColor = "#FF8484";  // 第二个波峰的颜色
+    private int mWaveSpeed = 30;   // 波峰移动的速度
+    private float mWaveDiff = 8f;  // 两个波峰之前的距离
     /**
      * 绘制进度
      */
@@ -158,6 +162,11 @@ public class WaveProgressView extends View {
         mPathPaint = new Paint();
         mPathPaint.setAntiAlias(true);
         mPathPaint.setStyle(Paint.Style.FILL);
+
+        mSecondPath = new Path();
+        mSecondPaint = new Paint();
+        mSecondPaint.setAntiAlias(true);
+        mSecondPaint.setStyle(Paint.Style.FILL);
         /**
          * 进度画笔
          */
@@ -191,8 +200,10 @@ public class WaveProgressView extends View {
 
     private Bitmap createImage() {
         mPathPaint.setColor(Color.parseColor(mWaveColor));
+        mSecondPaint.setColor(Color.parseColor(mSecondWaveColor));
         mTextPaint.setColor(Color.parseColor(mTextColor));
         mTextPaint.setTextSize(mTextSize);
+        mWaveDiff = mWaveHalfWidth * 1.5f;
 
         Paint paint = new Paint();
         paint.setAntiAlias(true);
@@ -210,21 +221,33 @@ public class WaveProgressView extends View {
         }
         mPath.reset();
         mPath.moveTo(0 - distance, CurY);
+        mSecondPath.reset();
+        mSecondPath.moveTo(0 - distance - mWaveDiff, CurY);
 
         int waveNum = width / ((int) mWaveHalfWidth * 4) + 1;
         int multiplier = 0;
         for (int i = 0; i < waveNum * 3; i++) {
             mPath.quadTo(mWaveHalfWidth * (multiplier + 1) - distance, CurY - mWaveHight, mWaveHalfWidth * (multiplier + 2) - distance, CurY);
             mPath.quadTo(mWaveHalfWidth * (multiplier + 3) - distance, CurY + mWaveHight, mWaveHalfWidth * (multiplier + 4) - distance, CurY);
+            mSecondPath.quadTo(mWaveHalfWidth * (multiplier + 1) - distance - mWaveDiff, CurY - mWaveHight, mWaveHalfWidth * (multiplier + 2) - distance - mWaveDiff, CurY);
+            mSecondPath.quadTo(mWaveHalfWidth * (multiplier + 3) - distance - mWaveDiff, CurY + mWaveHight, mWaveHalfWidth * (multiplier + 4) - distance - mWaveDiff, CurY);
             multiplier += 4;
         }
-        distance += mWaveHalfWidth / mWaveSpeed;
-        distance = distance % (mWaveHalfWidth * 4);
+
 
         mPath.lineTo(width, height);
         mPath.lineTo(0, height);
         mPath.close();
         canvas.drawPath(mPath, mPathPaint);
+
+        mSecondPath.lineTo(width, height);
+        mSecondPath.lineTo(0, height);
+        mSecondPath.close();
+        canvas.drawPath(mSecondPath, mSecondPaint);
+
+        distance += mWaveHalfWidth / mWaveSpeed;
+        distance = distance % (mWaveHalfWidth * 4);
+
 //        /**
 //         * 对图片给进行缩放
 //         */
