@@ -33,6 +33,7 @@ import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.GrabScoreTipsView
+import com.module.playways.grab.room.view.RelayEnergyView
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.view.normal.NormalOthersSingCardView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
@@ -139,6 +140,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 //    private lateinit var mGiveUpView: GrabGiveupView
 
     private var mVIPEnterView: VIPEnterView? = null
+    private var mRelayEnergyView: RelayEnergyView? = null
 //    lateinit var mHasSelectSongNumTv: ExTextView
 
     // 都是dialogplus
@@ -242,6 +244,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
         initVipEnterView()
         initMicSeatView()
+        initRelayEnergyView()
 
         if (mRoomData.isEnterFromInvite() && mRoomData.isPersonArrive()) {
             mAddSongIv.visibility = View.VISIBLE
@@ -345,6 +348,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 //        mHasSelectSongNumTv.setDebounceViewClickListener {
 //            mMicSeatView.show()
 //        }
+    }
+
+    private fun initRelayEnergyView() {
+        mRelayEnergyView = findViewById(R.id.relay_energy_view)
     }
 
     private fun initVipEnterView() {
@@ -862,6 +869,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     override fun receiveScoreEvent(score: Int) {
         mGrabScoreTipsView.updateScore(score, -1)
+        mRelayEnergyView?.updateScore(score, -1)
     }
 
 }

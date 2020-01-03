@@ -221,6 +221,15 @@
         app:layout_constraintBottom_toTopOf="@+id/relay_sing_card_view_layout_stub"
         app:layout_constraintRight_toRightOf="@+id/relay_sing_card_view_layout_stub" />
 
+    <com.module.playways.grab.room.view.RelayEnergyView
+        android:id="@+id/relay_energy_view"
+        android:layout_width="@dimen/view_44_dp"
+        android:layout_height="@dimen/view_31_dp"
+        android:layout_marginTop="@dimen/view_190_dp"
+        android:layout_marginRight="@dimen/view_14_dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
     <com.module.playways.room.room.comment.fly.FlyCommentView
         android:id="@+id/fly_comment_view"
         android:layout_width="match_parent"
