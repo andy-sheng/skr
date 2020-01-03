@@ -70,6 +70,7 @@ class RelayResultActivity : BaseActivity() {
         }
 
         U.getStatusBarUtil().setTransparentBar(this, false)
+        title = findViewById(R.id.title)
         reportTv = findViewById(R.id.report_tv)
         contentArea = findViewById(R.id.content_area)
 //        avatarLevel = findViewById(R.id.avatar_level)
@@ -89,6 +90,7 @@ class RelayResultActivity : BaseActivity() {
         coinCountTv = findViewById(R.id.coin_count_tv)
         followTv = findViewById(R.id.follow_tv)
         backTv = findViewById(R.id.back_tv)
+        (backTv.layoutParams as ConstraintLayout.LayoutParams).bottomMargin = ((U.getDisplayUtils().phoneHeight - U.getStatusBarUtil().getStatusBarHeight(this) - (U.getDisplayUtils().phoneWidth * 527 / 371)) - U.getDisplayUtils().dip2px(32f)) / 2
 
         followTv.setDebounceViewClickListener {
             if (isFriend == true || isFollow == true) {

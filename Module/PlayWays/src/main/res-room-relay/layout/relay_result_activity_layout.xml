@@ -182,7 +182,6 @@
         android:id="@+id/back_tv"
         android:layout_width="@dimen/view_136_dp"
         android:layout_height="@dimen/view_32_dp"
-        android:layout_marginBottom="@dimen/view_30_dp"
         android:gravity="center"
         android:text="返回"
         android:textColor="#e68B572A"
