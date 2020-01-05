@@ -481,7 +481,7 @@ class PartyGameTabView : ExConstraintLayout {
             }
         }
 
-        return if (TextUtils.isEmpty(uploader)) "" else "\n$uploader"
+        return if (TextUtils.isEmpty(uploader)) "" else "\n上传者：$uploader"
     }
 
     private fun setMainText(title: String?, content: String?, uploader: String = "") {
@@ -490,7 +490,7 @@ class PartyGameTabView : ExConstraintLayout {
                         ?: "").setForegroundColor(U.getColor(R.color.white_trans_80)).setFontSize(U.getDisplayUtils().dip2px(14f)).setBold()
                 .append(content
                         ?: "").setForegroundColor(U.getColor(R.color.white_trans_50)).setFontSize(U.getDisplayUtils().dip2px(14f))
-                .append(if (TextUtils.isEmpty(uploader)) "" else "\n$uploader").setForegroundColor(U.getColor(R.color.white_trans_50)).setFontSize(U.getDisplayUtils().dip2px(14f))
+                .append(if (TextUtils.isEmpty(uploader)) "" else "$uploader").setForegroundColor(U.getColor(R.color.white_trans_50)).setFontSize(U.getDisplayUtils().dip2px(14f))
                 .create()
 
         textGameTv.text = stringBuilder
