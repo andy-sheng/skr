@@ -297,5 +297,11 @@ public class WaveProgressView extends View {
             return null;
         }
     }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        handler.removeCallbacksAndMessages(null);
+    }
 }
 
