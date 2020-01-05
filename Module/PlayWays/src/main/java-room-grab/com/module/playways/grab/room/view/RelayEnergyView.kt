@@ -30,10 +30,6 @@ class RelayEnergyView : ExRelativeLayout {
 
     private val maxScore = 500
 
-    private var currentScore = 0
-
-    private var currentFullCount = 0
-
     constructor(context: Context) : super(context) {}
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
@@ -44,7 +40,7 @@ class RelayEnergyView : ExRelativeLayout {
         View.inflate(context, R.layout.relay_energy_view_layout, this)
         waveProgressView = rootView.findViewById(R.id.wave_progress_view)
         fullCountTv = rootView.findViewById(R.id.full_count_tv)
-        fullCountTv.text = "x$currentFullCount"
+        fullCountTv.text = "x0"
         waveProgressView.setCurrent(0, "")
         waveProgressView.setMaxProgress(maxScore)
 //        waveProgressView.setWave()
@@ -60,6 +56,7 @@ class RelayEnergyView : ExRelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RExpMsg) {
         waveProgressView.setMaxProgress(event.totalExp)
+        fullCountTv.text = "x${event.afterStar}"
         if (event.afterStar > event.beforeStar) {
             waveProgressView.setCurrent(event.totalExp, "")
             playScaleAnim {
