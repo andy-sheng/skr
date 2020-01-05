@@ -78,9 +78,9 @@ public class SearchUserFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
-        mRefreshLayout = (SmartRefreshLayout) getRootView().findViewById(R.id.refreshLayout);
-        mSearchResult = (RecyclerView) getRootView().findViewById(R.id.search_result);
+        mTitlebar = getRootView().findViewById(R.id.titlebar);
+        mRefreshLayout = getRootView().findViewById(R.id.refreshLayout);
+        mSearchResult = getRootView().findViewById(R.id.search_result);
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mSearchResult.setLayoutManager(mLinearLayoutManager);
