@@ -241,7 +241,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 MyLog.w(TAG, "  mGameArea.setOnLongClickListener");
                 HashMap map = new HashMap();
                 map.put("key1", 2);
-                FlutterPageRouter.openPageByUrl(HomeActivity.this, "PartyBgMusicManagerPage", map);
+                FlutterPageRouter.openPageByUrl(HomeActivity.this, FlutterPageRouter.FLUTTER_PAGE_MANAGER_BGM, map);
                 return false;
             }
         });

@@ -45,6 +45,11 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
                 result.success(null)
                 return true
             }
+            call.method == "stopAudioMixing" -> {
+                ZqEngineKit.getInstance().stopAudioMixing()
+                result.success(null)
+                return true
+            }
         }
         return false
     }
