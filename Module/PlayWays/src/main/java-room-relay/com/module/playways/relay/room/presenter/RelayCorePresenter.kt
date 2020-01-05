@@ -1323,6 +1323,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     }
 
     fun sendUnlock() {
+        StatisticsAdapter.recordCountEvent("chorus", "unlock", null)
         MyLog.w(TAG, "解锁爱心")
         val map = HashMap<String, Any>()
         map["roomID"] = mRoomData.gameId
