@@ -125,4 +125,13 @@
         app:layout_constraintRight_toRightOf="@id/party_bg"
         app:layout_constraintTop_toTopOf="@id/party_bg" />
 
+    <ImageView
+        android:id="@+id/place_view"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_0_dp"
+        app:layout_constraintBottom_toBottomOf="@id/party_bg"
+        app:layout_constraintLeft_toLeftOf="@id/party_bg"
+        app:layout_constraintRight_toRightOf="@id/party_bg"
+        app:layout_constraintTop_toTopOf="@id/party_bg"/>
+
 </android.support.constraint.ConstraintLayout>

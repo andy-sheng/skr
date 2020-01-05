@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -39,6 +40,8 @@ class GameTypeViewHolder(itemView: View,
 
     private val partyBg: ExImageView = itemView.findViewById(R.id.party_bg)
     private val partyRecycler: AutoPollRecyclerView = itemView.findViewById(R.id.party_recycler)
+    private val placeView: ImageView = itemView.findViewById(R.id.place_view)
+
 
     val looperLayoutManager = LooperLayoutManager(false)
 
@@ -60,6 +63,9 @@ class GameTypeViewHolder(itemView: View,
         levelBg.setDebounceViewClickListener {
             listener.onClickRankArea()
         }
+
+        partyRecycler.setOnTouchListener(View.OnTouchListener { v, _ -> true })
+        placeView.setDebounceViewClickListener { listener.onPartyRoomListener() }
 
         looperLayoutManager.setLooperEnable(true)
     }
