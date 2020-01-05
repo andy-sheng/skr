@@ -12,6 +12,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
@@ -19,12 +20,15 @@ import com.module.home.IHomeService;
 import com.module.home.R;
 import com.module.playways.IPlaywaysModeService;
 import com.component.person.view.AgeTagView;
+import com.zq.live.proto.Common.ESex;
 
 @Route(path = RouterConstants.ACTIVITY_UPLOAD_AGE)
 public class UploadAgeTagActivity extends BaseActivity {
 
     CommonTitleBar mTitlebar;
-    TextView mHintTv;
+    ExImageView mSecretIv;
+    ExImageView mMaleIv;
+    ExImageView mFemaleIv;
     AgeTagView mAgeTagView;
     ExTextView mSubmitTv;
 
@@ -39,18 +43,42 @@ public class UploadAgeTagActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mTitlebar = findViewById(R.id.titlebar);
-        mHintTv = findViewById(R.id.hint_tv);
+        mSecretIv = findViewById(R.id.secret_iv);
+        mMaleIv = findViewById(R.id.male_iv);
+        mFemaleIv = findViewById(R.id.female_iv);
         mAgeTagView = findViewById(R.id.age_tag_view);
+
         mSubmitTv = findViewById(R.id.submit_tv);
 
+        // 初始化数据
         mNickName = getIntent().getStringExtra("nickname");
-        mSex = getIntent().getIntExtra("sex", 0);
 
         mAgeTagView.setTextColor(U.getColor(R.color.white_trans_50));
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 finish();
+            }
+        });
+
+        mMaleIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                setSex(ESex.SX_MALE.getValue());
+            }
+        });
+
+        mFemaleIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                setSex(ESex.SX_FEMALE.getValue());
+            }
+        });
+
+        mSecretIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                setSex(ESex.SX_UNKNOWN.getValue());
             }
         });
 
@@ -88,9 +116,28 @@ public class UploadAgeTagActivity extends BaseActivity {
             }
         });
 
+        setSex(MyUserInfoManager.INSTANCE.getSex());
+
         mSubmitTv.setClickable(false);
         mSubmitTv.setAlpha(0.5f);
 
+    }
+
+    public void setSex(int sex) {
+        this.mSex = sex;
+        if (sex == ESex.SX_MALE.getValue()) {
+            mMaleIv.setSelected(true);
+            mFemaleIv.setSelected(false);
+            mSecretIv.setSelected(false);
+        } else if (sex == ESex.SX_FEMALE.getValue()) {
+            mMaleIv.setSelected(false);
+            mFemaleIv.setSelected(true);
+            mSecretIv.setSelected(false);
+        } else {
+            mMaleIv.setSelected(false);
+            mFemaleIv.setSelected(false);
+            mSecretIv.setSelected(true);
+        }
     }
 
     private void goNewMatch() {

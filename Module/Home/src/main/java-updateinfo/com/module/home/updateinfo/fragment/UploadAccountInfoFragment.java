@@ -49,13 +49,8 @@ public class UploadAccountInfoFragment extends BaseFragment {
     NoLeakEditText mNicknameEt;
     ExTextView mNicknameHintTv;
 
-    ExImageView mSecretIv;
-    ExImageView mMaleIv;
-    ExImageView mFemaleIv;
-
     ExTextView mNextIv;
 
-    int mSex = 0;// 未知、非法参数
     String mNickName = "";
     String mLastName = "";   //最后一次检查的昵称
 
@@ -74,9 +69,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
         mNicknameEt = getRootView().findViewById(R.id.nickname_et);
         mNicknameHintTv = getRootView().findViewById(R.id.nickname_hint_tv);
 
-        mSecretIv = getRootView().findViewById(R.id.secret_iv);
-        mMaleIv = getRootView().findViewById(R.id.male_iv);
-        mFemaleIv = getRootView().findViewById(R.id.female_iv);
+
         mNextIv = getRootView().findViewById(R.id.next_iv);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
@@ -125,27 +118,6 @@ public class UploadAccountInfoFragment extends BaseFragment {
             }
         });
 
-        mMaleIv.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                setSex(ESex.SX_MALE.getValue());
-            }
-        });
-
-        mFemaleIv.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                setSex(ESex.SX_FEMALE.getValue());
-            }
-        });
-
-        mSecretIv.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                setSex(ESex.SX_UNKNOWN.getValue());
-            }
-        });
-
         mNextIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -172,26 +144,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
             setCompleteTv(false);
         }
 
-        setSex(MyUserInfoManager.INSTANCE.getSex());
-
         initPublishSubject();
-    }
-
-    public void setSex(int sex) {
-        this.mSex = sex;
-        if (sex == ESex.SX_MALE.getValue()) {
-            mMaleIv.setSelected(true);
-            mFemaleIv.setSelected(false);
-            mSecretIv.setSelected(false);
-        } else if (sex == ESex.SX_FEMALE.getValue()) {
-            mMaleIv.setSelected(false);
-            mFemaleIv.setSelected(true);
-            mSecretIv.setSelected(false);
-        } else {
-            mMaleIv.setSelected(false);
-            mFemaleIv.setSelected(false);
-            mSecretIv.setSelected(true);
-        }
     }
 
     @Override
@@ -207,7 +160,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
 
     private void verifyName(String nickName) {
-        if (nickName.equals(MyUserInfoManager.INSTANCE.getNickName()) && (mSex == MyUserInfoManager.INSTANCE.getSex())) {
+        if (nickName.equals(MyUserInfoManager.INSTANCE.getNickName())) {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
             goAgeTagUpload();
             return;
@@ -237,7 +190,6 @@ public class UploadAccountInfoFragment extends BaseFragment {
     public void goAgeTagUpload() {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD_AGE)
                 .withString("nickname", mNickName)
-                .withInt("sex", mSex)
                 .greenChannel()
                 .navigation();
     }
