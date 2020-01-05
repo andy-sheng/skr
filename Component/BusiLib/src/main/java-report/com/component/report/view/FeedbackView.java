@@ -139,7 +139,7 @@ public class FeedbackView extends RelativeLayout {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {
-                    ZqEngineKit.getInstance().stopAudioRecording();
+                    ZqEngineKit.getInstance().tryStopRecordForFeedback("FeedbackView",true);
                     boolean hasLyricNoShowIv = false;
                     ArrayList<Integer> tags = new ArrayList<>();
                     for (ExImageView imageView : mSelectIvList) {
