@@ -216,9 +216,12 @@ public class WaveProgressView extends View {
          * 绘制波浪
          */
         float CurMidY = height * (maxProgress - currentProgress) / maxProgress;
-        if (CurY > CurMidY) {
-            CurY = CurY - (CurY - CurMidY) / 10;
+        if (Math.abs(CurY - CurMidY) > 0.01f) {
+            CurY = CurMidY;
         }
+//        if (CurY > CurMidY) {
+//            CurY = CurY - (CurY - CurMidY) / 10;
+//        }
         mPath.reset();
         mPath.moveTo(0 - distance, CurY);
         mSecondPath.reset();
