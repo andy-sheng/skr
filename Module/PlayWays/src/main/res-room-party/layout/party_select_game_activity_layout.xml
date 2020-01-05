@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
-        app:rightText=""
+        app:rightText="上传游戏"
         app:rightTextColor="@color/white"
         app:rightTextSize="@dimen/textsize_14_dp"
         app:rightType="textView"
