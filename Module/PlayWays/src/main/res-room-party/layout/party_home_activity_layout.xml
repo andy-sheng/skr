@@ -25,9 +25,9 @@
         app:layout_constraintTop_toBottomOf="@id/title" />
 
     <ImageView
-        android:layout_width="@dimen/view_147_dp"
-        android:layout_height="@dimen/view_65_dp"
-        android:background="@drawable/mic_room_icon"
+        android:layout_width="@dimen/view_164_dp"
+        android:layout_height="@dimen/view_51_dp"
+        android:background="@drawable/party_room_icon"
         app:layout_constraintBottom_toBottomOf="@id/back_iv"
         app:layout_constraintLeft_toRightOf="@id/back_iv"
         app:layout_constraintTop_toTopOf="@id/back_iv" />
