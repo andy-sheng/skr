@@ -42,7 +42,7 @@ public fun getLocalMusicInfo(): List<MusicInfo> {
     //TODO 先不加过滤
 
     var selections = StringBuilder()
-            .append(MediaStore.Audio.Media.MIME_TYPE)
+//            .append(MediaStore.Audio.Media.MIME_TYPE)
 //            .append(" in (")
 //            .append("'audio/mpeg'").append(",")
 //            .append("'audio/mp3'")
@@ -52,13 +52,13 @@ public fun getLocalMusicInfo(): List<MusicInfo> {
             .append("> " + 60 * 1000 * 2)
             .append(" and ")
             .append(MediaStore.Audio.Media.ARTIST)
-            .append("!=?")
+            .append("!='<unknown>'")
             .toString()
     var selectionArgs = arrayOf("<unknown>")
 
     val cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MUSIC_PROJECTION,
             selections,
-            selectionArgs, MediaStore.Audio.Media.DATE_ADDED
+            null, MediaStore.Audio.Media.DATE_ADDED
     )
     if (cursor != null) {
         val indexID = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
