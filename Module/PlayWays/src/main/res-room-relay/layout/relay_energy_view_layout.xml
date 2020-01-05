@@ -2,8 +2,8 @@
     xmlns:WaveProgressView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/view_48_dp"
-    android:layout_height="@dimen/view_31_dp"
+    android:layout_width="@dimen/view_64_dp"
+    android:layout_height="@dimen/view_59_dp"
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.component.busilib.view.WaveProgressView
@@ -17,12 +17,13 @@
         app:layout_constraintTop_toBottomOf="@+id/titlebar" />
 
     <com.common.view.ex.ExTextView
-        android:layout_marginBottom="-3dp"
         android:id="@+id/full_count_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/view_9_dp"
+        android:layout_marginBottom="10dp"
         android:text="x0"
         android:textColor="#FF8484"
         android:textSize="@dimen/textsize_10_dp" />
