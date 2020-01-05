@@ -40,7 +40,6 @@ AudioRecord::AudioRecord(int sampleRate, int channels, int bufferSamples):
 
     mBuffer = (uint8_t*) malloc((size_t) (bufferSamples * mFrameSize));
     assert(mBuffer);
-    pthread_mutex_init(&mFilterLock, NULL);
 
     int threshold = mSampleRate * 200 / 1000;     // 200ms
     mFifoSize = mBufferSamples * 2;
@@ -66,14 +65,15 @@ AudioRecord::~AudioRecord() {
         free(mBuffer);
         mBuffer = NULL;
     }
-    pthread_mutex_destroy(&mFilterLock);
 
     // destroy fifo
-    audio_utils_fifo_deinit(&mFifo);
     if (mFifoBuffer) {
+        audio_utils_fifo_deinit(&mFifo);
         free(mFifoBuffer);
+        mFifoBuffer = NULL;
     }
     destroyThreadLock(mReadCond);
+    mReadCond = NULL;
 }
 
 int AudioRecord::getState() {
