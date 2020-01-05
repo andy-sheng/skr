@@ -148,7 +148,12 @@ class PartyRoomViewHolder(item: View, var listener: PartyRoomAdapter.Listener) :
                         .setBorderWidth(1.dp().toFloat())
                         .setCornerRadius(8.dp().toFloat())
                         .build())
-        roomNameTv.text = model.roomName
+        if (model.roomtype == 1) {
+            roomNameTv.text = "个人房 ${model.roomName}"
+        } else {
+            roomNameTv.text = "家族房 ${model.roomName}"
+        }
+
         if (!TextUtils.isEmpty(model.gameName)) {
             roomDescTv.visibility = View.VISIBLE
             roomDescTv.text = model.gameName
