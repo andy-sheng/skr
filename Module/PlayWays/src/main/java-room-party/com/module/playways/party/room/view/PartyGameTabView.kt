@@ -406,7 +406,7 @@ class PartyGameTabView : ExConstraintLayout {
                 //还没开始
                 partySelfSingLyricView?.setVisibility(View.GONE)
                 textScrollView.visibility = View.VISIBLE
-                setMainText("", "还没有歌曲，大家快去点歌吧～")
+                setMainText("", partyGameInfoModel?.rule?.ruleDesc)
             }
         }
     }
