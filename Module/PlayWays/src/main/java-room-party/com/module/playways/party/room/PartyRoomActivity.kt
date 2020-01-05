@@ -98,7 +98,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 continue
             }
 
-            if (activity.javaClass.simpleName.equals(PartyHomeActivity::class.java.simpleName)) {
+            if (activity is PartyHomeActivity) {
                 continue
             }
             activity.finish()
