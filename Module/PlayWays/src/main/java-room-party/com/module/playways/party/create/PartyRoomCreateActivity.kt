@@ -67,6 +67,7 @@ class PartyRoomCreateActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        U.getStatusBarUtil().setTransparentBar(this, false)
         titlebar = this.findViewById(R.id.titlebar)
         val from = intent.getStringExtra("from")
         if (!TextUtils.isEmpty(from)) {
