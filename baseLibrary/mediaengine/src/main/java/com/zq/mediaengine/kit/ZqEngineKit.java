@@ -913,6 +913,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                     mLocalAudioPreview.stop();
                     mAudioCapture.stop();
                     mAudioPlayerCapture.stop();
+                    doStopAudioRecordingInner();
                 }
                 mAgoraRTCAdapter.leaveChannel();
             }
@@ -2196,8 +2197,8 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (mCustomHandlerThread != null) {
             if (mConfig.isRecordingForBusi()) {
                 mConfig.setRecordingForBusi(false);
-                stopAudioRecordingInner("ForBusi");
             }
+            stopAudioRecordingInner("ForBusi");
         }
     }
 
