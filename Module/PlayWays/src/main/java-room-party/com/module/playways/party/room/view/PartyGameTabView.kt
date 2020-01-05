@@ -297,7 +297,7 @@ class PartyGameTabView : ExConstraintLayout {
                 || partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Question.ordinal) {
             textScrollView.visibility = View.VISIBLE
 
-            setMainText(getGameTagTitle(), getGameTagContent())
+            setMainText(getGameTagTitle(), getGameTagContent(), getGameUploader())
             partyGameInfoModel?.let {
                 if (it.rule?.ruleType == EPGameType.PGT_Question.value && (it.question?.questionInfo?.questionPic?.size
                                 ?: 0) > 0) {
@@ -471,12 +471,26 @@ class PartyGameTabView : ExConstraintLayout {
         return ""
     }
 
-    private fun setMainText(title: String?, content: String?) {
+    private fun getGameUploader(): String {
+        var uploader = ""
+        partyGameInfoModel?.let {
+            if (it.rule?.ruleType == EPGameType.PGT_Play.value) {
+                uploader = it.play?.palyInfo?.uploader ?: ""
+            } else if (it.rule?.ruleType == EPGameType.PGT_Question.value) {
+                uploader = it.question?.questionInfo?.uploader ?: ""
+            }
+        }
+
+        return if (TextUtils.isEmpty(uploader)) "" else "\n$uploader"
+    }
+
+    private fun setMainText(title: String?, content: String?, uploader: String = "") {
         val stringBuilder = SpanUtils()
                 .append(title
                         ?: "").setForegroundColor(U.getColor(R.color.white_trans_80)).setFontSize(U.getDisplayUtils().dip2px(14f)).setBold()
                 .append(content
                         ?: "").setForegroundColor(U.getColor(R.color.white_trans_50)).setFontSize(U.getDisplayUtils().dip2px(14f))
+                .append(if (TextUtils.isEmpty(uploader)) "" else "\n$uploader").setForegroundColor(U.getColor(R.color.white_trans_50)).setFontSize(U.getDisplayUtils().dip2px(14f))
                 .create()
 
         textGameTv.text = stringBuilder

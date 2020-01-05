@@ -29,6 +29,8 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
 
   public static final String DEFAULT_ANSWERCONTENT = "";
 
+  public static final String DEFAULT_UPLOADER = "";
+
   /**
    * 问题标识
    */
@@ -66,18 +68,28 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
   )
   private final String answerContent;
 
+  /**
+   * 上传者
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String uploader;
+
   public PGameQuestion(Integer questionID, String questionContent, List<String> questionPic,
-      String answerContent) {
-    this(questionID, questionContent, questionPic, answerContent, ByteString.EMPTY);
+      String answerContent, String uploader) {
+    this(questionID, questionContent, questionPic, answerContent, uploader, ByteString.EMPTY);
   }
 
   public PGameQuestion(Integer questionID, String questionContent, List<String> questionPic,
-      String answerContent, ByteString unknownFields) {
+      String answerContent, String uploader, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.questionID = questionID;
     this.questionContent = questionContent;
     this.questionPic = Internal.immutableCopyOf("questionPic", questionPic);
     this.answerContent = answerContent;
+    this.uploader = uploader;
   }
 
   @Override
@@ -87,6 +99,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
     builder.questionContent = questionContent;
     builder.questionPic = Internal.copyOf("questionPic", questionPic);
     builder.answerContent = answerContent;
+    builder.uploader = uploader;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -100,7 +113,8 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
         && Internal.equals(questionID, o.questionID)
         && Internal.equals(questionContent, o.questionContent)
         && questionPic.equals(o.questionPic)
-        && Internal.equals(answerContent, o.answerContent);
+        && Internal.equals(answerContent, o.answerContent)
+        && Internal.equals(uploader, o.uploader);
   }
 
   @Override
@@ -112,6 +126,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
       result = result * 37 + (questionContent != null ? questionContent.hashCode() : 0);
       result = result * 37 + questionPic.hashCode();
       result = result * 37 + (answerContent != null ? answerContent.hashCode() : 0);
+      result = result * 37 + (uploader != null ? uploader.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -124,6 +139,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
     if (questionContent != null) builder.append(", questionContent=").append(questionContent);
     if (!questionPic.isEmpty()) builder.append(", questionPic=").append(questionPic);
     if (answerContent != null) builder.append(", answerContent=").append(answerContent);
+    if (uploader != null) builder.append(", uploader=").append(uploader);
     return builder.replace(0, 2, "PGameQuestion{").append('}').toString();
   }
 
@@ -178,6 +194,16 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
   }
 
   /**
+   * 上传者
+   */
+  public String getUploader() {
+    if(uploader==null){
+        return DEFAULT_UPLOADER;
+    }
+    return uploader;
+  }
+
+  /**
    * 问题标识
    */
   public boolean hasQuestionID() {
@@ -205,6 +231,13 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
     return answerContent!=null;
   }
 
+  /**
+   * 上传者
+   */
+  public boolean hasUploader() {
+    return uploader!=null;
+  }
+
   public static final class Builder extends Message.Builder<PGameQuestion, Builder> {
     private Integer questionID;
 
@@ -213,6 +246,8 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
     private List<String> questionPic;
 
     private String answerContent;
+
+    private String uploader;
 
     public Builder() {
       questionPic = Internal.newMutableList();
@@ -251,9 +286,17 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
       return this;
     }
 
+    /**
+     * 上传者
+     */
+    public Builder setUploader(String uploader) {
+      this.uploader = uploader;
+      return this;
+    }
+
     @Override
     public PGameQuestion build() {
-      return new PGameQuestion(questionID, questionContent, questionPic, answerContent, super.buildUnknownFields());
+      return new PGameQuestion(questionID, questionContent, questionPic, answerContent, uploader, super.buildUnknownFields());
     }
   }
 
@@ -268,6 +311,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
           + ProtoAdapter.STRING.encodedSizeWithTag(2, value.questionContent)
           + ProtoAdapter.STRING.asRepeated().encodedSizeWithTag(3, value.questionPic)
           + ProtoAdapter.STRING.encodedSizeWithTag(4, value.answerContent)
+          + ProtoAdapter.STRING.encodedSizeWithTag(5, value.uploader)
           + value.unknownFields().size();
     }
 
@@ -277,6 +321,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
       ProtoAdapter.STRING.encodeWithTag(writer, 2, value.questionContent);
       ProtoAdapter.STRING.asRepeated().encodeWithTag(writer, 3, value.questionPic);
       ProtoAdapter.STRING.encodeWithTag(writer, 4, value.answerContent);
+      ProtoAdapter.STRING.encodeWithTag(writer, 5, value.uploader);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -290,6 +335,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
           case 2: builder.setQuestionContent(ProtoAdapter.STRING.decode(reader)); break;
           case 3: builder.questionPic.add(ProtoAdapter.STRING.decode(reader)); break;
           case 4: builder.setAnswerContent(ProtoAdapter.STRING.decode(reader)); break;
+          case 5: builder.setUploader(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
