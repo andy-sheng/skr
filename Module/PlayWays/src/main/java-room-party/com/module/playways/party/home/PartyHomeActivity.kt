@@ -67,7 +67,7 @@ class PartyHomeActivity : BaseActivity() {
                     if (result.errno == 8436006) {
                         mTipsDialogView?.dismiss(false)
                         mTipsDialogView = TipsDialogView.Builder(this@PartyHomeActivity)
-                                .setMessageTip("开通VIP特权，立即获得派对创建权限")
+                                .setMessageTip("开通VIP特权，立即获得主题房创建权限")
                                 .setConfirmTip("立即开通")
                                 .setCancelTip("取消")
                                 .setConfirmBtnClickListener {

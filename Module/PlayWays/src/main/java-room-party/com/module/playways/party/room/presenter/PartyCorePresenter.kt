@@ -126,12 +126,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         joinRcRoom(-1)
         if (mRoomData.gameId > 0) {
             if (mRoomData.isClubHome()) {
-                pretendSystemMsg("欢迎加入${mRoomData.clubInfo?.name}的派对")
+                pretendSystemMsg("欢迎加入${mRoomData.clubInfo?.name}的主题房")
             } else {
                 if (mRoomData.notice.isNotEmpty()) {
                     pretendSystemMsg("房间公告 ${mRoomData.notice}")
                 } else {
-                    pretendSystemMsg("欢迎加入${mRoomData.getPlayerInfoById(mRoomData.hostId)?.userInfo?.nicknameRemark}的派对")
+                    pretendSystemMsg("欢迎加入${mRoomData.getPlayerInfoById(mRoomData.hostId)?.userInfo?.nicknameRemark}的主题房")
                 }
             }
 

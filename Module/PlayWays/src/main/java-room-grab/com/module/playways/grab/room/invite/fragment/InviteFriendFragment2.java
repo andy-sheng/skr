@@ -285,8 +285,8 @@ public class InviteFriendFragment2 extends BaseFragment {
             web.setTitle("房间已开，就等你来唱");
             web.setDescription("我在撕歌skr开了一个专属我们的小k房，快来一起耍呀～");
         } else if (mFrom == GameModeType.GAME_MODE_PARTY) {
-            web.setTitle("派对已开，就等你来玩");
-            web.setDescription("我在撕歌skr开了一个派对，快来一起耍呀～");
+            web.setTitle("主题房已开，就等你来玩");
+            web.setDescription("我在撕歌skr开了一个主题房，快来一起耍呀～");
         } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
             web.setTitle("合唱房间已开，就等你来玩");
             web.setDescription("我在撕歌skr开了一个合唱房间，快来一起耍呀～");

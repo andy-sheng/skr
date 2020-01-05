@@ -13,7 +13,7 @@
         android:layout_height="@dimen/view_24_dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/view_10_dp"
-        android:text="派对规则"
+        android:text="主题房规则"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_20_dp"
         android:textStyle="bold" />
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="派对由主持人、嘉宾、管理员、观众组成"
+                android:text="主题房由主持人、嘉宾、管理员、观众组成"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
