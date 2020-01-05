@@ -53,7 +53,7 @@ class LastFollowActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-
+        U.getStatusBarUtil().setTransparentBar(this, false)
         mTitlebar = findViewById(R.id.titlebar)
         mRefreshLayout = findViewById(R.id.refreshLayout)
         mContentRv = findViewById(R.id.content_rv)
