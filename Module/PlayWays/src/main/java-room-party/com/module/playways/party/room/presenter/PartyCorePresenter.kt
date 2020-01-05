@@ -389,10 +389,10 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
      * 主持人心跳
      */
     private fun startHeartbeat() {
-        if (mRoomData?.getMyUserInfoInParty()?.isHost()) {
-            heartbeatJob?.cancel()
-            heartbeatJob = launch {
-                while (true) {
+        heartbeatJob?.cancel()
+        heartbeatJob = launch {
+            while (true) {
+                if (mRoomData?.getMyUserInfoInParty()?.isHost()) {
                     val map = mutableMapOf(
                             "roomID" to mRoomData.gameId,
                             "hostUserID" to MyUserInfoManager.uid
@@ -405,6 +405,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
                     }
                     delay(60 * 1000)
+                } else {
+                    heartbeatJob?.cancel()
+                    break
                 }
             }
         }
@@ -549,7 +552,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     fun onEvent(event: PartyMyUserInfoChangeEvent) {
         DebugLogView.println(TAG, "PartyMyUserInfoChangeEvent 我是${mRoomData.myUserInfo?.role} 座位 ${mRoomData.mySeatInfo}")
         if (mRoomData.myUserInfo?.isHost() == true) {
-            startHeartbeat()
+//            startHeartbeat()
         } else if (mRoomData.myUserInfo?.isGuest() == true) {
             // 我是嘉宾了 开麦闭麦交给座位事件处理
         } else if (mRoomData.myUserInfo?.isAdmin() == true) {
@@ -564,6 +567,13 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             if (ZqEngineKit.getInstance().params.isAnchor) {
                 ZqEngineKit.getInstance().setClientRole(false)
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyHostChangeEvent) {
+        if (mRoomData.myUserInfo?.isHost() == true) {
+            startHeartbeat()
         }
     }
 
