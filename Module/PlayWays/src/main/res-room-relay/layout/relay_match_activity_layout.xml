@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     android:background="@drawable/double_room_view_bg">
 
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/match_avga"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"
+        app:antiAlias="true"
+        app:autoPlay="true"
+        app:loopCount="-1"
+        app:source="relay_match_lights.svga" />
+
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
@@ -74,7 +85,7 @@
         android:id="@+id/bottom_place"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_50_dp"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
 
     <com.component.busilib.view.recyclercardview.SpeedRecyclerView
         android:id="@+id/speed_recyclerView"
@@ -82,7 +93,5 @@
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_place"
         android:layout_below="@id/quick_tips_tv" />
-
-
 
 </RelativeLayout>

@@ -13,14 +13,16 @@ import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
-import com.common.rxretrofit.*
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
-import com.component.busilib.callback.EmptyCallback
 import com.component.busilib.manager.BgMusicManager
 import com.component.busilib.view.recyclercardview.CardScaleHelper
 import com.component.busilib.view.recyclercardview.SpeedRecyclerView
@@ -29,20 +31,16 @@ import com.dialog.view.TipsDialogView
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
-import com.module.ModuleServiceManager
 import com.module.RouterConstants
-import com.module.common.ICallback
 import com.module.playways.BaseRoomData
 import com.module.playways.R
-import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.relay.match.adapter.RelayRoomAdapter
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.match.model.RelayRecommendRoomInfo
 import com.module.playways.relay.match.view.RelayEmptyRoomCallback
 import com.module.playways.relay.room.RelayRoomActivity
-import com.module.playways.relay.room.RelayRoomData
-import com.module.playways.room.prepare.presenter.GrabMatchPresenter
 import com.module.playways.room.song.model.SongModel
+import com.opensource.svgaplayer.SVGAImageView
 import com.zq.live.proto.RelayRoom.RUserEnterMsg
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -104,6 +102,8 @@ class RelayMatchActivity : BaseActivity() {
         joinTipsTv = findViewById(R.id.join_tips_tv)
         quickTipsTv = findViewById(R.id.quick_tips_tv)
         speedRecyclerView = findViewById(R.id.speed_recyclerView)
+
+        findViewById<SVGAImageView>(R.id.match_avga).layoutParams.height = U.getDisplayUtils().phoneWidth * 230 / 375
 
         speedRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         speedRecyclerView?.adapter = adapter
