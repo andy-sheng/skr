@@ -2,6 +2,7 @@ package com.module.home.updateinfo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class UploadAgeTagActivity extends BaseActivity {
 
     String mNickName;
     int mSex;
+    int mAgaTag;
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class UploadAgeTagActivity extends BaseActivity {
         // 初始化数据
         mNickName = getIntent().getStringExtra("nickname");
 
-        mAgeTagView.setTextColor(U.getColor(R.color.white_trans_50));
+//        mAgeTagView.setTextColor(U.getColor(R.color.white_trans_50));
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -84,7 +86,17 @@ public class UploadAgeTagActivity extends BaseActivity {
 
         mAgeTagView.setListener(new AgeTagView.Listener() {
             @Override
+            public void onUnSelect() {
+                // 无选中的
+                mAgaTag = 0;
+                mSubmitTv.setAlpha(0.5f);
+                mSubmitTv.setClickable(false);
+            }
+
+            @Override
             public void onSelectedAge(int ageTag) {
+                // 有选中的
+                mAgaTag = ageTag;
                 mSubmitTv.setAlpha(1f);
                 mSubmitTv.setClickable(true);
             }
@@ -93,14 +105,13 @@ public class UploadAgeTagActivity extends BaseActivity {
         mSubmitTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                int ageStage = mAgeTagView.getSelectTag();
-                if (ageStage == 0) {
+                if (mAgaTag == 0) {
                     U.getToastUtil().showShort("您当前选择的年龄段为空");
                 } else {
                     MyUserInfoManager.INSTANCE.updateInfo(MyUserInfoManager.INSTANCE.newMyInfoUpdateParamsBuilder()
                             .setNickName(mNickName)
                             .setSex(mSex)
-                            .setAgeStage(ageStage)
+                            .setAgeStage(mAgaTag)
                             .build(), false, false, new MyUserInfoManager.ServerCallback() {
                         @Override
                         public void onSucess() {
@@ -120,7 +131,6 @@ public class UploadAgeTagActivity extends BaseActivity {
 
         mSubmitTv.setClickable(false);
         mSubmitTv.setAlpha(0.5f);
-
     }
 
     public void setSex(int sex) {

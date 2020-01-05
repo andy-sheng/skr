@@ -3,30 +3,27 @@ package com.component.person.view
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import com.common.flowlayout.FlowLayout
+import com.common.flowlayout.TagAdapter
+import com.common.flowlayout.TagFlowLayout
+import com.common.log.MyLog
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
+import com.common.view.ex.ExTextView
 import com.component.busilib.R
+import com.component.busilib.model.FeedTagModel
 
 
 class AgeTagView : ConstraintLayout {
 
-    private val age05Iv: ExImageView
-    private val age05Tv: TextView
-    private val age00Iv: ExImageView
-    private val age00Tv: TextView
-    private val age95Iv: ExImageView
-    private val age95Tv: TextView
-    private val age90Iv: ExImageView
-    private val age90Tv: TextView
-    private val age80Iv: ExImageView
-    private val age80Tv: TextView
-    private val age70Iv: ExImageView
-    private val age70Tv: TextView
+    private val tagAgeView: TagFlowLayout
+    private val tagAgeAdapter: TagAdapter<AgeTagModel>
+    private var tagDataList = ArrayList<AgeTagModel>()
 
     private var mListener: Listener? = null
-    private var ageStage: Int = 0
 
     constructor(context: Context) : super(context) {}
 
@@ -37,98 +34,51 @@ class AgeTagView : ConstraintLayout {
     init {
         View.inflate(context, R.layout.person_age_tag_view_layout, this)
 
-        age05Iv = this.findViewById(R.id.age_05_iv)
-        age05Tv = this.findViewById(R.id.age_05_tv)
-        age00Iv = this.findViewById(R.id.age_00_iv)
-        age00Tv = this.findViewById(R.id.age_00_tv)
-        age95Iv = this.findViewById(R.id.age_95_iv)
-        age95Tv = this.findViewById(R.id.age_95_tv)
-        age90Iv = this.findViewById(R.id.age_90_iv)
-        age90Tv = this.findViewById(R.id.age_90_tv)
-        age80Iv = this.findViewById(R.id.age_80_iv)
-        age80Tv = this.findViewById(R.id.age_80_tv)
-        age70Iv = this.findViewById(R.id.age_70_iv)
-        age70Tv = this.findViewById(R.id.age_70_tv)
+        tagAgeView = this.findViewById(R.id.tag_age_view)
 
-        age05Iv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                setSelectTag(1)
+        tagAgeAdapter = object : TagAdapter<AgeTagModel>(ArrayList()) {
+            override fun getView(parent: FlowLayout?, position: Int, t: AgeTagModel?): View {
+                val tv = LayoutInflater.from(parent?.context).inflate(R.layout.person_age_tag_item_layout,
+                        parent, false) as ExTextView
+                tv.text = t?.ageTagDesc
+                return tv
             }
-        })
+        }
+        tagDataList.clear()
+        tagDataList.addAll(getAgeTagList())
+        tagAgeAdapter.setTagDatas(tagDataList)
+        tagAgeView.setMaxSelectCount(1)
+        tagAgeView.adapter = tagAgeAdapter
 
-        age00Iv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                setSelectTag(2)
+        tagAgeView.setOnSelectListener {
+            if (it.isNullOrEmpty()) {
+                mListener?.onUnSelect()
+            } else {
+                it.forEach { index ->
+                    mListener?.onSelectedAge(tagDataList[index].ageTag)
+                    return@forEach
+                }
             }
-        })
-
-        age95Iv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                setSelectTag(3)
-            }
-        })
-
-        age90Iv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                setSelectTag(4)
-            }
-        })
-
-        age80Iv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                setSelectTag(5)
-            }
-        })
-
-        age70Iv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                setSelectTag(6)
-            }
-        })
-    }
-
-    fun setTextColor(color: Int) {
-        age05Tv.setTextColor(color)
-        age00Tv.setTextColor(color)
-        age95Tv.setTextColor(color)
-        age90Tv.setTextColor(color)
-        age80Tv.setTextColor(color)
-        age70Tv.setTextColor(color)
+        }
     }
 
     fun setSelectTag(ageTag: Int) {
-        ageStage = ageTag
-        age05Iv.isSelected = false
-        age00Iv.isSelected = false
-        age95Iv.isSelected = false
-        age90Iv.isSelected = false
-        age80Iv.isSelected = false
-        age70Iv.isSelected = false
-        mListener?.onSelectedAge(ageTag)
-        when (ageTag) {
-            1 -> {
-                age05Iv.isSelected = true
-            }
-            2 -> {
-                age00Iv.isSelected = true
-            }
-            3 -> {
-                age95Iv.isSelected = true
-            }
-            4 -> {
-                age90Iv.isSelected = true
-            }
-            5 -> {
-                age80Iv.isSelected = true
-            }
-            6 -> {
-                age70Iv.isSelected = true
+        tagDataList.forEachIndexed { index, model ->
+            if (ageTag == model.ageTag) {
+                val set = HashSet<Int>()
+                set.add(index)
+                tagAgeAdapter.setSelectedList(set)
+                tagAgeAdapter.notifyDataChanged()
+                return@forEachIndexed
             }
         }
     }
 
     fun getSelectTag(): Int {
-        return ageStage
+        tagAgeView.selectedList?.forEach {
+            return tagDataList[it].ageTag
+        }
+        return 0
     }
 
     fun setListener(listener: Listener) {
@@ -137,5 +87,20 @@ class AgeTagView : ConstraintLayout {
 
     public interface Listener {
         fun onSelectedAge(ageTag: Int)
+
+        fun onUnSelect()
     }
+
+    private fun getAgeTagList(): List<AgeTagModel> {
+        val list = ArrayList<AgeTagModel>()
+        list.add(AgeTagModel(1, "05后"))
+        list.add(AgeTagModel(2, "00后"))
+        list.add(AgeTagModel(3, "95后"))
+        list.add(AgeTagModel(4, "90后"))
+        list.add(AgeTagModel(5, "80后"))
+        list.add(AgeTagModel(6, "80前"))
+        return list
+    }
+
+    inner class AgeTagModel(var ageTag: Int, var ageTagDesc: String)
 }

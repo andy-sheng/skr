@@ -33,30 +33,20 @@
         android:layout_height="@dimen/view_25_dp"
         android:layout_marginTop="@dimen/view_89_dp"
         android:gravity="center"
-        android:text="让撕歌更懂你"
+        android:text="让撕歌更懂你，匹配更精准"
         android:textColor="#ffffffff"
-        android:textSize="@dimen/textsize_20_dp"
+        android:textSize="@dimen/textsize_14_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_11_dp"
-        android:gravity="center"
-        android:text="选择年龄，匹配更精准"
-        android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/textsize_16_dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_tv" />
 
     <com.component.person.view.AgeTagView
         android:id="@+id/age_tag_view"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_48_dp"
         android:layout_marginTop="@dimen/view_206_dp"
+        android:layout_marginRight="@dimen/view_48_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
