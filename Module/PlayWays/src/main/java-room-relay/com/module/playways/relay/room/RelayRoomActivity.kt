@@ -654,7 +654,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
             launch {
                 delay(500)
-                zanView.addZanXin(30)
+                repeat(30) {
+                    delay(80)
+                    zanView.addZanXin(1)
+                }
                 delay(8000)
                 if (!isFinishing && !isDestroyed) {
                     mMainContainerView.removeView(zanView)
