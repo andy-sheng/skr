@@ -45,6 +45,7 @@ object RelayRoomMsgManager : BaseMsgManager<ERelayRoomMsgType, RelayRoomMsg>() {
             msg.msgType == ERelayRoomMsgType.RRT_DEL_MUSIC -> EventBus.getDefault().post(msg.rDelMusicMsg)
             msg.msgType == ERelayRoomMsgType.RRT_UP_MUSIC -> EventBus.getDefault().post(msg.rUpMusicMsg)
             msg.msgType == ERelayRoomMsgType.RRT_MUTE -> EventBus.getDefault().post(msg.rMuteMsg)
+            msg.msgType == ERelayRoomMsgType.RRT_EXP -> EventBus.getDefault().post(msg.rExpMsg)
         }
     }
 }

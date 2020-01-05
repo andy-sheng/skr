@@ -5,14 +5,17 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
-import com.common.log.MyLog
 import com.common.view.ex.ExRelativeLayout
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.WaveProgressView
 import com.module.playways.R
 import com.module.playways.room.room.score.bar.ScoreTipsView
+import com.zq.live.proto.RelayRoom.RExpMsg
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class RelayEnergyView : ExRelativeLayout {
 
@@ -51,24 +54,19 @@ class RelayEnergyView : ExRelativeLayout {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        EventBus.getDefault().unregister(this)
     }
 
-    fun updateScore(score1: Int, songLineNum: Int) {
-        MyLog.d(mTag, "updateScore score1=$score1 songLineNum=$songLineNum")
-
-        currentScore += score1
-
-        if (currentScore > maxScore) {
-            currentFullCount++
-            fullCountTv.text = "x$currentFullCount"
-            currentScore -= maxScore
-            //满的情况下动画
-            waveProgressView.setCurrent(maxScore, "")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RExpMsg) {
+        waveProgressView.setMaxProgress(event.totalExp)
+        if (event.afterStar > event.beforeStar) {
+            waveProgressView.setCurrent(event.totalExp, "")
             playScaleAnim {
-                waveProgressView.setCurrent(currentScore, "")
+                waveProgressView.setCurrent(event.afterExp, "")
             }
         } else {
-            waveProgressView.setCurrent(currentScore, "")
+            waveProgressView.setCurrent(event.afterExp, "")
         }
     }
 
@@ -87,6 +85,11 @@ class RelayEnergyView : ExRelativeLayout {
             call.invoke()
         }
 
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        EventBus.getDefault().register(this)
     }
 
     fun reset() {

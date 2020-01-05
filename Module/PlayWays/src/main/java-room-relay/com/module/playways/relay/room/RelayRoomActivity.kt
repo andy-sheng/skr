@@ -869,7 +869,6 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     override fun receiveScoreEvent(score: Int) {
         mGrabScoreTipsView.updateScore(score, -1)
-        mRelayEnergyView?.updateScore(score, -1)
     }
 
 }

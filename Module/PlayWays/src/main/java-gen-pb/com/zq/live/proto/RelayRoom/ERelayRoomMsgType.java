@@ -61,7 +61,12 @@ public enum ERelayRoomMsgType implements WireEnum {
   /**
    * 静音
    */
-  RRT_MUTE(19);
+  RRT_MUTE(19),
+
+  /**
+   * 经验值
+   */
+  RRT_EXP(20);
 
   public static final ProtoAdapter<ERelayRoomMsgType> ADAPTER = new ProtoAdapter_ERelayRoomMsgType();
 
@@ -87,6 +92,7 @@ public enum ERelayRoomMsgType implements WireEnum {
       case 17: return RRT_DEL_MUSIC;
       case 18: return RRT_UP_MUSIC;
       case 19: return RRT_MUTE;
+      case 20: return RRT_EXP;
       default: return null;
     }
   }

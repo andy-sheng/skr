@@ -151,19 +151,28 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
   )
   private final RMuteMsg rMuteMsg;
 
+  /**
+   * 上报打分，计算获取的经验值
+   */
+  @WireField(
+      tag = 20,
+      adapter = "com.zq.live.proto.RelayRoom.RExpMsg#ADAPTER"
+  )
+  private final RExpMsg rExpMsg;
+
   public RelayRoomMsg(Long timeMs, ERelayRoomMsgType msgType, Integer roomID,
       RUserEnterMsg rUserEnterMsg, RGameOverMsg rGameOverMsg, RNextRoundMsg rNextRoundMsg,
       RUnlockMsg rUnlockMsg, RSyncMsg rSyncMsg, RReqAddMusicMsg rReqAddMusicMsg,
       RAddMusicMsg rAddMusicMsg, RDelMusicMsg rDelMusicMsg, RUpMusicMsg rUpMusicMsg,
-      RMuteMsg rMuteMsg) {
-    this(timeMs, msgType, roomID, rUserEnterMsg, rGameOverMsg, rNextRoundMsg, rUnlockMsg, rSyncMsg, rReqAddMusicMsg, rAddMusicMsg, rDelMusicMsg, rUpMusicMsg, rMuteMsg, ByteString.EMPTY);
+      RMuteMsg rMuteMsg, RExpMsg rExpMsg) {
+    this(timeMs, msgType, roomID, rUserEnterMsg, rGameOverMsg, rNextRoundMsg, rUnlockMsg, rSyncMsg, rReqAddMusicMsg, rAddMusicMsg, rDelMusicMsg, rUpMusicMsg, rMuteMsg, rExpMsg, ByteString.EMPTY);
   }
 
   public RelayRoomMsg(Long timeMs, ERelayRoomMsgType msgType, Integer roomID,
       RUserEnterMsg rUserEnterMsg, RGameOverMsg rGameOverMsg, RNextRoundMsg rNextRoundMsg,
       RUnlockMsg rUnlockMsg, RSyncMsg rSyncMsg, RReqAddMusicMsg rReqAddMusicMsg,
       RAddMusicMsg rAddMusicMsg, RDelMusicMsg rDelMusicMsg, RUpMusicMsg rUpMusicMsg,
-      RMuteMsg rMuteMsg, ByteString unknownFields) {
+      RMuteMsg rMuteMsg, RExpMsg rExpMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -178,6 +187,7 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
     this.rDelMusicMsg = rDelMusicMsg;
     this.rUpMusicMsg = rUpMusicMsg;
     this.rMuteMsg = rMuteMsg;
+    this.rExpMsg = rExpMsg;
   }
 
   @Override
@@ -196,6 +206,7 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
     builder.rDelMusicMsg = rDelMusicMsg;
     builder.rUpMusicMsg = rUpMusicMsg;
     builder.rMuteMsg = rMuteMsg;
+    builder.rExpMsg = rExpMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -218,7 +229,8 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
         && Internal.equals(rAddMusicMsg, o.rAddMusicMsg)
         && Internal.equals(rDelMusicMsg, o.rDelMusicMsg)
         && Internal.equals(rUpMusicMsg, o.rUpMusicMsg)
-        && Internal.equals(rMuteMsg, o.rMuteMsg);
+        && Internal.equals(rMuteMsg, o.rMuteMsg)
+        && Internal.equals(rExpMsg, o.rExpMsg);
   }
 
   @Override
@@ -239,6 +251,7 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
       result = result * 37 + (rDelMusicMsg != null ? rDelMusicMsg.hashCode() : 0);
       result = result * 37 + (rUpMusicMsg != null ? rUpMusicMsg.hashCode() : 0);
       result = result * 37 + (rMuteMsg != null ? rMuteMsg.hashCode() : 0);
+      result = result * 37 + (rExpMsg != null ? rExpMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -260,6 +273,7 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
     if (rDelMusicMsg != null) builder.append(", rDelMusicMsg=").append(rDelMusicMsg);
     if (rUpMusicMsg != null) builder.append(", rUpMusicMsg=").append(rUpMusicMsg);
     if (rMuteMsg != null) builder.append(", rMuteMsg=").append(rMuteMsg);
+    if (rExpMsg != null) builder.append(", rExpMsg=").append(rExpMsg);
     return builder.replace(0, 2, "RelayRoomMsg{").append('}').toString();
   }
 
@@ -404,6 +418,16 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
   }
 
   /**
+   * 上报打分，计算获取的经验值
+   */
+  public RExpMsg getRExpMsg() {
+    if(rExpMsg==null){
+        return new RExpMsg.Builder().build();
+    }
+    return rExpMsg;
+  }
+
+  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -494,6 +518,13 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
     return rMuteMsg!=null;
   }
 
+  /**
+   * 上报打分，计算获取的经验值
+   */
+  public boolean hasRExpMsg() {
+    return rExpMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<RelayRoomMsg, Builder> {
     private Long timeMs;
 
@@ -520,6 +551,8 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
     private RUpMusicMsg rUpMusicMsg;
 
     private RMuteMsg rMuteMsg;
+
+    private RExpMsg rExpMsg;
 
     public Builder() {
     }
@@ -628,9 +661,17 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
       return this;
     }
 
+    /**
+     * 上报打分，计算获取的经验值
+     */
+    public Builder setRExpMsg(RExpMsg rExpMsg) {
+      this.rExpMsg = rExpMsg;
+      return this;
+    }
+
     @Override
     public RelayRoomMsg build() {
-      return new RelayRoomMsg(timeMs, msgType, roomID, rUserEnterMsg, rGameOverMsg, rNextRoundMsg, rUnlockMsg, rSyncMsg, rReqAddMusicMsg, rAddMusicMsg, rDelMusicMsg, rUpMusicMsg, rMuteMsg, super.buildUnknownFields());
+      return new RelayRoomMsg(timeMs, msgType, roomID, rUserEnterMsg, rGameOverMsg, rNextRoundMsg, rUnlockMsg, rSyncMsg, rReqAddMusicMsg, rAddMusicMsg, rDelMusicMsg, rUpMusicMsg, rMuteMsg, rExpMsg, super.buildUnknownFields());
     }
   }
 
@@ -654,6 +695,7 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
           + RDelMusicMsg.ADAPTER.encodedSizeWithTag(17, value.rDelMusicMsg)
           + RUpMusicMsg.ADAPTER.encodedSizeWithTag(18, value.rUpMusicMsg)
           + RMuteMsg.ADAPTER.encodedSizeWithTag(19, value.rMuteMsg)
+          + RExpMsg.ADAPTER.encodedSizeWithTag(20, value.rExpMsg)
           + value.unknownFields().size();
     }
 
@@ -672,6 +714,7 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
       RDelMusicMsg.ADAPTER.encodeWithTag(writer, 17, value.rDelMusicMsg);
       RUpMusicMsg.ADAPTER.encodeWithTag(writer, 18, value.rUpMusicMsg);
       RMuteMsg.ADAPTER.encodeWithTag(writer, 19, value.rMuteMsg);
+      RExpMsg.ADAPTER.encodeWithTag(writer, 20, value.rExpMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -701,6 +744,7 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
           case 17: builder.setRDelMusicMsg(RDelMusicMsg.ADAPTER.decode(reader)); break;
           case 18: builder.setRUpMusicMsg(RUpMusicMsg.ADAPTER.decode(reader)); break;
           case 19: builder.setRMuteMsg(RMuteMsg.ADAPTER.decode(reader)); break;
+          case 20: builder.setRExpMsg(RExpMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -725,6 +769,7 @@ public final class RelayRoomMsg extends Message<RelayRoomMsg, RelayRoomMsg.Build
       if (builder.rDelMusicMsg != null) builder.rDelMusicMsg = RDelMusicMsg.ADAPTER.redact(builder.rDelMusicMsg);
       if (builder.rUpMusicMsg != null) builder.rUpMusicMsg = RUpMusicMsg.ADAPTER.redact(builder.rUpMusicMsg);
       if (builder.rMuteMsg != null) builder.rMuteMsg = RMuteMsg.ADAPTER.redact(builder.rMuteMsg);
+      if (builder.rExpMsg != null) builder.rExpMsg = RExpMsg.ADAPTER.redact(builder.rExpMsg);
       builder.clearUnknownFields();
       return builder.build();
     }

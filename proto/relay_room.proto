@@ -28,6 +28,19 @@ message RelayRoomMsg
     RDelMusicMsg rDelMusicMsg       = 17; //删歌
     RUpMusicMsg rUpMusicMsg         = 18; //置顶
     RMuteMsg rMuteMsg               = 19; //静音
+    RExpMsg rExpMsg                 = 20; //上报打分，计算获取的经验值
+}
+
+message RExpMsg
+{
+    uint32 totalExp   = 1; //总经验值
+    uint32 beforeExp  = 2; //之前经验值
+    uint32 afterExp   = 3; //之后经验值
+    uint32 incrExp    = 4; //增加经验值
+    uint32 beforeStar = 5; //之前星数
+    uint32 afterStar  = 6; //之后星数
+    uint32 incrStar   = 7; //增加星数
+    uint32 roundSeq   = 8; //轮次序号
 }
 
 enum ERelayRoomMsgType {
@@ -43,6 +56,7 @@ enum ERelayRoomMsgType {
     RRT_DEL_MUSIC     = 17; //删歌
     RRT_UP_MUSIC      = 18; //置顶
     RRT_MUTE          = 19; //静音
+    RRT_EXP           = 20; //经验值
 }
 
 message RMuteMsg

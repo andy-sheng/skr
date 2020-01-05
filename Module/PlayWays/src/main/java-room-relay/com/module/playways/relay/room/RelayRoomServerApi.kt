@@ -79,4 +79,7 @@ interface RelayRoomServerApi {
      */
     @GET("http://dev.game.inframe.mobi/v1/relaygame/result")
     fun getRelayResult(@Query("roomID") roomID: Int): Call<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/pk-commit-segment-result")
+    fun sendPkPerSegmentResult(@Body body: RequestBody): Call<ApiResult>
 }
