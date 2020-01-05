@@ -2,9 +2,8 @@ package com.module.home.updateinfo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -23,13 +22,14 @@ import com.module.playways.IPlaywaysModeService;
 import com.component.person.view.AgeTagView;
 import com.zq.live.proto.Common.ESex;
 
-@Route(path = RouterConstants.ACTIVITY_UPLOAD_AGE)
-public class UploadAgeTagActivity extends BaseActivity {
+@Route(path = RouterConstants.ACTIVITY_UPLOAD_SEX_AGE)
+public class UploadSexAndAgeTagActivity extends BaseActivity {
 
     CommonTitleBar mTitlebar;
-    ExImageView mSecretIv;
     ExImageView mMaleIv;
+    ImageView mMaleSelect;
     ExImageView mFemaleIv;
+    ImageView mFemaleSelect;
     AgeTagView mAgeTagView;
     ExTextView mSubmitTv;
 
@@ -44,10 +44,12 @@ public class UploadAgeTagActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        U.getStatusBarUtil().setTransparentBar(this, false);
         mTitlebar = findViewById(R.id.titlebar);
-        mSecretIv = findViewById(R.id.secret_iv);
         mMaleIv = findViewById(R.id.male_iv);
+        mMaleSelect = findViewById(R.id.male_select);
         mFemaleIv = findViewById(R.id.female_iv);
+        mFemaleSelect = findViewById(R.id.female_select);
         mAgeTagView = findViewById(R.id.age_tag_view);
 
         mSubmitTv = findViewById(R.id.submit_tv);
@@ -77,13 +79,6 @@ public class UploadAgeTagActivity extends BaseActivity {
             }
         });
 
-        mSecretIv.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                setSex(ESex.SX_UNKNOWN.getValue());
-            }
-        });
-
         mAgeTagView.setListener(new AgeTagView.Listener() {
             @Override
             public void onUnSelect() {
@@ -105,7 +100,9 @@ public class UploadAgeTagActivity extends BaseActivity {
         mSubmitTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mAgaTag == 0) {
+                if (mSex != ESex.SX_MALE.getValue() && mSex != ESex.SX_FEMALE.getValue()) {
+                    U.getToastUtil().showShort("您当前选择的性别为空");
+                } else if (mAgaTag == 0) {
                     U.getToastUtil().showShort("您当前选择的年龄段为空");
                 } else {
                     MyUserInfoManager.INSTANCE.updateInfo(MyUserInfoManager.INSTANCE.newMyInfoUpdateParamsBuilder()
@@ -138,15 +135,18 @@ public class UploadAgeTagActivity extends BaseActivity {
         if (sex == ESex.SX_MALE.getValue()) {
             mMaleIv.setSelected(true);
             mFemaleIv.setSelected(false);
-            mSecretIv.setSelected(false);
+            mMaleSelect.setVisibility(View.VISIBLE);
+            mFemaleSelect.setVisibility(View.GONE);
         } else if (sex == ESex.SX_FEMALE.getValue()) {
             mMaleIv.setSelected(false);
             mFemaleIv.setSelected(true);
-            mSecretIv.setSelected(false);
+            mMaleSelect.setVisibility(View.GONE);
+            mFemaleSelect.setVisibility(View.VISIBLE);
         } else {
             mMaleIv.setSelected(false);
             mFemaleIv.setSelected(false);
-            mSecretIv.setSelected(true);
+            mMaleSelect.setVisibility(View.GONE);
+            mFemaleSelect.setVisibility(View.GONE);
         }
     }
 

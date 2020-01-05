@@ -3,6 +3,7 @@ package com.module.home.updateinfo.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -19,6 +20,8 @@ public class EditInfoSexFragment extends BaseFragment {
     CommonTitleBar mTitlebar;
     ExImageView mMale;
     ExImageView mFemale;
+    ImageView maleSelect;
+    ImageView femaleSelect;
 
     int sex = 0;// 未知、非法参数
 
@@ -29,9 +32,11 @@ public class EditInfoSexFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
-        mMale = (ExImageView) getRootView().findViewById(R.id.male);
-        mFemale = (ExImageView) getRootView().findViewById(R.id.female);
+        mTitlebar = getRootView().findViewById(R.id.titlebar);
+        mMale = getRootView().findViewById(R.id.male);
+        mFemale = getRootView().findViewById(R.id.female);
+        maleSelect = getRootView().findViewById(R.id.male_select);
+        femaleSelect = getRootView().findViewById(R.id.female_select);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -103,6 +108,13 @@ public class EditInfoSexFragment extends BaseFragment {
 
         mMale.setClickable(isMale ? false : true);
         mFemale.setClickable(isMale ? true : false);
+        if (isMale) {
+            maleSelect.setVisibility(View.VISIBLE);
+            femaleSelect.setVisibility(View.GONE);
+        } else {
+            maleSelect.setVisibility(View.GONE);
+            femaleSelect.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -8,7 +8,7 @@ public interface RouterConstants {
     String ACTIVITY_FLUTTER = "/flutter/FlutterActivity";
     String ACTIVITY_HOME = "/home/HomeActivity";
     String ACTIVITY_UPLOAD = "/home/UploadAccountInfoActivity";
-    String ACTIVITY_UPLOAD_AGE = "/home/UploadAgeTagActivity";
+    String ACTIVITY_UPLOAD_SEX_AGE = "/home/UploadSexAndAgeTagActivity";
     String ACTIVITY_EDIT_INFO = "/home/EditInfoActivity";
     String ACTIVITY_EDIT_AGE = "/home/EditAgeTagActivity";
 

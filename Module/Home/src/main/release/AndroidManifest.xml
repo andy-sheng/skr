@@ -75,7 +75,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
-            android:name=".updateinfo.UploadAgeTagActivity"
+            android:name=".updateinfo.UploadSexAndAgeTagActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

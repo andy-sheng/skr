@@ -22,14 +22,12 @@ import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.zq.live.proto.Common.ESex;
 
 import java.util.concurrent.TimeUnit;
 
@@ -188,7 +186,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
     }
 
     public void goAgeTagUpload() {
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD_AGE)
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD_SEX_AGE)
                 .withString("nickname", mNickName)
                 .greenChannel()
                 .navigation();
