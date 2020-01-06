@@ -101,7 +101,7 @@ class RelayContinueSingView : ExRelativeLayout {
 
         var t = roomData?.configModel?.durationTimeMs ?: 0
 
-        var leftTs = t - (roomData?.getSingCurPosition() ?: 0) - ts
+        var leftTs = t - ts
         if (leftTs < 0) {
             leftTs = 0
         }
