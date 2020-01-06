@@ -34,15 +34,6 @@ open abstract class VoiceControlPanelView : ScrollView {
     protected var mDianyinSbtn: AppCompatRadioButton?=null
     protected var mKonglingSbtn: AppCompatRadioButton?=null
 
-    // 记录值用来标记是否改变
-    internal var mBeforeMode: Params.AudioEffect? = null
-    internal var mBeforePeopleVoice: Int = 0
-    internal var mBeforeMusicVoice: Int = 0
-
-    internal var mAfterMode: Params.AudioEffect? = null
-    internal var mAfterPeopleVoice: Int = 0
-    internal var mAfterMusicVoice: Int = 0
-
     internal var isShowACC = true  //是否显示伴奏
 
 
@@ -51,9 +42,6 @@ open abstract class VoiceControlPanelView : ScrollView {
     protected open fun getMarginLeft():Int{
         return U.getDisplayUtils().screenWidth - U.getDisplayUtils().dip2px((30 + 24).toFloat()) - U.getDisplayUtils().dip2px((53 * 5).toFloat())
     }
-
-    val isChange: Boolean
-        get() = !(mBeforeMode == mAfterMode && mBeforeMusicVoice == mAfterMusicVoice && mBeforePeopleVoice == mAfterPeopleVoice)
 
     constructor(context: Context?) : super(context) {
         init(context)
@@ -103,8 +91,9 @@ open abstract class VoiceControlPanelView : ScrollView {
         mPeopleVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 //                ZqEngineKit.getInstance().adjustPlaybackSignalVolume(progress);
-                mAfterPeopleVoice = progress
-                ZqEngineKit.getInstance().adjustRecordingSignalVolume(progress)
+                if(progress!=ZqEngineKit.getInstance().params.recordingSignalVolume){
+                    ZqEngineKit.getInstance().adjustRecordingSignalVolume(progress)
+                }
 //                ZqEngineKit.getInstance().adjustPlaybackSignalVolume(progress)
             }
 
@@ -119,9 +108,10 @@ open abstract class VoiceControlPanelView : ScrollView {
 
         mMusicVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                mAfterMusicVoice = progress
-                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(progress)
-                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(progress,true)
+                if(progress!=ZqEngineKit.getInstance().params.audioMixingPublishVolume){
+                    ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(progress)
+                    ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(progress,true)
+                }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -136,23 +126,18 @@ open abstract class VoiceControlPanelView : ScrollView {
         mScenesBtnGroup?.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.default_sbtn -> {
-                    mAfterMode = Params.AudioEffect.none
                     ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.none)
                 }
                 R.id.ktv_sbtn -> {
-                    mAfterMode = Params.AudioEffect.ktv
                     ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.ktv)
                 }
                 R.id.rock_sbtn -> {
-                    mAfterMode = Params.AudioEffect.rock
                     ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.rock)
                 }
                 R.id.liuxing_sbtn -> {
-                    mAfterMode = Params.AudioEffect.liuxing
                     ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.liuxing)
                 }
                 R.id.kongling_sbtn -> {
-                    mAfterMode = Params.AudioEffect.kongling
                     ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.kongling)
                 }
             }
@@ -200,13 +185,6 @@ open abstract class VoiceControlPanelView : ScrollView {
         mPeopleVoiceSeekbar?.progress = ZqEngineKit.getInstance().params.recordingSignalVolume
         mMusicVoiceSeekbar?.progress = ZqEngineKit.getInstance().params.audioMixingPlayoutVolume
 
-        mBeforeMode = styleEnum
-        mBeforePeopleVoice = ZqEngineKit.getInstance().params.recordingSignalVolume
-        mBeforeMusicVoice = ZqEngineKit.getInstance().params.audioMixingPlayoutVolume
-
-        mAfterMode = styleEnum
-        mAfterPeopleVoice = ZqEngineKit.getInstance().params.recordingSignalVolume
-        mAfterMusicVoice = ZqEngineKit.getInstance().params.audioMixingPlayoutVolume
 
         if(ZqEngineKit.getInstance().params.isUseExternalAudio){
             mEarTv?.visibility = View.VISIBLE
