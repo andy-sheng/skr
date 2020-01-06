@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:avatarLevel="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,79 +27,154 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/content_area"
-        android:layout_width="@dimen/view_0_dp"
-        android:layout_height="@dimen/view_0_dp"
-        android:layout_marginLeft="@dimen/view_30_dp"
-        android:layout_marginTop="@dimen/view_42_dp"
-        android:layout_marginRight="@dimen/view_30_dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_62_dp"
-        android:background="@drawable/common_gradient_bg"
         app:layout_constrainedHeight="true"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@id/back_tv"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/report_tv">
+        app:layout_constraintTop_toBottomOf="@id/title">
 
-        <com.component.busilib.view.AvatarLevelView
-            android:id="@+id/avatar_level"
-            android:layout_width="@dimen/view_80_dp"
-            android:layout_height="@dimen/view_85_dp"
-            android:layout_marginTop="@dimen/view_30_dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            avatarLevel:avatarSize="@dimen/view_45_dp" />
-
-        <TextView
-            android:id="@+id/game_status_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_30_dp"
-            android:layout_marginTop="@dimen/view_144_dp"
-            android:textColor="@color/black_trans_80"
-            android:textSize="@dimen/textsize_24_dp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/relay_result_bg"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/game_time_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_25_dp"
-            android:layout_marginTop="@dimen/view_4_dp"
-            android:gravity="center"
-            android:textColor="@color/black_trans_50"
-            android:textSize="@dimen/textsize_14_dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/game_status_tv" />
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/avatar_left_iv"
+            android:layout_width="@dimen/view_58_dp"
+            android:layout_height="@dimen/view_58_dp"
+            android:layout_marginTop="@dimen/view_200_dp"
+            app:layout_constraintEnd_toStartOf="@+id/avatar_right_iv"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <com.common.view.ex.ExTextView
+            android:id="@+id/left_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:lineSpacingExtra="@dimen/view_3_dp"
-            android:text="你们的相互陪伴\n让岁月多一份温暖"
-            android:textColor="@color/black_trans_50"
-            android:textSize="@dimen/textsize_12_dp"
-            app:layout_constraintBottom_toTopOf="@id/follow_tv"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/game_time_tv" />
-
-        <TextView
-            android:id="@+id/follow_tv"
-            android:layout_width="@dimen/view_136_dp"
-            android:layout_height="@dimen/view_40_dp"
-            android:layout_marginBottom="@dimen/view_22_dp"
-            android:background="@drawable/common_yellow_button_icon"
-            android:gravity="center"
-            android:paddingBottom="@dimen/view_5_dp"
-            android:text="关注Ta"
-            android:textColor="#e68B572A"
+            android:layout_marginTop="@dimen/view_8_dp"
+            android:ellipsize="end"
+            android:maxWidth="@dimen/view_68_dp"
+            android:maxLines="1"
+            android:textColor="@color/black"
             android:textSize="@dimen/textsize_14_dp"
             android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@+id/avatar_left_iv"
+            app:layout_constraintRight_toRightOf="@+id/avatar_left_iv"
+            app:layout_constraintTop_toBottomOf="@+id/avatar_left_iv" />
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/avatar_right_iv"
+            android:layout_width="@dimen/view_58_dp"
+            android:layout_height="@dimen/view_58_dp"
+            android:layout_marginLeft="@dimen/view_dimen_99"
+            android:layout_marginTop="@dimen/view_200_dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/avatar_left_iv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/right_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_8_dp"
+            android:ellipsize="end"
+            android:maxWidth="@dimen/view_68_dp"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_14_dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@+id/avatar_right_iv"
+            app:layout_constraintRight_toRightOf="@+id/avatar_right_iv"
+            app:layout_constraintTop_toBottomOf="@+id/avatar_right_iv" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/fen_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="86"
+            android:textColor="#F5A623"
+            android:textSize="49dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/right_name_tv" />
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/view_14_dp"
+            android:text="分"
+            android:textColor="#BD8424"
+            android:textSize="@dimen/textsize_12_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/fen_tv"
+            app:layout_constraintLeft_toRightOf="@+id/fen_tv" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tips_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="你们的声音匹配度很高哟～"
+            android:textColor="@color/black_trans_50"
+            android:textSize="@dimen/textsize_12_dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fen_tv" />
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/xin_iv"
+            android:layout_width="@dimen/view_16_dp"
+            android:layout_height="@dimen/view_18_dp"
+            android:layout_marginTop="@dimen/view_15_dp"
+            android:background="@drawable/relay_result_xin"
+            app:layout_constraintLeft_toLeftOf="@+id/avatar_left_iv"
+            app:layout_constraintRight_toRightOf="@+id/avatar_left_iv"
+            app:layout_constraintTop_toBottomOf="@+id/tips_tv" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/xin_count_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_3_dp"
+            android:maxWidth="@dimen/view_68_dp"
+            android:text="X12"
+            android:textColor="#BD8424"
+            android:textSize="@dimen/textsize_12_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/xin_iv"
+            app:layout_constraintLeft_toRightOf="@+id/xin_iv"
+            app:layout_constraintTop_toTopOf="@+id/xin_iv" />
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/coin_iv"
+            android:layout_width="@dimen/view_16_dp"
+            android:layout_height="@dimen/view_18_dp"
+            android:layout_marginTop="@dimen/view_15_dp"
+            android:background="@drawable/relay_result_coin"
+            app:layout_constraintLeft_toLeftOf="@+id/avatar_right_iv"
+            app:layout_constraintRight_toRightOf="@+id/avatar_right_iv"
+            app:layout_constraintTop_toBottomOf="@+id/tips_tv" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/coin_count_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_3_dp"
+            android:maxWidth="@dimen/view_68_dp"
+            android:text="X12"
+            android:textColor="#BD8424"
+            android:textSize="@dimen/textsize_12_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/coin_iv"
+            app:layout_constraintLeft_toRightOf="@+id/coin_iv"
+            app:layout_constraintTop_toTopOf="@+id/coin_iv" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/follow_tv"
+            android:layout_width="@dimen/view_131_dp"
+            android:layout_height="@dimen/view_47_dp"
+            android:layout_marginBottom="@dimen/view_92_dp"
+            android:background="@drawable/relay_follow"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
@@ -112,7 +186,6 @@
         android:id="@+id/back_tv"
         android:layout_width="@dimen/view_136_dp"
         android:layout_height="@dimen/view_32_dp"
-        android:layout_marginBottom="@dimen/view_50_dp"
         android:gravity="center"
         android:text="返回"
         android:textColor="#e68B572A"

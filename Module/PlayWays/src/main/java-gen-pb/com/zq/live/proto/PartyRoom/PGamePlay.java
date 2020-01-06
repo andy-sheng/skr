@@ -30,6 +30,8 @@ public final class PGamePlay extends Message<PGamePlay, PGamePlay.Builder> {
 
   public static final String DEFAULT_PLAYCARD = "";
 
+  public static final String DEFAULT_UPLOADER = "";
+
   /**
    * 剧本标识
    */
@@ -66,17 +68,28 @@ public final class PGamePlay extends Message<PGamePlay, PGamePlay.Builder> {
   )
   private final String playCard;
 
-  public PGamePlay(Integer playID, String playName, String playContent, String playCard) {
-    this(playID, playName, playContent, playCard, ByteString.EMPTY);
+  /**
+   * 上传者
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String uploader;
+
+  public PGamePlay(Integer playID, String playName, String playContent, String playCard,
+      String uploader) {
+    this(playID, playName, playContent, playCard, uploader, ByteString.EMPTY);
   }
 
   public PGamePlay(Integer playID, String playName, String playContent, String playCard,
-      ByteString unknownFields) {
+      String uploader, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.playID = playID;
     this.playName = playName;
     this.playContent = playContent;
     this.playCard = playCard;
+    this.uploader = uploader;
   }
 
   @Override
@@ -86,6 +99,7 @@ public final class PGamePlay extends Message<PGamePlay, PGamePlay.Builder> {
     builder.playName = playName;
     builder.playContent = playContent;
     builder.playCard = playCard;
+    builder.uploader = uploader;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -99,7 +113,8 @@ public final class PGamePlay extends Message<PGamePlay, PGamePlay.Builder> {
         && Internal.equals(playID, o.playID)
         && Internal.equals(playName, o.playName)
         && Internal.equals(playContent, o.playContent)
-        && Internal.equals(playCard, o.playCard);
+        && Internal.equals(playCard, o.playCard)
+        && Internal.equals(uploader, o.uploader);
   }
 
   @Override
@@ -111,6 +126,7 @@ public final class PGamePlay extends Message<PGamePlay, PGamePlay.Builder> {
       result = result * 37 + (playName != null ? playName.hashCode() : 0);
       result = result * 37 + (playContent != null ? playContent.hashCode() : 0);
       result = result * 37 + (playCard != null ? playCard.hashCode() : 0);
+      result = result * 37 + (uploader != null ? uploader.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -123,6 +139,7 @@ public final class PGamePlay extends Message<PGamePlay, PGamePlay.Builder> {
     if (playName != null) builder.append(", playName=").append(playName);
     if (playContent != null) builder.append(", playContent=").append(playContent);
     if (playCard != null) builder.append(", playCard=").append(playCard);
+    if (uploader != null) builder.append(", uploader=").append(uploader);
     return builder.replace(0, 2, "PGamePlay{").append('}').toString();
   }
 
@@ -177,6 +194,16 @@ public final class PGamePlay extends Message<PGamePlay, PGamePlay.Builder> {
   }
 
   /**
+   * 上传者
+   */
+  public String getUploader() {
+    if(uploader==null){
+        return DEFAULT_UPLOADER;
+    }
+    return uploader;
+  }
+
+  /**
    * 剧本标识
    */
   public boolean hasPlayID() {
@@ -204,6 +231,13 @@ public final class PGamePlay extends Message<PGamePlay, PGamePlay.Builder> {
     return playCard!=null;
   }
 
+  /**
+   * 上传者
+   */
+  public boolean hasUploader() {
+    return uploader!=null;
+  }
+
   public static final class Builder extends Message.Builder<PGamePlay, Builder> {
     private Integer playID;
 
@@ -212,6 +246,8 @@ public final class PGamePlay extends Message<PGamePlay, PGamePlay.Builder> {
     private String playContent;
 
     private String playCard;
+
+    private String uploader;
 
     public Builder() {
     }
@@ -248,9 +284,17 @@ public final class PGamePlay extends Message<PGamePlay, PGamePlay.Builder> {
       return this;
     }
 
+    /**
+     * 上传者
+     */
+    public Builder setUploader(String uploader) {
+      this.uploader = uploader;
+      return this;
+    }
+
     @Override
     public PGamePlay build() {
-      return new PGamePlay(playID, playName, playContent, playCard, super.buildUnknownFields());
+      return new PGamePlay(playID, playName, playContent, playCard, uploader, super.buildUnknownFields());
     }
   }
 
@@ -265,6 +309,7 @@ public final class PGamePlay extends Message<PGamePlay, PGamePlay.Builder> {
           + ProtoAdapter.STRING.encodedSizeWithTag(2, value.playName)
           + ProtoAdapter.STRING.encodedSizeWithTag(3, value.playContent)
           + ProtoAdapter.STRING.encodedSizeWithTag(4, value.playCard)
+          + ProtoAdapter.STRING.encodedSizeWithTag(5, value.uploader)
           + value.unknownFields().size();
     }
 
@@ -274,6 +319,7 @@ public final class PGamePlay extends Message<PGamePlay, PGamePlay.Builder> {
       ProtoAdapter.STRING.encodeWithTag(writer, 2, value.playName);
       ProtoAdapter.STRING.encodeWithTag(writer, 3, value.playContent);
       ProtoAdapter.STRING.encodeWithTag(writer, 4, value.playCard);
+      ProtoAdapter.STRING.encodeWithTag(writer, 5, value.uploader);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -287,6 +333,7 @@ public final class PGamePlay extends Message<PGamePlay, PGamePlay.Builder> {
           case 2: builder.setPlayName(ProtoAdapter.STRING.decode(reader)); break;
           case 3: builder.setPlayContent(ProtoAdapter.STRING.decode(reader)); break;
           case 4: builder.setPlayCard(ProtoAdapter.STRING.decode(reader)); break;
+          case 5: builder.setUploader(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

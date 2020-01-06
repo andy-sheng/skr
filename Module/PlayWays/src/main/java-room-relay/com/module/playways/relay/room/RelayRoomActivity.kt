@@ -3,6 +3,7 @@ package com.module.playways.relay.room
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.support.constraint.ConstraintLayout
 import android.view.*
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -32,6 +33,7 @@ import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.GrabScoreTipsView
+import com.module.playways.grab.room.view.RelayEnergyView
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.view.normal.NormalOthersSingCardView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
@@ -44,6 +46,7 @@ import com.module.playways.relay.room.bottom.RelayBottomContainerView
 import com.module.playways.relay.room.event.RelayLockChangeEvent
 import com.module.playways.relay.room.model.RelayRoundInfoModel
 import com.module.playways.relay.room.presenter.RelayCorePresenter
+import com.module.playways.relay.room.top.RelayContinueSingView
 import com.module.playways.relay.room.top.RelayTopContentView
 import com.module.playways.relay.room.top.RelayTopOpView
 import com.module.playways.relay.room.ui.IRelayRoomView
@@ -66,12 +69,15 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
+import com.module.playways.view.ZanView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.RelayRoom.ERRoundStatus
 import com.zq.live.proto.RelayRoom.RAddMusicMsg
 import com.zq.live.proto.RelayRoom.RReqAddMusicMsg
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -112,6 +118,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     internal lateinit var mTopOpView: RelayTopOpView
     internal lateinit var mTopContentView: RelayTopContentView
     internal lateinit var mExitIv: ImageView
+    internal lateinit var mMainContainerView: ConstraintLayout
 
     internal lateinit var mGameEffectBgView: GameEffectBgView
 
@@ -133,6 +140,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 //    private lateinit var mGiveUpView: GrabGiveupView
 
     private var mVIPEnterView: VIPEnterView? = null
+    private var mRelayEnergyView: RelayEnergyView? = null
 //    lateinit var mHasSelectSongNumTv: ExTextView
 
     // 都是dialogplus
@@ -142,6 +150,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     //    private var mMicSettingView: MicSettingView? = null
     private var mGameRuleDialog: DialogPlus? = null
     private var mTipsDialogView: TipsDialogView? = null
+    private var mRelayContinueSingView: RelayContinueSingView? = null
 
     internal var mVipEnterPresenter: VipEnterPresenter? = null
 
@@ -214,7 +223,9 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         addPresent(mVipEnterPresenter)
 //        addPresent(replyRoomInvitePresenter)
         // 请保证从下面的view往上面的view开始初始化
-        findViewById<View>(R.id.main_act_container).setOnTouchListener { v, event ->
+        mMainContainerView = findViewById(R.id.main_act_container)
+
+        mMainContainerView.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 mInputContainerView.hideSoftInput()
             }
@@ -229,9 +240,11 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         initGiftDisplayView()
         initTopView()
         initTurnSenceView()
+        initRelayContinueSingView()
 
         initVipEnterView()
         initMicSeatView()
+        initRelayEnergyView()
 
         if (mRoomData.isEnterFromInvite() && mRoomData.isPersonArrive()) {
             mAddSongIv.visibility = View.VISIBLE
@@ -264,6 +277,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             if (it.ranking != null) {
                 mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
             }
+        }
+
+        if (!mRoomData.isEnterFromInvite()) {
+            mRelayContinueSingView?.delayShowContinueView(mRoomData.configModel.unLockWaitTimeMs?.toLong())
         }
 
         U.getStatusBarUtil().setTransparentBar(this, false)
@@ -333,6 +350,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 //        }
     }
 
+    private fun initRelayEnergyView() {
+        mRelayEnergyView = findViewById(R.id.relay_energy_view)
+    }
+
     private fun initVipEnterView() {
         mVIPEnterView = VIPEnterView(findViewById(R.id.vip_enter_view_stub))
     }
@@ -344,6 +365,14 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     private fun initInputView() {
         mInputContainerView = findViewById(R.id.input_container_view)
         mInputContainerView.setRoomData(mRoomData)
+    }
+
+    private fun initRelayContinueSingView() {
+        mRelayContinueSingView = findViewById(R.id.relay_continue_sing_view)
+        mRelayContinueSingView?.roomData = mRoomData
+        mRelayContinueSingView?.mContinueListener = {
+            mCorePresenter.sendUnlock()
+        }
     }
 
 
@@ -619,6 +648,21 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         if (mRoomData?.unLockMe && mRoomData?.unLockPeer) {
             mChangeSongIv.visibility = View.VISIBLE
             mAddSongIv.visibility = View.VISIBLE
+
+            val zanView = ZanView(this)
+            mMainContainerView.addView(zanView, ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+
+            launch {
+                delay(500)
+                repeat(30) {
+                    delay(80)
+                    zanView.addZanXin(1)
+                }
+                delay(8000)
+                if (!isFinishing && !isDestroyed) {
+                    mMainContainerView.removeView(zanView)
+                }
+            }
         }
     }
 

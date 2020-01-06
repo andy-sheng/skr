@@ -44,14 +44,14 @@ public class MyConversationListAdapter extends ConversationListAdapter {
         holder.rightImageLayout = result.findViewById(R.id.rc_item2);
         holder.leftUnReadView = result.findViewById(R.id.rc_unread_view_left);
         holder.rightUnReadView = result.findViewById(R.id.rc_unread_view_right);
-        holder.leftImageView = (AsyncImageView) result.findViewById(R.id.rc_left);
-        holder.rightImageView = (AsyncImageView) result.findViewById(R.id.rc_right);
-        holder.contentView = (ProviderContainerView) result.findViewById(R.id.rc_content);
-        holder.unReadMsgCount = (TextView) result.findViewById(R.id.rc_unread_message);
-        holder.unReadMsgCountRight = (TextView) result.findViewById(R.id.rc_unread_message_right);
-        holder.unReadMsgCountIcon = (ImageView) result.findViewById(R.id.rc_unread_message_icon);
-        holder.unReadMsgCountRightIcon = (ImageView) result.findViewById(R.id.rc_unread_message_icon_right);
-        holder.vipIv = (ImageView) result.findViewById(R.id.vip_iv);
+        holder.leftImageView = result.findViewById(R.id.rc_left);
+        holder.rightImageView = result.findViewById(R.id.rc_right);
+        holder.contentView = result.findViewById(R.id.rc_content);
+        holder.unReadMsgCount = result.findViewById(R.id.rc_unread_message);
+        holder.unReadMsgCountRight = result.findViewById(R.id.rc_unread_message_right);
+        holder.unReadMsgCountIcon = result.findViewById(R.id.rc_unread_message_icon);
+        holder.unReadMsgCountRightIcon = result.findViewById(R.id.rc_unread_message_icon_right);
+        holder.vipIv = result.findViewById(R.id.vip_iv);
         result.setTag(holder);
         return result;
     }
@@ -61,7 +61,7 @@ public class MyConversationListAdapter extends ConversationListAdapter {
         super.bindView(v, position, data);
         MyConversationListAdapter.ViewHolder holder = (MyConversationListAdapter.ViewHolder) v.getTag();
         UserInfo target = RongUserInfoManager.getInstance().getUserInfo(data.getConversationTargetId());
-        if (target!=null && !TextUtils.isEmpty(target.getExtra())) {
+        if (target != null && !TextUtils.isEmpty(target.getExtra())) {
             JSONObject jsonObject = JSON.parseObject(target.getExtra(), JSONObject.class);
             VerifyInfo vipInfo = jsonObject.getObject("vipInfo", VerifyInfo.class);
             if (vipInfo != null) {
@@ -77,7 +77,7 @@ public class MyConversationListAdapter extends ConversationListAdapter {
             } else {
                 holder.vipIv.setVisibility(View.GONE);
             }
-        }else {
+        } else {
             holder.vipIv.setVisibility(View.GONE);
         }
     }

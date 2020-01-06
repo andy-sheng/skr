@@ -80,22 +80,23 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) findViewById(R.id.titlebar);
-        mEditAvatar = (RelativeLayout) findViewById(R.id.edit_avatar);
-        mEditName = (RelativeLayout) findViewById(R.id.edit_name);
-        mEditSign = (RelativeLayout) findViewById(R.id.edit_sign);
-        mEditAge = (RelativeLayout) findViewById(R.id.edit_age);
-        mEditSex = (RelativeLayout) findViewById(R.id.edit_sex);
-        mEditLocation = (RelativeLayout) findViewById(R.id.edit_location);
+        U.getStatusBarUtil().setTransparentBar(this, false);
+        mMainActContainer = findViewById(R.id.main_act_container);
+        mTitlebar = findViewById(R.id.titlebar);
+        mEditAvatar = findViewById(R.id.edit_avatar);
+        mEditName = findViewById(R.id.edit_name);
+        mEditSign = findViewById(R.id.edit_sign);
+        mEditAge = findViewById(R.id.edit_age);
+        mEditSex = findViewById(R.id.edit_sex);
+        mEditLocation = findViewById(R.id.edit_location);
 
-        mAvatarIv = (SimpleDraweeView) findViewById(R.id.avatar_iv);
-        mNicknameTv = (ExTextView) findViewById(R.id.nickname_tv);
-        mSignTv = (MarqueeTextView) findViewById(R.id.sign_tv);
-        mAgeTv = (ExTextView) findViewById(R.id.age_tv);
-        mSexTv = (ExTextView) findViewById(R.id.sex_tv);
-        mLocationTv = (MarqueeTextView) findViewById(R.id.location_tv);
-        mLocationRefreshBtn = (ExImageView) findViewById(R.id.location_refresh_btn);
+        mAvatarIv = findViewById(R.id.avatar_iv);
+        mNicknameTv = findViewById(R.id.nickname_tv);
+        mSignTv = findViewById(R.id.sign_tv);
+        mAgeTv = findViewById(R.id.age_tv);
+        mSexTv = findViewById(R.id.sex_tv);
+        mLocationTv = findViewById(R.id.location_tv);
+        mLocationRefreshBtn = findViewById(R.id.location_refresh_btn);
 
         mProgressBar = findViewById(R.id.progress_bar);
 

@@ -39,7 +39,7 @@ public class RelayInviteNotifyView extends ConstraintLayout {
     }
 
     private void init() {
-        inflate(getContext(), R.layout.normal_invite_notification_view_layout, this);
+        inflate(getContext(), R.layout.relay_invite_notification_view_layout, this);
 
         mAvatarIv = findViewById(R.id.avatar_iv);
         mNameView = findViewById(R.id.name_view);

@@ -22,7 +22,7 @@
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginBottom="@dimen/view_10_dp"
-        android:text="成员派对"
+        android:text="成员主题房"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_14_dp" />
 

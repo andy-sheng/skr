@@ -1,0 +1,43 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:WaveProgressView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/view_64_dp"
+    android:layout_height="@dimen/view_155_dp"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.component.busilib.view.WaveProgressView
+        android:id="@+id/wave_progress_view"
+        android:layout_width="@dimen/view_34_dp"
+        android:layout_height="@dimen/view_31_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_14_dp"
+        WaveProgressView:innerDrawable="@drawable/love_inner_icon"
+        WaveProgressView:outerDrawable="@drawable/love_outer_icon"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titlebar" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/left_sing_svga"
+        android:layout_width="@dimen/view_42_dp"
+        android:layout_height="@dimen/view_140_dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"
+        app:antiAlias="true"
+        app:autoPlay="true"
+        app:loopCount="-1"
+        app:source="heart_lights.svga" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/full_count_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/view_9_dp"
+        android:layout_marginBottom="10dp"
+        android:text="x0"
+        android:textColor="#FF8484"
+        android:textSize="@dimen/textsize_10_dp" />
+</merge>

@@ -49,7 +49,7 @@ class GiftRecordActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-
+        U.getStatusBarUtil().setTransparentBar(this, false)
         titlebar = findViewById(R.id.titlebar)
         refreshLayout = findViewById(R.id.refreshLayout)
         contentRv = findViewById(R.id.content_rv)

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--WaveProgressView-->
+    <declare-styleable name="WaveProgressView">
+        <!--底部的背景-->
+        <attr name="innerDrawable" format="reference" />
+        <!--顶部的背景-->
+        <attr name="outerDrawable" format="reference" />
+    </declare-styleable>
     <!--BitmapTextView的属性-->
     <declare-styleable name="BitmapTextView">
         <!--字体的高度-->

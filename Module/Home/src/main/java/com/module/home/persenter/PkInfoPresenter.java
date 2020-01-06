@@ -67,7 +67,7 @@ public class PkInfoPresenter extends RxLifeCyclePresenter {
     }
 
     private void getRankLevel() {
-        ApiMethods.subscribe(userInfoServerApi.getReginDiff(), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(userInfoServerApi.getRegionDiff(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {

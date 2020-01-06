@@ -68,7 +68,7 @@ public class SkrKouLingUtils {
         StringBuilder sb = new StringBuilder();
         sb.append("【复制消息 打开撕歌skr】").append("\n");
         String name = MyUserInfoManager.INSTANCE.getNickName();
-        sb.append(name).append(" 邀你加入ta的小派对，一起边唱边聊～").append("\n");
+        sb.append(name).append(" 邀你加入ta的主题房，一起边唱边聊～").append("\n");
         sb.append("——————————").append("\n");
         sb.append("房间口令:").append("$").append(kouling).append("$").append("\n");
         sb.append("撕歌skr 下载地址:" + PACKAGE_URL).append("\n");

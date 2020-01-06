@@ -125,7 +125,7 @@ public class GrabCreateRoomFragment extends BaseFragment {
                             }
 
                             mTipsDialogView = new TipsDialogView.Builder((BaseActivity) getContext())
-                                    .setMessageTip("开通VIP特权，立即获得更多派对开房权限")
+                                    .setMessageTip("开通VIP特权，立即获得更多主题房开房权限")
                                     .setConfirmTip("立即开通")
                                     .setCancelTip("取消")
                                     .setConfirmBtnClickListener(new View.OnClickListener() {

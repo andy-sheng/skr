@@ -26,9 +26,8 @@ import com.engine.Params
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
 import com.module.msg.CustomMsgType
-import com.module.playways.doubleplay.DoubleRoomServerApi
-import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.pretendHeadSetSystemMsg
+import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.room.RelayRoomActivity
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.relay.room.RelayRoomServerApi
@@ -244,6 +243,60 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     private fun pretendRoomNameSystemMsg(roomName: String?, type: Int) {
         val commentSysModel = CommentSysModel(roomName ?: "", type)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
+    }
+
+    /**
+     * 单句打分上报,合唱模式
+     *
+     * @param score
+     * @param line
+     */
+    private fun sendScoreToServer(score: Int, line: Int) {
+        val map = java.util.HashMap<String, Any>()
+        val infoModel = mRoomData.realRoundInfo ?: return
+        map["userID"] = MyUserInfoManager.uid
+
+        var itemID = 0
+        if (infoModel.music != null) {
+            itemID = infoModel?.music?.itemID ?: 0
+        }
+
+        map["itemID"] = itemID
+        map["score"] = score
+        map["no"] = line
+        map["gameID"] = mRoomData.gameId
+        map["mainLevel"] = 0
+        map["singSecond"] = 0
+        val roundSeq = infoModel.roundSeq
+        map["roundSeq"] = roundSeq
+        val nowTs = System.currentTimeMillis()
+        map["timeMs"] = nowTs
+
+
+        val sb = StringBuilder()
+        sb.append("skrer")
+                .append("|").append(MyUserInfoManager.uid)
+                .append("|").append(itemID)
+                .append("|").append(score)
+                .append("|").append(line)
+                .append("|").append(mRoomData.gameId)
+                .append("|").append(0)
+                .append("|").append(0)
+                .append("|").append(roundSeq)
+                .append("|").append(nowTs)
+        map["sign"] = U.getMD5Utils().MD5_32(sb.toString())
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe {
+                mRoomServerApi.sendPkPerSegmentResult(body)
+            }
+            if (result.errno == 0) {
+                // TODO: 2018/12/13  当前postman返回的为空 待补充
+                MyLog.w(TAG, "单句打分上报成功")
+            } else {
+                MyLog.w(TAG, "单句打分上报失败" + result.errno)
+            }
+        }
     }
 
     /**
@@ -1061,7 +1114,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         MyLog.d(TAG, "onEvent MachineScoreEvent = $event")
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
         if (mRoomData.getSingerIdNow() == event.userId) {
-            DebugLogView.println(TAG,"对手 score=${event.score}")
+            DebugLogView.println(TAG, "对手 score=${event.score}")
             roomView.receiveScoreEvent(event.score)
         }
     }
@@ -1084,7 +1137,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             return
         }
         if (!mRoomData.isSingByMeNow()) {
-            DebugLogView.println(TAG,"不是自己唱 score=${score}")
+            DebugLogView.println(TAG, "不是自己唱 score=${score}")
             return
         }
         val machineScoreItem = MachineScoreItem()
@@ -1096,18 +1149,15 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         machineScoreItem.no = line
         // 打分信息传输给其他人
         sendScoreToOthers(machineScoreItem)
-        DebugLogView.println(TAG,"自己 score=${score}")
+        DebugLogView.println(TAG, "自己 score=${score}")
         roomView.receiveScoreEvent(score)
         //打分传给服务器
-//        val now = mRoomData.realRoundInfo
-//        if (now != null) {
-//            /**
-//             * pk 与 普通 都发送
-//             */
-//            if (mRoomData.isSingByMeNow()) {
-//                sendScoreToServer(score, line)
-//            }
-//        }
+        val now = mRoomData.realRoundInfo
+        if (now != null) {
+            if (mRoomData.isSingByMeNow()) {
+                sendScoreToServer(score, line)
+            }
+        }
     }
 
     /**
@@ -1273,6 +1323,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     }
 
     fun sendUnlock() {
+        StatisticsAdapter.recordCountEvent("chorus", "unlock", null)
         MyLog.w(TAG, "解锁爱心")
         val map = HashMap<String, Any>()
         map["roomID"] = mRoomData.gameId

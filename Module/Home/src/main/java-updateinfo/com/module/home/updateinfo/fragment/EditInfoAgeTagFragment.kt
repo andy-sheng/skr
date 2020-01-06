@@ -49,10 +49,6 @@ class EditInfoAgeTagFragment : BaseFragment() {
         if (MyUserInfoManager.ageStage != 0) {
             mAgeTagView.setSelectTag(MyUserInfoManager.ageStage)
         }
-
-        if (mFrom == FROM_HOME) {
-            mAgeTagView.setTextColor(U.getColor(R.color.white_trans_50))
-        }
     }
 
     private fun save() {

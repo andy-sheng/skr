@@ -28,10 +28,7 @@
         android:layout_below="@+id/titlebar"
         android:layout_marginLeft="@dimen/view_12_dp"
         android:layout_marginRight="@dimen/view_12_dp"
-        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
-        app:bl_corners_topRightRadius="@dimen/view_16_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="@color/colorSolidPrimary" />
+        android:background="@drawable/common_gradient_top_corners_bg" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -48,9 +45,9 @@
         android:scrollbars="none">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <!--修改个人信息-->
             <RelativeLayout
@@ -222,8 +219,8 @@
                 android:id="@+id/upload_music_area"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_64_dp"
-                android:visibility="gone"
-                android:layout_below="@+id/user_blacklist">
+                android:layout_below="@+id/user_blacklist"
+                android:visibility="gone">
 
                 <com.common.view.ex.ExTextView
                     android:layout_width="wrap_content"

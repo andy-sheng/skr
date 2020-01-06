@@ -2,7 +2,6 @@ package com.module.home.game.presenter
 
 import android.text.TextUtils
 import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.JSONObject
 import com.common.base.BaseFragment
 import com.common.core.account.event.AccountEvent
 import com.common.core.myinfo.event.MyUserInfoEvent
@@ -13,10 +12,10 @@ import com.common.rxretrofit.*
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.component.busilib.friends.GrabSongApi
+import com.component.busilib.model.PartyRoomInfoModel
 import com.component.person.model.UserRankModel
 import com.module.home.MainPageSlideApi
 import com.module.home.event.CheckInSuccessEvent
-import com.module.home.game.model.GrabSpecialModel
 import com.module.home.game.view.IQuickGameView3
 import com.module.home.model.SlideShowModel
 import org.greenrobot.eventbus.EventBus
@@ -101,47 +100,7 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
         }, this, RequestControl("getSlideList", ControlType.CancelThis))
     }
 
-    fun initGameTypeArea(isFlag: Boolean) {
-        val now = System.currentTimeMillis()
-        if (!isFlag) {
-            // 半个小时更新一次吧
-            if (now - mLastUpdateGameType < 30 * 60 * 1000) {
-                return
-            }
-        }
-
-        var spResult = ""
-        if (mIsFirstQuick) {
-            // 先用SP里面的
-            mIsFirstQuick = false
-            spResult = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "game_type_tags", "")
-            if (!TextUtils.isEmpty(spResult)) {
-                try {
-                    var jsonObject = JSON.parseObject(spResult, JSONObject::class.java)
-                    var list = JSON.parseArray(jsonObject.getString("items"), GrabSpecialModel::class.java)
-                    mIGameView3.setGameType(list, false)
-                } catch (e: Exception) {
-                }
-
-            }
-        }
-
-        val finalSpResult = spResult
-        ApiMethods.subscribe(mMainPageSlideApi.indexTabBlocks, object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult) {
-                if (obj.errno == 0) {
-                    mLastUpdateGameType = System.currentTimeMillis()
-                    if (obj.data!!.toJSONString() != finalSpResult) {
-                        U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "game_type_tags", obj.data!!.toJSONString())
-                        val list = JSON.parseArray(obj.data!!.getString("items"), GrabSpecialModel::class.java)
-                        mIGameView3.setGameType(list, true)
-                    }
-                }
-            }
-        }, this, RequestControl("getSepcialList", ControlType.CancelThis))
-    }
-
-    fun getReginDiff(isFlag: Boolean) {
+    fun getRegionDiff(isFlag: Boolean) {
         val now = System.currentTimeMillis()
         if (!isFlag) {
             // diff 接口更新
@@ -149,12 +108,31 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
                 return
             }
         }
-        ApiMethods.subscribe(userInfoServerApi.reginDiff, object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(userInfoServerApi.regionDiff, object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     mLastUpdateReginDiff = System.currentTimeMillis()
                     val userRankModel = JSON.parseObject(result.data!!.getString("diff"), UserRankModel::class.java)
-                    mIGameView3.setReginDiff(userRankModel)
+                    mIGameView3.setRegionDiff(userRankModel)
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                U.getToastUtil().showShort("网络异常")
+            }
+
+            override fun onNetworkError(errorType: ApiObserver.ErrorType) {
+                U.getToastUtil().showShort("网络超时")
+            }
+        }, this)
+    }
+
+    fun getPartyRoomList() {
+        ApiMethods.subscribe(mMainPageSlideApi.getPartyRoomList(0, 20), object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult) {
+                if (result.errno == 0) {
+                    val list = JSON.parseArray(result.data.getString("roomInfo"), PartyRoomInfoModel::class.java)
+                    mIGameView3.setPartyRoomList(list)
                 }
             }
 
@@ -171,8 +149,8 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AccountEvent.SetAccountEvent) {
         initOperationArea(true)
-        initGameTypeArea(true)
-        getReginDiff(true)
+        getRegionDiff(true)
+        getPartyRoomList()
         checkTaskRedDot()
     }
 

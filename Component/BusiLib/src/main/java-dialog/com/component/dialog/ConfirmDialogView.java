@@ -140,7 +140,7 @@ public class ConfirmDialogView extends RelativeLayout {
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(lightColor)
                     .append("\n")
-                    .append("邀请你加入ta的派对房").setForegroundColor(normalColor)
+                    .append("邀请你加入ta的主题房").setForegroundColor(normalColor)
                     .create();
             mContentTv.setText(stringBuilder);
 

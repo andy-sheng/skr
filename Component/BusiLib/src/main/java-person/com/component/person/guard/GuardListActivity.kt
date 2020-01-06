@@ -55,6 +55,7 @@ class GuardListActivity : BaseActivity() {
     private var isNeedRefresh = true
 
     override fun initData(savedInstanceState: Bundle?) {
+        U.getStatusBarUtil().setTransparentBar(this, false)
         userID = intent.getIntExtra("userID", 0)
         from = intent.getIntExtra("from", 0)
         if (userID == 0) {

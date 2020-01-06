@@ -6,9 +6,11 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
+import com.common.rxretrofit.ApiManager
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
@@ -30,12 +32,19 @@ class PartySelectGameActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        U.getStatusBarUtil().setTransparentBar(this, false)
         titlebar = findViewById(R.id.titlebar)
         tagTab = findViewById(R.id.sliding_tab_layout)
         viewPager = findViewById(R.id.viewPager)
 
         titlebar.leftTextView.setDebounceViewClickListener {
             finish()
+        }
+
+        titlebar.rightTextView.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                    .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/user/game?title=1"))
+                    .navigation()
         }
 
         tagTab.setCustomTabView(R.layout.manage_song_tab, R.id.tab_tv)

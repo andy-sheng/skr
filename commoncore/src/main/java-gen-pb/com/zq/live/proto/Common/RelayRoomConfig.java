@@ -24,6 +24,8 @@ public final class RelayRoomConfig extends Message<RelayRoomConfig, RelayRoomCon
 
   public static final Integer DEFAULT_DURATIONTIMEMS = 0;
 
+  public static final Integer DEFAULT_UNLOCKWAITTIMEMS = 0;
+
   /**
    * 房间持续时间
    */
@@ -33,19 +35,31 @@ public final class RelayRoomConfig extends Message<RelayRoomConfig, RelayRoomCon
   )
   private final Integer durationTimeMs;
 
-  public RelayRoomConfig(Integer durationTimeMs) {
-    this(durationTimeMs, ByteString.EMPTY);
+  /**
+   * 可以解锁需要等待时间
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.squareup.wire.ProtoAdapter#SINT32"
+  )
+  private final Integer unLockWaitTimeMs;
+
+  public RelayRoomConfig(Integer durationTimeMs, Integer unLockWaitTimeMs) {
+    this(durationTimeMs, unLockWaitTimeMs, ByteString.EMPTY);
   }
 
-  public RelayRoomConfig(Integer durationTimeMs, ByteString unknownFields) {
+  public RelayRoomConfig(Integer durationTimeMs, Integer unLockWaitTimeMs,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.durationTimeMs = durationTimeMs;
+    this.unLockWaitTimeMs = unLockWaitTimeMs;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.durationTimeMs = durationTimeMs;
+    builder.unLockWaitTimeMs = unLockWaitTimeMs;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -56,7 +70,8 @@ public final class RelayRoomConfig extends Message<RelayRoomConfig, RelayRoomCon
     if (!(other instanceof RelayRoomConfig)) return false;
     RelayRoomConfig o = (RelayRoomConfig) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(durationTimeMs, o.durationTimeMs);
+        && Internal.equals(durationTimeMs, o.durationTimeMs)
+        && Internal.equals(unLockWaitTimeMs, o.unLockWaitTimeMs);
   }
 
   @Override
@@ -65,6 +80,7 @@ public final class RelayRoomConfig extends Message<RelayRoomConfig, RelayRoomCon
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (durationTimeMs != null ? durationTimeMs.hashCode() : 0);
+      result = result * 37 + (unLockWaitTimeMs != null ? unLockWaitTimeMs.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -74,6 +90,7 @@ public final class RelayRoomConfig extends Message<RelayRoomConfig, RelayRoomCon
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (durationTimeMs != null) builder.append(", durationTimeMs=").append(durationTimeMs);
+    if (unLockWaitTimeMs != null) builder.append(", unLockWaitTimeMs=").append(unLockWaitTimeMs);
     return builder.replace(0, 2, "RelayRoomConfig{").append('}').toString();
   }
 
@@ -98,14 +115,33 @@ public final class RelayRoomConfig extends Message<RelayRoomConfig, RelayRoomCon
   }
 
   /**
+   * 可以解锁需要等待时间
+   */
+  public Integer getUnLockWaitTimeMs() {
+    if(unLockWaitTimeMs==null){
+        return DEFAULT_UNLOCKWAITTIMEMS;
+    }
+    return unLockWaitTimeMs;
+  }
+
+  /**
    * 房间持续时间
    */
   public boolean hasDurationTimeMs() {
     return durationTimeMs!=null;
   }
 
+  /**
+   * 可以解锁需要等待时间
+   */
+  public boolean hasUnLockWaitTimeMs() {
+    return unLockWaitTimeMs!=null;
+  }
+
   public static final class Builder extends Message.Builder<RelayRoomConfig, Builder> {
     private Integer durationTimeMs;
+
+    private Integer unLockWaitTimeMs;
 
     public Builder() {
     }
@@ -118,9 +154,17 @@ public final class RelayRoomConfig extends Message<RelayRoomConfig, RelayRoomCon
       return this;
     }
 
+    /**
+     * 可以解锁需要等待时间
+     */
+    public Builder setUnLockWaitTimeMs(Integer unLockWaitTimeMs) {
+      this.unLockWaitTimeMs = unLockWaitTimeMs;
+      return this;
+    }
+
     @Override
     public RelayRoomConfig build() {
-      return new RelayRoomConfig(durationTimeMs, super.buildUnknownFields());
+      return new RelayRoomConfig(durationTimeMs, unLockWaitTimeMs, super.buildUnknownFields());
     }
   }
 
@@ -132,12 +176,14 @@ public final class RelayRoomConfig extends Message<RelayRoomConfig, RelayRoomCon
     @Override
     public int encodedSize(RelayRoomConfig value) {
       return ProtoAdapter.SINT32.encodedSizeWithTag(1, value.durationTimeMs)
+          + ProtoAdapter.SINT32.encodedSizeWithTag(2, value.unLockWaitTimeMs)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, RelayRoomConfig value) throws IOException {
       ProtoAdapter.SINT32.encodeWithTag(writer, 1, value.durationTimeMs);
+      ProtoAdapter.SINT32.encodeWithTag(writer, 2, value.unLockWaitTimeMs);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -148,6 +194,7 @@ public final class RelayRoomConfig extends Message<RelayRoomConfig, RelayRoomCon
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setDurationTimeMs(ProtoAdapter.SINT32.decode(reader)); break;
+          case 2: builder.setUnLockWaitTimeMs(ProtoAdapter.SINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

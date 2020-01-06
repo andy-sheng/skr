@@ -244,7 +244,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         UserStatus userStatus = mUserStatusMap.remove(uid);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_LEAVE, userStatus));
         MyLog.i(TAG, "onUserOffline mUserStatusMap=" + mUserStatusMap);
-        tryStopRecordForFeedback("onUserOffline");
+        tryStopRecordForFeedback("onUserOffline",false);
     }
 
     @Override
@@ -327,7 +327,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 tryPlayPendingMixingMusic("onClientRoleChanged");
             } else {
                 userStatus.setAnchor(false);
-                tryStopRecordForFeedback("onClientRoleChanged");
+                tryStopRecordForFeedback("onClientRoleChanged",false);
             }
         }
         // 只有切换时才会触发
@@ -2021,20 +2021,24 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
-    private void tryStopRecordForFeedback(String from) {
+    public void tryStopRecordForFeedback(String from,boolean force) {
         if (!OPEN_AUDIO_RECORD_FOR_CALLBACK) {
             return;
         }
-        boolean hasAnchor = false;
-        for (UserStatus us : mUserStatusMap.values()) {
-            MyLog.i(TAG, " us=" + us);
-            if (us.isAnchor()) {
-                hasAnchor = true;
+        if(force){
+
+        }else{
+            boolean hasAnchor = false;
+            for (UserStatus us : mUserStatusMap.values()) {
+                MyLog.i(TAG, " us=" + us);
+                if (us.isAnchor()) {
+                    hasAnchor = true;
+                }
             }
-        }
-        if (hasAnchor) {
-            MyLog.i(TAG, "仍有主播，不取消录制 from=" + from);
-            return;
+            if (hasAnchor) {
+                MyLog.i(TAG, "仍有主播，不取消录制 from=" + from);
+                return;
+            }
         }
         if (!mConfig.isRecordingForFeedback()) {
             MyLog.i(TAG, "反馈录制不在进行中，取消 from=" + from);

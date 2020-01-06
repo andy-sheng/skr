@@ -894,7 +894,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         mUiHandler.removeMessages(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW)
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW, 5000)
         val notifyView = NormalInviteNotifyView(U.app())
-        notifyView.bindData(userInfoModel, "邀请你加入派对房")
+        notifyView.bindData(userInfoModel, "邀请你加入主题房")
         notifyView.setListener {
             mUiHandler.removeMessages(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW)
             FloatWindow.destroy(TAG_PARTY_ROOM_INVITE_FOALT_WINDOW)

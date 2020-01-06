@@ -2,6 +2,7 @@ package com.module.playways.party.home
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -26,8 +27,13 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.*
 
-// 首页的剧场
-class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomView, CoroutineScope by MainScope() {
+// 首页的剧场(也包括一下主题房吧)
+class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context), IPartyRoomView, CoroutineScope by MainScope() {
+
+    companion object {
+        const val TYPE_GAME_HOME = 1  //首页
+        const val TYPE_PARTY_HOME = 2  //主题房首页
+    }
 
     private val refreshLayout: SmartRefreshLayout
     private val recyclerView: RecyclerView
@@ -35,7 +41,8 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
     private val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
     private val adapter: PartyRoomAdapter
     private var offset = 0
-    private val cnt = 15
+    private var hasMore = true
+    private val cnt = 10
 
     private var roomJob: Job? = null
     private var lastLoadDateTime: Long = 0    //记录上次获取接口的时间
@@ -78,8 +85,8 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
                         .navigation()
             }
 
-        })
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        }, type)
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = adapter
 
         refreshLayout.apply {
@@ -138,6 +145,7 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
             if (result.errno == 0) {
                 lastLoadDateTime = System.currentTimeMillis()
                 offset = result.data.getIntValue("offset")
+                hasMore = result.data.getBooleanValue("hasMore")
                 val list = JSON.parseArray(result.data.getString("roomInfo"), PartyRoomInfoModel::class.java)
                 addRoomList(list, isClean)
             }
@@ -152,6 +160,7 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
     private fun finishLoadMoreOrRefresh() {
         refreshLayout.finishLoadMore()
         refreshLayout.finishRefresh()
+        refreshLayout.setEnableLoadMore(hasMore)
     }
 
     private fun addRoomList(list: List<PartyRoomInfoModel>?, isClean: Boolean) {
@@ -184,7 +193,9 @@ class PartyRoomView(context: Context) : ConstraintLayout(context), IPartyRoomVie
             delay(delayTime)
             repeat(Int.MAX_VALUE) {
                 loadRoomListData(0, true)
-                loadClubListData()
+                if (type == TYPE_GAME_HOME) {
+                    loadClubListData()
+                }
                 delay(recommendInterval)
             }
         }

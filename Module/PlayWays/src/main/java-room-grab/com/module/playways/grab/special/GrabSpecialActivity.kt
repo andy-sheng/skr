@@ -56,6 +56,7 @@ class GrabSpecialActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        U.getStatusBarUtil().setTransparentBar(this, false)
         titlebar = findViewById(R.id.titlebar)
         createRoom = findViewById(R.id.create_room)
         refreshLayout = findViewById(R.id.refreshLayout)

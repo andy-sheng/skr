@@ -12,7 +12,7 @@ class GuardInfoModel : Serializable {
 }
 
 class GuardTimeInfo : Serializable {
-    @JSONField(name = "expireTimeMs")
+    @JSONField(name = "expireTime")
     var expireTimeMs: Long = 0L
     @JSONField(name = "nowTime")
     var nowTime: Long = 0L

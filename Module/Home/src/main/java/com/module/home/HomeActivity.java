@@ -75,8 +75,6 @@ import java.util.HashMap;
 @Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener, INotifyView {
 
-    public final static String PREF_KEY_PARTY_DIALOG = "pref_key_party_flag";
-
     public final String TAG = "HomeActivity";
     public final static String NOTIFY_CHANNEL_ID = "invite_notify";
 
@@ -343,30 +341,33 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         if (U.getChannelUtils().getChannel().startsWith("CHORUS")) {
             return;
         }
-        if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_PARTY_DIALOG, false)) {
-            if (mWaitingDialogPlus == null) {
-                mWaitingDialogPlus = DialogPlus.newDialog(this)
-                        .setContentHolder(new ViewHolder(R.layout.new_funcation_first_tip_layout))
-                        .setContentBackgroundResource(R.color.transparent)
-                        .setOverlayBackgroundResource(R.color.black_trans_50)
-                        .setExpanded(false)
-                        .setCancelable(true)
-                        .setGravity(Gravity.CENTER)
-                        .create();
-                mWaitingDialogPlus.findViewById(R.id.bg_iv).setOnClickListener(new DebounceViewClickListener() {
-                    @Override
-                    public void clickValid(View v) {
-                        if (mWaitingDialogPlus != null) {
-                            mWaitingDialogPlus.dismiss();
-                        }
-                    }
-                });
-
-            }
-
-            EventBus.getDefault().post(new ShowDialogInHomeEvent(mWaitingDialogPlus, 11));
-            U.getPreferenceUtils().setSettingBoolean(PREF_KEY_PARTY_DIALOG, true);
-        }
+//        if(U.getChannelUtils().getChannel().startsWith("CHORUS")){
+//            return;
+//        }
+//        if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_PARTY_DIALOG, false)) {
+//            if (mWaitingDialogPlus == null) {
+//                mWaitingDialogPlus = DialogPlus.newDialog(this)
+//                        .setContentHolder(new ViewHolder(R.layout.new_funcation_first_tip_layout))
+//                        .setContentBackgroundResource(R.color.transparent)
+//                        .setOverlayBackgroundResource(R.color.black_trans_50)
+//                        .setExpanded(false)
+//                        .setCancelable(true)
+//                        .setGravity(Gravity.CENTER)
+//                        .create();
+//                mWaitingDialogPlus.findViewById(R.id.bg_iv).setOnClickListener(new DebounceViewClickListener() {
+//                    @Override
+//                    public void clickValid(View v) {
+//                        if (mWaitingDialogPlus != null) {
+//                            mWaitingDialogPlus.dismiss();
+//                        }
+//                    }
+//                });
+//
+//            }
+//
+//            EventBus.getDefault().post(new ShowDialogInHomeEvent(mWaitingDialogPlus, 11));
+//            U.getPreferenceUtils().setSettingBoolean(PREF_KEY_PARTY_DIALOG, true);
+//        }
     }
 
     @Override

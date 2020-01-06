@@ -265,6 +265,7 @@ message PGameQuestion {
     string questionContent = 2; //问题内容
     repeated string questionPic = 3; //问题图片
     string answerContent = 4; //问题答案
+    string uploader = 5; //上传者
 }
 
 message PGamePlay {
@@ -272,6 +273,7 @@ message PGamePlay {
     string playName = 2; //剧本名称
     string playContent = 3; //剧本内容
     string playCard = 4; //剧本手卡
+    string uploader = 5; //上传者
 }
 
 message PKickoutUserMsg {

@@ -8,7 +8,7 @@ public interface RouterConstants {
     String ACTIVITY_FLUTTER = "/flutter/FlutterActivity";
     String ACTIVITY_HOME = "/home/HomeActivity";
     String ACTIVITY_UPLOAD = "/home/UploadAccountInfoActivity";
-    String ACTIVITY_UPLOAD_AGE = "/home/UploadAgeTagActivity";
+    String ACTIVITY_UPLOAD_SEX_AGE = "/home/UploadSexAndAgeTagActivity";
     String ACTIVITY_EDIT_INFO = "/home/EditInfoActivity";
     String ACTIVITY_EDIT_AGE = "/home/EditAgeTagActivity";
 
@@ -143,6 +143,7 @@ public interface RouterConstants {
     String ACTIVITY_CREATE_PARTY_ROOM = "/party/PartyRoomCreateActivity";
     String ACTIVITY_PARTY_ROOM = "/party/PartyRoomActivity";
     String ACTIVITY_PARTY_SELECT_GAME = "/party/PartySelectGameActivity";
+    String ACTIVITY_PARTY_HOME = "/party/PartyHomeActivity";
 
 
     String ACTIVITY_CREATE_CLUB = "/club/CreateClubActivity";

@@ -85,6 +85,7 @@ class GamePlayModel : Serializable {
     var playName = "" //剧本名称
     var playContent = "" //剧本内容
     var playCard = "" //剧本手卡
+    var uploader = "" //上传者
     override fun toString(): String {
         return "GamePlayModel(playID=$playID, playName='$playName', playContent='$playContent', playCard='$playCard')"
     }
@@ -96,6 +97,9 @@ class GamePlayModel : Serializable {
             p.playName = pb.playName
             p.playContent = pb.playContent
             p.playCard = pb.playCard
+            if (pb.hasUploader()) {
+                p.uploader = pb.uploader
+            }
             return p
         }
     }
@@ -128,6 +132,7 @@ class GameQuestionModel : Serializable {
     var questionContent = "" //问题内容
     var questionPic: ArrayList<String>? = null //问题图片
     var answerContent = "" //问题答案
+    var uploader = "" //上传者
     override fun toString(): String {
         return "GameQuestionModel(questionID=$questionID, questionContent='$questionContent', questionPic=$questionPic, answerContent='$answerContent')"
     }
@@ -144,6 +149,9 @@ class GameQuestionModel : Serializable {
                 }
             }
             p.answerContent = pb.answerContent
+            if (pb.hasUploader()) {
+                p.uploader = pb.uploader
+            }
             return p
         }
     }

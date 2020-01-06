@@ -40,6 +40,7 @@ import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.party.bgmusic.getLocalMusicInfo
+import com.module.playways.party.home.PartyHomeActivity
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.actor.PartyApplyPanelView
 import com.module.playways.party.room.actor.PartyMemberPanelView
@@ -95,6 +96,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 //                continue
 //            }
             if (U.getActivityUtils().isHomeActivity(activity)) {
+                continue
+            }
+
+            if (activity is PartyHomeActivity) {
                 continue
             }
             activity.finish()
@@ -802,7 +807,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun quitGame() {
         dismissDialog()
         mTipsDialogView = TipsDialogView.Builder(this)
-                .setMessageTip("确定要退出派对吗")
+                .setMessageTip("确定要退出主题房吗")
                 .setConfirmTip("确定")
                 .setCancelTip("取消")
                 .setConfirmBtnClickListener {

@@ -30,9 +30,7 @@
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_35_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#EFFAFF">
+        android:background="@drawable/common_gradient_bg">
 
         <TextView
             android:layout_width="wrap_content"
@@ -111,9 +109,7 @@
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#EFFAFF">
+        android:background="@drawable/common_gradient_bg">
 
         <TextView
             android:layout_width="wrap_content"

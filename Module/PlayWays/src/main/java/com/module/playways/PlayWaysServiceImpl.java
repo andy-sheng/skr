@@ -287,7 +287,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
     @Override
     public IPartyRoomView getPartyRoomView(Context context) {
-        return new PartyRoomView(context);
+        return new PartyRoomView(context, PartyRoomView.TYPE_GAME_HOME);
     }
 
     @Override

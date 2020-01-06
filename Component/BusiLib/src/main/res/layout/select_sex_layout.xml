@@ -50,7 +50,7 @@
         android:layout_marginLeft="@dimen/view_37_dp"
         android:layout_marginTop="60dp"
         app:bl_selected_drawable="@drawable/select_female"
-        app:bl_unSelected_drawable="@drawable/un_select_famale"
+        app:bl_unSelected_drawable="@drawable/un_select_female"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/find_male_iv"

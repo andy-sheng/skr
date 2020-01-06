@@ -8,11 +8,9 @@ import com.common.banner.BannerImageLoader
 import com.common.statistics.StatisticsAdapter
 import com.module.RouterConstants
 import com.module.home.R
-import com.module.home.game.model.BannerModel
 import com.module.home.model.SlideShowModel
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
-import com.youth.banner.listener.OnBannerListener
 
 import java.util.ArrayList
 
@@ -24,12 +22,12 @@ class BannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         mBannerView.setIndicatorGravity(BannerConfig.RIGHT)
     }
 
-    fun bindData(bannerModel: BannerModel) {
-        mBannerView.setImages(getSlideUrlList(bannerModel.slideShowModelList))
+    fun bindData(slideShowModelList:  List<SlideShowModel>) {
+        mBannerView.setImages(getSlideUrlList(slideShowModelList))
                 .setImageLoader(BannerImageLoader())
                 .setOnBannerListener { position ->
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
-                            .withString("uri", bannerModel.slideShowModelList[position].schema)
+                            .withString("uri", slideShowModelList[position].schema)
                             .navigation()
                     StatisticsAdapter.recordCountEvent("game","express_banner",null)
                 }

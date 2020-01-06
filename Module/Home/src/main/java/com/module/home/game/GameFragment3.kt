@@ -86,43 +86,44 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mInviteFriendIv = rootView.findViewById(R.id.invite_friend_iv)
 
         mInviteFriendIv.setAnimateDebounceViewClickListener {
-            if (mGameVp.currentItem == 2) {
-                launch {
-                    val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(null))
-                    val result = subscribe(RequestControl("hasCreatePermission", ControlType.CancelThis)) {
-                        mainPageSlideApi.hasCreatePermission(body)
-                    }
-                    if (result.errno == 0) {
-                        // 可以创建
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_PARTY_ROOM)
-                                .navigation()
-                    } else {
-                        if (result.errno == 8436006) {
-                            mTipsDialogView?.dismiss(false)
-                            mTipsDialogView = TipsDialogView.Builder(activity)
-                                    .setMessageTip("开通VIP特权，立即获得派对创建权限")
-                                    .setConfirmTip("立即开通")
-                                    .setCancelTip("取消")
-                                    .setConfirmBtnClickListener {
-                                        mTipsDialogView?.dismiss(false)
-                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                                .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/newVip?title=1"))
-                                                .greenChannel().navigation()
-                                    }
-                                    .setCancelBtnClickListener {
-                                        mTipsDialogView?.dismiss()
-                                    }
-                                    .build()
-                            mTipsDialogView?.showByDialog()
-                        } else {
-                            U.getToastUtil().showShort(result.errmsg)
-                        }
-                    }
-                }
-
-            } else {
-                showShareDialog()
-            }
+            showShareDialog()
+//            if (mGameVp.currentItem == 2) {
+//                launch {
+//                    val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(null))
+//                    val result = subscribe(RequestControl("hasCreatePermission", ControlType.CancelThis)) {
+//                        mainPageSlideApi.hasCreatePermission(body)
+//                    }
+//                    if (result.errno == 0) {
+//                        // 可以创建
+//                        ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_PARTY_ROOM)
+//                                .navigation()
+//                    } else {
+//                        if (result.errno == 8436006) {
+//                            mTipsDialogView?.dismiss(false)
+//                            mTipsDialogView = TipsDialogView.Builder(activity)
+//                                    .setMessageTip("开通VIP特权，立即获得主题房创建权限")
+//                                    .setConfirmTip("立即开通")
+//                                    .setCancelTip("取消")
+//                                    .setConfirmBtnClickListener {
+//                                        mTipsDialogView?.dismiss(false)
+//                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+//                                                .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/newVip?title=1"))
+//                                                .greenChannel().navigation()
+//                                    }
+//                                    .setCancelBtnClickListener {
+//                                        mTipsDialogView?.dismiss()
+//                                    }
+//                                    .build()
+//                            mTipsDialogView?.showByDialog()
+//                        } else {
+//                            U.getToastUtil().showShort(result.errmsg)
+//                        }
+//                    }
+//                }
+//
+//            } else {
+//                showShareDialog()
+//            }
         }
 
         mGameTab.setCustomTabView(R.layout.game_tab_view_layout, R.id.tab_tv)
@@ -168,7 +169,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 return when (position) {
                     0 -> "好友"
                     1 -> "游戏"
-                    2 -> "Party"
+                    2 -> "家族"
                     else -> super.getPageTitle(position)
                 }
             }
@@ -254,20 +255,17 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     private fun viewSelected(position: Int) {
         when (position) {
             0 -> {
-                mInviteFriendIv.background = U.getDrawable(R.drawable.game_home_invite_icon)
                 mFriendRoomGameView.initData(false)
                 mQuickGameView.stopTimer()
                 mPartyRoomView.stopTimer()
             }
             1 -> {
-                mInviteFriendIv.background = U.getDrawable(R.drawable.game_home_invite_icon)
                 mFriendRoomGameView.stopPlay()
                 mFriendRoomGameView.stopTimer()
                 mPartyRoomView.stopTimer()
                 mQuickGameView.initData(false)
             }
             2 -> {
-                mInviteFriendIv.background = U.getDrawable(R.drawable.create_party_icon)
                 mFriendRoomGameView.stopPlay()
                 mFriendRoomGameView.stopTimer()
                 mQuickGameView.stopTimer()
