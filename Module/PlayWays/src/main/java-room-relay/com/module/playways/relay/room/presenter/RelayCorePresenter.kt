@@ -246,60 +246,6 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     }
 
     /**
-     * 单句打分上报,合唱模式
-     *
-     * @param score
-     * @param line
-     */
-    private fun sendScoreToServer(score: Int, line: Int) {
-        val map = java.util.HashMap<String, Any>()
-        val infoModel = mRoomData.realRoundInfo ?: return
-        map["userID"] = MyUserInfoManager.uid
-
-        var itemID = 0
-        if (infoModel.music != null) {
-            itemID = infoModel?.music?.itemID ?: 0
-        }
-
-        map["itemID"] = itemID
-        map["score"] = score
-        map["no"] = line
-        map["gameID"] = mRoomData.gameId
-        map["mainLevel"] = 0
-        map["singSecond"] = 0
-        val roundSeq = infoModel.roundSeq
-        map["roundSeq"] = roundSeq
-        val nowTs = System.currentTimeMillis()
-        map["timeMs"] = nowTs
-
-
-        val sb = StringBuilder()
-        sb.append("skrer")
-                .append("|").append(MyUserInfoManager.uid)
-                .append("|").append(itemID)
-                .append("|").append(score)
-                .append("|").append(line)
-                .append("|").append(mRoomData.gameId)
-                .append("|").append(0)
-                .append("|").append(0)
-                .append("|").append(roundSeq)
-                .append("|").append(nowTs)
-        map["sign"] = U.getMD5Utils().MD5_32(sb.toString())
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-        launch {
-            var result = subscribe {
-                mRoomServerApi.sendPkPerSegmentResult(body)
-            }
-            if (result.errno == 0) {
-                // TODO: 2018/12/13  当前postman返回的为空 待补充
-                MyLog.w(TAG, "单句打分上报成功")
-            } else {
-                MyLog.w(TAG, "单句打分上报失败" + result.errno)
-            }
-        }
-    }
-
-    /**
      * 由ui层告知
      * 开场动画结束
      */
@@ -1203,66 +1149,60 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         }
     }
 
+    /**
+     * 单句打分上报,合唱模式
+     *
+     * @param score
+     * @param line
+     */
+    private fun sendScoreToServer(score: Int, line: Int) {
+        val map = java.util.HashMap<String, Any>()
+        val infoModel = mRoomData.realRoundInfo ?: return
+        map["userID"] = MyUserInfoManager.uid
 
-//    /**
-//     * 单句打分上报,只在pk模式上报
-//     *
-//     * @param score
-//     * @param line
-//     */
-//    private fun sendScoreToServer(score: Int, line: Int) {
-//        val map = HashMap<String, Any>()
-//        val infoModel = mRoomData.realRoundInfo ?: return
-//        map["userID"] = MyUserInfoManager.uid
-//
-//        var itemID = 0
-//        if (infoModel.music != null) {
-//            itemID = infoModel?.music?.itemID ?: 0
-//            if (infoModel.status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
-//                val pkSong = infoModel?.music?.pkMusic
-//                if (pkSong != null) {
-//                    itemID = pkSong.itemID
-//                }
-//            }
-//        }
-//
-//        map["itemID"] = itemID
-//        map["score"] = score
-//        map["no"] = line
-//        map["gameID"] = mRoomData.gameId
-//        map["mainLevel"] = 0
-//        map["singSecond"] = 0
-//        val roundSeq = infoModel.roundSeq
-//        map["roundSeq"] = roundSeq
-//        val nowTs = System.currentTimeMillis()
-//        map["timeMs"] = nowTs
-//
-//
-//        val sb = StringBuilder()
-//        sb.append("skrer")
-//                .append("|").append(MyUserInfoManager.uid)
-//                .append("|").append(itemID)
-//                .append("|").append(score)
-//                .append("|").append(line)
-//                .append("|").append(mRoomData.gameId)
-//                .append("|").append(0)
-//                .append("|").append(0)
-//                .append("|").append(roundSeq)
-//                .append("|").append(nowTs)
-//        map["sign"] = U.getMD5Utils().MD5_32(sb.toString())
-//        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-//        launch {
-//            var result = subscribe {
-//                mRoomServerApi.sendPkPerSegmentResult(body)
-//            }
-//            if (result.errno == 0) {
-//                // TODO: 2018/12/13  当前postman返回的为空 待补充
-//                MyLog.w(TAG, "单句打分上报成功")
-//            } else {
-//                MyLog.w(TAG, "单句打分上报失败" + result.errno)
-//            }
-//        }
-//    }
+        var itemID = 0
+        if (infoModel.music != null) {
+            itemID = infoModel?.music?.itemID ?: 0
+        }
+
+        map["itemID"] = itemID
+        map["score"] = score
+        map["no"] = line
+        map["gameID"] = mRoomData.gameId
+        map["mainLevel"] = 0
+        map["singSecond"] = 0
+        val roundSeq = infoModel.roundSeq
+        map["roundSeq"] = roundSeq
+        val nowTs = System.currentTimeMillis()
+        map["timeMs"] = nowTs
+        map["segmentCnt"] = (mRoomData.realRoundInfo?.music?.relaySegments?.size ?: 0) + 1
+        map["sentenceCnt"] = mRoomData.sentenceCnt
+
+        val sb = StringBuilder()
+        sb.append("skrer")
+                .append("|").append(MyUserInfoManager.uid)
+                .append("|").append(itemID)
+                .append("|").append(score)
+                .append("|").append(line)
+                .append("|").append(mRoomData.gameId)
+                .append("|").append(0)
+                .append("|").append(0)
+                .append("|").append(roundSeq)
+                .append("|").append(nowTs)
+        map["sign"] = U.getMD5Utils().MD5_32(sb.toString())
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe {
+                mRoomServerApi.sendPkPerSegmentResult(body)
+            }
+            if (result.errno == 0) {
+                // TODO: 2018/12/13  当前postman返回的为空 待补充
+                MyLog.w(TAG, "单句打分上报成功")
+            } else {
+                MyLog.w(TAG, "单句打分上报失败" + result.errno)
+            }
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(giftPresentEvent: GiftPresentEvent) {
