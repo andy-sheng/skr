@@ -104,7 +104,6 @@ class NormalOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         } else if (H.isMicRoom()) {
             userInfoModel = H.micRoomData?.getPlayerOrWaiterInfo(H.micRoomData?.realRoundInfo?.userID)
         } else if (H.isRelayRoom()) {
-            mTvSingerName?.visibility = View.GONE
             if (H.relayRoomData?.isSingByMeNow() == true) {
                 userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo)
             } else {
