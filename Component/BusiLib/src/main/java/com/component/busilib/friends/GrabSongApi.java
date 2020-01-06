@@ -68,7 +68,7 @@ public interface GrabSongApi {
      *
      * @return
      */
-    @GET("http://dev.api.inframe.mobi/v2/fuel/tab-room-list")
+    @GET("http://dev.api.inframe.mobi/v3/fuel/tab-room-list")
     Observable<ApiResult> getRecommendRoomList(@Query("offset") int offset, @Query("testList") String testList, @Query("vars") String vars);
 
     /**
