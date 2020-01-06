@@ -166,7 +166,6 @@ class PartyRoomCreateActivity : BaseActivity() {
             val result = subscribe(RequestControl("createRoom", ControlType.CancelThis)) {
                 roomServerApi.createRoom(body)
             }
-            titlebar.rightTextView.isClickable = true
             if (result.errno == 0) {
                 var rsp = JSON.parseObject(result.data.toString(), JoinPartyRoomRspModel::class.java)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_ROOM)
@@ -174,6 +173,8 @@ class PartyRoomCreateActivity : BaseActivity() {
                         .navigation()
                 finish()
             } else if (8436006 == result.errno) {
+                //因为创建成功就把这个界面finish了，所以只有在失败的时候isClickable = true就可以了
+                titlebar.rightTextView.isClickable = true
                 if (MyUserInfoManager.myUserInfo?.vipInfo == null) {
                     mTipsDialogView = TipsDialogView.Builder(this@PartyRoomCreateActivity)
                             .setMessageTip("开通VIP特权，立即获得创建权限")
