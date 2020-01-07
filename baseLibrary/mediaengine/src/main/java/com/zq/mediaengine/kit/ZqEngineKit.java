@@ -1086,7 +1086,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             return;
         }
         mRoomId = roomid;
-        String token2 = "006f23bd32ce6484113b02d14bd878e694cIACLo4l22yFd7V4lB1FENF5y5DXwdfMWYB6Qp+gEOmpe5SHf2/SIly2MEABaaIgF+msUXgEAAQAAAAAA";//token;
+        String token2 = token;
         if (mTokenEnable) {
             MyLog.i(TAG, "joinRoomInner 明确告知已经启用token了 token=" + token2);
             if (TextUtils.isEmpty(token2)) {
