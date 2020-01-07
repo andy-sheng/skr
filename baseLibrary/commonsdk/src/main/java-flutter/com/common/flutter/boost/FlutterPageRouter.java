@@ -23,7 +23,7 @@ public class FlutterPageRouter {
     private static final String FLUTTER_PAGE_PRE = "skrflutter://";
     public static String FLUTTER_PAGE_MANAGER_BGM = FLUTTER_PAGE_PRE + "PartyBgMusicManagerPage";
     public static String FLUTTER_PAGE_LOCAL_BGM = FLUTTER_PAGE_PRE + "PartyBgMusicLocalPage";
-
+    public static String FLUTTER_PAGE_TEST = FLUTTER_PAGE_PRE + "SkrTestPage";
 
     public static boolean openPageByUrl(Context context, String url, Map params) {
         return openPageByUrl(context, url, params, 0);
