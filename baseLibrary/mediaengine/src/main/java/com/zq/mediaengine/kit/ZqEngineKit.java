@@ -39,7 +39,6 @@ import com.zq.mediaengine.capture.AudioPlayerCapture;
 import com.zq.mediaengine.capture.CameraCapture;
 import com.zq.mediaengine.encoder.MediaCodecAudioEncoder;
 import com.zq.mediaengine.filter.audio.APMFilter;
-import com.zq.mediaengine.filter.audio.AudioCopyFilter;
 import com.zq.mediaengine.filter.audio.AudioFilterMgt;
 import com.zq.mediaengine.filter.audio.AudioMixer;
 import com.zq.mediaengine.filter.audio.AudioPreview;
@@ -59,9 +58,7 @@ import com.zq.mediaengine.kit.agora.AgoraRTCAdapter;
 import com.zq.mediaengine.kit.bytedance.BytedEffectFilter;
 import com.zq.mediaengine.kit.filter.AcrRecognizer;
 import com.zq.mediaengine.kit.filter.AudioDummyFilter;
-import com.zq.mediaengine.kit.filter.CbAudioEffectFilter;
 import com.zq.mediaengine.kit.filter.CbAudioScorer;
-import com.zq.mediaengine.kit.filter.TbAudioAgcFilter;
 import com.zq.mediaengine.kit.log.LogRunnable;
 import com.zq.mediaengine.publisher.MediaMuxerPublisher;
 import com.zq.mediaengine.publisher.Publisher;
@@ -144,6 +141,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private boolean mTokenEnable = false; // 是否开启token校验
     private String mLastJoinChannelToken; // 上一次加入房间用的token
     private String mRoomId = ""; // 房间id
+    private boolean mIsJoiningChannel = false;
 //    private boolean mInChannel = false; // 是否已经在频道中
 
     private GLRender mGLRender;
@@ -286,6 +284,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
         MyLog.d(TAG, "onJoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
         mConfig.setJoinChannelSuccess(true);
+        mIsJoiningChannel = false;
         initWhenInChannel();
         UserStatus userStatus = ensureJoin(uid, "onJoinChannelSuccess");
 //        userStatus.setIsSelf(true);
@@ -305,6 +304,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
         MyLog.i(TAG, "onRejoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
         mConfig.setJoinChannelSuccess(true);
+        mIsJoiningChannel = false;
         UserStatus userStatus = ensureJoin(uid, "onRejoinChannelSuccess");
 //        userStatus.setIsSelf(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_REJOIN, userStatus));
@@ -313,6 +313,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     @Override
     public void onLeaveChannel(IRtcEngineEventHandler.RtcStats stats) {
         mConfig.setJoinChannelSuccess(false);
+        mIsJoiningChannel = false;
     }
 
     @Override
@@ -437,8 +438,10 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mCustomHandlerThread.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (mStatus == STATUS_INITED) {
+                        Log.i(TAG, "token error: " + mIsJoiningChannel);
+                        if (mStatus == STATUS_INITED && !mIsJoiningChannel) {
                             String token = getToken(mRoomId);
+                            mIsJoiningChannel = true;
                             joinRoomInner2(mRoomId, mConfig.getSelfUid(), token);
                         }
                     }
@@ -905,15 +908,19 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new LogRunnable("leaveChannel") {
             @Override
             public void realRun() {
-                if (mConfig.isUseExternalAudio()) {
-                    mRemoteAudioPreview.stop();
-                    mLocalAudioPreview.stop();
-                    mAudioCapture.stop();
-                    mAudioPlayerCapture.stop();
-                }
-                mAgoraRTCAdapter.leaveChannel();
+                doLeaveChannel();
             }
         });
+    }
+
+    private void doLeaveChannel() {
+        if (mConfig.isUseExternalAudio()) {
+            mRemoteAudioPreview.stop();
+            mLocalAudioPreview.stop();
+            mAudioCapture.stop();
+            mAudioPlayerCapture.stop();
+        }
+        mAgoraRTCAdapter.leaveChannel();
     }
 
     /**
@@ -955,6 +962,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mMusicTimePlayTimeListener.dispose();
             }
             mConfig.setJoinChannelSuccess(false);
+            mIsJoiningChannel = false;
             MyLog.i(TAG, "destroyInner11");
             {
                 // 释放录制相关模块
@@ -1078,7 +1086,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             return;
         }
         mRoomId = roomid;
-        String token2 = token;
+        String token2 = "006f23bd32ce6484113b02d14bd878e694cIACLo4l22yFd7V4lB1FENF5y5DXwdfMWYB6Qp+gEOmpe5SHf2/SIly2MEABaaIgF+msUXgEAAQAAAAAA";//token;
         if (mTokenEnable) {
             MyLog.i(TAG, "joinRoomInner 明确告知已经启用token了 token=" + token2);
             if (TextUtils.isEmpty(token2)) {
@@ -1101,7 +1109,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private void joinRoomInner2(final String roomid, final int userId, final String token) {
         MyLog.i(TAG, "joinRoomInner2" + " roomid=" + roomid + " userId=" + userId + " token=" + token);
         mLastJoinChannelToken = token;
-        mAgoraRTCAdapter.leaveChannel();
+        doLeaveChannel();
 
         int retCode = 0;
         // TODO: 自采集模式下，练歌房不需要加入声网房间
@@ -1119,6 +1127,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
 
         if (retCode < 0) {
+            mIsJoiningChannel = false;
             HashMap map = new HashMap();
             map.put("reason", "" + retCode);
             StatisticsAdapter.recordCountEvent("agora", "join_failed", map);

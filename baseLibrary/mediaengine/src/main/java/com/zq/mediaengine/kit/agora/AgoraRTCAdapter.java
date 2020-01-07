@@ -69,7 +69,7 @@ import io.reactivex.schedulers.Schedulers;
 public class AgoraRTCAdapter {
     public final String TAG = "AgoraRTCAdapter";
     public final String TAG_SLS = "[SLS]" + TAG;
-    private final static boolean VERBOSE = false && MyLog.isDebugLogOpen();
+    private final static boolean VERBOSE = false;
 
     private static AgoraRTCAdapter sInstance;
     private static final String APP_ID;
@@ -887,6 +887,7 @@ public class AgoraRTCAdapter {
      */
     public void setClientRole(boolean isAnchor) {
         tryInitRtcEngine();
+        MyLog.i(TAG, "setClientRole: " + isAnchor);
         if (isAnchor) {
             mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
         } else {
@@ -903,7 +904,7 @@ public class AgoraRTCAdapter {
      * 如果已在频道中，用户必须调用 leaveChannel 方法退出当前频道，才能进入下一个频道。
      */
     public int joinChannel(String token, String channelId, String extra, int uid, SSTSCredentialHolder cHolder) {
-        tryInitRtcEngine();
+        initRtcEngineInner();
 //        channelId = "bul";
 //        token = null;
         MyLog.i(TAG, "joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
