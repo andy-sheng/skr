@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.flutter.plugin.MethodHandler
 import com.common.rxretrofit.httpGet
+import com.common.rxretrofit.httpPost
+import com.common.rxretrofit.httpPut
 import com.common.utils.U
 import com.module.playways.party.bgmusic.getLocalMusicInfo
 import com.zq.mediaengine.kit.ZqEngineKit
@@ -13,20 +15,36 @@ import io.flutter.plugin.common.MethodChannel
 class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
     override fun handle(call: MethodCall, result: MethodChannel.Result): Boolean {
         when {
-            call.method == "getDeviceID" -> {
-                result.success(U.getDeviceUtils().deviceID)
-                return true
-            }
-            call.method == "getChannel" -> {
-                result.success(U.getChannelUtils().channel)
-                return true
-            }
             call.method == "httpGet" -> {
                 var url = call.argument<String>("url")
                 var params = call.argument<HashMap<String, Any?>>("params")
                 httpGet(url!!, params) { r ->
                     result.success(r)
                 }
+                return true
+            }
+            call.method == "httpPost" -> {
+                var url = call.argument<String>("url")
+                var params = call.argument<HashMap<String, Any?>>("params")
+                httpPost(url!!, params) { r ->
+                    result.success(r)
+                }
+                return true
+            }
+            call.method == "httpPut" -> {
+                var url = call.argument<String>("url")
+                var params = call.argument<HashMap<String, Any?>>("params")
+                httpPut(url!!, params) { r ->
+                    result.success(r)
+                }
+                return true
+            }
+            call.method == "getDeviceID" -> {
+                result.success(U.getDeviceUtils().deviceID)
+                return true
+            }
+            call.method == "getChannel" -> {
+                result.success(U.getChannelUtils().channel)
                 return true
             }
             call.method == "loadLocalBGM" -> {
