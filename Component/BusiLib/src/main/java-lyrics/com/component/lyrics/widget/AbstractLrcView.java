@@ -596,6 +596,7 @@ public abstract class AbstractLrcView extends View {
                 // TODO: 2019/1/4 这个先注掉
 //                LyricsUtils.drawOutline(canvas, mPaintOutline, defText, x, y);
                 LyricsUtils.drawDynamicText(canvas, mPaint, mPaintHL, mPaintColors, mPaintHLColors, defText, hlWidth, x, y);
+                MyLog.w("AbstractLrcView", "mLrcStatus == LRCSTATUS_INIT || mLrcStatus == LRCSTATUS_NOLRC_DEFTEXT");
             } else if (mLrcStatus == LRCSTATUS_LOADING || mLrcStatus == LRCSTATUS_ERROR || mLrcStatus == LRCSTATUS_NONSUPPORT) {
                 //绘画加载中文本
                 String text = mDefText;
@@ -612,6 +613,7 @@ public abstract class AbstractLrcView extends View {
                 float y = (getHeight() + textHeight) / 2;
                 LyricsUtils.drawOutline(canvas, mPaintOutline, text, x, y);
                 LyricsUtils.drawText(canvas, mPaint, mPaintColors, text, x, y);
+                MyLog.w("AbstractLrcView", "mLrcStatus == LRCSTATUS_LOADING || mLrcStatus == LRCSTATUS_ERROR || mLrcStatus == LRCSTATUS_NONSUPPORT");
             } else if (mLrcStatus == LRCSTATUS_NOLRC_GOTOSEARCH) {
                 String btnText = mGotoSearchText;
                 //绘画搜索歌词按钮
@@ -645,7 +647,7 @@ public abstract class AbstractLrcView extends View {
                         MyLog.d("AbstractLrcViewAbstractLrcView", "结束 num is " + lyricsLineNum);
 //                        U.getToastUtil().showShort("结束");
                     }
-                }else {
+                } else {
                     mHasPostLastLineEndEvent = false;
                 }
             }
@@ -1056,7 +1058,7 @@ public abstract class AbstractLrcView extends View {
      */
     public void seekTo(int playProgress) {
         synchronized (lock) {
-            if(mLyricsReader == null){
+            if (mLyricsReader == null) {
                 MyLog.w(TAG, "seekto" + " mLyricsReader=null");
                 return;
             }
@@ -1107,7 +1109,7 @@ public abstract class AbstractLrcView extends View {
             this.mLyricsReader = lyricsReader;
             resetData();
             if (!hasLrcLineInfos()) {
-
+                MyLog.w(TAG, "setLyricsReader !hasLrcLineInfos()");
                 if (mSearchLyricsListener != null) {
                     mLrcStatus = LRCSTATUS_NOLRC_GOTOSEARCH;
                 } else {
@@ -1131,12 +1133,18 @@ public abstract class AbstractLrcView extends View {
      * @return
      */
     public boolean hasLrcLineInfos() {
+        boolean notNull = mLyricsReader != null;
+        boolean lrcLineInfosNotNull = mLyricsReader.getLrcLineInfos() != null;
+        boolean sizeNotZero = mLyricsReader.getLrcLineInfos().size() > 0;
+
+        MyLog.w(TAG, "hasLrcLineInfos notNull is " + notNull + ", lrcLineInfosNotNull is " + lrcLineInfosNotNull + ",sizeNotZero is " + sizeNotZero);
+
         if (mLyricsReader != null && mLyricsReader.getLrcLineInfos() != null && mLyricsReader.getLrcLineInfos().size() > 0) {
             //获取分割歌词集合
             if (mLyricsReader.getLyricsType() == LyricsInfo.LRC) {
                 //lrc歌词
                 mLrcLineInfos = LyricsUtils.getSplitLrcLyrics(mLyricsReader.getLrcLineInfos(), mTextMaxWidth, mPaint);
-                if(mLrcLineInfos == null){
+                if (mLrcLineInfos == null) {
                     MyLog.e(TAG, "mLrcLineInfos 1 为 null");
                 }
                 //翻译歌词
@@ -1146,7 +1154,7 @@ public abstract class AbstractLrcView extends View {
                 //动感歌词
                 //默认歌词
                 mLrcLineInfos = LyricsUtils.getSplitDynamicLyrics(mLyricsReader.getLrcLineInfos(), mTextMaxWidth, mPaint);
-                if(mLrcLineInfos == null){
+                if (mLrcLineInfos == null) {
                     MyLog.e(TAG, "mLrcLineInfos 2 为 null");
                 }
                 //翻译歌词
@@ -1409,7 +1417,7 @@ public abstract class AbstractLrcView extends View {
         void extraLrcCallback();
     }
 
-//    ///////////////////////////////////////////////
+    //    ///////////////////////////////////////////////
 //
 //
 //    public void setRefreshTime(long refreshTime) {
@@ -1487,7 +1495,8 @@ public abstract class AbstractLrcView extends View {
     public long getPlayerSpendTime() {
         return mPlayerSpendTime;
     }
-//
+
+    //
 //    public int getExtraSplitLyricsLineNum() {
 //        return mExtraSplitLyricsLineNum;
 //    }
@@ -1507,7 +1516,8 @@ public abstract class AbstractLrcView extends View {
     public float getSpaceLineHeight() {
         return mSpaceLineHeight;
     }
-//
+
+    //
 //    public float getPaddingLeftOrRight() {
 //        return mPaddingLeftOrRight;
 //    }
