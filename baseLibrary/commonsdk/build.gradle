@@ -152,8 +152,8 @@ android {
 dependencies {
     // New api keyword is exactly the same as the old compile keyword.
     if(flutterEnable.toBoolean()){
-        implementation project(":flutter")
-        implementation project(':flutter_boost')
+        api project(":flutter")
+        api project(':flutter_boost')
     }
 
     kapt rootProject.ext.dependencies["arouter-compiler"]

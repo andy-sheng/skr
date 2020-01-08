@@ -151,4 +151,6 @@ public interface RouterConstants {
     String ACTIVITY_LIST_MEMBER = "/club/ClubMemberListActivity";
     String ACTIVITY_LIST_APPLY_CLUB = "/club/ClubApplyListActivity";
     String ACTIVITY_LIST_CLUB_RANK = "/club/ClubRankListActivity";
+    String FLUTTER_PAGE_TEST = "SkrTestPage";
+    String FLUTTER_PAGE_PARTY_BGM_PAGE = "PartyBgMusicManagerPage";
 }

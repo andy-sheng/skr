@@ -17,6 +17,7 @@ package com.common.core;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -27,6 +28,9 @@ import com.common.base.InitManager;
 import com.common.base.delegate.AppLifecycles;
 import com.common.core.account.UserAccountManager;
 import com.common.core.crash.SkrCrashHandler;
+import com.common.core.scheme.SchemeUtils;
+import com.common.core.scheme.processor.SkrSchemeProcessor;
+import com.common.flutter.boost.FlutterBoostController;
 import com.common.notification.NotificationMsgProcess;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.interceptor.CoreInfoInterceptor;
@@ -78,13 +82,12 @@ public class CoreConfiguration implements ConfigModule {
                 }
                 UserAccountManager.INSTANCE.init();
                 DoraemonManager.init();
-                InitManager.initMainThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        SkrCrashHandler.getInstance().register();
-                    }
-                },20000);
-
+                InitManager.initMainThread(() -> SkrCrashHandler.getInstance().register(), 20000);
+                FlutterBoostController.INSTANCE.setOpenContainerListener((context, url, params, requestCode, extra) -> {
+                    String newUrl = SchemeUtils.join(url, params, requestCode);
+                    SkrSchemeProcessor.INSTANCE.process(Uri.parse(newUrl), context, false);
+                    return null;
+                });
             }
 
             @Override

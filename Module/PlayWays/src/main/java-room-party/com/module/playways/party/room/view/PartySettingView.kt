@@ -6,13 +6,14 @@ import android.view.ViewStub
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.common.core.view.setAnimateDebounceViewClickListener
-import com.common.flutter.boost.FlutterPageRouter
+import com.common.flutter.boost.FlutterBoostController
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.ExViewStub
+import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.room.data.H
@@ -51,7 +52,7 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
             setAllMicMute(!b)
         }
         bgmTv.setAnimateDebounceViewClickListener {
-            FlutterPageRouter.openPageByUrl(realView?.context,FlutterPageRouter.FLUTTER_PAGE_MANAGER_BGM,null)
+            FlutterBoostController.openFlutterPage(realView?.context!!,RouterConstants.FLUTTER_PAGE_PARTY_BGM_PAGE,null)
         }
     }
 

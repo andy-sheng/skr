@@ -5,6 +5,10 @@ import android.text.TextUtils;
 
 import com.common.log.MyLog;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Created by lan on 16/10/26.
  *
@@ -39,4 +43,40 @@ public class SchemeUtils {
         return "";
     }
 
+    public static String join(String url,Map<String, Object> params, Integer requestCode) {
+        Uri uri = Uri.parse(url);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(uri.getScheme()).append("://").append(uri.getHost()).append(uri.getPath());
+        HashMap<String,Object> paramsMap = new HashMap();
+        if(requestCode!=0){
+            paramsMap.put("requestCode",requestCode);
+        }
+        Set<String> keys = uri.getQueryParameterNames();
+        for(String key:keys){
+            Object value = uri.getQueryParameter(key);
+            paramsMap.put(key,value);
+        }
+        if(params!=null){
+            paramsMap.putAll(params);
+        }
+        if(!paramsMap.isEmpty()){
+            sb.append("?");
+            for(String key:paramsMap.keySet()){
+                sb.append(key).append("=").append(paramsMap.get(key)).append("&");
+            }
+            sb.deleteCharAt(sb.length()-1);
+        }
+        return sb.toString();
+    }
+
+    public static HashMap<String,Object> getParams(Uri uri) {
+        HashMap<String,Object> paramsMap = new HashMap();
+        Set<String> keys = uri.getQueryParameterNames();
+        for(String key:keys){
+            Object value = uri.getQueryParameter(key);
+            paramsMap.put(key,value);
+        }
+        return paramsMap;
+    }
 }

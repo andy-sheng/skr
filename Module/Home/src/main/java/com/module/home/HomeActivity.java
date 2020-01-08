@@ -36,7 +36,7 @@ import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
-import com.common.flutter.boost.FlutterPageRouter;
+import com.common.flutter.boost.FlutterBoostController;
 import com.common.log.MyLog;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.utils.ActivityUtils;
@@ -239,7 +239,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 MyLog.w(TAG, "  mGameArea.setOnLongClickListener");
                 HashMap map = new HashMap();
                 map.put("key1", 2);
-                FlutterPageRouter.openPageByUrl(HomeActivity.this, FlutterPageRouter.FLUTTER_PAGE_TEST, map);
+                FlutterBoostController.INSTANCE.openFlutterPage(HomeActivity.this, RouterConstants.FLUTTER_PAGE_TEST, null,0);
                 return false;
             }
         });

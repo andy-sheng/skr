@@ -13,7 +13,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
 import com.common.core.login.interceptor.SkrArouterInterceptor;
-import com.common.core.scheme.processor.ZqSchemeProcessorManager;
+import com.common.core.scheme.processor.SkrSchemeProcessor;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.RouterConstants;
@@ -78,7 +78,7 @@ public class SchemeSdkActivity extends BaseActivity {
             }
         }
         mUri = Uri.parse(uri);
-        ZqSchemeProcessorManager.getInstance().process(mUri,this,true);
+        SkrSchemeProcessor.INSTANCE.process(mUri,this,true);
         if (!isHomeActivityExist()) {
             MyLog.w(getTAG(), "HomeActivity不存在，需要先启动HomeActivity");
             ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
@@ -128,7 +128,7 @@ public class SchemeSdkActivity extends BaseActivity {
 
     private void process(final Uri uri) throws Exception {
         MyLog.w(getTAG(), "process uri=" + uri);
-        ZqSchemeProcessorManager.getInstance().process(mUri,this,false);
+        SkrSchemeProcessor.INSTANCE.process(mUri,this,false);
     }
 
 }

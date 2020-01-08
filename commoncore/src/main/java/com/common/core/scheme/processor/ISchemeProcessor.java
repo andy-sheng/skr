@@ -1,6 +1,7 @@
 package com.common.core.scheme.processor;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -15,5 +16,5 @@ public interface ISchemeProcessor {
      *                             false 的话 home肯定存在
      * @return
      */
-    ProcessResult process(Uri uri,boolean beforeHomeExistJudge);
+    ProcessResult process(Uri uri, Context context, boolean beforeHomeExistJudge);
 }

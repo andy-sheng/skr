@@ -8,8 +8,8 @@ import com.common.clipboard.ClipboardUtils;
 import com.common.core.account.UserAccountManager;
 import com.common.core.kouling.api.KouLingServerApi;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.scheme.processor.SkrSchemeProcessor;
 import com.common.core.scheme.processor.ProcessResult;
-import com.common.core.scheme.processor.ZqSchemeProcessorManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -258,7 +258,7 @@ public class SkrKouLingUtils {
                                 // TODO这里要考虑下如果没登录怎么办，走SchemeActivity
                                 if (UserAccountManager.INSTANCE.hasAccount()) {
                                     Uri uri = Uri.parse(scheme);
-                                    ProcessResult processResult = ZqSchemeProcessorManager.getInstance().process(uri, U.getActivityUtils().getTopActivity(), false);
+                                    ProcessResult processResult = SkrSchemeProcessor.INSTANCE.process(uri, U.getActivityUtils().getTopActivity(), false);
                                 } else {
                                     ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
                                             .withString("uri", scheme)
