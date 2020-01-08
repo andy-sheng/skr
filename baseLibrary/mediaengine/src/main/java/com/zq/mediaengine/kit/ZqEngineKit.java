@@ -430,7 +430,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 });
 
             }
-        } else if (error == Constants.ERR_INVALID_TOKEN) {
+        } else if (error == Constants.ERR_INVALID_TOKEN || error == Constants.ERR_TOKEN_EXPIRED) {
             // token验证失败
             if (mCustomHandlerThread != null) {
                 mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
