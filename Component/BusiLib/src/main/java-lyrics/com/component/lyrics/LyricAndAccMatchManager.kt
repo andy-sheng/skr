@@ -151,7 +151,7 @@ class LyricAndAccMatchManager {
             params?.manyLyricsView?.pause()
             mLyricsReader = lyricsReader
 
-            if (params?.needWaitAAC == true) {
+            if (params?.needWaitACC == true) {
                 if (params?.accLoadOk == true) {
                     launchLyricEvent(ZqEngineKit.getInstance().audioMixingCurrentPosition)
                 } else {
@@ -208,27 +208,29 @@ class LyricAndAccMatchManager {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: EngineEvent) {
-        if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
-            val `in` = event.getObj<EngineEvent.MixMusicTimeInfo>()
+        if(params?.needWaitACC == true){
+            if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
+                val `in` = event.getObj<EngineEvent.MixMusicTimeInfo>()
 //            MyLog.w(TAG, "伴奏 ts=" + `in`!!.current)
-            if (`in` != null && `in`.current > 0) {
-                if (params?.accLoadOk == false) {
-                    DebugLogView.println(TAG, "伴奏加载ready")
-                    if (mLrcLoadOk) {
-                        launchLyricEvent(`in`.current)
+                if (`in` != null && `in`.current > 0) {
+                    if (params?.accLoadOk == false) {
+                        DebugLogView.println(TAG, "伴奏加载ready")
+                        if (mLrcLoadOk) {
+                            launchLyricEvent(`in`.current)
+                        }
                     }
-                }
-                params?.accLoadOk = true
-                if (params?.manyLyricsView?.visibility == View.VISIBLE) {
-                    val a1 = params?.manyLyricsView?.curPlayingTime ?: 0
-                    val a2 = params?.manyLyricsView?.playerSpendTime ?: 0
-                    val ts1 = a1 + a2
-                    val ts2 = (`in`.current + (params?.accBeginTs ?: 0)).toLong()
-                    if (abs(ts1 - ts2) > 500) {
-                        DebugLogView.println(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=$ts1 伴奏ts=$ts2")
-                        params?.manyLyricsView?.seekTo(ts2.toInt())
-                    }
+                    params?.accLoadOk = true
+                    if (params?.manyLyricsView?.visibility == View.VISIBLE) {
+                        val a1 = params?.manyLyricsView?.curPlayingTime ?: 0
+                        val a2 = params?.manyLyricsView?.playerSpendTime ?: 0
+                        val ts1 = a1 + a2
+                        val ts2 = (`in`.current + (params?.accBeginTs ?: 0)).toLong()
+                        if (abs(ts1 - ts2) > 500) {
+                            DebugLogView.println(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=$ts1 伴奏ts=$ts2")
+                            params?.manyLyricsView?.seekTo(ts2.toInt())
+                        }
 
+                    }
                 }
             }
         }
@@ -356,7 +358,7 @@ class LyricAndAccMatchManager {
         // 是否需要打分
         var needScore: Boolean = true
         //是否需要等待伴奏的回调
-        var needWaitAAC: Boolean = true
+        var needWaitACC: Boolean = true
 //        var splitChorusArray:ArrayList<Int>? = null
 //        var firstSingByMe: Boolean = true
 

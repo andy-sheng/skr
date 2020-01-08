@@ -18,6 +18,8 @@ import org.greenrobot.eventbus.EventBus
 
 class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
+    var bgmPlayingPath: String? = null // 背景音乐的播放路径
+
     var config = PartyConfigModel()
 
     var isAllMute = false // 是否设置了全员禁麦

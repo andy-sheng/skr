@@ -8,6 +8,7 @@ import com.common.rxretrofit.httpPost
 import com.common.rxretrofit.httpPut
 import com.common.utils.U
 import com.module.playways.party.bgmusic.getLocalMusicInfo
+import com.module.playways.room.data.H
 import com.zq.mediaengine.kit.ZqEngineKit
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -62,11 +63,19 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
                 var cycle = call.argument<Int>("cycle")
                 ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), filePath, null, 0, false, false, cycle
                         ?: 1)
+                var from = call.argument<String>("from")
+                if(from == "party_bgm"){
+                    H.partyRoomData?.bgmPlayingPath = filePath
+                }
                 result.success(null)
                 return true
             }
             call.method == "stopAudioMixing" -> {
                 ZqEngineKit.getInstance().stopAudioMixing()
+                var from = call.argument<String>("from")
+                if(from == "party_bgm"){
+                    H.partyRoomData?.bgmPlayingPath = null
+                }
                 result.success(null)
                 return true
             }

@@ -454,7 +454,6 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun startRecordInner() {
-
         mFeedsMakeModel?.recordingClick = true
         if (mFeedsMakeModel?.withBgm == true) {
             // 如果开着伴奏

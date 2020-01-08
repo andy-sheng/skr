@@ -281,7 +281,7 @@ class PartyGameTabView : ExConstraintLayout {
             return
         }
 
-        ZqEngineKit.getInstance().stopAudioMixing()
+        tryStopAudioMixing()
 
         partySelfSingLyricView?.reset()
         delaySingJob?.cancel()
@@ -339,6 +339,8 @@ class PartyGameTabView : ExConstraintLayout {
                      * 伴奏先加载 ，一旦加载成功 在 PartyGameMainView 的引擎 onEvent 中 pause 住，时间一到 再 resume
                      */
                     if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
+                        roomData?.bgmPlayingPath = null
+                        tryStopAudioMixing()
                         val songModel = partyGameInfoModel?.ktv?.music
                         // 开始开始混伴奏，开始解除引擎mute
                         val accFile = SongResUtils.getAccFileByUrl(songModel?.acc)
@@ -370,7 +372,7 @@ class PartyGameTabView : ExConstraintLayout {
                         partySelfSingLyricView?.startFly(ts.toInt(), true) {
                             MyLog.d(mTag, "partySelfSingLyricView?.startFly end")
                             endQuestion()
-                            ZqEngineKit.getInstance().stopAudioMixing()
+                            tryStopAudioMixing()
                         }
                     } else {
                         var elapsedTimeMs = roomData?.realRoundInfo?.elapsedTimeMs ?: 0
@@ -427,7 +429,8 @@ class PartyGameTabView : ExConstraintLayout {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        ZqEngineKit.getInstance().stopAudioMixing()
+        roomData?.bgmPlayingPath = null
+        tryStopAudioMixing()
         partySelfSingLyricView?.reset()
         delaySingJob?.cancel()
         countDownJob?.cancel()
@@ -508,10 +511,18 @@ class PartyGameTabView : ExConstraintLayout {
             setMainText("", "还没有房主，先聊聊天吧～")
         }
 
-        ZqEngineKit.getInstance().stopAudioMixing()
+        tryStopAudioMixing()
         partySelfSingLyricView?.reset()
         delaySingJob?.cancel()
         countDownJob?.cancel()
         EventBus.getDefault().post(PartyFinishSongManageFragmentEvent())
+    }
+
+    private fun tryStopAudioMixing(){
+        if(roomData?.myUserInfo?.isHost() == true && roomData?.bgmPlayingPath?.isNotEmpty() == true){
+
+        }else{
+            ZqEngineKit.getInstance().stopAudioMixing()
+        }
     }
 }
