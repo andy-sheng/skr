@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
@@ -26,15 +25,11 @@ import com.common.view.ex.ExImageView
 import com.component.busilib.view.SpeakingTipsAnimationView
 import com.component.person.event.ShowPersonCardEvent
 import com.engine.EngineEvent
-import com.module.RouterConstants
-import com.module.club.IClubModuleService
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.event.PartyHostChangeEvent
 import com.module.playways.party.room.event.PartyOnlineUserCntChangeEvent
-import com.module.playways.party.room.seat.PartySeatAdapter
 import com.module.playways.room.data.H
-import com.zq.live.proto.PartyRoom.EMicStatus
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -97,11 +92,11 @@ class PartyTopContentView : ExConstraintLayout {
                                 return@getClubIdentify
                             }
                         } else {
-                            if (it.canOpHost() && it.isHighLevelThen(host)) {
-                                listener?.showPartyOpHost()
-                                return@getClubIdentify
-                            } else if ((roomData?.hostId ?: 0) == MyUserInfoManager.uid.toInt()) {
+                            if ((roomData?.hostId ?: 0) == MyUserInfoManager.uid.toInt()) {
                                 listener?.showPartySelfOpHost()
+                                return@getClubIdentify
+                            } else if (it.canOpHost() && it.isHighLevelThen(host)) {
+                                listener?.showPartyOpHost()
                                 return@getClubIdentify
                             }
                         }
