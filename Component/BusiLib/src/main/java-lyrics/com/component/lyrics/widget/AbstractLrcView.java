@@ -596,7 +596,7 @@ public abstract class AbstractLrcView extends View {
                 // TODO: 2019/1/4 这个先注掉
 //                LyricsUtils.drawOutline(canvas, mPaintOutline, defText, x, y);
                 LyricsUtils.drawDynamicText(canvas, mPaint, mPaintHL, mPaintColors, mPaintHLColors, defText, hlWidth, x, y);
-                MyLog.w("AbstractLrcView", "mLrcStatus == LRCSTATUS_INIT || mLrcStatus == LRCSTATUS_NOLRC_DEFTEXT");
+                MyLog.d("AbstractLrcView", "mLrcStatus == LRCSTATUS_INIT || mLrcStatus == LRCSTATUS_NOLRC_DEFTEXT");
             } else if (mLrcStatus == LRCSTATUS_LOADING || mLrcStatus == LRCSTATUS_ERROR || mLrcStatus == LRCSTATUS_NONSUPPORT) {
                 //绘画加载中文本
                 String text = mDefText;
@@ -613,7 +613,7 @@ public abstract class AbstractLrcView extends View {
                 float y = (getHeight() + textHeight) / 2;
                 LyricsUtils.drawOutline(canvas, mPaintOutline, text, x, y);
                 LyricsUtils.drawText(canvas, mPaint, mPaintColors, text, x, y);
-                MyLog.w("AbstractLrcView", "mLrcStatus == LRCSTATUS_LOADING || mLrcStatus == LRCSTATUS_ERROR || mLrcStatus == LRCSTATUS_NONSUPPORT");
+                MyLog.d("AbstractLrcView", "mLrcStatus == LRCSTATUS_LOADING || mLrcStatus == LRCSTATUS_ERROR || mLrcStatus == LRCSTATUS_NONSUPPORT");
             } else if (mLrcStatus == LRCSTATUS_NOLRC_GOTOSEARCH) {
                 String btnText = mGotoSearchText;
                 //绘画搜索歌词按钮
