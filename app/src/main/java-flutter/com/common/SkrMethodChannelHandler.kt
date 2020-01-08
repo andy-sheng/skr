@@ -70,6 +70,17 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
                 result.success(null)
                 return true
             }
+            call.method == "showToast" -> {
+                var short = call.argument<Boolean>("short") ?:true
+                var content = call.argument<String>("content") ?:""
+                if(short){
+                    U.getToastUtil().showShort(content)
+                }else{
+                    U.getToastUtil().showLong(content)
+                }
+                result.success(null)
+                return true
+            }
         }
         return false
     }
