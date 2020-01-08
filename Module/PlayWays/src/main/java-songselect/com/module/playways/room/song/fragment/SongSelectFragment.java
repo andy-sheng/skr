@@ -262,7 +262,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             }, true);
             return;
         } else {
-            StatisticsAdapter.recordCountEvent("chorus", "start", null);
             EventBus.getDefault().post(new AddSongEvent(songModel, mFrom));
         }
     }

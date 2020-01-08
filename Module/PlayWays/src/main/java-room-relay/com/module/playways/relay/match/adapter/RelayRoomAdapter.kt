@@ -8,23 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
-import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.view.AvatarLevelView
 import com.component.busilib.view.NickNameView
 import com.component.busilib.view.recyclercardview.CardAdapterHelper
-import com.component.level.utils.LevelConfigUtils
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.relay.match.model.RelayRecommendRoomInfo
-import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.Common.ESex
 
 class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHolder>() {
@@ -32,26 +28,6 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
     var mDataList = ArrayList<RelayRecommendRoomInfo>()
     var listener: RelayRoomListener? = null
     private val cardAdapterHelper = CardAdapterHelper(8, 12)
-
-    private val blueDrawable = DrawableCreator.Builder()
-            .setCornersRadius(16.dp().toFloat())
-            .setGradientColor(Color.parseColor("#FFFFFF"), Color.parseColor("#AFE1FF"))
-            .build()
-
-    private val redDrawable = DrawableCreator.Builder()
-            .setCornersRadius(16.dp().toFloat())
-            .setGradientColor(Color.parseColor("#FFFFFF"), Color.parseColor("#FFD6E9"))
-            .build()
-
-    private val girlDrawable = DrawableCreator.Builder()
-            .setCornersRadius(4.dp().toFloat())
-            .setSolidColor(Color.parseColor("#FF71BE"))
-            .build()
-
-    private val boyDrawable = DrawableCreator.Builder()
-            .setCornersRadius(4.dp().toFloat())
-            .setSolidColor(Color.parseColor("#6AB1DC"))
-            .build()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RelayRoomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.relay_room_card_item_layout, parent, false)
@@ -101,6 +77,26 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
         fun bindData(position: Int, model: RelayRecommendRoomInfo) {
             this.mPos = position
             this.mModel = model
+
+            val blueDrawable = DrawableCreator.Builder()
+                    .setCornersRadius(16.dp().toFloat())
+                    .setGradientColor(Color.parseColor("#FFFFFF"), Color.parseColor("#AFE1FF"))
+                    .build()
+
+            val redDrawable = DrawableCreator.Builder()
+                    .setCornersRadius(16.dp().toFloat())
+                    .setGradientColor(Color.parseColor("#FFFFFF"), Color.parseColor("#FFD6E9"))
+                    .build()
+
+            val girlDrawable = DrawableCreator.Builder()
+                    .setCornersRadius(4.dp().toFloat())
+                    .setSolidColor(Color.parseColor("#FF71BE"))
+                    .build()
+
+            val boyDrawable = DrawableCreator.Builder()
+                    .setCornersRadius(4.dp().toFloat())
+                    .setSolidColor(Color.parseColor("#6AB1DC"))
+                    .build()
 
             when {
                 model.user?.sex == ESex.SX_MALE.value -> {

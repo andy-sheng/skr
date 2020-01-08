@@ -1932,6 +1932,9 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (!OPEN_AUDIO_RECORD_FOR_CALLBACK) {
             return;
         }
+        if(!mConfig.isJoinChannelSuccess()){
+            return;
+        }
         boolean hasAnchor = false;
         /**
          * 当前的主播id 即时是合唱也只有一个id，因为对于引擎来说，不确定后面还有人成为主播

@@ -43,9 +43,7 @@ class RelayEnergyView : ExRelativeLayout {
         fullCountTv.text = "x0"
         waveProgressView.setCurrent(0, "")
         waveProgressView.setMaxProgress(maxScore)
-//        waveProgressView.setWave()
-        waveProgressView.setWaveColor("#FF8484")
-        waveProgressView.setmWaveSpeed(40)
+        waveProgressView.setmWaveSpeed(20)
     }
 
     override fun onDetachedFromWindow() {

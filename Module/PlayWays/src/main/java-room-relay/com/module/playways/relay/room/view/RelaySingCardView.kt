@@ -171,24 +171,12 @@ class RelaySingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 }
 //                mSvlyric?.visibility = View.GONE
             }
+
+            override fun onLyricEventPost(lineNum: Int) {
+                super.onLyricEventPost(lineNum)
+                roomData?.sentenceCnt = lineNum
+            }
         })
-//        LyricsManager
-//                .loadStandardLyric("http://song-static.inframe.mobi/lrc/4ee4ac0711c74d6f333fcac10c113239.zrce")
-//                .subscribe({ lyricsReader ->
-//                    manyLyricsView?.visibility = View.VISIBLE
-//                    manyLyricsView?.initLrcData()
-//                    manyLyricsView?.lyricsReader = lyricsReader
-//                    manyLyricsView?.setSplitChorusArray(intArrayOf(43*1000,65*1000,87*1000))
-//                    manyLyricsView?.setFirstSingByMe(false)
-//                    val set = HashSet<Int>()
-//                    set.add(lyricsReader.getLineInfoIdByStartTs(0))
-//                    set.add(19)
-//                    manyLyricsView?.needCountDownLine = set
-//                    manyLyricsView?.play(18*1000)
-//                }, { throwable ->
-//                    MyLog.e(TAG, throwable)
-//                    DebugLogView.println(TAG, "歌词下载失败，采用不滚动方式播放歌词")
-//                })
     }
 
     private fun processTurnChange() {

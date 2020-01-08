@@ -1,13 +1,26 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/view_123_dp"
-    android:layout_height="@dimen/view_38_dp"
+    android:layout_width="@dimen/view_160_dp"
+    android:layout_height="@dimen/view_78_dp"
     tools:parentTag="android.widget.RelativeLayout">
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="@dimen/view_160_dp"
+        android:layout_height="@dimen/view_28_dp"
+        android:gravity="center"
+        android:text="互相开启就能继续点歌合唱"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="@color/black_trans_50" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/continue_iv"
         android:layout_width="@dimen/view_123_dp"
         android:layout_height="@dimen/view_38_dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/relay_continue_sing" />
 
     <com.common.view.ex.ExTextView

@@ -99,6 +99,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nickname_view" />
 
+    <android.support.constraint.Barrier
+        android:id="@+id/tag_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="level_tv,age_tv,sex_tv" />
+
     <TextView
         android:id="@+id/song_name_tv"
         android:layout_width="wrap_content"
@@ -112,7 +119,7 @@
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/age_tv" />
+        app:layout_constraintTop_toBottomOf="@id/tag_barrier" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/recommend_tag_sdv"

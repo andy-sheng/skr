@@ -12,6 +12,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.*
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
@@ -62,6 +63,7 @@ class RelayHomeActivity : BaseActivity() {
     fun onEvent(event: AddSongEvent) {
         // 过滤一下点歌的来源
         if (event.from == SongManagerActivity.TYPE_FROM_RELAY_HOME) {
+            StatisticsAdapter.recordCountEvent("chorus", "start", null)
             goMatch(event.songModel)
         }
     }

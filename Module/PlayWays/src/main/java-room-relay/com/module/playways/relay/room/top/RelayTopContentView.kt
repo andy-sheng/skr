@@ -167,7 +167,7 @@ class RelayTopContentView : ExConstraintLayout {
                 var i = 0
                 while (i <= t) {
                     i++
-                    var leftTs = t - (roomData?.getSingCurPosition() ?: 0)
+                    var leftTs = t - (1000L * i)
                     if (leftTs < 0) {
                         leftTs = 0
                     }

@@ -43,6 +43,8 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         return getInSeatPlayerInfoList()
     }
 
+    var sentenceCnt = 10 //当前演唱歌曲的句子总数，用于打分用
+
     var lastSingerID: Int? = null
 
     /**

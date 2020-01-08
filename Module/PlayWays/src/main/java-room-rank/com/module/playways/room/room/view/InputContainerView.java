@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
-import com.common.core.account.UserAccountManager;
 import com.common.emoji.EmotionKeyboard;
 import com.common.emoji.EmotionLayout;
 import com.common.emoji.IEmotionExtClickListener;
@@ -23,17 +24,14 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.NoLeakEditText;
-import com.component.busilib.constans.GameModeType;
+import com.module.playways.BaseRoomData;
 import com.module.playways.R;
 import com.module.playways.room.msg.event.EventHelper;
 import com.module.playways.room.room.RoomServerApi;
 import com.module.playways.room.room.event.InputBoardEvent;
-import com.module.playways.BaseRoomData;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -127,6 +125,32 @@ public class InputContainerView extends RelativeLayout implements EmotionKeyboar
             }
         });
 
+        mEtContent.addTextChangedListener(new TextWatcher() {
+            String preString = "";
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                preString = charSequence.toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String str = charSequence.toString();
+                int length = str.length();
+                if (length > 500) {
+                    int selectIndex = preString.length();
+                    mEtContent.setText(preString);
+                    mEtContent.setSelection(selectIndex);
+                    U.getToastUtil().showShort("弹幕不能超过500个字");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         initEmotionKeyboard();
 
         mSendMsgBtn.setOnClickListener(new DebounceViewClickListener() {
@@ -139,7 +163,7 @@ public class InputContainerView extends RelativeLayout implements EmotionKeyboar
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("gameID", mRoomData.getGameId());
                 map.put("content", content);
-                map.put("mode",mRoomData.getGameType());
+                map.put("mode", mRoomData.getGameType());
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                 ApiMethods.subscribe(roomServerApi.sendMsg(body), new ApiObserver<ApiResult>() {
                     @Override

@@ -42,10 +42,10 @@ public class WaveProgressView extends View {
      */
     private float mWaveHight = 10f;    // 波峰高度
     private float mWaveHalfWidth = 16f;     // 波峰的宽带
-    private String mWaveColor = "#FFB1B1";      // 第一个波峰的颜色
+    private String mWaveColor = "#7FFFB1B1";      // 第一个波峰的颜色
     private String mSecondWaveColor = "#FF8484";  // 第二个波峰的颜色
     private int mWaveSpeed = 30;   // 波峰移动的速度
-    private float mWaveDiff = 8f;  // 两个波峰之前的距离
+    private float mWaveDiff = 12f;  // 两个波峰之前的距离
     /**
      * 绘制进度
      */

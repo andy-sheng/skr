@@ -115,7 +115,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             }
             var isAnchor = mRoomData?.getMyUserInfoInParty()?.isRole(EPUserRole.EPUR_HOST.value, EPUserRole.EPUR_GUEST.value)
             DebugLogView.println(TAG, "isAnchor=$isAnchor")
-            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), isAnchor, mRoomData.agoraToken)
+            // 自采集以主播身份进入房间 当token有问题时 会导致没声
+            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), false, mRoomData.agoraToken)
+            ZqEngineKit.getInstance().setClientRole(isAnchor)
             // 不发送本地音频, 会造成第一次抢没声音
             if (mRoomData.getMyUserInfoInParty().isGuest()) {
                 ZqEngineKit.getInstance().muteLocalAudioStream(mRoomData.isMute)

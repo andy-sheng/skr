@@ -59,7 +59,11 @@ class RelayVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) 
         })
         mMusicVoiceSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(progress)
+                if(roomData?.isSingByMeNow() == true){
+                    ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(progress)
+                }else{
+                    ZqEngineKit.getInstance().params.audioMixingPlayoutVolume = progress
+                }
 //                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(progress,true)
             }
 
