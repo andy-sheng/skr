@@ -1134,8 +1134,8 @@ public abstract class AbstractLrcView extends View {
      */
     public boolean hasLrcLineInfos() {
         boolean notNull = mLyricsReader != null;
-        boolean lrcLineInfosNotNull = mLyricsReader.getLrcLineInfos() != null;
-        boolean sizeNotZero = mLyricsReader.getLrcLineInfos().size() > 0;
+        boolean lrcLineInfosNotNull = mLyricsReader != null && mLyricsReader.getLrcLineInfos() != null;
+        boolean sizeNotZero = mLyricsReader != null && mLyricsReader.getLrcLineInfos() != null && mLyricsReader.getLrcLineInfos().size() > 0;
 
         MyLog.w(TAG, "hasLrcLineInfos notNull is " + notNull + ", lrcLineInfosNotNull is " + lrcLineInfosNotNull + ",sizeNotZero is " + sizeNotZero);
 
