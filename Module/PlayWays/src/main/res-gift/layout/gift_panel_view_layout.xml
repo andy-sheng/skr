@@ -10,7 +10,7 @@
     <com.common.view.ex.ExRelativeLayout
         android:id="@+id/gift_panel_area"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_307_dp"
+        android:layout_height="@dimen/view_310_dp"
         android:layout_gravity="bottom"
         app:bl_corners_topLeftRadius="@dimen/view_16_dp"
         app:bl_corners_topRightRadius="@dimen/view_16_dp"
@@ -106,6 +106,14 @@
             android:layout_marginTop="@dimen/view_59_dp"
             android:layout_marginRight="@dimen/view_12_dp" />
 
+        <com.module.playways.room.gift.view.GiftCircleGuideView
+            android:id="@+id/gift_guide_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gift_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_6_dp" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_58_dp"
@@ -150,9 +158,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="18dp"
                     android:layout_toRightOf="@+id/iv_diamond_icon"
-                    android:layout_gravity="center_vertical"
                     BitmapTextView:scale="0.5" />
 
             </com.common.view.ex.ExFrameLayout>

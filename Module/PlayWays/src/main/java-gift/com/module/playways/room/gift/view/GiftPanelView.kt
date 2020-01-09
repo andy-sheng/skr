@@ -63,6 +63,7 @@ open class GiftPanelView : FrameLayout {
     internal var mHz = 0f
 
     internal var mGiftDisplayView: GiftDisplayView? = null
+    internal var mGiftCircleGuideView: GiftCircleGuideView? = null
     internal var mRelationTask: Disposable? = null
 
     internal lateinit var mGiftAllPlayersAdapter: GiftAllPlayersAdapter
@@ -160,6 +161,7 @@ open class GiftPanelView : FrameLayout {
         mIvDiamondIcon = findViewById<View>(R.id.iv_diamond_icon) as ImageView
         mIvSend = findViewById(R.id.iv_send)
         mGiftDisplayView = findViewById<View>(R.id.gift_view) as GiftDisplayView
+        mGiftCircleGuideView = findViewById<View>(R.id.gift_guide_view) as GiftCircleGuideView
         mAllPlayersRV = findViewById<View>(R.id.all_players_rv) as RecyclerView
         mLlSelectedMan = findViewById<View>(R.id.ll_selected_man) as RelativeLayout
         mTvDiamond = findViewById<View>(R.id.tv_diamond) as BitmapTextView
@@ -167,6 +169,7 @@ open class GiftPanelView : FrameLayout {
         mTvCoin = findViewById<View>(R.id.tv_coin) as BitmapTextView
         mTvCoinChange = findViewById<View>(R.id.tv_coin_change) as ExTextView
         mGiftDisplayView!!.setIGetGiftCountDownListener(mIGetGiftCountDownListener)
+        mGiftDisplayView!!.setGiftCircleGuideView(mGiftCircleGuideView)
 
         mGiftAllPlayersAdapter = GiftAllPlayersAdapter()
         val linearLayoutManager = LinearLayoutManager(context)
