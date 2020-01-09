@@ -4,69 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <com.common.view.ex.ExImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/common_gradient_bg" />
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_gradient_endColor="#E4E4FF"
+        app:bl_gradient_startColor="#FFFFFF"
+        app:bl_shape="rectangle" />
 
-    <TextView
-        android:id="@+id/song_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_60_dp"
-        android:text="《爱在西元前》"
-        android:textColor="@color/black_trans_80"
-        android:textSize="@dimen/textsize_20_dp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/song_author_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_5_dp"
-        android:text="周杰伦"
-        android:textColor="@color/black_trans_50"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/song_name_tv" />
-
-    <TextView
-        android:id="@+id/content_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:layout_marginBottom="@dimen/view_20_dp"
-        android:gravity="center"
-        android:ellipsize="end"
-        android:maxLines="17"
-        android:lineSpacingExtra="@dimen/view_10_dp"
-        android:textColor="@color/black_trans_80"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@id/start_tv"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/song_author_tv" />
-
-
-    <TextView
-        android:id="@+id/start_tv"
-        android:layout_width="@dimen/view_160_dp"
-        android:layout_height="@dimen/view_40_dp"
-        android:layout_marginBottom="@dimen/view_20_dp"
-        android:background="@drawable/common_yellow_button_icon"
-        android:gravity="center"
-        android:paddingBottom="@dimen/view_5_dp"
-        android:text="发起"
-        android:textColor="#e68B572A"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/song_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </android.support.constraint.ConstraintLayout>
