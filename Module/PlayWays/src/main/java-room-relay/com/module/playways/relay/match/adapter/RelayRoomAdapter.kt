@@ -15,6 +15,7 @@ import com.common.utils.dp
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.view.AvatarLevelView
+import com.component.busilib.view.AvatarView
 import com.component.busilib.view.NickNameView
 import com.component.busilib.view.recyclercardview.CardAdapterHelper
 import com.facebook.drawee.drawable.ScalingUtils
@@ -55,12 +56,13 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
     inner class RelayRoomViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
         private val imageBg: ImageView = item.findViewById(R.id.image_bg)
-        private val avatarLevel: AvatarLevelView = item.findViewById(R.id.avatar_level)
+        private val avatarLevel: AvatarView = item.findViewById(R.id.avatar_level)
         private val nicknameView: NickNameView = item.findViewById(R.id.nickname_view)
         private val levelTv: ExTextView = item.findViewById(R.id.level_tv)
         private val ageTv: ExTextView = item.findViewById(R.id.age_tv)
         private val sexTv: ExTextView = item.findViewById(R.id.sex_tv)
 
+        private val bottomArea: ImageView = item.findViewById(R.id.bottom_area)
         private val songNameTv: TextView = item.findViewById(R.id.song_name_tv)
         private val recommendTagSdv: SimpleDraweeView = item.findViewById(R.id.recommend_tag_sdv)
         private val joinTv: TextView = item.findViewById(R.id.join_tv)
@@ -80,17 +82,27 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
 
             val blueDrawable = DrawableCreator.Builder()
                     .setCornersRadius(16.dp().toFloat())
-                    .setGradientColor(Color.parseColor("#FFFFFF"), Color.parseColor("#AFE1FF"))
+                    .setGradientColor(Color.parseColor("#DEF1FF"), Color.parseColor("#C4D7FF"))
+                    .build()
+
+            val blueBottomDrawable = DrawableCreator.Builder()
+                    .setCornersRadius(16.dp().toFloat(), 16.dp().toFloat(), 0f, 0f)
+                    .setGradientColor(Color.parseColor("#DEF1FF"), Color.parseColor("#D0E3FF"))
                     .build()
 
             val redDrawable = DrawableCreator.Builder()
                     .setCornersRadius(16.dp().toFloat())
-                    .setGradientColor(Color.parseColor("#FFFFFF"), Color.parseColor("#FFD6E9"))
+                    .setGradientColor(Color.parseColor("#FFDEDE"), Color.parseColor("#FFC4DB"))
+                    .build()
+
+            val redBottomDrawable = DrawableCreator.Builder()
+                    .setCornersRadius(16.dp().toFloat(), 16.dp().toFloat(), 0f, 0f)
+                    .setGradientColor(Color.parseColor("#FFE4E4"), Color.parseColor("#FFE4EE"))
                     .build()
 
             val girlDrawable = DrawableCreator.Builder()
                     .setCornersRadius(4.dp().toFloat())
-                    .setSolidColor(Color.parseColor("#FF71BE"))
+                    .setSolidColor(Color.parseColor("#FFA2D5"))
                     .build()
 
             val boyDrawable = DrawableCreator.Builder()
@@ -104,12 +116,14 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
                     sexTv.visibility = View.VISIBLE
                     sexTv.text = "男生"
                     sexTv.background = boyDrawable
+                    bottomArea.background = blueBottomDrawable
                 }
                 model.user?.sex == ESex.SX_FEMALE.value -> {
                     imageBg.background = redDrawable
                     sexTv.visibility = View.VISIBLE
                     sexTv.text = "女生"
                     sexTv.background = girlDrawable
+                    bottomArea.background = redBottomDrawable
                 }
                 else -> {
                     sexTv.visibility = View.GONE
