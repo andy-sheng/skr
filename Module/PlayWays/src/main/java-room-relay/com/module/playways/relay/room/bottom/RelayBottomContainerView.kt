@@ -56,11 +56,11 @@ class RelayBottomContainerView : BottomContainerView {
             override fun clickValid(v: View) {
                 if(roomData?.isMute == true){
                     roomData?.isMute = false
-                    mInputBtn?.setBackgroundResource(R.drawable.relay_unmute)
+                    mInputBtn?.setBackgroundResource(R.drawable.relay_new_unmute)
                     ZqEngineKit.getInstance().adjustRecordingSignalVolume(ZqEngineKit.getInstance().params.recordingSignalVolume,false)
                 }else{
                     roomData?.isMute = true
-                    mInputBtn?.setBackgroundResource(R.drawable.relay_mute)
+                    mInputBtn?.setBackgroundResource(R.drawable.relay_new_mute)
                     ZqEngineKit.getInstance().adjustRecordingSignalVolume(0,false)
                 }
 

@@ -6,6 +6,7 @@ import android.os.Message
 import android.support.constraint.ConstraintLayout
 import android.view.*
 import android.widget.ImageView
+import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
@@ -136,7 +137,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 //    lateinit var mGrabScoreTipsView: GrabScoreTipsView // 打分提示
 
     lateinit var mAddSongIv: ImageView
-    lateinit var mChangeSongIv: ImageView
+    lateinit var mChangeSongIv: TextView
 //    private lateinit var mGiveUpView: GrabGiveupView
 
     private var mVIPEnterView: VIPEnterView? = null

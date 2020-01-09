@@ -147,6 +147,7 @@ class LyricAndAccMatchManager {
         if (params?.manyLyricsView?.lrcStatus == AbstractLrcView.LRCSTATUS_LRC
                 && params?.manyLyricsView?.lrcPlayerStatus != LRCPLAYERSTATUS_PLAY) {
             //                            mManyLyricsView.play(mAccBeginTs);
+            MyLog.w(TAG, "parseReader state ok")
             params?.manyLyricsView?.seekTo(params?.accBeginTs ?: 0)
             params?.manyLyricsView?.pause()
             mLyricsReader = lyricsReader

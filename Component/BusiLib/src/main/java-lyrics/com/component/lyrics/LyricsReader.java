@@ -149,6 +149,9 @@ public class LyricsReader implements Cloneable {
         if (lyricsInfo.getTransliterationLrcLineInfos() != null)
             mTransliterationLrcLineInfos = LyricsUtils.getTransliterationLrc(mLyricsType, mLrcLineInfos, lyricsInfo.getTransliterationLrcLineInfos());
 
+        if(mLrcLineInfos == null || mLrcLineInfos.size() == 0){
+            MyLog.d(TAG, "parser error, mLrcLineInfos is " + mLrcLineInfos);
+        }
     }
 
     public void cut(long startTs, long endTs) {

@@ -120,7 +120,7 @@ class RelayTopContentView : ExConstraintLayout {
             AvatarUtils.loadAvatarByUrl(leftAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                     .setCircle(true)
                     .setBorderColor(Color.parseColor("#ffd8d8d8"))
-                    .setBorderWidth(1.dp().toFloat())
+                    .setBorderWidth(0.dp().toFloat())
                     .build())
 
             //创建房间的人显示在昨天
@@ -131,7 +131,7 @@ class RelayTopContentView : ExConstraintLayout {
                 AvatarUtils.loadAvatarByUrl(rightAvatarSdv, AvatarUtils.newParamsBuilder(roomData?.peerUser?.userInfo?.avatar)
                         .setCircle(true)
                         .setBorderColor(Color.parseColor("#ffd8d8d8"))
-                        .setBorderWidth(1.dp().toFloat())
+                        .setBorderWidth(0.dp().toFloat())
                         .build())
             } else {
                 rightAvatarSdv.visibility = View.INVISIBLE
@@ -141,12 +141,12 @@ class RelayTopContentView : ExConstraintLayout {
             AvatarUtils.loadAvatarByUrl(rightAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                     .setCircle(true)
                     .setBorderColor(Color.parseColor("#ffd8d8d8"))
-                    .setBorderWidth(1.dp().toFloat())
+                    .setBorderWidth(0.dp().toFloat())
                     .build())
             AvatarUtils.loadAvatarByUrl(leftAvatarSdv, AvatarUtils.newParamsBuilder(roomData?.peerUser?.userInfo?.avatar)
                     .setCircle(true)
                     .setBorderColor(Color.parseColor("#ffd8d8d8"))
-                    .setBorderWidth(1.dp().toFloat())
+                    .setBorderWidth(0.dp().toFloat())
                     .build())
         }
 

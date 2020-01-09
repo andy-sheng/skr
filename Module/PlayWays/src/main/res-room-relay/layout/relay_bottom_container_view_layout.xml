@@ -1,7 +1,9 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="android.widget.RelativeLayout">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
 
@@ -11,7 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:gravity="right">
+        android:gravity="right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
         <!--        <com.common.view.ex.ExImageView-->
         <!--            android:id="@+id/emoji_btn"-->
@@ -24,17 +28,17 @@
 
         <com.common.view.ex.ExImageView
             android:id="@+id/gift_mall_btn"
-            android:layout_width="@dimen/view_36_dp"
-            android:layout_height="@dimen/view_35_dp"
+            android:layout_width="@dimen/view_32_dp"
+            android:layout_height="@dimen/view_32_dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_10_dp"
             android:scaleType="fitXY"
-            app:src_unPressed_drawable="@drawable/outer_gift" />
+            app:src_unPressed_drawable="@drawable/relay_outer_gift" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/meigui_iv"
-            android:layout_width="@dimen/view_36_dp"
-            android:layout_height="@dimen/view_35_dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_10_dp"
             android:layout_toRightOf="@id/gift_mall_btn"
@@ -53,29 +57,52 @@
         android:id="@+id/input_btn"
         android:layout_width="@dimen/view_32_dp"
         android:layout_height="@dimen/view_32_dp"
-        android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/view_16_dp"
-        android:background="@drawable/relay_unmute" />
+        android:background="@drawable/relay_new_unmute"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <ImageView
+        android:id="@+id/select_song_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_marginRight="@dimen/view_14_dp"
+        android:src="@drawable/relay_select_song"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/input_btn"
+        app:layout_constraintLeft_toRightOf="@+id/input_btn"
+        app:layout_constraintTop_toTopOf="@+id/input_btn" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/show_input_container_btn"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/view_32_dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_20_dp"
-        android:layout_toLeftOf="@+id/emoji_area"
-        android:layout_toRightOf="@+id/input_btn"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/view_10_dp"
         android:singleLine="true"
-        android:text="夸赞是一种美德"
         android:textColor="@color/white_trans_30"
         android:textSize="@dimen/textsize_15_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_solid_color="@color/black_trans_20"
-        app:bl_stroke_color="@color/white_trans_20"
-        app:bl_stroke_width="1dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/select_song_tv"
+        app:layout_constraintRight_toLeftOf="@+id/emoji_area"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_goneMarginLeft="@dimen/view_20_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:background="@drawable/relay_edit"
+        app:layout_constraintBottom_toBottomOf="@+id/show_input_container_btn"
+        app:layout_constraintLeft_toLeftOf="@+id/show_input_container_btn"
+        app:layout_constraintTop_toTopOf="@+id/show_input_container_btn" />
+
 
     <!--    <com.module.playways.grab.room.voicemsg.VoiceRecordTextView-->
     <!--        android:id="@+id/voice_record_btn"-->
@@ -95,4 +122,4 @@
     <!--        app:bl_corners_radius="@dimen/view_16_dp"-->
     <!--        app:bl_solid_color="#5B72E8" />-->
 
-</merge>
+</android.support.constraint.ConstraintLayout>

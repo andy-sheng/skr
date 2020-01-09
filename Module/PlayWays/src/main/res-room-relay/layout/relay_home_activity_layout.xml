@@ -1,9 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/double_room_view_bg">
+    app:bl_gradient_endColor="#425EEC"
+    app:bl_gradient_startColor="#D3A9FF"
+    app:bl_shape="rectangle">
 
-</android.support.constraint.ConstraintLayout>
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showBottomLine="false"
+        app:showMainView="false"
+        app:statusBarColor="@color/transparent" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/select_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/view_4_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/img_back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="选择合唱歌曲"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_24_dp"
+        app:layout_constraintBottom_toBottomOf="@id/select_back"
+        app:layout_constraintLeft_toRightOf="@id/select_back"
+        app:layout_constraintTop_toTopOf="@id/select_back" />
+
+    <ImageView
+        android:id="@+id/invite_friend_iv"
+        android:layout_width="@dimen/view_110_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:background="@drawable/relay_invite_icon"
+        app:layout_constraintBottom_toBottomOf="@id/select_back"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/select_back" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/search_song_tv"
+        android:layout_width="@dimen/view_120_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginBottom="@dimen/view_30_dp"
+        android:gravity="center"
+        android:text="搜索歌曲"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#3C50D3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/song_list_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/song_list_tv"
+        android:layout_width="@dimen/view_120_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginBottom="@dimen/view_30_dp"
+        android:gravity="center"
+        android:text="已唱歌单"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#3C50D3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/search_song_tv"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/bottom_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="song_list_tv,search_song_tv" />
+
+    <com.component.busilib.view.recyclercardview.SpeedRecyclerView
+        android:id="@+id/speed_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/bottom_area"
+        app:layout_constraintTop_toBottomOf="@id/title_tv" />
+
+</com.common.view.ex.ExConstraintLayout>

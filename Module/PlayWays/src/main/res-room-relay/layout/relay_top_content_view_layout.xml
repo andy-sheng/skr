@@ -26,13 +26,25 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/content_ll" />
 
+    <com.common.view.ex.ExImageView
+        android:layout_width="@dimen/view_80_dp"
+        android:layout_height="@dimen/view_80_dp"
+        app:bl_corners_radius="@dimen/view_40_dp"
+        app:bl_solid_color="@color/white_trans_10"
+        app:layout_constraintBottom_toBottomOf="@+id/left_avatar_sdv"
+        app:layout_constraintLeft_toLeftOf="@+id/left_avatar_sdv"
+        app:layout_constraintRight_toRightOf="@+id/left_avatar_sdv"
+        app:layout_constraintTop_toTopOf="@+id/left_avatar_sdv" />
+
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/left_avatar_sdv"
-        android:layout_width="@dimen/view_42_dp"
-        android:layout_height="@dimen/view_42_dp"
+        android:layout_width="@dimen/view_56_dp"
+        android:layout_height="@dimen/view_56_dp"
+        android:layout_marginTop="@dimen/view_25_dp"
         app:layout_constraintEnd_toStartOf="@+id/right_avatar_sdv"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/left_mute_iv"
@@ -44,13 +56,13 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/right_avatar_bg"
-        android:layout_width="@dimen/view_42_dp"
-        android:layout_height="@dimen/view_42_dp"
+        android:layout_width="@dimen/view_56_dp"
+        android:layout_height="@dimen/view_56_dp"
         android:gravity="center"
         android:text="邀请"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_12_dp"
-        app:bl_corners_radius="@dimen/view_21_dp"
+        app:bl_corners_radius="@dimen/view_28_dp"
         app:bl_solid_color="@color/black_trans_10"
         app:bl_stroke_color="@color/white_trans_15"
         app:bl_stroke_width="@dimen/view_1_dp"
@@ -59,13 +71,25 @@
         app:layout_constraintRight_toRightOf="@+id/right_avatar_sdv"
         app:layout_constraintTop_toTopOf="@+id/right_avatar_sdv" />
 
+    <com.common.view.ex.ExImageView
+        android:layout_width="@dimen/view_80_dp"
+        android:layout_height="@dimen/view_80_dp"
+        app:bl_corners_radius="@dimen/view_40_dp"
+        app:bl_solid_color="@color/white_trans_10"
+        app:layout_constraintBottom_toBottomOf="@+id/right_avatar_sdv"
+        app:layout_constraintLeft_toLeftOf="@+id/right_avatar_sdv"
+        app:layout_constraintRight_toRightOf="@+id/right_avatar_sdv"
+        app:layout_constraintTop_toTopOf="@+id/right_avatar_sdv" />
+
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/right_avatar_sdv"
-        android:layout_width="@dimen/view_42_dp"
-        android:layout_height="@dimen/view_42_dp"
-        android:layout_marginLeft="@dimen/view_76_dp"
+        android:layout_width="@dimen/view_56_dp"
+        android:layout_height="@dimen/view_56_dp"
+        android:layout_marginLeft="@dimen/view_96_dp"
+        android:layout_marginTop="@dimen/view_25_dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/left_avatar_sdv" />
+        app:layout_constraintStart_toEndOf="@+id/left_avatar_sdv"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/right_mute_iv"
@@ -80,7 +104,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="04:00"
-        android:textColor="@color/white_trans_80"
+        android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_16_dp"
         app:layout_constraintBottom_toBottomOf="@+id/left_avatar_sdv"
         app:layout_constraintLeft_toLeftOf="parent"

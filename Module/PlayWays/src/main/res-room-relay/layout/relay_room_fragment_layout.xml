@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/srf_haichang_bj">
+    app:bl_gradient_endColor="#814FBE"
+    app:bl_gradient_startColor="#3E457E">
 
     <ViewStub
         android:id="@+id/game_effect_bg_view_layout_viewStub"
@@ -71,27 +72,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
-    <ImageView
-        android:id="@+id/select_song_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_14_dp"
-        android:layout_marginBottom="@dimen/view_20_dp"
-        android:src="@drawable/new_select_song"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/relay_sing_card_view_layout_stub"
-        app:layout_constraintRight_toRightOf="@+id/relay_sing_card_view_layout_stub" />
-
-    <ImageView
+    <TextView
         android:id="@+id/change_song_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_4_dp"
         android:layout_marginRight="@dimen/view_14_dp"
-        android:layout_marginBottom="@dimen/view_20_dp"
-        android:src="@drawable/relay_song_change"
+        android:text="切歌"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/relay_sing_card_view_layout_stub"
-        app:layout_constraintLeft_toLeftOf="@+id/relay_sing_card_view_layout_stub" />
+        app:layout_constraintRight_toRightOf="@+id/relay_sing_card_view_layout_stub"
+        app:layout_constraintTop_toTopOf="@+id/relay_sing_card_view_layout_stub" />
 
     <!--    <com.common.view.ex.ExTextView-->
     <!--        android:id="@+id/has_select_song_num_tv"-->
@@ -127,7 +119,7 @@
         android:id="@+id/normal_other_sing_card_view_stub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-75dp"
+        android:layout_marginTop="-85dp"
         android:layout="@layout/relay_normal_other_sing_card_stub_layout"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
@@ -214,9 +206,9 @@
 
     <com.module.playways.relay.room.top.RelayContinueSingView
         android:id="@+id/relay_continue_sing_view"
-        android:layout_width="@dimen/view_160_dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/view_78_dp"
-        android:layout_marginBottom="@dimen/view_20_dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/relay_sing_card_view_layout_stub"
         app:layout_constraintRight_toRightOf="@+id/relay_sing_card_view_layout_stub" />
@@ -225,9 +217,9 @@
         android:id="@+id/relay_energy_view"
         android:layout_width="@dimen/view_64_dp"
         android:layout_height="@dimen/view_155_dp"
-        android:layout_marginTop="@dimen/view_70_dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+        android:layout_marginBottom="13dp"
+        app:layout_constraintBottom_toTopOf="@+id/relay_sing_card_view_layout_stub"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <com.module.playways.room.room.comment.fly.FlyCommentView
         android:id="@+id/fly_comment_view"
@@ -315,4 +307,4 @@
         android:layout_height="match_parent"
         android:inflatedId="@+id/debug_log_view"
         android:layout="@layout/debug_log_view_stub_layout" />
-</android.support.constraint.ConstraintLayout>
+</com.common.view.ex.ExConstraintLayout>
