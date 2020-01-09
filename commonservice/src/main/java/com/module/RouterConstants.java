@@ -154,4 +154,5 @@ public interface RouterConstants {
     String FLUTTER_PAGE_TEST = "SkrTestPage";
     String FLUTTER_PAGE_RELAY_RESULT = "RelayResultPage";
     String FLUTTER_PAGE_PARTY_BGM_PAGE = "PartyBgMusicManagerPage";
+    String FLUTTER_PAGE_SETTING = "SettingManagerPage";
 }
