@@ -1,6 +1,7 @@
 package com.module.playways.relay.match
 
 import com.common.rxretrofit.ApiResult
+import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -21,6 +22,12 @@ interface RelayMatchServerApi {
      */
     @GET("http://dev.game.inframe.mobi/v1/relaygame/list-playbook-items")
     fun getPlayBookList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Call<ApiResult>
+
+    /**
+     * 列出可以接唱的曲目
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/list-playbook-items")
+    fun getRelayMusicItems(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Long): Call<ApiResult>
 
     /**
      * 列出匹配中的列表
@@ -60,4 +67,7 @@ interface RelayMatchServerApi {
      */
     @GET("http://dev.game.inframe.mobi/v1/relaygame/room-data")
     fun getTotalResTimes(): Call<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/room-create")
+    fun createRelayRoom(@Body body: RequestBody): Call<ApiResult>
 }

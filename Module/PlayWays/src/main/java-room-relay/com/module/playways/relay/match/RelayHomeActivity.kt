@@ -1,10 +1,12 @@
 package com.module.playways.relay.match
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.Barrier
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,14 +14,18 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
+import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.utils.dp
+import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
@@ -29,13 +35,23 @@ import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.relay.match.adapter.RelayHomeSongCardAdapter
+import com.module.playways.relay.match.model.JoinRelayRoomRspModel
+import com.module.playways.relay.room.RelayRoomActivity
+import com.module.playways.relay.room.RelayRoomData
+import com.module.playways.room.song.SongSelectServerApi
+import com.module.playways.room.song.fragment.HistorySongFragment
+import com.module.playways.room.song.fragment.SearchSongFragment
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.room.song.view.RelaySongInfoDialogView
 import com.module.playways.songmanager.SongManagerActivity
 import com.module.playways.songmanager.event.AddSongEvent
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.HashMap
 import kotlin.math.max
 
 @Route(path = RouterConstants.ACTIVITY_RELAY_HOME)
@@ -84,6 +100,40 @@ class RelayHomeActivity : BaseActivity() {
         bottomArea = findViewById(R.id.bottom_area)
         speedRecyclerView = findViewById(R.id.speed_recyclerView)
 
+        selectBack?.setAnimateDebounceViewClickListener { finish() }
+
+        inviteFriendIv?.setDebounceViewClickListener {
+            inviteFriendIv?.isClickable = false
+            createRelayRoom()
+        }
+
+        searchSongTv?.setDebounceViewClickListener {
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SearchSongFragment::class.java)
+                    .setAddToBackStack(true)
+                    .setHasAnimation(false)
+                    .addDataBeforeAdd(0, SongManagerActivity.TYPE_FROM_RELAY_HOME)
+                    .addDataBeforeAdd(1, false)
+                    .setFragmentDataListener(object : FragmentDataListener {
+                        override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
+                            if (requestCode == 0 && resultCode == 0 && obj != null) {
+                                val model = obj as SongModel?
+                                EventBus.getDefault().post(AddSongEvent(model!!, SongManagerActivity.TYPE_FROM_RELAY_HOME))
+                            }
+                        }
+                    })
+                    .build())
+        }
+
+        songListTv?.setDebounceViewClickListener {
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, RelayHistorySongFragment::class.java)
+                    .setAddToBackStack(true)
+                    .setHasAnimation(true)
+                    .addDataBeforeAdd(0, SongManagerActivity.TYPE_FROM_RELAY_HOME)
+                    .setEnterAnim(R.anim.slide_in_bottom)
+                    .setExitAnim(R.anim.slide_out_bottom)
+                    .build())
+        }
+
         val songCardMaxHeight = (U.getDisplayUtils().screenHeight - 32.dp() - 30.dp() - 50.dp() - 2 * 16.dp()) -
                 (if (U.getDeviceUtils().hasNotch(this)) U.getStatusBarUtil().getStatusBarHeight(this) else 0)
         var maxSize = songCardMaxHeight / 72.dp()
@@ -115,6 +165,8 @@ class RelayHomeActivity : BaseActivity() {
                 }
             }
         })
+
+
 
         cardScaleHelper = CardScaleHelper(8, 12)
         cardScaleHelper?.attachToRecyclerView(speedRecyclerView)
@@ -183,6 +235,30 @@ class RelayHomeActivity : BaseActivity() {
             }
 
         }
+    }
+
+    private fun createRelayRoom() {
+        launch {
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(null))
+            val result = subscribe(RequestControl("createRelayRoom", ControlType.CancelThis)) {
+                relayMatchServerApi.createRelayRoom(body)
+            }
+            if (result.errno == 0) {
+                val rsp = JSON.parseObject(result.data!!.toJSONString(), JoinRelayRoomRspModel::class.java)
+                rsp.enterType = RelayRoomData.EnterType.INVITE
+                createSuccess(rsp)
+                inviteFriendIv?.isClickable = true
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+                inviteFriendIv?.isClickable = true
+            }
+        }
+    }
+
+    private fun createSuccess(joinRelayRoomRspModel: JoinRelayRoomRspModel) {
+        val intent = Intent(this, RelayRoomActivity::class.java)
+        intent.putExtra("JoinRelayRoomRspModel", joinRelayRoomRspModel)
+        startActivity(intent)
     }
 
     fun getPlayBookList(off: Int, clean: Boolean) {
