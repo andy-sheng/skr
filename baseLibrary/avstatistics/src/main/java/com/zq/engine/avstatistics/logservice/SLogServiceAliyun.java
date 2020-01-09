@@ -114,9 +114,9 @@ class SLogServiceAliyun extends SLogServiceBase{
 //            jsObj.put("comeFrom", "liveSDK");
             jsObj.put("SkrID", mParam.skrUid);
             String deviceModel = U.getDeviceUtils().getProductBrand() + " " + U.getDeviceUtils().getProductModel();
-            jsObj.put("DevModel", deviceModel);
+            jsObj.put("devModel", deviceModel);
             long appVer = U.getAppInfoUtils().getVersionCode();
-            jsObj.put("AppVer", appVer);
+            jsObj.put("appVer", appVer);
             jsObj.put("OS", "Android");
             jsObj.put("OSVer", android.os.Build.VERSION.RELEASE);
             Log log = new Log();
