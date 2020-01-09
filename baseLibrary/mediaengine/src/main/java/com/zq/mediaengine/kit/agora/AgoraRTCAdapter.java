@@ -919,7 +919,10 @@ public class AgoraRTCAdapter {
         if (0 != retCode)
             stopStatisticThread();
 
-        SDataManager.getInstance().getDataHolder().addJoinChannelAction(retCode);
+        SDataManager.getInstance().getDataHolder().addJoinChannelAction(retCode,
+                mConfig.getConfigFromServerNotChange().hasServerConfig,
+                mConfig.isUseExternalAudio(), mConfig.isEnableAudioLowLatency(),
+                mConfig.getEarMonitoringSwitch());
 
         return retCode;
     }

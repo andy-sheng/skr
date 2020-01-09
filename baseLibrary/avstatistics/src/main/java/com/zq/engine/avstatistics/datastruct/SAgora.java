@@ -628,6 +628,10 @@ public class SAgora //all struct related to Agora is defined here!
     public static class SJoinChannelAction implements ILogItem{
         public long ts = 0;
         public long ret= 0;
+        public long hasServerConfig = 0;
+        public long isExternalAudio = 0;
+        public long isOpenSL = 0;
+        public long audioPreview = 0;
 
         public String toString(){
 
@@ -642,6 +646,11 @@ public class SAgora //all struct related to Agora is defined here!
                 jsObj.put("tsValue", ts);
 
                 jsObj.put("ret", ret);
+
+                jsObj.put("hasServerConf", hasServerConfig);
+                jsObj.put("extAudio", isExternalAudio);
+                jsObj.put("openSL", isOpenSL);
+                jsObj.put("audioPreview", audioPreview);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
