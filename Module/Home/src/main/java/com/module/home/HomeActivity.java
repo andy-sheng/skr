@@ -239,7 +239,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 MyLog.w(TAG, "  mGameArea.setOnLongClickListener");
                 HashMap map = new HashMap();
                 map.put("key1", 2);
-                FlutterBoostController.INSTANCE.openFlutterPage(HomeActivity.this, RouterConstants.FLUTTER_PAGE_TEST, null,0);
+                FlutterBoostController.INSTANCE.openFlutterPage(HomeActivity.this, RouterConstants.FLUTTER_PAGE_RELAY_RESULT, null,0);
                 return false;
             }
         });
