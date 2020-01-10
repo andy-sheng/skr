@@ -10,6 +10,6 @@ import retrofit2.http.Query;
 
 public interface ResServerApi {
 
-    @GET("http://dev.res.inframe.mobi/v1/oss/download?type=1")
+    @GET("http://dev.res.inframe.mobi/v1/oss/download?type=4")
     Call<JSONObject> getLyricByUrl(@Query("URL") String url);
 }

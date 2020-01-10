@@ -26,7 +26,8 @@ class IOUtils {
                 file.createNewFile()
             }
             bufferSink = Okio.buffer(Okio.sink(file))
-            bufferSink.writeString(content, Charset.forName("utf-8"))
+            val byte = U.getBase64Utils().decode(content)
+            bufferSink.write(byte)
         } catch (e: Exception) {
             MyLog.e(e)
         } finally {
