@@ -24,6 +24,12 @@
             android:launchMode="standard"
             android:windowSoftInputMode="adjustPan" />
 
+        <activity
+            android:name="com.component.report.activity.QuickFeedbackActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="standard"
+            android:windowSoftInputMode="adjustPan" />
+
     </application>
 
 </manifest>

@@ -17,6 +17,7 @@ import com.common.core.permission.SkrAudioPermission
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
+import com.common.flutter.boost.FlutterBoostController
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
@@ -853,9 +854,14 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             mCorePresenter.exitRoom("gameOver")
 
             if (mRoomData.isPersonArrive()) {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_RESULT)
-                        .withSerializable("roomData", mRoomData)
-                        .navigation()
+//                ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_RESULT)
+//                        .withSerializable("roomData", mRoomData)
+//                        .navigation()
+                FlutterBoostController.openFlutterPage(this, "RelayResultPage", hashMapOf(
+                        "roomId" to mRoomData.gameId,
+                        "targetId" to mRoomData.peerUser?.userID!!,
+                        "targetAvatar" to mRoomData.peerUser?.userInfo?.avatar!!
+                ))
             }
 
             finish()

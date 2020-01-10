@@ -142,6 +142,10 @@ object SkrSchemeProcessor : ISchemeProcessor {
                         processFlutterUrl(uri, context)
                         return ProcessResult.AcceptedAndContinue
                     }
+                    "all" -> {
+                        processCommonUrl(uri, context)
+                        return ProcessResult.AcceptedAndContinue
+                    }
                 }
             }
         } else if ("rong" == scheme) {
@@ -163,6 +167,18 @@ object SkrSchemeProcessor : ISchemeProcessor {
             }
         }
         return ProcessResult.NotAccepted
+    }
+
+    private fun processCommonUrl(uri: Uri, context: Context) {
+        if(uri.path=="/feedback"){
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDBACK)
+                        .withInt("from",SchemeUtils.getInt(uri,"from",0))
+                        .withInt("roomId",SchemeUtils.getInt(uri,"roomId",0))
+                        .withInt("targetId",SchemeUtils.getInt(uri,"targetId",0))
+                        .withInt("actionType",SchemeUtils.getInt(uri,"actionType",0))
+                        .navigation()
+        }
+
     }
 
     private fun processFlutterUrl(uri: Uri, context: Context) {

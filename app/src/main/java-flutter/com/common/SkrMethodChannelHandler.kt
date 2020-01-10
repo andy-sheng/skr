@@ -64,7 +64,7 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
                 ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), filePath, null, 0, false, false, cycle
                         ?: 1)
                 var from = call.argument<String>("from")
-                if(from == "party_bgm"){
+                if (from == "party_bgm") {
                     H.partyRoomData?.bgmPlayingPath = filePath
                 }
                 result.success(null)
@@ -73,21 +73,28 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
             call.method == "stopAudioMixing" -> {
                 ZqEngineKit.getInstance().stopAudioMixing()
                 var from = call.argument<String>("from")
-                if(from == "party_bgm"){
+                if (from == "party_bgm") {
                     H.partyRoomData?.bgmPlayingPath = null
                 }
                 result.success(null)
                 return true
             }
             call.method == "showToast" -> {
-                var short = call.argument<Boolean>("short") ?:true
-                var content = call.argument<String>("content") ?:""
-                if(short){
+                var short = call.argument<Boolean>("short") ?: true
+                var content = call.argument<String>("content") ?: ""
+                if (short) {
                     U.getToastUtil().showShort(content)
-                }else{
+                } else {
                     U.getToastUtil().showLong(content)
                 }
                 result.success(null)
+                return true
+            }
+            call.method == "syncMyInfo" -> {
+                result.success(hashMapOf("uid" to MyUserInfoManager.uid,
+                        "avatar" to MyUserInfoManager.avatar,
+                        "userNickname" to MyUserInfoManager.nickName)
+                )
                 return true
             }
         }

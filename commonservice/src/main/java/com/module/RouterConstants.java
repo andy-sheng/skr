@@ -6,6 +6,7 @@ package com.module;
  */
 public interface RouterConstants {
     String ACTIVITY_FLUTTER = "/flutter/FlutterActivity";
+
     String ACTIVITY_HOME = "/home/HomeActivity";
     String ACTIVITY_UPLOAD = "/home/UploadAccountInfoActivity";
     String ACTIVITY_UPLOAD_SEX_AGE = "/home/UploadSexAndAgeTagActivity";
@@ -154,4 +155,6 @@ public interface RouterConstants {
     String FLUTTER_PAGE_TEST = "SkrTestPage";
     String FLUTTER_PAGE_RELAY_RESULT = "RelayResultPage";
     String FLUTTER_PAGE_PARTY_BGM_PAGE = "PartyBgMusicManagerPage";
+
+    String ACTIVITY_FEEDBACK = "/all/QuickFeedbackActivity";
 }
