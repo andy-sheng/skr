@@ -155,29 +155,6 @@ public class SDataHolderEx {
         return;
     }
 
-    int numPlayerInfo = 0;
-
-    public void addPlayerInfo(final int uid, final String filePath, final String midiPath,
-                              final long mixMusicBeginOffset, final boolean loopback,
-                              final boolean replace, final int cycle) {
-
-        if (numPlayerInfo <= 2) {
-            SAgora.SPlayerInfo n = new SAgora.SPlayerInfo();
-            n.ts = System.currentTimeMillis();
-            n.uid = uid;
-            n.filePath = filePath;
-            n.midiPath = midiPath;
-            n.mixMusicBeginOffset = mixMusicBeginOffset;
-            n.loopback = loopback;
-            n.replace = replace;
-            n.cycle = cycle;
-            mItemList.add(n);
-            numPlayerInfo++;
-        }
-        return;
-    }
-
-
     //for user event
     public void addUserEvent(SAgoraUserEvent e) {
         if (null == e) return;
@@ -207,6 +184,27 @@ public class SDataHolderEx {
             numNetworkInfo++;
         }
         return;
+    }
+
+    // 伴奏播放
+    int numPlayerStartInfo = 0;
+    public void addPlayerStartInfo(Skr.PlayerStartInfo info) {
+        if (info == null) return;
+        if (numPlayerStartInfo <= 10) {
+            info.ts = System.currentTimeMillis();
+            mItemList.add(info);
+            numPlayerStartInfo++;
+        }
+    }
+
+    int numPlayerStopInfo = 0;
+    public void addPlayerStopInfo(Skr.PlayerStopInfo info) {
+        if (info == null) return;
+        if (numPlayerStopInfo <= 10) {
+            info.ts = System.currentTimeMillis();
+            mItemList.add(info);
+            numPlayerStopInfo++;
+        }
     }
 
     public final static int AR_PHONE_SPEAKER = 1;
@@ -277,10 +275,11 @@ public class SDataHolderEx {
         numNetQualityStats = 0;
         numRemoteAudioTransStats = 0;
         numRemoteVideoTransStata = 0;
-        numPlayerInfo = 0;
         numPingInfo = 0;
         numNetworkInfo = 0;
         numSAudioSamplingInfoGroup = 0;
+        numPlayerStartInfo = 0;
+        numPlayerStopInfo = 0;
         return this;
     }
 

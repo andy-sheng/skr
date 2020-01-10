@@ -277,10 +277,10 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         }
         if (accFile?.exists() == true) {
             DebugLogView.println(TAG, "preOpWhenSelfRound 伴奏文件本地存在${accFile.path}")
-            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile?.path, midiFile?.path, 0, false, false, 1)
+            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile?.path, midiFile?.path, 0, 1)
         } else {
             DebugLogView.println(TAG, "preOpWhenSelfRound 伴奏文件本地不存在${accFile.path}")
-            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), mRoomData?.realRoundInfo?.music?.acc, midiFile?.path, 0, false, false, 1)
+            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), mRoomData?.realRoundInfo?.music?.acc, midiFile?.path, 0, 1)
         }
         mUiHandler.removeMessages(MSG_MY_ACC_LOADING_FAILED)
         var msg = mUiHandler.obtainMessage(MSG_MY_ACC_LOADING_FAILED)

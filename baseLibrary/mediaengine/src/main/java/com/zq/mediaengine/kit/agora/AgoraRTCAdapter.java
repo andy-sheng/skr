@@ -1386,7 +1386,7 @@ public class AgoraRTCAdapter {
      *                 正整数：循环的次数
      *                 -1：无限循环
      */
-    public void startAudioMixing(String filePath, String melPath, boolean loopback, boolean replace, int cycle) {
+    public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
         if (mRtcEngine == null) {
             return;
         }

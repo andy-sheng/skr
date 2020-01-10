@@ -348,9 +348,9 @@ class PartyGameTabView : ExConstraintLayout {
                         val songBeginTs = songModel?.beginMs ?: 0
                         if (accFile != null && accFile.exists()) {
                             // 伴奏文件存在
-                            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+                            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), 1)
                         } else {
-                            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel?.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+                            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel?.acc, midiFile.absolutePath, songBeginTs.toLong(), 1)
                         }
                     }
                     // 未开始，等待着

@@ -34,66 +34,6 @@ public class SAgora //all struct related to Agora is defined here!
         else return "声网没有定义的质量值value("+quality+")";
     }
 
-    public static class SPlayerInfo implements ILogItem{
-        public long  ts; //timsstamp;
-
-        public int uid;
-        public String filePath;
-        public String midiPath;
-        public long mixMusicBeginOffset;
-        public boolean loopback;
-        public boolean replace;
-        public int cycle;
-
-        public String extraMsg;
-
-        @Override
-        public String toString() {
-
-            return SUtils.transTime(ts)+ " SPlayerInfo: " +
-                    ", uid=" + uid +
-                    ", mixMusicBeginOffset=" + mixMusicBeginOffset+
-                    ", isLoopback=" + loopback+
-                    ", isReplace=" + replace+
-                    ", cycle=" + cycle +
-                    ", filePath=" + filePath +
-                    ", midiPath=" + filePath +
-                    ", extraInfo="+ extraMsg + "\n";
-
-        }
-        @Override
-        public JSONObject toJSONObject() {
-            JSONObject jsObj = new JSONObject();
-            try {
-
-                jsObj.put("tsStr", SUtils.transTime(ts));
-                jsObj.put("tsValue", ts);
-
-                jsObj.put("uid", uid);
-                jsObj.put("filePath", filePath);
-                jsObj.put("midiPath", midiPath);
-                jsObj.put("mixMusicBeginOffset", mixMusicBeginOffset);
-                jsObj.put("loopback", loopback);
-                jsObj.put("replace", replace);
-                jsObj.put("cycle", cycle);
-
-                if (null != extraMsg) {
-                    jsObj.put("extraMsg", extraMsg);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return jsObj;
-        }
-
-        @Override
-        public String getKey() {
-            return  "SPlayerInfo";
-        }
-    }
-
-
     private final static int ASI_GROUP_MAX_CNT = 10;
     public static class SAudioSamplingInfoGroup implements ILogItem {
 
