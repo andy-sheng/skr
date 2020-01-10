@@ -29,4 +29,8 @@ class QuickFeedbackActivity : BaseActivity() {
                         .addDataBeforeAdd(3, intent.getIntExtra("roomId", 0))
                         .build())
     }
+
+    override fun useEventBus(): Boolean {
+        return false
+    }
 }
