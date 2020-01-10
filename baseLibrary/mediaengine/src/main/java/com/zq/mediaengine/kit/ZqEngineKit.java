@@ -470,8 +470,10 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         // 伴奏状态上报
         if (state == Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY) {
-            mIsAccPrepared = true;
-            doUploadAccStartEvent(0);
+            if (!mIsAccPrepared) {
+                mIsAccPrepared = true;
+                doUploadAccStartEvent(0);
+            }
             if (mAccPreparedSent) {
                 return;
             }
