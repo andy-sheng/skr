@@ -90,6 +90,11 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
                     .setGradientColor(Color.parseColor("#DEF1FF"), Color.parseColor("#D0E3FF"))
                     .build()
 
+            val boyDrawable = DrawableCreator.Builder()
+                    .setCornersRadius(4.dp().toFloat())
+                    .setSolidColor(Color.parseColor("#6AB1DC"))
+                    .build()
+
             val redDrawable = DrawableCreator.Builder()
                     .setCornersRadius(16.dp().toFloat())
                     .setGradientColor(Color.parseColor("#FFDEDE"), Color.parseColor("#FFC4DB"))
@@ -105,25 +110,20 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
                     .setSolidColor(Color.parseColor("#FFA2D5"))
                     .build()
 
-            val boyDrawable = DrawableCreator.Builder()
-                    .setCornersRadius(4.dp().toFloat())
-                    .setSolidColor(Color.parseColor("#6AB1DC"))
-                    .build()
-
             when {
                 model.user?.sex == ESex.SX_MALE.value -> {
                     imageBg.background = blueDrawable
+                    bottomArea.background = blueBottomDrawable
                     sexTv.visibility = View.VISIBLE
                     sexTv.text = "男生"
                     sexTv.background = boyDrawable
-                    bottomArea.background = blueBottomDrawable
                 }
                 model.user?.sex == ESex.SX_FEMALE.value -> {
                     imageBg.background = redDrawable
+                    bottomArea.background = redBottomDrawable
                     sexTv.visibility = View.VISIBLE
                     sexTv.text = "女生"
                     sexTv.background = girlDrawable
-                    bottomArea.background = redBottomDrawable
                 }
                 else -> {
                     sexTv.visibility = View.GONE
