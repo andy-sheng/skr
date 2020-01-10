@@ -134,15 +134,14 @@ class RelayHomeActivity : BaseActivity() {
                     .build())
         }
 
-        val songCardMaxHeight = (U.getDisplayUtils().screenHeight - 32.dp() - 30.dp() - 50.dp() - 2 * 16.dp()) -
+        val songCardMaxHeight = (U.getDisplayUtils().screenHeight - 62.dp() - 50.dp() - 36.dp() - 20.dp()) -
                 (if (U.getDeviceUtils().hasNotch(this)) U.getStatusBarUtil().getStatusBarHeight(this) else 0)
         var maxSize = songCardMaxHeight / 72.dp()
-        var songCardHeight = 72.dp() * maxSize
-        MyLog.d(TAG, "initData songCardMaxHeight = $songCardMaxHeight songCardHeight = $songCardHeight maxSize = $maxSize")
-        if ((songCardMaxHeight - songCardHeight) >= 66.dp()) {
+        var songCardHeight = 72.dp() * maxSize + 36.dp()
+        if ((songCardMaxHeight - songCardHeight) >= 50.dp()) {
             // 只是把判断条件放宽一点，毕竟有上下的距离
             maxSize += 1
-            songCardHeight = 72.dp() * maxSize
+            songCardHeight = 72.dp() * maxSize + 36.dp()
         }
 
         val layoutParams = speedRecyclerView?.layoutParams as ConstraintLayout.LayoutParams?

@@ -4,13 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.common.view.ex.ExImageView
+    <ImageView
+        android:id="@+id/shaow_iv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/view_72_dp"
+        android:background="@drawable/relay_home_shaow"
+        app:layout_constraintBottom_toBottomOf="@id/image_bg"
+        app:layout_constraintTop_toBottomOf="@id/image_bg" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/image_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_0_dp"
+        android:layout_marginBottom="@dimen/view_36_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_gradient_endColor="#E4E4FF"
         app:bl_gradient_startColor="#FFFFFF"
-        app:bl_shape="rectangle" />
+        app:bl_shape="rectangle"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/song_view"

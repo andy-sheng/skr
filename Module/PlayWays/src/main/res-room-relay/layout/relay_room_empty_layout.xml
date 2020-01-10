@@ -6,33 +6,25 @@
     android:paddingLeft="@dimen/view_30_dp"
     android:paddingRight="@dimen/view_30_dp">
 
-    <ImageView
+    <com.common.view.ex.ExImageView
+        android:id="@+id/image_bg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/common_gradient_bg" />
-
-    <ImageView
-        android:id="@+id/empty_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/feed_wall_empty_icon"
-        app:layout_constraintBottom_toTopOf="@id/empty_tv"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        android:layout_height="@dimen/view_140_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_10"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/empty_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_24_dp"
-        android:text="暂时没有人发起合唱"
-        android:textColor="@color/black_trans_50"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/empty_img" />
+        android:text="与 你 相 遇    恰 逢 其 时"
+        android:textColor="@color/white_trans_20"
+        android:textSize="@dimen/textsize_16_dp"
+        app:layout_constraintBottom_toBottomOf="@id/image_bg"
+        app:layout_constraintLeft_toLeftOf="@id/image_bg"
+        app:layout_constraintRight_toRightOf="@id/image_bg"
+        app:layout_constraintTop_toTopOf="@id/image_bg" />
 
 </android.support.constraint.ConstraintLayout>

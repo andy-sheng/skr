@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -324,8 +325,10 @@ class RelayMatchActivity : BaseActivity() {
     private fun checkIsEmpty() {
         if (adapter.mDataList.isNullOrEmpty()) {
             mLoadService?.showCallback(RelayEmptyRoomCallback::class.java)
+            quickTipsTv?.visibility = View.GONE
         } else {
             mLoadService?.showSuccess()
+            quickTipsTv?.visibility = View.VISIBLE
         }
     }
 

@@ -55,8 +55,28 @@
         android:layout_height="@dimen/view_360_dp"
         android:layout_below="@id/titlebar"
         android:background="@drawable/relay_match_icon"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/join_tips_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_230_dp"
+        android:gravity="center"
+        android:letterSpacing="0.4"
+        android:text="Ta正在赶来的路上..."
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <com.component.busilib.view.recyclercardview.SpeedRecyclerView
+        android:id="@+id/speed_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_176_dp"
+        android:layout_marginBottom="@dimen/view_20_dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/quick_tips_tv"
@@ -72,28 +92,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
-
-    <com.component.busilib.view.recyclercardview.SpeedRecyclerView
-        android:id="@+id/speed_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_140_dp"
-        android:layout_above="@id/quick_tips_tv"
-        android:layout_marginBottom="@dimen/view_16_dp"
-        app:layout_constraintBottom_toTopOf="@id/quick_tips_tv" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/join_tips_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/speed_recyclerView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/view_36_dp"
-        android:gravity="center"
-        android:letterSpacing="0.4"
-        android:text="Ta正在赶来的路上..."
-        android:textColor="@color/white_trans_80"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintBottom_toTopOf="@id/speed_recyclerView" />
-
 
 </com.common.view.ex.ExConstraintLayout>

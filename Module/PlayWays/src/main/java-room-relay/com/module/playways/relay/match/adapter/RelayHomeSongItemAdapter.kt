@@ -62,7 +62,7 @@ class RelayHomeSongItemAdapter(var listener: RelaySongListener?, var maxSize: In
                 songDesc.visibility = View.VISIBLE
                 songDesc.text = model.songDesc
             }
-            
+
             if (hasLastDivider == false && maxSize != null && position == ((maxSize ?: 0) - 1)) {
                 divider.visibility = View.GONE
             } else {

@@ -8,6 +8,8 @@ import android.util.Pair;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.common.log.MyLog;
+
 
 /**
  * Created by MK on 15-3-25.
@@ -124,6 +126,12 @@ public class DisplayUtils {
             }
         }
         if (productModel.equals("HMA-AL00")) {
+        }
+
+        MyLog.d("fafa", "productModel = " + productModel);
+        if (productModel.equals("MI CC 9")) {
+            // todo 小米CC9 尺寸不对，且无法判断是否有虚拟按键
+            return 2340;
         }
         return h;
     }

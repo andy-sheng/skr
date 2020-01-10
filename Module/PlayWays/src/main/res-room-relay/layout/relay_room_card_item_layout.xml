@@ -7,9 +7,21 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/shaow_iv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_72_dp"
+        android:background="@drawable/relay_match_shaow"
+        app:layout_constraintBottom_toBottomOf="@id/image_bg"
+        app:layout_constraintTop_toBottomOf="@id/image_bg" />
+
+    <ImageView
         android:id="@+id/image_bg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="@dimen/view_0_dp"
+        android:layout_marginBottom="@dimen/view_36_dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.component.busilib.view.AvatarView
         android:id="@+id/avatar_level"
@@ -17,8 +29,8 @@
         android:layout_height="@dimen/view_56_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_12_dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/image_bg"
+        app:layout_constraintTop_toTopOf="@id/image_bg"
         avatarView:borderColor="@color/white"
         avatarView:borderWidth="@dimen/view_0_dp" />
 
@@ -32,7 +44,7 @@
         app:layout_constraintBottom_toTopOf="@id/tag_area"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toRightOf="@id/avatar_level"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toRightOf="@id/image_bg"
         app:layout_constraintTop_toTopOf="@id/avatar_level"
         app:textColor="@color/black_trans_50"
         app:textSize="@dimen/textsize_14_dp" />
@@ -106,7 +118,7 @@
         android:id="@+id/bottom_area"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_56_dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/image_bg" />
 
     <TextView
         android:id="@+id/join_tv"
@@ -149,7 +161,7 @@
         android:layout_marginTop="@dimen/view_12_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintRight_toRightOf="@id/image_bg"
+        app:layout_constraintTop_toTopOf="@id/image_bg" />
 
 </android.support.constraint.ConstraintLayout>
