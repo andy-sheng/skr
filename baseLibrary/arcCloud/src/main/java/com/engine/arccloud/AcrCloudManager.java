@@ -415,7 +415,7 @@ public class AcrCloudManager implements IACRCloudListener {
                             }
                         }
                     }
-                    MyLog.d(TAG, " list=" + list + " targetSongInfo=" + targetSongInfo);
+                    MyLog.i(TAG, " list=" + list + " targetSongInfo=" + targetSongInfo);
                     recognizeConfig.getResultListener().onResult(result, list, targetSongInfo, lineNo);
                 }
             } else {

@@ -230,8 +230,6 @@ public class AgoraRTCAdapter {
         mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO), 0);
         mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 4000);//触发进入循环
 
-//        Context ctx = U.app().getApplicationContext();
-//        startMonitorNetwork(ctx);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -250,7 +248,9 @@ public class AgoraRTCAdapter {
 
     public void stopStatistics() {//考虑到退出房间的时候，以标志量的方式更好。
         mRunStatistic = false;
+        mInAudioStatistic = false; //下次启动采集的时候看到true，会记录时时间戳
         flushCachedAudioSmpInfoGroup();//补上数据
+        SDataManager.getInstance().flush(mDataFlushMode);
     }
 
     public synchronized void stopStatisticThread() {
@@ -393,9 +393,7 @@ public class AgoraRTCAdapter {
         @Override
         public void onLeaveChannel(RtcStats stats) {
             super.onLeaveChannel(stats);
-            mInAudioStatistic = false; //下次启动采集的时候看到true，会记录时时间戳
             stopStatistics();
-//            SDataManager.getInstance().setChannelID("no-channel").setChannelJoinElipse(-1).setUserID(-1);
 
             if (mOutCallback != null) {
                 mOutCallback.onLeaveChannel(stats);
@@ -857,6 +855,7 @@ public class AgoraRTCAdapter {
      * 不是做模式切换一般不用销毁所有
      */
     public void destroy(boolean destroyAll) {
+        stopStatistics();
         if (mRtcEngine != null) {
             mRtcEngine.stopPreview();
         }
@@ -917,10 +916,14 @@ public class AgoraRTCAdapter {
         startStatisticThread();
 
         int retCode = mRtcEngine.joinChannel(t, channelId, extra, uid);
-        if (0 != retCode)
+        if (0 != retCode) {
             stopStatisticThread();
+        }
 
-        SDataManager.getInstance().getDataHolder().addJoinChannelAction(retCode);
+        SDataManager.getInstance().getDataHolder().addJoinChannelAction(retCode,
+                mConfig.getConfigFromServerNotChange().hasServerConfig,
+                mConfig.isUseExternalAudio(), mConfig.isEnableAudioLowLatency(),
+                mConfig.getEarMonitoringSwitch());
 
         return retCode;
     }
@@ -1384,7 +1387,7 @@ public class AgoraRTCAdapter {
      *                 正整数：循环的次数
      *                 -1：无限循环
      */
-    public void startAudioMixing(String filePath, String melPath, boolean loopback, boolean replace, int cycle) {
+    public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
         if (mRtcEngine == null) {
             return;
         }

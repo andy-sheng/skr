@@ -5,6 +5,7 @@ import android.content.res.AssetFileDescriptor;
 import android.media.MediaCodec;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -15,6 +16,7 @@ import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
 import com.zq.mediaengine.framework.SrcPin;
+import com.zq.mediaengine.util.HttpMediaDataSource;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -29,6 +31,7 @@ public class AudioFileCapture {
     private final static String TAG = "AudioFileCapture";
     private final static boolean VERBOSE = false;
 
+    private static final boolean ENABLE_MEDIA_DATA_SOURCE = false;
     private static final long TIMEOUT_US = 10000;
     private static final int MAX_EOS_SPINS = 10;
     private static final long OFFSET_IGNORE = 20;
@@ -623,6 +626,10 @@ public class AudioFileCapture {
         });
     }
 
+    private boolean isHttpDataSource(String url) {
+        return url.startsWith("http://") || url.startsWith("https://");
+    }
+
     private void doSetDataSource(String url) throws IOException {
         final String filePrefix = "file://";
         final String assetsPrefix = "assets://";
@@ -639,6 +646,11 @@ public class AudioFileCapture {
             final AssetFileDescriptor afd = mContext.getAssets().openFd(path);
             mMediaExtractor.setDataSource(afd.getFileDescriptor(),
                     afd.getStartOffset(), afd.getLength());
+        } else if (ENABLE_MEDIA_DATA_SOURCE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isHttpDataSource(url)) {
+            // use custom data source to deal with network issue
+            // but caused much slower prepare time, disabled for now
+            HttpMediaDataSource httpMediaDataSource = new HttpMediaDataSource(mUrl);
+            mMediaExtractor.setDataSource(httpMediaDataSource);
         } else {
             mMediaExtractor.setDataSource(mUrl);
         }
@@ -667,6 +679,7 @@ public class AudioFileCapture {
             return ERROR_IO;
         }
 
+        Log.i(TAG, "getCachedDuration0: " + mMediaExtractor.getCachedDuration());
         int numTracks = mMediaExtractor.getTrackCount();
         for (int i = 0; i< numTracks; i++) {
             MediaFormat mediaFormat = mMediaExtractor.getTrackFormat(i);
@@ -704,6 +717,7 @@ public class AudioFileCapture {
                 }
                 mMediaCodec.start();
                 mBufferInfo = new MediaCodec.BufferInfo();
+                Log.i(TAG, "getCachedDuration1: " + mMediaExtractor.getCachedDuration());
                 return 0;
             }
         }
@@ -750,6 +764,10 @@ public class AudioFileCapture {
         int inputBufferIndex = mMediaCodec.dequeueInputBuffer(TIMEOUT_US);
         if (inputBufferIndex >= 0) {
             ByteBuffer inputBuffer = inputBuffers[inputBufferIndex];
+            if (VERBOSE) {
+                Log.d(TAG, "getCachedDuration loop: " + mMediaExtractor.getCachedDuration() +
+                        " " + mMediaExtractor.hasCacheReachedEndOfStream());
+            }
             int sampleSize = mMediaExtractor.readSampleData(inputBuffer, 0);
             long pts = (sampleSize >= 0) ? mMediaExtractor.getSampleTime() : 0;
             if (sampleSize >= 0 && (mEnd < 0 || mEnd * 1000 > pts)) {

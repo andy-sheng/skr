@@ -751,9 +751,9 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
                 val songBeginTs = songModel.beginMs
                 if (accFile != null && accFile.exists()) {
                     // 伴奏文件存在
-                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), 1)
                 } else {
-                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel.acc, midiFile.absolutePath, songBeginTs.toLong(), 1)
                 }
             }
             // 启动acr打分识别

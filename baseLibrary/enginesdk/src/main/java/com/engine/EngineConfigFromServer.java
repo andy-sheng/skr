@@ -26,6 +26,7 @@ import retrofit2.Response;
  * enableAudioPreview = true 只代表服务端的配置建议开启耳返，不代表耳返是否开启
  */
 public class EngineConfigFromServer implements Serializable {
+    private static final boolean LATENCY_TEST_MODE = false;
 
     public boolean hasServerConfig = false; // 是否有服务端配置
 
@@ -84,6 +85,13 @@ public class EngineConfigFromServer implements Serializable {
         this.enableAudioLowLatency = enableAudioLowLatency;
     }
 
+    public void save2Pref() {
+        if (LATENCY_TEST_MODE) {
+            U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(),
+                    "EngineConfigFromServer", JSON.toJSONString(this));
+        }
+    }
+
     @Override
     public String toString() {
         return "hasServerConfig=" + hasServerConfig +
@@ -100,7 +108,7 @@ public class EngineConfigFromServer implements Serializable {
         EngineConfigFromServer configFromServer = null;
         long lastTs = U.getPreferenceUtils().getSettingLong(U.getPreferenceUtils().longlySp(), "EngineConfigFromServerUpdateTs", 0);
         MyLog.i("Params", "configFromServer lastTs=" + lastTs);
-        if (System.currentTimeMillis() - lastTs > 24 * 3600 * 1000) {
+        if (!LATENCY_TEST_MODE && System.currentTimeMillis() - lastTs > 24 * 3600 * 1000) {
             // 请求服务器
             if (Looper.getMainLooper() == Looper.myLooper()) {
                 Observable.create(new ObservableOnSubscribe<Object>() {
@@ -123,6 +131,11 @@ public class EngineConfigFromServer implements Serializable {
         }
         if (configFromServer == null) {
             configFromServer = new EngineConfigFromServer();
+            if (LATENCY_TEST_MODE) {
+                configFromServer.hasServerConfig = true;
+                configFromServer.useExternalAudio = true;
+                configFromServer.enableAudioLowLatency = true;
+            }
         }
         MyLog.i("Params", configFromServer.toString());
         return configFromServer;

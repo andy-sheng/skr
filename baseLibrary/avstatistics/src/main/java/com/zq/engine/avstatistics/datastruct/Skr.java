@@ -107,6 +107,100 @@ public class Skr
 
     }
 
+    public static class PlayerStartInfo implements ILogItem {
+        public long ts = 0; //timestamp;
 
+        // 0: unknown 1: aliyun 2: aliyun_cache 3: ksc 4: ksc_cache
+        public long cdnType = 0;
+        public long extAudio = 0;
+        public String url;
+        public String urlInUse;
+        public long prepareTime = -1;
+        // 0: no error
+        public long errCode = 0;
+
+        @Override
+        public String toString() {
+            return getKey() + ": " + toJSONObject().toString();
+        }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsObj = new JSONObject();
+            try {
+                jsObj.put("tsStr", SUtils.transTime(ts));
+                jsObj.put("tsValue", ts);
+
+                boolean isHttp = urlInUse.startsWith("http://") || url.startsWith("https://");
+                jsObj.put("cdnType", cdnType);
+                jsObj.put("extAudio", extAudio);
+                jsObj.put("url", url);
+                jsObj.put("urlInUse", urlInUse);
+                jsObj.put("isLocal", isHttp ? 0 : 1);
+                jsObj.put("prepareTime", prepareTime);
+                jsObj.put("errCode", errCode);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return jsObj;
+        }
+
+        @Override
+        public String getKey() {
+            return "PlayerStartInfo";
+        }
+    }
+
+    public static class PlayerStopInfo implements ILogItem {
+        public long ts = 0; //timestamp;
+
+        // 0: unknown 1: aliyun 2: aliyun_cache 3: ksc 4: ksc_cache
+        public long cdnType = 0;
+        public long extAudio = 0;
+        public String url;
+        public String urlInUse;
+        // 从调用start接口到现在的时间
+        public long duration = -1;
+        public long isPrepared = 0;
+        // 0: 用户退出 1: 播放出错
+        public long stopReason = 0;
+        // 播放出错的错误码
+        public long errCode = 0;
+
+        @Override
+        public String toString() {
+            return getKey() + ": " + toJSONObject().toString();
+        }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsObj = new JSONObject();
+            try {
+                jsObj.put("tsStr", SUtils.transTime(ts));
+                jsObj.put("tsValue", ts);
+
+                boolean isHttp = urlInUse.startsWith("http://") || url.startsWith("https://");
+                jsObj.put("cdnType", cdnType);
+                jsObj.put("extAudio", extAudio);
+                jsObj.put("url", url);
+                jsObj.put("urlInUse", urlInUse);
+                jsObj.put("isLocal", isHttp ? 0 : 1);
+                jsObj.put("duration", duration);
+                jsObj.put("isPrepared", isPrepared);
+                jsObj.put("stopReason", stopReason);
+                jsObj.put("errCode", errCode);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsObj;
+        }
+
+        @Override
+        public String getKey() {
+            return "PlayerStopInfo";
+        }
+    }
 
 }

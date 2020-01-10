@@ -61,7 +61,7 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
             call.method == "startAudioMixing" -> {
                 var filePath = call.argument<String>("filePath")
                 var cycle = call.argument<Int>("cycle")
-                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), filePath, null, 0, false, false, cycle
+                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), filePath, null, 0, cycle
                         ?: 1)
                 var from = call.argument<String>("from")
                 if (from == "party_bgm") {

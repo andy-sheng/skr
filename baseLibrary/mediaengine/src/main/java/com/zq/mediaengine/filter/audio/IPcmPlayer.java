@@ -26,7 +26,13 @@ public interface IPcmPlayer {
 
     int resume();
 
+    void attachTo(int idx, long ptr, boolean detach);
+
+    int read(ByteBuffer buffer, int size);
+
     int write(ByteBuffer buffer);
+
+    int write(ByteBuffer buffer, boolean nonBlock);
 
     int flush();
 

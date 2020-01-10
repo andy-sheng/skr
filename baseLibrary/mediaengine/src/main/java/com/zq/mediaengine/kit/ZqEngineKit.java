@@ -24,6 +24,7 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.CustomHandlerThread;
 import com.common.utils.DeviceUtils;
 import com.common.utils.U;
+import com.common.videocache.MediaCacheManager;
 import com.engine.EngineEvent;
 import com.engine.Params;
 import com.engine.UserStatus;
@@ -34,6 +35,7 @@ import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.score.Score2Callback;
 import com.zq.engine.avstatistics.SDataManager;
+import com.zq.engine.avstatistics.datastruct.Skr;
 import com.zq.mediaengine.capture.AudioCapture;
 import com.zq.mediaengine.capture.AudioPlayerCapture;
 import com.zq.mediaengine.capture.CameraCapture;
@@ -191,6 +193,10 @@ public class ZqEngineKit implements AgoraOutCallback {
     private RawFrameWriter mBgmRawFrameWriter;
 
     // 伴奏状态相关
+    private int mCdnType = 0;
+    private String mAccUrlInUse;
+    private long mAccStartTime;
+    private boolean mIsAccPrepared;
     private boolean mAccPreparedSent = false;
     private long mAccRecoverPosition = 0;
     private int mAccRemainedLoopCount = 0;
@@ -397,13 +403,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onWarning(int warn) {
-        if (warn == Constants.WARN_AUDIO_MIXING_OPEN_ERROR) {
-            // 上传伴奏播放失败
-            HashMap<String, String> map = new HashMap<>();
-            map.put("url", mConfig.getMixMusicFilePath());
-            StatisticsAdapter.recordCountEvent("engine", "acc_play_failed", map);
-            MyLog.i(TAG, "upload bgm play failed event");
-        }
+        MyLog.i(TAG, "onWarning" + " warn=" + warn);
     }
 
     @Override
@@ -467,6 +467,36 @@ public class ZqEngineKit implements AgoraOutCallback {
     @Override
     public void onAudioMixingStateChanged(int state, int errorCode) {
         MyLog.i(TAG, "onAudioMixingStateChanged" + " state=" + state + " errorCode=" + errorCode);
+
+        // 伴奏状态上报
+        if (state == Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY) {
+            mIsAccPrepared = true;
+            doUploadAccStartEvent(0);
+            if (mAccPreparedSent) {
+                return;
+            }
+            mAccPreparedSent = true;
+        } else if (state == Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_ERROR) {
+            doUploadAccStopEvent(1, errorCode);
+            if (mCustomHandlerThread != null) {
+                if (mIsAccPrepared) {
+                    mAccRecoverPosition = getAudioMixingCurrentPosition();
+                    if (mConfig.isUseExternalAudio()) {
+                        mAccRemainedLoopCount = mAudioPlayerCapture.getRemainedLoopCount();
+                    }
+                }
+                mCustomHandlerThread.postDelayed(() -> {
+                    if (!mConfig.isMixMusicPlaying()) {
+                        return;
+                    }
+                    MyLog.i(TAG, "retry acc playback with pos: " + mAccRecoverPosition + " remainLoopCount: " + mAccRemainedLoopCount);
+                    doStopAudioMixing();
+                    doStartAudioMixing(mAccUrlInUse, mAccRecoverPosition, mAccRemainedLoopCount);
+                }, 100);
+            }
+            return;
+        }
+
         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STATE_CHANGE, null);
         engineEvent.obj = new EngineEvent.MusicStateChange(state, errorCode);
         EventBus.getDefault().post(engineEvent);
@@ -579,7 +609,6 @@ public class ZqEngineKit implements AgoraOutCallback {
                 " isUseExternalVideo: " + mConfig.isUseExternalVideo() +
                 " isUseExternalRecord: " + mConfig.isUseExternalAudioRecord() +
                 " isEnableAudioLowLatency: " + mConfig.isEnableAudioLowLatency() +
-//                " isEnableAudioPreview: " + mConfig.isEnableAudioPreview() +
                 " accMixLatency: " + mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnSpeaker() +
                 " " + mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnHeadset());
 
@@ -607,11 +636,10 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioCapture = new AudioCapture(mContext);
             mAudioCapture.setSampleRate(mConfig.getAudioSampleRate());
             mAudioPlayerCapture = new AudioPlayerCapture(mContext);
-            mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
             mAudioPlayerCapture.setOutFormat(new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16,
                     mConfig.getAudioSampleRate(), mConfig.getAudioChannels()));
-            mRemoteAudioPreview = new AudioPreview(mContext);
-            mLocalAudioPreview = new AudioPreview(mContext);
+            mRemoteAudioPreview = new AudioPreview(mContext, mConfig.isEnableAudioLowLatency());
+            mLocalAudioPreview = new AudioPreview(mContext, mConfig.isEnableAudioLowLatency());
             mAPMFilter = new APMFilter();
 
             // debug录制的相关连接
@@ -626,7 +654,6 @@ public class ZqEngineKit implements AgoraOutCallback {
 
             if (mConfig.isUseLocalAPM()) {
                 mAudioCapture.getSrcPin().connect(mAPMFilter.getSinkPin());
-                mAudioRemoteSrcPin.connect(mRemoteAudioPreview.getSinkPin());
                 mAudioLocalSrcPin = mAPMFilter.getSrcPin();
 
                 // 开启降噪模块
@@ -644,10 +671,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 public void onPrepared(AudioPlayerCapture audioPlayerCapture) {
                     MyLog.i(TAG, "AudioPlayerCapture onPrepared");
                     // TODO: 预加载完成通知
-                    if (!mAccPreparedSent) {
-                        mAccPreparedSent = true;
-                        onAudioMixingStateChanged(Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY, 0);
-                    }
+                    onAudioMixingStateChanged(Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY, 0);
                 }
             });
             mAudioPlayerCapture.setOnCompletionListener(new AudioPlayerCapture.OnCompletionListener() {
@@ -670,23 +694,8 @@ public class ZqEngineKit implements AgoraOutCallback {
                 @Override
                 public void onError(AudioPlayerCapture audioPlayerCapture, int type, long msg) {
                     MyLog.e(TAG, "AudioPlayerCapture error: " + type);
-
-                    if (mCustomHandlerThread != null) {
-                        if (mAccPreparedSent) {
-                            mAccRecoverPosition = mAudioPlayerCapture.getPosition();
-                            mAccRemainedLoopCount = mAudioPlayerCapture.getRemainedLoopCount();
-                        }
-                        mCustomHandlerThread.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (!mConfig.isMixMusicPlaying()) {
-                                    return;
-                                }
-                                MyLog.i(TAG, "retry acc playback with pos: " + mAccRecoverPosition + " remainLoopCount: " + mAccRemainedLoopCount);
-                                mAudioPlayerCapture.start(mConfig.getMixMusicFilePath(), mAccRecoverPosition, -1, mAccRemainedLoopCount);
-                            }
-                        }, 100);
-                    }
+                    // TODO: 伴奏播放出错
+                    onAudioMixingStateChanged(Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_ERROR, type);
 
                     EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_ERROR);
                     engineEvent.setObj(type);
@@ -784,9 +793,11 @@ public class ZqEngineKit implements AgoraOutCallback {
             // 初始参数配置
             if (mConfig.isEnableAudioLowLatency()) {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
+                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
                 mAudioPlayerCapture.setEnableLowLatency(true);
             } else {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
+                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_AUDIOTRACK);
                 mAudioPlayerCapture.setEnableLowLatency(false);
             }
             int mixingLatency = mHeadSetPlugged ? mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnHeadset()
@@ -794,8 +805,9 @@ public class ZqEngineKit implements AgoraOutCallback {
             mLocalAudioMixer.setDelay(1, mixingLatency);
             mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
             mRemoteAudioPreview.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
+            mLocalAudioPreview.setVolume(mConfig.getEarMonitoringVolume() / 100.f);
             mAudioPlayerCapture.setPlayoutVolume(mConfig.getAudioMixingPlayoutVolume() / 100.f);
-            mLocalAudioMixer.setInputVolume(1, mConfig.getAudioMixingPublishVolume() / 100.f);
+            setAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume());
             if (mConfig.isEnableInEarMonitoring() && shouldStartAudioPreview()) {
                 mLocalAudioPreview.start();
             }
@@ -884,6 +896,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                     mAgoraRTCAdapter.setEnableAPM(true);
                 }
             }
+
+            // 调节伴奏混音音量
+            setAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume());
         }
     }
 
@@ -905,6 +920,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 离开房间
      */
     public void leaveChannel() {
+        stopAudioMixing();
         mCustomHandlerThread.post(new LogRunnable("leaveChannel") {
             @Override
             public void realRun() {
@@ -936,6 +952,8 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
         // 销毁前清理掉其他的异步任务
         mCustomHandlerThread.removeCallbacksAndMessages(null);
+        // 销毁前停止伴奏播放, 保证统计事件的发送
+        stopAudioMixing();
         mCustomHandlerThread.post(new LogRunnable("destroy" + " from=" + from + " status=" + mStatus) {
             @Override
             public void realRun() {
@@ -1493,6 +1511,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             if (enable) {
                 mLocalAudioPreview.stop();
             }
+            setAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume());
             mAudioPlayerCapture.setEnableLatencyTest(enable);
             mLocalAudioMixer.setEnableLatencyTest(enable);
         }
@@ -1519,10 +1538,38 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (mConfig.isUseExternalAudio()) {
             if (enable) {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_OPENSLES);
+                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_OPENSLES);
                 mAudioPlayerCapture.setEnableLowLatency(true);
             } else {
                 mAudioCapture.setAudioCaptureType(AudioCapture.AUDIO_CAPTURE_TYPE_AUDIORECORDER);
+                mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_AUDIOTRACK);
                 mAudioPlayerCapture.setEnableLowLatency(false);
+            }
+            if (mRemoteAudioPreview.isEnableLowLatency() != enable) {
+                MyLog.i(TAG, "recreate RemoteAudioPreview");
+                mAudioRemoteSrcPin.disconnect(mRemoteAudioPreview.getSinkPin(), false);
+                mRemoteAudioPreview.release();
+                mRemoteAudioPreview = new AudioPreview(mContext, enable);
+                mRemoteAudioPreview.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
+                if (mConfig.isJoinChannelSuccess()) {
+                    mRemoteAudioPreview.start();
+                }
+                mAudioRemoteSrcPin.connect(mRemoteAudioPreview.getSinkPin());
+            }
+            if (mLocalAudioPreview.isEnableLowLatency() != enable) {
+                MyLog.i(TAG, "recreate LocalAudioPreview");
+                mLocalAudioPreview.getSrcPin().disconnect(mAudioSendResampleFilter.getSinkPin(), false);
+                mAudioFilterMgt.getSrcPin().disconnect(mLocalAudioPreview.getSinkPin(), false);
+                mLocalAudioPreview.release();
+                mLocalAudioPreview = new AudioPreview(mContext, enable);
+                mLocalAudioPreview.setVolume(mConfig.getEarMonitoringVolume() / 100.f);
+                if (mConfig.isEnableInEarMonitoring() && shouldStartAudioPreview()) {
+                    if (mAudioCapture.isRecordingState()) {
+                        mLocalAudioPreview.start();
+                    }
+                }
+                mLocalAudioPreview.getSrcPin().connect(mAudioSendResampleFilter.getSinkPin());
+                mAudioFilterMgt.getSrcPin().connect(mLocalAudioPreview.getSinkPin());
             }
         }
     }
@@ -1536,6 +1583,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                 @Override
                 public void realRun() {
                     mConfig.setEnableAudioLowLatency(enable);
+                    // 这里在延迟测试模式下会改变参数值
+                    mConfig.getConfigFromServerNotChange().setEnableAudioLowLatency(enable);
+                    mConfig.getConfigFromServerNotChange().save2Pref();
                     doSetEnableAudioLowLatency(enable);
                 }
             });
@@ -1598,8 +1648,8 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     PendingStartMixAudioParams mPendingStartMixAudioParams;
 
-    public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
-        startAudioMixing(filePath, null, 0, loopback, replace, cycle);
+    public void startAudioMixing(String filePath, int cycle) {
+        startAudioMixing(filePath, null, 0, cycle);
     }
 
     /**
@@ -1609,24 +1659,20 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param filePath 指定需要混音的本地或在线音频文件的绝对路径。支持d的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv、wav 及 flac。详见 Supported Media Formats。
      *                 如果用户提供的目录以 /assets/ 开头，则去 assets 里面查找该文件
      *                 如果用户提供的目录不是以 /assets/ 开头，一律认为是在绝对路径里查找该文件
-     * @param loopback true：只有本地可以听到混音或替换后的音频流
-     *                 false：本地和对方都可以听到混音或替换后的音频流
-     * @param replace  true：只推动设置的本地音频文件或者线上音频文件，不传输麦克风收录的音频
-     *                 false：音频文件内容将会和麦克风采集的音频流进行混音
      * @param cycle    指定音频文件循环播放的次数：
      *                 正整数：循环的次数
      *                 -1：无限循环
      */
-    public void startAudioMixing(final String filePath, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
-        startAudioMixing(0, filePath, midiPath, mixMusicBeginOffset, loopback, replace, cycle);
+    public void startAudioMixing(final String filePath, final String midiPath, final long mixMusicBeginOffset, final int cycle) {
+        startAudioMixing(0, filePath, midiPath, mixMusicBeginOffset, cycle);
     }
 
-    public void startAudioMixing(final int uid, final String filePath, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
+    public void startAudioMixing(final int uid, final String filePath, final String midiPath, final long mixMusicBeginOffset, final int cycle) {
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle) {
+//            final String filePath = "http://song-static.inframe.mobi/bgm/28995bcaee647a8ebba90fd4b6492820.mp3";
+            mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " cycle=" + cycle) {
                 @Override
                 public void realRun() {
-                    SDataManager.getInstance().getDataHolder().addPlayerInfo(uid, filePath, midiPath, mixMusicBeginOffset, loopback, replace, cycle);
                     if (TextUtils.isEmpty(filePath)) {
                         MyLog.i(TAG, "伴奏路径非法");
                         return;
@@ -1655,26 +1701,17 @@ public class ZqEngineKit implements AgoraOutCallback {
                         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
                         EventBus.getDefault().post(engineEvent);
 
-                        if (mConfig.isUseExternalAudio()) {
-                            mAccPreparedSent = false;
-                            mAccRecoverPosition = 0;
-                            mAccRemainedLoopCount = cycle;
-                            mAudioPlayerCapture.start(filePath, cycle);
-                        } else {
-                            mAgoraRTCAdapter.startAudioMixing(filePath, midiPath, loopback, replace, cycle);
-
-                            // 伴奏播放打点上传
-                            StatisticsAdapter.recordCountEvent("engine", "acc_play", null);
-                            MyLog.i(TAG, "upload bgm play event");
-                        }
+                        mAccPreparedSent = false;
+                        mAccRecoverPosition = 0;
+                        mAccRemainedLoopCount = cycle;
+                        mAccUrlInUse = getUrlToPlay();
+                        doStartAudioMixing(mAccUrlInUse, 0, cycle);
                     } else {
                         mPendingStartMixAudioParams = new PendingStartMixAudioParams();
                         mPendingStartMixAudioParams.uid = uid;
                         mPendingStartMixAudioParams.filePath = filePath;
                         mPendingStartMixAudioParams.midiPath = midiPath;
                         mPendingStartMixAudioParams.mixMusicBeginOffset = mixMusicBeginOffset;
-                        mPendingStartMixAudioParams.loopback = loopback;
-                        mPendingStartMixAudioParams.replace = replace;
                         mPendingStartMixAudioParams.cycle = cycle;
                     }
                 }
@@ -1682,13 +1719,84 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
+    private void doStartAudioMixing(String url, long startOffset, int loopCount) {
+        mAccStartTime = System.currentTimeMillis();
+        mIsAccPrepared = false;
+        if (mConfig.isUseExternalAudio()) {
+            mAudioPlayerCapture.start(url, startOffset, -1, loopCount);
+        } else {
+            mAgoraRTCAdapter.startAudioMixing(url, false, false, loopCount);
+            if (startOffset > 0) {
+                mAgoraRTCAdapter.setAudioMixingPosition((int) startOffset);
+            }
+        }
+    }
+
+    private boolean isHttpUrl(String url) {
+        return url.startsWith("http://") || url.startsWith("https://");
+    }
+
+    private String getUrlToPlay() {
+        String url = mConfig.getMixMusicFilePath();
+        if (TextUtils.isEmpty(url)) {
+            return null;
+        }
+
+        String urlToPlay = url;
+        if (isHttpUrl(urlToPlay)) {
+            if (mCdnType == 3 || mCdnType == 4) {
+                urlToPlay = urlToPlay.replaceFirst("://song-static", "://song-static-1");
+            }
+            if (mCdnType == 2 || mCdnType == 4) {
+                urlToPlay = MediaCacheManager.INSTANCE.getProxyUrl(urlToPlay, true);
+            }
+        }
+        return urlToPlay;
+    }
+
+    private void doUploadAccStartEvent(int errCode) {
+        MyLog.i(TAG, "doUploadAccStartEvent " + errCode);
+        long now = System.currentTimeMillis();
+        long prepareTime = -1;
+        if (errCode == 0 && mAccStartTime > 0) {
+            prepareTime = now - mAccStartTime;
+        }
+
+        Skr.PlayerStartInfo startInfo = new Skr.PlayerStartInfo();
+        startInfo.cdnType = mCdnType;
+        startInfo.extAudio = mConfig.isUseExternalAudio() ? 1 : 0;
+        startInfo.url = mConfig.getMixMusicFilePath();
+        startInfo.urlInUse = mAccUrlInUse;
+        startInfo.prepareTime = prepareTime;
+        startInfo.errCode = errCode;
+        SDataManager.getInstance().getDataHolder().addPlayerStartInfo(startInfo);
+    }
+
+    private void doUploadAccStopEvent(int stopReason, int errCode) {
+        MyLog.i(TAG, "doUploadAccStopEvent reason: " + stopReason + " err: " + errCode);
+        long now = System.currentTimeMillis();
+        long duration = -1;
+        if (mAccStartTime > 0) {
+            duration = now - mAccStartTime;
+        }
+
+        Skr.PlayerStopInfo stopInfo = new Skr.PlayerStopInfo();
+        stopInfo.cdnType = mCdnType;
+        stopInfo.extAudio = mConfig.isUseExternalAudio() ? 1 : 0;
+        stopInfo.url = mConfig.getMixMusicFilePath();
+        stopInfo.urlInUse = mAccUrlInUse;
+        stopInfo.duration = duration;
+        stopInfo.isPrepared = mIsAccPrepared ? 1 : 0;
+        stopInfo.stopReason = stopReason;
+        stopInfo.errCode = errCode;
+        SDataManager.getInstance().getDataHolder().addPlayerStopInfo(stopInfo);
+    }
+
     public static class PendingStartMixAudioParams {
         int uid;
         String filePath;
         String midiPath;
         long mixMusicBeginOffset;
-        boolean loopback;
-        boolean replace;
         int cycle;
     }
 
@@ -1704,8 +1812,6 @@ public class ZqEngineKit implements AgoraOutCallback {
                                 mPendingStartMixAudioParams.filePath,
                                 mPendingStartMixAudioParams.midiPath,
                                 mPendingStartMixAudioParams.mixMusicBeginOffset,
-                                mPendingStartMixAudioParams.loopback,
-                                mPendingStartMixAudioParams.replace,
                                 mPendingStartMixAudioParams.cycle);
                         mPendingStartMixAudioParams = null;
                     } else {
@@ -1726,19 +1832,19 @@ public class ZqEngineKit implements AgoraOutCallback {
                 @Override
                 public void realRun() {
                     if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
+                        doUploadAccStopEvent(0, 0);
                         mConfig.setMixMusicPlaying(false);
                         mConfig.setMixMusicFilePath(null);
                         mConfig.setMidiPath(null);
                         mConfig.setMixMusicBeginOffset(0);
+                        mAccUrlInUse = null;
+                        mIsAccPrepared = false;
+                        mAccStartTime = 0;
                         stopMusicPlayTimeListener();
                         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STOP);
                         EventBus.getDefault().post(engineEvent);
 
-                        if (mConfig.isUseExternalAudio()) {
-                            mAudioPlayerCapture.stop();
-                        } else {
-                            mAgoraRTCAdapter.stopAudioMixing();
-                        }
+                        doStopAudioMixing();
                     }
                     mPendingStartMixAudioParams = null;
                     mConfig.setCurrentMusicTs(0);
@@ -1746,6 +1852,14 @@ public class ZqEngineKit implements AgoraOutCallback {
                     mConfig.setLrcHasStart(false);
                 }
             });
+        }
+    }
+
+    private void doStopAudioMixing() {
+        if (mConfig.isUseExternalAudio()) {
+            mAudioPlayerCapture.stop();
+        } else {
+            mAgoraRTCAdapter.stopAudioMixing();
         }
     }
 
@@ -1868,6 +1982,26 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
+    private boolean shouldMixAcc() {
+        if (mHeadSetPlugged || mBluetoothPlugged) {
+            return true;
+        } else {
+            return (mConfig.getConfigFromServerNotChange().hasServerConfig &&
+                    mConfig.isEnableAudioLowLatency() == mConfig.getConfigFromServerNotChange().isEnableAudioLowLatency() &&
+                    mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnSpeaker() > 0);
+        }
+    }
+
+    // 自采集下伴奏声音发送大小(对于未测定机型，外放模式下不进行混音，伴奏使用外放回采的声音)
+    private void setAudioMixingPublishVolume(int volume) {
+        if (mConfig.isUseExternalAudio()) {
+            float val = shouldMixAcc() ? volume / 100.f : 0;
+            val = mConfig.isEnableAudioMixLatencyTest() ? 1.0f : val;
+            MyLog.i(TAG, "setAudioMixingPublishVolume to: " + val);
+            mLocalAudioMixer.setInputVolume(1, val);
+        }
+    }
+
     /**
      * 调节音乐远端播放音量大小
      *
@@ -1882,7 +2016,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         mConfig.setAudioMixingPublishVolume(volume);
                     }
                     if (mConfig.isUseExternalAudio()) {
-                        mLocalAudioMixer.setInputVolume(1, volume / 100.f);
+                        setAudioMixingPublishVolume(volume);
                     } else {
                         mAgoraRTCAdapter.adjustAudioMixingPublishVolume(volume);
                     }

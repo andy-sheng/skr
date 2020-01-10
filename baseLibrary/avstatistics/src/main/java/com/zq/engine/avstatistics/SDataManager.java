@@ -127,27 +127,23 @@ public class SDataManager {
     public final static int FLUSH_MODE_UPLOAD = 0x00000002;
     public final static int FLUSH_MODE_ALL = (FLUSH_MODE_FILE | FLUSH_MODE_UPLOAD);
 
-    public SDataManager flush(int flushMode) {//flush mode暂时留了个口子，目前是文件log和上传都处理
+    public synchronized SDataManager flush(int flushMode) {//flush mode暂时留了个口子，目前是文件log和上传都处理
 
         StringBuilder logStr1 = new StringBuilder();
         logStr1.append(" userID=").append(mBasicInfo.userID).append(", channelID=").append(mBasicInfo.channelID)
                 .append(", channelJoinElapsed=").append(mBasicInfo.channelJoinElapsed).append("\n");
         logStr1.append(mADHolder.toString());
         MyLog.w(logStr1.toString());
-        List<ILogItem> itemList = mADHolder.getItemList();
+        List<ILogItem> itemList = mADHolder.getItemListAndReset();
         int listSize = 0;
         long logLen = 0;
         if (null != itemList && (listSize = itemList.size()) > 0) {
             for (int i=0; i<listSize; i++) {
                 ILogItem e = itemList.get(i);
-//                if(e!=null){
-//                    logStr.append(e.toString());
-//                }
-                if(e!=null) {
+                if (e != null) {
                     MyLog.w(e.toString());//MyLog的flush行为由其自己控制
                     mLS.appendLog(e);
                 }
-//                logStr.delete(LOG_PREFIX.length()+1, logStr.length()); //+1是给空格留的
                 if (dbgMode) {
                     logLen += (e.toJSONObject().toString().length());
                 }
@@ -157,8 +153,6 @@ public class SDataManager {
             }
             mLS.flushLog(true);
         }
-        mADHolder.reset();
-//        MyLog.flushLog();
 
         return this;
     }

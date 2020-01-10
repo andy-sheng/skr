@@ -87,6 +87,7 @@ public class ICbScoreProcessor {
                             Score2Callback score2Callback = (Score2Callback) var1.obj;
                             if (score2Callback != null) {
                                 int score2 = getScore2();
+                                MyLog.i(TAG, "getScore2: " + score2);
                                 score2Callback.onGetScore(var1.arg1, score2);
                             }
                         }else if(var1.what ==MSG_DESTROY){

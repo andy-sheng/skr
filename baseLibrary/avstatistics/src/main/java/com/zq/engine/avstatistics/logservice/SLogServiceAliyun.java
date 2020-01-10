@@ -2,6 +2,7 @@ package com.zq.engine.avstatistics.logservice;
 
 
 import android.content.Context;
+import android.os.Build;
 
 import com.aliyun.sls.android.sdk.ClientConfiguration;
 import com.aliyun.sls.android.sdk.LOGClient;
@@ -14,6 +15,7 @@ import com.aliyun.sls.android.sdk.model.LogGroup;
 import com.aliyun.sls.android.sdk.request.PostLogRequest;
 import com.aliyun.sls.android.sdk.result.PostLogResult;
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.zq.engine.avstatistics.SDataManager;
 import com.zq.engine.avstatistics.datastruct.ILogItem;
 import com.zq.engine.avstatistics.sts.SSTSCredentialHolder;
@@ -111,6 +113,11 @@ class SLogServiceAliyun extends SLogServiceBase{
         try {
 //            jsObj.put("comeFrom", "liveSDK");
             jsObj.put("SkrID", mParam.skrUid);
+            String deviceModel = U.getDeviceUtils().getProductBrand() + " " + U.getDeviceUtils().getProductModel();
+            jsObj.put("devModel", deviceModel);
+            jsObj.put("appVer", U.getAppInfoUtils().getVersionName());
+            jsObj.put("OS", "Android");
+            jsObj.put("OSVer", android.os.Build.VERSION.RELEASE);
             Log log = new Log();
             log.PutContent(itemOp.getKey(), jsObj.toString());
             mLogGroup.PutLog(log);
