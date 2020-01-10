@@ -1744,9 +1744,6 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         String urlToPlay = url;
         if (isHttpUrl(urlToPlay)) {
-            if (mCdnType == 3 || mCdnType == 4) {
-                urlToPlay = urlToPlay.replaceFirst("://song-static", "://song-static-1");
-            }
             if (mCdnType == 2 || mCdnType == 4) {
                 urlToPlay = MediaCacheManager.INSTANCE.getProxyUrl(urlToPlay, true);
             }
