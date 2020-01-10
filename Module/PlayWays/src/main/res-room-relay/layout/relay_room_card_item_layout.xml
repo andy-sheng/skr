@@ -9,18 +9,7 @@
     <ImageView
         android:id="@+id/image_bg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/common_gradient_bg"
-        android:visibility="gone" />
-
-    <com.common.view.ex.ExImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_gradient_angle="90"
-        app:bl_gradient_endColor="#FFFFFF"
-        app:bl_gradient_startColor="#AFE1FF"
-        app:bl_shape="rectangle" />
+        android:layout_height="match_parent" />
 
     <com.component.busilib.view.AvatarView
         android:id="@+id/avatar_level"
@@ -46,8 +35,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/avatar_level"
         app:textColor="@color/black_trans_50"
-        app:textSize="@dimen/textsize_14_dp"
-        app:textStyle="BOLD" />
+        app:textSize="@dimen/textsize_14_dp" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/tag_area"

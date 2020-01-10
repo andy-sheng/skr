@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/double_room_view_bg">
-
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/match_avga"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:visibility="visible"
-        app:antiAlias="true"
-        app:autoPlay="true"
-        app:loopCount="-1"
-        app:source="relay_match_lights.svga" />
+    app:bl_gradient_endColor="#563E60"
+    app:bl_gradient_startColor="#27365C"
+    app:bl_shape="rectangle">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
@@ -30,11 +21,42 @@
         app:statusBarColor="@color/transparent"
         app:titleBarColor="@color/transparent" />
 
-    <View
-        android:id="@+id/bottom_place"
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/match_circle_svga"
+        android:layout_width="@dimen/view_170_dp"
+        android:layout_height="@dimen/view_170_dp"
+        android:layout_centerHorizontal="true"
+        android:alpha="0.2"
+        android:visibility="visible"
+        app:antiAlias="true"
+        app:autoPlay="true"
+        app:layout_constraintBottom_toTopOf="@id/match_icon"
+        app:layout_constraintLeft_toLeftOf="@id/match_icon"
+        app:layout_constraintRight_toRightOf="@id/match_icon"
+        app:layout_constraintTop_toTopOf="@id/match_icon"
+        app:loopCount="-1"
+        app:source="relay_match_circle.svga" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/match_avga"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_50_dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"
+        app:antiAlias="true"
+        app:autoPlay="true"
+        app:layout_constraintBottom_toBottomOf="@id/match_icon"
+        app:loopCount="-1"
+        app:source="relay_match_lights.svga" />
+
+    <ImageView
+        android:id="@+id/match_icon"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_360_dp"
+        android:layout_below="@id/titlebar"
+        android:background="@drawable/relay_match_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
         android:id="@+id/quick_tips_tv"
@@ -43,17 +65,21 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_20_dp"
-        android:text="今日剩余5次快速合唱次数"
         android:letterSpacing="0.4"
+        android:text="今日剩余5次快速合唱次数"
         android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/textsize_12_dp" />
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <com.component.busilib.view.recyclercardview.SpeedRecyclerView
         android:id="@+id/speed_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_140_dp"
         android:layout_above="@id/quick_tips_tv"
-        android:layout_marginBottom="@dimen/view_16_dp" />
+        android:layout_marginBottom="@dimen/view_16_dp"
+        app:layout_constraintBottom_toTopOf="@id/quick_tips_tv" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/join_tips_tv"
@@ -63,10 +89,11 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_36_dp"
         android:gravity="center"
-        android:text="Ta正在赶来的路上..."
         android:letterSpacing="0.4"
+        android:text="Ta正在赶来的路上..."
         android:textColor="@color/white_trans_80"
-        android:textSize="@dimen/textsize_16_dp" />
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toTopOf="@id/speed_recyclerView" />
 
 
-</RelativeLayout>
+</com.common.view.ex.ExConstraintLayout>

@@ -207,9 +207,9 @@ class RelayMatchActivity : BaseActivity() {
 
     private fun showTodayResTimes() {
         val ss = SpanUtils()
-                .append("今日剩余").setForegroundColor(U.getColor(R.color.white_trans_50))
+                .append("今日剩余").setForegroundColor(U.getColor(R.color.white_trans_30))
                 .append("${todayResTimes}次").setForegroundColor(U.getColor(R.color.white))
-                .append("快速合唱").setForegroundColor(U.getColor(R.color.white_trans_50))
+                .append("快速合唱").setForegroundColor(U.getColor(R.color.white_trans_30))
                 .create()
         quickTipsTv?.text = ss
     }
