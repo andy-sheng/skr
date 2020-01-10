@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.common.anim.svga.SvgaParserAdapter
 import com.common.base.BaseActivity
 import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfo
@@ -71,15 +72,13 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
-import com.module.playways.view.ZanView
+import com.opensource.svgaplayer.*
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.RelayRoom.ERRoundStatus
 import com.zq.live.proto.RelayRoom.RAddMusicMsg
 import com.zq.live.proto.RelayRoom.RReqAddMusicMsg
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -142,6 +141,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 //    private lateinit var mGiveUpView: GrabGiveupView
 
     private var mVIPEnterView: VIPEnterView? = null
+    private var mContinueSVGAImageView: SVGAImageView? = null
     private var mRelayEnergyView: RelayEnergyView? = null
 //    lateinit var mHasSelectSongNumTv: ExTextView
 
@@ -651,19 +651,63 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             mChangeSongIv.visibility = View.VISIBLE
             mAddSongIv.visibility = View.VISIBLE
 
-            val zanView = ZanView(this)
-            mMainContainerView.addView(zanView, ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+            LayoutInflater.from(this).inflate(R.layout.relay_continue_burst, mMainContainerView)
+            mContinueSVGAImageView = findViewById(R.id.continue_svga)
+//
+//            launch {
+//                delay(500)
+//                repeat(30) {
+//                    delay(80)
+//                    zanView.addZanXin(1)
+//                }
+//                delay(8000)
+//                if (!isFinishing && !isDestroyed) {
+//                    mMainContainerView.removeView(zanView)
+//                }
+//            }
 
-            launch {
-                delay(500)
-                repeat(30) {
-                    delay(80)
-                    zanView.addZanXin(1)
-                }
-                delay(8000)
+            playContinueAnimation()
+        }
+    }
+
+    // 播放声纹动画
+    private fun playContinueAnimation() {
+        mContinueSVGAImageView?.visibility = View.VISIBLE
+        mContinueSVGAImageView?.loops = 1
+
+        SvgaParserAdapter.parse("relay_continue_sing.svga", object : SVGAParser.ParseCompletion {
+            override fun onComplete(videoItem: SVGAVideoEntity) {
+                val drawable = SVGADrawable(videoItem)
+                mContinueSVGAImageView?.setImageDrawable(drawable)
+                mContinueSVGAImageView?.startAnimation()
+            }
+
+            override fun onError() {
+
+            }
+        })
+
+        mContinueSVGAImageView?.callback = object : SVGACallback {
+            override fun onPause() {
+
+            }
+
+            override fun onFinished() {
+                mContinueSVGAImageView?.callback = null
+                mContinueSVGAImageView?.stopAnimation(true)
+                mContinueSVGAImageView?.visibility = View.GONE
+
                 if (!isFinishing && !isDestroyed) {
-                    mMainContainerView.removeView(zanView)
+                    mMainContainerView.removeView(mContinueSVGAImageView)
                 }
+            }
+
+            override fun onRepeat() {
+
+            }
+
+            override fun onStep(i: Int, v: Double) {
+
             }
         }
     }

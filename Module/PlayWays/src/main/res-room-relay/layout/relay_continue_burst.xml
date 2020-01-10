@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.opensource.svgaplayer.SVGAImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/continue_svga"
+    android:layout_width="800dp"
+    android:layout_height="@dimen/view_dimen_400"
+    android:layout_marginBottom="@dimen/view_dimen_470"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@+id/relay_sing_card_view_layout_stub"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent" />
