@@ -26,7 +26,7 @@ import retrofit2.Response;
  * enableAudioPreview = true 只代表服务端的配置建议开启耳返，不代表耳返是否开启
  */
 public class EngineConfigFromServer implements Serializable {
-    private static final boolean LATENCY_TEST_MODE = true;
+    private static final boolean LATENCY_TEST_MODE = false;
 
     public boolean hasServerConfig = false; // 是否有服务端配置
 

@@ -9,7 +9,7 @@ import com.kyleduo.switchbutton.SwitchButton
 import com.module.playways.R
 import com.zq.mediaengine.kit.ZqEngineKit
 
-const val LATENCY_TEST_MODE = true
+const val LATENCY_TEST_MODE = false
 
 class AudienceVoiceControlPanelView(context: Context, attrs: AttributeSet) : VoiceControlPanelView(context, attrs) {
     protected var mMixTv: TextView? = null
