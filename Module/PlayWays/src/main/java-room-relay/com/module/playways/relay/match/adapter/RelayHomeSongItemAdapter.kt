@@ -8,11 +8,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.room.song.model.SongModel
 
-class RelayHomeSongItemAdapter(var listener: RelaySongListener?) : RecyclerView.Adapter<RelayHomeSongItemAdapter.RelaySongItemViewHolder>() {
+class RelayHomeSongItemAdapter(var listener: RelaySongListener?, var maxSize: Int?, var hasLastDivider: Boolean?) : RecyclerView.Adapter<RelayHomeSongItemAdapter.RelaySongItemViewHolder>() {
 
     var mDataList = ArrayList<SongModel>()
 
@@ -33,7 +34,7 @@ class RelayHomeSongItemAdapter(var listener: RelaySongListener?) : RecyclerView.
         private val songSelectTv: ExTextView = item.findViewById(R.id.song_select_tv)
         private val songNameTv: ExTextView = item.findViewById(R.id.song_name_tv)
         private val songDesc: TextView = item.findViewById(R.id.song_desc)
-        private val divider: View = item.findViewById(R.id.song_desc)
+        private val divider: View = item.findViewById(R.id.divider)
 
         var mPos = -1
         var mModel: SongModel? = null
@@ -60,6 +61,12 @@ class RelayHomeSongItemAdapter(var listener: RelaySongListener?) : RecyclerView.
             } else {
                 songDesc.visibility = View.VISIBLE
                 songDesc.text = model.songDesc
+            }
+            
+            if (hasLastDivider == false && maxSize != null && position == ((maxSize ?: 0) - 1)) {
+                divider.visibility = View.GONE
+            } else {
+                divider.visibility = View.VISIBLE
             }
         }
 

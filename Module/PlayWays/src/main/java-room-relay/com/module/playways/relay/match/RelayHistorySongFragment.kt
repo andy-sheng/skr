@@ -97,7 +97,7 @@ class RelayHistorySongFragment : BaseFragment() {
                 }
             }
 
-        })
+        }, null, null)
         recyclerView.adapter = adapter
 
         val mLoadSir = LoadSir.Builder()

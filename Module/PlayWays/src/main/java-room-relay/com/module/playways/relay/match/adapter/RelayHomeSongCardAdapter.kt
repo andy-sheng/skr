@@ -81,7 +81,7 @@ class RelayHomeSongCardAdapter(private val maxSize: Int) : RecyclerView.Adapter<
                     listener?.selectSongDetail(mPos, position, model)
                 }
 
-            })
+            }, maxSize, false)
             songView.adapter = adapter
         }
 
