@@ -1,35 +1,20 @@
 package com.component.lyrics
 
-import android.content.Context
 import android.text.TextUtils
 import android.util.Log
-
-import com.alibaba.fastjson.JSONObject
 import com.common.core.crash.IgnoreException
 import com.common.core.global.ResServerApi
 import com.common.log.MyLog
 import com.common.rx.RxRetryAssist
 import com.common.rxretrofit.ApiManager
-import com.common.utils.FileUtils
 import com.common.utils.U
-import com.component.lyrics.utils.LyricsUtils
 import com.component.lyrics.utils.SongResUtils
-
+import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.io.File
 import java.io.IOException
-import java.util.HashMap
-
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.ObservableSource
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Function
-import io.reactivex.schedulers.Schedulers
-import okio.BufferedSource
-import okio.Okio
-import retrofit2.Call
-import retrofit2.Response
 
 object LyricsManager {
 
@@ -69,8 +54,8 @@ object LyricsManager {
     fun loadStandardLyric(url: String?, processReader: ((reader: LyricsReader) -> Unit)?): Observable<LyricsReader> {
         var b = System.currentTimeMillis()
         return Observable.create(ObservableOnSubscribe<File> { emitter ->
-            if(TextUtils.isEmpty(url)){
-                if(MyLog.isDebugLogOpen()){
+            if (TextUtils.isEmpty(url)) {
+                if (MyLog.isDebugLogOpen()) {
                     U.getToastUtil().showShort("歌词 url==null")
                 }
                 emitter.onComplete()
@@ -126,7 +111,17 @@ object LyricsManager {
             } catch (e: Exception) {
                 Log.e("LyricsManager", "" + e.toString())
             }
-            MyLog.w(TAG,"stand歌词parse完毕,耗时${System.currentTimeMillis()-b}")
+            MyLog.w(TAG, "stand歌词parse完毕,耗时${System.currentTimeMillis() - b}")
+
+            if (lyricsReader.getLrcLineInfos() == null || lyricsReader.getLrcLineInfos().size == 0) {
+                //数据有问题，需要删除文件
+                MyLog.w(TAG, "数据有问题，删除")
+                if (file.exists()) {
+                    file.delete()
+                    MyLog.w(TAG, "删除成功")
+                }
+            }
+
             lyricsReader
         }
                 .subscribeOn(U.getThreadUtils().urgentIO())
@@ -144,8 +139,8 @@ object LyricsManager {
     fun loadGrabPlainLyric(url: String?): Observable<String> {
         MyLog.w(TAG, "loadGrabPlainLyric url=$url")
         return Observable.create(ObservableOnSubscribe<String> { emitter ->
-            if(TextUtils.isEmpty(url)){
-                if(MyLog.isDebugLogOpen()){
+            if (TextUtils.isEmpty(url)) {
+                if (MyLog.isDebugLogOpen()) {
                     U.getToastUtil().showShort("歌词 url==null")
                 }
                 emitter.onComplete()
