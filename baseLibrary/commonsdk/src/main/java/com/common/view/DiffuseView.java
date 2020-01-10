@@ -6,16 +6,26 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.common.base.R;
+import com.common.log.MyLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DiffuseView extends View {
 
+    /**
+     * 长宽比 （1f即为圆形）
+     */
+    private float mRatio;
+    /**
+     * 视差因子 （0f则同心）
+     */
+    private float mParallax;
     /**
      * 扩散圆圈颜色
      */
@@ -71,6 +81,8 @@ public class DiffuseView extends View {
     public DiffuseView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DiffuseView, defStyleAttr, 0);
+        mRatio = a.getFloat(R.styleable.DiffuseView_diffuse_aspect, 1f);
+        mParallax = a.getFloat(R.styleable.DiffuseView_diffuse_parallax, 0f);
         mColor = a.getColor(R.styleable.DiffuseView_diffuse_color, mColor);
         mCoreColor = a.getColor(R.styleable.DiffuseView_diffuse_coreColor, mCoreColor);
 
@@ -87,6 +99,10 @@ public class DiffuseView extends View {
             if (imageId != -1) {
                 mPressedBitmap = BitmapFactory.decodeResource(getResources(), imageId);
             }
+        }
+        if (mRatio == 0) {
+            MyLog.w("DiffuseView mRatio can not set 0 ");
+            mRatio = 1f;
         }
         a.recycle();
         init();
@@ -126,7 +142,9 @@ public class DiffuseView extends View {
                 // 绘制扩散圆
                 int width = mWidths.get(i);
                 float r = mCoreRadius + width;
-                canvas.drawCircle(getWidth() / 2, getHeight() / 2, r, mPaint);
+                RectF rect = new RectF((int) (getWidth() / 2 - r), getHeight() / 2 - r / mRatio + r * mParallax, (int) (getWidth() / 2 + r), getHeight() / 2 + r / mRatio + 20 + r * mParallax);
+                canvas.drawOval(rect, mPaint);
+//                canvas.drawCircle(getWidth() / 2, getHeight() / 2, r, mPaint);
                 float t = width / ((mMaxRadius - mCoreRadius) * 1.0f);
                 if (alpha > 0 && r < mMaxRadius) {
                     alpha = (int) ((1 - t) * 255);
@@ -160,7 +178,9 @@ public class DiffuseView extends View {
             // 绘制中心圆及图片
             mPaint.setAlpha(255);
             mPaint.setColor(mCoreColor);
-            canvas.drawCircle(getWidth() / 2, getHeight() / 2, mCoreRadius, mPaint);
+            RectF rect = new RectF((int) (getWidth() / 2 - mCoreRadius), getHeight() / 2 - mCircleCount / mRatio, (int) (getWidth() / 2 + mCoreRadius), getHeight() / 2 + mCircleCount / mRatio);
+            canvas.drawOval(rect, mPaint);
+//            canvas.drawCircle(getWidth() / 2, getHeight() / 2, mCoreRadius, mPaint);
         }
 
         if (mPressing) {
