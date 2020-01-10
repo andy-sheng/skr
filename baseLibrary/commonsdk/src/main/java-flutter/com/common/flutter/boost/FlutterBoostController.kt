@@ -16,6 +16,8 @@ import io.flutter.plugins.GeneratedPluginRegistrant
 
 object FlutterBoostController  {
 
+    val TAG = "FlutterBoostController"
+
     private var inited = false
 
     var openContainerListener: ((context: Context?, url: String?, urlParams: MutableMap<String, Any>?, requestCode: Int, exts: MutableMap<String, Any>?) -> Unit)? = null
@@ -63,6 +65,21 @@ object FlutterBoostController  {
                 .whenEngineStart(FlutterBoost.ConfigBuilder.ANY_ACTIVITY_CREATED)
                 .renderMode(FlutterView.RenderMode.texture)
                 .pluginsRegister(pluginsRegister)
+                .whenEngineStart(FlutterBoost.ConfigBuilder.ANY_ACTIVITY_CREATED)
+                .lifecycleListener(object : FlutterBoost.BoostLifecycleListener{
+                    override fun onEngineCreated() {
+                        MyLog.d(TAG, "onEngineCreated")
+                    }
+
+                    override fun onPluginsRegistered() {
+                        MyLog.d(TAG, "onPluginsRegistered")
+                    }
+
+                    override fun onEngineDestroy() {
+                        MyLog.w(TAG,"onEngineDestroy")
+                    }
+
+                })
                 .build()
         FlutterBoost.instance().init(platform)
     }
