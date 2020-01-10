@@ -461,6 +461,11 @@ public class HttpUtils {
         return downloadFileSync(urlStr, outputFile, needTempFile, progress, -1);
     }
 
+    public boolean downloadFileSync(String urlStr, final File outputFile,
+                                    boolean needTempFile, OnDownloadProgress progress, int maxSaveSize) {
+        return downloadFileSync(urlStr, outputFile, needTempFile, progress, maxSaveSize, 10 * 1000, 15 * 1000);
+    }
+
     /**
      * 唯一的下载接口，同步
      *
@@ -472,7 +477,7 @@ public class HttpUtils {
      * @return
      */
     public boolean downloadFileSync(String urlStr, final File outputFile,
-                                    boolean needTempFile, OnDownloadProgress progress, int maxSaveSize) {
+                                    boolean needTempFile, OnDownloadProgress progress, int maxSaveSize, int connectTimeout, int readTimeout) {
         MyLog.w(TAG, "downloadFileSync" + " urlStr=" + urlStr + " out=" + outputFile.getAbsolutePath());
         if (Looper.getMainLooper() == Looper.myLooper()) {
             throw new IllegalThreadStateException("cannot downloadFile on mainthread");
@@ -502,8 +507,8 @@ public class HttpUtils {
             output = new FileOutputStream(outputFile2);
             URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(10 * 1000);
-            conn.setReadTimeout(15 * 1000);
+            conn.setConnectTimeout(connectTimeout);
+            conn.setReadTimeout(readTimeout);
             HttpURLConnection.setFollowRedirects(true);
             conn.connect();
 
@@ -515,7 +520,7 @@ public class HttpUtils {
             int count;
             long downloaded = 0;
             long totalLength = conn.getContentLength();
-            MyLog.w(TAG,"conn.getResponseCode()="+conn.getResponseCode());
+            MyLog.w(TAG, "conn.getResponseCode()=" + conn.getResponseCode());
             DownloadParams downloadParams = mDownLoadMap.get(urlStr);
             while ((count = input.read(buffer)) != -1) {
                 output.write(buffer, 0, count);

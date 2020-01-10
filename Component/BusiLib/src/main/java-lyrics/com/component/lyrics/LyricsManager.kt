@@ -68,7 +68,7 @@ object LyricsManager {
                 return@ObservableOnSubscribe
             }
             var isSuccess = false
-            isSuccess = U.getHttpUtils().downloadFileSync(url, newName, true, null)
+            isSuccess = U.getHttpUtils().downloadFileSync(url, newName, true, null, -1, 2 * 1000, 3 * 1000)
             if (isSuccess) {
                 emitter.onNext(newName)
             } else {
@@ -149,7 +149,7 @@ object LyricsManager {
             val file = SongResUtils.getGrabLyricFileByUrl(url)
             if (file == null || !file.exists()) {
                 var isSuccess = false
-                isSuccess = U.getHttpUtils().downloadFileSync(url, file, true, null)
+                isSuccess = U.getHttpUtils().downloadFileSync(url, file, true, null, -1, 2 * 1000, 3 * 1000)
                 if (isSuccess) {
                     val content = U.getIOUtils().readFile(file!!)
                     if (!TextUtils.isEmpty(content)) {
