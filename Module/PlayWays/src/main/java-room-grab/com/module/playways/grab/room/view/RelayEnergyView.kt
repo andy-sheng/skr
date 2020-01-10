@@ -34,7 +34,7 @@ class RelayEnergyView : ExRelativeLayout {
 
     private val maxScore = 500
 
-    var mHandler: Handler = Handler()
+    var mHandler: Handler? = null
 
     constructor(context: Context) : super(context) {}
 
@@ -66,7 +66,7 @@ class RelayEnergyView : ExRelativeLayout {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         EventBus.getDefault().unregister(this)
-        mHandler.removeCallbacksAndMessages(null)
+        mHandler?.removeCallbacksAndMessages(null)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -79,9 +79,9 @@ class RelayEnergyView : ExRelativeLayout {
                 waveProgressView.setCurrent(event.afterExp, "")
             }
 
-            mHandler.sendEmptyMessageDelayed(MSG_WAVE, 1000)
-            mHandler.sendEmptyMessageDelayed(MSG_WAVE, 2000)
-            mHandler.sendEmptyMessageDelayed(MSG_WAVE, 3000)
+            mHandler?.sendEmptyMessageDelayed(MSG_WAVE, 1000)
+            mHandler?.sendEmptyMessageDelayed(MSG_WAVE, 2000)
+            mHandler?.sendEmptyMessageDelayed(MSG_WAVE, 3000)
         } else {
             waveProgressView.setCurrent(event.afterExp, "")
         }
