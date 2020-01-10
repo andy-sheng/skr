@@ -23,6 +23,7 @@ import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.common.view.DiffuseView
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.PersonInfoDialog
@@ -143,6 +144,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     private var mVIPEnterView: VIPEnterView? = null
     private var mContinueSVGAImageView: SVGAImageView? = null
     private var mRelayEnergyView: RelayEnergyView? = null
+    private var mDiffuseView: DiffuseView? = null
 //    lateinit var mHasSelectSongNumTv: ExTextView
 
     // 都是dialogplus
@@ -354,6 +356,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     private fun initRelayEnergyView() {
         mRelayEnergyView = findViewById(R.id.relay_energy_view)
+        mDiffuseView = findViewById(R.id.wave_view)
+        mRelayEnergyView?.diffuseView = mDiffuseView
     }
 
     private fun initVipEnterView() {

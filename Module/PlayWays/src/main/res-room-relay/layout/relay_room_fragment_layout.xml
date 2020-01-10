@@ -213,6 +213,23 @@
         app:layout_constraintBottom_toTopOf="@+id/relay_sing_card_view_layout_stub"
         app:layout_constraintRight_toRightOf="@+id/relay_sing_card_view_layout_stub" />
 
+    <com.common.view.DiffuseView
+        android:id="@+id/wave_view"
+        android:layout_width="@dimen/view_150_dp"
+        android:layout_height="@dimen/view_150_dp"
+        android:layout_marginTop="@dimen/view_60_dp"
+        app:diffuse_addNewRadius="@dimen/view_10_dp"
+        app:diffuse_aspect="5f"
+        app:diffuse_color="#ffeccd"
+        app:diffuse_coreRadius="@dimen/view_10_dp"
+        app:diffuse_maxRadius="@dimen/view_70_dp"
+        app:diffuse_parallax="0.05f"
+        app:diffuse_speed="@dimen/view_1_dp"
+        app:diffuse_stroke_width="@dimen/view_1_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/relay_energy_view"
+        app:layout_constraintRight_toRightOf="@+id/relay_energy_view"
+        app:layout_constraintTop_toTopOf="@+id/relay_energy_view" />
+
     <com.module.playways.grab.room.view.RelayEnergyView
         android:id="@+id/relay_energy_view"
         android:layout_width="@dimen/view_64_dp"
