@@ -18,6 +18,13 @@ class IOUtils {
         }
         var bufferSink: BufferedSink? = null
         try {
+            if (!file.parentFile.exists()) {
+                file.getParentFile().mkdirs()
+            }
+
+            if (!file.exists()) {
+                file.createNewFile()
+            }
             bufferSink = Okio.buffer(Okio.sink(file))
             bufferSink.writeString(content, Charset.forName("utf-8"))
         } catch (e: Exception) {
