@@ -121,7 +121,7 @@ public class Skr
 
         @Override
         public String toString() {
-            return toJSONObject().toString();
+            return getKey() + ": " + toJSONObject().toString();
         }
 
         @Override
@@ -170,7 +170,7 @@ public class Skr
 
         @Override
         public String toString() {
-            return toJSONObject().toString();
+            return getKey() + ": " + toJSONObject().toString();
         }
 
         @Override

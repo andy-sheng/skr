@@ -19,9 +19,7 @@ import static io.agora.rtc.Constants.AUDIO_ROUTE_SPEAKERPHONE;
 public class SDataHolderEx {
     private final static String TAG = "[SLS]SDataHolderEx";
 
-
     private List<ILogItem> mItemList = new ArrayList<ILogItem>();
-    ;
 
     public SDataHolderEx() {
 
@@ -29,7 +27,7 @@ public class SDataHolderEx {
 
     int numRtcStats = 0;
 
-    public void addRtcStats(IRtcEngineEventHandler.RtcStats s) {
+    synchronized public void addRtcStats(IRtcEngineEventHandler.RtcStats s) {
         if (numRtcStats <= 2) {
             SAgora.SRTCStats n = new SAgora.SRTCStats();
             n.timeStamp = System.currentTimeMillis();
@@ -54,7 +52,7 @@ public class SDataHolderEx {
 
     int numLocalVideoStats = 0;
 
-    public void addLocalVideoStats(IRtcEngineEventHandler.LocalVideoStats s) {
+    synchronized public void addLocalVideoStats(IRtcEngineEventHandler.LocalVideoStats s) {
         if (numLocalVideoStats <= 2) {
             SAgora.SLocalVideoStats n = new SAgora.SLocalVideoStats();
             n.timeStamp = System.currentTimeMillis();
@@ -73,7 +71,7 @@ public class SDataHolderEx {
 
     int numRemoteAudioStats = 0;
 
-    public void addRemoteAudioStats(IRtcEngineEventHandler.RemoteAudioStats s) {
+    synchronized public void addRemoteAudioStats(IRtcEngineEventHandler.RemoteAudioStats s) {
         if (numRemoteAudioStats <= 2) {
             SAgora.SRemoteAudioStats n = new SAgora.SRemoteAudioStats();
             n.timeStamp = System.currentTimeMillis();
@@ -91,7 +89,7 @@ public class SDataHolderEx {
 
     int numRemoteVideoStats = 0;
 
-    public void addRemoteVideoStats(IRtcEngineEventHandler.RemoteVideoStats s) {
+    synchronized public void addRemoteVideoStats(IRtcEngineEventHandler.RemoteVideoStats s) {
         if (numRemoteVideoStats <= 2) {
             SAgora.SRemoteVideoStats n = new SAgora.SRemoteVideoStats();
             n.timeStamp = System.currentTimeMillis();
@@ -110,7 +108,7 @@ public class SDataHolderEx {
 
     int numNetQualityStats = 0;
 
-    public void addNetQualityStats(int uid, int txQuality, int rxQuality) {
+    synchronized public void addNetQualityStats(int uid, int txQuality, int rxQuality) {
         if (numNetQualityStats <= 2) {
             SAgora.SNetworkQuality n = new SAgora.SNetworkQuality();
             n.timeStamp = System.currentTimeMillis();
@@ -125,7 +123,7 @@ public class SDataHolderEx {
 
     int numRemoteAudioTransStats = 0;
 
-    public void addRemoteAudioTransStats(int uid, int delay, int lost, int rxKBitRate) {
+    synchronized public void addRemoteAudioTransStats(int uid, int delay, int lost, int rxKBitRate) {
         if (numRemoteAudioTransStats <= 2) {
             SAgora.SRemoteAudioTransportStats n = new SAgora.SRemoteAudioTransportStats();
             n.timeStamp = System.currentTimeMillis();
@@ -141,7 +139,7 @@ public class SDataHolderEx {
 
     int numRemoteVideoTransStata = 0;
 
-    public void addRemoteVideoTransStata(int uid, int delay, int lost, int rxKBitRate) {
+    synchronized public void addRemoteVideoTransStata(int uid, int delay, int lost, int rxKBitRate) {
         if (numRemoteVideoTransStata <= 2) {
             SAgora.SRemoteVideoTransportStat n = new SAgora.SRemoteVideoTransportStat();
             n.timeStamp = System.currentTimeMillis();
@@ -156,7 +154,7 @@ public class SDataHolderEx {
     }
 
     //for user event
-    public void addUserEvent(SAgoraUserEvent e) {
+    synchronized public void addUserEvent(SAgoraUserEvent e) {
         if (null == e) return;
         mItemList.add(e);
         return;
@@ -164,7 +162,7 @@ public class SDataHolderEx {
 
     int numPingInfo = 0;
 
-    public void addPingInfo(Skr.PingInfo e) {
+    synchronized public void addPingInfo(Skr.PingInfo e) {
         if (null == e) return;
         if (numPingInfo <= 2) {
             e.ts = System.currentTimeMillis();
@@ -176,7 +174,7 @@ public class SDataHolderEx {
 
     int numNetworkInfo = 0;
 
-    public void addNetworkInfo(Skr.NetworkInfo e) {
+    synchronized public void addNetworkInfo(Skr.NetworkInfo e) {
         if (null == e) return;
         if (numNetworkInfo <= 2) {
             e.ts = System.currentTimeMillis();
@@ -188,7 +186,8 @@ public class SDataHolderEx {
 
     // 伴奏播放
     int numPlayerStartInfo = 0;
-    public void addPlayerStartInfo(Skr.PlayerStartInfo info) {
+
+    synchronized public void addPlayerStartInfo(Skr.PlayerStartInfo info) {
         if (info == null) return;
         if (numPlayerStartInfo <= 10) {
             info.ts = System.currentTimeMillis();
@@ -198,7 +197,8 @@ public class SDataHolderEx {
     }
 
     int numPlayerStopInfo = 0;
-    public void addPlayerStopInfo(Skr.PlayerStopInfo info) {
+
+    synchronized public void addPlayerStopInfo(Skr.PlayerStopInfo info) {
         if (info == null) return;
         if (numPlayerStopInfo <= 10) {
             info.ts = System.currentTimeMillis();
@@ -211,7 +211,7 @@ public class SDataHolderEx {
     public final static int AR_BLUETOOTH = 2;
     public final static int AR_HEADSET = 3;
 
-    public void addAudioRoutine(int type) {//服用SAgoraUserEvent，一起统计
+    synchronized public void addAudioRoutine(int type) {//服用SAgoraUserEvent，一起统计
         SAgoraUserEvent n = new SAgoraUserEvent();
         n.ts = System.currentTimeMillis();
         n.type = EVENT_TYPE_onAudioRouteChanged;
@@ -235,7 +235,7 @@ public class SDataHolderEx {
 
     }
 
-    public void addJoinChannelAction(int joinRet, boolean hasServerConfig, boolean isExternalAudio, boolean isOpenSL, int audioPreviewMode) {
+    synchronized public void addJoinChannelAction(int joinRet, boolean hasServerConfig, boolean isExternalAudio, boolean isOpenSL, int audioPreviewMode) {
         SAgora.SJoinChannelAction n = new SAgora.SJoinChannelAction();
         n.ts = System.currentTimeMillis();
         n.ret = joinRet;
@@ -250,7 +250,7 @@ public class SDataHolderEx {
 
     int numSAudioSamplingInfoGroup = 0;
 
-    public void addSAudioSamplingInfoGroup(SAgora.SAudioSamplingInfoGroup e) {
+    synchronized public void addSAudioSamplingInfoGroup(SAgora.SAudioSamplingInfoGroup e) {
         if (numSAudioSamplingInfoGroup <= 2) {
             if (0 == e.ts) {
                 e.ts = System.currentTimeMillis();
@@ -262,11 +262,13 @@ public class SDataHolderEx {
     }
 
 
-    public List<ILogItem> getItemList() {
-        return mItemList;
+    synchronized public List<ILogItem> getItemListAndReset() {
+        List<ILogItem> itemList = new ArrayList<>(mItemList);
+        reset();
+        return itemList;
     }
 
-    public SDataHolderEx reset() {
+    private void reset() {
         mItemList.clear();
         numRtcStats = 0;
         numLocalVideoStats = 0;
@@ -280,17 +282,13 @@ public class SDataHolderEx {
         numSAudioSamplingInfoGroup = 0;
         numPlayerStartInfo = 0;
         numPlayerStopInfo = 0;
-        return this;
     }
 
 
     private final static int LIST_COUNT_THRESHOLD = 20;
 
-    public boolean need2Flush() {
-         if (mItemList.size() >= LIST_COUNT_THRESHOLD)
-            return true;
-        else
-            return false;
+    synchronized public boolean need2Flush() {
+        return mItemList.size() >= LIST_COUNT_THRESHOLD;
     }
 
 

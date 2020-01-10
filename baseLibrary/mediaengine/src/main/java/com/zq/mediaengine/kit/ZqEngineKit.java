@@ -1661,7 +1661,6 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public void startAudioMixing(final int uid, final String filePath, final String midiPath, final long mixMusicBeginOffset, final int cycle) {
         if (mCustomHandlerThread != null) {
-//            final String filePath = MediaCacheManager.INSTANCE.getProxyUrl("http://song-static-1.inframe.mobi/bgm/28995bcaee647a8ebba90fd4b6492820.mp3", true);
 //            final String filePath = "http://song-static.inframe.mobi/bgm/28995bcaee647a8ebba90fd4b6492820.mp3";
             mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " cycle=" + cycle) {
                 @Override
