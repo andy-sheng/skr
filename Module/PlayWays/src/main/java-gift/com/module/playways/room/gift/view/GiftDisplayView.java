@@ -31,6 +31,7 @@ import java.util.List;
  */
 public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
     ViewPager mViewpager;
+    GiftCircleGuideView mGiftCircleGuideView;
 
     GiftViewPagerAdapter mGiftViewPagerAdapter;
 
@@ -87,6 +88,10 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
         }
     };
 
+    public void setGiftCircleGuideView(GiftCircleGuideView giftCircleGuideView) {
+        mGiftCircleGuideView = giftCircleGuideView;
+    }
+
     public BaseGift getSelectedGift() {
         return mSelectedGift;
     }
@@ -128,6 +133,7 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
             }
         }
         mGiftViewPagerAdapter.setData(baseGiftCollection);
+        mGiftCircleGuideView.setViewPager(mViewpager, baseGiftCollection.size());
     }
 
     @Override
