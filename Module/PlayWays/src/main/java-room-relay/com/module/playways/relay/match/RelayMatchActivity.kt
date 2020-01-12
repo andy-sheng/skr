@@ -76,7 +76,7 @@ class RelayMatchActivity : BaseActivity() {
     var matchJob: Job? = null
 
     var roomJob: Job? = null
-    val roomInterval = 6 * 1000L
+    var roomInterval = 6 * 1000L
 
     var mLoadService: LoadService<*>? = null
 
@@ -105,6 +105,9 @@ class RelayMatchActivity : BaseActivity() {
         speedRecyclerView = findViewById(R.id.speed_recyclerView)
 
         findViewById<SVGAImageView>(R.id.match_avga).layoutParams.height = U.getDisplayUtils().phoneWidth * 230 / 375
+
+        // 获取时间间隔
+        roomInterval = U.getPreferenceUtils().getSettingLong("relay-ticker-interval-ms", 6000L)
 
         speedRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         speedRecyclerView?.adapter = adapter

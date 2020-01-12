@@ -72,7 +72,8 @@ class RelayHomeActivity : BaseActivity() {
     private val relayMatchServerApi = ApiManager.getInstance().createService(RelayMatchServerApi::class.java)
     var offset: Int = 0
     var hasMore: Boolean = false
-    val cnt = 15
+    var cnt = 15
+    val firstRequestPage = 3 // 第一次请求多少页数据
 
     //在滑动到最后的时候自动加载更多
     var loadMore: Boolean = false
@@ -143,6 +144,8 @@ class RelayHomeActivity : BaseActivity() {
             maxSize += 1
             songCardHeight = 72.dp() * maxSize + 36.dp()
         }
+        // 直接用cnt表示每一页的熟练
+        cnt = maxSize
 
         val layoutParams = speedRecyclerView?.layoutParams as ConstraintLayout.LayoutParams?
         layoutParams?.height = songCardHeight
@@ -157,9 +160,9 @@ class RelayHomeActivity : BaseActivity() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     currentPosition = cardScaleHelper?.currentItemPos ?: 0
-                    if (!loadMore && currentPosition > (adapter?.mDataList?.size ?: 0 - 3)) {
+                    if (!loadMore && currentPosition > ((adapter?.mDataList?.size ?: 0) - firstRequestPage)) {
                         loadMore = true
-                        getPlayBookList(offset, false)
+                        getPlayBookList(offset, cnt, false)
                     }
                 }
             }
@@ -190,7 +193,7 @@ class RelayHomeActivity : BaseActivity() {
             }
         }
 
-        getPlayBookList(0, true)
+        getPlayBookList(0, firstRequestPage * cnt, true)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -260,10 +263,10 @@ class RelayHomeActivity : BaseActivity() {
         startActivity(intent)
     }
 
-    fun getPlayBookList(off: Int, clean: Boolean) {
+    fun getPlayBookList(off: Int, limit: Int, clean: Boolean) {
         launch {
             val result = subscribe(RequestControl("getPlayBookList", ControlType.CancelThis)) {
-                relayMatchServerApi.getPlayBookList(off, cnt, MyUserInfoManager.uid.toInt())
+                relayMatchServerApi.getPlayBookList(off, limit, MyUserInfoManager.uid.toInt())
             }
             loadMore = false
 

@@ -284,7 +284,6 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
     override fun setGameConfig(gameKConfigModel: GameKConfigModel) {
         // 存一下刷新间隔
-        U.getPreferenceUtils().setSettingInt("homepage_ticker_interval", gameKConfigModel.homepagetickerinterval)
         mQuickGameView.mRecommendInterval = gameKConfigModel.homepagetickerinterval
         if (mGameVp.currentItem == 1 && this.fragmentVisible) {
             mQuickGameView.initData(true)

@@ -31,6 +31,8 @@ class GamePresenter3(internal var mIGameView: IGameView3) : RxLifeCyclePresenter
                     mIsKConfig = true
                     val gameKConfigModel = JSON.parseObject(result.data!!.getString("common"), GameKConfigModel::class.java)
                     U.getPreferenceUtils().setSettingBoolean(Params.PREF_KEY_TOKEN_ENABLE, gameKConfigModel.isAgoraTokenEnable)
+                    U.getPreferenceUtils().setSettingInt("homepage_ticker_interval", gameKConfigModel.homepagetickerinterval) // 存刷新间隔秒
+                    U.getPreferenceUtils().setSettingLong("relay-ticker-interval-ms", gameKConfigModel.relaytickerinterval)  // 存合唱刷新的间隔
                     mIGameView.setGameConfig(gameKConfigModel)
 
                     val homepagesitefirstBean = gameKConfigModel.homepagesitefirst

@@ -20,7 +20,9 @@ public class GameKConfigModel implements Serializable {
     @JSONField(name = "stand-tags")
     private List<String> standtags;
     @JSONField(name = "homepage-ticker-interval")
-    private int homepagetickerinterval;
+    private int homepagetickerinterval; // 老接口，用秒吧
+    @JSONField(name = "relay-ticker-interval-ms")
+    private long relaytickerinterval;   // 毫秒
 
     public HomepagesitefirstBean getHomepagesitefirst() {
         return homepagesitefirst;
@@ -60,6 +62,14 @@ public class GameKConfigModel implements Serializable {
 
     public void setHomepagetickerinterval(int homepagetickerinterval) {
         this.homepagetickerinterval = homepagetickerinterval;
+    }
+
+    public long getRelaytickerinterval() {
+        return relaytickerinterval;
+    }
+
+    public void setRelaytickerinterval(long relaytickerinterval) {
+        this.relaytickerinterval = relaytickerinterval;
     }
 
     public static class HomepagesitefirstBean implements Serializable{
