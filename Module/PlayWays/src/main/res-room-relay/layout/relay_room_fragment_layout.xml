@@ -156,7 +156,7 @@
         android:id="@+id/mic_invite_view_stub"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_70_dp"
-        android:layout_marginTop="@dimen/view_60_dp"
+        android:layout_marginTop="@dimen/view_100_dp"
         android:inflatedId="@+id/mic_invite_view"
         android:layout="@layout/mic_invite_view_stub_layout"
         app:layout_constraintLeft_toLeftOf="parent"
