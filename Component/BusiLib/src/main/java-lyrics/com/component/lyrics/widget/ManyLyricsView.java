@@ -684,7 +684,7 @@ public class ManyLyricsView extends AbstractLrcView {
             lineY = lineY + LyricsUtils.getTextHeight(mWhoTurnsPaint) + mSpaceLineHeight;
         } else {
             lineY = lineY - LyricsUtils.getTextHeight(mWhoTurnsPaint) - mSpaceLineHeight;
-            if (lineY > 0) {
+            if (lineY >= LyricsUtils.getTextHeight(mWhoTurnsPaint) + mSpaceLineHeight) {
                 LyricsUtils.drawText(canvas, mWhoTurnsPaint, colors, text, textX, lineY, getMeasuredWidth());
             }
         }
