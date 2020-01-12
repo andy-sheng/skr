@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
+import com.common.log.MyLog
 import com.common.view.DiffuseView
 import com.common.view.ex.ExRelativeLayout
 import com.common.view.ex.ExTextView
@@ -72,8 +73,12 @@ class RelayEnergyView : ExRelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RExpMsg) {
         waveProgressView.setMaxProgress(event.totalExp)
-        fullCountTv.text = "x${event.afterStar}"
-        if (event.afterStar > event.beforeStar) {
+        if (event.hasAfterStar()) {
+            fullCountTv.text = "x${event.afterStar}"
+        }
+
+        if (event.hasAfterStar() && event.afterStar > event.beforeStar) {
+            MyLog.d(mTag, "onEvent event = event.hasAfterStar() && event.afterStar > beforeStar")
             waveProgressView.setCurrent(event.totalExp, "")
             playScaleAnim {
                 waveProgressView.setCurrent(event.afterExp, "")
