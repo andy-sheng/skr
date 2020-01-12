@@ -560,7 +560,8 @@ public class SongModel implements Serializable {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    cdnInfos = JSON.parseArray(obj.getData().toString(), CdnInfo.class);
+                    cdnInfos = JSON.parseArray(obj.getData().getString("cfg"), CdnInfo.class);
+                    MyLog.w("SongModel",cdnInfos.toString());
                 }
             }
         });
