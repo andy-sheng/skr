@@ -65,7 +65,8 @@ object FlutterBoostController  {
                 .isDebug(true)
                 // 任意activity启动都创建
 //                .whenEngineStart(FlutterBoost.ConfigBuilder.ANY_ACTIVITY_CREATED)
-                .whenEngineStart(FlutterBoost.ConfigBuilder.IMMEDIATELY)
+                .whenEngineStart(FlutterBoost.ConfigBuilder.FLUTTER_ACTIVITY_CREATED)
+
                 .renderMode(FlutterView.RenderMode.texture)
                 .pluginsRegister(pluginsRegister)
                 .lifecycleListener(object : FlutterBoost.BoostLifecycleListener{
