@@ -330,6 +330,11 @@ public class MyBoostFlutterActivity extends BaseActivity
     }
 
     @Override
+    public boolean canSlide() {
+        return false;
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         delegate.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
