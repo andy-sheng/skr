@@ -167,32 +167,33 @@ public class SongModel implements Serializable {
 
     public String getAcc() {
         List<CdnInfo> l = getAccWithCdnInfos(false);
-        if (l.isEmpty()){
+        if (l.isEmpty()) {
             return acc;
-        }else{
+        } else {
             return l.get(0).getUrl();
         }
     }
 
     public List<CdnInfo> getAccWithCdnInfos(boolean isUseCacheFile) {
         ArrayList<CdnInfo> l = new ArrayList<>();
-        String accFilePath = null;
-        if (isUseCacheFile) {
-            File accFile = SongResUtils.getAccFileByUrl(acc);
-            if (accFile != null && accFile.exists()) {
-                accFilePath = accFile.getAbsolutePath();
-            }
-        }
         if (acc.contains("song-static")) {
             for (CdnInfo info : cdnInfos) {
                 CdnInfo cdnInfo = new CdnInfo();
                 cdnInfo.setCdnType(info.getCdnType());
                 cdnInfo.setAppendix(info.getAppendix());
                 cdnInfo.setEnableCache(info.isEnableCache());
+                String url = acc.replaceFirst("song-static", "song-static" + cdnInfo.getAppendix());
+                String accFilePath = null;
+                if (isUseCacheFile) {
+                    File accFile = SongResUtils.getAccFileByUrl(url);
+                    if (accFile != null && accFile.exists()) {
+                        accFilePath = accFile.getAbsolutePath();
+                    }
+                }
                 if (!TextUtils.isEmpty(accFilePath)) {
                     cdnInfo.setUrl(accFilePath);
                 } else {
-                    cdnInfo.setUrl(acc.replaceFirst("song-static", "song-static" + cdnInfo.getAppendix()));
+                    cdnInfo.setUrl(url);
                 }
                 l.add(cdnInfo);
             }
@@ -572,7 +573,7 @@ public class SongModel implements Serializable {
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     cdnInfos = JSON.parseArray(obj.getData().getString("cfg"), CdnInfo.class);
-                    MyLog.w("SongModel",cdnInfos.toString());
+                    MyLog.w("SongModel", cdnInfos.toString());
                 }
             }
         });

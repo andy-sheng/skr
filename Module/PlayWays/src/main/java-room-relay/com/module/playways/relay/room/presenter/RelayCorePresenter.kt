@@ -269,18 +269,18 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
         ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
 
-        val accFile = SongResUtils.getAccFileByUrl(mRoomData?.realRoundInfo?.music?.acc)
+//        val accFile = SongResUtils.getAccFileByUrl(mRoomData?.realRoundInfo?.music?.acc)
         val midiFile = SongResUtils.getMIDIFileByUrl(mRoomData?.realRoundInfo?.music?.midi)
         if (midiFile != null && !midiFile.exists()) {
             U.getHttpUtils().downloadFileAsync(mRoomData?.realRoundInfo?.music?.midi, midiFile, true, null)
         }
-        if (accFile?.exists() == true) {
-            DebugLogView.println(TAG, "preOpWhenSelfRound 伴奏文件本地存在${accFile.path}")
-            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile?.path, midiFile?.path, 0, 1)
-        } else {
-            DebugLogView.println(TAG, "preOpWhenSelfRound 伴奏文件本地不存在${accFile.path}")
+//        if (accFile?.exists() == true) {
+//            DebugLogView.println(TAG, "preOpWhenSelfRound 伴奏文件本地存在${accFile.path}")
+//            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile?.path, midiFile?.path, 0, 1)
+//        } else {
+//            DebugLogView.println(TAG, "preOpWhenSelfRound 伴奏文件本地不存在${accFile.path}")
             ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), mRoomData?.realRoundInfo?.music?.accWithCdnInfosJson, midiFile?.path, 0, 1)
-        }
+//        }
         mUiHandler.removeMessages(MSG_MY_ACC_LOADING_FAILED)
         var msg = mUiHandler.obtainMessage(MSG_MY_ACC_LOADING_FAILED)
         msg.arg1 = mRoomData.realRoundInfo?.roundSeq ?: 0

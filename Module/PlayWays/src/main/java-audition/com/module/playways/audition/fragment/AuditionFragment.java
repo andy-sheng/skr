@@ -417,16 +417,17 @@ public class AuditionFragment extends BaseFragment {
         String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
         MyLog.d(TAG, "playMusic " + " fileName=" + fileName + " song name is " + songModel.getItemName());
 
-        File accFile = SongResUtils.getAccFileByUrl(songModel.getAcc());
+//        File accFile = SongResUtils.getAccFileByUrl(songModel.getAcc());
 
         File midiFile = SongResUtils.getMIDIFileByUrl(songModel.getMidi());
-        if (accFile != null) {
-            if (ZqEngineKit.RECORD_FOR_DEBUG) {
-                ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.INSTANCE.getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), 1);
-            } else {
-                ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.INSTANCE.getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), 1);
-            }
-        }
+        ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.INSTANCE.getUid(), songModel.getAccWithCdnInfosJson(), midiFile.getAbsolutePath(), songModel.getBeginMs(), 1);
+//        if (accFile != null) {
+//            if (ZqEngineKit.RECORD_FOR_DEBUG) {
+//                ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.INSTANCE.getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), 1);
+//            } else {
+//
+//            }
+//        }
     }
 
 //    private void playLyrics(SongModel songModel, boolean play, boolean isFirst) {

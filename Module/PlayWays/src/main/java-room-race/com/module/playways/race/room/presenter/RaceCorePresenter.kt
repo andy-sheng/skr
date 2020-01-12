@@ -1131,7 +1131,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 return@Runnable
             }
             // 开始开始混伴奏，开始解除引擎mute
-            val accFile = SongResUtils.getAccFileByUrl(songModel.acc)
+//            val accFile = SongResUtils.getAccFileByUrl(songModel.acc)
             // midi不需要在这下，只要下好，native就会解析，打分就能恢复
             val midiFile = SongResUtils.getMIDIFileByUrl(songModel.midi)
             MyLog.d(TAG, "onChangeBroadcastSuccess 我的演唱环节 info=${songModel.toSimpleString()} acc=${songModel.acc} midi=${songModel.midi} accRound=${mRoomData?.realRoundInfo?.isAccRoundNow()} mRoomData.isAccEnable=${mRoomData.isAccEnable}")
@@ -1145,12 +1145,12 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
                 //  播放伴奏
                 val songBeginTs = songModel.beginMs
-                if (accFile != null && accFile.exists()) {
-                    // 伴奏文件存在
-                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), 1)
-                } else {
+//                if (accFile != null && accFile.exists()) {
+//                    // 伴奏文件存在
+//                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), 1)
+//                } else {
                     ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel.accWithCdnInfosJson, midiFile.absolutePath, songBeginTs.toLong(), 1)
-                }
+//                }
             }
             // 启动acr打分识别
             if (needAcc) {
