@@ -207,7 +207,7 @@
     <com.module.playways.relay.room.top.RelayContinueSingView
         android:id="@+id/relay_continue_sing_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_78_dp"
+        android:layout_height="@dimen/view_72_dp"
         android:layout_marginBottom="@dimen/view_10_dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/relay_sing_card_view_layout_stub"
