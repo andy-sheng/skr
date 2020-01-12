@@ -85,7 +85,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_20_dp"
-        android:letterSpacing="0.4"
+        android:letterSpacing="0.2"
         android:text="今日剩余5次快速合唱次数"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_12_dp"
