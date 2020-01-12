@@ -236,30 +236,15 @@ class RelayMatchActivity : BaseActivity() {
 
     // 开始匹配
     private fun startMatch() {
-        model?.let {
+        model?.let { song ->
             matchJob?.cancel()
             matchJob = launch {
-                val map = mutableMapOf(
-                        "itemID" to it.itemID,
-                        "platform" to 20)
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+
                 repeat(Int.MAX_VALUE) {
-                    when (it % 10) {
+                    when (it % 20) {
                         0 -> {
                             joinTipsTv?.text = "正在为你匹配合拍好声音.  "
-                            val result = subscribe(RequestControl("startMatch", ControlType.CancelThis)) {
-                                relayMatchServerApi.queryMatch(body)
-                            }
-                            if (result.errno == 0) {
-                                val hasMatchedRoom = result.data.getBoolean("hasMatchedRoom")
-                                if (hasMatchedRoom) {
-                                    val joinRelayRoomRspModel = JSON.parseObject(result.data.toJSONString(), JoinRelayRoomRspModel::class.java)
-                                    matchJob?.cancel()
-                                    tryGoRelayRoom(joinRelayRoomRspModel)
-                                } else {
-                                    // 没匹配到 donothing
-                                }
-                            }
+                            queryMatch(song.itemID)
                         }
                         1, 4, 7 -> {
                             joinTipsTv?.text = "正在为你匹配合拍好声音.. "
@@ -270,11 +255,37 @@ class RelayMatchActivity : BaseActivity() {
                         3, 6 -> {
                             joinTipsTv?.text = "正在为你匹配合拍好声音.  "
                         }
-                        9 -> {
+                        10 -> {
+                            joinTipsTv?.text = "等太久，试试加入别人等合唱吧～"
+                            queryMatch(song.itemID)
+                        }
+                        else -> {
                             joinTipsTv?.text = "等太久，试试加入别人等合唱吧～"
                         }
                     }
                     delay(1000)
+                }
+            }
+        }
+    }
+
+    private fun queryMatch(songID: Int) {
+        val map = mutableMapOf(
+                "itemID" to songID,
+                "platform" to 20)
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            val result = subscribe(RequestControl("startMatch", ControlType.CancelThis)) {
+                relayMatchServerApi.queryMatch(body)
+            }
+            if (result.errno == 0) {
+                val hasMatchedRoom = result.data.getBoolean("hasMatchedRoom")
+                if (hasMatchedRoom) {
+                    val joinRelayRoomRspModel = JSON.parseObject(result.data.toJSONString(), JoinRelayRoomRspModel::class.java)
+                    matchJob?.cancel()
+                    tryGoRelayRoom(joinRelayRoomRspModel)
+                } else {
+                    // 没匹配到 donothing
                 }
             }
         }
