@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 
 import com.common.base.BaseActivity;
 import com.common.base.R;
+import com.common.log.MyLog;
 import com.idlefish.flutterboost.FlutterBoost;
 import com.idlefish.flutterboost.XFlutterView;
 
@@ -141,6 +142,7 @@ public class MyBoostFlutterActivity extends BaseActivity
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        MyLog.d(TAG,"onCreate" + " savedInstanceState=" + savedInstanceState);
         switchLaunchThemeForNormalTheme();
 
         super.onCreate(savedInstanceState);
