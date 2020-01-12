@@ -53,7 +53,7 @@ class RelaySongManageFragment : BaseFragment() {
     private var mRoomData: RelayRoomData? = null
     private var relaySongManageView: ExistSongManageView? = null
     private val mSongManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
-    private var mTagModelList: List<RecommendTagModel>? = null
+    private var mTagModelList = ArrayList<RecommendTagModel>()
 
     override fun initView(): Int {
         return R.layout.relay_song_manage_fragment_layout
@@ -131,16 +131,16 @@ class RelaySongManageFragment : BaseFragment() {
     }
 
     private fun showRecommendSong(recommendTagModelList: MutableList<RecommendTagModel>?) {
-        if (recommendTagModelList.isNullOrEmpty()) {
-            return
+        mTagModelList.clear()
+        if (!recommendTagModelList.isNullOrEmpty()) {
+            mTagModelList.addAll(recommendTagModelList)
         }
 
         val recommendTagModel = RecommendTagModel()
         recommendTagModel.type = -1
         recommendTagModel.name = "已点"
-        recommendTagModelList.add(recommendTagModel)
+        mTagModelList.add(recommendTagModel)
 
-        mTagModelList = recommendTagModelList
         tagTab.setCustomTabView(R.layout.manage_song_tab, R.id.tab_tv)
         tagTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
         tagTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
@@ -154,11 +154,11 @@ class RelaySongManageFragment : BaseFragment() {
             }
 
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
-                return instantiateItemTag(container, position, mTagModelList!!)
+                return instantiateItemTag(container, position, mTagModelList)
             }
 
             override fun getCount(): Int {
-                return mTagModelList!!.size
+                return mTagModelList.size
             }
 
             override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -166,7 +166,7 @@ class RelaySongManageFragment : BaseFragment() {
             }
 
             override fun getPageTitle(position: Int): CharSequence? {
-                return mTagModelList!![position].name
+                return mTagModelList[position].name
             }
         }
 
