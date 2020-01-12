@@ -79,6 +79,18 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
                 result.success(null)
                 return true
             }
+            call.method == "setMusicPublishVolume" -> {
+                var volume = call.argument<Int>("volume")
+                var from = call.argument<String>("from")
+                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(volume ?: 80, true)
+                result.success(null)
+                return true
+            }
+            call.method == "getMusicPublishVolume" -> {
+                var volume = ZqEngineKit.getInstance().params.audioMixingPublishVolume
+                result.success(volume)
+                return true
+            }
             call.method == "showToast" -> {
                 var short = call.argument<Boolean>("short") ?: true
                 var content = call.argument<String>("content") ?: ""

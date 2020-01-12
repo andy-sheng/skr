@@ -9,7 +9,7 @@ public class CdnInfo {
     String appendix;
     @JSONField(name = "enableCache")
     boolean enableCache;
-
+    @JSONField(name = "url")
     String url;
 
     public String getCdnType() {
