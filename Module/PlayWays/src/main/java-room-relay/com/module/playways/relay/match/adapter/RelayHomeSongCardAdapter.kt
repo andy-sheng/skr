@@ -10,7 +10,7 @@ import com.module.playways.R
 import com.module.playways.room.song.model.SongCardModel
 import com.module.playways.room.song.model.SongModel
 
-class RelayHomeSongCardAdapter(private val maxSize: Int) : RecyclerView.Adapter<RelayHomeSongCardAdapter.RelaySongCardViewHolder>() {
+class RelayHomeSongCardAdapter(val maxSize: Int) : RecyclerView.Adapter<RelayHomeSongCardAdapter.RelaySongCardViewHolder>() {
 
     var listener: RelayHomeListener? = null
     var mDataList = ArrayList<SongCardModel>()
@@ -55,11 +55,9 @@ class RelayHomeSongCardAdapter(private val maxSize: Int) : RecyclerView.Adapter<
             if (songCardModel != null) {
                 mDataList.add(songCardModel)
             }
-            if (lastDiff == 0 || oldSize == 0) {
-                notifyItemRangeChanged(oldSize, mDataList.size - oldSize)
-            } else {
-                notifyItemRangeChanged(oldSize - 1, mDataList.size - oldSize + 1)
-            }
+
+            // 必须得从oldSize - 1开始change，数据得间隔会不对
+            notifyItemRangeChanged(oldSize - 1, mDataList.size - oldSize + 1)
         }
     }
 

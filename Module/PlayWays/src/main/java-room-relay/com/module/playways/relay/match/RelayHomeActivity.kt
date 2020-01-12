@@ -73,7 +73,7 @@ class RelayHomeActivity : BaseActivity() {
     var offset: Int = 0
     var hasMore: Boolean = false
     var cnt = 15
-    val firstRequestPage = 3 // 第一次请求多少页数据
+    val firstRequestPage = 4 // 第一次请求多少页数据
 
     //在滑动到最后的时候自动加载更多
     var loadMore: Boolean = false
@@ -160,9 +160,14 @@ class RelayHomeActivity : BaseActivity() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     currentPosition = cardScaleHelper?.currentItemPos ?: 0
-                    if (!loadMore && currentPosition > ((adapter?.mDataList?.size ?: 0) - firstRequestPage)) {
+                    if (!loadMore && currentPosition >= ((adapter?.mDataList?.size
+                                    ?: 0) - 3)) {
                         loadMore = true
-                        getPlayBookList(offset, cnt, false)
+                        val lastItemSize = adapter?.mDataList?.get((adapter?.mDataList?.size
+                                ?: 0) - 1)?.list?.size ?: 0
+                        val diff = (adapter?.maxSize ?: 0) - lastItemSize
+                        // 尽量保障拉回来的数据和之前数据能组成满页
+                        getPlayBookList(offset, 3 * cnt + diff, false)
                     }
                 }
             }
@@ -283,9 +288,15 @@ class RelayHomeActivity : BaseActivity() {
         if (clean) {
             adapter?.mDataList?.clear()
             adapter?.addData(list)
+            speedRecyclerView?.post {
+                speedRecyclerView?.smoothScrollBy(1, 0)
+            }
         } else {
             if (!list.isNullOrEmpty()) {
                 adapter?.addData(list)
+                speedRecyclerView?.post {
+                    speedRecyclerView?.smoothScrollBy(1, 0)
+                }
             }
         }
     }
