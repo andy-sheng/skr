@@ -57,6 +57,7 @@ import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
+import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.MicRoom.EJoinRoomSrc;
 
 import org.greenrobot.eventbus.EventBus;
@@ -480,6 +481,11 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 }
             }
         }, true);
+    }
+
+    @Override
+    public void idleHandler() {
+        SongModel.syncCdnInfo();
     }
 
     private void startCheckLoop() {

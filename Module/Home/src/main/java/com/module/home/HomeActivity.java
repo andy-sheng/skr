@@ -63,6 +63,7 @@ import com.module.home.persenter.VipReceiveCoinPresenter;
 import com.module.home.view.IHomeActivity;
 import com.module.home.view.INotifyView;
 import com.module.msg.IMsgService;
+import com.module.playways.IPlaywaysModeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
@@ -332,6 +333,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 // 触发提前获取引擎配置
                 EngineConfigFromServer.getDefault();
 //                FlutterRoute.Companion.pre();
+                IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                if (iRankingModeService != null) {
+                    iRankingModeService.idleHandler();
+                }
                 return false;
             }
         });

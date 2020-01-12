@@ -29,4 +29,5 @@ public class ModuleServiceManager {
     public IPostModuleService getPostsService(){
         return (IPostModuleService) ARouter.getInstance().build(RouterConstants.SERVICE_POSTS).navigation();
     }
+
 }

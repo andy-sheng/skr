@@ -2,8 +2,20 @@ package com.module.playways.room.song.model;
 
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
+import com.common.rxretrofit.ControlType;
+import com.common.rxretrofit.RequestControl;
+import com.common.utils.U;
+import com.component.toast.CommonToastView;
+import com.engine.CdnInfo;
+import com.engine.api.EngineServerApi;
 import com.zq.live.proto.Common.StandPlayType;
 import com.component.lyrics.utils.SongResUtils;
 import com.zq.live.proto.Common.MusicInfo;
@@ -12,6 +24,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
 
 public class SongModel implements Serializable {
 
@@ -153,6 +167,29 @@ public class SongModel implements Serializable {
 
     public String getAcc() {
         return acc;
+    }
+
+    public List<CdnInfo> getAccWithCdnInfos() {
+        ArrayList<CdnInfo> l = new ArrayList<>();
+        if (acc.contains("song-static")) {
+            for (CdnInfo info : cdnInfos) {
+                CdnInfo cdnInfo = new CdnInfo();
+                cdnInfo.setCdnType(info.getCdnType());
+                cdnInfo.setAppendix(info.getAppendix());
+                cdnInfo.setEnableCache(info.isEnableCache());
+                cdnInfo.setUrl(acc.replace("song-static", "song-static" + cdnInfo.getAppendix()));
+                l.add(cdnInfo);
+            }
+        }
+        if (l.isEmpty()) {
+            CdnInfo cdnInfo = new CdnInfo();
+            cdnInfo.setCdnType("aliyun");
+            cdnInfo.setAppendix("");
+            cdnInfo.setEnableCache(true);
+            cdnInfo.setUrl(acc);
+            l.add(cdnInfo);
+        }
+        return l;
     }
 
     public void setAcc(String acc) {
@@ -375,7 +412,7 @@ public class SongModel implements Serializable {
         this.setWriter(musicInfo.getWriter());
         this.setComposer(musicInfo.getComposer());
         this.setUploaderName(musicInfo.getUploaderName());
-        if(musicInfo.getRelaySegmentsList()!=null){
+        if (musicInfo.getRelaySegmentsList() != null) {
             ArrayList<Integer> l = new ArrayList<>();
             l.addAll(musicInfo.getRelaySegmentsList());
             this.setRelaySegments(l);
@@ -502,5 +539,19 @@ public class SongModel implements Serializable {
 //                ", isblank=" + isblank +
 //                ", standLrc='" + standLrc + '\'' +
                 '}';
+    }
+
+    static List<CdnInfo> cdnInfos = new ArrayList<>();
+
+    public static void syncCdnInfo() {
+        EngineServerApi api = ApiManager.getInstance().createService(EngineServerApi.class);
+        ApiMethods.subscribe(api.getCdnCfg((int) MyUserInfoManager.INSTANCE.getUid()), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    cdnInfos = JSON.parseArray(obj.getData().toString(), CdnInfo.class);
+                }
+            }
+        });
     }
 }
