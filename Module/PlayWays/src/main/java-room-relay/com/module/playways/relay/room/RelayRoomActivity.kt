@@ -73,6 +73,7 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
+import com.module.playways.view.ZanView
 import com.opensource.svgaplayer.*
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
@@ -80,6 +81,8 @@ import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.RelayRoom.ERRoundStatus
 import com.zq.live.proto.RelayRoom.RAddMusicMsg
 import com.zq.live.proto.RelayRoom.RReqAddMusicMsg
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -655,21 +658,23 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             mChangeSongIv.visibility = View.VISIBLE
             mAddSongIv.visibility = View.VISIBLE
 
+            val zanView = ZanView(this)
+            mMainContainerView.addView(zanView, ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+
+            launch {
+                delay(500)
+                repeat(30) {
+                    delay(80)
+                    zanView.addZanXin(1)
+                }
+                delay(8000)
+                if (!isFinishing && !isDestroyed) {
+                    mMainContainerView.removeView(zanView)
+                }
+            }
+
             LayoutInflater.from(this).inflate(R.layout.relay_continue_burst, mMainContainerView)
             mContinueSVGAImageView = findViewById(R.id.continue_svga)
-//
-//            launch {
-//                delay(500)
-//                repeat(30) {
-//                    delay(80)
-//                    zanView.addZanXin(1)
-//                }
-//                delay(8000)
-//                if (!isFinishing && !isDestroyed) {
-//                    mMainContainerView.removeView(zanView)
-//                }
-//            }
-
             playContinueAnimation()
         }
     }
