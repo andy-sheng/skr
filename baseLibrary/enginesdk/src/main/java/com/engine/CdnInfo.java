@@ -2,7 +2,9 @@ package com.engine;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-public class CdnInfo {
+import java.io.Serializable;
+
+public class CdnInfo implements Serializable {
     @JSONField(name = "cdnType")
     String cdnType;
     @JSONField(name = "appendix")
