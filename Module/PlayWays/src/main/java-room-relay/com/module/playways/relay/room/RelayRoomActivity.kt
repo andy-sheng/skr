@@ -253,7 +253,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         initMicSeatView()
         initRelayEnergyView()
 
-        if (mRoomData.isEnterFromInvite() && mRoomData.isPersonArrive()) {
+        if (mRoomData.isEnterFromInvite()) {
             mAddSongIv.visibility = View.VISIBLE
         }
 
@@ -433,6 +433,11 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
         mAddSongIv = findViewById(R.id.select_song_tv)
         mAddSongIv.setAnimateDebounceViewClickListener {
+            if (!mRoomData.isPersonArrive()) {
+                U.getToastUtil().showShort("小伙伴还没到，暂不能点歌～")
+                return@setAnimateDebounceViewClickListener
+            }
+
             mSkrAudioPermission.ensurePermission({
                 SongManagerActivity.open(this, mRoomData)
             }, true)
