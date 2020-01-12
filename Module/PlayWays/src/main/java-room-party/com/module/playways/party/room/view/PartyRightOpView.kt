@@ -147,8 +147,11 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
                 }
             }
             else -> {
-                if (!isInit && oldUser?.isNotOnlyAudience() != myInfo?.isNotOnlyAudience()) {
-                    // 不是初始化，只是我的身份角色在管理员和观众中发生改变
+                if (!isInit) {
+                    if (oldUser?.isGuest() == true || oldUser?.isHost() == true) {
+                        // 不是初始化 之前是嘉宾或者主持
+                        micStatus = MIC_STATUS_UNAPPLY
+                    }
                 } else {
                     micStatus = MIC_STATUS_UNAPPLY
                 }
