@@ -138,7 +138,7 @@ class RelaySongManageFragment : BaseFragment() {
         val recommendTagModel = RecommendTagModel()
         recommendTagModel.type = -1
         recommendTagModel.name = "已点"
-        recommendTagModelList.add(0, recommendTagModel)
+        recommendTagModelList.add(recommendTagModel)
 
         mTagModelList = recommendTagModelList
         tagTab.setCustomTabView(R.layout.manage_song_tab, R.id.tab_tv)
@@ -200,18 +200,24 @@ class RelaySongManageFragment : BaseFragment() {
         MyLog.d(TAG, "instantiateItem container=$container position=$position")
         var view: View
 
-        if (position == 0) {
+        if (position == (recommendTagModelList.size - 1)) {
             if (relaySongManageView == null) {
                 relaySongManageView = ExistSongManageView(context!!, mRoomData?.gameId
                         ?: 0, GameModeType.GAME_MODE_RELAY)
             }
             relaySongManageView?.tag = position
+            if (position == 0) {
+                relaySongManageView?.tryLoad()
+            }
             view = relaySongManageView!!
         } else {
             val recommendTagModel = recommendTagModelList[position]
             val recommendSongView = RecommendSongView(activity!!, SongManagerActivity.TYPE_FROM_RELAY_ROOM,
                     false, mRoomData!!.gameId, recommendTagModel)
             recommendSongView.tag = position
+            if (position == 0) {
+                recommendSongView.tryLoad()
+            }
             view = recommendSongView
         }
 

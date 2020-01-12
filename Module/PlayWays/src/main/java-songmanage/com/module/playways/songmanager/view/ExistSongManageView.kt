@@ -89,9 +89,6 @@ class ExistSongManageView(context: Context, var roomID: Int, var gameType: Int) 
 
         })
         recyclerView.adapter = manageSongAdapter
-
-        // 默认展示，所有默认去拉数据
-        tryLoad()
     }
 
     private fun addSongList(list: List<MicExistSongModel>?, clear: Boolean) {
