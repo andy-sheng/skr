@@ -1414,6 +1414,8 @@ public class AgoraRTCAdapter {
                     con.disconnect();
                 }
             }
+        } else if (filePath.startsWith("file://")) {
+            filePath = filePath.replace("file://", "");
         }
         mRtcEngine.startAudioMixing(filePath, loopback, replace, cycle);
     }
