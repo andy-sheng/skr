@@ -342,6 +342,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 if (iRankingModeService != null) {
                     iRankingModeService.idleHandler();
                 }
+                FlutterBoostController.INSTANCE.init();
                 return false;
             }
         });

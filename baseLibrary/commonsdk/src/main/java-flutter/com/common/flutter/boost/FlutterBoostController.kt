@@ -44,7 +44,7 @@ object FlutterBoostController  {
         openFlutterPage(context,pageRouterName,params,0)
     }
 
-    private fun init() {
+    fun init() {
         if (inited) {
             return
         }
@@ -63,10 +63,11 @@ object FlutterBoostController  {
 
         val platform = FlutterBoost.ConfigBuilder(U.app(), router)
                 .isDebug(true)
-                .whenEngineStart(FlutterBoost.ConfigBuilder.ANY_ACTIVITY_CREATED)
+                // 任意activity启动都创建
+//                .whenEngineStart(FlutterBoost.ConfigBuilder.ANY_ACTIVITY_CREATED)
+                .whenEngineStart(FlutterBoost.ConfigBuilder.IMMEDIATELY)
                 .renderMode(FlutterView.RenderMode.texture)
                 .pluginsRegister(pluginsRegister)
-                .whenEngineStart(FlutterBoost.ConfigBuilder.ANY_ACTIVITY_CREATED)
                 .lifecycleListener(object : FlutterBoost.BoostLifecycleListener{
                     override fun onEngineCreated() {
                         MyLog.d(TAG, "onEngineCreated")
