@@ -13,6 +13,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExRelativeLayout
 import com.common.view.ex.ExTextView
+import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.relay.room.event.RelayLockChangeEvent
@@ -98,17 +99,36 @@ class RelayContinueSingView : ExRelativeLayout {
 
     fun delayShowContinueView(ts: Long) {
         hideWithAnimation(false)
+        mUiHandler.removeMessages(MSG_ANIMATION_SHOW)
+
+        //游戏已经进行的时间
+        var offsetTs = (System.currentTimeMillis() - BaseRoomData.shiftTsForRelay) - (roomData?.gameCreateTs
+                ?: 0)
+        if (offsetTs < 1000) {
+            offsetTs = 0
+        }
 
         var t = roomData?.configModel?.durationTimeMs ?: 0
 
-        var leftTs = t - ts
-        if (leftTs < 0) {
-            leftTs = 0
-        }
+        var leftTs = t - offsetTs - ts
+        if (leftTs >= 0) {
+            //还没到倒计时的时间
+            mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_SHOW, leftTs)
+            mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_HIDE, leftTs + countDownTime)
+        } else {
+//            //倒计时的时间过了
+//            if (leftTs + countDownTime > 0) {
+//                //但是还在处于显示的时间
+//                mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_SHOW, 0)
+//                mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_HIDE, leftTs + countDownTime)
+//            } else {
+//                //显示的时间也过了
+//            }
 
-        mUiHandler.removeMessages(MSG_ANIMATION_SHOW)
-        mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_SHOW, leftTs)
-        mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_HIDE, leftTs + countDownTime)
+            //无论如何都应该展示8秒钟
+            mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_SHOW, 0)
+            mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_HIDE, countDownTime)
+        }
     }
 
     fun hideWithAnimation(needAnim: Boolean) {

@@ -17,6 +17,7 @@ import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.component.person.event.ShowPersonCardEvent
 import com.facebook.drawee.view.SimpleDraweeView
+import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.relay.room.event.RelayLockChangeEvent
@@ -165,9 +166,15 @@ class RelayTopContentView : ExConstraintLayout {
             countDownJob = launch {
                 var t = roomData?.configModel?.durationTimeMs ?: 0
                 var i = 0
+                var offsetTs = (System.currentTimeMillis() - BaseRoomData.shiftTsForRelay) - (roomData?.gameCreateTs
+                        ?: 0)
+                if (offsetTs < 1000) {
+                    offsetTs = 0
+                }
+
                 while (i <= t) {
                     i++
-                    var leftTs = t - (1000L * i)
+                    var leftTs = t - (1000L * i) - offsetTs
                     if (leftTs < 0) {
                         leftTs = 0
                     }
