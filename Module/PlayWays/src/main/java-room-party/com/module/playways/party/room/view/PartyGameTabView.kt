@@ -352,7 +352,7 @@ class PartyGameTabView : ExConstraintLayout {
                             // 伴奏文件存在
                             ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), 1)
                         } else {
-                            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel?.acc, midiFile.absolutePath, songBeginTs.toLong(), 1)
+                            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel?.accWithCdnInfosJson, midiFile.absolutePath, songBeginTs.toLong(), 1)
                         }
                     }
                     // 未开始，等待着

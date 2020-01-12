@@ -166,7 +166,12 @@ public class SongModel implements Serializable {
     }
 
     public String getAcc() {
-        return acc;
+        List<CdnInfo> l = getAccWithCdnInfos();
+        if (l.isEmpty()){
+            return acc;
+        }else{
+            return l.get(0).getUrl();
+        }
     }
 
     public List<CdnInfo> getAccWithCdnInfos() {
@@ -190,6 +195,12 @@ public class SongModel implements Serializable {
             l.add(cdnInfo);
         }
         return l;
+    }
+
+    public String getAccWithCdnInfosJson() {
+        List<CdnInfo> l = getAccWithCdnInfos();
+        String json = JSON.toJSONString(l);
+        return json;
     }
 
     public void setAcc(String acc) {
