@@ -107,7 +107,7 @@ class SLogServiceAliyun extends SLogServiceBase{
     @Override
     public void appendLog(ILogItem itemOp) {
 
-        if (!mEnableLS) return;
+        if (!mEnableLS || mLogGroup == null) return;
 
         JSONObject jsObj = itemOp.toJSONObject();
         try {
@@ -129,7 +129,7 @@ class SLogServiceAliyun extends SLogServiceBase{
     @Override
     public void flushLog(boolean isSync) {
 
-        if (!mEnableLS) return;
+        if (!mEnableLS || mLogGroup == null) return;
 
         if (!prepareSLSClientBySTS()) {
             return;

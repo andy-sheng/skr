@@ -71,6 +71,9 @@ import com.zq.mediaengine.util.gles.GLRender;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -193,7 +196,8 @@ public class ZqEngineKit implements AgoraOutCallback {
     private RawFrameWriter mBgmRawFrameWriter;
 
     // 伴奏状态相关
-    private int mCdnType = 0;
+    private String mCdnType = "";
+    private boolean mAccEnableCache = false;
     private String mAccUrlInUse;
     private long mAccStartTime;
     private boolean mIsAccPrepared;
@@ -1669,12 +1673,17 @@ public class ZqEngineKit implements AgoraOutCallback {
         startAudioMixing(0, filePath, midiPath, mixMusicBeginOffset, cycle);
     }
 
-    public void startAudioMixing(final int uid, final String filePath, final String midiPath, final long mixMusicBeginOffset, final int cycle) {
+    public void startAudioMixing(final int uid, final String accPath, final String midiPath, final long mixMusicBeginOffset, final int cycle) {
         if (mCustomHandlerThread != null) {
-//            final String filePath = "http://song-static.inframe.mobi/bgm/28995bcaee647a8ebba90fd4b6492820.mp3";
-            mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " cycle=" + cycle) {
+            //final String accPath = "[{\"url\":\"http://song-static.inframe.mobi/bgm/c879eba70890a7dc43ae4e2901f99c31_2.mp3\",\"cdnType\":\"aliyun\",\"enableCache\":false},{\"url\":\"http://song-static-1.inframe.mobi/bgm/c879eba70890a7dc43ae4e2901f99c31_2.mp3\",\"cdnType\":\"ksc\",\"enableCache\":false}]";
+            mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " accPath=" + accPath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " cycle=" + cycle) {
                 @Override
                 public void realRun() {
+                    if (TextUtils.isEmpty(accPath)) {
+                        MyLog.i(TAG, "伴奏路径非法");
+                        return;
+                    }
+                    String filePath = getUrlFromJson(accPath);
                     if (TextUtils.isEmpty(filePath)) {
                         MyLog.i(TAG, "伴奏路径非法");
                         return;
@@ -1734,6 +1743,22 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
+    private String getUrlFromJson(String accPath) {
+        try {
+            JSONArray accList = new JSONArray(accPath);
+            JSONObject accObj = accList.getJSONObject(0);
+            String url = accObj.getString("url");
+            mCdnType = accObj.getString("cdnType");
+            mAccEnableCache = accObj.getBoolean("enableCache");
+            return url;
+        } catch (JSONException e) {
+            MyLog.i(TAG, "Not a json url list!");
+            mCdnType = "";
+            mAccEnableCache = false;
+            return accPath;
+        }
+    }
+
     private boolean isHttpUrl(String url) {
         return url.startsWith("http://") || url.startsWith("https://");
     }
@@ -1745,10 +1770,8 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
 
         String urlToPlay = url;
-        if (isHttpUrl(urlToPlay)) {
-            if (mCdnType == 2 || mCdnType == 4) {
-                urlToPlay = MediaCacheManager.INSTANCE.getProxyUrl(urlToPlay, true);
-            }
+        if (isHttpUrl(urlToPlay) && mAccEnableCache) {
+            urlToPlay = MediaCacheManager.INSTANCE.getProxyUrl(urlToPlay, true);
         }
         return urlToPlay;
     }

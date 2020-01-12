@@ -110,8 +110,9 @@ public class Skr
     public static class PlayerStartInfo implements ILogItem {
         public long ts = 0; //timestamp;
 
-        // 0: unknown 1: aliyun 2: aliyun_cache 3: ksc 4: ksc_cache
-        public long cdnType = 0;
+        // aliyun ksc
+        public String cdnType = "";
+        public long enableCache = 0;
         public long extAudio = 0;
         public String url;
         public String urlInUse;
@@ -133,6 +134,7 @@ public class Skr
 
                 boolean isHttp = urlInUse.startsWith("http://") || url.startsWith("https://");
                 jsObj.put("cdnType", cdnType);
+                jsObj.put("enableCache", enableCache);
                 jsObj.put("extAudio", extAudio);
                 jsObj.put("url", url);
                 jsObj.put("urlInUse", urlInUse);
@@ -155,8 +157,9 @@ public class Skr
     public static class PlayerStopInfo implements ILogItem {
         public long ts = 0; //timestamp;
 
-        // 0: unknown 1: aliyun 2: aliyun_cache 3: ksc 4: ksc_cache
-        public long cdnType = 0;
+        // aliyun ksc
+        public String cdnType = "";
+        public long enableCache = 0;
         public long extAudio = 0;
         public String url;
         public String urlInUse;
@@ -182,6 +185,7 @@ public class Skr
 
                 boolean isHttp = urlInUse.startsWith("http://") || url.startsWith("https://");
                 jsObj.put("cdnType", cdnType);
+                jsObj.put("enableCache", enableCache);
                 jsObj.put("extAudio", extAudio);
                 jsObj.put("url", url);
                 jsObj.put("urlInUse", urlInUse);
