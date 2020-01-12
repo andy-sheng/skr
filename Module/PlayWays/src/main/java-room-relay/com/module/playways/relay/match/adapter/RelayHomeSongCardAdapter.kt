@@ -55,7 +55,7 @@ class RelayHomeSongCardAdapter(private val maxSize: Int) : RecyclerView.Adapter<
             if (songCardModel != null) {
                 mDataList.add(songCardModel)
             }
-            if (lastDiff == 0 && oldSize == 0) {
+            if (lastDiff == 0 || oldSize == 0) {
                 notifyItemRangeChanged(oldSize, mDataList.size - oldSize)
             } else {
                 notifyItemRangeChanged(oldSize - 1, mDataList.size - oldSize + 1)
