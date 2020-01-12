@@ -9,6 +9,7 @@ import com.common.log.MyLog
 import com.common.utils.U
 import com.idlefish.flutterboost.FlutterBoost
 import com.idlefish.flutterboost.containers.BoostFlutterActivity
+import com.idlefish.flutterboost.containers.MyBoostFlutterActivity
 import com.idlefish.flutterboost.interfaces.INativeRouter
 import io.flutter.embedding.android.FlutterView
 import io.flutter.plugin.common.PluginRegistry
@@ -28,9 +29,9 @@ object FlutterBoostController  {
     fun openFlutterPage(context: Context, pageRouterName: String, params: MutableMap<String, Any>?, requestCode: Int = 0) {
         init()
         // 打开一个flutter page 页面
-        val intent = BoostFlutterActivity.withNewEngine().url(pageRouterName)
+        val intent = MyBoostFlutterActivity.withNewEngine().url(pageRouterName)
                 .params(params ?: mapOf<String, Any>())
-                .backgroundMode(BoostFlutterActivity.BackgroundMode.opaque)
+                .backgroundMode(MyBoostFlutterActivity.BackgroundMode.opaque)
                 .build(context)
         if (context is Activity) {
             context.startActivityForResult(intent, requestCode)

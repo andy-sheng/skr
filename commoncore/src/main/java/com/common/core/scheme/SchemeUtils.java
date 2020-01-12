@@ -5,6 +5,8 @@ import android.text.TextUtils;
 
 import com.common.log.MyLog;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -43,6 +45,15 @@ public class SchemeUtils {
         return "";
     }
 
+    public static boolean getBoolean(@NotNull Uri uri, @NotNull String key, boolean b) {
+        try {
+            return Boolean.parseBoolean(uri.getQueryParameter(key));
+        } catch (Exception e) {
+            MyLog.e(e);
+        }
+        return b;
+    }
+
     public static String join(String url,Map<String, Object> params, Integer requestCode) {
         Uri uri = Uri.parse(url);
 
@@ -79,4 +90,5 @@ public class SchemeUtils {
         }
         return paramsMap;
     }
+
 }

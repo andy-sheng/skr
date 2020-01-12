@@ -5,9 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.text.TextUtils
 
 import com.alibaba.android.arouter.launcher.ARouter
+import com.common.base.BaseFragment
+import com.common.core.R
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
@@ -22,8 +26,10 @@ import com.common.core.scheme.event.MicInviteFromSchemeEvent
 import com.common.core.scheme.event.PartyInviteFromSchemeEvent
 import com.common.core.scheme.event.RelayInviteFromSchemeEvent
 import com.common.log.MyLog
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.idlefish.flutterboost.containers.BoostFlutterActivity
+import com.idlefish.flutterboost.containers.MyBoostFlutterActivity
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.IPlaywaysModeService
@@ -171,12 +177,26 @@ object SkrSchemeProcessor : ISchemeProcessor {
 
     private fun processCommonUrl(uri: Uri, context: Context) {
         if(uri.path=="/feedback"){
+            if(SchemeUtils.getBoolean(uri,"useFragment",false)){
+                // 举报
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(U.getActivityUtils().topActivity as FragmentActivity, Class.forName("com.component.report.fragment.QuickFeedbackFragment") as Class<out Fragment>?)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .addDataBeforeAdd(0,SchemeUtils.getInt(uri,"from",0))
+                                .addDataBeforeAdd(1, SchemeUtils.getInt(uri,"actionType",0))
+                                .addDataBeforeAdd(2, SchemeUtils.getInt(uri,"targetId",0))
+                                .setEnterAnim(R.anim.slide_in_bottom)
+                                .setExitAnim(R.anim.slide_out_bottom)
+                                .build())
+            }else{
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDBACK)
                         .withInt("from",SchemeUtils.getInt(uri,"from",0))
                         .withInt("roomId",SchemeUtils.getInt(uri,"roomId",0))
                         .withInt("targetId",SchemeUtils.getInt(uri,"targetId",0))
                         .withInt("actionType",SchemeUtils.getInt(uri,"actionType",0))
                         .navigation()
+            }
         }
 
     }
@@ -188,9 +208,9 @@ object SkrSchemeProcessor : ISchemeProcessor {
         }
         // 打开一个flutter page 页面
         val params = SchemeUtils.getParams(uri)
-        val intent = BoostFlutterActivity.withNewEngine().url(pageRouterName!!)
+        val intent = MyBoostFlutterActivity.withNewEngine().url(pageRouterName!!)
                 .params(params)
-                .backgroundMode(BoostFlutterActivity.BackgroundMode.opaque)
+                .backgroundMode(MyBoostFlutterActivity.BackgroundMode.opaque)
                 .build(context)
 
         if (context is Activity) {

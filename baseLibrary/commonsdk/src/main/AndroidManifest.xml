@@ -274,11 +274,11 @@
             </intent-filter>
         </service>
 
-
+        <!--android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"-->
         <activity
-            android:name="com.idlefish.flutterboost.containers.BoostFlutterActivity"
-            android:theme="@style/Theme.AppCompat"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:name="com.idlefish.flutterboost.containers.MyBoostFlutterActivity"
+            android:theme="@style/AppTheme_Swipe"
+            android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize" >
             <meta-data android:name="io.flutter.embedding.android.SplashScreenDrawable" android:resource="@drawable/loading_place_holder_img"/>

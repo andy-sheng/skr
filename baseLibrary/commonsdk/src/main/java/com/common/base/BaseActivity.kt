@@ -160,13 +160,15 @@ abstract class BaseActivity : AppCompatActivity(), IActivity, ActivityLifecyclea
         if (layoutResID == 0) {
             layoutResID = R.layout.empty_activity_layout
         }
-        setContentView(layoutResID)
+        if(layoutResID>0){
+            setContentView(layoutResID)
+            initData(savedInstanceState)
+        }
         //        ViewGroup contentFrameLayout = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
         //        View parentView = contentFrameLayout.getChildAt(0);
         //        if (parentView != null && Build.VERSION.SDK_INT >= 14) {
         //            parentView.setFitsSystemWindows(true);
         //        }
-        initData(savedInstanceState)
         if (useEventBus()) {
             if (!EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().register(this)
