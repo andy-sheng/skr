@@ -233,18 +233,18 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         });
 
-//        if (MyLog.isDebugLogOpen()) {
-        mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                MyLog.w(TAG, "  mGameArea.setOnLongClickListener");
-                HashMap map = new HashMap();
-                map.put("key1", 2);
-                FlutterBoostController.INSTANCE.openFlutterPage(HomeActivity.this, RouterConstants.FLUTTER_PAGE_RELAY_RESULT, null,0);
-                return false;
-            }
-        });
-//        }
+        if (MyLog.isDebugLogOpen()) {
+            mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    MyLog.w(TAG, "  mGameArea.setOnLongClickListener");
+                    HashMap map = new HashMap();
+                    map.put("key1", 2);
+                    FlutterBoostController.INSTANCE.openFlutterPage(HomeActivity.this, RouterConstants.FLUTTER_PAGE_RELAY_RESULT, null, 0);
+                    return false;
+                }
+            });
+        }
 
         mPostsArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override

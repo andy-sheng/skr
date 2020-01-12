@@ -146,16 +146,19 @@ public interface RouterConstants {
     String ACTIVITY_PARTY_SELECT_GAME = "/party/PartySelectGameActivity";
     String ACTIVITY_PARTY_HOME = "/party/PartyHomeActivity";
 
-
     String ACTIVITY_CREATE_CLUB = "/club/CreateClubActivity";
     String ACTIVITY_LIST_CLUB = "/club/ClubListActivity";
     String ACTIVITY_LIST_MEMBER = "/club/ClubMemberListActivity";
     String ACTIVITY_LIST_APPLY_CLUB = "/club/ClubApplyListActivity";
     String ACTIVITY_LIST_CLUB_RANK = "/club/ClubRankListActivity";
+    String ACTIVITY_FEEDBACK = "/all/QuickFeedbackActivity";
+
+
+    /**
+     * Flutter 相关页面
+     */
     String FLUTTER_PAGE_TEST = "SkrTestPage";
     String FLUTTER_PAGE_RELAY_RESULT = "RelayResultPage";
     String FLUTTER_PAGE_PARTY_BGM_PAGE = "PartyBgMusicManagerPage";
     String FLUTTER_PAGE_SETTING = "SettingManagerPage";
-
-    String ACTIVITY_FEEDBACK = "/all/QuickFeedbackActivity";
 }
