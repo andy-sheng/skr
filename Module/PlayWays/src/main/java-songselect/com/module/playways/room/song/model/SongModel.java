@@ -166,7 +166,7 @@ public class SongModel implements Serializable {
     }
 
     public String getAcc() {
-        List<CdnInfo> l = getAccWithCdnInfos();
+        List<CdnInfo> l = getAccWithCdnInfos(false);
         if (l.isEmpty()){
             return acc;
         }else{
@@ -174,15 +174,26 @@ public class SongModel implements Serializable {
         }
     }
 
-    public List<CdnInfo> getAccWithCdnInfos() {
+    public List<CdnInfo> getAccWithCdnInfos(boolean isUseCacheFile) {
         ArrayList<CdnInfo> l = new ArrayList<>();
+        String accFilePath = null;
+        if (isUseCacheFile) {
+            File accFile = SongResUtils.getAccFileByUrl(acc);
+            if (accFile != null && accFile.exists()) {
+                accFilePath = accFile.getAbsolutePath();
+            }
+        }
         if (acc.contains("song-static")) {
             for (CdnInfo info : cdnInfos) {
                 CdnInfo cdnInfo = new CdnInfo();
                 cdnInfo.setCdnType(info.getCdnType());
                 cdnInfo.setAppendix(info.getAppendix());
                 cdnInfo.setEnableCache(info.isEnableCache());
-                cdnInfo.setUrl(acc.replace("song-static", "song-static" + cdnInfo.getAppendix()));
+                if (!TextUtils.isEmpty(accFilePath)) {
+                    cdnInfo.setUrl(accFilePath);
+                } else {
+                    cdnInfo.setUrl(acc.replaceFirst("song-static", "song-static" + cdnInfo.getAppendix()));
+                }
                 l.add(cdnInfo);
             }
         }
@@ -198,7 +209,7 @@ public class SongModel implements Serializable {
     }
 
     public String getAccWithCdnInfosJson() {
-        List<CdnInfo> l = getAccWithCdnInfos();
+        List<CdnInfo> l = getAccWithCdnInfos(true);
         String json = JSON.toJSONString(l);
         return json;
     }
