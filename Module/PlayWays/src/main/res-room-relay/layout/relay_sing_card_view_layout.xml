@@ -100,9 +100,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="@id/bottom_bg_view"
         app:leftBgPaintColor="@color/transparent"
+        app:leftPaintColor="@color/white"
         app:redInnerpaintColor="#FFC15B"
         app:redOutpaintColor="@color/transparent"
         app:rightBgPaintColor="@color/transparent"
+        app:rightPaintColor="#FFC15B"
         app:showBottomBound="false"
         app:showTopBound="false" />
 
