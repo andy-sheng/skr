@@ -75,7 +75,7 @@
         </LinearLayout>
 
         <com.common.image.fresco.BaseImageView
-            android:layout_marginTop="@dimen/view_d_12_dp"
+            android:layout_marginTop="@dimen/view_d_9_dp"
             android:id="@+id/gift_img_iv"
             android:layout_width="@dimen/view_55_dp"
             android:layout_height="@dimen/view_55_dp"

@@ -1720,7 +1720,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                     } else {
                         mPendingStartMixAudioParams = new PendingStartMixAudioParams();
                         mPendingStartMixAudioParams.uid = uid;
-                        mPendingStartMixAudioParams.filePath = filePath;
+                        mPendingStartMixAudioParams.filePath = accPath;
                         mPendingStartMixAudioParams.midiPath = midiPath;
                         mPendingStartMixAudioParams.mixMusicBeginOffset = mixMusicBeginOffset;
                         mPendingStartMixAudioParams.cycle = cycle;
@@ -1786,6 +1786,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         Skr.PlayerStartInfo startInfo = new Skr.PlayerStartInfo();
         startInfo.cdnType = mCdnType;
+        startInfo.enableCache = mAccEnableCache ? 1 : 0;
         startInfo.extAudio = mConfig.isUseExternalAudio() ? 1 : 0;
         startInfo.url = mConfig.getMixMusicFilePath();
         startInfo.urlInUse = mAccUrlInUse;
@@ -1804,6 +1805,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         Skr.PlayerStopInfo stopInfo = new Skr.PlayerStopInfo();
         stopInfo.cdnType = mCdnType;
+        stopInfo.enableCache = mAccEnableCache ? 1 : 0;
         stopInfo.extAudio = mConfig.isUseExternalAudio() ? 1 : 0;
         stopInfo.url = mConfig.getMixMusicFilePath();
         stopInfo.urlInUse = mAccUrlInUse;
