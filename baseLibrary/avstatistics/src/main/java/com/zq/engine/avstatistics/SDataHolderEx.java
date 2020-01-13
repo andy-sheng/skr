@@ -235,7 +235,7 @@ public class SDataHolderEx {
 
     }
 
-    synchronized public void addJoinChannelAction(int joinRet, boolean hasServerConfig, boolean isExternalAudio, boolean isOpenSL, int audioPreviewMode) {
+    synchronized public void addJoinChannelAction(int joinRet, boolean hasServerConfig, boolean isExternalAudio, boolean isOpenSL, boolean enableAudioPreview) {
         SAgora.SJoinChannelAction n = new SAgora.SJoinChannelAction();
         n.ts = System.currentTimeMillis();
         n.ret = joinRet;
@@ -243,7 +243,7 @@ public class SDataHolderEx {
         n.hasServerConfig = hasServerConfig ? 1 : 0;
         n.isExternalAudio = isExternalAudio ? 1 : 0;
         n.isOpenSL = isOpenSL ? 1 : 0;
-        n.audioPreview = audioPreviewMode;
+        n.audioPreview = enableAudioPreview ? 1 : 0;
 
         mItemList.add(n);
     }

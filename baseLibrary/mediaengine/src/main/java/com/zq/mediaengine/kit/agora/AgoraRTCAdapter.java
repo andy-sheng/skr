@@ -923,7 +923,7 @@ public class AgoraRTCAdapter {
         SDataManager.getInstance().getDataHolder().addJoinChannelAction(retCode,
                 mConfig.getConfigFromServerNotChange().hasServerConfig,
                 mConfig.isUseExternalAudio(), mConfig.isEnableAudioLowLatency(),
-                mConfig.getEarMonitoringSwitch());
+                mConfig.isEnableInEarMonitoring());
 
         return retCode;
     }
