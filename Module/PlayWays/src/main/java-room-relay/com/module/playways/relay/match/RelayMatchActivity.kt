@@ -256,11 +256,11 @@ class RelayMatchActivity : BaseActivity() {
                             joinTipsTv?.text = "正在为你匹配合拍好声音.  "
                         }
                         10 -> {
-                            joinTipsTv?.text = "等太久，试试加入别人等合唱吧～"
+                            joinTipsTv?.text = "等太久，试试加入别人的合唱吧～"
                             queryMatch(song.itemID)
                         }
                         else -> {
-                            joinTipsTv?.text = "等太久，试试加入别人等合唱吧～"
+                            joinTipsTv?.text = "等太久，试试加入别人的合唱吧～"
                         }
                     }
                     delay(1000)
