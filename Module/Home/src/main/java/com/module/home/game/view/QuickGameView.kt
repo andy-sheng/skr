@@ -91,8 +91,10 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                 // 进入双人接唱
                 StatisticsAdapter.recordCountEvent("game_express", "chorus", null)
                 mSkrAudioPermission.ensurePermission({
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
-                            .navigation()
+                    mRealNameVerifyUtils.checkAgeSettingState {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
+                                .navigation()
+                    }
                 }, true)
             }
 

@@ -126,6 +126,9 @@ class RelayRoomAdapter : RecyclerView.Adapter<RelayRoomAdapter.RelayRoomViewHold
                     sexTv.background = girlDrawable
                 }
                 else -> {
+                    // 没有性别，默认给个女生
+                    imageBg.background = redDrawable
+                    bottomArea.background = redBottomDrawable
                     sexTv.visibility = View.GONE
                 }
             }
