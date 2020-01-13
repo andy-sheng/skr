@@ -8,10 +8,12 @@ import com.common.flutter.plugin.CommonFlutterPlugin
 import com.common.log.MyLog
 import com.common.utils.U
 import com.idlefish.flutterboost.FlutterBoost
+import com.idlefish.flutterboost.FlutterBoostPlugin
 import com.idlefish.flutterboost.containers.BoostFlutterActivity
 import com.idlefish.flutterboost.containers.MyBoostFlutterActivity
 import com.idlefish.flutterboost.interfaces.INativeRouter
 import io.flutter.embedding.android.FlutterView
+import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugins.GeneratedPluginRegistrant
 
@@ -56,6 +58,7 @@ object FlutterBoostController  {
         val pluginsRegister = FlutterBoost.BoostPluginsRegister { mRegistry ->
             MyLog.d("FlutterBoost", "registerPlugins mRegistry=$mRegistry")
             GeneratedPluginRegistrant.registerWith(mRegistry)
+            FlutterBoostPlugin.registerWith(mRegistry.registrarFor("com.idlefish.flutterboost.FlutterBoostPlugin"))
             //用户自定义的插件也在这里注册
             TextPlatformViewPlugin.register(mRegistry.registrarFor("TextPlatformViewPlugin"))
             CommonFlutterPlugin.registerWith(mRegistry.registrarFor("com.commonsdk.SkrFlutterPlugin"))
