@@ -244,6 +244,8 @@ do
         refresh=true
     elif [[ $p = scan ]]; then
         scan=true
+    elif [[ $p = online ]]; then
+        online=true
     fi
 done
 
@@ -258,6 +260,7 @@ echo clean=$clean
 echo pre=$pre
 echo server=$server
 echo refresh=$refresh
+echo online=$online
 
 if [ $pre = true ]; then
    if [[ $release = true ]]; then
@@ -323,7 +326,11 @@ if [ $refresh = true ]; then
     rd='--refresh-dependencies'
     echo "依赖更新结束"
 else
-    rd='--offline'
+    if [ $online = true ]; then
+        rd=''
+    else
+        rd='--offline'
+    fi
 fi
 
 if [ $scan = true ]; then
