@@ -2,19 +2,14 @@ package com.common.flutter.boost
 
 import android.app.Activity
 import android.content.Context
-import android.net.Uri
-import com.alibaba.android.arouter.launcher.ARouter
 import com.common.flutter.plugin.CommonFlutterPlugin
 import com.common.log.MyLog
 import com.common.utils.U
 import com.idlefish.flutterboost.FlutterBoost
 import com.idlefish.flutterboost.FlutterBoostPlugin
-import com.idlefish.flutterboost.containers.BoostFlutterActivity
 import com.idlefish.flutterboost.containers.MyBoostFlutterActivity
 import com.idlefish.flutterboost.interfaces.INativeRouter
 import io.flutter.embedding.android.FlutterView
-import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugins.GeneratedPluginRegistrant
 
 object FlutterBoostController  {
@@ -88,5 +83,6 @@ object FlutterBoostController  {
                 })
                 .build()
         FlutterBoost.instance().init(platform)
+        inited = true
     }
 }

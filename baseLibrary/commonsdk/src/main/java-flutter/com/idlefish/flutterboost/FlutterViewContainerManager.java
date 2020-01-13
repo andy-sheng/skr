@@ -26,6 +26,7 @@ package com.idlefish.flutterboost;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.common.log.MyLog;
 import com.idlefish.flutterboost.interfaces.IContainerManager;
 import com.idlefish.flutterboost.interfaces.IContainerRecord;
 import com.idlefish.flutterboost.interfaces.IFlutterViewContainer;
@@ -43,6 +44,7 @@ import java.util.Stack;
 
 public class FlutterViewContainerManager implements IContainerManager {
 
+
     private final Map<IFlutterViewContainer, IContainerRecord> mRecordMap = new LinkedHashMap<>();
     private final Set<ContainerRef> mRefs = new HashSet<>();
     private final Stack<IContainerRecord> mRecordStack = new Stack<>();
@@ -53,6 +55,8 @@ public class FlutterViewContainerManager implements IContainerManager {
 
     @Override
     public IOperateSyncer generateSyncer(IFlutterViewContainer container) {
+        MyLog.d("FlutterViewContainerManager"+hashCode(),"generateSyncer" + " container=" + container +" mRecordMap.size()="+mRecordMap.size());
+
         Utils.assertCallOnMainThread();
 
         ContainerRecord record = new ContainerRecord(this, container);
@@ -80,13 +84,12 @@ public class FlutterViewContainerManager implements IContainerManager {
     }
 
     void removeRecord(IContainerRecord record) {
+        MyLog.d("FlutterViewContainerManager"+hashCode(),"removeRecord" + " container=" + record.getContainer()+" mRecordMap.size()="+mRecordMap.size());
         mRecordStack.remove(record);
         mRecordMap.remove(record.getContainer());
 //        if(mRecordMap.isEmpty()){
 //
 //        }
-
-
     }
 
     void setContainerResult(IContainerRecord record,int requestCode, int resultCode, Map<String,Object> result) {

@@ -191,7 +191,9 @@ public class FlutterSplashView extends FrameLayout {
      * a Dart isolate ID. It also requires that a {@code splashScreen} exist.
      */
     private void transitionToFlutter() {
-        transitioningIsolateId = flutterView.getAttachedFlutterEngine().getDartExecutor().getIsolateServiceId();
+        if(flutterView.getAttachedFlutterEngine()!=null){
+            transitioningIsolateId = flutterView.getAttachedFlutterEngine().getDartExecutor().getIsolateServiceId();
+        }
         Log.v(TAG, "Transitioning splash screen to a Flutter UI. Isolate: " + transitioningIsolateId);
         splashScreen.transitionToFlutter(onTransitionComplete);
     }
