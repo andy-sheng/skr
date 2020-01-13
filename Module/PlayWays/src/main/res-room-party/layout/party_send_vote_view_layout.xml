@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_400_dp"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_gradient_endColor="#E4E4FF"
+        app:bl_gradient_startColor="#FFFFFF" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_16_dp"
+        android:text="发起投票"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_18_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/exit_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_7_dp"
+        android:padding="@dimen/view_10_dp"
+        android:src="@drawable/back_close_black"
+        android:textColor="@color/black"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/in_mic_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_70_dp"
+        android:layout_marginRight="@dimen/view_42_dp"
+        android:text="仅麦上投票"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/in_mic_selected_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:background="@drawable/party_vote_select"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/in_mic_tv"
+        app:layout_constraintLeft_toRightOf="@+id/in_mic_tv"
+        app:layout_constraintTop_toTopOf="@+id/in_mic_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/all_man_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_42_dp"
+        android:layout_marginTop="@dimen/view_70_dp"
+        android:text="所有人投票"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/all_man_selected_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:background="@drawable/party_vote_select"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/all_man_tv"
+        app:layout_constraintLeft_toRightOf="@+id/all_man_tv"
+        app:layout_constraintTop_toTopOf="@+id/all_man_tv" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginLeft="@dimen/view_38_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:background="@color/black_trans_20"
+        app:layout_constraintBottom_toBottomOf="@+id/tips_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/tips_tv"
+        app:layout_constraintTop_toTopOf="@+id/tips_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_124_dp"
+        android:text="投票范围"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_38_dp"
+        android:background="@color/black_trans_20"
+        app:layout_constraintBottom_toBottomOf="@+id/tips_tv"
+        app:layout_constraintLeft_toRightOf="@+id/tips_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tips_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/seat_1_text"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="@dimen/view_35_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="#BDBDE2"
+        android:textSize="@dimen/textsize_20_dp"
+        app:bl_corners_radius="@dimen/view_25_dp"
+        app:bl_solid_color="#DCDCF6"
+        app:bl_stroke_color="#BDBDE2"
+        app:bl_stroke_width="1dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tips_tv" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/seat_1_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/seat_1_text"
+        app:layout_constraintLeft_toLeftOf="@+id/seat_1_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_1_text"
+        app:layout_constraintTop_toTopOf="@+id/seat_1_text" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/seat_1_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:ellipsize="end"
+        android:maxWidth="@dimen/view_84_dp"
+        android:maxLines="1"
+        android:text="林三木林三木林三木林三木"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/seat_1_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_1_text"
+        app:layout_constraintTop_toBottomOf="@+id/seat_1_text" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/seat_1_seleced_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:background="@drawable/party_vote_select"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/seat_1_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_1_text" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/seat_2_text"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:gravity="center"
+        android:text="2"
+        android:textColor="#BDBDE2"
+        android:textSize="@dimen/textsize_20_dp"
+        app:bl_corners_radius="@dimen/view_25_dp"
+        app:bl_solid_color="#DCDCF6"
+        app:bl_stroke_color="#BDBDE2"
+        app:bl_stroke_width="1dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tips_tv" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/seat_2_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/seat_2_text"
+        app:layout_constraintLeft_toLeftOf="@+id/seat_2_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_2_text"
+        app:layout_constraintTop_toTopOf="@+id/seat_2_text" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/seat_2_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:ellipsize="end"
+        android:maxWidth="@dimen/view_84_dp"
+        android:maxLines="1"
+        android:text="林三木林三木林三木林三木"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/seat_2_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_2_text"
+        app:layout_constraintTop_toBottomOf="@+id/seat_2_text" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/seat_2_seleced_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:background="@drawable/party_vote_select"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/seat_2_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_2_text" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/seat_3_text"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_35_dp"
+        android:gravity="center"
+        android:text="3"
+        android:textColor="#BDBDE2"
+        android:textSize="@dimen/textsize_20_dp"
+        app:bl_corners_radius="@dimen/view_25_dp"
+        app:bl_solid_color="#DCDCF6"
+        app:bl_stroke_color="#BDBDE2"
+        app:bl_stroke_width="1dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tips_tv" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/seat_3_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/seat_3_text"
+        app:layout_constraintLeft_toLeftOf="@+id/seat_3_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_3_text"
+        app:layout_constraintTop_toTopOf="@+id/seat_3_text" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/seat_3_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:ellipsize="end"
+        android:maxWidth="@dimen/view_84_dp"
+        android:maxLines="1"
+        android:text="林三木林三木林三木林三木"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/seat_3_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_3_text"
+        app:layout_constraintTop_toBottomOf="@+id/seat_3_text" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/seat_3_seleced_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:background="@drawable/party_vote_select"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/seat_3_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_3_text" />
+
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/seat_4_text"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="@dimen/view_35_dp"
+        android:layout_marginTop="@dimen/view_102_dp"
+        android:gravity="center"
+        android:text="4"
+        android:textColor="#BDBDE2"
+        android:textSize="@dimen/textsize_20_dp"
+        app:bl_corners_radius="@dimen/view_25_dp"
+        app:bl_solid_color="#DCDCF6"
+        app:bl_stroke_color="#BDBDE2"
+        app:bl_stroke_width="1dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tips_tv" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/seat_4_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/seat_4_text"
+        app:layout_constraintLeft_toLeftOf="@+id/seat_4_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_4_text"
+        app:layout_constraintTop_toTopOf="@+id/seat_4_text" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/seat_4_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:ellipsize="end"
+        android:maxWidth="@dimen/view_84_dp"
+        android:maxLines="1"
+        android:text="林三木林三木林三木林三木"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/seat_4_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_4_text"
+        app:layout_constraintTop_toBottomOf="@+id/seat_4_text" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/seat_4_seleced_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:background="@drawable/party_vote_select"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/seat_4_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_4_text" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/seat_5_text"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/view_102_dp"
+        android:gravity="center"
+        android:text="5"
+        android:textColor="#BDBDE2"
+        android:textSize="@dimen/textsize_20_dp"
+        app:bl_corners_radius="@dimen/view_25_dp"
+        app:bl_solid_color="#DCDCF6"
+        app:bl_stroke_color="#BDBDE2"
+        app:bl_stroke_width="1dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tips_tv" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/seat_5_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/seat_5_text"
+        app:layout_constraintLeft_toLeftOf="@+id/seat_5_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_5_text"
+        app:layout_constraintTop_toTopOf="@+id/seat_5_text" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/seat_5_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:ellipsize="end"
+        android:maxWidth="@dimen/view_84_dp"
+        android:maxLines="1"
+        android:text="林三木林三木林三木林三木"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/seat_5_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_5_text"
+        app:layout_constraintTop_toBottomOf="@+id/seat_5_text" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/seat_5_seleced_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:background="@drawable/party_vote_select"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/seat_5_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_5_text" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/seat_6_text"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/view_102_dp"
+        android:layout_marginRight="@dimen/view_35_dp"
+        android:gravity="center"
+        android:text="6"
+        android:textColor="#BDBDE2"
+        android:textSize="@dimen/textsize_20_dp"
+        app:bl_corners_radius="@dimen/view_25_dp"
+        app:bl_solid_color="#DCDCF6"
+        app:bl_stroke_color="#BDBDE2"
+        app:bl_stroke_width="1dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tips_tv" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/seat_6_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/seat_6_text"
+        app:layout_constraintLeft_toLeftOf="@+id/seat_6_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_6_text"
+        app:layout_constraintTop_toTopOf="@+id/seat_6_text" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/seat_6_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:ellipsize="end"
+        android:maxWidth="@dimen/view_84_dp"
+        android:maxLines="1"
+        android:text="林三木林三木林三木林三木"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/seat_6_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_6_text"
+        app:layout_constraintTop_toBottomOf="@+id/seat_6_text" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/seat_6_seleced_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:background="@drawable/party_vote_select"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/seat_6_text"
+        app:layout_constraintRight_toRightOf="@+id/seat_6_text" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/send_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_15_dp"
+        android:background="@drawable/common_yellow_button_icon"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_30_dp"
+        android:paddingRight="@dimen/view_30_dp"
+        android:paddingBottom="@dimen/view_6_dp"
+        android:text="发起投票"
+        android:textColor="#8B572A"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</merge>
