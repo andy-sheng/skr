@@ -163,11 +163,15 @@ class RelayHomeActivity : BaseActivity() {
                     if (!loadMore && currentPosition >= ((adapter?.mDataList?.size
                                     ?: 0) - 3)) {
                         loadMore = true
-                        val lastItemSize = adapter?.mDataList?.get((adapter?.mDataList?.size
-                                ?: 0) - 1)?.list?.size ?: 0
-                        val diff = (adapter?.maxSize ?: 0) - lastItemSize
-                        // 尽量保障拉回来的数据和之前数据能组成满页
-                        getPlayBookList(offset, 3 * cnt + diff, false)
+                        if ((adapter?.mDataList?.size ?: 0) > 0) {
+                            val lastItemSize = adapter?.mDataList?.get((adapter?.mDataList?.size
+                                    ?: 0) - 1)?.list?.size ?: 0
+                            val diff = (adapter?.maxSize ?: 0) - lastItemSize
+                            // 尽量保障拉回来的数据和之前数据能组成满页
+                            getPlayBookList(offset, 3 * cnt + diff, false)
+                        } else {
+                            getPlayBookList(offset, 3 * cnt, false)
+                        }
                     }
                 }
             }

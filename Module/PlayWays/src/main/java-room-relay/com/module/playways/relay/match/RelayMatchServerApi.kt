@@ -24,12 +24,6 @@ interface RelayMatchServerApi {
     fun getPlayBookList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Call<ApiResult>
 
     /**
-     * 已唱歌单
-     */
-    @GET("http://dev.game.inframe.mobi/v1/relaygame/list-playbook-items")
-    fun getRelayMusicItems(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Long): Call<ApiResult>
-
-    /**
      * 列出匹配中的列表
      */
     @GET("http://dev.game.inframe.mobi/v1/relaygame/list-match-items")
