@@ -1,6 +1,8 @@
 package com.zq.engine.avstatistics.datastruct;
 
 
+import android.text.TextUtils;
+
 import com.zq.engine.avstatistics.SUtils;
 
 import org.json.JSONException;
@@ -132,7 +134,7 @@ public class Skr
                 jsObj.put("tsStr", SUtils.transTime(ts));
                 jsObj.put("tsValue", ts);
 
-                boolean isHttp = urlInUse.startsWith("http://") || url.startsWith("https://");
+                boolean isHttp = !TextUtils.isEmpty(urlInUse) && (urlInUse.startsWith("http://") || urlInUse.startsWith("https://"));
                 jsObj.put("cdnType", cdnType);
                 jsObj.put("enableCache", enableCache);
                 jsObj.put("extAudio", extAudio);
@@ -183,7 +185,7 @@ public class Skr
                 jsObj.put("tsStr", SUtils.transTime(ts));
                 jsObj.put("tsValue", ts);
 
-                boolean isHttp = urlInUse.startsWith("http://") || url.startsWith("https://");
+                boolean isHttp = !TextUtils.isEmpty(urlInUse) && (urlInUse.startsWith("http://") || urlInUse.startsWith("https://"));
                 jsObj.put("cdnType", cdnType);
                 jsObj.put("enableCache", enableCache);
                 jsObj.put("extAudio", extAudio);
@@ -194,7 +196,7 @@ public class Skr
                 jsObj.put("isPrepared", isPrepared);
                 jsObj.put("stopReason", stopReason);
                 jsObj.put("errCode", errCode);
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
