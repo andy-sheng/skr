@@ -113,7 +113,7 @@ class RelayHistorySongFragment : BaseFragment() {
     fun getPlayBookList(off: Int, clean: Boolean) {
         launch {
             val result = subscribe(RequestControl("getPlayBookList", ControlType.CancelThis)) {
-                relayMatchServerApi.getRelayMusicItems(off, cnt, MyUserInfoManager.uid)
+                relayMatchServerApi.getRelayClickedMusicItmes(off, cnt, MyUserInfoManager.uid.toInt())
             }
 
             if (result.errno == 0) {
