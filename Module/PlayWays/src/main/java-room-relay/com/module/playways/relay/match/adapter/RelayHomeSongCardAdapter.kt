@@ -57,7 +57,12 @@ class RelayHomeSongCardAdapter(val maxSize: Int) : RecyclerView.Adapter<RelayHom
             }
 
             // 必须得从oldSize - 1开始change，数据得间隔会不对
-            notifyItemRangeChanged(oldSize - 1, mDataList.size - oldSize + 1)
+            if (oldSize > 0) {
+                notifyItemRangeChanged(oldSize - 1, mDataList.size - oldSize + 1)
+            } else {
+                notifyItemRangeChanged(0, mDataList.size)
+            }
+
         }
     }
 
