@@ -31,6 +31,7 @@ import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.model.PartySeatInfoModel
 import com.module.playways.party.room.ui.IPartyRoomView
+import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
@@ -1137,6 +1138,14 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         roomView.showWarningDialog(event.msg)
     }
 
+    // 开始抢答
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PBeginQuickAnswer) {
+        MyLog.d(TAG, "onEvent event = $event")
+        H.partyRoomData?.quickAnswerTag =  event.quickAnswerTag
+        roomView.beginQuickAnswer(event.beginTimeMs.toInt())
+    }
+
     // 有人抢答
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PResponseQuickAnswer) {
@@ -1149,6 +1158,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     fun onEvent(event: PResultQuickAnswer) {
         MyLog.d(TAG, "onEvent event = $event")
     }
+
+
     // TODO sync
     /**
      * 同步

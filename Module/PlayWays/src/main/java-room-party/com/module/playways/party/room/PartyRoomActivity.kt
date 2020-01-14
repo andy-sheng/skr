@@ -426,7 +426,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mPartySettingView = PartySettingView(findViewById(R.id.party_bottom_setting_viewStub))
         mPartySettingView?.listener = object : PartySettingView.Listener {
             override fun onClickQuickAnswer() {
-                mCorePresenter.beginQuickAnswer()
+                //mCorePresenter.beginQuickAnswer()
+
             }
 
             override fun onClickGameSetting() {
@@ -896,5 +897,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mTipsDialogView = TipsDialogView.Builder(this)
                 .setMessageTip(warningMsg).build()
         mTipsDialogView?.showByDialog()
+    }
+
+    override fun beginQuickAnswer(beginTs: Int) {
+        mRightQuickAnswerView?.playCountDown(beginTs)
     }
 }

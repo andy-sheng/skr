@@ -19,6 +19,7 @@ interface IPartyRoomView {
     fun showWarningDialog(warningMsg: String)
 
     fun showVoteView(event: PBeginVote)
+    fun beginQuickAnswer(toInt: Int)
 //    fun turnChange()
 
 //

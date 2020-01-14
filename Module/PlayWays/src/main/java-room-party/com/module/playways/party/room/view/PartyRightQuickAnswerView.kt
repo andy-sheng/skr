@@ -248,24 +248,16 @@ class PartyRightQuickAnswerView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
         }
     }
 
-    // 开始抢答
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PBeginQuickAnswer) {
-        MyLog.d(TAG, "onEvent event = $event")
-        H.partyRoomData?.quickAnswerTag =  event.quickAnswerTag
-        playCountDown(event.beginTimeMs.toInt())
-    }
-
     override fun onViewAttachedToWindow(v: View) {
         super.onViewAttachedToWindow(v)
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this)
-        }
+//        if (!EventBus.getDefault().isRegistered(this)) {
+//            EventBus.getDefault().register(this)
+//        }
     }
 
     override fun onViewDetachedFromWindow(v: View) {
         super.onViewDetachedFromWindow(v)
-        EventBus.getDefault().unregister(this)
+//        EventBus.getDefault().unregister(this)
         reset()
     }
 
