@@ -19,38 +19,37 @@
 
     <ImageView
         android:id="@+id/relay_iv"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_10_dp"
         android:adjustViewBounds="true"
         android:background="@drawable/quick_relay_icon"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/grab_iv" />
-
-    <ImageView
-        android:id="@+id/race_iv"
-        android:layout_width="@dimen/view_0_dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_5_dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/quick_race_icon"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/party_iv"
-        app:layout_constraintTop_toBottomOf="@id/relay_iv" />
+        app:layout_constraintTop_toBottomOf="@id/grab_iv" />
 
     <ImageView
         android:id="@+id/party_iv"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_5_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
         android:adjustViewBounds="true"
         android:background="@drawable/quick_party_icon"
-        app:layout_constraintLeft_toRightOf="@id/race_iv"
+        app:layout_constraintLeft_toRightOf="@id/relay_iv"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/relay_iv" />
+        app:layout_constraintTop_toTopOf="@id/relay_iv" />
+
+    <ImageView
+        android:id="@+id/race_iv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:background="@drawable/quick_race_icon"
+        app:layout_constraintLeft_toLeftOf="@id/party_iv"
+        app:layout_constraintRight_toRightOf="@id/party_iv"
+        app:layout_constraintTop_toBottomOf="@id/party_iv"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintBottom_toBottomOf="@id/relay_iv"/>
 
     <com.common.view.ex.ExImageView
         android:id="@+id/level_bg"
@@ -59,7 +58,7 @@
         android:layout_marginBottom="@dimen/view_12_dp"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#b34B6BEB"
+        app:bl_solid_color="#EECC86"
         app:layout_constraintBottom_toBottomOf="@id/race_iv"
         app:layout_constraintLeft_toLeftOf="@id/race_iv"
         app:layout_constraintRight_toRightOf="@id/race_iv" />
@@ -80,7 +79,7 @@
         android:layout_marginLeft="@dimen/view_8_dp"
         android:gravity="center"
         android:text="钻石巨星II"
-        android:textColor="#FFC15B"
+        android:textColor="#8B572A"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintLeft_toRightOf="@id/level_iv"
         app:layout_constraintTop_toTopOf="@id/level_iv" />
@@ -94,7 +93,7 @@
         android:maxLines="1"
         android:singleLine="true"
         android:text="朝阳区 第26名"
-        android:textColor="@color/white"
+        android:textColor="#8B572A"
         android:textSize="@dimen/textsize_10_dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintHorizontal_bias="0"
@@ -109,7 +108,7 @@
         android:layout_marginBottom="@dimen/view_12_dp"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#b3AD70E8"
+        app:bl_solid_color="#9BBEEB"
         app:layout_constraintBottom_toBottomOf="@id/party_iv"
         app:layout_constraintLeft_toLeftOf="@id/party_iv"
         app:layout_constraintRight_toRightOf="@id/party_iv" />
@@ -118,8 +117,8 @@
         android:id="@+id/party_recycler"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_0_dp"
-        app:layout_constrainedWidth="true"
         app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@id/party_bg"
         app:layout_constraintLeft_toLeftOf="@id/party_bg"
         app:layout_constraintRight_toRightOf="@id/party_bg"
@@ -132,6 +131,6 @@
         app:layout_constraintBottom_toBottomOf="@id/party_bg"
         app:layout_constraintLeft_toLeftOf="@id/party_bg"
         app:layout_constraintRight_toRightOf="@id/party_bg"
-        app:layout_constraintTop_toTopOf="@id/party_bg"/>
+        app:layout_constraintTop_toTopOf="@id/party_bg" />
 
 </android.support.constraint.ConstraintLayout>

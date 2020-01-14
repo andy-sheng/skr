@@ -33,7 +33,6 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 class ClubHomeView(context: Context) : ConstraintLayout(context), IClubHomeView, CoroutineScope by MainScope() {
-
     private val refreshLayout: SmartRefreshLayout
     private val recyclerView: RecyclerView
     private val adapter: ClubHomeAdapter
@@ -145,6 +144,10 @@ class ClubHomeView(context: Context) : ConstraintLayout(context), IClubHomeView,
             }
         }
 
+    }
+
+    override fun autoToHead() {
+        recyclerView.smoothScrollToPosition(0)
     }
 
     override fun stopTimer() {

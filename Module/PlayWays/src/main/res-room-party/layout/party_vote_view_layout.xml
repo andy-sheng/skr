@@ -3,19 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_280_dp"
+    android:layout_height="@dimen/view_350_dp"
     tools:parentTag="android.support.constraint.ConstraintLayout">
 
     <com.common.view.ex.ExImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/view_70_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_solid_color="@color/white" />
+        app:bl_solid_color="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/left_bg"
         android:layout_width="0dp"
         android:layout_height="@dimen/view_200_dp"
+        android:layout_marginTop="@dimen/view_70_dp"
         android:layout_marginRight="@dimen/view_dimen_1"
         app:bl_corners_topLeftRadius="@dimen/view_16_dp"
         app:bl_gradient_endColor="#FFF1FA"
@@ -29,11 +33,13 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/view_200_dp"
         android:layout_marginLeft="@dimen/view_dimen_1"
+        android:layout_marginTop="@dimen/view_70_dp"
         app:bl_corners_topRightRadius="@dimen/view_16_dp"
         app:bl_gradient_endColor="#EBECFF"
         app:bl_gradient_startColor="#8B90FF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/left_bg" />
+        app:layout_constraintStart_toEndOf="@+id/left_bg"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/left_avatar_iv"
@@ -43,6 +49,13 @@
         app:layout_constraintLeft_toLeftOf="@+id/left_bg"
         app:layout_constraintRight_toRightOf="@+id/left_bg"
         app:layout_constraintTop_toTopOf="@+id/left_bg" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/left_svga_iv"
+        android:layout_width="@dimen/view_150_dp"
+        android:layout_height="@dimen/view_150_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/left_bg"
+        app:layout_constraintRight_toRightOf="@+id/left_bg" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/left_name_tv"
@@ -61,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_2_dp"
-        android:text="04"
+        android:text="0"
         android:textColor="#AF4970"
         android:textSize="@dimen/textsize_24_dp"
         app:layout_constraintEnd_toStartOf="@+id/left_ticket_name"
@@ -96,7 +109,14 @@
         app:bl_gradient_startColor="#FFBDD6"
         app:layout_constraintLeft_toLeftOf="@+id/left_bg"
         app:layout_constraintRight_toRightOf="@+id/left_bg"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/left_bg" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/right_svga_iv"
+        android:layout_width="@dimen/view_150_dp"
+        android:layout_height="@dimen/view_150_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/right_bg"
+        app:layout_constraintRight_toRightOf="@+id/right_bg" />
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/right_avatar_iv"
@@ -124,8 +144,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_2_dp"
-        android:text="04"
-        android:textColor="#AF4970"
+        android:text="0"
+        android:textColor="#4A5FAF"
         android:textSize="@dimen/textsize_24_dp"
         app:layout_constraintEnd_toStartOf="@+id/right_ticket_name"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -159,7 +179,7 @@
         app:bl_gradient_startColor="#C5EAFF"
         app:layout_constraintLeft_toLeftOf="@+id/right_bg"
         app:layout_constraintRight_toRightOf="@+id/right_bg"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/right_bg" />
 
     <com.common.view.ex.ExTextView
         android:layout_width="wrap_content"
@@ -176,10 +196,12 @@
         android:id="@+id/count_down_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="9s"
+        android:background="@drawable/party_count_down_bg"
+        android:gravity="center"
+        android:paddingBottom="@dimen/view_10_dp"
+        android:text="0"
         android:textColor="#495EAF"
         android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintBottom_toBottomOf="@+id/left_buttom"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/left_buttom" />

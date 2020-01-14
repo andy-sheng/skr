@@ -9,4 +9,6 @@ public interface IFriendRoomView {
     void stopPlay();
 
     void destory();
+
+    void autoToHead();
 }

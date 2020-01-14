@@ -2,12 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_112_dp">
+    android:layout_height="@dimen/view_84_dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/club_logo_sdv"
-        android:layout_width="@dimen/view_80_dp"
-        android:layout_height="@dimen/view_80_dp"
+        android:layout_width="@dimen/view_64_dp"
+        android:layout_height="@dimen/view_64_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -18,7 +18,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_2_dp"
         android:layout_marginRight="@dimen/view_16_dp"
         android:ellipsize="end"
         android:gravity="center"
@@ -26,10 +25,10 @@
         android:singleLine="true"
         android:text="迪丽热巴后援团"
         android:textColor="@color/black_trans_80"
-        android:textSize="@dimen/textsize_16_dp"
+        android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@id/popular_tv"
+        app:layout_constraintBottom_toTopOf="@id/club_desc_tv"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toRightOf="@id/club_logo_sdv"
         app:layout_constraintRight_toRightOf="parent"
@@ -37,47 +36,60 @@
         app:layout_constraintVertical_chainStyle="packed" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/popular_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_18_dp"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_4_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:drawableLeft="@drawable/party_hot_icon"
-        android:drawablePadding="@dimen/view_5_dp"
-        android:gravity="center"
-        android:paddingLeft="@dimen/view_8_dp"
-        android:paddingRight="@dimen/view_8_dp"
-        android:text="主持迪丽东八里"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_12_dp"
-        app:bl_corners_radius="@dimen/view_10_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#8029164B"
-        app:layout_constraintBottom_toTopOf="@id/club_desc_tv"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintLeft_toRightOf="@id/club_logo_sdv"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/club_name_tv" />
-
-    <com.common.view.ex.ExTextView
         android:id="@+id/club_desc_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_18_dp"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_4_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:ellipsize="end"
         android:gravity="center"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/club_logo_sdv"
+        app:layout_constraintBottom_toTopOf="@id/club_num_tv"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toRightOf="@id/club_logo_sdv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/club_name_tv" />
+
+    <TextView
+        android:id="@+id/club_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_6_dp"
+        android:drawableLeft="@drawable/player_top_icon"
+        android:drawablePadding="@dimen/view_2_dp"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintBottom_toBottomOf="@id/club_logo_sdv"
         app:layout_constraintLeft_toRightOf="@id/club_logo_sdv"
-        app:layout_constraintTop_toBottomOf="@id/popular_tv" />
+        app:layout_constraintTop_toBottomOf="@id/club_desc_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/popular_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:drawableLeft="@drawable/party_hot_icon"
+        android:drawablePadding="@dimen/view_2_dp"
+        android:gravity="center"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="@id/club_num_tv"
+        app:layout_constraintLeft_toRightOf="@id/club_num_tv"
+        app:layout_constraintTop_toTopOf="@id/club_num_tv" />
+
 
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
-        android:background="@color/black_trans_10"
+        android:background="@color/black_trans_5"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

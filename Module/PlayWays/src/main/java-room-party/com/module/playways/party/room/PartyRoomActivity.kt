@@ -32,6 +32,7 @@ import com.component.toast.CommonToastView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.IHomeService
+import com.module.playways.BaseRoomData
 import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
 import com.module.playways.grab.room.inter.IGrabVipView
@@ -76,6 +77,7 @@ import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.live.proto.PartyRoom.PBeginVote
 import com.zq.live.proto.PartyRoom.PKickoutUserMsg
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -857,6 +859,15 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
      */
     override fun gameBegin(thisRound: PartyRoundInfoModel?) {
         mPartyGameMainView?.updateRound(thisRound)
+    }
+
+    override fun showVoteView(event: PBeginVote) {
+        if ((System.currentTimeMillis() - BaseRoomData.shiftTsForRelay) - event.beginTimeMs >= event.endTimeMs - event.beginTimeMs) {
+            MyLog.w(TAG, "已经过了投票时间，PBeginVote event.voteTag is ${event.voteTag}")
+        } else {
+            val partyVoteDialogView = PartyVoteDialogView(this@PartyRoomActivity, event)
+            partyVoteDialogView.showByDialog()
+        }
     }
 
     /**

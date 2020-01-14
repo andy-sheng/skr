@@ -31,6 +31,12 @@ interface PartyRoomServerApi {
     fun getRecommendClubList(@Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 
     /**
+     * 获取投票结果
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partygame/result-vote")
+    fun getVoteResult(@Query("roomID") roomID: Int, @Query("voteTag") voteTag: String): Call<ApiResult>
+
+    /**
      * 进入房间 {"joinSrc": "JRS_UNKNOWN","platform": "PF_UNKNOWN","roomID": 0}
      */
     @PUT("http://dev.game.inframe.mobi/v1/partyroom/join-room")
@@ -300,6 +306,16 @@ interface PartyRoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/partygame/begin-vote")
     fun beginVote(@Body body: RequestBody): Call<ApiResult>
 
+    /**进行投票
+     * {
+    {
+    "beVotedUserID": 0,
+    "roomID": 0,
+    "voteTag": "string"
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/response-vote")
+    fun vote(@Body body: RequestBody): Call<ApiResult>
 
     /**开始抢
      * {

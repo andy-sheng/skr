@@ -172,6 +172,8 @@ public class Skr
         public long stopReason = 0;
         // 播放出错的错误码
         public long errCode = 0;
+        // 播放过程中的重试次数
+        public long retriedCount = 0;
 
         @Override
         public String toString() {
@@ -196,6 +198,7 @@ public class Skr
                 jsObj.put("isPrepared", isPrepared);
                 jsObj.put("stopReason", stopReason);
                 jsObj.put("errCode", errCode);
+                jsObj.put("retriedCount", retriedCount);
             } catch (Exception e) {
                 e.printStackTrace();
             }

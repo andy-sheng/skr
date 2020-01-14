@@ -263,6 +263,10 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
                 })
     }
 
+    override fun autoToHead() {
+        recycler_view.smoothScrollToPosition(0)
+    }
+
     override fun stopTimer() {
         mRecommendTimer?.dispose()
     }

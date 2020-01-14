@@ -47,6 +47,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExLinearLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
+import com.component.busilib.event.GameTabRefreshEvent;
 import com.component.busilib.event.PostsPublishSucessEvent;
 import com.component.busilib.event.PostsWatchTabRefreshEvent;
 import com.component.busilib.manager.WeakRedDotManager;
@@ -230,6 +231,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mGameArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
+                if (mMainVp.getCurrentItem() == 0) {
+                    EventBus.getDefault().post(new GameTabRefreshEvent());
+                }
                 mMainVp.setCurrentItem(0, false);
                 selectTab(0);
             }
@@ -247,7 +251,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                             map.put("key1", 2);
                             FlutterBoostController.INSTANCE.openFlutterPage(HomeActivity.this, RouterConstants.FLUTTER_PAGE_RELAY_RESULT, null, 0);
                         }
-                    },5000);
+                    }, 5000);
                     return false;
                 }
             });

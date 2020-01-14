@@ -5,6 +5,7 @@ import android.os.Message
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoManager
 import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
@@ -65,6 +66,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     internal var mRoomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
 
     internal var mDestroyed = false
+
+    //上次显示投票的时间
+    var voteDialogTs = 0L
 
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -171,6 +175,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                 JiGuangPush.joinSkrRoomId(mRoomData.gameId.toString())
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PResultVote) {
+        pretendSystemMsg("投票结果：${UserInfoManager.getInstance().getRemarkName(event.voteInfosList[0].user.userInfo.userID, event.voteInfosList[0].user.userInfo.nickName)} ${event.voteInfosList[0].voteCnt}票  ${UserInfoManager.getInstance().getRemarkName(event.voteInfosList[1].user.userInfo.userID, event.voteInfosList[1].user.userInfo.nickName)} ${event.voteInfosList[1].voteCnt}票")
     }
 
     private fun ensureInRcRoom() {
@@ -473,8 +482,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                     // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
                     processSyncResult(false, gameOverTimeMs, onlineUserCnt, applyUserCnt, seats, users, thisRound)
                 }
-                if(result.data.getBooleanValue("mustExitRoom")){
-                    MyLog.i(TAG,"mustExitRoom == true 可能被封禁了")
+                if (result.data.getBooleanValue("mustExitRoom")) {
+                    MyLog.i(TAG, "mustExitRoom == true 可能被封禁了")
                     roomView.gameOver()
                 }
             } else {
@@ -602,6 +611,16 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     fun onEvent(event: PartyHostChangeEvent) {
         if (mRoomData.myUserInfo?.isHost() == true) {
             startHeartbeat()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PBeginVote) {
+        if (event.beginTimeMs > voteDialogTs) {
+            voteDialogTs = event.beginTimeMs
+            roomView.showVoteView(event)
+        } else {
+            MyLog.w(TAG, "PBeginVote已经过去的投票")
         }
     }
 
@@ -1105,7 +1124,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PRoomWarningMsg) {
         MyLog.d(TAG, "onEvent event = $event")
-        if(mRoomData.myUserInfo?.isHost() ==true || mRoomData.myUserInfo?.isAdmin() ==true) {
+        if (mRoomData.myUserInfo?.isHost() == true || mRoomData.myUserInfo?.isAdmin() == true) {
             roomView.showWarningDialog(event.warningMsg)
         }
     }

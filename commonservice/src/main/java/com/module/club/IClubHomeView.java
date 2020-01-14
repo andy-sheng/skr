@@ -7,4 +7,6 @@ public interface IClubHomeView {
     void stopTimer();
 
     void destory();
+
+    void autoToHead();
 }

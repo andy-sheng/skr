@@ -177,7 +177,7 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         launch {
-            var result = subscribe(RequestControl("takeClubHost", ControlType.CancelThis)) {
+            var result = subscribe(RequestControl("sendVote", ControlType.CancelThis)) {
                 roomServerApi.beginVote(body)
             }
             if (result.errno == 0) {

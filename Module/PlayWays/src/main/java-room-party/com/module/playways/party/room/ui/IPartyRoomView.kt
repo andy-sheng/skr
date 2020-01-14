@@ -2,6 +2,7 @@ package com.module.playways.party.room.ui
 
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
+import com.zq.live.proto.PartyRoom.PBeginVote
 
 interface IPartyRoomView {
 
@@ -14,7 +15,10 @@ interface IPartyRoomView {
     fun joinNotice(model: PartyPlayerInfoModel?)
 
     fun gameOver()
+
     fun showWarningDialog(warningMsg: String)
+
+    fun showVoteView(event: PBeginVote)
 //    fun turnChange()
 
 //
