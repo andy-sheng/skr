@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.Gravity
 import android.view.View
 import com.alibaba.fastjson.JSON
+import com.common.anim.svga.SvgaParserAdapter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.view.setDebounceViewClickListener
@@ -26,6 +27,10 @@ import com.module.playways.party.room.model.PartyVoteResultModel
 import com.module.playways.room.data.H
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
+import com.opensource.svgaplayer.SVGADrawable
+import com.opensource.svgaplayer.SVGAImageView
+import com.opensource.svgaplayer.SVGAParser
+import com.opensource.svgaplayer.SVGAVideoEntity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.PartyRoom.PBeginVote
@@ -54,11 +59,13 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
     val leftTicketTv: ExTextView
     val leftTicketName: ExTextView
     val leftButtom: ExTextView
+    val leftSVGA: SVGAImageView
     val rightAvatarIv: BaseImageView
     val rightNameTv: ExTextView
     val rightTicketTv: ExTextView
     val rightTicketName: ExTextView
     val rightButtom: ExTextView
+    val rightSVGA: SVGAImageView
     val countDownTv: ExTextView
 
     var isVoting = true
@@ -76,11 +83,13 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
         leftTicketTv = this.findViewById(R.id.left_ticket_tv)
         leftTicketName = this.findViewById(R.id.left_ticket_name)
         leftButtom = this.findViewById(R.id.left_buttom)
+        leftSVGA = this.findViewById(R.id.left_svga_iv)
         rightAvatarIv = this.findViewById(R.id.right_avatar_iv)
         rightNameTv = this.findViewById(R.id.right_name_tv)
         rightTicketTv = this.findViewById(R.id.right_ticket_tv)
         rightTicketName = this.findViewById(R.id.right_ticket_name)
         rightButtom = this.findViewById(R.id.right_buttom)
+        rightSVGA = this.findViewById(R.id.right_svga_iv)
         countDownTv = this.findViewById(R.id.count_down_tv)
         setData()
 
@@ -183,17 +192,35 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
 
     private fun showWinner(leftCnt: Int, rightCnt: Int) {
         if (leftCnt > rightCnt) {
-
+            tryPlayAnima(leftSVGA)
         } else if (leftCnt < rightCnt) {
-
+            tryPlayAnima(rightSVGA)
         } else {
-
+            tryPlayAnima(leftSVGA)
+            tryPlayAnima(rightSVGA)
         }
 
         launch {
             delay(3000)
             dismiss(false)
         }
+    }
+
+    private fun tryPlayAnima(svgaImageView: SVGAImageView) {
+        svgaImageView.clearAnimation()
+        svgaImageView.visibility = View.VISIBLE
+        svgaImageView.loops = 1
+        SvgaParserAdapter.parse("vote_star.svga", object : SVGAParser.ParseCompletion {
+            override fun onComplete(videoItem: SVGAVideoEntity) {
+                val drawable = SVGADrawable(videoItem)
+                svgaImageView.setImageDrawable(drawable)
+                svgaImageView.startAnimation()
+            }
+
+            override fun onError() {
+
+            }
+        })
     }
 
     private fun vote(userID: Int) {
@@ -295,7 +322,7 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
                 .setExpanded(false)
                 .setMargin(U.getDisplayUtils().dip2px(10f), 0, U.getDisplayUtils().dip2px(10f), U.getDisplayUtils().dip2px(10f))
                 .setCancelable(canCancel)
-                .setContentHeight(U.getDisplayUtils().dip2px(280f))
+                .setContentHeight(U.getDisplayUtils().dip2px(350f))
                 .create()
         mDialogPlus?.show()
     }
