@@ -70,7 +70,7 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
     val guestSelectedImgList: ArrayList<ExImageView> = ArrayList(6)
 
     val selectedSeatIndex: ArrayList<Int> = ArrayList(2)
-    var selectedSendMode: Int = 0
+    var selectedSendMode: Int = 2
 
     private val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
 
@@ -132,34 +132,18 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
         inMicTv.setDebounceViewClickListener {
             inMicSelectedIv.visibility = View.VISIBLE
             allManSelectedIv.visibility = View.GONE
-            selectedSendMode = 0
+            selectedSendMode = 1
         }
 
         allManTv.setDebounceViewClickListener {
             inMicSelectedIv.visibility = View.GONE
             allManSelectedIv.visibility = View.VISIBLE
-            selectedSendMode = 1
+            selectedSendMode = 2
         }
 
         sendIv.setDebounceViewClickListener {
             if (selectedSeatIndex.size >= 2) {
-                mDialogPlus?.dismiss(false)
-
-                val map = HashMap<String, Any?>()
-                map["roomID"] = H.partyRoomData?.gameId
-//                map["curHostUserID"] = mRoomData.hostId
-
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                launch {
-                    var result = subscribe(RequestControl("takeClubHost", ControlType.CancelThis)) {
-                        roomServerApi.beginVote(body)
-                    }
-                    if (result.errno == 0) {
-
-                    } else {
-                        U.getToastUtil().showShort(result.errmsg)
-                    }
-                }
+                sendVote()
             } else {
                 U.getToastUtil().showShort("请选择两个人")
             }
@@ -176,6 +160,31 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
         guestAvatarList.forEachIndexed { index, baseImageView ->
             H.partyRoomData?.getSeatInfoMap()?.get(index + 1)?.player?.let {
                 setClickListener(baseImageView, index + 1)
+            }
+        }
+    }
+
+    private fun sendVote() {
+        val map = HashMap<String, Any?>()
+        map["roomID"] = H.partyRoomData?.gameId
+        map["scope"] = selectedSendMode
+
+        val list = ArrayList<Int>()
+        selectedSeatIndex.forEach {
+            list.add(guestAvatarList.get(it - 1).getTag() as Int)
+        }
+        map["beVotedUserIDs"] = list
+
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe(RequestControl("takeClubHost", ControlType.CancelThis)) {
+                roomServerApi.beginVote(body)
+            }
+            if (result.errno == 0) {
+                dismiss(false)
+//                U.getToastUtil().showShort("")
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
             }
         }
     }
@@ -199,6 +208,7 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
     private fun showGuestInfo(seatIndex: Int, info: PartyPlayerInfoModel?) {
         MyLog.d("PartySendVoteDialogView", "showGuestInfo seatIndex = $seatIndex, info = $info")
         if (info != null) {
+            guestAvatarList[seatIndex - 1].setTag(info.userID)
             guestNameList[seatIndex - 1].text = info.userInfo.nicknameRemark
             guestAvatarList[seatIndex - 1].visibility = View.VISIBLE
             AvatarUtils.loadAvatarByUrl(guestAvatarList[seatIndex - 1],
