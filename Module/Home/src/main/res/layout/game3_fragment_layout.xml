@@ -50,14 +50,5 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/game_tab" />
 
-    <ImageView
-        android:id="@+id/invite_friend_iv"
-        android:layout_width="@dimen/view_110_dp"
-        android:layout_height="@dimen/view_40_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:layout_marginBottom="@dimen/view_5_dp"
-        android:background="@drawable/game_home_invite_icon"
-        app:layout_constraintBottom_toTopOf="@id/game_vp"
-        app:layout_constraintRight_toRightOf="parent" />
 
 </com.common.view.ex.ExConstraintLayout>

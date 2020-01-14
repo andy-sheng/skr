@@ -197,17 +197,17 @@ class FriendRoomGrabViewHolder(itemView: View, var mOnItemClickListener: FriendR
                 .build()
 
         when (position % 4) {
-            0 -> {
+            1 -> {
                 container.background = drawable1
                 bottomBg.background = drawableBottom1
                 topIconIv.background = topDrawable1
             }
-            1 -> {
+            2 -> {
                 container.background = drawable2
                 bottomBg.background = drawableBottom2
                 topIconIv.background = topDrawable2
             }
-            2 -> {
+            3 -> {
                 container.background = drawable3
                 bottomBg.background = drawableBottom3
                 topIconIv.background = topDrawable3

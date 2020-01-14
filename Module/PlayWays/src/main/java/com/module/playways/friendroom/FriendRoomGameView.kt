@@ -100,6 +100,10 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
 
         recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         friendRoomAdapter = FriendRoomAdapter(object : FriendRoomAdapter.FriendRoomClickListener {
+            override fun onClickInvite() {
+                showShareDialog()
+            }
+
             override fun onClickGrabRoom(position: Int, model: RecommendRoomModel?) {
                 // 进入抢唱房间
                 SinglePlayer.stop(playerTag)
@@ -117,13 +121,6 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
                         }
                     } else {
                         MyLog.w(mTag, "friendRoomModel == null or friendRoomModel.getRoomInfo() == null")
-                    }
-                } else {
-                    if (position == 0) {
-                        StatisticsAdapter.recordCountEvent("grab", "1.1tab_invite", null)
-                        showShareDialog()
-                    } else {
-                        MyLog.w(mTag, "onClickFriendRoom position=$position model=$model")
                     }
                 }
             }
