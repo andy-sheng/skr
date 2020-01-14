@@ -201,7 +201,9 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
     }
 
     private fun showWinner(leftCnt: Int, rightCnt: Int) {
-        if (leftCnt > rightCnt) {
+        if (leftCnt == 0 && rightCnt == 0) {
+            //什么都不做
+        } else if (leftCnt > rightCnt) {
             tryPlayAnima(leftSVGA)
         } else if (leftCnt < rightCnt) {
             tryPlayAnima(rightSVGA)
