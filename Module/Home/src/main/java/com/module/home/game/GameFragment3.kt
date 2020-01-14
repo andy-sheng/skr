@@ -19,6 +19,7 @@ import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
+import com.component.busilib.event.GameTabRefreshEvent
 import com.component.dialog.InviteFriendDialog
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
@@ -292,6 +293,22 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
     override fun isBlackStatusBarText(): Boolean {
         return false
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: GameTabRefreshEvent) {
+        when {
+            mGameVp.currentItem == 0 -> {
+                // 好友页面，是否需要回到顶部
+                mFriendRoomGameView.autoToHead()
+            }
+            mGameVp.currentItem == 1 -> {
+
+            }
+            mGameVp.currentItem == 2 -> {
+                mClubHomeView.autoToHead()
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
