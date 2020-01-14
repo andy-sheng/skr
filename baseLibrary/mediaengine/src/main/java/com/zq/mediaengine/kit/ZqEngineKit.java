@@ -199,11 +199,13 @@ public class ZqEngineKit implements AgoraOutCallback {
     private String mCdnType = "";
     private boolean mAccEnableCache = false;
     private String mAccUrlInUse;
+    private long mAccFirstStartTime;
     private long mAccStartTime;
     private boolean mIsAccPrepared;
     private boolean mAccPreparedSent = false;
     private long mAccRecoverPosition = 0;
     private int mAccRemainedLoopCount = 0;
+    private int mAccRetriedCount = 0;
 
     private HeadSetReceiver mHeadSetReceiver;
     protected boolean mHeadSetPlugged = false;
@@ -483,7 +485,10 @@ public class ZqEngineKit implements AgoraOutCallback {
             }
             mAccPreparedSent = true;
         } else if (state == Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_ERROR) {
-            doUploadAccStopEvent(1, errorCode);
+            if (mIsAccPrepared) {
+                // 仅在播放开始后出错才上报
+                doUploadAccStopEvent(1, errorCode);
+            }
             if (mCustomHandlerThread != null) {
                 if (mIsAccPrepared) {
                     mAccRecoverPosition = getAudioMixingCurrentPosition();
@@ -497,6 +502,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                     }
                     MyLog.i(TAG, "retry acc playback with pos: " + mAccRecoverPosition + " remainLoopCount: " + mAccRemainedLoopCount);
                     doStopAudioMixing();
+                    mAccRetriedCount++;
                     doStartAudioMixing(mAccUrlInUse, mAccRecoverPosition, mAccRemainedLoopCount);
                 }, 100);
             }
@@ -1715,6 +1721,10 @@ public class ZqEngineKit implements AgoraOutCallback {
                         mAccPreparedSent = false;
                         mAccRecoverPosition = 0;
                         mAccRemainedLoopCount = cycle;
+                        mIsAccPrepared = false;
+                        mAccRetriedCount = 0;
+                        mAccFirstStartTime = System.currentTimeMillis();
+                        mAccStartTime = mAccFirstStartTime;
                         mAccUrlInUse = getUrlToPlay();
                         doStartAudioMixing(mAccUrlInUse, 0, cycle);
                     } else {
@@ -1731,8 +1741,10 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void doStartAudioMixing(String url, long startOffset, int loopCount) {
-        mAccStartTime = System.currentTimeMillis();
-        mIsAccPrepared = false;
+        if (mIsAccPrepared) {
+            mAccStartTime = System.currentTimeMillis();
+            mIsAccPrepared = false;
+        }
         if (mConfig.isUseExternalAudio()) {
             mAudioPlayerCapture.start(url, startOffset, -1, loopCount);
         } else {
@@ -1799,8 +1811,8 @@ public class ZqEngineKit implements AgoraOutCallback {
         MyLog.i(TAG, "doUploadAccStopEvent reason: " + stopReason + " err: " + errCode);
         long now = System.currentTimeMillis();
         long duration = -1;
-        if (mAccStartTime > 0) {
-            duration = now - mAccStartTime;
+        if (mAccFirstStartTime > 0) {
+            duration = now - mAccFirstStartTime;
         }
 
         Skr.PlayerStopInfo stopInfo = new Skr.PlayerStopInfo();
@@ -1813,6 +1825,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         stopInfo.isPrepared = mIsAccPrepared ? 1 : 0;
         stopInfo.stopReason = stopReason;
         stopInfo.errCode = errCode;
+        stopInfo.retriedCount = mAccRetriedCount;
         SDataManager.getInstance().getDataHolder().addPlayerStopInfo(stopInfo);
     }
 
@@ -1864,6 +1877,8 @@ public class ZqEngineKit implements AgoraOutCallback {
                         mAccUrlInUse = null;
                         mIsAccPrepared = false;
                         mAccStartTime = 0;
+                        mAccFirstStartTime = 0;
+                        mAccRetriedCount = 0;
                         stopMusicPlayTimeListener();
                         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STOP);
                         EventBus.getDefault().post(engineEvent);
