@@ -67,6 +67,7 @@ enum ERoomLockType {
 message PRoomLockedMsg
 {
     ERoomLockType roomLockType = 1;
+    string msg = 2;
 }
 
 message PRoomWarningMsg
@@ -209,21 +210,19 @@ enum EPartyRoomMsgType {
     PRT_CHANGE_ROOM_ENTER_PERMISSION = 28; //修改房间进入权限
     PRT_UPDATE_POPULARITY            = 29; //更新人气值
     PRT_CLUB_GAME_STOP               = 30; //家族派对房游戏停止
-        PRT_CLUB_BECOME_HOST             = 31; //家族派对房游戏新增主持人
-        PRT_CLUB_CHANGE_HOST             = 32; //家族派对房游戏更改主持人
-           PRT_INVITE_BE_GUEST              = 33; //邀请成为嘉宾
-            PRT_RESP_BE_GUEST                = 34; //邀请的响应
-            PRT_KTV_STOP                     = 35; //ktv暂停or开始信令
-            PRT_BEGIN_QUICK_ANSWER           = 36; //主持人下发抢答
-            PRT_RSP_QUICK_ANSWER             = 37; //嘉宾响应获得抢答
-            PRT_RESULT_QUICK_ANSWER          = 38; //抢答结果
-            PRT_BEGIN_VOTE                   = 39; //主持人下发投票
-            PRT_RSP_VOTE                     = 40; //投票响应数
-            PRT_RESULT_VOTE                  = 41; //投票结果
-            PRT_ROOM_WARNING                 = 42; //房间警告消息
-            PRT_ROOM_LOCKED                  = 43; //房间封禁消息
-
-
+    PRT_CLUB_BECOME_HOST             = 31; //家族派对房游戏新增主持人
+    PRT_CLUB_CHANGE_HOST             = 32; //家族派对房游戏更改主持人
+    PRT_INVITE_BE_GUEST              = 33; //邀请成为嘉宾
+    PRT_RESP_BE_GUEST                = 34; //邀请的响应
+    PRT_KTV_STOP                     = 35; //ktv暂停or开始信令
+    PRT_BEGIN_QUICK_ANSWER           = 36; //主持人下发抢答
+    PRT_RSP_QUICK_ANSWER             = 37; //嘉宾响应获得抢答
+    PRT_RESULT_QUICK_ANSWER          = 38; //抢答结果
+    PRT_BEGIN_VOTE                   = 39; //主持人下发投票
+    PRT_RSP_VOTE                     = 40; //投票响应数
+    PRT_RESULT_VOTE                  = 41; //投票结果
+    PRT_ROOM_WARNING                 = 42; //房间警告消息
+    PRT_ROOM_LOCKED                  = 43; //房间封禁消息
 }
 
 enum EEnterPermissionType {

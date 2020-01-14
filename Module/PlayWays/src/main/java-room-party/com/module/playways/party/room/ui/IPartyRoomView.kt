@@ -14,6 +14,7 @@ interface IPartyRoomView {
     fun joinNotice(model: PartyPlayerInfoModel?)
 
     fun gameOver()
+    fun showWarningDialog(warningMsg: String)
 //    fun turnChange()
 
 //

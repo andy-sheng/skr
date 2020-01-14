@@ -874,4 +874,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         U.getToastUtil().showShort("房间已解散")
     }
 
+    override fun showWarningDialog(warningMsg: String) {
+        dismissDialog()
+        mTipsDialogView = TipsDialogView.Builder(this)
+                .setMessageTip(warningMsg).build()
+        mTipsDialogView?.showByDialog()
+    }
 }

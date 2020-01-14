@@ -17,6 +17,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.component.busilib.constans.GameModeType
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
@@ -437,7 +438,10 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     private fun syncGameStatusInner() {
         launch {
-            val result = subscribe { mRoomServerApi.syncStatus(mRoomData.gameId.toLong()) }
+            val result = subscribe {
+                mRoomServerApi.syncStatus(mRoomData.gameId.toLong(), mRoomData?.roomType
+                        ?: GameModeType.GAME_MODE_PARTY)
+            }
             if (result.errno == 0) {
                 val syncStatusTimeMs = result.data.getLongValue("syncStatusTimeMs")
                 if (syncStatusTimeMs > mRoomData.lastSyncTs) {
@@ -450,6 +454,10 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                     val gameOverTimeMs = result.data.getLongValue("gameOverTimeMs")
                     // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
                     processSyncResult(false, gameOverTimeMs, onlineUserCnt, applyUserCnt, seats, users, thisRound)
+                }
+                if(result.data.getBooleanValue("mustExitRoom")){
+                    MyLog.i(TAG,"mustExitRoom == true 可能被封禁了")
+                    roomView.gameOver()
                 }
             } else {
 
@@ -1073,6 +1081,24 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         mRoomData.expectRoundInfo = null
         mRoomData.checkRoundInEachMode()
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PRoomWarningMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        if(mRoomData.myUserInfo?.isHost() ==true || mRoomData.myUserInfo?.isAdmin() ==true) {
+            roomView.showWarningDialog(event.warningMsg)
+        }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PRoomLockedMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+        roomView.showWarningDialog(event.msg)
+    }
+
+
     // TODO sync
     /**
      * 同步
@@ -1153,20 +1179,6 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //            muteAllRemoteAudioStreams(true, false)
 //        }
     }
-
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: RUnlockMsg) {
-//        ensureInRcRoom()
-//        MyLog.w(TAG, "event=$event")
-//        for (us in event.userLockInfoList) {
-//            if (us.userID == MyUserInfoManager.uid.toInt()) {
-//                mRoomData.unLockMe = !us.hasLock
-//            } else if (us.userID == mRoomData.peerUser?.userID) {
-//                mRoomData.unLockPeer = !us.hasLock
-//            }
-//        }
-//    }
-//
 //
 //    @Subscribe(threadMode = ThreadMode.MAIN)
 //    fun onEvent(event: RGameOverMsg) {
@@ -1376,35 +1388,6 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
     }
 
-//    fun sendUnlock() {
-//        MyLog.w(TAG, "解锁爱心")
-//        val map = HashMap<String, Any>()
-//        map["roomID"] = mRoomData.gameId
-//
-//        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-//        launch {
-//            var result = subscribe { mRoomServerApi.sendUnlock(body) }
-//            if (result.errno == 0) {
-//                val ja = result.data.getJSONArray("userLockInfo")
-//
-//                for (i in 0 until ja.size) {
-//                    var userID = ja.getJSONObject(i).getIntValue("userID")
-//                    var hasLock = ja.getJSONObject(i).getBooleanValue("hasLock")
-//                    if (userID == MyUserInfoManager.uid.toInt()) {
-//                        mRoomData.unLockMe = !hasLock
-//                    } else if (userID == mRoomData.peerUser?.userID) {
-//                        mRoomData.unLockPeer = !hasLock
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: MCancelMusic) {
-//        MyLog.d(TAG, "onEvent MCancelMusic=$event")
-//        pretendSystemMsg(event.cancelMusicMsg)
-//    }
 
 
 }

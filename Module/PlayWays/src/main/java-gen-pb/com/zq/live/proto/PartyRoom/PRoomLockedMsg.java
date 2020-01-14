@@ -23,25 +23,35 @@ public final class PRoomLockedMsg extends Message<PRoomLockedMsg, PRoomLockedMsg
 
   public static final ERoomLockType DEFAULT_ROOMLOCKTYPE = ERoomLockType.RTT_UNKNOWN;
 
+  public static final String DEFAULT_MSG = "";
+
   @WireField(
       tag = 1,
       adapter = "com.zq.live.proto.PartyRoom.ERoomLockType#ADAPTER"
   )
   private final ERoomLockType roomLockType;
 
-  public PRoomLockedMsg(ERoomLockType roomLockType) {
-    this(roomLockType, ByteString.EMPTY);
+  @WireField(
+      tag = 2,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String msg;
+
+  public PRoomLockedMsg(ERoomLockType roomLockType, String msg) {
+    this(roomLockType, msg, ByteString.EMPTY);
   }
 
-  public PRoomLockedMsg(ERoomLockType roomLockType, ByteString unknownFields) {
+  public PRoomLockedMsg(ERoomLockType roomLockType, String msg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roomLockType = roomLockType;
+    this.msg = msg;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.roomLockType = roomLockType;
+    builder.msg = msg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -52,7 +62,8 @@ public final class PRoomLockedMsg extends Message<PRoomLockedMsg, PRoomLockedMsg
     if (!(other instanceof PRoomLockedMsg)) return false;
     PRoomLockedMsg o = (PRoomLockedMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(roomLockType, o.roomLockType);
+        && Internal.equals(roomLockType, o.roomLockType)
+        && Internal.equals(msg, o.msg);
   }
 
   @Override
@@ -61,6 +72,7 @@ public final class PRoomLockedMsg extends Message<PRoomLockedMsg, PRoomLockedMsg
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (roomLockType != null ? roomLockType.hashCode() : 0);
+      result = result * 37 + (msg != null ? msg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -70,6 +82,7 @@ public final class PRoomLockedMsg extends Message<PRoomLockedMsg, PRoomLockedMsg
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (roomLockType != null) builder.append(", roomLockType=").append(roomLockType);
+    if (msg != null) builder.append(", msg=").append(msg);
     return builder.replace(0, 2, "PRoomLockedMsg{").append('}').toString();
   }
 
@@ -90,12 +103,25 @@ public final class PRoomLockedMsg extends Message<PRoomLockedMsg, PRoomLockedMsg
     return roomLockType;
   }
 
+  public String getMsg() {
+    if(msg==null){
+        return DEFAULT_MSG;
+    }
+    return msg;
+  }
+
   public boolean hasRoomLockType() {
     return roomLockType!=null;
   }
 
+  public boolean hasMsg() {
+    return msg!=null;
+  }
+
   public static final class Builder extends Message.Builder<PRoomLockedMsg, Builder> {
     private ERoomLockType roomLockType;
+
+    private String msg;
 
     public Builder() {
     }
@@ -105,9 +131,14 @@ public final class PRoomLockedMsg extends Message<PRoomLockedMsg, PRoomLockedMsg
       return this;
     }
 
+    public Builder setMsg(String msg) {
+      this.msg = msg;
+      return this;
+    }
+
     @Override
     public PRoomLockedMsg build() {
-      return new PRoomLockedMsg(roomLockType, super.buildUnknownFields());
+      return new PRoomLockedMsg(roomLockType, msg, super.buildUnknownFields());
     }
   }
 
@@ -119,12 +150,14 @@ public final class PRoomLockedMsg extends Message<PRoomLockedMsg, PRoomLockedMsg
     @Override
     public int encodedSize(PRoomLockedMsg value) {
       return ERoomLockType.ADAPTER.encodedSizeWithTag(1, value.roomLockType)
+          + ProtoAdapter.STRING.encodedSizeWithTag(2, value.msg)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, PRoomLockedMsg value) throws IOException {
       ERoomLockType.ADAPTER.encodeWithTag(writer, 1, value.roomLockType);
+      ProtoAdapter.STRING.encodeWithTag(writer, 2, value.msg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -142,6 +175,7 @@ public final class PRoomLockedMsg extends Message<PRoomLockedMsg, PRoomLockedMsg
             }
             break;
           }
+          case 2: builder.setMsg(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

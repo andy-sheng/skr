@@ -50,7 +50,7 @@ interface PartyRoomServerApi {
     fun heartbeat(@Body body: RequestBody): Call<ApiResult>
 
     @GET("http://dev.game.inframe.mobi/v1/partygame/sync-status")
-    fun syncStatus(@Query("roomID") roomID: Long): Call<ApiResult>
+    fun syncStatus(@Query("roomID") roomID: Long,@Query("roomType") roomType: Int): Call<ApiResult>
 
     /**
      * {
