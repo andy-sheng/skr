@@ -77,19 +77,30 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
   )
   private final String uploader;
 
+  /**
+   * 问题音频
+   */
+  @WireField(
+      tag = 6,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING",
+      label = WireField.Label.REPEATED
+  )
+  private final List<String> questionAudio;
+
   public PGameQuestion(Integer questionID, String questionContent, List<String> questionPic,
-      String answerContent, String uploader) {
-    this(questionID, questionContent, questionPic, answerContent, uploader, ByteString.EMPTY);
+      String answerContent, String uploader, List<String> questionAudio) {
+    this(questionID, questionContent, questionPic, answerContent, uploader, questionAudio, ByteString.EMPTY);
   }
 
   public PGameQuestion(Integer questionID, String questionContent, List<String> questionPic,
-      String answerContent, String uploader, ByteString unknownFields) {
+      String answerContent, String uploader, List<String> questionAudio, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.questionID = questionID;
     this.questionContent = questionContent;
     this.questionPic = Internal.immutableCopyOf("questionPic", questionPic);
     this.answerContent = answerContent;
     this.uploader = uploader;
+    this.questionAudio = Internal.immutableCopyOf("questionAudio", questionAudio);
   }
 
   @Override
@@ -100,6 +111,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
     builder.questionPic = Internal.copyOf("questionPic", questionPic);
     builder.answerContent = answerContent;
     builder.uploader = uploader;
+    builder.questionAudio = Internal.copyOf("questionAudio", questionAudio);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -114,7 +126,8 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
         && Internal.equals(questionContent, o.questionContent)
         && questionPic.equals(o.questionPic)
         && Internal.equals(answerContent, o.answerContent)
-        && Internal.equals(uploader, o.uploader);
+        && Internal.equals(uploader, o.uploader)
+        && questionAudio.equals(o.questionAudio);
   }
 
   @Override
@@ -127,6 +140,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
       result = result * 37 + questionPic.hashCode();
       result = result * 37 + (answerContent != null ? answerContent.hashCode() : 0);
       result = result * 37 + (uploader != null ? uploader.hashCode() : 0);
+      result = result * 37 + questionAudio.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -140,6 +154,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
     if (!questionPic.isEmpty()) builder.append(", questionPic=").append(questionPic);
     if (answerContent != null) builder.append(", answerContent=").append(answerContent);
     if (uploader != null) builder.append(", uploader=").append(uploader);
+    if (!questionAudio.isEmpty()) builder.append(", questionAudio=").append(questionAudio);
     return builder.replace(0, 2, "PGameQuestion{").append('}').toString();
   }
 
@@ -204,6 +219,16 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
   }
 
   /**
+   * 问题音频
+   */
+  public List<String> getQuestionAudioList() {
+    if(questionAudio==null){
+        return new java.util.ArrayList<String>();
+    }
+    return questionAudio;
+  }
+
+  /**
    * 问题标识
    */
   public boolean hasQuestionID() {
@@ -238,6 +263,13 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
     return uploader!=null;
   }
 
+  /**
+   * 问题音频
+   */
+  public boolean hasQuestionAudioList() {
+    return questionAudio!=null;
+  }
+
   public static final class Builder extends Message.Builder<PGameQuestion, Builder> {
     private Integer questionID;
 
@@ -249,8 +281,11 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
 
     private String uploader;
 
+    private List<String> questionAudio;
+
     public Builder() {
       questionPic = Internal.newMutableList();
+      questionAudio = Internal.newMutableList();
     }
 
     /**
@@ -294,9 +329,18 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
       return this;
     }
 
+    /**
+     * 问题音频
+     */
+    public Builder addAllQuestionAudio(List<String> questionAudio) {
+      Internal.checkElementsNotNull(questionAudio);
+      this.questionAudio = questionAudio;
+      return this;
+    }
+
     @Override
     public PGameQuestion build() {
-      return new PGameQuestion(questionID, questionContent, questionPic, answerContent, uploader, super.buildUnknownFields());
+      return new PGameQuestion(questionID, questionContent, questionPic, answerContent, uploader, questionAudio, super.buildUnknownFields());
     }
   }
 
@@ -312,6 +356,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
           + ProtoAdapter.STRING.asRepeated().encodedSizeWithTag(3, value.questionPic)
           + ProtoAdapter.STRING.encodedSizeWithTag(4, value.answerContent)
           + ProtoAdapter.STRING.encodedSizeWithTag(5, value.uploader)
+          + ProtoAdapter.STRING.asRepeated().encodedSizeWithTag(6, value.questionAudio)
           + value.unknownFields().size();
     }
 
@@ -322,6 +367,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
       ProtoAdapter.STRING.asRepeated().encodeWithTag(writer, 3, value.questionPic);
       ProtoAdapter.STRING.encodeWithTag(writer, 4, value.answerContent);
       ProtoAdapter.STRING.encodeWithTag(writer, 5, value.uploader);
+      ProtoAdapter.STRING.asRepeated().encodeWithTag(writer, 6, value.questionAudio);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -336,6 +382,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
           case 3: builder.questionPic.add(ProtoAdapter.STRING.decode(reader)); break;
           case 4: builder.setAnswerContent(ProtoAdapter.STRING.decode(reader)); break;
           case 5: builder.setUploader(ProtoAdapter.STRING.decode(reader)); break;
+          case 6: builder.questionAudio.add(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

@@ -20,14 +20,12 @@ import com.module.playways.party.room.event.PartyMyUserInfoChangeEvent
 import com.module.playways.party.room.event.PartyNoticeChangeEvent
 import com.module.playways.party.room.model.PartyGameInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
-import com.module.playways.relay.room.presenter.RelayCorePresenter
 import com.zq.live.proto.PartyRoom.EPGameType
 import com.zq.live.proto.PartyRoom.EPRoundStatus
 import com.zq.mediaengine.kit.ZqEngineKit
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import kotlin.math.abs
 
 class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomData) : ExViewStub(viewStub) {
     val TAG = "PartyGameMainView"
@@ -38,7 +36,8 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     lateinit var attentionTv: ExTextView
     lateinit var textScrollView: ScrollView
     lateinit var commonTextView: ExTextView
-    lateinit var partyGameTabView: PartyGameTabView
+    var partyGameTabView: PartyGameTabView? = null
+    var iAudioGameListener: PartyGameTabView.IAudioGameListener? = null
 
     var seq: Int = 0
     var tagType: TagType = TagType.GAME
@@ -56,7 +55,8 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         attentionTv = parentView.findViewById(R.id.attention_tv)
         commonTextView = parentView.findViewById(R.id.text_game_tv)
         partyGameTabView = parentView.findViewById(R.id.party_game_tab_view)
-        partyGameTabView.roomData = mRoomData
+        partyGameTabView?.roomData = mRoomData
+        partyGameTabView?.iAudioGameListener = iAudioGameListener
 
         gameTv.setDebounceViewClickListener {
             toGameTab()
@@ -96,7 +96,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         gameTv.isSelected = true
         tagType = TagType.GAME
 
-        partyGameTabView.visibility = View.VISIBLE
+        partyGameTabView?.visibility = View.VISIBLE
         setGameTabText()
     }
 
@@ -160,7 +160,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyMyUserInfoChangeEvent) {
-        partyGameTabView.updateIdentity()
+        partyGameTabView?.updateIdentity()
         tagChange()
     }
 
@@ -170,7 +170,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
             if (mRoomData?.realRoundInfo?.sceneInfo == null) {
                 toEmptyState()
             } else {
-                partyGameTabView.updateIdentity()
+                partyGameTabView?.updateIdentity()
                 tagChange()
             }
         } else {
@@ -219,7 +219,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         ruleTv.isSelected = false
         attentionTv.isSelected = false
         textScrollView.visibility = View.GONE
-        partyGameTabView.visibility = View.GONE
+        partyGameTabView?.visibility = View.GONE
     }
 
     override fun layoutDesc(): Int {
@@ -235,7 +235,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         tryInflate()
 
         this.partyGameInfoModel = thisRound?.sceneInfo!!
-        partyGameTabView.bindData()
+        partyGameTabView?.bindData()
         toGameTab()
 
         setGameTabText()
@@ -311,7 +311,7 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
 
     fun toEmptyState() {
         gameTv.isSelected = true
-        partyGameTabView.toEmptyState()
+        partyGameTabView?.toEmptyState()
 
         gameTv.visibility = View.VISIBLE
         handCardTv.visibility = View.GONE

@@ -19,6 +19,8 @@ import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
+import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
@@ -86,6 +88,9 @@ import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_PARTY_ROOM)
 class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
+    companion object {
+        val playerTag = "PartyRoomActivity"
+    }
 
     fun ensureActivtyTop() {
         // 销毁其他的除排麦房页面所有界面
@@ -126,7 +131,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     internal lateinit var mGameEffectBgView: GameEffectBgView
 
     var mRightOpView: PartyRightOpView? = null
-    var mRightQuickAnswerView:PartyRightQuickAnswerView? = null
+    var mRightQuickAnswerView: PartyRightQuickAnswerView? = null
     var mPartyGameMainView: PartyGameMainView? = null
     var mSeatView: PartySeatView? = null
     var mPartySettingView: PartySettingView? = null
@@ -188,6 +193,18 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             }
             false
         }
+
+        SinglePlayer.addCallback(playerTag, object : SinglePlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                mPartyGameMainView?.partyGameTabView?.setAudioPlay(false)
+            }
+
+            override fun onError(what: Int, extra: Int) {
+                super.onError(what, extra)
+                mPartyGameMainView?.partyGameTabView?.setAudioPlay(false)
+            }
+        })
 
         initBgEffectView()
         initTopView()
@@ -347,6 +364,15 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     private fun initGameMainView() {
         mPartyGameMainView = PartyGameMainView(findViewById(R.id.party_game_main_view_layout_viewStub), mRoomData)
+        mPartyGameMainView?.iAudioGameListener = object : PartyGameTabView.IAudioGameListener {
+            override fun stopPlay() {
+                SinglePlayer.stop(playerTag)
+            }
+
+            override fun startPlay(url: String) {
+                SinglePlayer.startPlay(playerTag, url)
+            }
+        }
         mPartyGameMainView?.tryInflate()
         mPartyGameMainView?.toEmptyState()
     }

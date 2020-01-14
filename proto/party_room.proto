@@ -415,6 +415,7 @@ message PGameQuestion {
     repeated string questionPic = 3; //问题图片
     string answerContent = 4; //问题答案
     string uploader = 5; //上传者
+    repeated string questionAudio = 6; //问题音频
 }
 
 message PGamePlay {

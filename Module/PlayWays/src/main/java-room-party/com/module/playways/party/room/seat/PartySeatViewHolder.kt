@@ -62,8 +62,8 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
                 MSG_TYPE_END_ROLLING -> {
                     animationRoll?.stop()
                     rollIv.clearAnimation()
-                    rollIv.visibility = View.GONE
                     emojiSdv.visibility = View.VISIBLE
+                    rollIv.visibility = View.GONE
                 }
                 MSG_TYPE_END_ANIMATION -> {
                     rollIv.visibility = View.GONE
@@ -132,7 +132,7 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
             animationRoll?.start()
 
             handler.sendEmptyMessageDelayed(MSG_TYPE_END_ROLLING,2000)
-            handler.sendEmptyMessageDelayed(MSG_TYPE_END_ANIMATION,3000)
+            handler.sendEmptyMessageDelayed(MSG_TYPE_END_ANIMATION,4000)
         } else {
             // 普通表情
             emojiSdv.visibility = View.VISIBLE

@@ -64,9 +64,10 @@ class PartyEmojiView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 roomServerApi.sendEmoji(body)
             }
             if (result.errno == 0) {
-                EventBus.getDefault().post(PartySendEmojiEvent(model))
+                val resultModel = JSON.parseObject(result.data.toJSONString(), PartyEmojiInfoModel::class.java)
+                EventBus.getDefault().post(PartySendEmojiEvent(resultModel))
             } else {
-
+                U.getToastUtil().showShort(result.errmsg)
             }
         }
     }
