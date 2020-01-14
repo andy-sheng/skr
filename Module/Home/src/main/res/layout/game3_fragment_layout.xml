@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#7088FF">
+    android:paddingBottom="@dimen/view_60_dp"
+    app:bl_gradient_endColor="#425EEC"
+    app:bl_gradient_startColor="#D3A9FF"
+    app:bl_shape="rectangle">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/title"
@@ -12,13 +15,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:showBottomLine="false"
         app:showMainView="false"
-        app:statusBarColor="#7088FF" />
+        app:statusBarColor="@color/transparent" />
 
     <ImageView
         android:id="@+id/navigation_bg_iv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_72_dp"
-        android:background="#7088FF"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />
@@ -58,4 +60,4 @@
         app:layout_constraintBottom_toTopOf="@id/game_vp"
         app:layout_constraintRight_toRightOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+</com.common.view.ex.ExConstraintLayout>

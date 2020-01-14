@@ -42,7 +42,9 @@ import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExConstraintLayout;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExLinearLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.component.busilib.event.PostsPublishSucessEvent;
@@ -80,7 +82,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     public final static String NOTIFY_CHANNEL_ID = "invite_notify";
 
     ConstraintLayout mMainActContainer;
-    LinearLayout mBottomContainer;
+    ExLinearLayout mBottomContainer;
     RelativeLayout mGameArea;
     ExTextView mGameBtn;
     RelativeLayout mMessageArea;
