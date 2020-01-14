@@ -192,7 +192,7 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
         val AUDIO_FOR_AI_PATH = "audioforai.aac"
         val MATCHING_SCORE_FOR_AI_PATH = "matchingscore.json"
 
-        var shiftTsForRelay = 0
+        var shiftTsForRelay = 0 // 本地时间 - 服务器时间
         fun syncServerTs() {
             if (shiftTsForRelay != 0) {
                 MyLog.d("BaseRoomData", "shiftTsForRelay=$shiftTsForRelay")

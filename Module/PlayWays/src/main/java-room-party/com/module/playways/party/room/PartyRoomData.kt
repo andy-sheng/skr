@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.EventBus
 
 class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
+    var quickAnswerTag: String? = null // 当前抢答的标识
     var bgmPlayingPath: String? = null // 背景音乐的播放路径
 
     var config = PartyConfigModel()

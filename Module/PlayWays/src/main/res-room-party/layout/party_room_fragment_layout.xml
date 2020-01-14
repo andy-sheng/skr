@@ -123,6 +123,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <!--底部抢答区-->
+    <ViewStub
+        android:id="@+id/party_right_quick_answer_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_15_dp"
+        android:layout_marginBottom="@dimen/view_165_dp"
+        android:layout="@layout/party_right_quick_answer_view_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
     <com.module.playways.room.room.comment.CommentView
         android:id="@+id/comment_view"
         android:layout_width="match_parent"

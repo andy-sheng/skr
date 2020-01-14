@@ -22,6 +22,7 @@ import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
+import com.module.playways.BaseRoomData
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.*
@@ -358,6 +359,23 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 //                MyLog.w(TAG, "放弃演唱上报失败 traceid is " + result.traceId)
 //            }
 //        }
+    }
+
+    fun beginQuickAnswer() {
+        val map = HashMap<String, Any?>()
+        map["roomID"] = mRoomData.gameId
+
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe(RequestControl("beginQuickAnswer", ControlType.CancelThis)) {
+                mRoomServerApi.beginQuickAnswer(body)
+            }
+            if (result.errno == 0) {
+                U.getToastUtil().showShort("抢答发起成功")
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
     }
 
     /**
@@ -1083,6 +1101,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     }
 
 
+    // 警告
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PRoomWarningMsg) {
         MyLog.d(TAG, "onEvent event = $event")
@@ -1091,14 +1110,25 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
     }
 
-
+    // 封禁
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PRoomLockedMsg) {
         MyLog.d(TAG, "onEvent event = $event")
         roomView.showWarningDialog(event.msg)
     }
 
+    // 有人抢答
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PResponseQuickAnswer) {
+        MyLog.d(TAG, "onEvent event = $event")
+    }
 
+
+    // 抢答结果
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PResultQuickAnswer) {
+        MyLog.d(TAG, "onEvent event = $event")
+    }
     // TODO sync
     /**
      * 同步
@@ -1387,7 +1417,5 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             }
         }
     }
-
-
 
 }

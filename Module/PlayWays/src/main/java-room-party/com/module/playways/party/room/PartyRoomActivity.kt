@@ -124,6 +124,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     internal lateinit var mGameEffectBgView: GameEffectBgView
 
     var mRightOpView: PartyRightOpView? = null
+    var mRightQuickAnswerView:PartyRightQuickAnswerView? = null
     var mPartyGameMainView: PartyGameMainView? = null
     var mSeatView: PartySeatView? = null
     var mPartySettingView: PartySettingView? = null
@@ -339,6 +340,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 mPartyApplyPanelView?.showByDialog()
             }
         }
+        mRightQuickAnswerView = PartyRightQuickAnswerView(findViewById(R.id.party_right_quick_answer_view))
     }
 
     private fun initGameMainView() {
@@ -421,6 +423,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
         mPartySettingView = PartySettingView(findViewById(R.id.party_bottom_setting_viewStub))
         mPartySettingView?.listener = object : PartySettingView.Listener {
+            override fun onClickQuickAnswer() {
+                mCorePresenter.beginQuickAnswer()
+            }
+
             override fun onClickGameSetting() {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_SELECT_GAME)
                         .navigation()

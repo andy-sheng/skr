@@ -6,7 +6,6 @@ import android.view.ViewStub
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.common.core.view.setAnimateDebounceViewClickListener
-import com.common.core.view.setDebounceViewClickListener
 import com.common.flutter.boost.FlutterBoostController
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
@@ -29,6 +28,7 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var muteSettingTv: TextView
     lateinit var bgmTv: TextView
     lateinit var voteTv: TextView
+    lateinit var qiangdaTv: TextView
 
     var listener: Listener? = null
 
@@ -40,6 +40,7 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
         muteSettingTv = parentView.findViewById(R.id.mute_setting_tv)
         bgmTv = parentView.findViewById(R.id.bgm_tv)
         voteTv = parentView.findViewById(R.id.vote_tv)
+        qiangdaTv = parentView.findViewById(R.id.qiangda_tv)
 
         gameSettingTv.setAnimateDebounceViewClickListener {
             listener?.onClickGameSetting()
@@ -52,7 +53,9 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
         voteTv.setAnimateDebounceViewClickListener {
             listener?.onClickVote()
         }
-
+        qiangdaTv.setAnimateDebounceViewClickListener {
+            listener?.onClickQuickAnswer()
+        }
         muteSettingTv.setAnimateDebounceViewClickListener {
             var b = (H.partyRoomData?.isAllMute == true)
             setAllMicMute(!b)
@@ -108,5 +111,6 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
         fun onClickGameSetting()
         fun onClickGameSound()
         fun onClickVote()
+        fun onClickQuickAnswer()
     }
 }

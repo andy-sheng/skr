@@ -50,7 +50,7 @@ interface PartyRoomServerApi {
     fun heartbeat(@Body body: RequestBody): Call<ApiResult>
 
     @GET("http://dev.game.inframe.mobi/v1/partygame/sync-status")
-    fun syncStatus(@Query("roomID") roomID: Long,@Query("roomType") roomType: Int): Call<ApiResult>
+    fun syncStatus(@Query("roomID") roomID: Long, @Query("roomType") roomType: Int): Call<ApiResult>
 
     /**
      * {
@@ -299,4 +299,22 @@ interface PartyRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partygame/begin-vote")
     fun beginVote(@Body body: RequestBody): Call<ApiResult>
+
+
+    /**开始抢
+     * {
+     * "roomID": 0
+     * }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/begin-quick-answer")
+    fun beginQuickAnswer(@Body body: RequestBody): Call<ApiResult>
+
+    /**回应开始抢
+     * {
+     *  "quickAnswerTag": "string",
+     * "roomID": 0
+     * }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/response-quick-answer")
+    fun responseQuickAnswer(@Body body: RequestBody): Call<ApiResult>
 }
