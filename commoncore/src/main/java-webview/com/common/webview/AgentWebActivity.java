@@ -67,6 +67,8 @@ import static com.common.webview.JsBridgeImpl.getJsonObj;
  */
 class AgentWebActivity extends CameraAdapWebActivity {
 
+    public final static String TAG = "AgentWebActivity";
+
     protected AgentWebX5 mAgentWeb;
     //    private AgentWebUIControllerImplBase mAgentWebUIController;
     private ErrorLayoutEntity mErrorLayoutEntity;
@@ -304,6 +306,8 @@ class AgentWebActivity extends CameraAdapWebActivity {
      * 更多使用实例，参考 AgentWeb 官网上的 samples
      */
     protected void buildAgentWeb() {
+        MyLog.d("","buildAgentWeb 1");
+
         ErrorLayoutEntity mErrorLayoutEntity = getErrorLayoutEntity();
         String url = getIntent().getStringExtra("url");
 //        String url = "http://test.app.inframe.mobi/test/bridge";
@@ -370,7 +374,7 @@ class AgentWebActivity extends CameraAdapWebActivity {
 //                .createAgentWeb()//
 //                .ready()//
 //                .go(url);
-
+        MyLog.d("","buildAgentWeb 2");
         mAgentWeb = AgentWebX5.with(this)//
                 .setAgentWebParent(mContentContainer, new LinearLayout.LayoutParams(-1, -1))//
                 .useDefaultIndicator()//
@@ -396,10 +400,12 @@ class AgentWebActivity extends CameraAdapWebActivity {
                 + " appVersion/" + U.getAppInfoUtils().getVersionCode()
                 + " Pixel/" + U.getDisplayUtils().getPhoneWidth());
 
+        MyLog.d("","buildAgentWeb 3");
         mJsRegister = new JsRegister(mBridgeWebView, this);
         mJsRegister.register();
 
         setCookie(url);
+        MyLog.d("","buildAgentWeb 4");
     }
 
     private String getNet() {

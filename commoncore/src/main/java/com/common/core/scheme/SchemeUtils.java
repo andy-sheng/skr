@@ -29,7 +29,10 @@ public class SchemeUtils {
 
     public static int getInt(Uri uri, String key, int defaultValue) {
         try {
-            return Integer.valueOf(uri.getQueryParameter(key));
+            String s = uri.getQueryParameter(key);
+            if(s!=null){
+                return Integer.valueOf(s);
+            }
         } catch (Exception e) {
             MyLog.e(e);
         }
@@ -47,7 +50,10 @@ public class SchemeUtils {
 
     public static boolean getBoolean(@NotNull Uri uri, @NotNull String key, boolean b) {
         try {
-            return Boolean.parseBoolean(uri.getQueryParameter(key));
+            String s = uri.getQueryParameter(key);
+            if(s!=null){
+                return Boolean.parseBoolean(s);
+            }
         } catch (Exception e) {
             MyLog.e(e);
         }
