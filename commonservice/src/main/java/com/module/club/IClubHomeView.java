@@ -1,6 +1,6 @@
 package com.module.club;
 
-public interface IClubListView {
+public interface IClubHomeView {
 
     void initData(boolean flag);
 

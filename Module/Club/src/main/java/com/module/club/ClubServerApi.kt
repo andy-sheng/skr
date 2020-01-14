@@ -9,6 +9,12 @@ import java.util.*
 
 interface ClubServerApi {
     /**
+     * 首页列出推荐家族
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/list-recommend-club")
+    fun getRecommendClubList(@Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
+
+    /**
      * 首页列出推荐家族(内页)
      */
     @GET("http://dev.api.inframe.mobi/v1/club/list-recommend-club-inner")

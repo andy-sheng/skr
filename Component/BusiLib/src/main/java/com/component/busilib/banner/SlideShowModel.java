@@ -1,4 +1,4 @@
-package com.module.home.model;
+package com.component.busilib.banner;
 
 import java.io.Serializable;
 

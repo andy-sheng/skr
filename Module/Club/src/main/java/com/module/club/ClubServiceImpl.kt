@@ -13,8 +13,8 @@ import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.utils.U
 import com.module.RouterConstants
+import com.module.club.home.ClubHomeView
 import com.module.club.homepage.ClubHomepageActivity
-import com.module.club.manage.list.ClubListView
 
 @Route(path = RouterConstants.SERVICE_CLUB, name = "测试服务")
 class ClubServiceImpl : IClubModuleService {
@@ -44,7 +44,7 @@ class ClubServiceImpl : IClubModuleService {
         })
     }
 
-    override fun getPartyRoomView(context: Context): IClubListView {
-        return ClubListView(context)
+    override fun getClubHomeView(context: Context): IClubHomeView {
+        return ClubHomeView(context)
     }
 }

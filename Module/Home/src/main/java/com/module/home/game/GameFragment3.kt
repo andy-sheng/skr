@@ -1,27 +1,19 @@
 package com.module.home.game
 
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.widget.ImageView
 import com.alibaba.android.arouter.launcher.ARouter
-import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.account.event.AccountEvent
-import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent
 import com.common.core.view.setAnimateDebounceViewClickListener
-import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ControlType
-import com.common.rxretrofit.RequestControl
-import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
@@ -30,19 +22,15 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.component.dialog.InviteFriendDialog
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
+import com.module.club.IClubHomeView
+import com.module.club.IClubModuleService
 import com.module.home.MainPageSlideApi
 import com.module.home.R
 import com.module.home.game.presenter.GamePresenter3
 import com.module.home.game.view.*
 import com.module.home.model.GameKConfigModel
 import com.module.playways.IFriendRoomView
-import com.module.playways.IPartyRoomView
 import com.module.playways.IPlaywaysModeService
-import com.orhanobut.dialogplus.DialogPlus
-import com.orhanobut.dialogplus.ViewHolder
-import kotlinx.coroutines.launch
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -63,10 +51,14 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         iRankingModeService.getFriendRoomView(context!!)
     }
     val mQuickGameView: QuickGameView by lazy { QuickGameView(this) }
-    val mPartyRoomView: IPartyRoomView by lazy {
-        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-        iRankingModeService.getPartyRoomView(context!!)
+    val mClubHomeView: IClubHomeView by lazy {
+        val clubService = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
+        clubService.getClubHomeView(context!!)
     }
+//    val mPartyRoomView: IPartyRoomView by lazy {
+//        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+//        iRankingModeService.getPartyRoomView(context!!)
+//    }
 
     private var alphaAnimation: AlphaAnimation? = null
     private var mInviteFriendDialog: InviteFriendDialog? = null
@@ -148,7 +140,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 var view: View? = when (position) {
                     0 -> mFriendRoomGameView as View
                     1 -> mQuickGameView
-                    2 -> mPartyRoomView as View
+                    2 -> mClubHomeView as View
                     else -> null
                 }
                 if (container.indexOfChild(view) == -1) {
@@ -257,19 +249,19 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             0 -> {
                 mFriendRoomGameView.initData(false)
                 mQuickGameView.stopTimer()
-                mPartyRoomView.stopTimer()
+                mClubHomeView.stopTimer()
             }
             1 -> {
                 mFriendRoomGameView.stopPlay()
                 mFriendRoomGameView.stopTimer()
-                mPartyRoomView.stopTimer()
+                mClubHomeView.stopTimer()
                 mQuickGameView.initData(false)
             }
             2 -> {
                 mFriendRoomGameView.stopPlay()
                 mFriendRoomGameView.stopTimer()
                 mQuickGameView.stopTimer()
-                mPartyRoomView.initData(false)
+                mClubHomeView.initData(false)
             }
         }
     }
@@ -279,7 +271,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mFriendRoomGameView.stopPlay()
         mFriendRoomGameView.stopTimer()
         mQuickGameView.stopTimer()
-        mPartyRoomView.stopTimer()
+        mClubHomeView.stopTimer()
     }
 
     override fun setGameConfig(gameKConfigModel: GameKConfigModel) {
@@ -324,7 +316,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         super.destroy()
         mQuickGameView.destory()
         mFriendRoomGameView.destory()
-        mPartyRoomView.destory()
+        mClubHomeView.destory()
         alphaAnimation?.cancel()
         mTipsDialogView?.dismiss(false)
         mInviteFriendDialog?.dismiss(false)

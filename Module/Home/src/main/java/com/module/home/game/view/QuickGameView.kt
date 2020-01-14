@@ -32,7 +32,7 @@ import com.module.home.game.adapter.ClickGameListener
 import com.module.home.game.adapter.GameAdapter
 import com.module.home.game.presenter.QuickGamePresenter
 import com.module.home.model.GameKConfigModel
-import com.module.home.model.SlideShowModel
+import com.component.busilib.banner.SlideShowModel
 import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder

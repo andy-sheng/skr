@@ -1,4 +1,4 @@
-package com.module.home.game.viewholder
+package com.component.busilib.banner
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -6,9 +6,8 @@ import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.banner.BannerImageLoader
 import com.common.statistics.StatisticsAdapter
+import com.component.busilib.R
 import com.module.RouterConstants
-import com.module.home.R
-import com.module.home.model.SlideShowModel
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
 

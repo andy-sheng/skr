@@ -111,6 +111,7 @@ class ClubHomepageActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        U.getStatusBarUtil().setTransparentBar(this, false)
         clubMemberInfo = intent.getSerializableExtra("clubMemberInfo") as ClubMemberInfo?
         clubID = clubMemberInfo?.club?.clubID ?: 0
         if (clubMemberInfo == null) {
@@ -306,7 +307,7 @@ class ClubHomepageActivity : BaseActivity() {
     }
 
     private fun initToolBarScroll() {
-        appbar?.addOnOffsetChangedListener (AppBarLayout.OnOffsetChangedListener{ appBarLayout, verticalOffset ->
+        appbar?.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             // TODO: 2019-06-23 也可以加效果，看产品怎么说
             imageBg?.translationY = verticalOffset.toFloat()
             if (lastVerticalOffset != verticalOffset) {

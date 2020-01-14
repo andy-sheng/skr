@@ -6,20 +6,15 @@ import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.JSONObject
-import com.common.base.BaseFragment
-import com.common.core.userinfo.UserInfoLocalApi
-import com.common.core.userinfo.UserInfoManager
+import com.common.base.BaseActivity
 import com.common.core.userinfo.model.ClubInfo
-import com.common.core.userinfo.model.UserInfoModel
-import com.common.core.userinfo.utils.UserInfoDataUtils
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
@@ -32,15 +27,15 @@ import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.IClubModuleService
 import com.module.club.R
-import com.module.club.manage.list.ClubListAdapter
-import io.reactivex.Observable
+import com.module.club.home.viewholder.ClubListAdapter
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Function
 import io.reactivex.functions.Predicate
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-class ClubSearchFragemnt : BaseFragment() {
+@Route(path = RouterConstants.ACTIVITY_SEARCH_CLUB)
+class ClubSearchActivity : BaseActivity() {
 
     lateinit var searchArea: RelativeLayout
     lateinit var cancleTv: TextView
@@ -53,32 +48,32 @@ class ClubSearchFragemnt : BaseFragment() {
 
     private var isAutoSearch: Boolean? = false      // 标记是否是自动搜索
 
-    override fun initView(): Int {
+    override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.club_search_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        searchArea = rootView.findViewById(R.id.search_area)
-        cancleTv = rootView.findViewById(R.id.cancle_tv)
-        searchContent = rootView.findViewById(R.id.search_content)
-        recyclerView = rootView.findViewById(R.id.recycler_view)
+        searchArea = findViewById(R.id.search_area)
+        cancleTv = findViewById(R.id.cancle_tv)
+        searchContent = findViewById(R.id.search_content)
+        recyclerView = findViewById(R.id.recycler_view)
 
         adapter = ClubListAdapter(object : ClubListAdapter.Listener {
             override fun onClickItem(position: Int, model: ClubInfo?) {
                 model?.let {
-                    U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(this@ClubSearchActivity)
                     val clubServices = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
                     clubServices.tryGoClubHomePage(it.clubID)
                 }
             }
         })
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
 
         cancleTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
-                U.getFragmentUtils().popFragment(this@ClubSearchFragemnt)
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(this@ClubSearchActivity)
+                finish()
             }
         })
 
@@ -112,7 +107,7 @@ class ClubSearchFragemnt : BaseFragment() {
 
         searchContent.postDelayed(Runnable {
             searchContent.requestFocus()
-            U.getKeyBoardUtils().showSoftInputKeyBoard(activity)
+            U.getKeyBoardUtils().showSoftInputKeyBoard(this)
         }, 200)
 
     }
@@ -137,6 +132,10 @@ class ClubSearchFragemnt : BaseFragment() {
             }
         }, this)
 
+    }
+
+    override fun canSlide(): Boolean {
+        return false
     }
 
     override fun useEventBus(): Boolean {

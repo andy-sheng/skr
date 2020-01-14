@@ -2,8 +2,7 @@ package com.module.home.game.view
 
 import com.component.busilib.model.PartyRoomInfoModel
 import com.component.person.model.UserRankModel
-import com.module.home.game.model.GrabSpecialModel
-import com.module.home.model.SlideShowModel
+import com.component.busilib.banner.SlideShowModel
 
 interface IQuickGameView3 {
     fun setBannerImage(slideShowModelList: List<SlideShowModel>?)

@@ -17,7 +17,7 @@ import com.component.person.model.UserRankModel
 import com.module.home.MainPageSlideApi
 import com.module.home.event.CheckInSuccessEvent
 import com.module.home.game.view.IQuickGameView3
-import com.module.home.model.SlideShowModel
+import com.component.busilib.banner.SlideShowModel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

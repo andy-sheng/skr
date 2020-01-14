@@ -151,7 +151,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, priority = Int.MAX_VALUE)
     fun onEvent(event: ClubInfoChangeMsg) {
         // 我自己家族信息的改变
         MyUserInfoManager.myUserInfo?.clubInfo = ClubMemberInfo.parseFromPB(event.clubInfo)

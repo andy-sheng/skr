@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_36_dp">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/club_search_tv"
+        android:layout_width="@dimen/view_110_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:gravity="center"
+        android:text="搜索家族"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#846BE6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/club_rank_tv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/club_rank_tv"
+        android:layout_width="@dimen/view_110_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:gravity="center"
+        android:text="家族排行"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#846BE6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/club_search_tv"
+        app:layout_constraintRight_toLeftOf="@id/club_create_tv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/club_create_tv"
+        android:layout_width="@dimen/view_110_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:gravity="center"
+        android:text="创建家族"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#846BE6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/club_rank_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 
 import com.common.base.BaseFragment
+import com.component.busilib.banner.BannerViewHolder
 import com.component.busilib.model.PartyRoomInfoModel
 import com.component.person.model.UserRankModel
 import com.module.home.R
 import com.module.home.game.viewholder.*
-import com.module.home.model.SlideShowModel
+import com.component.busilib.banner.SlideShowModel
 
 class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickGameListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
