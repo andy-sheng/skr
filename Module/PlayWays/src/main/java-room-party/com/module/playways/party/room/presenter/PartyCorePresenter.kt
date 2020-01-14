@@ -619,6 +619,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         if (event.beginTimeMs > voteDialogTs) {
             voteDialogTs = event.beginTimeMs
             roomView.showVoteView(event)
+            pretendSystemMsg(if(event.scope == EVoteScope.EVS_HOST_GUEST) "主持人发起了投票，请嘉宾作出选择" else "主持人发起了一个投票")
         } else {
             MyLog.w(TAG, "PBeginVote已经过去的投票")
         }

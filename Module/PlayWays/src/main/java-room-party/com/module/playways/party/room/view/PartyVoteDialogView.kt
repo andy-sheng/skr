@@ -6,6 +6,7 @@ import android.view.View
 import com.alibaba.fastjson.JSON
 import com.common.anim.svga.SvgaParserAdapter
 import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
@@ -33,6 +34,7 @@ import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.live.proto.PartyRoom.EVoteScope
 import com.zq.live.proto.PartyRoom.PBeginVote
 import com.zq.live.proto.PartyRoom.PResponseVote
 import com.zq.live.proto.PartyRoom.PResultVote
@@ -134,6 +136,14 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
             countDown((event.endTimeMs - event.beginTimeMs).toInt() / 1000)
         } else {
             countDown(((event.endTimeMs - event.beginTimeMs).toInt() - ((System.currentTimeMillis() - BaseRoomData.shiftTsForRelay) - event.beginTimeMs).toInt()) / 1000)
+        }
+
+        if (event.scope == EVoteScope.EVS_HOST_GUEST) {
+            val info = H.partyRoomData?.getPlayerInfoById(MyUserInfoManager.uid.toInt())
+            if (info == null || !info.isGuest()) {
+                leftButtom.visibility = View.GONE
+                rightButtom.visibility = View.GONE
+            }
         }
     }
 
