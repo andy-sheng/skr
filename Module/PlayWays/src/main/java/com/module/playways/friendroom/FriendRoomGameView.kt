@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
@@ -97,7 +98,7 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
             }
         })
 
-        recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         friendRoomAdapter = FriendRoomAdapter(object : FriendRoomAdapter.FriendRoomClickListener {
             override fun onClickGrabRoom(position: Int, model: RecommendRoomModel?) {
                 // 进入抢唱房间
