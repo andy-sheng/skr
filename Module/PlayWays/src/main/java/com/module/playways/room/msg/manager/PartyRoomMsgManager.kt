@@ -63,6 +63,9 @@ object PartyRoomMsgManager : BaseMsgManager<EPartyRoomMsgType, PartyRoomMsg>() {
             msg.msgType == EPartyRoomMsgType.PRT_CLUB_GAME_STOP -> EventBus.getDefault().post(msg.pClubGameStopMsg)
             msg.msgType == EPartyRoomMsgType.PRT_CLUB_BECOME_HOST -> EventBus.getDefault().post(msg.pClubBecomeHostMsg)
             msg.msgType == EPartyRoomMsgType.PRT_CLUB_CHANGE_HOST -> EventBus.getDefault().post(msg.pClubChangeHostMsg)
+            msg.msgType == EPartyRoomMsgType.PRT_BEGIN_VOTE -> EventBus.getDefault().post(msg.pBeginVote)
+            msg.msgType == EPartyRoomMsgType.PRT_RSP_VOTE -> EventBus.getDefault().post(msg.pResponseVote)
+            msg.msgType == EPartyRoomMsgType.PRT_RESULT_VOTE -> EventBus.getDefault().post(msg.pResultVote)
         }
     }
 }

@@ -65,6 +65,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     internal var mDestroyed = false
 
+    //上次显示投票的时间
+    var voteDialogTs = 0L
+
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -584,6 +587,16 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     fun onEvent(event: PartyHostChangeEvent) {
         if (mRoomData.myUserInfo?.isHost() == true) {
             startHeartbeat()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PBeginVote) {
+        if (event.beginTimeMs > voteDialogTs) {
+            voteDialogTs = event.beginTimeMs
+            roomView.showVoteView(event)
+        } else {
+            MyLog.w(TAG, "PBeginVote已经过去的投票")
         }
     }
 
