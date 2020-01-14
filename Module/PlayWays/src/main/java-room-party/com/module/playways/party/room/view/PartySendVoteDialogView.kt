@@ -32,6 +32,8 @@ import okhttp3.RequestBody
  *  打开座位，取消
  */
 class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
+    private val PRE_SCOPE_KEY = "scope_vote"
+
     private var mDialogPlus: DialogPlus? = null
     var inMicTv: ExTextView
     var inMicSelectedIv: ExImageView
@@ -141,6 +143,15 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
             selectedSendMode = 2
         }
 
+        selectedSendMode = U.getPreferenceUtils().getSettingInt(PRE_SCOPE_KEY, 2)
+        if (selectedSendMode == 2) {
+            inMicSelectedIv.visibility = View.GONE
+            allManSelectedIv.visibility = View.VISIBLE
+        } else {
+            inMicSelectedIv.visibility = View.VISIBLE
+            allManSelectedIv.visibility = View.GONE
+        }
+
         sendIv.setDebounceViewClickListener {
             if (selectedSeatIndex.size >= 2) {
                 sendVote()
@@ -168,7 +179,7 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
         val map = HashMap<String, Any?>()
         map["roomID"] = H.partyRoomData?.gameId
         map["scope"] = selectedSendMode
-
+        U.getPreferenceUtils().setSettingInt(PRE_SCOPE_KEY, selectedSendMode)
         val list = ArrayList<Int>()
         selectedSeatIndex.forEach {
             list.add(guestAvatarList.get(it - 1).getTag() as Int)
