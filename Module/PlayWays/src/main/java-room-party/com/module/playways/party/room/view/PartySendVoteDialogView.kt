@@ -145,7 +145,7 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
             if (selectedSeatIndex.size >= 2) {
                 sendVote()
             } else {
-                U.getToastUtil().showShort("请选择两个人")
+                U.getToastUtil().showShort("请至少选择2位被投票嘉宾吧")
             }
         }
 
@@ -196,7 +196,7 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
                 select(false, index)
             } else {
                 if (selectedSeatIndex.size >= 2) {
-                    U.getToastUtil().showShort("只能选择两个人")
+                    U.getToastUtil().showShort("最多选择2位被投票嘉宾")
                 } else {
                     selectedSeatIndex.add(index)
                     select(true, index)
