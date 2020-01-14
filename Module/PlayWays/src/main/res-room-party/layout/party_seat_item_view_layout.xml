@@ -13,7 +13,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <android.support.constraint.Group
         android:id="@+id/mute_area"
         android:layout_width="wrap_content"
@@ -92,6 +91,15 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/emoji_sdv"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/avatar_sdv"
+        app:layout_constraintLeft_toLeftOf="@id/avatar_sdv"
+        app:layout_constraintRight_toLeftOf="@id/avatar_sdv" />
+
+    <ImageView
+        android:id="@+id/roll_iv"
         android:layout_width="@dimen/view_40_dp"
         android:layout_height="@dimen/view_40_dp"
         android:visibility="gone"

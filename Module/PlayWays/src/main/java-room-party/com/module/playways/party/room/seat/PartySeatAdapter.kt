@@ -52,10 +52,18 @@ class PartySeatAdapter(var listener: Listener?) : RecyclerView.Adapter<RecyclerV
                 payloads.forEach { refreshType ->
                     if (refreshType is Int) {
                         when (refreshType) {
-                            REFRESH_MUTE -> { holder.refreshMute() }
-                            REFRESH_HOT -> { holder.refreshHot() }
-                            REFRESH_PLAY_VOLUME -> { holder.playSpeakAnimation() }
-                            REFRESH_STOP_VOLUME -> { holder.stopSpeakAnimation() }
+                            REFRESH_MUTE -> {
+                                holder.refreshMute()
+                            }
+                            REFRESH_HOT -> {
+                                holder.refreshHot()
+                            }
+                            REFRESH_PLAY_VOLUME -> {
+                                holder.playSpeakAnimation()
+                            }
+                            REFRESH_STOP_VOLUME -> {
+                                holder.stopSpeakAnimation()
+                            }
                         }
                     } else if (refreshType is PartyEmojiInfoModel) {
                         // 刷个表情
