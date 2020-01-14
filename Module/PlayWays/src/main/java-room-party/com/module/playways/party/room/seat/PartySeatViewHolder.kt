@@ -131,8 +131,8 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
             rollIv.setImageDrawable(animationRoll)
             animationRoll?.start()
 
-            handler.sendEmptyMessageDelayed(MSG_TYPE_END_ROLLING,3000)
-            handler.sendEmptyMessageDelayed(MSG_TYPE_END_ANIMATION,6000)
+            handler.sendEmptyMessageDelayed(MSG_TYPE_END_ROLLING,2000)
+            handler.sendEmptyMessageDelayed(MSG_TYPE_END_ANIMATION,4000)
         } else {
             // 普通表情
             emojiSdv.visibility = View.VISIBLE
