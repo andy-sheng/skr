@@ -73,6 +73,8 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
     var isVoting = true
 
     var countDownJob: Job? = null
+    //确保消失
+    var dismissJob: Job? = null
 
     private val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
 
@@ -96,8 +98,8 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
         setData()
 
         //确保能关闭
-        launch {
-            delay(15000)
+        dismissJob = launch {
+            delay(event.endTimeMs - event.beginTimeMs + 6000)
             dismiss(false)
         }
     }
@@ -201,6 +203,7 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
     }
 
     private fun showWinner(leftCnt: Int, rightCnt: Int) {
+        dismissJob?.cancel()
         if (leftCnt == 0 && rightCnt == 0) {
             //什么都不做
         } else if (leftCnt > rightCnt) {
