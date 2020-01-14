@@ -32,6 +32,8 @@ import okhttp3.RequestBody
  *  打开座位，取消
  */
 class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
+    private val PRE_SCOPE_KEY = "scope_vote"
+
     private var mDialogPlus: DialogPlus? = null
     var inMicTv: ExTextView
     var inMicSelectedIv: ExImageView
@@ -141,11 +143,20 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
             selectedSendMode = 2
         }
 
+        selectedSendMode = U.getPreferenceUtils().getSettingInt(PRE_SCOPE_KEY, 2)
+        if (selectedSendMode == 2) {
+            inMicSelectedIv.visibility = View.GONE
+            allManSelectedIv.visibility = View.VISIBLE
+        } else {
+            inMicSelectedIv.visibility = View.VISIBLE
+            allManSelectedIv.visibility = View.GONE
+        }
+
         sendIv.setDebounceViewClickListener {
             if (selectedSeatIndex.size >= 2) {
                 sendVote()
             } else {
-                U.getToastUtil().showShort("请选择两个人")
+                U.getToastUtil().showShort("请至少选择2位被投票嘉宾吧")
             }
         }
 
@@ -168,7 +179,7 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
         val map = HashMap<String, Any?>()
         map["roomID"] = H.partyRoomData?.gameId
         map["scope"] = selectedSendMode
-
+        U.getPreferenceUtils().setSettingInt(PRE_SCOPE_KEY, selectedSendMode)
         val list = ArrayList<Int>()
         selectedSeatIndex.forEach {
             list.add(guestAvatarList.get(it - 1).getTag() as Int)
@@ -196,7 +207,7 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
                 select(false, index)
             } else {
                 if (selectedSeatIndex.size >= 2) {
-                    U.getToastUtil().showShort("只能选择两个人")
+                    U.getToastUtil().showShort("最多选择2位被投票嘉宾")
                 } else {
                     selectedSeatIndex.add(index)
                     select(true, index)

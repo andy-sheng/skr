@@ -157,7 +157,7 @@ class ClubHomeView(context: Context) : ConstraintLayout(context), IClubHomeView,
     override fun destory() {
         mTipsDialogView?.dismiss(false)
         if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this)
+            EventBus.getDefault().unregister(this)
         }
         cancel()
     }

@@ -4,6 +4,9 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.graphics.Color
+import android.graphics.drawable.AnimationDrawable
+import android.os.Handler
+import android.os.Message
 import android.support.constraint.Group
 import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
@@ -15,10 +18,12 @@ import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.component.busilib.view.AutoPollRecyclerView
 import com.component.busilib.view.SpeakingTipsAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
@@ -26,6 +31,7 @@ import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.party.room.model.PartyEmojiInfoModel
 import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.ESeatStatus
+import java.lang.ref.WeakReference
 
 // 正常位置
 class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : RecyclerView.ViewHolder(item) {
@@ -38,11 +44,35 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
     private val muteIv: ImageView = item.findViewById(R.id.mute_iv)
     private val speakerAnimationIv: SpeakingTipsAnimationView = item.findViewById(R.id.speaker_animation_iv)
 
+    private val rollIv: ImageView = item.findViewById(R.id.roll_iv)
     private val emojiSdv: SimpleDraweeView = item.findViewById(R.id.emoji_sdv)
 
     var animation: ObjectAnimator? = null
+    var animationRoll: AnimationDrawable? = null
     var mModel: PartyActorInfoModel? = null
     var mPos: Int = -1
+
+    val MSG_TYPE_END_ROLLING = 0x01
+    val MSG_TYPE_END_ANIMATION = 0x02
+
+    var handler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+            when (msg?.what) {
+                MSG_TYPE_END_ROLLING -> {
+                    animationRoll?.stop()
+                    rollIv.clearAnimation()
+                    rollIv.visibility = View.GONE
+                    emojiSdv.visibility = View.VISIBLE
+                }
+                MSG_TYPE_END_ANIMATION -> {
+                    rollIv.visibility = View.GONE
+                    emojiSdv.visibility = View.GONE
+                }
+
+            }
+        }
+    }
 
     init {
         avatarSdv.setDebounceViewClickListener {
@@ -89,22 +119,45 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
     }
 
     fun playEmojiAnimation(model: PartyEmojiInfoModel) {
-        emojiSdv.visibility = View.VISIBLE
+        stop()
         FrescoWorker.loadImage(emojiSdv, ImageFactory.newPathImage(model.bigEmojiURL)
                 .build())
+        if (model.id == 1000) {
+            // 骰子
+            emojiSdv.visibility = View.GONE
+            rollIv.visibility = View.VISIBLE
+
+            animationRoll = U.getDrawable(R.drawable.party_rolling_anmation) as AnimationDrawable
+            rollIv.setImageDrawable(animationRoll)
+            animationRoll?.start()
+
+            handler.sendEmptyMessageDelayed(MSG_TYPE_END_ROLLING,2000)
+            handler.sendEmptyMessageDelayed(MSG_TYPE_END_ANIMATION,3000)
+        } else {
+            // 普通表情
+            emojiSdv.visibility = View.VISIBLE
+            rollIv.visibility = View.GONE
+
+            animation = ObjectAnimator.ofFloat(emojiSdv, View.TRANSLATION_Y, -10.dp().toFloat(), 0f)
+            animation?.interpolator = CycleInterpolator(3f)
+            animation?.duration = 2000
+            animation?.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator?) {
+                    super.onAnimationEnd(animation)
+                    emojiSdv.visibility = View.GONE
+                }
+            })
+            animation?.start()
+        }
+    }
+
+    private fun stop() {
         animation?.removeAllListeners()
         animation?.cancel()
-        animation = ObjectAnimator.ofFloat(emojiSdv, View.TRANSLATION_Y, -10.dp().toFloat(), 0f)
-        animation?.interpolator = CycleInterpolator(3f)
-        animation?.duration = 2000
-        animation?.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
-                super.onAnimationEnd(animation)
-                emojiSdv.visibility = View.GONE
-            }
-        })
-        animation?.start()
+        handler?.removeCallbacksAndMessages(null)
+        animationRoll?.stop()
     }
+
 }
 
 
