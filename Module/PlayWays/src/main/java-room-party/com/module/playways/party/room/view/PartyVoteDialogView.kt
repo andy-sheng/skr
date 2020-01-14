@@ -4,7 +4,10 @@ import android.content.Context
 import android.view.Gravity
 import android.view.View
 import com.common.core.view.setDebounceViewClickListener
+import com.common.image.fresco.BaseImageView
+import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
+import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.orhanobut.dialogplus.DialogPlus
@@ -17,18 +20,42 @@ import com.orhanobut.dialogplus.ViewHolder
  */
 class PartyVoteDialogView(context: Context) : ExConstraintLayout(context) {
     private var mDialogPlus: DialogPlus? = null
-    var function1: ExTextView
-    var function2: ExTextView
-    var cancel: ExTextView
+    val leftBg: ExImageView
+    val rightBg: ExImageView
+    val leftAvatarIv: BaseImageView
+    val leftNameTv: ExTextView
+    val leftTicketTv: ExTextView
+    val leftTicketName: ExTextView
+    val leftButtom: ExTextView
+    val rightAvatarIv: BaseImageView
+    val rightNameTv: ExTextView
+    val rightTicketTv: ExTextView
+    val rightTicketName: ExTextView
+    val rightButtom: ExTextView
+    val countDownTv: ExTextView
 
     init {
-        View.inflate(context, R.layout.party_manage_host_dialog_view_layout, this)
-        function1 = rootView.findViewById(R.id.function_1)
-        function2 = rootView.findViewById(R.id.function_2)
-        cancel = rootView.findViewById(R.id.cancel)
+        View.inflate(context, R.layout.party_vote_view_layout, this)
+        leftBg = this.findViewById(R.id.left_bg)
+        rightBg = this.findViewById(R.id.right_bg)
+        leftAvatarIv = this.findViewById(R.id.left_avatar_iv)
+        leftNameTv = this.findViewById(R.id.left_name_tv)
+        leftTicketTv = this.findViewById(R.id.left_ticket_tv)
+        leftTicketName = this.findViewById(R.id.left_ticket_name)
+        leftButtom = this.findViewById(R.id.left_buttom)
+        rightAvatarIv = this.findViewById(R.id.right_avatar_iv)
+        rightNameTv = this.findViewById(R.id.right_name_tv)
+        rightTicketTv = this.findViewById(R.id.right_ticket_tv)
+        rightTicketName = this.findViewById(R.id.right_ticket_name)
+        rightButtom = this.findViewById(R.id.right_buttom)
+        countDownTv = this.findViewById(R.id.count_down_tv)
 
-        cancel.setDebounceViewClickListener {
-            dismiss(false)
+        leftButtom.setDebounceViewClickListener {
+
+        }
+
+        rightButtom.setDebounceViewClickListener {
+
         }
     }
 
@@ -48,6 +75,7 @@ class PartyVoteDialogView(context: Context) : ExConstraintLayout(context) {
                 .setContentBackgroundResource(com.common.base.R.color.transparent)
                 .setOverlayBackgroundResource(com.common.base.R.color.black_trans_80)
                 .setExpanded(false)
+                .setMargin(U.getDisplayUtils().dip2px(10f), 0, U.getDisplayUtils().dip2px(10f), U.getDisplayUtils().dip2px(10f))
                 .setCancelable(canCancel)
                 .create()
         mDialogPlus?.show()
