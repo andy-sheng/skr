@@ -6,6 +6,7 @@ import android.view.ViewStub
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.common.core.view.setAnimateDebounceViewClickListener
+import com.common.core.view.setDebounceViewClickListener
 import com.common.flutter.boost.FlutterBoostController
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
@@ -20,7 +21,6 @@ import com.module.playways.room.data.H
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import org.greenrobot.eventbus.EventBus
 
 class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
@@ -28,6 +28,7 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var soundSettingTv: TextView
     lateinit var muteSettingTv: TextView
     lateinit var bgmTv: TextView
+    lateinit var voteTv: TextView
 
     var listener: Listener? = null
 
@@ -38,6 +39,7 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
         soundSettingTv = parentView.findViewById(R.id.sound_setting_tv)
         muteSettingTv = parentView.findViewById(R.id.mute_setting_tv)
         bgmTv = parentView.findViewById(R.id.bgm_tv)
+        voteTv = parentView.findViewById(R.id.vote_tv)
 
         gameSettingTv.setAnimateDebounceViewClickListener {
             listener?.onClickGameSetting()
@@ -47,12 +49,16 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
             listener?.onClickGameSound()
         }
 
+        voteTv.setAnimateDebounceViewClickListener {
+            listener?.onClickVote()
+        }
+
         muteSettingTv.setAnimateDebounceViewClickListener {
-            var  b = (H.partyRoomData?.isAllMute==true)
+            var b = (H.partyRoomData?.isAllMute == true)
             setAllMicMute(!b)
         }
         bgmTv.setAnimateDebounceViewClickListener {
-            FlutterBoostController.openFlutterPage(realView?.context!!,RouterConstants.FLUTTER_PAGE_PARTY_BGM_PAGE,null)
+            FlutterBoostController.openFlutterPage(realView?.context!!, RouterConstants.FLUTTER_PAGE_PARTY_BGM_PAGE, null)
         }
     }
 
@@ -88,7 +94,7 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     private fun refreshAllMute() {
         var drawable = U.getDrawable(R.drawable.party_setting_all_unmute)
-        if (H.partyRoomData?.isAllMute==true) {
+        if (H.partyRoomData?.isAllMute == true) {
             muteSettingTv.text = "全员开麦"
         } else {
             drawable = U.getDrawable(R.drawable.party_setting_all_mute)
@@ -101,5 +107,6 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
     interface Listener {
         fun onClickGameSetting()
         fun onClickGameSound()
+        fun onClickVote()
     }
 }

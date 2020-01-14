@@ -409,7 +409,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             }
 
             override fun showGiftPanel() {
-                MyLog.d(TAG,"${getLocalMusicInfo()}")
+                MyLog.d(TAG, "${getLocalMusicInfo()}")
                 mContinueSendView.visibility = View.GONE
                 showPanelView()
             }
@@ -428,6 +428,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
             override fun onClickGameSound() {
 
+            }
+
+            override fun onClickVote() {
+                val partySendVoteDialogView = PartySendVoteDialogView(this@PartyRoomActivity)
+                partySendVoteDialogView.showByDialog()
             }
         }
 
