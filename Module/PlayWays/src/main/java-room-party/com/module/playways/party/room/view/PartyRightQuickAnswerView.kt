@@ -111,7 +111,7 @@ class PartyRightQuickAnswerView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
         }
     }
 
-    private fun getCountDownTs(beginTs: Int): Int {
+    private fun getCountDownTs(beginTs: Long): Int {
         val now = System.currentTimeMillis()
         return (beginTs - (now - BaseRoomData.shiftTsForRelay)).toInt()
     }
@@ -121,6 +121,7 @@ class PartyRightQuickAnswerView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
         setVisibility(View.GONE)
         countDownJob?.cancel()
         mStatus = STATUS_COUNT_DOWN
+        onChangeState()
         realView?.clearAnimation()
         grabIv.clearAnimation()
         enterAnimation?.cancel()
@@ -130,7 +131,7 @@ class PartyRightQuickAnswerView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
     /**
      * @param num 倒计时时间，倒计时结束后变成想唱
      */
-    fun playCountDown(beginTs: Int) {
+    fun playCountDown(beginTs: Long, endTs: Long) {
         reset()
         setVisibility(View.VISIBLE)
         enterAnimation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
@@ -142,6 +143,7 @@ class PartyRightQuickAnswerView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
         realView?.startAnimation(enterAnimation)
         // 播放 3 2 1 导唱倒计时
         var countDownTs = getCountDownTs(beginTs)
+        MyLog.d(TAG, "countDownTs1=$countDownTs")
         if (countDownTs > 0) {
             countDownJob = launch {
                 val t = countDownTs % 1000
@@ -159,21 +161,29 @@ class PartyRightQuickAnswerView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
                     delay(1000)
                 }
                 delay(t.toLong())
+                showBtn(beginTs, endTs)
             }
-        }
-        countDownTs = getCountDownTs(beginTs)
-        val duration = 5000 - countDownTs
-        if (duration > 0) {
-            // 开始抢答倒计时
-            mStatus = STATUS_GRAB
-            onChangeState()
-            rrlProgress.visibility = View.VISIBLE
-            rrlProgress.startCountDown(duration.toLong())
-            val msg = mUiHandler.obtainMessage(MSG_HIDE)
-            mUiHandler.sendMessageDelayed(msg, duration.toLong())
+        } else {
+            showBtn(beginTs, endTs)
         }
     }
 
+    private fun showBtn(beginTs: Long, endTs: Long) {
+        val countDownTs = getCountDownTs(endTs)
+        if (countDownTs > 0) {
+            MyLog.d(TAG, "countDownTs2=$countDownTs")
+            if (countDownTs > 0) {
+                // 开始抢答倒计时
+                mStatus = STATUS_GRAB
+                onChangeState()
+                rrlProgress.visibility = View.VISIBLE
+                rrlProgress.startCountDown(countDownTs.toLong())
+                val msg = mUiHandler.obtainMessage(MSG_HIDE)
+                mUiHandler.sendMessageDelayed(msg, countDownTs.toLong())
+            }
+        }
+
+    }
 
     /**
      * 状态发生变化

@@ -1143,7 +1143,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     fun onEvent(event: PBeginQuickAnswer) {
         MyLog.d(TAG, "onEvent event = $event")
         H.partyRoomData?.quickAnswerTag =  event.quickAnswerTag
-        roomView.beginQuickAnswer(event.beginTimeMs.toInt())
+        roomView.beginQuickAnswer(event.beginTimeMs,event.endTimeMs)
     }
 
     // 有人抢答
