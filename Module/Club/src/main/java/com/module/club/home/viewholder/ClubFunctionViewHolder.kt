@@ -2,30 +2,32 @@ package com.module.club.home.viewholder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.ImageView
 import com.common.core.userinfo.model.ClubInfo
 import com.common.core.view.setAnimateDebounceViewClickListener
+import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.module.club.R
 import com.module.club.home.ClubHomeClickListener
 
 class ClubFunctionViewHolder(item: View, var listener: ClubHomeClickListener) : RecyclerView.ViewHolder(item) {
 
-    private val clubSearchTv: ExTextView = item.findViewById(R.id.club_search_tv)
-    private val clubRankTv: ExTextView = item.findViewById(R.id.club_rank_tv)
-    private val clubCreateTv: ExTextView = item.findViewById(R.id.club_create_tv)
+    private val clubSearchIv: ImageView = item.findViewById(R.id.club_search_iv)
+    private val clubRankIv: ImageView = item.findViewById(R.id.club_rank_iv)
+    private val clubCreateIv: ImageView = item.findViewById(R.id.club_create_iv)
 
     private var clubInfo: ClubInfo? = null
 
     init {
-        clubSearchTv.setAnimateDebounceViewClickListener {
+        clubSearchIv.setAnimateDebounceViewClickListener {
             listener.onClickSearchClub()
         }
 
-        clubRankTv.setAnimateDebounceViewClickListener {
+        clubRankIv.setAnimateDebounceViewClickListener {
             listener.onClickSearchClub()
         }
 
-        clubCreateTv.setAnimateDebounceViewClickListener {
+        clubCreateIv.setAnimateDebounceViewClickListener {
             if (clubInfo == null) {
                 listener.onClickCreatClub()
             } else {
@@ -38,9 +40,9 @@ class ClubFunctionViewHolder(item: View, var listener: ClubHomeClickListener) : 
         this.clubInfo = clubInfo
 
         if (clubInfo == null) {
-            clubCreateTv.text = "创建家族"
+            clubCreateIv.background = U.getDrawable(R.drawable.club_home_create_icon)
         } else {
-            clubCreateTv.text = "我的家族"
+            clubCreateIv.background = U.getDrawable(R.drawable.club_home_myclub_icon)
         }
     }
 }

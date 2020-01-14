@@ -139,7 +139,7 @@ class PersonTagView : ConstraintLayout {
     }
 
     fun setClubHot(hot: Int) {
-        mHashMap[CLUB_HOT_TAG] = "$hot"
+        mHashMap[CLUB_HOT_TAG] = "${StringFromatUtils.formatMillion(hot)}"
         refreshTag()
     }
 

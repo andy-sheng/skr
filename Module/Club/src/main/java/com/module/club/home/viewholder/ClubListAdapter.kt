@@ -1,5 +1,5 @@
 package com.module.club.home.viewholder
- 
+
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +10,7 @@ import com.common.core.userinfo.model.ClubInfo
 import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.dp
 import com.common.view.ex.ExTextView
+import com.component.person.utils.StringFromatUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.club.R
 
@@ -34,8 +35,9 @@ class ClubListAdapter(var listener: Listener) : RecyclerView.Adapter<ClubListAda
 
         private val clubLogoSdv: SimpleDraweeView = item.findViewById(R.id.club_logo_sdv)
         private val clubNameTv: TextView = item.findViewById(R.id.club_name_tv)
-        private val popularTv: ExTextView = item.findViewById(R.id.popular_tv)
         private val clubDescTv: ExTextView = item.findViewById(R.id.club_desc_tv)
+        private val clubNumTv: TextView = item.findViewById(R.id.club_num_tv)
+        private val popularTv: ExTextView = item.findViewById(R.id.popular_tv)
         private val divider: View = item.findViewById(R.id.divider)
 
         var mPos = -1
@@ -56,9 +58,11 @@ class ClubListAdapter(var listener: Listener) : RecyclerView.Adapter<ClubListAda
                             .setCircle(false)
                             .setCornerRadius(8.dp().toFloat())
                             .build())
-            clubNameTv.text = model.name
-            popularTv.text = "${model.hot}"
-            clubDescTv.text = "家族成员/${model.memberCnt}人"
+            clubNameTv.text = model.name.trim()
+            clubDescTv.text = model.desc.trim()
+            clubNumTv.text = model.memberCnt.toString()
+            popularTv.text = StringFromatUtils.formatMillion(model.hot)
+
         }
     }
 
