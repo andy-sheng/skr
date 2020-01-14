@@ -18,11 +18,14 @@ import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.model.PartyVoteResultModel
 import com.module.playways.room.data.H
+import com.module.playways.room.room.comment.model.CommentSysModel
+import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.PartyRoom.PBeginVote
@@ -154,17 +157,22 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
                         val voteResultList = JSON.parseArray(result.data.getString("voteInfos"), PartyVoteResultModel::class.java)
                         var leftCnt = 0
                         var rightCnt = 0
+                        var leftStr = ""
+                        var rightStr = ""
                         voteResultList.forEach {
                             if (it.user?.userID == this@PartyVoteDialogView.event.usersList[0].userInfo.userID) {
                                 leftTicketTv.text = it.voteCnt.toString()
                                 leftCnt = it.voteCnt ?: 0
+                                leftStr = "${UserInfoManager.getInstance().getRemarkName(this@PartyVoteDialogView.event.usersList[0].userInfo.userID, this@PartyVoteDialogView.event.usersList[0].userInfo.nickName)} ${it.voteCnt}"
                             } else if (it.user?.userID == this@PartyVoteDialogView.event.usersList[1].userInfo.userID) {
                                 rightTicketTv.text = it.voteCnt.toString()
                                 rightCnt = it.voteCnt ?: 0
+                                rightStr = "${UserInfoManager.getInstance().getRemarkName(this@PartyVoteDialogView.event.usersList[1].userInfo.userID, this@PartyVoteDialogView.event.usersList[1].userInfo.nickName)} ${it.voteCnt}"
                             }
                         }
 
                         showWinner(leftCnt, rightCnt)
+                        pretendSystemMsg("投票结果：$leftStr  $rightStr")
                     }
                 } else {
                     U.getToastUtil().showShort(result.errmsg)
@@ -174,7 +182,6 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
     }
 
     private fun showWinner(leftCnt: Int, rightCnt: Int) {
-        U.getToastUtil().showShort("result , leftCnt is $leftCnt, rightCnt is $rightCnt")
         if (leftCnt > rightCnt) {
 
         } else if (leftCnt < rightCnt) {
@@ -263,6 +270,11 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
         } else {
             MyLog.w("PartyVoteDialogView", "收到别的投票相关消息，PResultVote event.voteTag是${event.voteTag}")
         }
+    }
+
+    fun pretendSystemMsg(text: String) {
+        val commentSysModel = CommentSysModel(GameModeType.GAME_MODE_PARTY, text)
+        EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
 
     /**
