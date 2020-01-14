@@ -3,19 +3,28 @@ package com.module.playways.party.room.view
 import android.content.Context
 import android.view.Gravity
 import android.view.View
+import com.alibaba.fastjson.JSON
 import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
+import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.room.data.H
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 
 /**
  *  下麦，关麦，查看信息，取消
@@ -62,6 +71,8 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
 
     val selectedSeatIndex: ArrayList<Int> = ArrayList(2)
     var selectedSendMode: Int = 0
+
+    private val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
 
     init {
         View.inflate(context, R.layout.party_send_vote_view_layout, this)
@@ -133,6 +144,22 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
         sendIv.setDebounceViewClickListener {
             if (selectedSeatIndex.size >= 2) {
                 mDialogPlus?.dismiss(false)
+
+                val map = HashMap<String, Any?>()
+                map["roomID"] = H.partyRoomData?.gameId
+//                map["curHostUserID"] = mRoomData.hostId
+
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                launch {
+                    var result = subscribe(RequestControl("takeClubHost", ControlType.CancelThis)) {
+                        roomServerApi.beginVote(body)
+                    }
+                    if (result.errno == 0) {
+
+                    } else {
+                        U.getToastUtil().showShort(result.errmsg)
+                    }
+                }
             } else {
                 U.getToastUtil().showShort("请选择两个人")
             }

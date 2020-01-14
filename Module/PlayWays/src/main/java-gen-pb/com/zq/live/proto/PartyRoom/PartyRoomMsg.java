@@ -268,6 +268,105 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
   )
   private final PClubChangeHostMsg pClubChangeHostMsg;
 
+  /**
+   * 邀请成为嘉宾
+   */
+  @WireField(
+      tag = 33,
+      adapter = "com.zq.live.proto.PartyRoom.PInviteBeGuestMsg#ADAPTER"
+  )
+  private final PInviteBeGuestMsg pInviteBeGuestMsg;
+
+  /**
+   * 邀请的响应
+   */
+  @WireField(
+      tag = 34,
+      adapter = "com.zq.live.proto.PartyRoom.PRspInviteBeGuestMsg#ADAPTER"
+  )
+  private final PRspInviteBeGuestMsg pRspInviteBeGuestMsg;
+
+  /**
+   * ktv暂停or开始信令
+   */
+  @WireField(
+      tag = 35,
+      adapter = "com.zq.live.proto.PartyRoom.PKTVStopMsg#ADAPTER"
+  )
+  private final PKTVStopMsg pKTVStopMsg;
+
+  /**
+   * 主持人下发抢答
+   */
+  @WireField(
+      tag = 36,
+      adapter = "com.zq.live.proto.PartyRoom.PBeginQuickAnswer#ADAPTER"
+  )
+  private final PBeginQuickAnswer pBeginQuickAnswer;
+
+  /**
+   * 嘉宾响应获得抢答
+   */
+  @WireField(
+      tag = 37,
+      adapter = "com.zq.live.proto.PartyRoom.PResponseQuickAnswer#ADAPTER"
+  )
+  private final PResponseQuickAnswer pResponseQuickAnswer;
+
+  /**
+   * 抢答结果
+   */
+  @WireField(
+      tag = 38,
+      adapter = "com.zq.live.proto.PartyRoom.PResultQuickAnswer#ADAPTER"
+  )
+  private final PResultQuickAnswer pResultQuickAnswer;
+
+  /**
+   * 主持人下发投票
+   */
+  @WireField(
+      tag = 39,
+      adapter = "com.zq.live.proto.PartyRoom.PBeginVote#ADAPTER"
+  )
+  private final PBeginVote pBeginVote;
+
+  /**
+   * 投票响应数
+   */
+  @WireField(
+      tag = 40,
+      adapter = "com.zq.live.proto.PartyRoom.PResponseVote#ADAPTER"
+  )
+  private final PResponseVote pResponseVote;
+
+  /**
+   * 投票结果
+   */
+  @WireField(
+      tag = 41,
+      adapter = "com.zq.live.proto.PartyRoom.PResultVote#ADAPTER"
+  )
+  private final PResultVote pResultVote;
+
+  /**
+   * 房间警告消息
+   */
+  @WireField(
+      tag = 42,
+      adapter = "com.zq.live.proto.PartyRoom.PRoomWarningMsg#ADAPTER"
+  )
+  private final PRoomWarningMsg pRoomWarningMsg;
+
+  /**
+   * 房间封禁消息
+   */
+  @WireField(
+      tag = 43,
+      adapter = "com.zq.live.proto.PartyRoom.PRoomLockedMsg#ADAPTER"
+  )
+  private final PRoomLockedMsg pRoomLockedMsg;
+
   public PartyRoomMsg(Long timeMs, EPartyRoomMsgType msgType, Integer roomID,
       PJoinNoticeMsg pJoinNoticeMsg, PFixRoomNoticeMsg pFixRoomNoticeMsg,
       PSetRoomAdminMsg pSetRoomAdminMsg, PSetAllMemberMicMsg pSetAllMemberMicMsg,
@@ -279,8 +378,13 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PChangeRoomTopicMsg pChangeRoomTopicMsg,
       PChangeRoomEnterPermissionMsg pChangeRoomEnterPermissionMsg,
       PUpdatePopularityMsg pUpdatePopularityMsg, PClubGameStopMsg pClubGameStopMsg,
-      PClubBecomeHostMsg pClubBecomeHostMsg, PClubChangeHostMsg pClubChangeHostMsg) {
-    this(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, ByteString.EMPTY);
+      PClubBecomeHostMsg pClubBecomeHostMsg, PClubChangeHostMsg pClubChangeHostMsg,
+      PInviteBeGuestMsg pInviteBeGuestMsg, PRspInviteBeGuestMsg pRspInviteBeGuestMsg,
+      PKTVStopMsg pKTVStopMsg, PBeginQuickAnswer pBeginQuickAnswer,
+      PResponseQuickAnswer pResponseQuickAnswer, PResultQuickAnswer pResultQuickAnswer,
+      PBeginVote pBeginVote, PResponseVote pResponseVote, PResultVote pResultVote,
+      PRoomWarningMsg pRoomWarningMsg, PRoomLockedMsg pRoomLockedMsg) {
+    this(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, pInviteBeGuestMsg, pRspInviteBeGuestMsg, pKTVStopMsg, pBeginQuickAnswer, pResponseQuickAnswer, pResultQuickAnswer, pBeginVote, pResponseVote, pResultVote, pRoomWarningMsg, pRoomLockedMsg, ByteString.EMPTY);
   }
 
   public PartyRoomMsg(Long timeMs, EPartyRoomMsgType msgType, Integer roomID,
@@ -295,7 +399,11 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PChangeRoomEnterPermissionMsg pChangeRoomEnterPermissionMsg,
       PUpdatePopularityMsg pUpdatePopularityMsg, PClubGameStopMsg pClubGameStopMsg,
       PClubBecomeHostMsg pClubBecomeHostMsg, PClubChangeHostMsg pClubChangeHostMsg,
-      ByteString unknownFields) {
+      PInviteBeGuestMsg pInviteBeGuestMsg, PRspInviteBeGuestMsg pRspInviteBeGuestMsg,
+      PKTVStopMsg pKTVStopMsg, PBeginQuickAnswer pBeginQuickAnswer,
+      PResponseQuickAnswer pResponseQuickAnswer, PResultQuickAnswer pResultQuickAnswer,
+      PBeginVote pBeginVote, PResponseVote pResponseVote, PResultVote pResultVote,
+      PRoomWarningMsg pRoomWarningMsg, PRoomLockedMsg pRoomLockedMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -323,6 +431,17 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     this.pClubGameStopMsg = pClubGameStopMsg;
     this.pClubBecomeHostMsg = pClubBecomeHostMsg;
     this.pClubChangeHostMsg = pClubChangeHostMsg;
+    this.pInviteBeGuestMsg = pInviteBeGuestMsg;
+    this.pRspInviteBeGuestMsg = pRspInviteBeGuestMsg;
+    this.pKTVStopMsg = pKTVStopMsg;
+    this.pBeginQuickAnswer = pBeginQuickAnswer;
+    this.pResponseQuickAnswer = pResponseQuickAnswer;
+    this.pResultQuickAnswer = pResultQuickAnswer;
+    this.pBeginVote = pBeginVote;
+    this.pResponseVote = pResponseVote;
+    this.pResultVote = pResultVote;
+    this.pRoomWarningMsg = pRoomWarningMsg;
+    this.pRoomLockedMsg = pRoomLockedMsg;
   }
 
   @Override
@@ -354,6 +473,17 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     builder.pClubGameStopMsg = pClubGameStopMsg;
     builder.pClubBecomeHostMsg = pClubBecomeHostMsg;
     builder.pClubChangeHostMsg = pClubChangeHostMsg;
+    builder.pInviteBeGuestMsg = pInviteBeGuestMsg;
+    builder.pRspInviteBeGuestMsg = pRspInviteBeGuestMsg;
+    builder.pKTVStopMsg = pKTVStopMsg;
+    builder.pBeginQuickAnswer = pBeginQuickAnswer;
+    builder.pResponseQuickAnswer = pResponseQuickAnswer;
+    builder.pResultQuickAnswer = pResultQuickAnswer;
+    builder.pBeginVote = pBeginVote;
+    builder.pResponseVote = pResponseVote;
+    builder.pResultVote = pResultVote;
+    builder.pRoomWarningMsg = pRoomWarningMsg;
+    builder.pRoomLockedMsg = pRoomLockedMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -389,7 +519,18 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
         && Internal.equals(pUpdatePopularityMsg, o.pUpdatePopularityMsg)
         && Internal.equals(pClubGameStopMsg, o.pClubGameStopMsg)
         && Internal.equals(pClubBecomeHostMsg, o.pClubBecomeHostMsg)
-        && Internal.equals(pClubChangeHostMsg, o.pClubChangeHostMsg);
+        && Internal.equals(pClubChangeHostMsg, o.pClubChangeHostMsg)
+        && Internal.equals(pInviteBeGuestMsg, o.pInviteBeGuestMsg)
+        && Internal.equals(pRspInviteBeGuestMsg, o.pRspInviteBeGuestMsg)
+        && Internal.equals(pKTVStopMsg, o.pKTVStopMsg)
+        && Internal.equals(pBeginQuickAnswer, o.pBeginQuickAnswer)
+        && Internal.equals(pResponseQuickAnswer, o.pResponseQuickAnswer)
+        && Internal.equals(pResultQuickAnswer, o.pResultQuickAnswer)
+        && Internal.equals(pBeginVote, o.pBeginVote)
+        && Internal.equals(pResponseVote, o.pResponseVote)
+        && Internal.equals(pResultVote, o.pResultVote)
+        && Internal.equals(pRoomWarningMsg, o.pRoomWarningMsg)
+        && Internal.equals(pRoomLockedMsg, o.pRoomLockedMsg);
   }
 
   @Override
@@ -423,6 +564,17 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       result = result * 37 + (pClubGameStopMsg != null ? pClubGameStopMsg.hashCode() : 0);
       result = result * 37 + (pClubBecomeHostMsg != null ? pClubBecomeHostMsg.hashCode() : 0);
       result = result * 37 + (pClubChangeHostMsg != null ? pClubChangeHostMsg.hashCode() : 0);
+      result = result * 37 + (pInviteBeGuestMsg != null ? pInviteBeGuestMsg.hashCode() : 0);
+      result = result * 37 + (pRspInviteBeGuestMsg != null ? pRspInviteBeGuestMsg.hashCode() : 0);
+      result = result * 37 + (pKTVStopMsg != null ? pKTVStopMsg.hashCode() : 0);
+      result = result * 37 + (pBeginQuickAnswer != null ? pBeginQuickAnswer.hashCode() : 0);
+      result = result * 37 + (pResponseQuickAnswer != null ? pResponseQuickAnswer.hashCode() : 0);
+      result = result * 37 + (pResultQuickAnswer != null ? pResultQuickAnswer.hashCode() : 0);
+      result = result * 37 + (pBeginVote != null ? pBeginVote.hashCode() : 0);
+      result = result * 37 + (pResponseVote != null ? pResponseVote.hashCode() : 0);
+      result = result * 37 + (pResultVote != null ? pResultVote.hashCode() : 0);
+      result = result * 37 + (pRoomWarningMsg != null ? pRoomWarningMsg.hashCode() : 0);
+      result = result * 37 + (pRoomLockedMsg != null ? pRoomLockedMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -457,6 +609,17 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     if (pClubGameStopMsg != null) builder.append(", pClubGameStopMsg=").append(pClubGameStopMsg);
     if (pClubBecomeHostMsg != null) builder.append(", pClubBecomeHostMsg=").append(pClubBecomeHostMsg);
     if (pClubChangeHostMsg != null) builder.append(", pClubChangeHostMsg=").append(pClubChangeHostMsg);
+    if (pInviteBeGuestMsg != null) builder.append(", pInviteBeGuestMsg=").append(pInviteBeGuestMsg);
+    if (pRspInviteBeGuestMsg != null) builder.append(", pRspInviteBeGuestMsg=").append(pRspInviteBeGuestMsg);
+    if (pKTVStopMsg != null) builder.append(", pKTVStopMsg=").append(pKTVStopMsg);
+    if (pBeginQuickAnswer != null) builder.append(", pBeginQuickAnswer=").append(pBeginQuickAnswer);
+    if (pResponseQuickAnswer != null) builder.append(", pResponseQuickAnswer=").append(pResponseQuickAnswer);
+    if (pResultQuickAnswer != null) builder.append(", pResultQuickAnswer=").append(pResultQuickAnswer);
+    if (pBeginVote != null) builder.append(", pBeginVote=").append(pBeginVote);
+    if (pResponseVote != null) builder.append(", pResponseVote=").append(pResponseVote);
+    if (pResultVote != null) builder.append(", pResultVote=").append(pResultVote);
+    if (pRoomWarningMsg != null) builder.append(", pRoomWarningMsg=").append(pRoomWarningMsg);
+    if (pRoomLockedMsg != null) builder.append(", pRoomLockedMsg=").append(pRoomLockedMsg);
     return builder.replace(0, 2, "PartyRoomMsg{").append('}').toString();
   }
 
@@ -731,6 +894,116 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
   }
 
   /**
+   * 邀请成为嘉宾
+   */
+  public PInviteBeGuestMsg getPInviteBeGuestMsg() {
+    if(pInviteBeGuestMsg==null){
+        return new PInviteBeGuestMsg.Builder().build();
+    }
+    return pInviteBeGuestMsg;
+  }
+
+  /**
+   * 邀请的响应
+   */
+  public PRspInviteBeGuestMsg getPRspInviteBeGuestMsg() {
+    if(pRspInviteBeGuestMsg==null){
+        return new PRspInviteBeGuestMsg.Builder().build();
+    }
+    return pRspInviteBeGuestMsg;
+  }
+
+  /**
+   * ktv暂停or开始信令
+   */
+  public PKTVStopMsg getPKTVStopMsg() {
+    if(pKTVStopMsg==null){
+        return new PKTVStopMsg.Builder().build();
+    }
+    return pKTVStopMsg;
+  }
+
+  /**
+   * 主持人下发抢答
+   */
+  public PBeginQuickAnswer getPBeginQuickAnswer() {
+    if(pBeginQuickAnswer==null){
+        return new PBeginQuickAnswer.Builder().build();
+    }
+    return pBeginQuickAnswer;
+  }
+
+  /**
+   * 嘉宾响应获得抢答
+   */
+  public PResponseQuickAnswer getPResponseQuickAnswer() {
+    if(pResponseQuickAnswer==null){
+        return new PResponseQuickAnswer.Builder().build();
+    }
+    return pResponseQuickAnswer;
+  }
+
+  /**
+   * 抢答结果
+   */
+  public PResultQuickAnswer getPResultQuickAnswer() {
+    if(pResultQuickAnswer==null){
+        return new PResultQuickAnswer.Builder().build();
+    }
+    return pResultQuickAnswer;
+  }
+
+  /**
+   * 主持人下发投票
+   */
+  public PBeginVote getPBeginVote() {
+    if(pBeginVote==null){
+        return new PBeginVote.Builder().build();
+    }
+    return pBeginVote;
+  }
+
+  /**
+   * 投票响应数
+   */
+  public PResponseVote getPResponseVote() {
+    if(pResponseVote==null){
+        return new PResponseVote.Builder().build();
+    }
+    return pResponseVote;
+  }
+
+  /**
+   * 投票结果
+   */
+  public PResultVote getPResultVote() {
+    if(pResultVote==null){
+        return new PResultVote.Builder().build();
+    }
+    return pResultVote;
+  }
+
+  /**
+   * 房间警告消息
+   */
+  public PRoomWarningMsg getPRoomWarningMsg() {
+    if(pRoomWarningMsg==null){
+        return new PRoomWarningMsg.Builder().build();
+    }
+    return pRoomWarningMsg;
+  }
+
+  /**
+   * 房间封禁消息
+   */
+  public PRoomLockedMsg getPRoomLockedMsg() {
+    if(pRoomLockedMsg==null){
+        return new PRoomLockedMsg.Builder().build();
+    }
+    return pRoomLockedMsg;
+  }
+
+  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -912,6 +1185,83 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     return pClubChangeHostMsg!=null;
   }
 
+  /**
+   * 邀请成为嘉宾
+   */
+  public boolean hasPInviteBeGuestMsg() {
+    return pInviteBeGuestMsg!=null;
+  }
+
+  /**
+   * 邀请的响应
+   */
+  public boolean hasPRspInviteBeGuestMsg() {
+    return pRspInviteBeGuestMsg!=null;
+  }
+
+  /**
+   * ktv暂停or开始信令
+   */
+  public boolean hasPKTVStopMsg() {
+    return pKTVStopMsg!=null;
+  }
+
+  /**
+   * 主持人下发抢答
+   */
+  public boolean hasPBeginQuickAnswer() {
+    return pBeginQuickAnswer!=null;
+  }
+
+  /**
+   * 嘉宾响应获得抢答
+   */
+  public boolean hasPResponseQuickAnswer() {
+    return pResponseQuickAnswer!=null;
+  }
+
+  /**
+   * 抢答结果
+   */
+  public boolean hasPResultQuickAnswer() {
+    return pResultQuickAnswer!=null;
+  }
+
+  /**
+   * 主持人下发投票
+   */
+  public boolean hasPBeginVote() {
+    return pBeginVote!=null;
+  }
+
+  /**
+   * 投票响应数
+   */
+  public boolean hasPResponseVote() {
+    return pResponseVote!=null;
+  }
+
+  /**
+   * 投票结果
+   */
+  public boolean hasPResultVote() {
+    return pResultVote!=null;
+  }
+
+  /**
+   * 房间警告消息
+   */
+  public boolean hasPRoomWarningMsg() {
+    return pRoomWarningMsg!=null;
+  }
+
+  /**
+   * 房间封禁消息
+   */
+  public boolean hasPRoomLockedMsg() {
+    return pRoomLockedMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<PartyRoomMsg, Builder> {
     private Long timeMs;
 
@@ -964,6 +1314,28 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     private PClubBecomeHostMsg pClubBecomeHostMsg;
 
     private PClubChangeHostMsg pClubChangeHostMsg;
+
+    private PInviteBeGuestMsg pInviteBeGuestMsg;
+
+    private PRspInviteBeGuestMsg pRspInviteBeGuestMsg;
+
+    private PKTVStopMsg pKTVStopMsg;
+
+    private PBeginQuickAnswer pBeginQuickAnswer;
+
+    private PResponseQuickAnswer pResponseQuickAnswer;
+
+    private PResultQuickAnswer pResultQuickAnswer;
+
+    private PBeginVote pBeginVote;
+
+    private PResponseVote pResponseVote;
+
+    private PResultVote pResultVote;
+
+    private PRoomWarningMsg pRoomWarningMsg;
+
+    private PRoomLockedMsg pRoomLockedMsg;
 
     public Builder() {
     }
@@ -1177,9 +1549,97 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       return this;
     }
 
+    /**
+     * 邀请成为嘉宾
+     */
+    public Builder setPInviteBeGuestMsg(PInviteBeGuestMsg pInviteBeGuestMsg) {
+      this.pInviteBeGuestMsg = pInviteBeGuestMsg;
+      return this;
+    }
+
+    /**
+     * 邀请的响应
+     */
+    public Builder setPRspInviteBeGuestMsg(PRspInviteBeGuestMsg pRspInviteBeGuestMsg) {
+      this.pRspInviteBeGuestMsg = pRspInviteBeGuestMsg;
+      return this;
+    }
+
+    /**
+     * ktv暂停or开始信令
+     */
+    public Builder setPKTVStopMsg(PKTVStopMsg pKTVStopMsg) {
+      this.pKTVStopMsg = pKTVStopMsg;
+      return this;
+    }
+
+    /**
+     * 主持人下发抢答
+     */
+    public Builder setPBeginQuickAnswer(PBeginQuickAnswer pBeginQuickAnswer) {
+      this.pBeginQuickAnswer = pBeginQuickAnswer;
+      return this;
+    }
+
+    /**
+     * 嘉宾响应获得抢答
+     */
+    public Builder setPResponseQuickAnswer(PResponseQuickAnswer pResponseQuickAnswer) {
+      this.pResponseQuickAnswer = pResponseQuickAnswer;
+      return this;
+    }
+
+    /**
+     * 抢答结果
+     */
+    public Builder setPResultQuickAnswer(PResultQuickAnswer pResultQuickAnswer) {
+      this.pResultQuickAnswer = pResultQuickAnswer;
+      return this;
+    }
+
+    /**
+     * 主持人下发投票
+     */
+    public Builder setPBeginVote(PBeginVote pBeginVote) {
+      this.pBeginVote = pBeginVote;
+      return this;
+    }
+
+    /**
+     * 投票响应数
+     */
+    public Builder setPResponseVote(PResponseVote pResponseVote) {
+      this.pResponseVote = pResponseVote;
+      return this;
+    }
+
+    /**
+     * 投票结果
+     */
+    public Builder setPResultVote(PResultVote pResultVote) {
+      this.pResultVote = pResultVote;
+      return this;
+    }
+
+    /**
+     * 房间警告消息
+     */
+    public Builder setPRoomWarningMsg(PRoomWarningMsg pRoomWarningMsg) {
+      this.pRoomWarningMsg = pRoomWarningMsg;
+      return this;
+    }
+
+    /**
+     * 房间封禁消息
+     */
+    public Builder setPRoomLockedMsg(PRoomLockedMsg pRoomLockedMsg) {
+      this.pRoomLockedMsg = pRoomLockedMsg;
+      return this;
+    }
+
     @Override
     public PartyRoomMsg build() {
-      return new PartyRoomMsg(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, super.buildUnknownFields());
+      return new PartyRoomMsg(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, pInviteBeGuestMsg, pRspInviteBeGuestMsg, pKTVStopMsg, pBeginQuickAnswer, pResponseQuickAnswer, pResultQuickAnswer, pBeginVote, pResponseVote, pResultVote, pRoomWarningMsg, pRoomLockedMsg, super.buildUnknownFields());
     }
   }
 
@@ -1216,6 +1676,17 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
           + PClubGameStopMsg.ADAPTER.encodedSizeWithTag(30, value.pClubGameStopMsg)
           + PClubBecomeHostMsg.ADAPTER.encodedSizeWithTag(31, value.pClubBecomeHostMsg)
           + PClubChangeHostMsg.ADAPTER.encodedSizeWithTag(32, value.pClubChangeHostMsg)
+          + PInviteBeGuestMsg.ADAPTER.encodedSizeWithTag(33, value.pInviteBeGuestMsg)
+          + PRspInviteBeGuestMsg.ADAPTER.encodedSizeWithTag(34, value.pRspInviteBeGuestMsg)
+          + PKTVStopMsg.ADAPTER.encodedSizeWithTag(35, value.pKTVStopMsg)
+          + PBeginQuickAnswer.ADAPTER.encodedSizeWithTag(36, value.pBeginQuickAnswer)
+          + PResponseQuickAnswer.ADAPTER.encodedSizeWithTag(37, value.pResponseQuickAnswer)
+          + PResultQuickAnswer.ADAPTER.encodedSizeWithTag(38, value.pResultQuickAnswer)
+          + PBeginVote.ADAPTER.encodedSizeWithTag(39, value.pBeginVote)
+          + PResponseVote.ADAPTER.encodedSizeWithTag(40, value.pResponseVote)
+          + PResultVote.ADAPTER.encodedSizeWithTag(41, value.pResultVote)
+          + PRoomWarningMsg.ADAPTER.encodedSizeWithTag(42, value.pRoomWarningMsg)
+          + PRoomLockedMsg.ADAPTER.encodedSizeWithTag(43, value.pRoomLockedMsg)
           + value.unknownFields().size();
     }
 
@@ -1247,6 +1718,17 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PClubGameStopMsg.ADAPTER.encodeWithTag(writer, 30, value.pClubGameStopMsg);
       PClubBecomeHostMsg.ADAPTER.encodeWithTag(writer, 31, value.pClubBecomeHostMsg);
       PClubChangeHostMsg.ADAPTER.encodeWithTag(writer, 32, value.pClubChangeHostMsg);
+      PInviteBeGuestMsg.ADAPTER.encodeWithTag(writer, 33, value.pInviteBeGuestMsg);
+      PRspInviteBeGuestMsg.ADAPTER.encodeWithTag(writer, 34, value.pRspInviteBeGuestMsg);
+      PKTVStopMsg.ADAPTER.encodeWithTag(writer, 35, value.pKTVStopMsg);
+      PBeginQuickAnswer.ADAPTER.encodeWithTag(writer, 36, value.pBeginQuickAnswer);
+      PResponseQuickAnswer.ADAPTER.encodeWithTag(writer, 37, value.pResponseQuickAnswer);
+      PResultQuickAnswer.ADAPTER.encodeWithTag(writer, 38, value.pResultQuickAnswer);
+      PBeginVote.ADAPTER.encodeWithTag(writer, 39, value.pBeginVote);
+      PResponseVote.ADAPTER.encodeWithTag(writer, 40, value.pResponseVote);
+      PResultVote.ADAPTER.encodeWithTag(writer, 41, value.pResultVote);
+      PRoomWarningMsg.ADAPTER.encodeWithTag(writer, 42, value.pRoomWarningMsg);
+      PRoomLockedMsg.ADAPTER.encodeWithTag(writer, 43, value.pRoomLockedMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1289,6 +1771,17 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
           case 30: builder.setPClubGameStopMsg(PClubGameStopMsg.ADAPTER.decode(reader)); break;
           case 31: builder.setPClubBecomeHostMsg(PClubBecomeHostMsg.ADAPTER.decode(reader)); break;
           case 32: builder.setPClubChangeHostMsg(PClubChangeHostMsg.ADAPTER.decode(reader)); break;
+          case 33: builder.setPInviteBeGuestMsg(PInviteBeGuestMsg.ADAPTER.decode(reader)); break;
+          case 34: builder.setPRspInviteBeGuestMsg(PRspInviteBeGuestMsg.ADAPTER.decode(reader)); break;
+          case 35: builder.setPKTVStopMsg(PKTVStopMsg.ADAPTER.decode(reader)); break;
+          case 36: builder.setPBeginQuickAnswer(PBeginQuickAnswer.ADAPTER.decode(reader)); break;
+          case 37: builder.setPResponseQuickAnswer(PResponseQuickAnswer.ADAPTER.decode(reader)); break;
+          case 38: builder.setPResultQuickAnswer(PResultQuickAnswer.ADAPTER.decode(reader)); break;
+          case 39: builder.setPBeginVote(PBeginVote.ADAPTER.decode(reader)); break;
+          case 40: builder.setPResponseVote(PResponseVote.ADAPTER.decode(reader)); break;
+          case 41: builder.setPResultVote(PResultVote.ADAPTER.decode(reader)); break;
+          case 42: builder.setPRoomWarningMsg(PRoomWarningMsg.ADAPTER.decode(reader)); break;
+          case 43: builder.setPRoomLockedMsg(PRoomLockedMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1326,6 +1819,17 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       if (builder.pClubGameStopMsg != null) builder.pClubGameStopMsg = PClubGameStopMsg.ADAPTER.redact(builder.pClubGameStopMsg);
       if (builder.pClubBecomeHostMsg != null) builder.pClubBecomeHostMsg = PClubBecomeHostMsg.ADAPTER.redact(builder.pClubBecomeHostMsg);
       if (builder.pClubChangeHostMsg != null) builder.pClubChangeHostMsg = PClubChangeHostMsg.ADAPTER.redact(builder.pClubChangeHostMsg);
+      if (builder.pInviteBeGuestMsg != null) builder.pInviteBeGuestMsg = PInviteBeGuestMsg.ADAPTER.redact(builder.pInviteBeGuestMsg);
+      if (builder.pRspInviteBeGuestMsg != null) builder.pRspInviteBeGuestMsg = PRspInviteBeGuestMsg.ADAPTER.redact(builder.pRspInviteBeGuestMsg);
+      if (builder.pKTVStopMsg != null) builder.pKTVStopMsg = PKTVStopMsg.ADAPTER.redact(builder.pKTVStopMsg);
+      if (builder.pBeginQuickAnswer != null) builder.pBeginQuickAnswer = PBeginQuickAnswer.ADAPTER.redact(builder.pBeginQuickAnswer);
+      if (builder.pResponseQuickAnswer != null) builder.pResponseQuickAnswer = PResponseQuickAnswer.ADAPTER.redact(builder.pResponseQuickAnswer);
+      if (builder.pResultQuickAnswer != null) builder.pResultQuickAnswer = PResultQuickAnswer.ADAPTER.redact(builder.pResultQuickAnswer);
+      if (builder.pBeginVote != null) builder.pBeginVote = PBeginVote.ADAPTER.redact(builder.pBeginVote);
+      if (builder.pResponseVote != null) builder.pResponseVote = PResponseVote.ADAPTER.redact(builder.pResponseVote);
+      if (builder.pResultVote != null) builder.pResultVote = PResultVote.ADAPTER.redact(builder.pResultVote);
+      if (builder.pRoomWarningMsg != null) builder.pRoomWarningMsg = PRoomWarningMsg.ADAPTER.redact(builder.pRoomWarningMsg);
+      if (builder.pRoomLockedMsg != null) builder.pRoomLockedMsg = PRoomLockedMsg.ADAPTER.redact(builder.pRoomLockedMsg);
       builder.clearUnknownFields();
       return builder.build();
     }

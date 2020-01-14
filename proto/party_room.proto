@@ -46,6 +46,144 @@ message PartyRoomMsg {
     PClubGameStopMsg pClubGameStopMsg                           = 30; //家族派对房游戏停止
     PClubBecomeHostMsg pClubBecomeHostMsg                       = 31; //家族派对房游戏新增主持人
     PClubChangeHostMsg pClubChangeHostMsg                       = 32; //家族派对房游戏移交主持人
+    PInviteBeGuestMsg pInviteBeGuestMsg                         = 33; //邀请成为嘉宾
+    PRspInviteBeGuestMsg pRspInviteBeGuestMsg                   = 34; //邀请的响应
+    PKTVStopMsg pKTVStopMsg                                     = 35; //ktv暂停or开始信令
+    PBeginQuickAnswer pBeginQuickAnswer                         = 36; //主持人下发抢答
+    PResponseQuickAnswer pResponseQuickAnswer                   = 37; //嘉宾响应获得抢答
+    PResultQuickAnswer pResultQuickAnswer                       = 38; //抢答结果
+    PBeginVote pBeginVote                                       = 39; //主持人下发投票
+    PResponseVote pResponseVote                                 = 40; //投票响应数
+    PResultVote pResultVote                                     = 41; //投票结果
+    PRoomWarningMsg pRoomWarningMsg                             = 42; //房间警告消息
+    PRoomLockedMsg pRoomLockedMsg                               = 43; //房间封禁消息
+}
+
+enum ERoomLockType {
+    RTT_UNKNOWN = 0;
+    RTT_24_HOUR = 1;
+}
+
+message PRoomLockedMsg
+{
+    ERoomLockType roomLockType = 1;
+}
+
+message PRoomWarningMsg
+{
+    string warningMsg = 1;
+}
+
+message PResultVote
+{
+    string voteTag               = 1; //投票标识
+    repeated PVoteInfo voteInfos = 2; //投票信息
+}
+
+message PVoteInfo
+{
+    uint32 voteCnt   = 1; //投票数
+    POnlineInfo user = 2; //用户信息
+}
+
+message PResponseVote
+{
+    string voteTag = 1; //投票标识
+    uint32 userID  = 2; //用户标识
+    uint32 voteCnt = 3; //投票数
+}
+
+message PBeginVote
+{
+    string voteTag             = 1; //投票标识
+    EVoteScope scope           = 2; //投票范围
+    repeated POnlineInfo users = 3; //被投票用户信息
+    sint64 beginTimeMs         = 4; //开始时间戳，绝对时间
+    sint64 endTimeMs           = 5; //结束时间戳，绝对时间
+}
+
+enum EVoteScope {
+    EVS_UNKNOWN    = 0; //未知
+    EVS_HOST_GUEST = 1; //除被投票用户以外，仅主持人、嘉宾可以投票
+    EVS_ALL        = 2; //除被投票用户以外，房间其他所有成员均可以投票
+}
+
+message PResultQuickAnswer
+{
+    string quickAnswerTag            = 1; //抢答标识
+    repeated QuickAnswerInfo answers = 2; //应答信息
+}
+
+message QuickAnswerInfo
+{
+    uint32 seq       = 1; //次序
+    POnlineInfo user = 2; //用户信息
+}
+
+message PResponseQuickAnswer
+{
+    string quickAnswerTag  = 1; //抢答标识
+    QuickAnswerInfo answer = 2; //应答信息
+}
+
+message QuickAnswerInfo
+{
+    uint32 seq       = 1; //次序
+    POnlineInfo user = 2; //用户信息
+}
+
+message PBeginQuickAnswer
+{
+    string quickAnswerTag = 1; //抢答标识
+    sint64 beginTimeMs    = 2; //开始时间戳，绝对时间
+    sint64 endTimeMs      = 3; //结束时间戳，绝对时间
+    sint64 createTimeMs   = 4; //创建时间戳，绝对时间(创建后，经过倒计时(beginTimeMs-createTimeMs)，再开始抢答)
+}
+
+
+message PKTVStopMsg
+{
+    POnlineInfo opUser     = 1; //执行者
+    EOpKTvMusicType opType = 2; //执行暂停/开始
+}
+
+enum EOpKTvMusicType {
+    EOMT_UNKNOWN = 0;
+    EOMT_STOP    = 1; //暂停
+    EOMT_START   = 2; //开始
+}
+
+
+message PRspInviteBeGuestMsg
+{
+    uint32 sendInviteUserID          = 1; //发出邀请用户id
+    POnlineInfo beInvitedUser        = 2; //被邀请用户信息
+    bool beGuestSuccess              = 3; //是否成为嘉宾
+    PRspInviteBeGuestSuccess success = 4; //成功,若beGuestSuccess为TRUE，解析此字段
+    PRspInviteBeGuestFailed failed   = 5; //失败,若beGuestSuccess为FALSE，解析此字段
+}
+
+message PRspInviteBeGuestSuccess
+{
+    SeatInfo seatInfo = 1; //座位信息
+}
+
+message PRspInviteBeGuestFailed
+{
+    EFailedBeGuestReason reason = 1;
+}
+
+message PInviteBeGuestMsg
+{
+    uint32 beInvitedUserID     = 1; //被邀请用户id
+    POnlineInfo sendInviteUser = 2; //发出邀请用户信息
+    sint64 inviteTimeMs        = 3; //邀请时间戳
+}
+
+enum EFailedBeGuestReason {
+    ER_UNKNOWN  = 0; //未知
+    ER_DISAGREE = 1; //不同意
+    ER_NO_SEAT  = 2; //没座位
 }
 
 enum EPartyRoomMsgType {
@@ -73,6 +211,18 @@ enum EPartyRoomMsgType {
     PRT_CLUB_GAME_STOP               = 30; //家族派对房游戏停止
         PRT_CLUB_BECOME_HOST             = 31; //家族派对房游戏新增主持人
         PRT_CLUB_CHANGE_HOST             = 32; //家族派对房游戏更改主持人
+           PRT_INVITE_BE_GUEST              = 33; //邀请成为嘉宾
+            PRT_RESP_BE_GUEST                = 34; //邀请的响应
+            PRT_KTV_STOP                     = 35; //ktv暂停or开始信令
+            PRT_BEGIN_QUICK_ANSWER           = 36; //主持人下发抢答
+            PRT_RSP_QUICK_ANSWER             = 37; //嘉宾响应获得抢答
+            PRT_RESULT_QUICK_ANSWER          = 38; //抢答结果
+            PRT_BEGIN_VOTE                   = 39; //主持人下发投票
+            PRT_RSP_VOTE                     = 40; //投票响应数
+            PRT_RESULT_VOTE                  = 41; //投票结果
+            PRT_ROOM_WARNING                 = 42; //房间警告消息
+            PRT_ROOM_LOCKED                  = 43; //房间封禁消息
+
 
 }
 

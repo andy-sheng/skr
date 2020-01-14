@@ -287,4 +287,16 @@ interface PartyRoomServerApi {
 
     @PUT("http://dev.game.inframe.mobi/v1/relaygame/room-send-invite-user")
     fun relayRoominvite(@Body body: RequestBody): Observable<ApiResult>
+
+    /**主持人下发投票
+     * {
+    "beVotedUserIDs": [
+    0
+    ],
+    "roomID": 0,
+    "scope": "EVS_UNKNOWN"  title: - EVS_UNKNOWN = 0 : 未知 - EVS_HOST_GUEST = 1 : 除被投票用户以外，仅主持人、嘉宾可以投票 - EVS_ALL = 2 : 除被投票用户以外，房间其他所有成员均可以
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/begin-vote")
+    fun beginVote(@Body body: RequestBody): Call<ApiResult>
 }

@@ -126,7 +126,62 @@ public enum EPartyRoomMsgType implements WireEnum {
   /**
    * 家族派对房游戏更改主持人
    */
-  PRT_CLUB_CHANGE_HOST(32);
+  PRT_CLUB_CHANGE_HOST(32),
+
+  /**
+   * 邀请成为嘉宾
+   */
+  PRT_INVITE_BE_GUEST(33),
+
+  /**
+   * 邀请的响应
+   */
+  PRT_RESP_BE_GUEST(34),
+
+  /**
+   * ktv暂停or开始信令
+   */
+  PRT_KTV_STOP(35),
+
+  /**
+   * 主持人下发抢答
+   */
+  PRT_BEGIN_QUICK_ANSWER(36),
+
+  /**
+   * 嘉宾响应获得抢答
+   */
+  PRT_RSP_QUICK_ANSWER(37),
+
+  /**
+   * 抢答结果
+   */
+  PRT_RESULT_QUICK_ANSWER(38),
+
+  /**
+   * 主持人下发投票
+   */
+  PRT_BEGIN_VOTE(39),
+
+  /**
+   * 投票响应数
+   */
+  PRT_RSP_VOTE(40),
+
+  /**
+   * 投票结果
+   */
+  PRT_RESULT_VOTE(41),
+
+  /**
+   * 房间警告消息
+   */
+  PRT_ROOM_WARNING(42),
+
+  /**
+   * 房间封禁消息
+   */
+  PRT_ROOM_LOCKED(43);
 
   public static final ProtoAdapter<EPartyRoomMsgType> ADAPTER = new ProtoAdapter_EPartyRoomMsgType();
 
@@ -165,6 +220,17 @@ public enum EPartyRoomMsgType implements WireEnum {
       case 30: return PRT_CLUB_GAME_STOP;
       case 31: return PRT_CLUB_BECOME_HOST;
       case 32: return PRT_CLUB_CHANGE_HOST;
+      case 33: return PRT_INVITE_BE_GUEST;
+      case 34: return PRT_RESP_BE_GUEST;
+      case 35: return PRT_KTV_STOP;
+      case 36: return PRT_BEGIN_QUICK_ANSWER;
+      case 37: return PRT_RSP_QUICK_ANSWER;
+      case 38: return PRT_RESULT_QUICK_ANSWER;
+      case 39: return PRT_BEGIN_VOTE;
+      case 40: return PRT_RSP_VOTE;
+      case 41: return PRT_RESULT_VOTE;
+      case 42: return PRT_ROOM_WARNING;
+      case 43: return PRT_ROOM_LOCKED;
       default: return null;
     }
   }
