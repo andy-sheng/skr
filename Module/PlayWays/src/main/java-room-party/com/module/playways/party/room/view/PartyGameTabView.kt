@@ -27,6 +27,7 @@ import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.component.lyrics.utils.SongResUtils
+import com.component.person.view.CommonAudioView
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
@@ -54,12 +55,15 @@ class PartyGameTabView : ExConstraintLayout {
     var gamePicImg: BaseImageView
     var textScrollView: ScrollView
     var textGameTv: ExTextView
+    var textUploader: ExTextView
+    var audioView: CommonAudioView
     var bottomLeftOpTv: ExTextView
     var bottomRightOpTv: ExTextView
     var avatarIv: BaseImageView
     var singingTv: ExTextView
     var selectSongTv: ExTextView
     var singingGroup: Group
+    var iAudioGameListener: IAudioGameListener? = null
 
     var partySelfSingLyricView: PartySelfSingLyricView? = null
 
@@ -89,6 +93,8 @@ class PartyGameTabView : ExConstraintLayout {
         gamePicImg = rootView.findViewById(R.id.game_pic_img)
         textScrollView = rootView.findViewById(R.id.text_scrollView)
         textGameTv = rootView.findViewById(R.id.text_game_tv)
+        textUploader = rootView.findViewById(R.id.uploader_tv)
+        audioView = rootView.findViewById(R.id.audio_view)
         bottomRightOpTv = rootView.findViewById(R.id.bottom_right_op_tv)
         avatarIv = rootView.findViewById(R.id.avatar_iv)
         singingTv = rootView.findViewById(R.id.singing_tv)
@@ -142,6 +148,24 @@ class PartyGameTabView : ExConstraintLayout {
 
             })
         }
+
+        audioView.setDebounceViewClickListener {
+            if (audioView.isPlaying) {
+                iAudioGameListener?.stopPlay()
+                audioView.setPlay(false)
+            } else {
+                if ((partyGameInfoModel?.question?.questionInfo?.questionAudio?.size
+                                ?: 0) > 0) {
+                    iAudioGameListener?.startPlay(partyGameInfoModel?.question?.questionInfo?.questionAudio?.get(0)
+                            ?: "")
+                    audioView.setPlay(true)
+                }
+            }
+        }
+    }
+
+    fun setAudioPlay(play: Boolean) {
+        audioView.setPlay(play)
     }
 
     fun endQuestion() {
@@ -297,19 +321,31 @@ class PartyGameTabView : ExConstraintLayout {
                 || partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Question.ordinal) {
             textScrollView.visibility = View.VISIBLE
 
-            setMainText(getGameTagTitle(), getGameTagContent(), getGameUploader())
+            setMainText(getGameTagTitle(), getGameTagContent())
+            textUploader.text = getGameUploader()
             partyGameInfoModel?.let {
-                if (it.rule?.ruleType == EPGameType.PGT_Question.value && (it.question?.questionInfo?.questionPic?.size
-                                ?: 0) > 0) {
-                    gamePicImg.visibility = View.VISIBLE
+                if (it.rule?.ruleType == EPGameType.PGT_Question.value) {
+                    if ((it.question?.questionInfo?.questionPic?.size
+                                    ?: 0) > 0) {
+                        gamePicImg.visibility = View.VISIBLE
 
-                    gamePicImg.setTag(it.question?.questionInfo?.questionPic?.get(0))
-                    AvatarUtils.loadAvatarByUrl(gamePicImg, AvatarUtils.newParamsBuilder(it.question?.questionInfo?.questionPic?.get(0))
-                            .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                            .setSizeType(ImageUtils.SIZE.SIZE_320)
-                            .setBorderColor(Color.WHITE)
-                            .build())
+                        gamePicImg.setTag(it.question?.questionInfo?.questionPic?.get(0))
+                        AvatarUtils.loadAvatarByUrl(gamePicImg, AvatarUtils.newParamsBuilder(it.question?.questionInfo?.questionPic?.get(0))
+                                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                                .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                                .setSizeType(ImageUtils.SIZE.SIZE_320)
+                                .setBorderColor(Color.WHITE)
+                                .build())
+                    } else {
+                        gamePicImg.visibility = View.GONE
+                    }
+
+                    if ((it.question?.questionInfo?.questionAudio?.size
+                                    ?: 0) > 0) {
+                        audioView.visibility = View.VISIBLE
+                    } else {
+                        audioView.visibility = View.GONE
+                    }
                 } else {
                     gamePicImg.visibility = View.GONE
                 }
@@ -352,7 +388,7 @@ class PartyGameTabView : ExConstraintLayout {
 //                            // 伴奏文件存在
 //                            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), 1)
 //                        } else {
-                            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel?.accWithCdnInfosJson, midiFile.absolutePath, songBeginTs.toLong(), 1)
+                        ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel?.accWithCdnInfosJson, midiFile.absolutePath, songBeginTs.toLong(), 1)
 //                        }
                     }
                     // 未开始，等待着
@@ -487,13 +523,12 @@ class PartyGameTabView : ExConstraintLayout {
         return if (TextUtils.isEmpty(uploader)) "" else "\n上传者：$uploader"
     }
 
-    private fun setMainText(title: String?, content: String?, uploader: String = "") {
+    private fun setMainText(title: String?, content: String?) {
         val stringBuilder = SpanUtils()
                 .append(title
                         ?: "").setForegroundColor(U.getColor(R.color.white_trans_80)).setFontSize(U.getDisplayUtils().dip2px(14f)).setBold()
                 .append(content
                         ?: "").setForegroundColor(U.getColor(R.color.white_trans_50)).setFontSize(U.getDisplayUtils().dip2px(14f))
-                .append(if (TextUtils.isEmpty(uploader)) "" else "$uploader").setForegroundColor(U.getColor(R.color.white_trans_50)).setFontSize(U.getDisplayUtils().dip2px(14f))
                 .create()
 
         textGameTv.text = stringBuilder
@@ -518,11 +553,17 @@ class PartyGameTabView : ExConstraintLayout {
         EventBus.getDefault().post(PartyFinishSongManageFragmentEvent())
     }
 
-    private fun tryStopAudioMixing(){
-        if(roomData?.myUserInfo?.isHost() == true && roomData?.bgmPlayingPath?.isNotEmpty() == true){
+    private fun tryStopAudioMixing() {
+        if (roomData?.myUserInfo?.isHost() == true && roomData?.bgmPlayingPath?.isNotEmpty() == true) {
 
-        }else{
+        } else {
             ZqEngineKit.getInstance().stopAudioMixing()
         }
+    }
+
+    interface IAudioGameListener {
+        fun stopPlay()
+
+        fun startPlay(url: String)
     }
 }

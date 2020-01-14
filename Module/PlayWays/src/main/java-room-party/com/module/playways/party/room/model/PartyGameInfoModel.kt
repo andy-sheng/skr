@@ -133,9 +133,8 @@ class GameQuestionModel : Serializable {
     var questionPic: ArrayList<String>? = null //问题图片
     var answerContent = "" //问题答案
     var uploader = "" //上传者
-    override fun toString(): String {
-        return "GameQuestionModel(questionID=$questionID, questionContent='$questionContent', questionPic=$questionPic, answerContent='$answerContent')"
-    }
+    var questionAudio: ArrayList<String>? = null //问题图片
+
 
     companion object {
         fun parseFromItemInfo(pb: PGameQuestion): GameQuestionModel {
@@ -152,8 +151,18 @@ class GameQuestionModel : Serializable {
             if (pb.hasUploader()) {
                 p.uploader = pb.uploader
             }
+            if (pb.hasQuestionAudioList()) {
+                p.questionAudio = ArrayList<String>()
+                for (c in pb.questionAudioList) {
+                    p.questionAudio?.add(c)
+                }
+            }
             return p
         }
+    }
+
+    override fun toString(): String {
+        return "GameQuestionModel(questionID=$questionID, questionContent='$questionContent', questionPic=$questionPic, answerContent='$answerContent', uploader='$uploader', questionAudio=$questionAudio)"
     }
 }
 

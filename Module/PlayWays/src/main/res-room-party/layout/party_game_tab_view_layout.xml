@@ -40,19 +40,36 @@
         android:layout_marginTop="@dimen/view_20_dp"
         android:paddingLeft="@dimen/view_18_dp"
         android:paddingRight="@dimen/view_18_dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintLeft_toRightOf="@+id/game_pic_img"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.common.view.ex.ExTextView
-            android:id="@+id/text_game_tv"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:lineSpacingExtra="@dimen/view_5_dp"
-            android:minHeight="@dimen/view_92_dp"
-            android:text="" />
+            android:orientation="vertical">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/text_game_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="@dimen/view_5_dp"
+                android:text="" />
+
+            <com.component.person.view.CommonAudioView
+                android:id="@+id/audio_view"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_24_dp"
+                android:visibility="gone" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/uploader_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_trans_55"
+                android:textSize="@dimen/textsize_10_dp" />
+        </LinearLayout>
     </ScrollView>
 
     <com.common.view.ex.ExTextView
