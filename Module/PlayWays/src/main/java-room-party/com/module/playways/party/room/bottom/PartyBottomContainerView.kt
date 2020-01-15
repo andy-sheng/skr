@@ -178,13 +178,20 @@ class PartyBottomContainerView : BottomContainerView {
     }
 
     private fun refreshInputMic() {
-        if (roomData?.isMute == true) {
+        if (roomData?.isAllMute == true) {
+            // 全员禁麦
             mInputBtn?.setBackgroundResource(R.drawable.relay_mute)
             ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
         } else {
-            mInputBtn?.setBackgroundResource(R.drawable.relay_unmute)
-            ZqEngineKit.getInstance().adjustRecordingSignalVolume(ZqEngineKit.getInstance().params.recordingSignalVolume, false)
+            if (roomData?.isMute == true) {
+                mInputBtn?.setBackgroundResource(R.drawable.relay_mute)
+                ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
+            } else {
+                mInputBtn?.setBackgroundResource(R.drawable.relay_unmute)
+                ZqEngineKit.getInstance().adjustRecordingSignalVolume(ZqEngineKit.getInstance().params.recordingSignalVolume, false)
+            }
         }
+
     }
 
     override fun dismissPopWindow() {
