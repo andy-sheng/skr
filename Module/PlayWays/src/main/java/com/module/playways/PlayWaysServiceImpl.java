@@ -488,6 +488,22 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         SongModel.syncCdnInfo();
     }
 
+    @Override
+    public void tryGoRelayHome() {
+        skrAudioPermission.ensurePermission(new Runnable() {
+            @Override
+            public void run() {
+                skrVerifyUtils.checkAgeSettingState(new Runnable() {
+                    @Override
+                    public void run() {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
+                                .navigation();
+                    }
+                });
+            }
+        }, true);
+    }
+
     private void startCheckLoop() {
         if (checkTimer != null) {
             checkTimer.dispose();

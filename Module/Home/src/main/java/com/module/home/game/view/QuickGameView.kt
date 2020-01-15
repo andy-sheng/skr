@@ -33,6 +33,7 @@ import com.module.home.game.adapter.GameAdapter
 import com.module.home.game.presenter.QuickGamePresenter
 import com.module.home.model.GameKConfigModel
 import com.component.busilib.banner.SlideShowModel
+import com.facebook.drawee.drawable.RoundedColorDrawable
 import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
@@ -90,12 +91,8 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
             override fun onRelayRoomListener() {
                 // 进入双人接唱
                 StatisticsAdapter.recordCountEvent("game_express", "chorus", null)
-                mSkrAudioPermission.ensurePermission({
-                    mRealNameVerifyUtils.checkAgeSettingState {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
-                                .navigation()
-                    }
-                }, true)
+                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                iRankingModeService.tryGoRelayHome()
             }
 
             override fun onClickTaskListener() {

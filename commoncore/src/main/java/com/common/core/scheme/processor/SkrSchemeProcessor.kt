@@ -176,25 +176,25 @@ object SkrSchemeProcessor : ISchemeProcessor {
     }
 
     private fun processCommonUrl(uri: Uri, context: Context) {
-        if(uri.path=="/feedback"){
-            if(SchemeUtils.getBoolean(uri,"useFragment",false)){
+        if (uri.path == "/feedback") {
+            if (SchemeUtils.getBoolean(uri, "useFragment", false)) {
                 // 举报
                 U.getFragmentUtils().addFragment(
                         FragmentUtils.newAddParamsBuilder(U.getActivityUtils().topActivity as FragmentActivity, Class.forName("com.component.report.fragment.QuickFeedbackFragment") as Class<out Fragment>?)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
-                                .addDataBeforeAdd(0,SchemeUtils.getInt(uri,"from",0))
-                                .addDataBeforeAdd(1, SchemeUtils.getInt(uri,"actionType",0))
-                                .addDataBeforeAdd(2, SchemeUtils.getInt(uri,"targetId",0))
+                                .addDataBeforeAdd(0, SchemeUtils.getInt(uri, "from", 0))
+                                .addDataBeforeAdd(1, SchemeUtils.getInt(uri, "actionType", 0))
+                                .addDataBeforeAdd(2, SchemeUtils.getInt(uri, "targetId", 0))
                                 .setEnterAnim(R.anim.slide_in_bottom)
                                 .setExitAnim(R.anim.slide_out_bottom)
                                 .build())
-            }else{
+            } else {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDBACK)
-                        .withInt("from",SchemeUtils.getInt(uri,"from",0))
-                        .withInt("roomId",SchemeUtils.getInt(uri,"roomId",0))
-                        .withInt("targetId",SchemeUtils.getInt(uri,"targetId",0))
-                        .withInt("actionType",SchemeUtils.getInt(uri,"actionType",0))
+                        .withInt("from", SchemeUtils.getInt(uri, "from", 0))
+                        .withInt("roomId", SchemeUtils.getInt(uri, "roomId", 0))
+                        .withInt("targetId", SchemeUtils.getInt(uri, "targetId", 0))
+                        .withInt("actionType", SchemeUtils.getInt(uri, "actionType", 0))
                         .navigation()
             }
         }
@@ -203,8 +203,8 @@ object SkrSchemeProcessor : ISchemeProcessor {
 
     private fun processFlutterUrl(uri: Uri, context: Context) {
         var pageRouterName = uri.path
-        if(pageRouterName.startsWith("/")){
-            pageRouterName = pageRouterName.substring(1,pageRouterName.length)
+        if (pageRouterName.startsWith("/")) {
+            pageRouterName = pageRouterName.substring(1, pageRouterName.length)
         }
         // 打开一个flutter page 页面
         val params = SchemeUtils.getParams(uri)
@@ -229,8 +229,8 @@ object SkrSchemeProcessor : ISchemeProcessor {
         val path = uri.path
         if (SchemeConstants.PATH_HOME == path) {
             try {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_HOME)
-                        .navigation()
+                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                iRankingModeService.tryGoRelayHome()
             } catch (e: Exception) {
                 e.printStackTrace()
             }

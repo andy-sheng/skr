@@ -53,4 +53,6 @@ public interface IPlaywaysModeService extends IProvider {
     void tryInviteToRelay(int userID, boolean isFriend);
 
     void idleHandler();
+
+    void tryGoRelayHome();
 }
