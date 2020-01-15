@@ -8,17 +8,21 @@ import android.view.View
 import com.module.playways.R
 import android.support.v7.widget.RecyclerView
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.log.MyLog
 import com.engine.EngineEvent
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.event.PartyPopularityUpdateEvent
+import com.module.playways.party.room.event.PartyQuickAnswerResultEvent
 import com.module.playways.party.room.event.PartySeatInfoChangeEvent
 import com.module.playways.party.room.event.PartySendEmojiEvent
 import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.party.room.model.PartyEmojiInfoModel
 import com.module.playways.party.room.model.PartyPlayerInfoModel
+import com.module.playways.party.room.model.QuickAnswerUiModel
 import com.module.playways.room.data.H
 import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.PDynamicEmojiMsg
+import com.zq.live.proto.PartyRoom.PResponseQuickAnswer
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -104,6 +108,34 @@ class PartySeatView : ConstraintLayout {
             adapter.notifyItemChanged(event.seatSeq - 1, null)
         }
     }
+
+    // 有人抢答
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PResponseQuickAnswer) {
+        val seatInfo = H.partyRoomData?.getSeatInfoByUserId(event.answer.user.userInfo.userID)
+        seatInfo?.let {
+            var model = QuickAnswerUiModel()
+            model.seq = event.answer.seq
+            model.durationTime = 5000
+            adapter.notifyItemChanged(it.seatSeq - 1, model)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyQuickAnswerResultEvent) {
+        event.list?.let {
+            for (an in it) {
+                val seatInfo = H.partyRoomData?.getSeatInfoByUserId(an.user?.userID ?: 0)
+                seatInfo?.let { seat ->
+                    var model = QuickAnswerUiModel()
+                    model.seq = an.seq
+                    model.durationTime = 1000
+                    adapter.notifyItemChanged(seat.seatSeq - 1, model)
+                }
+            }
+        }
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: EngineEvent) {

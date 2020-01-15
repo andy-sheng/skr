@@ -333,4 +333,13 @@ interface PartyRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partygame/response-quick-answer")
     fun responseQuickAnswer(@Body body: RequestBody): Call<ApiResult>
+
+    /**得到抢答结果
+     * {
+     *  "quickAnswerTag": "string",
+     * "roomID": 0
+     * }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/result-quick-answer")
+    fun getQuickAnswerResult(@Body body: RequestBody): Call<ApiResult>
 }

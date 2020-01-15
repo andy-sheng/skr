@@ -8,6 +8,7 @@ import com.module.playways.R
 import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.party.room.model.PartyEmojiInfoModel
 import com.module.playways.party.room.model.PartySeatInfoModel
+import com.module.playways.party.room.model.QuickAnswerUiModel
 import com.zq.live.proto.PartyRoom.ESeatStatus
 
 class PartySeatAdapter(var listener: Listener?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -68,6 +69,9 @@ class PartySeatAdapter(var listener: Listener?) : RecyclerView.Adapter<RecyclerV
                     } else if (refreshType is PartyEmojiInfoModel) {
                         // 刷个表情
                         holder.playEmojiAnimation(refreshType)
+                    } else if (refreshType is QuickAnswerUiModel) {
+                        // 刷个表情
+                        holder.showQuickAnswerSeq(refreshType)
                     }
                 }
             }

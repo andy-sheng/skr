@@ -10,10 +10,7 @@ import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ControlType
-import com.common.rxretrofit.RequestControl
-import com.common.rxretrofit.subscribe
+import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
@@ -28,6 +25,7 @@ import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.*
 import com.module.playways.party.room.model.PartyPlayerInfoModel
+import com.module.playways.party.room.model.PartyQuickAnswerResult
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.model.PartySeatInfoModel
 import com.module.playways.party.room.ui.IPartyRoomView
@@ -60,6 +58,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     companion object {
         internal val MSG_ENSURE_IN_RC_ROOM = 9// 确保在融云的聊天室，保证融云的长链接
+        internal val MSG_GET_QUICK_ANSWER_RESULT = 21// 拉取抢答结果
     }
 
     internal var mAbsenTimes = 0
@@ -80,6 +79,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                     ModuleServiceManager.getInstance().msgService.leaveChatRoom(mRoomData.gameId.toString() + "")
                     joinRcRoom(0)
                     ensureInRcRoom()
+                }
+                MSG_GET_QUICK_ANSWER_RESULT -> {
+                    getQuickAnswerResult(msg.obj as String)
                 }
             }
         }
@@ -382,6 +384,29 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             }
             if (result.errno == 0) {
                 U.getToastUtil().showShort("抢答发起成功")
+                // 10秒后拉取抢答结果
+                mUiHandler.removeMessages(MSG_GET_QUICK_ANSWER_RESULT)
+                val msg = mUiHandler.obtainMessage(MSG_GET_QUICK_ANSWER_RESULT)
+                msg.obj = result.data.getString("quickAnswerTag")
+                mUiHandler.sendMessageDelayed(msg, 10 * 1000)
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
+    }
+
+    private fun getQuickAnswerResult(tag: String) {
+        val map = HashMap<String, Any?>()
+        map["roomID"] = mRoomData.gameId
+        map["quickAnswerTag"] = tag
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe(RequestControl("getQuickAnswerResult", ControlType.CancelThis)) {
+                mRoomServerApi.getQuickAnswerResult(body)
+            }
+            if (result.errno == 0) {
+                var answers = JSON.parseArray(result.data.getString("answers"), PartyQuickAnswerResult::class.java)
+                EventBus.getDefault().post(PartyQuickAnswerResultEvent(answers))
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }
@@ -620,7 +645,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         if (event.beginTimeMs > voteDialogTs) {
             voteDialogTs = event.beginTimeMs
             roomView.showVoteView(event)
-            pretendSystemMsg(if(event.scope == EVoteScope.EVS_HOST_GUEST) "主持人发起了投票，请嘉宾作出选择" else "主持人发起了一个投票")
+            pretendSystemMsg(if (event.scope == EVoteScope.EVS_HOST_GUEST) "主持人发起了投票，请嘉宾作出选择" else "主持人发起了一个投票")
         } else {
             MyLog.w(TAG, "PBeginVote已经过去的投票")
         }
@@ -1142,14 +1167,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PBeginQuickAnswer) {
         MyLog.d(TAG, "onEvent event = $event")
-        H.partyRoomData?.quickAnswerTag =  event.quickAnswerTag
-        roomView.beginQuickAnswer(event.beginTimeMs,event.endTimeMs)
-    }
-
-    // 有人抢答
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PResponseQuickAnswer) {
-        MyLog.d(TAG, "onEvent event = $event")
+        if (mRoomData.myUserInfo?.isGuest() == true || mRoomData.myUserInfo?.isHost() == true) {
+            H.partyRoomData?.quickAnswerTag = event.quickAnswerTag
+            roomView.beginQuickAnswer(event.beginTimeMs, event.endTimeMs)
+        }
+        pretendSystemMsg("主持人下发抢答，嘉宾请抢机会")
     }
 
 
@@ -1157,6 +1179,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PResultQuickAnswer) {
         MyLog.d(TAG, "onEvent event = $event")
+        mUiHandler.removeMessages(MSG_GET_QUICK_ANSWER_RESULT)
+        val answers = ArrayList<PartyQuickAnswerResult>()
+        for (an in event.answersList) {
+            answers.add(PartyQuickAnswerResult.parseFromPb(an))
+        }
+        EventBus.getDefault().post(PartyQuickAnswerResultEvent(answers))
     }
 
 

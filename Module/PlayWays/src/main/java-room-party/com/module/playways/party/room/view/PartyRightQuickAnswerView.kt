@@ -83,7 +83,9 @@ class PartyRightQuickAnswerView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
                                 api.responseQuickAnswer(body)
                             }
                             if (result.errno == 0) {
-
+                                mUiHandler.removeMessages(MSG_HIDE)
+                                val msg = mUiHandler.obtainMessage(MSG_HIDE)
+                                mUiHandler.sendMessage(msg)
                             } else {
                                 U.getToastUtil().showShort(result.errmsg)
                             }

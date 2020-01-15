@@ -29,6 +29,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.party.room.model.PartyEmojiInfoModel
+import com.module.playways.party.room.model.QuickAnswerUiModel
 import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.ESeatStatus
 import java.lang.ref.WeakReference
@@ -45,6 +46,7 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
     private val speakerAnimationIv: SpeakingTipsAnimationView = item.findViewById(R.id.speaker_animation_iv)
 
     private val rollIv: ImageView = item.findViewById(R.id.roll_iv)
+    private val quickAnswerSeqIv: ImageView = item.findViewById(R.id.quick_answer_seq_iv)
     private val emojiSdv: SimpleDraweeView = item.findViewById(R.id.emoji_sdv)
 
     var animation: ObjectAnimator? = null
@@ -54,6 +56,7 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
 
     val MSG_TYPE_END_ROLLING = 0x01
     val MSG_TYPE_END_ANIMATION = 0x02
+    val MSG_TYPE_END_SHOW_QUICK_ANSWER_SEQ = 0x03
 
     var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message?) {
@@ -69,7 +72,9 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
                     rollIv.visibility = View.GONE
                     emojiSdv.visibility = View.GONE
                 }
-
+                MSG_TYPE_END_SHOW_QUICK_ANSWER_SEQ -> {
+                    quickAnswerSeqIv.visibility = View.GONE
+                }
             }
         }
     }
@@ -131,8 +136,8 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
             rollIv.setImageDrawable(animationRoll)
             animationRoll?.start()
 
-            handler.sendEmptyMessageDelayed(MSG_TYPE_END_ROLLING,2000)
-            handler.sendEmptyMessageDelayed(MSG_TYPE_END_ANIMATION,4000)
+            handler.sendEmptyMessageDelayed(MSG_TYPE_END_ROLLING, 2000)
+            handler.sendEmptyMessageDelayed(MSG_TYPE_END_ANIMATION, 4000)
         } else {
             // 普通表情
             emojiSdv.visibility = View.VISIBLE
@@ -149,6 +154,23 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
             })
             animation?.start()
         }
+    }
+
+    fun showQuickAnswerSeq(model: QuickAnswerUiModel) {
+        quickAnswerSeqIv.visibility = View.VISIBLE
+
+        quickAnswerSeqIv.setImageResource(when (model.seq) {
+            1 -> R.drawable.party_quick_answer_1
+            2 -> R.drawable.party_quick_answer_2
+            3 -> R.drawable.party_quick_answer_3
+            4 -> R.drawable.party_quick_answer_4
+            5 -> R.drawable.party_quick_answer_5
+            6 -> R.drawable.party_quick_answer_6
+            else -> R.drawable.party_quick_answer_6
+        })
+
+        handler.removeMessages(MSG_TYPE_END_SHOW_QUICK_ANSWER_SEQ)
+        handler.sendEmptyMessageDelayed(MSG_TYPE_END_SHOW_QUICK_ANSWER_SEQ, model.durationTime.toLong())
     }
 
     private fun stop() {
