@@ -176,6 +176,8 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
     }
 
     private fun stop() {
+        emojiSdv.visibility = View.GONE
+        rollIv.visibility = View.GONE
         animation?.removeAllListeners()
         animation?.cancel()
         handler.removeCallbacksAndMessages(null)
