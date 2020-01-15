@@ -209,14 +209,14 @@ public class AudioCapture {
         mSrcPin.disconnect(true);
     }
 
-    private void postState(int state) {
+    private void postState(final int state) {
         mState = state;
         if (mMainHandler != null) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     if (mOnAudioCaptureListener != null) {
-                        mOnAudioCaptureListener.onStatusChanged(mState);
+                        mOnAudioCaptureListener.onStatusChanged(state);
                     }
                 }
             });
