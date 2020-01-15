@@ -74,15 +74,15 @@ public class InviteShareFriendView extends RelativeLayout {
 
     private void initSharModel(int from) {
         if (from == GameModeType.GAME_MODE_DOUBLE || from == GameModeType.GAME_MODE_RELAY) {
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_CIPHER, R.drawable.yaoqing_anhao, "暗号邀请"));
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ, R.drawable.icon_qq, "QQ好友"));
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT, R.drawable.icon_weixin, "微信好友"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_CIPHER, R.drawable.share_anhao_icon, "暗号邀请"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ, R.drawable.share_qq_icon, "QQ好友"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT, R.drawable.share_weixin_icon, "微信好友"));
         } else {
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_CIPHER, R.drawable.yaoqing_anhao, "暗号邀请"));
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ, R.drawable.icon_qq, "QQ好友"));
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ_QZON, R.drawable.icon_qzone, "QQ空间"));
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT, R.drawable.icon_weixin, "微信好友"));
-            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT_FRIEND, R.drawable.icon_quan, "朋友圈"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_CIPHER, R.drawable.share_anhao_icon, "暗号邀请"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ, R.drawable.share_qq_icon, "QQ好友"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ_QZON, R.drawable.share_qzone_icon, "QQ空间"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT, R.drawable.share_weixin_icon, "微信好友"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT_FRIEND, R.drawable.share_quan_icon, "朋友圈"));
         }
 
     }
