@@ -164,14 +164,24 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
             mDialogPlus?.dismiss(false)
         }
 
-        H.partyRoomData?.getSeatInfoMap()?.forEach {
-            showGuestInfo(it.key, it.value.player)
+        setData()
+    }
+
+    private fun setData() {
+        guestSelectedImgList.forEach {
+            it.visibility = View.GONE
         }
 
         guestAvatarList.forEachIndexed { index, baseImageView ->
+            baseImageView.setOnClickListener(null)
+            baseImageView.setTag(null)
             H.partyRoomData?.getSeatInfoMap()?.get(index + 1)?.player?.let {
                 setClickListener(baseImageView, index + 1)
             }
+        }
+
+        H.partyRoomData?.getSeatInfoMap()?.forEach {
+            showGuestInfo(it.key, it.value.player)
         }
     }
 
@@ -195,9 +205,28 @@ class PartySendVoteDialogView(context: Context) : ExConstraintLayout(context) {
                 dismiss(false)
 //                U.getToastUtil().showShort("")
             } else {
+                if (result.errno == 8348041) {
+                    refreshUserInfo(list)
+                }
                 U.getToastUtil().showShort(result.errmsg)
             }
         }
+    }
+
+    //用户不在了，需要重新选择
+    private fun refreshUserInfo(userIDs: ArrayList<Int>) {
+        selectedSeatIndex.clear()
+        setData()
+        guestAvatarList.forEachIndexed { index, baseImageView ->
+            val tag = baseImageView.getTag()
+            tag?.let {
+                if (userIDs.contains((tag as Int))) {
+                    selectedSeatIndex.add(index + 1)
+                    select(true, index + 1)
+                }
+            }
+        }
+
     }
 
     private fun setClickListener(view: View, index: Int) {
