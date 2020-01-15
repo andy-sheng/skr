@@ -87,7 +87,6 @@ class PartyBottomWidgetAnimationController(internal var mF: PartyRoomActivity) {
 
     private fun fillView(viewList: MutableList<View?>) {
         viewList.add(mF.mBottomContainerView)
-        viewList.add(mF.mRightOpView)
     }
 
     /**
