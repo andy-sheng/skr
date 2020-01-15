@@ -150,6 +150,8 @@ class PartyRightQuickAnswerView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
             countDownJob = launch {
                 val t = countDownTs % 1000
                 val times = countDownTs / 1000
+                grabIv.setImageDrawable(U.getDrawable(R.drawable.xiangchang_3))
+                delay(t.toLong())
                 repeat(times) {
                     var drawable: Drawable? = null
                     drawable = when (times - it) {
@@ -162,7 +164,6 @@ class PartyRightQuickAnswerView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
                     grabIv.setImageDrawable(drawable)
                     delay(1000)
                 }
-                delay(t.toLong())
                 showBtn(beginTs, endTs)
             }
         } else {

@@ -109,8 +109,10 @@
 
     <ImageView
         android:id="@+id/quick_answer_seq_iv"
-        android:layout_width="@dimen/view_40_dp"
-        android:layout_height="@dimen/view_40_dp"
+        android:layout_width="@dimen/view_27_dp"
+        android:layout_height="@dimen/view_27_dp"
+        android:src="@drawable/party_quick_answer_6"
+        android:scaleType="centerInside"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/avatar_sdv"
         app:layout_constraintLeft_toLeftOf="@id/avatar_sdv"
