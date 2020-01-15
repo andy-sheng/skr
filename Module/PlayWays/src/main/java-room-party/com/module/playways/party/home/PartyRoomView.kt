@@ -57,6 +57,9 @@ class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context)
         adapter = PartyRoomAdapter(object : PartyRoomAdapter.Listener {
             override fun onClickRoom(position: Int, model: PartyRoomInfoModel?) {
                 model?.roomID?.let {
+                    if (type == TYPE_PARTY_HOME) {
+                        stopTimer()
+                    }
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                     iRankingModeService.tryGoPartyRoom(it, 1, model.roomtype ?: 0)
 
@@ -73,6 +76,9 @@ class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context)
 
             override fun onClickClub(position: Int, clubInfo: ClubInfo?) {
                 clubInfo?.let {
+                    if (type == TYPE_PARTY_HOME) {
+                        stopTimer()
+                    }
                     val clubServices = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
                     clubServices.tryGoClubHomePage(it.clubID)
 

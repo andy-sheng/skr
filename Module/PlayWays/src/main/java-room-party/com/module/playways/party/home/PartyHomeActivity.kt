@@ -42,6 +42,7 @@ class PartyHomeActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        U.getStatusBarUtil().setTransparentBar(this, false)
 
         title = findViewById(R.id.title)
         backIv = findViewById(R.id.back_iv)
@@ -94,7 +95,10 @@ class PartyHomeActivity : BaseActivity() {
         }
         partyRoomView?.layoutParams = ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         contentArea.addView(partyRoomView)
+    }
 
+    override fun onResume() {
+        super.onResume()
         partyRoomView?.initData(false)
     }
 
