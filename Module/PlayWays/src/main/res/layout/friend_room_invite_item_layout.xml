@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_64_dp"
+    android:layout_marginLeft="@dimen/view_5_dp"
+    android:layout_marginRight="@dimen/view_5_dp"
+    android:layout_marginBottom="@dimen/view_10_dp"
+    android:orientation="horizontal"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="@color/white">
+
+    <ImageView
+        android:id="@+id/weixin_iv"
+        android:layout_width="@dimen/view_37_dp"
+        android:layout_height="@dimen/view_37_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:background="@drawable/icon_weixin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/qq_iv"
+        android:layout_width="@dimen/view_37_dp"
+        android:layout_height="@dimen/view_37_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:background="@drawable/icon_qq"
+        app:layout_constraintLeft_toRightOf="@id/weixin_iv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:text="邀请好友"
+        android:textColor="#76C3F1"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</com.common.view.ex.ExConstraintLayout>

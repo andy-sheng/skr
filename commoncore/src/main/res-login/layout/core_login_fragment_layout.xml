@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#7187FF"
+    android:background="@drawable/skr_common_gradient_bg"
     android:clipChildren="false"
     android:clipToPadding="false">
 
@@ -93,21 +93,21 @@
         <com.common.view.ex.ExImageView
             android:id="@+id/phone_login_tv"
             android:layout_width="0dp"
-            android:layout_height="@dimen/view_64_dp"
+            android:layout_height="@dimen/view_74_dp"
             android:layout_weight="1"
             android:src="@drawable/icon_phone" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/weixin_login_tv"
             android:layout_width="0dp"
-            android:layout_height="@dimen/view_64_dp"
+            android:layout_height="@dimen/view_74_dp"
             android:layout_weight="1"
             android:src="@drawable/icon_weixin" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/qq_login_tv"
             android:layout_width="0dp"
-            android:layout_height="@dimen/view_64_dp"
+            android:layout_height="@dimen/view_74_dp"
             android:layout_weight="1"
             android:src="@drawable/icon_qq" />
     </LinearLayout>
@@ -120,4 +120,4 @@
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
-</RelativeLayout>
+</com.common.view.ex.ExRelativeLayout>

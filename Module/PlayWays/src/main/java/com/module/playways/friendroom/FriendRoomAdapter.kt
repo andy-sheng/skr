@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 
 import com.module.playways.R
+import com.module.playways.mic.home.FriendInviteViewHolder
 import com.module.playways.mic.home.RecommendMicViewHolder
 import com.module.playways.mic.home.RecommendUserInfo
 
@@ -16,6 +17,7 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
 
     var mDataList = ArrayList<RecommendRoomModel>()
 
+    private val INVITE_FRIEND_TYPE = 0
     private val ROOM_GRAB_TYPE = 1
     private val ROOM_MIC_TYPE = 2
 
@@ -27,16 +29,22 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
     var mCurrChildPosition = -1  //标记播放的是holder里面某个位置，抢唱房为-1
     var isPlay = false  // 标记播放
 
-
     private val uiHanlder = Handler(Looper.getMainLooper())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == ROOM_MIC_TYPE) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recommend_item_layout, parent, false)
-            RecommendMicViewHolder(view, mOnItemClickListener)
-        } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.friend_room_grab_item_layout, parent, false)
-            FriendRoomGrabViewHolder(view, mOnItemClickListener)
+        return when (viewType) {
+            INVITE_FRIEND_TYPE -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.friend_room_invite_item_layout, parent, false)
+                FriendInviteViewHolder(view, mOnItemClickListener)
+            }
+            ROOM_MIC_TYPE -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recommend_item_layout, parent, false)
+                RecommendMicViewHolder(view, mOnItemClickListener)
+            }
+            else -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.friend_room_grab_item_layout, parent, false)
+                FriendRoomGrabViewHolder(view, mOnItemClickListener)
+            }
         }
     }
 
@@ -45,30 +53,32 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (mDataList[position].gameSceneType == RecommendRoomModel.EGST_MIC) {
-            ROOM_MIC_TYPE
-        } else {
-            ROOM_GRAB_TYPE
+        return when {
+            position == 0 -> INVITE_FRIEND_TYPE
+            getDataByPosition(position).gameSceneType == RecommendRoomModel.EGST_MIC -> ROOM_MIC_TYPE
+            else -> ROOM_GRAB_TYPE
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<*>) {
         if (payloads.isEmpty()) {
-            val friendRoomModel = mDataList[position]
-            if (holder is FriendRoomGrabViewHolder) {
-                holder.bindData(friendRoomModel, position)
-                if (isPlay && mCurrPlayModel == mDataList[position]) {
-                    holder.startPlay()
-                } else {
-                    holder.stopPlay()
+            if (position > 0) {
+                val friendRoomModel = getDataByPosition(position)
+                if (holder is FriendRoomGrabViewHolder) {
+                    holder.bindData(friendRoomModel, position)
+                    if (isPlay && mCurrPlayModel == getDataByPosition(position)) {
+                        holder.startPlay()
+                    } else {
+                        holder.stopPlay()
+                    }
                 }
-            }
-            if (holder is RecommendMicViewHolder) {
-                holder.bindRoomData(friendRoomModel, position)
-                if (isPlay && mCurrPlayModel == mDataList[position]) {
-                    holder.startPlay(mCurrChildPosition)
-                } else {
-                    holder.stopPlay()
+                if (holder is RecommendMicViewHolder) {
+                    holder.bindRoomData(friendRoomModel, position)
+                    if (isPlay && mCurrPlayModel == getDataByPosition(position)) {
+                        holder.startPlay(mCurrChildPosition)
+                    } else {
+                        holder.stopPlay()
+                    }
                 }
             }
         } else {
@@ -77,7 +87,7 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
                 if (refreshType is Int) {
                     when (refreshType) {
                         REFRESH_PLAY -> {
-                            if (isPlay && mCurrPlayModel === mDataList[position]) {
+                            if (isPlay && mCurrPlayModel === getDataByPosition(position)) {
                                 if (holder is FriendRoomGrabViewHolder) {
                                     holder.startPlay()
                                 } else if (holder is RecommendMicViewHolder) {
@@ -106,7 +116,7 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
 
     fun update(model: RecommendRoomModel, position: Int) {
         if (mDataList.size > position && position >= 0) {
-            mDataList[position] = model
+            setDataByPosition(position, model)
             notifyItemChanged(position)
         }
     }
@@ -166,6 +176,16 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
         }
     }
 
+    private fun getDataByPosition(position: Int): RecommendRoomModel {
+        return mDataList[position - 1]
+    }
+
+    private fun setDataByPosition(position: Int, model: RecommendRoomModel) {
+        if (position > 0) {
+            mDataList[position - 1] = model
+        }
+    }
+
     fun stopPlay() {
         isPlay = false
         update(mCurrPlayPosition, mCurrPlayModel, REFRESH_STOP)
@@ -176,7 +196,7 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
     }
 
     private fun update(position: Int, model: RecommendRoomModel?, refreshType: Int) {
-        if (position >= 0 && position < mDataList.size && mDataList[position] == model) {
+        if (position >= 0 && position < mDataList.size && getDataByPosition(position) == model) {
             // 位置是对的
             notifyItemChanged(position, refreshType)
             return
@@ -192,7 +212,7 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
     }
 
     override fun getItemCount(): Int {
-        return mDataList.size
+        return mDataList.size + 1
     }
 
     interface FriendRoomClickListener {
@@ -203,5 +223,7 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
         fun onClickMicRoom(model: RecommendRoomModel?, position: Int)
 
         fun onClickMicVoice(model: RecommendRoomModel?, position: Int, userInfoModel: RecommendUserInfo?, childPos: Int)
+
+        fun onClickInvite()
     }
 }

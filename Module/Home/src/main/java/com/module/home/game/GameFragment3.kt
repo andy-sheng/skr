@@ -43,7 +43,6 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     lateinit var mNavigationBgIv: ImageView
     lateinit var mGameTab: SlidingTabLayout
     lateinit var mGameVp: NestViewPager
-    lateinit var mInviteFriendIv: ImageView
     lateinit var mTabPagerAdapter: PagerAdapter
     lateinit var mPresenter: GamePresenter3
 
@@ -62,7 +61,6 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 //    }
 
     private var alphaAnimation: AlphaAnimation? = null
-    private var mInviteFriendDialog: InviteFriendDialog? = null
 
     private val mainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
     private var mTipsDialogView: TipsDialogView? = null
@@ -76,48 +74,6 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mNavigationBgIv = rootView.findViewById(R.id.navigation_bg_iv)
         mGameTab = rootView.findViewById(R.id.game_tab)
         mGameVp = rootView.findViewById(R.id.game_vp)
-        mInviteFriendIv = rootView.findViewById(R.id.invite_friend_iv)
-
-        mInviteFriendIv.setAnimateDebounceViewClickListener {
-            showShareDialog()
-//            if (mGameVp.currentItem == 2) {
-//                launch {
-//                    val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(null))
-//                    val result = subscribe(RequestControl("hasCreatePermission", ControlType.CancelThis)) {
-//                        mainPageSlideApi.hasCreatePermission(body)
-//                    }
-//                    if (result.errno == 0) {
-//                        // 可以创建
-//                        ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_PARTY_ROOM)
-//                                .navigation()
-//                    } else {
-//                        if (result.errno == 8436006) {
-//                            mTipsDialogView?.dismiss(false)
-//                            mTipsDialogView = TipsDialogView.Builder(activity)
-//                                    .setMessageTip("开通VIP特权，立即获得主题房创建权限")
-//                                    .setConfirmTip("立即开通")
-//                                    .setCancelTip("取消")
-//                                    .setConfirmBtnClickListener {
-//                                        mTipsDialogView?.dismiss(false)
-//                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-//                                                .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/newVip?title=1"))
-//                                                .greenChannel().navigation()
-//                                    }
-//                                    .setCancelBtnClickListener {
-//                                        mTipsDialogView?.dismiss()
-//                                    }
-//                                    .build()
-//                            mTipsDialogView?.showByDialog()
-//                        } else {
-//                            U.getToastUtil().showShort(result.errmsg)
-//                        }
-//                    }
-//                }
-//
-//            } else {
-//                showShareDialog()
-//            }
-        }
 
         mGameTab.setCustomTabView(R.layout.game_tab_view_layout, R.id.tab_tv)
         mGameTab.setSelectedIndicatorColors(Color.WHITE)
@@ -206,13 +162,6 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
         mPresenter = GamePresenter3(this)
         addPresent(mPresenter)
-    }
-
-    private fun showShareDialog() {
-        if (mInviteFriendDialog == null) {
-            mInviteFriendDialog = InviteFriendDialog(context, InviteFriendDialog.INVITE_GRAB_FRIEND, 0, 0, 0, null)
-        }
-        mInviteFriendDialog?.show()
     }
 
     fun animation(startColor: Int, endColor: Int) {
@@ -336,7 +285,6 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mClubHomeView.destory()
         alphaAnimation?.cancel()
         mTipsDialogView?.dismiss(false)
-        mInviteFriendDialog?.dismiss(false)
     }
 }
 

@@ -31,6 +31,14 @@ class BuyEffectDialogView : ConstraintLayout {
     var buyGive: ExTextView
     var model: ProductModel? = null
 
+    var coinDrawable = U.getDrawable(R.drawable.grab_coin_icon).apply {
+        setBounds(0, 0, getIntrinsicWidth(), getIntrinsicHeight())
+    }
+
+    var diamondDrawable = U.getDrawable(R.drawable.mall_diamond).apply {
+        setBounds(0, 0, getIntrinsicWidth(), getIntrinsicHeight())
+    }
+
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
@@ -97,12 +105,25 @@ class BuyEffectDialogView : ConstraintLayout {
         secondDes.visibility = View.GONE
 
         repeat(if (model.price.size > 2) 2 else model.price.size) {
+            var view: ExTextView? = null
             if (it == 0) {
                 firstDes.text = "X${model.price[it].realPrice} /${model.price[it].buyTypeDes}"
                 firstDes.visibility = View.VISIBLE
+                view = firstDes
             } else if (it == 1) {
                 secondDes.text = "X${model.price[it].realPrice} /${model.price[it].buyTypeDes}"
                 secondDes.visibility = View.VISIBLE
+                view = secondDes
+            }
+
+            view?.let { view ->
+                if (model.price[it].priceType == 1) {
+                    //PT_Coin
+                    view.setCompoundDrawables(coinDrawable, null, null, null)
+                } else {
+                    //PT_Zuan
+                    view.setCompoundDrawables(diamondDrawable, null, null, null)
+                }
             }
         }
 

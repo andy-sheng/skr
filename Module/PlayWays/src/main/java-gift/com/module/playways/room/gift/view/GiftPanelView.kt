@@ -33,6 +33,7 @@ import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent
+import com.module.playways.room.data.H
 import com.module.playways.room.gift.GiftServerApi
 import com.module.playways.room.gift.adapter.GiftAllPlayersAdapter
 import com.module.playways.room.gift.event.*
@@ -107,9 +108,11 @@ open class GiftPanelView : FrameLayout {
             val grabPlayerInfoModelList = getGrabRoomData()?.getCanGiveGiftList()
                     ?: ArrayList()
 
-            for (grabPlayerInfoModel in grabPlayerInfoModelList) {
-                if (grabPlayerInfoModel.getUserID().toLong() != MyUserInfoManager.uid) {
-                    return grabPlayerInfoModel
+            if (!H.isPartyRoom()) {
+                for (grabPlayerInfoModel in grabPlayerInfoModelList) {
+                    if (grabPlayerInfoModel.getUserID().toLong() != MyUserInfoManager.uid) {
+                        return grabPlayerInfoModel
+                    }
                 }
             }
 

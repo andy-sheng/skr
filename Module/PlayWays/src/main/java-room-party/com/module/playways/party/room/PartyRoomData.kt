@@ -8,6 +8,7 @@ import com.module.playways.BaseRoomData
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.event.*
 import com.module.playways.party.room.model.*
+import com.module.playways.room.data.H
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.EPRoundStatus
@@ -160,6 +161,12 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
     override fun getCanGiveGiftList(): List<PlayerInfoModel> {
         var list = ArrayList<PlayerInfoModel>()
+        if (H.partyRoomData?.hostId!! > 0) {
+            getPlayerInfoById(H.partyRoomData?.hostId!!)?.let { model ->
+                list.add(model)
+            }
+        }
+
         this.seats?.let {
             for (info in it) {
                 getPlayerInfoById(info.userID)?.let { model ->

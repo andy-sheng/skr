@@ -52,7 +52,7 @@ class Price : Serializable {
     @JSONField(name = "price")
     var price: String = ""
     @JSONField(name = "priceType")
-    var priceType: Int = 0
+    var priceType: Int = 0    //[ PT_UNKNOWN, PT_Coin, PT_Zuan ]
     @JSONField(name = "realPrice")
     var realPrice: Int = 0
     @JSONField(name = "buyTypeDes")

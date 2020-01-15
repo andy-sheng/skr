@@ -61,6 +61,14 @@ class ProductAdapter(val getIndexMethod: (() -> Int)) : DiffAdapter<ProductModel
         var model: ProductModel? = null
         var index: Int = -1
 
+        var coinDrawable = U.getDrawable(R.drawable.grab_coin_icon).apply {
+            setBounds(0, 0, getIntrinsicWidth(), getIntrinsicHeight())
+        }
+
+        var diamondDrawable = U.getDrawable(R.drawable.mall_diamond).apply {
+            setBounds(0, 0, getIntrinsicWidth(), getIntrinsicHeight())
+        }
+
         constructor(itemView: View) : super(itemView) {
             bg = itemView.findViewById(R.id.bg)
             productName = itemView.findViewById(R.id.product_name)
@@ -108,6 +116,13 @@ class ProductAdapter(val getIndexMethod: (() -> Int)) : DiffAdapter<ProductModel
 
                 if (model.price?.size > 0) {
                     btnIv.text = "X${model.price[0].realPrice}"
+                    if (model.price[0].priceType == 1) {
+                        //PT_Coin
+                        btnIv.setCompoundDrawables(coinDrawable, null, null, null)
+                    } else {
+                        //PT_Zuan
+                        btnIv.setCompoundDrawables(diamondDrawable, null, null, null)
+                    }
                 }
             }
 

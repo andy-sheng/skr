@@ -67,7 +67,7 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
             SearchItmeHolder viewHolder = new SearchItmeHolder(view);
             return viewHolder;
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.invite_friend_item_layout, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_invite_item_layout, parent, false);
             ItemHolder viewHolder = new ItemHolder(view);
             return viewHolder;
         }

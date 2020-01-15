@@ -47,7 +47,6 @@ public class LoginFragment extends BaseFragment implements Callback {
     public static final int MSG_HIDE_PORGRESS_BAR = 1;
     public static final int MIN_HEIGHT = U.getDisplayUtils().dip2px(140);
 
-    RelativeLayout mMainActContainer;
     ImageView mPicture;
 
     LinearLayout mTvUserAgree;
@@ -99,7 +98,6 @@ public class LoginFragment extends BaseFragment implements Callback {
     public void initData(@Nullable Bundle savedInstanceState) {
         ShareManager.init();
 
-        mMainActContainer = getRootView().findViewById(R.id.main_act_container);
         mPicture = getRootView().findViewById(R.id.picture);
 
         mDengluArea = getRootView().findViewById(R.id.denglu_area);
