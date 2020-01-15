@@ -266,7 +266,7 @@ class CommentView : EdgeTransparentView {
                         partyPlayerInfoModel.isHost() -> commentTextModel.nameBuilder?.insert(0, "【主持人】")
                         partyPlayerInfoModel.isAdmin() -> commentTextModel.nameBuilder?.insert(0, "【管理员】")
                         else -> {
-                            if (event.info.sender?.hasClubInfo() == true) {
+                            if (event.info.sender?.hasClubInfo() == true && event.info.sender?.clubInfo?.clubID == roomData.clubInfo?.clubID) {
                                 commentTextModel.nameBuilder?.insert(0, getIdentityName(event.info.sender.clubInfo?.roleType?.value
                                         ?: 0))
                             }
