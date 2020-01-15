@@ -98,6 +98,8 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
         nameTv.text = "${model?.player?.userInfo?.nicknameRemark}"
         refreshHot()
         refreshMute()
+        // 所有的动画需要重置一下
+        stop()
         stopSpeakAnimation()
     }
 
@@ -176,7 +178,7 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
     private fun stop() {
         animation?.removeAllListeners()
         animation?.cancel()
-        handler?.removeCallbacksAndMessages(null)
+        handler.removeCallbacksAndMessages(null)
         animationRoll?.stop()
     }
 
