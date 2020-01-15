@@ -23,11 +23,21 @@ class CommentTextModel : CommentModel() {
             if (roomData != null) {
                 val sender = roomData.getPlayerOrWaiterInfo(event.info.sender.userID!!)
                 commentModel.avatarColor = AVATAR_COLOR
-                if (sender != null) {
-                    commentModel.userInfo = sender
+                if ((roomData is PartyRoomData) || (roomData is RaceRoomData)) {
+                    // 派对房和排位赛中，补充一个没有段位就从sender取
+                    if (sender != null && sender.ranking != null && sender.ranking.mainRanking != 0) {
+                        commentModel.userInfo = sender
+                    } else {
+                        commentModel.userInfo = UserInfoModel.parseFromPB(event.info.sender)
+                    }
                 } else {
-                    commentModel.userInfo = UserInfoModel.parseFromPB(event.info.sender)
+                    if (sender != null) {
+                        commentModel.userInfo = sender
+                    } else {
+                        commentModel.userInfo = UserInfoModel.parseFromPB(event.info.sender)
+                    }
                 }
+
 
                 if (roomData is RaceRoomData) {
                     commentModel.fakeUserInfo = roomData.getFakeInfo(commentModel.userInfo?.userId)
