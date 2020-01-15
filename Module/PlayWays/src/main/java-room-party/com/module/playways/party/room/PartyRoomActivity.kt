@@ -79,6 +79,7 @@ import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.live.proto.PartyRoom.EPGameType
 import com.zq.live.proto.PartyRoom.PBeginVote
 import com.zq.live.proto.PartyRoom.PKickoutUserMsg
 import org.greenrobot.eventbus.EventBus
@@ -477,10 +478,25 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     }
 
     private fun showPanelView() {
-        if (mRoomData.hostId == MyUserInfoManager.uid.toInt()) {
-            mGiftPanelView?.show(mRoomData.getPlayerInfoBySeq(1))
+        val partyGameInfoModel = mRoomData?.realRoundInfo?.sceneInfo
+
+        if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
+            if (partyGameInfoModel?.ktv?.userID ?: 0 > 0) {
+                if (partyGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
+                    //自己唱
+                    mGiftPanelView?.show(null)
+                } else {
+                    //别人在唱
+                    mGiftPanelView?.show(mRoomData.getPlayerInfoById(partyGameInfoModel?.ktv?.userID
+                            ?: 0))
+                }
+            } else {
+                //还没开始
+                mGiftPanelView?.show(null)
+            }
         } else {
-            mGiftPanelView?.show(mRoomData.getPlayerInfoById(mRoomData.hostId))
+            //别的模式
+            mGiftPanelView?.show(null)
         }
     }
 
@@ -926,7 +942,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mTipsDialogView?.showByDialog()
     }
 
-    override fun beginQuickAnswer(beginTs: Long,endTs:Long) {
-        mRightQuickAnswerView?.playCountDown(beginTs,endTs)
+    override fun beginQuickAnswer(beginTs: Long, endTs: Long) {
+        mRightQuickAnswerView?.playCountDown(beginTs, endTs)
     }
 }
