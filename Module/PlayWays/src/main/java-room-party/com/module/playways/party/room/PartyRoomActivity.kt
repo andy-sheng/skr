@@ -28,6 +28,7 @@ import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.ClubCardDialogView
 import com.component.dialog.ConfirmDialog
 import com.component.dialog.PersonInfoDialog
+import com.component.person.event.SendGiftByPersonCardEvent
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
 import com.component.toast.CommonToastView
@@ -733,6 +734,17 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
         showPersonInfoView(event.uid, event.showKick)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: SendGiftByPersonCardEvent) {
+        val info = mRoomData.getPlayerInfoById(event.model.userId)
+
+        if (info != null) {
+            mGiftPanelView.show(info)
+        } else {
+            U.getToastUtil().showShort("嘉宾下麦了")
+        }
     }
 
     private fun getPartyManageHostDialogView(): PartyManageHostDialogView {
