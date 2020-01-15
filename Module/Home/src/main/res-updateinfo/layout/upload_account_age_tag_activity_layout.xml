@@ -3,70 +3,73 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4C56AA">
+    android:background="@drawable/skr_common_gradient_bg">
 
     <com.common.view.titlebar.CommonTitleBar
-        android:id="@+id/titlebar"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:centerText="选择性别年龄"
-        app:centerTextColor="@color/white_trans_80"
-        app:centerTextSize="@dimen/textsize_16_dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftDrawable="@drawable/img_back"
-        app:leftType="textView"
-        app:rightText="2/2"
-        app:rightTextColor="@color/white_trans_80"
-        app:rightTextSize="@dimen/textsize_16_dp"
-        app:rightTextStyle="BOLD"
-        app:rightType="textView"
         app:showBottomLine="false"
-        app:statusBarColor="#4C56AA"
-        app:titleBarColor="#4C56AA" />
+        app:showMainView="false"
+        app:statusBarColor="@color/transparent" />
 
-    <ImageView
-        android:id="@+id/image_bg"
-        android:layout_width="@dimen/view_0_dp"
-        android:layout_height="@dimen/view_0_dp"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:background="@drawable/common_gradient_top_corners_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_marginLeft="@dimen/view_4_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/img_back"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titlebar" />
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_toRightOf="@id/iv_back"
+        android:gravity="center_vertical"
+        android:text="选择年龄性别"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_24_dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/iv_back"
+        app:layout_constraintLeft_toRightOf="@id/iv_back"
+        app:layout_constraintTop_toTopOf="@id/iv_back" />
 
     <TextView
-        android:id="@+id/sex_hint"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_50_dp"
-        android:gravity="center"
-        android:text="请选择性别"
-        android:textColor="@color/black_trans_50"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintLeft_toLeftOf="@id/image_bg"
-        app:layout_constraintRight_toRightOf="@id/image_bg"
-        app:layout_constraintTop_toTopOf="@id/image_bg" />
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_18_dp"
+        android:text="2/2"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/iv_back"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_back" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/male_iv"
-        android:layout_width="@dimen/view_74_dp"
-        android:layout_height="@dimen/view_74_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_24_dp"
-        app:bl_selected_drawable="@drawable/select_male"
-        app:bl_unSelected_drawable="@drawable/un_select_male"
+        android:background="@drawable/sex_male_icon"
+        app:layout_constraintBottom_toTopOf="@id/age_tag_view"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintLeft_toLeftOf="@id/image_bg"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/female_iv"
-        app:layout_constraintTop_toBottomOf="@id/sex_hint" />
+        app:layout_constraintTop_toBottomOf="@id/iv_back" />
 
     <ImageView
         android:id="@+id/male_select"
         android:layout_width="@dimen/view_18_dp"
         android:layout_height="@dimen/view_18_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:layout_marginBottom="@dimen/view_30_dp"
         android:background="@drawable/sex_select_icon"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/male_iv"
@@ -74,20 +77,21 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/female_iv"
-        android:layout_width="@dimen/view_74_dp"
-        android:layout_height="@dimen/view_74_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_80_dp"
-        android:layout_marginTop="@dimen/view_24_dp"
-        app:bl_selected_drawable="@drawable/select_female"
-        app:bl_unSelected_drawable="@drawable/un_select_female"
+        android:background="@drawable/sex_female_icon"
+        app:layout_constraintBottom_toBottomOf="@id/male_iv"
         app:layout_constraintLeft_toRightOf="@id/male_iv"
-        app:layout_constraintRight_toRightOf="@id/image_bg"
-        app:layout_constraintTop_toBottomOf="@id/sex_hint" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/male_iv" />
 
     <ImageView
         android:id="@+id/female_select"
         android:layout_width="@dimen/view_18_dp"
         android:layout_height="@dimen/view_18_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:layout_marginBottom="@dimen/view_30_dp"
         android:background="@drawable/sex_select_icon"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/female_iv"
@@ -98,58 +102,37 @@
         android:layout_height="@dimen/view_18_dp"
         android:layout_marginTop="@dimen/view_8_dp"
         android:text="男生"
-        android:textColor="@color/black_trans_50"
-        android:textSize="@dimen/textsize_12_dp"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="@id/male_iv"
         app:layout_constraintLeft_toLeftOf="@id/male_iv"
-        app:layout_constraintRight_toRightOf="@id/male_iv"
-        app:layout_constraintTop_toBottomOf="@id/male_iv" />
+        app:layout_constraintRight_toRightOf="@id/male_iv" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_18_dp"
         android:layout_marginTop="@dimen/view_8_dp"
         android:text="女生"
-        android:textColor="@color/black_trans_50"
-        android:textSize="@dimen/textsize_12_dp"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="@id/female_iv"
         app:layout_constraintLeft_toLeftOf="@id/female_iv"
-        app:layout_constraintRight_toRightOf="@id/female_iv"
-        app:layout_constraintTop_toBottomOf="@id/female_iv" />
-
-    <TextView
-        android:id="@+id/age_hint_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_206_dp"
-        android:text="请选择年龄段"
-        android:textColor="@color/black_trans_50"
-        android:textSize="@dimen/textsize_16_dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sex_hint" />
+        app:layout_constraintRight_toRightOf="@id/female_iv" />
 
     <com.component.person.view.AgeTagView
         android:id="@+id/age_tag_view"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_48_dp"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:layout_marginRight="@dimen/view_48_dp"
+        app:layout_constraintBottom_toTopOf="@id/submit_iv"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/age_hint_tv" />
+        app:layout_constraintTop_toBottomOf="@id/male_iv" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/submit_tv"
-        android:layout_width="@dimen/view_134_dp"
-        android:layout_height="@dimen/view_40_dp"
-        android:gravity="center"
-        android:text="开启嗨唱之旅"
-        android:textColor="#AD6C00"
-        android:textSize="@dimen/textsize_16_dp"
-        android:textStyle="bold"
-        app:bl_corners_radius="@dimen/view_20_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#FFC15B"
+    <ImageView
+        android:id="@+id/submit_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/star_grab_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

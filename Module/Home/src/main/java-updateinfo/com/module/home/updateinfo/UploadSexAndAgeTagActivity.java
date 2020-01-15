@@ -25,13 +25,13 @@ import com.zq.live.proto.Common.ESex;
 @Route(path = RouterConstants.ACTIVITY_UPLOAD_SEX_AGE)
 public class UploadSexAndAgeTagActivity extends BaseActivity {
 
-    CommonTitleBar mTitlebar;
+    ExImageView mIvBack;
     ExImageView mMaleIv;
     ImageView mMaleSelect;
     ExImageView mFemaleIv;
     ImageView mFemaleSelect;
     AgeTagView mAgeTagView;
-    ExTextView mSubmitTv;
+    ImageView mSubmitIv;
 
     String mNickName;
     int mSex;
@@ -45,20 +45,21 @@ public class UploadSexAndAgeTagActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         U.getStatusBarUtil().setTransparentBar(this, false);
-        mTitlebar = findViewById(R.id.titlebar);
+
+        mIvBack = findViewById(R.id.iv_back);
         mMaleIv = findViewById(R.id.male_iv);
         mMaleSelect = findViewById(R.id.male_select);
         mFemaleIv = findViewById(R.id.female_iv);
         mFemaleSelect = findViewById(R.id.female_select);
         mAgeTagView = findViewById(R.id.age_tag_view);
 
-        mSubmitTv = findViewById(R.id.submit_tv);
+        mSubmitIv = findViewById(R.id.submit_iv);
 
         // 初始化数据
         mNickName = getIntent().getStringExtra("nickname");
 
 //        mAgeTagView.setTextColor(U.getColor(R.color.white_trans_50));
-        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+        mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 finish();
@@ -84,20 +85,20 @@ public class UploadSexAndAgeTagActivity extends BaseActivity {
             public void onUnSelect() {
                 // 无选中的
                 mAgaTag = 0;
-                mSubmitTv.setAlpha(0.5f);
-                mSubmitTv.setClickable(false);
+                mSubmitIv.setAlpha(0.5f);
+                mSubmitIv.setClickable(false);
             }
 
             @Override
             public void onSelectedAge(int ageTag) {
                 // 有选中的
                 mAgaTag = ageTag;
-                mSubmitTv.setAlpha(1f);
-                mSubmitTv.setClickable(true);
+                mSubmitIv.setAlpha(1f);
+                mSubmitIv.setClickable(true);
             }
         });
 
-        mSubmitTv.setOnClickListener(new DebounceViewClickListener() {
+        mSubmitIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mSex != ESex.SX_MALE.getValue() && mSex != ESex.SX_FEMALE.getValue()) {
@@ -126,8 +127,8 @@ public class UploadSexAndAgeTagActivity extends BaseActivity {
 
         setSex(MyUserInfoManager.INSTANCE.getSex());
 
-        mSubmitTv.setClickable(false);
-        mSubmitTv.setAlpha(0.5f);
+        mSubmitIv.setClickable(false);
+        mSubmitIv.setAlpha(0.5f);
     }
 
     public void setSex(int sex) {

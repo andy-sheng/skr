@@ -58,9 +58,7 @@
         android:id="@+id/age_tag_view"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_48_dp"
         android:layout_marginTop="@dimen/view_170_dp"
-        android:layout_marginRight="@dimen/view_48_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/age_tag_bg" />

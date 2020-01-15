@@ -22,6 +22,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
@@ -42,7 +43,7 @@ import io.reactivex.subjects.PublishSubject;
 
 public class UploadAccountInfoFragment extends BaseFragment {
 
-    CommonTitleBar mTitlebar;
+    ExImageView mIvBack;
     SimpleDraweeView mAvatarIv;
     NoLeakEditText mNicknameEt;
     ExTextView mNicknameHintTv;
@@ -62,7 +63,8 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = getRootView().findViewById(R.id.titlebar);
+        mIvBack = getRootView().findViewById(R.id.iv_back);
+
         mAvatarIv = getRootView().findViewById(R.id.avatar_iv);
         mNicknameEt = getRootView().findViewById(R.id.nickname_et);
         mNicknameHintTv = getRootView().findViewById(R.id.nickname_hint_tv);
@@ -70,7 +72,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
         mNextIv = getRootView().findViewById(R.id.next_iv);
 
-        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+        mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 // HomeAcitivy的
