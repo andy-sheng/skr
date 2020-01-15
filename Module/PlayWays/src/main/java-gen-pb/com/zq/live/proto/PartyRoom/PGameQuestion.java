@@ -82,18 +82,19 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
    */
   @WireField(
       tag = 6,
-      adapter = "com.squareup.wire.ProtoAdapter#STRING",
+      adapter = "com.zq.live.proto.PartyRoom.QuestionAudio#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  private final List<String> questionAudio;
+  private final List<QuestionAudio> questionAudio;
 
   public PGameQuestion(Integer questionID, String questionContent, List<String> questionPic,
-      String answerContent, String uploader, List<String> questionAudio) {
+      String answerContent, String uploader, List<QuestionAudio> questionAudio) {
     this(questionID, questionContent, questionPic, answerContent, uploader, questionAudio, ByteString.EMPTY);
   }
 
   public PGameQuestion(Integer questionID, String questionContent, List<String> questionPic,
-      String answerContent, String uploader, List<String> questionAudio, ByteString unknownFields) {
+      String answerContent, String uploader, List<QuestionAudio> questionAudio,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.questionID = questionID;
     this.questionContent = questionContent;
@@ -221,9 +222,9 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
   /**
    * 问题音频
    */
-  public List<String> getQuestionAudioList() {
+  public List<QuestionAudio> getQuestionAudioList() {
     if(questionAudio==null){
-        return new java.util.ArrayList<String>();
+        return new java.util.ArrayList<QuestionAudio>();
     }
     return questionAudio;
   }
@@ -281,7 +282,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
 
     private String uploader;
 
-    private List<String> questionAudio;
+    private List<QuestionAudio> questionAudio;
 
     public Builder() {
       questionPic = Internal.newMutableList();
@@ -332,7 +333,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
     /**
      * 问题音频
      */
-    public Builder addAllQuestionAudio(List<String> questionAudio) {
+    public Builder addAllQuestionAudio(List<QuestionAudio> questionAudio) {
       Internal.checkElementsNotNull(questionAudio);
       this.questionAudio = questionAudio;
       return this;
@@ -356,7 +357,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
           + ProtoAdapter.STRING.asRepeated().encodedSizeWithTag(3, value.questionPic)
           + ProtoAdapter.STRING.encodedSizeWithTag(4, value.answerContent)
           + ProtoAdapter.STRING.encodedSizeWithTag(5, value.uploader)
-          + ProtoAdapter.STRING.asRepeated().encodedSizeWithTag(6, value.questionAudio)
+          + QuestionAudio.ADAPTER.asRepeated().encodedSizeWithTag(6, value.questionAudio)
           + value.unknownFields().size();
     }
 
@@ -367,7 +368,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
       ProtoAdapter.STRING.asRepeated().encodeWithTag(writer, 3, value.questionPic);
       ProtoAdapter.STRING.encodeWithTag(writer, 4, value.answerContent);
       ProtoAdapter.STRING.encodeWithTag(writer, 5, value.uploader);
-      ProtoAdapter.STRING.asRepeated().encodeWithTag(writer, 6, value.questionAudio);
+      QuestionAudio.ADAPTER.asRepeated().encodeWithTag(writer, 6, value.questionAudio);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -382,7 +383,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
           case 3: builder.questionPic.add(ProtoAdapter.STRING.decode(reader)); break;
           case 4: builder.setAnswerContent(ProtoAdapter.STRING.decode(reader)); break;
           case 5: builder.setUploader(ProtoAdapter.STRING.decode(reader)); break;
-          case 6: builder.questionAudio.add(ProtoAdapter.STRING.decode(reader)); break;
+          case 6: builder.questionAudio.add(QuestionAudio.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -397,6 +398,7 @@ public final class PGameQuestion extends Message<PGameQuestion, PGameQuestion.Bu
     @Override
     public PGameQuestion redact(PGameQuestion value) {
       Builder builder = value.newBuilder();
+      Internal.redactElements(builder.questionAudio, QuestionAudio.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

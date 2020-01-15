@@ -415,7 +415,13 @@ message PGameQuestion {
     repeated string questionPic = 3; //问题图片
     string answerContent = 4; //问题答案
     string uploader = 5; //上传者
-    repeated string questionAudio = 6; //问题音频
+    repeated QuestionAudio questionAudio = 6; //问题音频
+}
+
+message QuestionAudio
+{
+    string URL       = 1; //资源地址
+    uint32 durTimeMs = 2; //持续时长（毫秒）
 }
 
 message PGamePlay {

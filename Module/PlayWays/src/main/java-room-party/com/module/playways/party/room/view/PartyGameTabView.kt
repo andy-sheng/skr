@@ -156,7 +156,7 @@ class PartyGameTabView : ExConstraintLayout {
             } else {
                 if ((partyGameInfoModel?.question?.questionInfo?.questionAudio?.size
                                 ?: 0) > 0) {
-                    iAudioGameListener?.startPlay(partyGameInfoModel?.question?.questionInfo?.questionAudio?.get(0)
+                    iAudioGameListener?.startPlay(partyGameInfoModel?.question?.questionInfo?.questionAudio?.get(0)?.URL
                             ?: "")
                     audioView.setPlay(true)
                 }
@@ -343,6 +343,8 @@ class PartyGameTabView : ExConstraintLayout {
                     if ((it.question?.questionInfo?.questionAudio?.size
                                     ?: 0) > 0) {
                         audioView.visibility = View.VISIBLE
+                        audioView.bindData(it.question?.questionInfo?.questionAudio?.get(0)?.durTimeMs?.toLong()
+                                ?: 0L)
                     } else {
                         audioView.visibility = View.GONE
                     }
@@ -483,6 +485,7 @@ class PartyGameTabView : ExConstraintLayout {
         singingGroup.visibility = View.GONE
         bottomLeftOpTv.visibility = View.GONE
         bottomRightOpTv.visibility = View.GONE
+        audioView.visibility = View.GONE
     }
 
     private fun getGameTagTitle(): String {

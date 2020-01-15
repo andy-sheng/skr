@@ -133,7 +133,7 @@ class GameQuestionModel : Serializable {
     var questionPic: ArrayList<String>? = null //问题图片
     var answerContent = "" //问题答案
     var uploader = "" //上传者
-    var questionAudio: ArrayList<String>? = null //问题图片
+    var questionAudio: ArrayList<QuestionAudioModel>? = null //问题图片
 
 
     companion object {
@@ -152,9 +152,9 @@ class GameQuestionModel : Serializable {
                 p.uploader = pb.uploader
             }
             if (pb.hasQuestionAudioList()) {
-                p.questionAudio = ArrayList<String>()
+                p.questionAudio = ArrayList<QuestionAudioModel>()
                 for (c in pb.questionAudioList) {
-                    p.questionAudio?.add(c)
+                    p.questionAudio?.add(QuestionAudioModel.parseFromItemInfo(c))
                 }
             }
             return p
@@ -163,6 +163,24 @@ class GameQuestionModel : Serializable {
 
     override fun toString(): String {
         return "GameQuestionModel(questionID=$questionID, questionContent='$questionContent', questionPic=$questionPic, answerContent='$answerContent', uploader='$uploader', questionAudio=$questionAudio)"
+    }
+}
+
+class QuestionAudioModel : Serializable {
+    var URL: String = "" //资源地址
+    var durTimeMs: Int = 0 //持续时长（毫秒）
+
+    companion object {
+        fun parseFromItemInfo(pb: QuestionAudio): QuestionAudioModel {
+            var p = QuestionAudioModel()
+            p.URL = pb.url
+            p.durTimeMs = pb.durTimeMs
+            return p
+        }
+    }
+
+    override fun toString(): String {
+        return "QuestionAudioModel(URL='$URL', durTimeMs=$durTimeMs)"
     }
 }
 
