@@ -269,6 +269,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mWidgetAnimationController.destroy()
         mBottomWidgetAnimationController.destroy()
         mGiftPanelView?.destroy()
+        SinglePlayer.stop(playerTag)
         H.reset("PartyRoomActivity")
     }
 
