@@ -18,12 +18,10 @@ import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
-import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
-import com.component.busilib.view.AutoPollRecyclerView
 import com.component.busilib.view.SpeakingTipsAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
@@ -32,7 +30,6 @@ import com.module.playways.party.room.model.PartyEmojiInfoModel
 import com.module.playways.party.room.model.QuickAnswerUiModel
 import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.ESeatStatus
-import java.lang.ref.WeakReference
 
 // 正常位置
 class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : RecyclerView.ViewHolder(item) {
@@ -99,7 +96,8 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
         refreshHot()
         refreshMute()
         // 所有的动画需要重置一下
-        stop()
+        resetEmojiArea()
+        resetQuickAnswerArea()
         stopSpeakAnimation()
     }
 
@@ -126,7 +124,7 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
     }
 
     fun playEmojiAnimation(model: PartyEmojiInfoModel) {
-        stop()
+        resetEmojiArea()
         FrescoWorker.loadImage(emojiSdv, ImageFactory.newPathImage(model.bigEmojiURL)
                 .build())
         if (model.id == 1000) {
@@ -158,7 +156,19 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
         }
     }
 
+    private fun resetEmojiArea() {
+        emojiSdv.visibility = View.GONE
+        rollIv.visibility = View.GONE
+        animation?.removeAllListeners()
+        animation?.cancel()
+
+        handler.removeMessages(MSG_TYPE_END_ANIMATION)
+        handler.removeMessages(MSG_TYPE_END_ROLLING)
+        animationRoll?.stop()
+    }
+
     fun showQuickAnswerSeq(model: QuickAnswerUiModel) {
+        resetQuickAnswerArea()
         quickAnswerSeqIv.visibility = View.VISIBLE
 
         quickAnswerSeqIv.setImageResource(when (model.seq) {
@@ -175,15 +185,10 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
         handler.sendEmptyMessageDelayed(MSG_TYPE_END_SHOW_QUICK_ANSWER_SEQ, model.durationTime.toLong())
     }
 
-    private fun stop() {
-        emojiSdv.visibility = View.GONE
-        rollIv.visibility = View.GONE
-        animation?.removeAllListeners()
-        animation?.cancel()
-        handler.removeCallbacksAndMessages(null)
-        animationRoll?.stop()
+    private fun resetQuickAnswerArea() {
+        quickAnswerSeqIv.visibility = View.GONE
+        handler.removeMessages(MSG_TYPE_END_SHOW_QUICK_ANSWER_SEQ)
     }
-
 }
 
 
