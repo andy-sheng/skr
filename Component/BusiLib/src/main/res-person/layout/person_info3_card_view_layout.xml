@@ -185,15 +185,15 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/invite_iv"
-        android:layout_width="@dimen/view_140_dp"
+        android:layout_width="@dimen/view_100_dp"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_16_dp"
         android:layout_marginBottom="@dimen/view_12_dp"
         android:background="@drawable/common_red_button_icon"
         android:gravity="center"
-        android:paddingBottom="@dimen/view_4_dp"
-        android:text="合唱邀请"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:text="邀请合唱"
         android:textColor="#AF436B"
         android:textSize="@dimen/textsize_16_dp"
         app:layout_constrainedWidth="true"
@@ -205,19 +205,39 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/follow_iv"
-        android:layout_width="@dimen/view_140_dp"
+        android:layout_width="@dimen/view_100_dp"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
         android:layout_marginBottom="@dimen/view_12_dp"
         android:background="@drawable/common_yellow_button_icon"
         android:gravity="center"
-        android:paddingBottom="@dimen/view_4_dp"
+        android:paddingBottom="@dimen/view_5_dp"
         android:text="关注Ta"
         android:textColor="#AD6C00"
         android:textSize="@dimen/textsize_16_dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/invite_iv"
+        app:layout_constraintRight_toLeftOf="@id/gift_iv"
+        app:layout_constraintTop_toBottomOf="@id/photo_view" />
+
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/gift_iv"
+        android:layout_width="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginBottom="@dimen/view_12_dp"
+        android:background="@drawable/common_yellow_button_icon"
+        android:gravity="center"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:text="送礼物"
+        android:textColor="#AD6C00"
+        android:textSize="@dimen/textsize_16_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/follow_iv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/photo_view" />
 

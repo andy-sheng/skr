@@ -55,7 +55,7 @@ import com.module.RouterConstants
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: Int, showKick: Boolean, showInvite: Boolean) : RelativeLayout(mContext) {
+class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: Int, showKick: Boolean, showInvite: Boolean, showGift: Boolean) : RelativeLayout(mContext) {
 
     val TAG = "PersonInfoDialogView3"
 
@@ -76,11 +76,13 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
     private val divider: View
     private val inviteIv: ExTextView
     private val followIv: ExTextView
+    private val giftIv: ExTextView
 
     private var mUserId: Int = 0
     private var mUserInfoModel = UserInfoModel()
     private var isShowKick: Boolean = false
     private var isShowInvite: Boolean = false
+    private var isShowGift: Boolean = false
 
     private var clickListener: PersonInfoDialog.PersonCardClickListener? = null
 
@@ -120,8 +122,10 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         divider = this.findViewById(R.id.divider)
         inviteIv = this.findViewById(R.id.invite_iv)
         followIv = this.findViewById(R.id.follow_iv)
+        giftIv = this.findViewById(R.id.gift_iv)
 
-        initData(userID, showKick, showInvite)
+
+        initData(userID, showKick, showInvite, showGift)
 
         avatarIv.setDebounceViewClickListener { clickListener?.onClickAvatar(mUserInfoModel.avatar) }
         levelBg.setDebounceViewClickListener { clickListener?.onClickAvatar(mUserInfoModel.avatar) }
@@ -132,6 +136,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
             clickListener?.onClickDoubleInvite(mUserInfoModel)
         }
         followIv.setDebounceViewClickListener { clickListener?.onClickFollow(mUserId, mUserInfoModel.isFriend, mUserInfoModel.isFollow) }
+        giftIv.setDebounceViewClickListener { clickListener?.onClickSendGift(mUserInfoModel) }
 
         personClubName.setDebounceViewClickListener {
             clickListener?.showClubInfoCard(mUserInfoModel.clubInfo?.club?.clubID ?: 0)
@@ -211,10 +216,11 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         }
     }
 
-    private fun initData(userID: Int, showKick: Boolean, showInvite: Boolean) {
+    private fun initData(userID: Int, showKick: Boolean, showInvite: Boolean, showGift: Boolean) {
         mUserId = userID
         isShowKick = showKick
         isShowInvite = showInvite
+        isShowGift = showGift
 
         if (mUserInfoModel == null) {
             mUserInfoModel = UserInfoModel()
@@ -234,6 +240,12 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
             inviteIv.visibility = View.GONE
         }
 
+        if (isShowGift) {
+            giftIv.visibility = View.VISIBLE
+        } else {
+            giftIv.visibility = View.GONE
+        }
+
 
         // 自己卡片的处理
         if (mUserId.toLong() == MyUserInfoManager.uid) {
@@ -241,6 +253,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
             moreIv.visibility = View.GONE
             inviteIv.visibility = View.GONE
             followIv.visibility = View.GONE
+            giftIv.visibility = View.GONE
             photoView.visibility = View.GONE
             photoViewBg.visibility = View.GONE
             divider.visibility = View.INVISIBLE

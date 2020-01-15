@@ -24,6 +24,7 @@ import com.common.view.DebounceViewClickListener;
 import com.component.busilib.R;
 import com.component.busilib.recommend.RA;
 import com.component.busilib.verify.SkrVerifyUtils;
+import com.component.person.event.SendGiftByPersonCardEvent;
 import com.dialog.view.TipsDialogView;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.module.RouterConstants;
@@ -49,6 +50,7 @@ public class PersonInfoDialog {
     int mUserID;
     boolean mShowKick;
     boolean mShowInvite = true;
+    boolean mShowGift;
     int mRoomID;
 
     SkrVerifyUtils mRealNameVerifyUtils = new SkrVerifyUtils();
@@ -65,6 +67,7 @@ public class PersonInfoDialog {
         mUserID = builder.mUserID;
         mShowKick = builder.mShowKick;
         mShowInvite = builder.mShowInvite;
+        mShowGift = builder.mShowGift;
         mRoomID = builder.mRoomID;
         mKickListener = builder.mKickListener;
         mInviteDoubleListener = builder.mInviteReplyListener;
@@ -79,7 +82,7 @@ public class PersonInfoDialog {
     }
 
     private void init() {
-        personInfoDialogView = new PersonInfoDialogView3(mActivity, mUserID, mShowKick, mShowInvite);
+        personInfoDialogView = new PersonInfoDialogView3(mActivity, mUserID, mShowKick, mShowInvite, mShowGift);
         personInfoDialogView.setListener(new PersonCardClickListener() {
             @Override
             public void onClickReport(int userID) {
@@ -173,6 +176,14 @@ public class PersonInfoDialog {
                     mDialogPlus.dismiss(false);
                 }
                 showClubInfoCardDialog(clubID);
+            }
+
+            @Override
+            public void onClickSendGift(UserInfoModel model) {
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss(false);
+                }
+                EventBus.getDefault().post(new SendGiftByPersonCardEvent(model));
             }
         });
 
@@ -522,6 +533,8 @@ public class PersonInfoDialog {
         void showSpFollowDialog(int userID, boolean isSpFollow);
 
         void showClubInfoCard(int clubID);
+
+        void onClickSendGift(UserInfoModel userInfoModel);
     }
 
     public static final class Builder {
@@ -530,6 +543,7 @@ public class PersonInfoDialog {
         private int mUserID;
         private boolean mShowKick;
         private boolean mShowInvite;
+        private boolean mShowGift;
         private int mRoomID;
         private KickListener mKickListener;
         private InviteReplyListener mInviteReplyListener;
@@ -540,6 +554,16 @@ public class PersonInfoDialog {
             mUserID = userID;
             mShowKick = showKick;
             mShowInvite = showInvite;
+            mShowGift = false;
+        }
+
+        public Builder(Activity activity, int from, int userID, boolean showKick, boolean showInvite, boolean showGift) {
+            mActivity = activity;
+            mFrom = from;
+            mUserID = userID;
+            mShowKick = showKick;
+            mShowInvite = showInvite;
+            mShowGift = showGift;
         }
 
         public Builder setRoomID(int roomID) {
