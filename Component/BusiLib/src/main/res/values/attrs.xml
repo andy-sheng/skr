@@ -76,4 +76,12 @@
             <enum name="BOLD_ITALIC" value="3" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="ageTagView">
+        <!-- type -->
+        <attr name="ageType" format="enum">
+            <enum name="edit" value="1" />
+            <enum name="upload" value="2" />
+        </attr>
+    </declare-styleable>
 </resources>
