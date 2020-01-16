@@ -1,6 +1,7 @@
 package com.module.playways.relay.match
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -11,6 +12,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
@@ -25,10 +27,13 @@ import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.manager.BgMusicManager
+import com.component.busilib.view.AvatarView
+import com.component.busilib.view.CircleCountDownView
 import com.component.busilib.view.recyclercardview.CardScaleHelper
 import com.component.busilib.view.recyclercardview.SpeedRecyclerView
 import com.component.lyrics.utils.SongResUtils
 import com.dialog.view.TipsDialogView
+import com.facebook.drawee.view.SimpleDraweeView
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -37,7 +42,7 @@ import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.relay.match.adapter.RelayRoomAdapter
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
-import com.module.playways.relay.match.model.RelayRecommendRoomInfo
+import com.module.playways.relay.match.model.RelaySelectItemInfo
 import com.module.playways.relay.match.view.RelayEmptyRoomCallback
 import com.module.playways.relay.room.RelayRoomActivity
 import com.module.playways.room.song.model.SongModel
@@ -59,6 +64,8 @@ class RelayMatchActivity : BaseActivity() {
     private var joinTipsTv: ExTextView? = null
     private var quickTipsTv: TextView? = null
     private var speedRecyclerView: SpeedRecyclerView? = null
+    private var circleCountDownView: CircleCountDownView? = null
+    private var inviteAvatar: SimpleDraweeView? = null
 
     var adapter: RelayRoomAdapter = RelayRoomAdapter()
     private var cardScaleHelper: CardScaleHelper? = null
@@ -104,6 +111,10 @@ class RelayMatchActivity : BaseActivity() {
         quickTipsTv = findViewById(R.id.quick_tips_tv)
         speedRecyclerView = findViewById(R.id.speed_recyclerView)
 
+        circleCountDownView = findViewById(R.id.circle_count_down_view)
+        inviteAvatar = findViewById(R.id.invite_avatar)
+
+
         findViewById<SVGAImageView>(R.id.match_avga).layoutParams.height = U.getDisplayUtils().phoneWidth * 230 / 375
 
         // 获取时间间隔
@@ -131,7 +142,13 @@ class RelayMatchActivity : BaseActivity() {
         })
 
         adapter.listener = object : RelayRoomAdapter.RelayRoomListener {
-            override fun selectRoom(position: Int, model: RelayRecommendRoomInfo?) {
+            override fun selectRedPacket(position: Int, model: RelaySelectItemInfo?) {
+                model?.let {
+                    sendRedPacketInvite(position, it)
+                }
+            }
+
+            override fun selectRoom(position: Int, model: RelaySelectItemInfo?) {
                 StatisticsAdapter.recordCountEvent("chorus", "join", null)
                 if (todayResTimes <= 0) {
                     if (needAlert) {
@@ -194,6 +211,45 @@ class RelayMatchActivity : BaseActivity() {
         }
 
         BgMusicManager.getInstance().starPlay(model?.acc, 0, "RelayMatchActivity")
+    }
+
+    private fun sendRedPacketInvite(position: Int, itemInfo: RelaySelectItemInfo) {
+        launch {
+            val map = mutableMapOf(
+                    "itemID" to model?.itemID,
+                    "inviteUserID" to itemInfo.redpacketItem?.user?.userId)
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("checkResTime", ControlType.CancelThis)) {
+                relayMatchServerApi.sendRedPacketInvite(body)
+            }
+            if (result.errno == 0) {
+                // 更新到已邀请
+                adapter.updateInviteStatus(itemInfo, true)
+                // 停止发送匹配
+                cancelTimeRoom()
+                // 开始邀请等待倒计时
+                showInviteCountDown(itemInfo)
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
+    }
+
+    private fun showInviteCountDown(itemInfo: RelaySelectItemInfo) {
+        // 邀请倒计时
+        circleCountDownView?.visibility = View.VISIBLE
+        inviteAvatar?.visibility = View.VISIBLE
+        AvatarUtils.loadAvatarByUrl(inviteAvatar, AvatarUtils.newParamsBuilder(itemInfo.redpacketItem?.user?.avatar)
+                .setCircle(true)
+                .build())
+        circleCountDownView?.cancelAnim()
+        circleCountDownView?.go(0, 6 * 1000) {
+            // 更新恢复到未邀请状态
+            adapter.updateInviteStatus(itemInfo, false)
+            // 还没人响应, 重新开始匹配
+            startMatch()
+        }
+
     }
 
     private fun checkResTime() {
@@ -314,13 +370,13 @@ class RelayMatchActivity : BaseActivity() {
             if (result.errno == 0) {
                 hasMore = result.data.getBooleanValue("hasMore")
                 offset = result.data.getIntValue("offset")
-                val list = JSON.parseArray(result.data.getString("items"), RelayRecommendRoomInfo::class.java)
+                val list = JSON.parseArray(result.data.getString("items"), RelaySelectItemInfo::class.java)
                 addRoomList(list, true)
             }
         }
     }
 
-    private fun addRoomList(list: List<RelayRecommendRoomInfo>?, clean: Boolean) {
+    private fun addRoomList(list: List<RelaySelectItemInfo>?, clean: Boolean) {
         if (clean) {
             adapter.mDataList.clear()
             if (!list.isNullOrEmpty()) {
@@ -351,14 +407,16 @@ class RelayMatchActivity : BaseActivity() {
         MyLog.d(TAG, "onEvent event = $event")
         // 进入房间的信令 直接加入融云的房间
         matchJob?.cancel()
+        circleCountDownView?.cancelAnim()
+        adapter.inviteModel = null
         tryGoRelayRoom(JoinRelayRoomRspModel.parseFromPB(event))
     }
 
-    private fun choiceRoom(position: Int, model: RelayRecommendRoomInfo) {
+    private fun choiceRoom(position: Int, model: RelaySelectItemInfo) {
         launch {
             val map = mutableMapOf(
-                    "itemID" to (model.item?.itemID ?: 0),
-                    "peerUserID" to (model.user?.userId ?: 0))
+                    "itemID" to (model.matchItem?.item?.itemID ?: 0),
+                    "peerUserID" to (model.matchItem?.user?.userId ?: 0))
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe(RequestControl("selectRoom", ControlType.CancelThis)) {
                 relayMatchServerApi.choiceRoom(body)
@@ -391,21 +449,7 @@ class RelayMatchActivity : BaseActivity() {
             intent.putExtra("JoinRelayRoomRspModel", model)
             this.startActivity(intent)
             finish()
-//            ARouter.getInstance().build(RouterConstants.ACTIVITY_RELAY_ROOM)
-//                    .withSerializable("JoinRelayRoomRspModel", model)
-//                    .navigation()
         }
-//        ModuleServiceManager.getInstance().msgService.joinChatRoom(model.roomID.toString(), 10, object : ICallback {
-//            override fun onSucess(obj: Any?) {
-//                // todo 补全加融云成功直接
-//
-//            }
-//
-//            override fun onFailed(obj: Any?, errcode: Int, message: String?) {
-//                // 加入失败
-//                reportEnterFail(model)
-//            }
-//        })
     }
 
     private fun reportEnterFail(model: JoinRelayRoomRspModel) {

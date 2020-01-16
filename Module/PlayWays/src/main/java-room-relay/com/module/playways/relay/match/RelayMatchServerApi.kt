@@ -44,7 +44,7 @@ interface RelayMatchServerApi {
     /**
      * 列出匹配中的列表
      */
-    @GET("http://dev.game.inframe.mobi/v1/relaygame/list-match-items")
+    @GET("http://dev.game.inframe.mobi/v2/relaygame/list-match-items")
     fun getMatchRoomList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Call<ApiResult>
 
 
