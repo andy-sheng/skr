@@ -101,7 +101,7 @@
         android:visibility="gone"
         app:bg_color="@color/transparent"
         app:inner_color="@color/white"
-        app:inner_stroke_raduis="@dimen/view_25_dp"
+        app:inner_stroke_raduis="@dimen/view_13_dp"
         app:inner_stroke_width="@dimen/view_2_dp"
         app:layout_constraintBottom_toBottomOf="@id/invite_avatar"
         app:layout_constraintLeft_toLeftOf="@id/invite_avatar"

@@ -3,9 +3,9 @@
     xmlns:NickNameView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:avatarView="http://schemas.android.com/apk/res-auto"
+    xmlns:speaking="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:speaking="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/shaow_iv"
@@ -142,10 +142,12 @@
         android:layout_height="@dimen/view_32_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_10_dp"
+        android:drawableLeft="@drawable/relay_red_packet_diamond_icon"
+        android:drawablePadding="@dimen/view_4_dp"
         android:ellipsize="end"
+        android:gravity="center"
         android:maxLines="1"
         android:paddingLeft="@dimen/view_10_dp"
-        android:gravity="center"
         android:paddingRight="@dimen/view_10_dp"
         android:singleLine="true"
         android:textColor="#B65D77"
@@ -161,11 +163,10 @@
         android:id="@+id/speaker_animation_iv"
         android:layout_width="@dimen/view_12_dp"
         android:layout_height="@dimen/view_14_dp"
-        android:layout_marginRight="@dimen/view_12_dp"
         android:layout_marginTop="@dimen/view_20_dp"
-        speaking:animationtype="msg_audio"
+        android:layout_marginRight="@dimen/view_12_dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        speaking:animationtype="msg_audio" />
 
 </android.support.constraint.ConstraintLayout>

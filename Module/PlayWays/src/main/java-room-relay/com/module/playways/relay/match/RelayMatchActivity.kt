@@ -226,7 +226,7 @@ class RelayMatchActivity : BaseActivity() {
                 // 更新到已邀请
                 adapter.updateInviteStatus(itemInfo, true)
                 // 停止发送匹配
-                cancelTimeRoom()
+                matchJob?.cancel()
                 // 开始邀请等待倒计时
                 showInviteCountDown(itemInfo)
             } else {
@@ -245,6 +245,8 @@ class RelayMatchActivity : BaseActivity() {
         circleCountDownView?.cancelAnim()
         circleCountDownView?.go(0, 6 * 1000) {
             // 更新恢复到未邀请状态
+            circleCountDownView?.visibility = View.GONE
+            inviteAvatar?.visibility = View.GONE
             adapter.updateInviteStatus(itemInfo, false)
             // 还没人响应, 重新开始匹配
             startMatch()
