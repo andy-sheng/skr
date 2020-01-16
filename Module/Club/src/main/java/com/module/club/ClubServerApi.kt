@@ -5,9 +5,14 @@ import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
-import java.util.*
 
 interface ClubServerApi {
+    /**
+     * 获得家族Banner信息
+     */
+    @GET("http://dev.api.inframe.mobi/v1/kconf/slide-show-for-club")
+    fun getClubBannerInfo(): Call<ApiResult>
+
     /**
      * 首页列出推荐家族
      */

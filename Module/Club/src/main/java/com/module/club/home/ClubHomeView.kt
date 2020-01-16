@@ -4,17 +4,20 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.ClubInfo
 import com.common.flutter.boost.FlutterBoostController
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
+import com.component.busilib.banner.SlideShowModel
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
@@ -78,7 +81,7 @@ class ClubHomeView(context: Context) : ConstraintLayout(context), IClubHomeView,
             }
 
             override fun onClickRankClub() {
-                FlutterBoostController.openFlutterPage(getContext(),"FamilyRankPage",null)
+                FlutterBoostController.openFlutterPage(getContext(), "FamilyRankPage", null)
             }
 
             override fun onClickCreatClub() {
@@ -137,11 +140,17 @@ class ClubHomeView(context: Context) : ConstraintLayout(context), IClubHomeView,
     override fun initData(flag: Boolean) {
         if (flag) {
             getClubListData(0, true)
+            getBannerInfo()
         } else {
             val now = System.currentTimeMillis()
             if ((now - lastUpdateClubListTimeMs) > 10 * 1000 * 60) {
                 // 超过10分钟再去更新吧
                 getClubListData(0, true)
+            }
+
+            // 距离上次拉去已经超过30秒了
+            if ((now - lastUpdateBannerTimeMs) > 30 * 1000) {
+                getBannerInfo()
             }
         }
 
@@ -164,7 +173,28 @@ class ClubHomeView(context: Context) : ConstraintLayout(context), IClubHomeView,
     }
 
     private fun getBannerInfo() {
+        val slideshow = U.getPreferenceUtils().getSettingString("club_banner_info", "")
+        if (!TextUtils.isEmpty(slideshow)) {
+            try {
+                val slideShowModelList = JSON.parseArray(slideshow, SlideShowModel::class.java)
+                adapter.updateBanner(slideShowModelList)
+            } catch (e: Exception) {
+                MyLog.e("ClubHomeView", e)
+            }
 
+        }
+
+        launch {
+            val result = subscribe(RequestControl("getClubBannerInfo", ControlType.CancelThis)) {
+                clubServerApi.getClubBannerInfo()
+            }
+            if (result.errno == 0) {
+                lastUpdateBannerTimeMs = System.currentTimeMillis()
+                var slideShowModelList: List<SlideShowModel>? = JSON.parseArray(result.data!!.getString("slideshow"), SlideShowModel::class.java)
+                U.getPreferenceUtils().setSettingString("club_banner_info", result.data!!.getString("slideshow"))
+                adapter.updateBanner(slideShowModelList)
+            }
+        }
     }
 
     private fun getClubListData(off: Int, isClean: Boolean) {
