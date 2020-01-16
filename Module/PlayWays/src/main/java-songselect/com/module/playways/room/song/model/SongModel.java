@@ -190,11 +190,8 @@ public class SongModel implements Serializable {
                         accFilePath = accFile.getAbsolutePath();
                     }
                 }
-                if (!TextUtils.isEmpty(accFilePath)) {
-                    cdnInfo.setUrl(accFilePath);
-                } else {
-                    cdnInfo.setUrl(url);
-                }
+                cdnInfo.setLocalPath(accFilePath);
+                cdnInfo.setUrl(url);
                 l.add(cdnInfo);
             }
         }

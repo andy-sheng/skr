@@ -13,6 +13,8 @@ public class CdnInfo implements Serializable {
     boolean enableCache;
     @JSONField(name = "url")
     String url;
+    @JSONField(name = "localPath")
+    String localPath;
 
     public String getCdnType() {
         return cdnType;
@@ -44,5 +46,13 @@ public class CdnInfo implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getLocalPath() {
+        return localPath;
+    }
+
+    public void setLocalPath(String localPath) {
+        this.localPath = localPath;
     }
 }
