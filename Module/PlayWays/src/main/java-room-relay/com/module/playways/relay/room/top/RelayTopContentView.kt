@@ -151,7 +151,7 @@ class RelayTopContentView : ExConstraintLayout {
                     .build())
         }
 
-        if (roomData?.isEnterFromInvite() == true) {
+        if (roomData?.hasTimeLimit() == true) {
             countTimeTv.visibility = View.GONE
             unlimitIv.visibility = View.VISIBLE
         } else {

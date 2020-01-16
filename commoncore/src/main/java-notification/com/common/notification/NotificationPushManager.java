@@ -2,6 +2,7 @@ package com.common.notification;
 
 import com.common.log.MyLog;
 import com.common.notification.event.CNRelayEnterFromOuterInviteNotifyEvent;
+import com.common.notification.event.CNRelayEnterFromRedpacketNotifyEvent;
 import com.common.notification.event.CNRelayEnterFromRoomInviteNotifyEvent;
 import com.common.notification.event.CRInviteInCreateRoomNotifyEvent;
 import com.common.notification.event.CRRefuseInviteNotifyEvent;
@@ -142,6 +143,8 @@ public class NotificationPushManager {
                 EventBus.getDefault().post(new CNRelayEnterFromOuterInviteNotifyEvent(msg.getRelayRoomEnterMsg()));
             } else if (msg.getRelayRoomEnterMsg().getInviteType() == ERInviteType.RIT_IN_COMBINE_ROOM) {
                 EventBus.getDefault().post(new CNRelayEnterFromRoomInviteNotifyEvent(msg.getRelayRoomEnterMsg()));
+            } else if (msg.getRelayRoomEnterMsg().getInviteType() == ERInviteType.RIT_REDPACKET_INVITE) {
+                EventBus.getDefault().post(new CNRelayEnterFromRedpacketNotifyEvent(msg.getRelayRoomEnterMsg()));
             }
         } else if (msg.getMsgType() == ENotificationMsgType.NM_RELAY_REFUSE) {
             EventBus.getDefault().post(msg.getRelayRoomRefuseMsg());

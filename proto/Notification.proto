@@ -87,6 +87,7 @@ enum ERInviteType {
     RIT_UNKNOWN          = 0; //未知
     RIT_OUT_COMBINE_ROOM = 1; //在接唱房间外邀请
     RIT_IN_COMBINE_ROOM  = 2; //在接唱房间内邀请
+    RIT_REDPACKET_INVITE = 3; //红包邀请
 }
 
 message ClubInfoChangeMsg
