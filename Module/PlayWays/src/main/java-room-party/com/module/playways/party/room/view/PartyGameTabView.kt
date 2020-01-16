@@ -156,9 +156,9 @@ class PartyGameTabView : ExConstraintLayout {
             } else {
                 if ((partyGameInfoModel?.question?.questionInfo?.questionAudio?.size
                                 ?: 0) > 0) {
+                    audioView.setPlay(true)
                     iAudioGameListener?.startPlay(partyGameInfoModel?.question?.questionInfo?.questionAudio?.get(0)?.URL
                             ?: "")
-                    audioView.setPlay(true)
                 }
             }
         }

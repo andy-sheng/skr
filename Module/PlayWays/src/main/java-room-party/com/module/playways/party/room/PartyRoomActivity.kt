@@ -33,6 +33,7 @@ import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
 import com.component.toast.CommonToastView
 import com.dialog.view.TipsDialogView
+import com.engine.agora.AgoraEngineAdapter
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.BaseRoomData
@@ -83,6 +84,7 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.PartyRoom.EPGameType
 import com.zq.live.proto.PartyRoom.PBeginVote
 import com.zq.live.proto.PartyRoom.PKickoutUserMsg
+import com.zq.mediaengine.kit.ZqEngineKit
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -196,18 +198,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             false
         }
 
-        SinglePlayer.addCallback(playerTag, object : SinglePlayerCallbackAdapter() {
-            override fun onCompletion() {
-                super.onCompletion()
-                mPartyGameMainView?.partyGameTabView?.setAudioPlay(false)
-            }
-
-            override fun onError(what: Int, extra: Int) {
-                super.onError(what, extra)
-                mPartyGameMainView?.partyGameTabView?.setAudioPlay(false)
-            }
-        })
-
         initBgEffectView()
         initTopView()
         initInputView()
@@ -271,8 +261,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mWidgetAnimationController.destroy()
         mBottomWidgetAnimationController.destroy()
         mGiftPanelView?.destroy()
-        SinglePlayer.stop(playerTag)
-        SinglePlayer.removeCallback(playerTag)
         H.reset("PartyRoomActivity")
     }
 
@@ -368,15 +356,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     private fun initGameMainView() {
         mPartyGameMainView = PartyGameMainView(findViewById(R.id.party_game_main_view_layout_viewStub), mRoomData)
-        mPartyGameMainView?.iAudioGameListener = object : PartyGameTabView.IAudioGameListener {
-            override fun stopPlay() {
-                SinglePlayer.stop(playerTag)
-            }
-
-            override fun startPlay(url: String) {
-                SinglePlayer.startPlay(playerTag, url)
-            }
-        }
         mPartyGameMainView?.tryInflate()
         mPartyGameMainView?.toEmptyState()
     }

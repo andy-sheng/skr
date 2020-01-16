@@ -37,7 +37,6 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     lateinit var textScrollView: ScrollView
     lateinit var commonTextView: ExTextView
     var partyGameTabView: PartyGameTabView? = null
-    var iAudioGameListener: PartyGameTabView.IAudioGameListener? = null
 
     var seq: Int = 0
     var tagType: TagType = TagType.GAME
@@ -56,7 +55,21 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
         commonTextView = parentView.findViewById(R.id.text_game_tv)
         partyGameTabView = parentView.findViewById(R.id.party_game_tab_view)
         partyGameTabView?.roomData = mRoomData
-        partyGameTabView?.iAudioGameListener = iAudioGameListener
+        partyGameTabView?.iAudioGameListener = object : PartyGameTabView.IAudioGameListener {
+            override fun stopPlay() {
+                ZqEngineKit.getInstance().stopAudioMixing()
+            }
+
+            override fun startPlay(url: String) {
+                if (mRoomData.hostId == MyUserInfoManager.uid.toInt()) {
+                    ZqEngineKit.getInstance().stopAudioMixing()
+                    ZqEngineKit.getInstance().startAudioMixing(url, 1)
+                } else {
+                    U.getToastUtil().showShort("仅主持人可操作哦～")
+                    partyGameTabView?.setAudioPlay(false)
+                }
+            }
+        }
 
         gameTv.setDebounceViewClickListener {
             toGameTab()
@@ -199,6 +212,8 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
                     MyLog.e(TAG, "当前播放进度非法2")
                 }
             }
+        } else if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_FINISH) {
+            partyGameTabView?.setAudioPlay(false)
         }
     }
 
