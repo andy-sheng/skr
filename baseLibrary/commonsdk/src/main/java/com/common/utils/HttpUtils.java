@@ -549,18 +549,27 @@ public class HttpUtils {
                 }
                 //Thread.sleep(1000);
             }
-            if (needTempFile) {
-                if (outputFile2.renameTo(outputFile)) {
-                    MyLog.w(TAG, urlStr + " 下载成功");
-                } else {
-                    MyLog.w(TAG, "重命名失败");
+            if (maxSaveSize <= 0 && downloaded < totalLength) {
+                MyLog.e(TAG, "下载完成了，但是文件有缺失？downloaded=" + downloaded + " totalLength=" + totalLength);
+                if (null != progress) {
+                    progress.onFailed();
                 }
-            }
-            if (null != progress) {
-                progress.onCompleted(outputFile.getAbsolutePath());
-                // 下载完成打点
-                long compleDownMs = System.currentTimeMillis();
-                StatisticsAdapter.recordCalculateEvent("download", "success", compleDownMs - startDownloadMs, null);
+                long completeDownMs = System.currentTimeMillis();
+                StatisticsAdapter.recordCalculateEvent("download", "notCompleted", completeDownMs - startDownloadMs, null);
+            } else {
+                if (needTempFile) {
+                    if (outputFile2.renameTo(outputFile)) {
+                        MyLog.w(TAG, urlStr + " 下载成功");
+                    } else {
+                        MyLog.w(TAG, "重命名失败");
+                    }
+                }
+                if (null != progress) {
+                    progress.onCompleted(outputFile.getAbsolutePath());
+                    // 下载完成打点
+                    long completeDownMs = System.currentTimeMillis();
+                    StatisticsAdapter.recordCalculateEvent("download", "success", completeDownMs - startDownloadMs, null);
+                }
             }
             mDownLoadMap.remove(urlStr);
             return true;

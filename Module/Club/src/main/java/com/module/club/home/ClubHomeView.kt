@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.ClubInfo
+import com.common.flutter.boost.FlutterBoostController
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -77,7 +78,7 @@ class ClubHomeView(context: Context) : ConstraintLayout(context), IClubHomeView,
             }
 
             override fun onClickRankClub() {
-                // todo 排行榜去吧
+                FlutterBoostController.openFlutterPage(getContext(),"FamilyRankPage",null)
             }
 
             override fun onClickCreatClub() {

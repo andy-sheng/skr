@@ -24,7 +24,7 @@ class ClubFunctionViewHolder(item: View, var listener: ClubHomeClickListener) : 
         }
 
         clubRankIv.setAnimateDebounceViewClickListener {
-            listener.onClickSearchClub()
+            listener.onClickRankClub()
         }
 
         clubCreateIv.setAnimateDebounceViewClickListener {
