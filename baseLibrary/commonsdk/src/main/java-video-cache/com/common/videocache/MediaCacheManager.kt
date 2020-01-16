@@ -15,7 +15,11 @@ object MediaCacheManager {
     private val fileNameGenerator = object : FileNameGenerator {
         override fun generate(url: String?): String {
             MyLog.d(TAG, "url=$url")
-            return U.getMD5Utils().MD5_16(url) + "." + U.getFileUtils().getSuffixFromUrl(url, "m4a")
+            var url2 = url
+            if (url2?.contains("song-static-1") == true) {
+                url2 = url2?.replace("song-static-1", "song-static")
+            }
+            return U.getMD5Utils().MD5_16(url2) + "." + U.getFileUtils().getSuffixFromUrl(url2, "m4a")
         }
     }
 
