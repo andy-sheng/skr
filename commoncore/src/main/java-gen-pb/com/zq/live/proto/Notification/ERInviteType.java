@@ -21,7 +21,12 @@ public enum ERInviteType implements WireEnum {
   /**
    * 在接唱房间内邀请
    */
-  RIT_IN_COMBINE_ROOM(2);
+  RIT_IN_COMBINE_ROOM(2),
+
+  /**
+   * 红包邀请
+   */
+  RIT_REDPACKET_INVITE(3);
 
   public static final ProtoAdapter<ERInviteType> ADAPTER = new ProtoAdapter_ERInviteType();
 
@@ -39,6 +44,7 @@ public enum ERInviteType implements WireEnum {
       case 0: return RIT_UNKNOWN;
       case 1: return RIT_OUT_COMBINE_ROOM;
       case 2: return RIT_IN_COMBINE_ROOM;
+      case 3: return RIT_REDPACKET_INVITE;
       default: return null;
     }
   }

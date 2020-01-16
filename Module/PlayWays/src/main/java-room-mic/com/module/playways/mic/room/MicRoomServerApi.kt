@@ -131,4 +131,16 @@ interface MicRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/relaygame/refuse-enter")
     fun relayRefuseEnter(@Body body: RequestBody): Observable<ApiResult>
+
+    /**
+     * 从房间内邀请，邀请之后同意，调用这个接口查询房间信息
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/redpacket-invite-user-enter")
+    fun relayRoomRedPacketInviteUserEnter(@Body body: RequestBody): Observable<ApiResult>
+
+    /**
+     * 拒绝加入红包合唱房
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/redpacket-refuse-enter")
+    fun relayRefuseRedPacketEnter(@Body body: RequestBody): Observable<ApiResult>
 }

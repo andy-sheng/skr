@@ -967,7 +967,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RSyncMsg) {
-        if (mRoomData.enterType == RelayRoomData.EnterType.INVITE && !mRoomData.isPersonArrive()) {
+        if (!mRoomData.isPersonArrive()) {
             fetchRelayRoom()
             return
         }

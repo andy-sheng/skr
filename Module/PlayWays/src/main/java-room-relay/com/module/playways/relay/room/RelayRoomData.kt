@@ -60,28 +60,24 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
 
     var unLockMe = false // 我是否解锁
         set(value) {
-            if (value != field) {
+            if (!enableNoLimitDuration && value != field) {
                 field = value
                 if (field && unLockPeer) {
                     enableNoLimitDuration = true
                 }
 
-                if (!isEnterFromInvite()) {
-                    EventBus.getDefault().post(RelayLockChangeEvent())
-                }
+                EventBus.getDefault().post(RelayLockChangeEvent())
             }
         }
     var unLockPeer = false // 对方是否解锁
         set(value) {
-            if (value != field) {
+            if (!enableNoLimitDuration && value != field) {
                 field = value
-                if (field && unLockPeer) {
+                if (field && unLockMe) {
                     enableNoLimitDuration = true
                 }
 
-                if (!isEnterFromInvite()) {
-                    EventBus.getDefault().post(RelayLockChangeEvent())
-                }
+                EventBus.getDefault().post(RelayLockChangeEvent())
             }
         }
     var leftSeat = true   // 我的未知是否在左边

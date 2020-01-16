@@ -314,7 +314,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                         confirmDialog.setListener {
                             Observable.timer(500, TimeUnit.MILLISECONDS)
                                     .compose(this@NotifyCorePresenter.bindUntilEvent(PresenterEvent.DESTROY))
-                                    .subscribe { tryToRelayRoom(event.ownerId, event.roomId) }
+                                    .subscribe { tryToRelayRoom(event.ownerId, event.roomId, 0) }
                         }
                         confirmDialog.show()
                     }
@@ -323,7 +323,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
             })
         } else {
             // 不需要直接进
-            tryToRelayRoom(event.ownerId, event.roomId)
+            tryToRelayRoom(event.ownerId, event.roomId, 0)
         }
     }
 
@@ -560,10 +560,10 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         }, true)
     }
 
-    internal fun tryToRelayRoom(ownerId: Int, roomID: Int, ts: Long = 0) {
+    internal fun tryToRelayRoom(ownerId: Int, roomID: Int, inviteType: Int, ts: Long = 0) {
         mSkrAudioPermission!!.ensurePermission({
             val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-            iRankingModeService.acceptRelayRoomInvite(ownerId, roomID, ts)
+            iRankingModeService.acceptRelayRoomInvite(ownerId, roomID, ts, inviteType)
         }, true)
     }
 
@@ -629,6 +629,13 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         iRankingModeService.tryToRelayRoomByOuterInvite(event)
     }
 
+    //在匹配界面邀请别人一起红包合唱之后当被邀请的人同意之后邀请人收到这个push
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: CNRelayEnterFromRedpacketNotifyEvent) {
+        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+        iRankingModeService.tryToRelayRoomByRedPacketInvite(event)
+    }
+
     //无论在哪里邀请（合唱房间，合唱房间外），都在这里展示被拒绝的toast
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelayRoomRefuseMsg) {
@@ -640,17 +647,33 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelayRoomInviteMsg) {
         val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-        if (iRankingModeService.canShowRelayInvite(event.user.userID)) {
-            val floatWindowData = FloatWindowData(FloatWindowData.Type.RELAY_INVITE)
-            floatWindowData.userInfoModel = UserInfoModel.parseFromPB(event.user)
-            if (event.hasRoomID()) {
-                floatWindowData.roomID = event.roomID
+        if (iRankingModeService.canShowRelayInvite(event.user.userID, event.inviteType.value)) {
+            if (event.inviteType == ERInviteType.RIT_REDPACKET_INVITE) {
+                //这个是红包邀请，ui不一样
+                val floatWindowData = FloatWindowData(FloatWindowData.Type.RELAY_INVITE)
+                floatWindowData.userInfoModel = UserInfoModel.parseFromPB(event.user)
+                if (event.hasRoomID()) {
+                    floatWindowData.roomID = event.roomID
+                }
+                val json = JSONObject()
+                json["inviteTimeMs"] = event.inviteTimeMs
+                json["inviteMsg"] = event.inviteMsg
+                json["inviteType"] = event.inviteType.value
+                floatWindowData.extra = json.toJSONString()
+                mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
+            } else {
+                val floatWindowData = FloatWindowData(FloatWindowData.Type.RELAY_INVITE)
+                floatWindowData.userInfoModel = UserInfoModel.parseFromPB(event.user)
+                if (event.hasRoomID()) {
+                    floatWindowData.roomID = event.roomID
+                }
+                val json = JSONObject()
+                json["inviteTimeMs"] = event.inviteTimeMs
+                json["inviteMsg"] = event.inviteMsg
+                json["inviteType"] = event.inviteType.value
+                floatWindowData.extra = json.toJSONString()
+                mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
             }
-            val json = JSONObject()
-            json["inviteTimeMs"] = event.inviteTimeMs
-            json["inviteMsg"] = event.inviteMsg
-            floatWindowData.extra = json.toJSONString()
-            mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
         }
     }
 
@@ -933,11 +956,13 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         val jsonObject = JSONObject.parseObject(floatWindowData.extra, JSONObject::class.java)
         val inviteTimeMs = jsonObject.getLongValue("inviteTimeMs")
         val inviteMsg = jsonObject.getString("inviteMsg")
+        val inviteType = jsonObject.getIntValue("inviteType")
         notifyView.bindData(userInfoModel, inviteMsg)
         notifyView.setListener {
             mUiHandler.removeMessages(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW)
             FloatWindow.destroy(TAG_RELAY_INVITE_FOALT_WINDOW)
-            tryToRelayRoom(userInfoModel?.userId ?: 0, floatWindowData.roomID, inviteTimeMs)
+            tryToRelayRoom(userInfoModel?.userId
+                    ?: 0, floatWindowData.roomID, inviteType, inviteTimeMs)
         }
 
         FloatWindow.with(U.app())
@@ -949,9 +974,11 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                     override fun onDismiss(dismissReason: Int) {
                         val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                         if (dismissReason == 2) {
-                            iRankingModeService.refuseJoinRelayRoom(userInfoModel?.userId ?: 0, 2)
+                            iRankingModeService.refuseJoinRelayRoom(userInfoModel?.userId
+                                    ?: 0, 2, inviteType)
                         } else if (dismissReason == 1) {
-                            iRankingModeService.refuseJoinRelayRoom(userInfoModel?.userId ?: 0, 1)
+                            iRankingModeService.refuseJoinRelayRoom(userInfoModel?.userId
+                                    ?: 0, 1, inviteType)
                         }
 
                         mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.endCurrent(floatWindowData)

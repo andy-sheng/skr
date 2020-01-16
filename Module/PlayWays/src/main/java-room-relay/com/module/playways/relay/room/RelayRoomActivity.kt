@@ -253,7 +253,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         initMicSeatView()
         initRelayEnergyView()
 
-        if (mRoomData.isEnterFromInvite()) {
+        if (mRoomData.hasTimeLimit()) {
             mAddSongIv.visibility = View.VISIBLE
         }
 
@@ -286,7 +286,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             }
         }
 
-        if (!mRoomData.isEnterFromInvite()) {
+        if (!mRoomData.hasTimeLimit()) {
             mRelayContinueSingView?.delayShowContinueView(mRoomData.configModel.unLockWaitTimeMs?.toLong())
         }
 
@@ -867,7 +867,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         hideAllSceneView(null)
         relaySingCardView.turnSingPrepare()
 
-        if (!mRoomData.isEnterFromInvite()) {
+        if (!mRoomData.hasTimeLimit()) {
             mTopContentView.launchCountDown()
         }
 
@@ -884,7 +884,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
     }
 
     private fun updateChangeSongIv() {
-        if (mRoomData.isEnterFromInvite()) {
+        if (mRoomData.hasTimeLimit()) {
             if (mRoomData.realRoundInfo?.music != null) {
                 mChangeSongIv.visibility = View.VISIBLE
             } else {

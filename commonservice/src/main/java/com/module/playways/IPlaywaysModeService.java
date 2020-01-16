@@ -44,11 +44,13 @@ public interface IPlaywaysModeService extends IProvider {
 
     void tryToRelayRoomByOuterInvite(Object o);
 
-    void acceptRelayRoomInvite(int ownerId, int roomID, long ts);
+    void tryToRelayRoomByRedPacketInvite(Object o);
 
-    boolean canShowRelayInvite(int peerUserID);
+    void acceptRelayRoomInvite(int ownerId, int roomID, long ts, int inviteType);
 
-    void refuseJoinRelayRoom(int peerUserID, int refuseType);
+    boolean canShowRelayInvite(int peerUserID, int inviteType);
+
+    void refuseJoinRelayRoom(int peerUserID, int refuseType, int inviteType);
 
     void tryInviteToRelay(int userID, boolean isFriend);
 
