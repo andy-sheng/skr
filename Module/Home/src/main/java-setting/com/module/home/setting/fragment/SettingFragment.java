@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -43,6 +44,7 @@ import com.orhanobut.dialogplus.ViewHolder;
 import com.component.relation.fragment.BlackListFragment;
 import com.component.toast.CommonToastView;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -396,6 +398,9 @@ public class SettingFragment extends BaseFragment {
 
     }
 
+
+
+
     void computeCache() {
         Observable.create(new ObservableOnSubscribe<Long>() {
             @Override
@@ -407,6 +412,8 @@ public class SettingFragment extends BaseFragment {
                 for (String dirName : CACHE_CAN_DELETE) {
                     String dirPath = U.getAppInfoUtils().getSubDirPath(dirName);
                     len += U.getFileUtils().getDirSize(dirPath);
+                    String dirPath2 = new File(Environment.getExternalStorageDirectory(), "ZQ_LIVE").getAbsolutePath() + File.separator + dirName + File.separator;
+                    len += U.getFileUtils().getDirSize(dirPath2);
                 }
                 emitter.onNext(len);
                 emitter.onComplete();
@@ -424,7 +431,6 @@ public class SettingFragment extends BaseFragment {
                 });
     }
 
-
     void clearCache() {
         Observable.create(new ObservableOnSubscribe<Long>() {
             @Override
@@ -435,6 +441,9 @@ public class SettingFragment extends BaseFragment {
                 for (String dirName : CACHE_CAN_DELETE) {
                     String dirPath = U.getAppInfoUtils().getSubDirPath(dirName);
                     U.getFileUtils().deleteAllFiles(dirPath);
+
+                    String dirPath2 = new File(Environment.getExternalStorageDirectory(), "ZQ_LIVE").getAbsolutePath() + File.separator + dirName + File.separator;
+                    U.getFileUtils().deleteAllFiles(dirPath2);
                 }
                 emitter.onComplete();
             }
