@@ -1,13 +1,7 @@
 package com.zq.mediaengine.kit;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothHeadset;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.RectF;
-import android.media.AudioManager;
 import android.opengl.GLSurfaceView;
 import android.os.Looper;
 import android.os.Message;
@@ -198,6 +192,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     // 伴奏状态相关
     private String mCdnType = "";
     private boolean mAccEnableCache = false;
+    private String mAccFullPath;
     private String mAccUrlInUse;
     private long mAccFirstStartTime;
     private long mAccStartTime;
@@ -472,6 +467,12 @@ public class ZqEngineKit implements AgoraOutCallback {
     public void onAudioMixingStateChanged(int state, int errorCode) {
         MyLog.i(TAG, "onAudioMixingStateChanged" + " state=" + state + " errorCode=" + errorCode);
 
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.post(() -> handleAudioMixingStateChanged(state, errorCode));
+        }
+    }
+
+    private void handleAudioMixingStateChanged(int state, int errorCode) {
         // 伴奏状态上报
         if (state == Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY) {
             if (!mIsAccPrepared) {
@@ -483,27 +484,21 @@ public class ZqEngineKit implements AgoraOutCallback {
             }
             mAccPreparedSent = true;
         } else if (state == Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_ERROR) {
+            doUploadAccStopEvent(1, errorCode);
             if (mIsAccPrepared) {
-                // 仅在播放开始后出错才上报
-                doUploadAccStopEvent(1, errorCode);
-            }
-            if (mCustomHandlerThread != null) {
-                if (mIsAccPrepared) {
-                    mAccRecoverPosition = getAudioMixingCurrentPosition();
-                    if (mConfig.isUseExternalAudio()) {
-                        mAccRemainedLoopCount = mAudioPlayerCapture.getRemainedLoopCount();
-                    }
+                mAccRecoverPosition = getAudioMixingCurrentPosition();
+                if (mConfig.isUseExternalAudio()) {
+                    mAccRemainedLoopCount = mAudioPlayerCapture.getRemainedLoopCount();
                 }
-                mCustomHandlerThread.postDelayed(() -> {
-                    if (!mConfig.isMixMusicPlaying()) {
-                        return;
-                    }
-                    MyLog.i(TAG, "retry acc playback with pos: " + mAccRecoverPosition + " remainLoopCount: " + mAccRemainedLoopCount);
-                    doStopAudioMixing();
-                    mAccRetriedCount++;
-                    doStartAudioMixing(mAccUrlInUse, mAccRecoverPosition, mAccRemainedLoopCount);
-                }, 100);
             }
+            mCustomHandlerThread.postDelayed(() -> {
+                if (!mConfig.isMixMusicPlaying()) {
+                    return;
+                }
+                MyLog.i(TAG, "retry acc playback with pos: " + mAccRecoverPosition + " remainLoopCount: " + mAccRemainedLoopCount);
+                doStopAudioMixingInternal();
+                doStartAudioMixing(mAccUrlInUse, mAccRecoverPosition, mAccRemainedLoopCount);
+            }, 100);
             return;
         }
 
@@ -1090,14 +1085,6 @@ public class ZqEngineKit implements AgoraOutCallback {
                     }
                 }
                 joinRoomInner(roomid, userId, token);
-                //TODO 临时关闭耳返
-//                if (U.getDeviceUtils().getHeadsetPlugOn()) {
-//                    setEnableSpeakerphone(false);
-//                    enableInEarMonitoring(false);
-//                } else {
-//                    setEnableSpeakerphone(true);
-//                    enableInEarMonitoring(false);
-//                }
             }
         });
     }
@@ -1721,6 +1708,17 @@ public class ZqEngineKit implements AgoraOutCallback {
                         }
                     }
                     if (canGo) {
+                        // 重复播放处理
+                        if (mConfig.isMixMusicPlaying()) {
+                            if (TextUtils.isEmpty(mAccFullPath) && accPath.equals(mAccFullPath)) {
+                                MyLog.w(TAG, "startAudioMixing repeatedly, ignore!");
+                                return;
+                            } else {
+                                MyLog.w(TAG, "start another acc, stop the previous one!");
+                                doStopAudioMixing();
+                            }
+                        }
+
                         mConfig.setMixMusicPlaying(true);
                         mConfig.setMixMusicFilePath(filePath);
                         mConfig.setMidiPath(midiPath);
@@ -1730,6 +1728,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
                         EventBus.getDefault().post(engineEvent);
 
+                        mAccFullPath = accPath;
                         mAccPreparedSent = false;
                         mAccRecoverPosition = 0;
                         mAccRemainedLoopCount = cycle;
@@ -1880,33 +1879,38 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new LogRunnable("stopAudioMixing") {
                 @Override
                 public void realRun() {
-                    if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
-                        doUploadAccStopEvent(0, 0);
-                        mConfig.setMixMusicPlaying(false);
-                        mConfig.setMixMusicFilePath(null);
-                        mConfig.setMidiPath(null);
-                        mConfig.setMixMusicBeginOffset(0);
-                        mAccUrlInUse = null;
-                        mIsAccPrepared = false;
-                        mAccStartTime = 0;
-                        mAccFirstStartTime = 0;
-                        mAccRetriedCount = 0;
-                        stopMusicPlayTimeListener();
-                        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STOP);
-                        EventBus.getDefault().post(engineEvent);
-
-                        doStopAudioMixing();
-                    }
-                    mPendingStartMixAudioParams = null;
-                    mConfig.setCurrentMusicTs(0);
-                    mConfig.setRecordCurrentMusicTsTs(0);
-                    mConfig.setLrcHasStart(false);
+                    doStopAudioMixing();
                 }
             });
         }
     }
 
     private void doStopAudioMixing() {
+        if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
+            doUploadAccStopEvent(0, 0);
+            mConfig.setMixMusicPlaying(false);
+            mConfig.setMixMusicFilePath(null);
+            mConfig.setMidiPath(null);
+            mConfig.setMixMusicBeginOffset(0);
+            mAccFullPath = null;
+            mAccUrlInUse = null;
+            mIsAccPrepared = false;
+            mAccStartTime = 0;
+            mAccFirstStartTime = 0;
+            mAccRetriedCount = 0;
+            stopMusicPlayTimeListener();
+            EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STOP);
+            EventBus.getDefault().post(engineEvent);
+
+            doStopAudioMixingInternal();
+        }
+        mPendingStartMixAudioParams = null;
+        mConfig.setCurrentMusicTs(0);
+        mConfig.setRecordCurrentMusicTsTs(0);
+        mConfig.setLrcHasStart(false);
+    }
+
+    private void doStopAudioMixingInternal() {
         if (mConfig.isUseExternalAudio()) {
             mAudioPlayerCapture.stop();
         } else {
