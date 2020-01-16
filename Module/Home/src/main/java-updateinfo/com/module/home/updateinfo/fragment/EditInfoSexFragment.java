@@ -11,6 +11,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.dialog.view.TipsDialogView;
 import com.module.home.R;
 import com.zq.live.proto.Common.ESex;
 
@@ -24,6 +25,8 @@ public class EditInfoSexFragment extends BaseFragment {
     ImageView femaleSelect;
 
     int sex = 0;// 未知、非法参数
+
+    TipsDialogView mTipsDialogView;
 
     @Override
     public int initView() {
@@ -49,7 +52,32 @@ public class EditInfoSexFragment extends BaseFragment {
         mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                clickComplete();
+                if (mTipsDialogView != null) {
+                    mTipsDialogView.dismiss(false);
+                }
+                mTipsDialogView = new TipsDialogView.Builder(getActivity())
+                        .setMessageTip("性别只能修改一次\n确定修改么")
+                        .setCancelTip("取消")
+                        .setConfirmTip("确定")
+                        .setConfirmBtnClickListener(new DebounceViewClickListener() {
+                            @Override
+                            public void clickValid(View v) {
+                                if (mTipsDialogView != null) {
+                                    mTipsDialogView.dismiss(true);
+                                }
+                                clickComplete();
+                            }
+                        })
+                        .setCancelBtnClickListener(new DebounceViewClickListener() {
+                            @Override
+                            public void clickValid(View v) {
+                                if (mTipsDialogView != null) {
+                                    mTipsDialogView.dismiss(false);
+                                }
+                            }
+                        })
+                        .build();
+                mTipsDialogView.showByDialog();
             }
         });
 
@@ -125,5 +153,8 @@ public class EditInfoSexFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
+        if (mTipsDialogView != null) {
+            mTipsDialogView.dismiss(false);
+        }
     }
 }
