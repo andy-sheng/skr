@@ -210,7 +210,11 @@ public interface UserInfoServerApi {
     @GET("/v2/rank/region-diff")
     Observable<ApiResult> getRegionDiff();
 
-
+    /**
+     * 举报房间
+     */
+    @PUT("v1/report/room")
+    Observable<ApiResult> reportRoom(@Body RequestBody body);
 
     /**
      * 举报

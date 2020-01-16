@@ -12,6 +12,7 @@ import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
 
 class PartyTopOpView : RelativeLayout {
+    private val mReportRoom: ExTextView
     private val mIvSetting: ImageView
     private val mIvVoiceSetting: ImageView
     private val mGameRuleIv: ImageView
@@ -33,11 +34,16 @@ class PartyTopOpView : RelativeLayout {
 
     init {
         View.inflate(context, R.layout.party_top_op_view, this)
+        mReportRoom = findViewById(R.id.report_room)
         mGameRuleIv = findViewById(R.id.game_rule_iv)
         mIvSetting = findViewById(R.id.game_setting)
         mFeedBackIv = findViewById(R.id.feed_back_iv)
         mExitTv = findViewById(R.id.exit_tv)
         mIvVoiceSetting = findViewById<View>(R.id.iv_voice_setting) as ImageView
+
+        mReportRoom.setDebounceViewClickListener {
+            mListener?.onClickRoomReport()
+        }
 
         mIvSetting.setDebounceViewClickListener {
             mListener?.onClickSetting()
@@ -89,6 +95,8 @@ class PartyTopOpView : RelativeLayout {
 
         fun onClickVoiceAudition()
 
-        fun onClickSetting();
+        fun onClickSetting()
+
+        fun onClickRoomReport()
     }
 }

@@ -488,6 +488,20 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun initTopView() {
         mTopOpView = findViewById(R.id.top_op_view)
         mTopOpView.setListener(object : PartyTopOpView.Listener {
+            override fun onClickRoomReport() {
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(this@PartyRoomActivity, QuickFeedbackFragment::class.java)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_PARTY_ROOM)
+                                .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
+                                .addDataBeforeAdd(3, mRoomData.gameId)
+                                .addDataBeforeAdd(4, mRoomData.roomName)
+                                .setEnterAnim(R.anim.slide_in_bottom)
+                                .setExitAnim(R.anim.slide_out_bottom)
+                                .build())
+            }
+
             override fun onClickGameRule() {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PartyRoomActivity)
                 showGameRuleDialog()

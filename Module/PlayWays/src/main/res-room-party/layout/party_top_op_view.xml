@@ -10,12 +10,29 @@
     tools:parentTag="android.widget.RelativeLayout">
 
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/report_room"
+        android:layout_width="@dimen/view_48_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:gravity="center"
+        android:text="举报"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_14_dp"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/transparent"
+        app:bl_stroke_color="@color/white_trans_20"
+        app:bl_stroke_width="@dimen/view_1_dp" />
+
     <ImageView
         android:id="@+id/game_setting"
         android:layout_width="@dimen/view_41_dp"
         android:layout_height="@dimen/view_26_dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_toRightOf="@id/report_room"
         android:background="@drawable/xkf_shezhi" />
 
     <ImageView
