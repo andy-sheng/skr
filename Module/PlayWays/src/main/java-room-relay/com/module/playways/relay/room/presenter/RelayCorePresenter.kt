@@ -5,6 +5,7 @@ import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.os.Handler
 import android.os.Message
+import android.text.TextUtils
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.common.core.account.UserAccountManager
@@ -540,7 +541,10 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         GlobalScope.launch {
             var result = subscribe { mRoomServerApi.exitRoom(body) }
             if (result.errno == 0) {
-
+                val msg = result.data.getString("needAlertMsg")
+                if(!TextUtils.isEmpty(msg)){
+                    U.getToastUtil().showLong(msg)
+                }
             }
         }
     }
