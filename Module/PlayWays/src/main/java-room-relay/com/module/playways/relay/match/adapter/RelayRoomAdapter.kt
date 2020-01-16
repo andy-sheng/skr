@@ -11,11 +11,13 @@ import android.widget.TextView
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
+import com.common.player.SinglePlayer
 import com.common.utils.dp
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.view.AvatarView
 import com.component.busilib.view.NickNameView
+import com.component.busilib.view.SpeakingTipsAnimationView
 import com.component.busilib.view.recyclercardview.CardAdapterHelper
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
@@ -133,6 +135,7 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class RelayRedPacketViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
+        private val speakerAnimationIv: SpeakingTipsAnimationView = item.findViewById(R.id.speaker_animation_iv)
         private val imageBg: ImageView = item.findViewById(R.id.image_bg)
         private val avatarLevel: AvatarView = item.findViewById(R.id.avatar_level)
         private val nicknameView: NickNameView = item.findViewById(R.id.nickname_view)
@@ -151,12 +154,25 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             inviteTv.setDebounceViewClickListener {
                 listener?.selectRedPacket(mPos, mModel)
             }
+            speakerAnimationIv.setDebounceViewClickListener {
+                mModel?.redpacketItem?.voiceInfo?.voiceURL?.let {
+                    speakerAnimationIv.show(mModel?.redpacketItem?.voiceInfo?.duration?.toInt()
+                            ?: 3, true)
+                    if (SinglePlayer.isPlaying) {
+                        speakerAnimationIv.reset()
+                        SinglePlayer.stop("RelayRedPacketViewHolder")
+                    } else {
+                        SinglePlayer.startPlay("RelayRedPacketViewHolder", it)
+                    }
+                }
+            }
         }
 
         fun bindData(position: Int, model: RelaySelectItemInfo) {
             this.mPos = position
             this.mModel = model
-
+            speakerAnimationIv.reset()
+            SinglePlayer.stop("RelayRedPacketViewHolder")
             initBackground(model.redpacketItem?.user?.sex, imageBg, bottomArea, sexTv)
             costTv.text = "${model.redpacketItem?.costZS.toString()}/次"
             val maleDrawable = DrawableCreator.Builder()
