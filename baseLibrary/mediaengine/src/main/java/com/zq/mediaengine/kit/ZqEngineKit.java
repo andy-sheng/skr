@@ -206,10 +206,8 @@ public class ZqEngineKit implements AgoraOutCallback {
     private long mAccRecoverPosition = 0;
     private int mAccRemainedLoopCount = 0;
     private int mAccRetriedCount = 0;
-
-    private HeadSetReceiver mHeadSetReceiver;
-    protected boolean mHeadSetPlugged = false;
-    protected boolean mBluetoothPlugged = false;
+    int lastAudioMixingPublishVolume = -1;
+//    private HeadSetReceiver mHeadSetReceiver;
 
     // 视频相关参数
     protected int mScreenRenderWidth = 0;
@@ -795,12 +793,8 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
 
         if (mConfig.isUseExternalAudio()) {
-            AudioManager localAudioManager = (AudioManager) mContext.getSystemService(Context
-                    .AUDIO_SERVICE);
-            mHeadSetPlugged = localAudioManager.isWiredHeadsetOn();
-            mBluetoothPlugged = localAudioManager.isBluetoothA2dpOn() || localAudioManager.isBluetoothScoOn();
             toggleAEC();
-            registerHeadsetPlugReceiver();
+//            registerHeadsetPlugReceiver();
 
             // 初始参数配置
             if (mConfig.isEnableAudioLowLatency()) {
@@ -812,7 +806,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioPlayerCapture.setAudioPlayerType(AudioPlayerCapture.AUDIO_PLAYER_TYPE_AUDIOTRACK);
                 mAudioPlayerCapture.setEnableLowLatency(false);
             }
-            int mixingLatency = mHeadSetPlugged ? mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnHeadset()
+            int mixingLatency = U.getDeviceUtils().getWiredHeadsetPlugOn() ? mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnHeadset()
                     : mConfig.getConfigFromServerNotChange().getAccMixingLatencyOnSpeaker();
             mLocalAudioMixer.setDelay(1, mixingLatency);
             mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
@@ -892,7 +886,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private void toggleAEC() {
         if (mConfig.isUseExternalAudio()) {
-            if (mHeadSetPlugged || mBluetoothPlugged) {
+            if (U.getDeviceUtils().getWiredHeadsetPlugOn() || U.getDeviceUtils().getBlueToothHeadsetOn()) {
                 if (mConfig.isUseLocalAPM()) {
                     // 开启APM处理后耳返延迟会增加20ms左右，当前在耳机模式下直接bypass掉
                     //mAPMFilter.enableAEC(false);
@@ -908,9 +902,13 @@ public class ZqEngineKit implements AgoraOutCallback {
                     mAgoraRTCAdapter.setEnableAPM(true);
                 }
             }
-
             // 调节伴奏混音音量
-            setAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume());
+            //TODO  如果是合唱房，会暂时把音量变成0 ，要区分这种情况
+            if(lastAudioMixingPublishVolume>=0){
+                setAudioMixingPublishVolume(lastAudioMixingPublishVolume);
+            }else{
+                setAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume());
+            }
         }
     }
 
@@ -1006,7 +1004,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioPlayerCapture.release();
                 MyLog.i(TAG, "destroyInner13");
                 mAudioCapture.release();
-                unregisterHeadsetPlugReceiver();
+//                unregisterHeadsetPlugReceiver();
             }
             MyLog.i(TAG, "destroyInner2");
             if (mConfig.isEnableVideo() && mConfig.isUseExternalVideo()) {
@@ -1262,6 +1260,19 @@ public class ZqEngineKit implements AgoraOutCallback {
             setEnableSpeakerphone(true);
             enableInEarMonitoring(false);
         }
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                toggleAEC();
+                if (mConfig.isUseExternalAudio() && mConfig.isEnableInEarMonitoring()) {
+                    if (shouldStartAudioPreview()) {
+                        mLocalAudioPreview.start();
+                    } else {
+                        mLocalAudioPreview.stop();
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -1318,7 +1329,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private boolean shouldStartAudioPreview() {
-        return (mHeadSetPlugged || mConfig.isEnableAudioPreviewLatencyTest()) &&
+        return (U.getDeviceUtils().getWiredHeadsetPlugOn() || mConfig.isEnableAudioPreviewLatencyTest()) &&
                 !mConfig.isEnableAudioMixLatencyTest();
     }
 
@@ -1493,7 +1504,8 @@ public class ZqEngineKit implements AgoraOutCallback {
             } else {
                 mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
                 mAudioPlayerCapture.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
-                if (!mHeadSetPlugged && !mBluetoothPlugged) {
+                
+                if (!U.getDeviceUtils().getWiredHeadsetPlugOn() && !U.getDeviceUtils().getBlueToothHeadsetOn()) {
                     mLocalAudioPreview.stop();
                 }
             }
@@ -2022,7 +2034,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private boolean shouldMixAcc() {
-        if (mHeadSetPlugged || mBluetoothPlugged) {
+        if (U.getDeviceUtils().getWiredHeadsetPlugOn() || U.getDeviceUtils().getBlueToothHeadsetOn()) {
             return true;
         } else {
             return (mConfig.getConfigFromServerNotChange().hasServerConfig &&
@@ -2034,6 +2046,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     // 自采集下伴奏声音发送大小(对于未测定机型，外放模式下不进行混音，伴奏使用外放回采的声音)
     private void setAudioMixingPublishVolume(int volume) {
         if (mConfig.isUseExternalAudio()) {
+            lastAudioMixingPublishVolume = volume;
             float val = shouldMixAcc() ? volume / 100.f : 0;
             val = mConfig.isEnableAudioMixLatencyTest() ? 1.0f : val;
             MyLog.i(TAG, "setAudioMixingPublishVolume to: " + val);
@@ -2417,94 +2430,24 @@ public class ZqEngineKit implements AgoraOutCallback {
         public String token;
     }
 
-    private void registerHeadsetPlugReceiver() {
-        if (mHeadSetReceiver == null && mContext != null) {
-            mHeadSetReceiver = new HeadSetReceiver();
-            IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
-
-            filter.addAction(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED);
-            filter.addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED);
-            filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-            mContext.registerReceiver(mHeadSetReceiver, filter);
-        }
-    }
-
-    private void unregisterHeadsetPlugReceiver() {
-        if (mHeadSetReceiver != null) {
-            mContext.unregisterReceiver(mHeadSetReceiver);
-            mHeadSetReceiver = null;
-        }
-    }
-
-    private class HeadSetReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (TextUtils.isEmpty(action)) {
-                return;
-            }
-
-            int state = BluetoothHeadset.STATE_DISCONNECTED;
-            if (action.equals(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED)) {
-                state = intent.getIntExtra(BluetoothHeadset.EXTRA_STATE,
-                        BluetoothHeadset.STATE_DISCONNECTED);
-                Log.d(TAG, "bluetooth state:" + state);
-                if (state == BluetoothHeadset.STATE_CONNECTED) {
-                    Log.d(TAG, "bluetooth Headset is plugged");
-                    mBluetoothPlugged = true;
-                } else if (state == BluetoothHeadset.STATE_DISCONNECTED) {
-                    Log.d(TAG, "bluetooth Headset is unplugged");
-                    mBluetoothPlugged = false;
-                }
-            } else if (action.equals(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED))// audio
-            {
-                state = intent.getIntExtra(BluetoothHeadset.EXTRA_STATE,
-                        BluetoothHeadset.STATE_AUDIO_DISCONNECTED);
-                if (state == BluetoothHeadset.STATE_AUDIO_CONNECTED) {
-                    Log.d(TAG, "bluetooth Headset is plugged");
-                    mBluetoothPlugged = true;
-                } else if (state == BluetoothHeadset.STATE_AUDIO_DISCONNECTED) {
-                    Log.d(TAG, "bluetooth Headset is unplugged");
-                    mBluetoothPlugged = false;
-                }
-            } else if (action.equals(Intent.ACTION_HEADSET_PLUG)) {
-                state = intent.getIntExtra("state", -1);
-
-                switch (state) {
-                    case 0:
-                        Log.d(TAG, "Headset is unplugged");
-                        mHeadSetPlugged = false;
-                        break;
-                    case 1:
-                        Log.d(TAG, "Headset is plugged");
-                        mHeadSetPlugged = true;
-                        break;
-                    default:
-                        Log.d(TAG, "I have no idea what the headset state is");
-                }
-            } else if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) { //蓝牙开关
-                state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.STATE_OFF);
-                if (state == BluetoothAdapter.STATE_OFF) {
-                    Log.d(TAG, "bluetooth Headset is unplugged");
-                    mBluetoothPlugged = false;
-                }
-            }
-
-            mCustomHandlerThread.post(new Runnable() {
-                @Override
-                public void run() {
-                    toggleAEC();
-                    if (mConfig.isUseExternalAudio() && mConfig.isEnableInEarMonitoring()) {
-                        if (shouldStartAudioPreview()) {
-                            mLocalAudioPreview.start();
-                        } else {
-                            mLocalAudioPreview.stop();
-                        }
-                    }
-                }
-            });
-        }
-    }
+//    private void registerHeadsetPlugReceiver() {
+//        if (mHeadSetReceiver == null && mContext != null) {
+//            mHeadSetReceiver = new HeadSetReceiver();
+//            IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+//
+//            filter.addAction(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED);
+//            filter.addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED);
+//            filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+//            mContext.registerReceiver(mHeadSetReceiver, filter);
+//        }
+//    }
+//
+//    private void unregisterHeadsetPlugReceiver() {
+//        if (mHeadSetReceiver != null) {
+//            mContext.unregisterReceiver(mHeadSetReceiver);
+//            mHeadSetReceiver = null;
+//        }
+//    }
 
     // 视频相关接口
 
