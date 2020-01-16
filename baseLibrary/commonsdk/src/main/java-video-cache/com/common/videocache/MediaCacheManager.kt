@@ -11,16 +11,14 @@ import java.io.File
 
 object MediaCacheManager {
     private val TAG = "MediaCacheManager"
-    private val saveFile = U.getAppInfoUtils().getSubDirFile("ori")
-    private val fileNameGenerator = object : FileNameGenerator {
-        override fun generate(url: String?): String {
-            MyLog.d(TAG, "url=$url")
-            var url2 = url
-            if (url2?.contains("song-static-1") == true) {
-                url2 = url2?.replace("song-static-1", "song-static")
-            }
-            return U.getMD5Utils().MD5_16(url2) + "." + U.getFileUtils().getSuffixFromUrl(url2, "m4a")
+    private val saveFile = U.getAppInfoUtils().getSubDirFile("acc")
+    private val fileNameGenerator = FileNameGenerator { url ->
+        MyLog.d(TAG, "url=$url")
+        var url2 = url
+        if (url2?.contains("song-static-1") == true) {
+            url2 = url2?.replace("song-static-1", "song-static")
         }
+        U.getMD5Utils().MD5_16(url2) + "." + U.getFileUtils().getSuffixFromUrl(url2, "m4a")
     }
 
     private val httpProxyCacheServer = HttpProxyCacheServer.Builder(U.app())
@@ -42,7 +40,7 @@ object MediaCacheManager {
         return httpProxyCacheServer.getProxyUrl(url, allowFromCache)
     }
 
-    val preCacheingSet = HashSet<String>()
+    private val preCacheingSet = HashSet<String>()
 
     fun preCache(url: String) {
         MyLog.d(TAG, "preCache url=$url cacheingNum=${preCacheingSet.size}")

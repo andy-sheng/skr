@@ -1,7 +1,10 @@
 package com.component.lyrics.utils;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 
 import java.io.File;
@@ -16,95 +19,112 @@ public class SongResUtils {
     public static final String SUFF_JSON = "json";
     public static final String SUFF_TXT = "txt";
 
-    //存储目录
-    private static final String LYRIC_DIR = getRootFile() + File.separator + "lyrics";
-    private static final String ACC_DIR = getRootFile() + File.separator + "acc";
-    private static final String ORI_DIR = getRootFile() + File.separator + "ori";
-    private static final String MIDI_DIR = getRootFile() + File.separator + "midi";
-    private static final String SCORE_DIR = getRootFile() + File.separator + "score";
-    private static final String STAND_DIR = getRootFile() + File.separator + "stand";
-    private static final String GRAB_LYRIC_DIR = getRootFile() + File.separator + "grabLyric";
-    private static int sHasScardPermission = -1;
+    private static String rootFilePath;
 
-    public static final File getRootFile() {
-        if (sHasScardPermission == -1) {
-            sHasScardPermission = U.getPermissionUtils().checkExternalStorage(U.getActivityUtils().getTopActivity()) ? 1 : 0;
+    //存储目录
+    static {
+        getRootFile();
+    }
+
+    public static final String getRootFile() {
+        if (TextUtils.isEmpty(rootFilePath)) {
+            if (Looper.myLooper() == Looper.getMainLooper()) {
+                boolean hasPermission = U.getPermissionUtils().checkExternalStorage(U.getActivityUtils().getTopActivity());
+                if (hasPermission) {
+                    rootFilePath = U.getAppInfoUtils().getMainDir().getPath();
+                }
+            } else {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (TextUtils.isEmpty(rootFilePath)) {
+                            boolean hasPermission = U.getPermissionUtils().checkExternalStorage(U.getActivityUtils().getTopActivity());
+                            if (hasPermission) {
+                                rootFilePath = U.getAppInfoUtils().getMainDir().getPath();
+                            }
+                        }
+                    }
+                });
+            }
         }
-        if (sHasScardPermission == 1) {
-            return U.getAppInfoUtils().getMainDir();
+
+        if (TextUtils.isEmpty(rootFilePath)) {
+            return U.app().getFilesDir().getPath();
         } else {
-            return U.app().getFilesDir();
+            return rootFilePath;
         }
     }
 
+
     public static final String getLyricDir() {
-        return LYRIC_DIR;
+        return getRootFile() + File.separator + "lyrics";
     }
 
     public static final String getACCDir() {
-        return ACC_DIR;
+        return getRootFile() + File.separator + "acc";
     }
 
     public static final String getORIDir() {
-        return ORI_DIR;
+        return getRootFile() + File.separator + "ori";
     }
 
     public static final String getMIDIDir() {
-        return MIDI_DIR;
+        return getRootFile() + File.separator + "midi";
     }
 
     public static final String getScoreDir() {
-        return SCORE_DIR;
+        return getRootFile() + File.separator + "score";
     }
 
     public static final String getStandDir() {
-        return STAND_DIR;
+        return getRootFile() + File.separator + "stand";
     }
 
     public static final String getGrabLyricDir() {
-        return GRAB_LYRIC_DIR;
+        return getRootFile() + File.separator + "grabLyric";
     }
 
     public static final File getLyricFileByUrl(String resUrl) {
 
-        return getFile(LYRIC_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_ZRCE));
+        return getFile(getLyricDir(), resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_ZRCE));
     }
 
     public static final File getAccFileByUrl(String resUrl) {
 
-        return getFile(ACC_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_ACC));
+        return getFile(getACCDir(), resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_ACC));
     }
 
     public static final File getORIFileByUrl(String resUrl) {
 
-        return getFile(ORI_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_ORI));
+        return getFile(getORIDir(), resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_ORI));
     }
 
     public static final File getMIDIFileByUrl(String resUrl) {
 
-        return getFile(MIDI_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_MIDI));
+        return getFile(getMIDIDir(), resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_MIDI));
     }
 
     public static final File getScoreFileByUrl(String resUrl) {
 
-        return getFile(SCORE_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_JSON));
+        return getFile(getScoreDir(), resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_JSON));
     }
 
     public static final File getStandFileByUrl(String resUrl) {
 
-        return getFile(STAND_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_STAND));
+        return getFile(getStandDir(), resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_STAND));
     }
 
     public static final File getGrabLyricFileByUrl(String resUrl) {
 
-        return getFile(GRAB_LYRIC_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_TXT));
+        return getFile(getGrabLyricDir(), resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_TXT));
     }
 
     private static File getFile(String dir, String url, String suff) {
         String url2 = url;
-        if (url2!=null && url2.contains("song-static-1") == true) {
+        if (url2 != null && url2.contains("song-static-1") == true) {
             url2 = url2.replace("song-static-1", "song-static");
         }
+        MyLog.i("SongResUtils", "dir=" + dir);
         File file = new File(dir + File.separator + getFileNameWithMD5(url2) + "." + suff);
         if (file.exists()) {
             return file;

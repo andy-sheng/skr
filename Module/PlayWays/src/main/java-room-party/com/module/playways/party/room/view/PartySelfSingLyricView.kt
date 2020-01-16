@@ -81,7 +81,18 @@ class PartySelfSingLyricView(viewStub: ViewStub, protected var mRoomData: PartyR
         configParams.voiceScaleView = mVoiceScaleView
         configParams.lyricUrl = curSong.lyric
         configParams.lyricBeginTs = curSong.standLrcBeginT
-        configParams.lyricEndTs = curSong.standLrcBeginT + totalTs
+//        configParams.lyricEndTs = curSong.rankLrcBeginT+totalTs
+        // 和佳胜讨论，改成伴奏开始 + 总时间 胜哥说 prefectotal
+        configParams.lyricEndTs = curSong.beginMs+totalTs-5000
+
+//        var lyricEndTs1 = curSong.standLrcEndT
+//        var lyricEndTs2 = curSong.beginMs+totalTs
+//        if(lyricEndTs2 <lyricEndTs1 ){
+//            configParams.lyricEndTs = lyricEndTs2
+//        }else{
+//            configParams.lyricEndTs = lyricEndTs1
+//        }
+
         configParams.accBeginTs = curSong.beginMs
         configParams.accEndTs = curSong.beginMs + totalTs
         configParams.authorName = curSong.uploaderName

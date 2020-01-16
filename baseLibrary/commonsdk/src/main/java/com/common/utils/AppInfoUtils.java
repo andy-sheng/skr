@@ -8,6 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -42,6 +43,26 @@ public class AppInfoUtils {
     /**
      * 存储的主目录,所有的存储请基于此目录
      *
+     * 上面这些方法，我们可能似曾相识，但是对于有些同学来说却又很难分清出，主要还是不同的Android版本的问题。为了方便大家理解，我先简要介绍以上各个方法，为方便大家理解我把这些方法的结果打印出来（以下的打印结果是基于荣耀7的（系统版本6.0）：
+     * 1、Environment.getDataDirectory() = /data
+     * 这个方法是获取内部存储的根路径
+     * 2、getFilesDir().getAbsolutePath() = /data/user/0/packname/files
+     * 这个方法是获取某个应用在内部存储中的files路径
+     * 3、getCacheDir().getAbsolutePath() = /data/user/0/packname/cache
+     * 这个方法是获取某个应用在内部存储中的cache路径
+     * 4、getDir(“myFile”, MODE_PRIVATE).getAbsolutePath() = /data/user/0/packname/app_myFile
+     * 这个方法是获取某个应用在内部存储中的自定义路径
+     * 方法2,3,4的路径中都带有包名，说明他们是属于某个应用
+     * …………………………………………………………………………………………
+     * 5、Environment.getExternalStorageDirectory().getAbsolutePath() = /storage/emulated/0
+     * 这个方法是获取外部存储的根路径
+     * 6、Environment.getExternalStoragePublicDirectory(“”).getAbsolutePath() = /storage/emulated/0
+     * 这个方法是获取外部存储的根路径
+     * 7、getExternalFilesDir(“”).getAbsolutePath() = /storage/emulated/0/Android/data/packname/files
+     * 这个方法是获取某个应用在外部存储中的files路径
+     * 8、getExternalCacheDir().getAbsolutePath() = /storage/emulated/0/Android/data/packname/cache
+     * 这个方法是获取某个应用在外部存储中的cache路径
+     *
      * @return
      */
     public File getMainDir() {
@@ -49,8 +70,13 @@ public class AppInfoUtils {
             return mainFile;
         }
         if (U.getDeviceUtils().existSDCard()) {
-            mainFile = new File(Environment.getExternalStorageDirectory(), "ZQ_LIVE");
-            return mainFile;
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+                mainFile = U.app().getExternalFilesDir("");
+                return mainFile;
+            }else{
+                mainFile = new File(Environment.getExternalStorageDirectory(), "ZQ_LIVE");
+                return mainFile;
+            }
         } else {
             return U.app().getFilesDir();
         }

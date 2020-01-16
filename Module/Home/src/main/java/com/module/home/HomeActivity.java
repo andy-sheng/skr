@@ -51,6 +51,7 @@ import com.component.busilib.event.GameTabRefreshEvent;
 import com.component.busilib.event.PostsPublishSucessEvent;
 import com.component.busilib.event.PostsWatchTabRefreshEvent;
 import com.component.busilib.manager.WeakRedDotManager;
+import com.component.lyrics.utils.SongResUtils;
 import com.engine.EngineConfigFromServer;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
@@ -349,6 +350,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                     iRankingModeService.idleHandler();
                 }
                 FlutterBoostController.INSTANCE.init();
+                SongResUtils.getRootFile();
                 return false;
             }
         });
