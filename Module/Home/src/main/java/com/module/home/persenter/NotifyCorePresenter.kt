@@ -41,6 +41,7 @@ import com.component.busilib.manager.WeakRedDotManager
 import com.component.busilib.verify.SkrVerifyUtils
 import com.component.dialog.ConfirmDialog
 import com.component.dialog.NotifyDialogView
+import com.component.dialog.RedPacketRelayDialogView
 import com.component.notification.*
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
@@ -649,18 +650,24 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
         if (iRankingModeService.canShowRelayInvite(event.user.userID, event.inviteType.value)) {
             if (event.inviteType == ERInviteType.RIT_REDPACKET_INVITE) {
-                //这个是红包邀请，ui不一样
-                val floatWindowData = FloatWindowData(FloatWindowData.Type.RELAY_INVITE)
-                floatWindowData.userInfoModel = UserInfoModel.parseFromPB(event.user)
-                if (event.hasRoomID()) {
-                    floatWindowData.roomID = event.roomID
+                val redPacketRelayDialogView = RedPacketRelayDialogView(U.getActivityUtils().topActivity, event)
+                redPacketRelayDialogView.clickMethod = {
+                    if (it) {
+                        tryToRelayRoom(event.user.userID
+                                ?: 0, event.roomID, event.inviteType.value, event.inviteTimeMs)
+                    } else {
+                        iRankingModeService.refuseJoinRelayRoom(event.user.userID
+                                ?: 0, 1, event.inviteType.value)
+                    }
                 }
-                val json = JSONObject()
-                json["inviteTimeMs"] = event.inviteTimeMs
-                json["inviteMsg"] = event.inviteMsg
-                json["inviteType"] = event.inviteType.value
-                floatWindowData.extra = json.toJSONString()
-                mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
+
+                redPacketRelayDialogView.timeOutMethod = {
+                    iRankingModeService.refuseJoinRelayRoom(event.user.userID
+                            ?: 0, 2, event.inviteType.value)
+                }
+
+                redPacketRelayDialogView.showByDialog()
+                redPacketRelayDialogView.starCounDown(5)
             } else {
                 val floatWindowData = FloatWindowData(FloatWindowData.Type.RELAY_INVITE)
                 floatWindowData.userInfoModel = UserInfoModel.parseFromPB(event.user)

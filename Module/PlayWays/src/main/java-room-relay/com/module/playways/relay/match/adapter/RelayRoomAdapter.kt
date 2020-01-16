@@ -116,9 +116,9 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         mDataList.forEachIndexed { index, relaySelectItemInfo ->
             if (relaySelectItemInfo.type == RelaySelectItemInfo.ST_REDPACKET_ITEM && relaySelectItemInfo.redpacketItem?.user?.userId == model.redpacketItem?.user?.userId) {
                 if (hasInvited) {
-                    notifyItemRangeChanged(index, REFRESH_TYPE_HAS_INVITE)
+                    notifyItemChanged(index, REFRESH_TYPE_HAS_INVITE)
                 } else {
-                    notifyItemRangeChanged(index, REFRESH_TYPE_NO_INVITE)
+                    notifyItemChanged(index, REFRESH_TYPE_NO_INVITE)
                 }
                 return@forEachIndexed
             }
@@ -206,7 +206,13 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         fun setInvited(hasInvited: Boolean) {
-
+            if (hasInvited) {
+                inviteTv.text = "已邀请"
+                inviteTv.isClickable = false
+            } else {
+                inviteTv.text = "邀请合唱"
+                inviteTv.isClickable = true
+            }
         }
 
     }

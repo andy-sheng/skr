@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.common.anim.ObjectPlayControlTemplate;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.share.SharePanel;
 import com.common.core.share.SharePlatform;
@@ -76,6 +77,7 @@ public class QuickFeedbackFragment extends BaseFragment {
     int mActionType;
     int mTargetId;
     int mRoomID;  //快速反馈时加上
+    String mRoomName; //房间名称
 
     ExRelativeLayout mContainer;
     FeedbackView mFeedBackView;
@@ -276,7 +278,11 @@ public class QuickFeedbackFragment extends BaseFragment {
         if (mActionType == FEED_BACK) {
             summitFeedback(typeList, content, logUrl, picUrls);
         } else {
-            submitReport(typeList, content, picUrls);
+            if (mFrom == FROM_PARTY_ROOM) {
+                submitReportRoom(typeList, content, picUrls);
+            } else {
+                submitReport(typeList, content, picUrls);
+            }
         }
     }
 
@@ -343,6 +349,39 @@ public class QuickFeedbackFragment extends BaseFragment {
         });
     }
 
+
+    private void submitReportRoom(List<Integer> typeList, String content, List<String> picUrls) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("content", content);
+        map.put("reporterID", MyUserInfoManager.INSTANCE.getUid());
+        map.put("roomID", mRoomID);
+        map.put("roomName", mRoomName);
+        map.put("screenshot", picUrls);
+        map.put("type", typeList);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        ApiMethods.subscribe(userInfoServerApi.reportRoom(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                            .setImage(R.drawable.touxiangshezhichenggong_icon)
+                            .setText("举报成功")
+                            .build());
+                    U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
+                } else {
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                            .setImage(R.drawable.touxiangshezhishibai_icon)
+                            .setText("举报失败")
+                            .build());
+                    U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
+                }
+            }
+        }, this);
+    }
+
     private void submitReport(List<Integer> typeList, String content, List<String> picUrls) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("targetID", mTargetId);
@@ -397,6 +436,8 @@ public class QuickFeedbackFragment extends BaseFragment {
             mTargetId = (int) data;
         } else if (type == 3) {
             mRoomID = (int) data;
+        } else if (type == 4) {
+            mRoomName = (String) data;
         }
     }
 
