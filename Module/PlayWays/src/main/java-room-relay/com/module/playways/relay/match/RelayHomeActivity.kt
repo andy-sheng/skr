@@ -36,6 +36,8 @@ import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.relay.match.adapter.RelayHomeSongCardAdapter
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
+import com.module.playways.relay.match.view.ClickRedPacketListener
+import com.module.playways.relay.match.view.RelayRedPacketConfirmView
 import com.module.playways.relay.room.RelayRoomActivity
 import com.module.playways.relay.room.RelayRoomData
 import com.module.playways.room.song.SongSelectServerApi
@@ -60,9 +62,10 @@ class RelayHomeActivity : BaseActivity() {
     private var title: CommonTitleBar? = null
     private var selectBack: ExImageView? = null
     private var titleTv: TextView? = null
-    private var inviteFriendIv: ImageView? = null
+    private var relayRedPacketTv: TextView? = null
     private var searchSongTv: ExTextView? = null
     private var songListTv: ExTextView? = null
+    private var inviteFriendTv: ExTextView? = null
     private var bottomArea: Barrier? = null
     private var speedRecyclerView: SpeedRecyclerView? = null
 
@@ -83,6 +86,10 @@ class RelayHomeActivity : BaseActivity() {
     var mTipsDialogView: TipsDialogView? = null
     var mRelaySongInfoDialogView: RelaySongInfoDialogView? = null
 
+    var status = 1 // 红包状态
+    var mRelayRedPacketConfirmView: RelayRedPacketConfirmView? = null
+    val KEY_PREFRE_RED_PACKET_SHOW = "has_show_redpacket_dialog"
+
     /**
      * 存起该房间一些状态信息
      */
@@ -95,16 +102,19 @@ class RelayHomeActivity : BaseActivity() {
         title = findViewById(R.id.title)
         selectBack = findViewById(R.id.select_back)
         titleTv = findViewById(R.id.title_tv)
-        inviteFriendIv = findViewById(R.id.invite_friend_iv)
+        relayRedPacketTv = findViewById(R.id.relay_red_packet_tv)
+
         searchSongTv = findViewById(R.id.search_song_tv)
         songListTv = findViewById(R.id.song_list_tv)
+        inviteFriendTv = this.findViewById(R.id.invite_friend_tv)
+
         bottomArea = findViewById(R.id.bottom_area)
         speedRecyclerView = findViewById(R.id.speed_recyclerView)
 
         selectBack?.setAnimateDebounceViewClickListener { finish() }
 
-        inviteFriendIv?.setDebounceViewClickListener {
-            inviteFriendIv?.isClickable = false
+        inviteFriendTv?.setDebounceViewClickListener {
+            inviteFriendTv?.isClickable = false
             createRelayRoom()
         }
 
@@ -133,6 +143,10 @@ class RelayHomeActivity : BaseActivity() {
                     .setEnterAnim(R.anim.slide_in_bottom)
                     .setExitAnim(R.anim.slide_out_bottom)
                     .build())
+        }
+
+        relayRedPacketTv?.setDebounceViewClickListener {
+            showRedPacketDialog()
         }
 
         val songCardMaxHeight = (U.getDisplayUtils().screenHeight - 62.dp() - 50.dp() - 36.dp() - 20.dp()) -
@@ -177,8 +191,6 @@ class RelayHomeActivity : BaseActivity() {
             }
         })
 
-
-
         cardScaleHelper = CardScaleHelper(8, 12)
         cardScaleHelper?.attachToRecyclerView(speedRecyclerView)
 
@@ -203,6 +215,22 @@ class RelayHomeActivity : BaseActivity() {
         }
 
         getPlayBookList(0, firstRequestPage * cnt, true)
+        getRedPacketStatus()
+    }
+
+    private fun showRedPacketDialog() {
+        mRelayRedPacketConfirmView?.dismiss(false)
+        var isOpen = false  // 默认是未开启
+        if (status == 1) {
+            isOpen = true
+        }
+        mRelayRedPacketConfirmView = RelayRedPacketConfirmView(this, isOpen, object : ClickRedPacketListener {
+            override fun onClickRedPacket() {
+                mRelayRedPacketConfirmView?.dismiss(false)
+                updateRedPacketStatus(!isOpen)
+            }
+        })
+        mRelayRedPacketConfirmView?.showByDialog()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -258,10 +286,10 @@ class RelayHomeActivity : BaseActivity() {
                 val rsp = JSON.parseObject(result.data!!.toJSONString(), JoinRelayRoomRspModel::class.java)
                 rsp.enterType = RelayRoomData.EnterType.INVITE
                 createSuccess(rsp)
-                inviteFriendIv?.isClickable = true
+                inviteFriendTv?.isClickable = true
             } else {
                 U.getToastUtil().showShort(result.errmsg)
-                inviteFriendIv?.isClickable = true
+                inviteFriendTv?.isClickable = true
             }
         }
     }
@@ -270,6 +298,50 @@ class RelayHomeActivity : BaseActivity() {
         val intent = Intent(this, RelayRoomActivity::class.java)
         intent.putExtra("JoinRelayRoomRspModel", joinRelayRoomRspModel)
         startActivity(intent)
+    }
+
+    private fun getRedPacketStatus() {
+        launch {
+            val result = subscribe(RequestControl("getRedPacketStatus", ControlType.CancelThis)) {
+                relayMatchServerApi.getRedPacketStatus()
+            }
+
+            if (result.errno == 0) {
+                status = result.data.getIntValue("status")
+                refreshRedPacketStatus()
+                if (!U.getPreferenceUtils().getSettingBoolean(KEY_PREFRE_RED_PACKET_SHOW, false)) {
+                    U.getPreferenceUtils().setSettingBoolean(KEY_PREFRE_RED_PACKET_SHOW, true)
+                    showRedPacketDialog()
+                }
+            }
+        }
+    }
+
+    private fun updateRedPacketStatus(isOpen: Boolean) {
+        launch {
+            val result = subscribe(RequestControl("updateRedPacketStatus", ControlType.CancelThis)) {
+                relayMatchServerApi.updateRedPacketStatus(isOpen)
+            }
+
+            if (result.errno == 0) {
+                status = result.data.getIntValue("status")
+                refreshRedPacketStatus()
+            }
+        }
+    }
+
+    private fun refreshRedPacketStatus() {
+        when (status) {
+            1 -> {
+                relayRedPacketTv?.visibility = View.VISIBLE
+                relayRedPacketTv?.text = "已开启"
+            }
+            2 -> {
+                relayRedPacketTv?.visibility = View.VISIBLE
+                relayRedPacketTv?.text = "红包合唱"
+            }
+            else -> relayRedPacketTv?.visibility = View.GONE
+        }
     }
 
     fun getPlayBookList(off: Int, limit: Int, clean: Boolean) {

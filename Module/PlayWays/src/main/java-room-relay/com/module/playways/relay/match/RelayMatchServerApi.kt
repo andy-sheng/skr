@@ -12,6 +12,24 @@ import retrofit2.http.Query
 interface RelayMatchServerApi {
 
     /**
+     * 查询红包合唱状态 0UNKOWN 1打开 2关闭
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/redpacket-get-bell-status")
+    fun getRedPacketStatus(): Call<ApiResult>
+
+    /**
+     * 更新合唱   true为打开  false为关闭
+     */
+    @GET("http://dev.game.inframe.mobi/v1/relaygame/redpacket-update-bell-status")
+    fun updateRedPacketStatus(@Query("enable") enable: Boolean): Call<ApiResult>
+
+    /**
+     * 发送红包合唱邀请
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/relaygame/redpacket-send-invite-user")
+    fun sendRedPacketInvite(@Body body: RequestBody): Call<ApiResult>
+
+    /**
      * 检查用户进入权限
      */
     @GET("http://dev.game.inframe.mobi/v1/relaygame/enter-permission")
