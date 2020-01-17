@@ -562,6 +562,7 @@ class RelayMatchActivity : BaseActivity() {
         SinglePlayer.removeCallback(TAG)
     }
 
+    // destroy可能很慢
     override fun destroy() {
         super.destroy()
         roomJob?.cancel()
