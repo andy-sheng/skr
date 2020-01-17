@@ -22,9 +22,11 @@ import android.content.ComponentCallbacks2;
 import android.content.ContentProvider;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.webkit.WebView;
 
 import com.common.base.GlobalParams;
 import com.common.base.ConfigModule;
@@ -60,18 +62,18 @@ public class AppDelegate implements AppLifecycles {
     private ComponentCallbacks2 mComponentCallback;
 
     public AppDelegate(@NonNull Context context) {
-        TAG+=hashCode();
-        Log.d(TAG,"new AppDelegate" + " context=" + context);
+        TAG += hashCode();
+        Log.d(TAG, "new AppDelegate" + " context=" + context);
         //用反射, 将 AndroidManifest.xml 中带有 ConfigModule 标签的 class 转成对象集合（List<ConfigModule>）
         this.mModules = new ManifestParser(context).parse();
 
         //遍历之前获得的集合, 执行每一个 ConfigModule 实现类的某些方法
         for (ConfigModule module : mModules) {
             //将框架外部, 开发者实现的 Application 的生命周期回调 (AppLifecycles) 存入 mAppLifecycles 集合 (此时还未注册回调)
-            module.injectAppLifecycle( mAppLifecycles);
+            module.injectAppLifecycle(mAppLifecycles);
 
             //将框架外部, 开发者实现的 Activity 的生命周期回调 (ActivityLifecycleCallbacks) 存入 mActivityLifecycles 集合 (此时还未注册回调)
-            module.injectActivityLifecycle( mActivityLifecycles);
+            module.injectActivityLifecycle(mActivityLifecycles);
         }
     }
 
@@ -85,7 +87,7 @@ public class AppDelegate implements AppLifecycles {
 
     @Override
     public void onMainProcessCreate(@NonNull Application application) {
-        U.getCacheUtils().putToKeep(ConfigModule.class.getName(),mModules);
+        U.getCacheUtils().putToKeep(ConfigModule.class.getName(), mModules);
 //        AC.inst().init(getGlobalConfigModule(mModules));
 
         this.mModules = null;
@@ -120,6 +122,10 @@ public class AppDelegate implements AppLifecycles {
         //执行框架外部, 开发者扩展的 App onCreate 逻辑
         for (AppLifecycles lifecycle : mAppLifecycles) {
             lifecycle.onOtherProcessCreate(U.app());
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            String processName = U.app().getProcessName();
+            WebView.setDataDirectorySuffix(processName);
         }
     }
 
@@ -157,7 +163,7 @@ public class AppDelegate implements AppLifecycles {
 
         //遍历 ConfigModule 集合, 给全局配置 GlobalConfigModule 添加参数
         for (ConfigModule module : modules) {
-            module.applyOptions( builder);
+            module.applyOptions(builder);
         }
 
         return builder.build();
