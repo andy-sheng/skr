@@ -28,6 +28,7 @@ class PartyRoomViewHolder(item: View, var listener: PartyRoomAdapter.Listener) :
     private val bottomArea: ExImageView = item.findViewById(R.id.bottom_area)
     private val roomPlayerNumTv: TextView = item.findViewById(R.id.room_player_num_tv)
     private val roomDescTv: TextView = item.findViewById(R.id.room_desc_tv)
+    private val widgetSdv: SimpleDraweeView = item.findViewById(R.id.widget_sdv)
 
     var mPos = -1
     var mModel: PartyRoomInfoModel? = null
@@ -169,6 +170,13 @@ class PartyRoomViewHolder(item: View, var listener: PartyRoomAdapter.Listener) :
         }
         roomPlayerNumTv.text = "${model.playerNum?.toString()}"
 
+        if (TextUtils.isEmpty(model.widgetkUrl)) {
+            widgetSdv.visibility = View.GONE
+        } else {
+            widgetSdv.visibility = View.VISIBLE
+            AvatarUtils.loadAvatarByUrl(widgetSdv, AvatarUtils.newParamsBuilder(model.widgetkUrl)
+                    .build())
+        }
     }
 
 }

@@ -114,5 +114,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/bottom_area" />
 
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/widget_sdv"
+        android:layout_width="@dimen/view_30_dp"
+        android:layout_height="@dimen/view_30_dp"
+        app:layout_constraintBottom_toBottomOf="@id/avatar_sdv"
+        app:layout_constraintRight_toRightOf="@id/avatar_sdv"
+        app:layout_constraintLeft_toRightOf="@id/avatar_sdv"/>
+
 
 </android.support.constraint.ConstraintLayout>
