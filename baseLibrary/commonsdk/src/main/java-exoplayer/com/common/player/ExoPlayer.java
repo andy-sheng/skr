@@ -703,11 +703,12 @@ public class ExoPlayer extends BasePlayer {
 
     @Override
     public void stop() {
-        MyLog.d(TAG, "stop");
+        MyLog.d(TAG, "stop 1");
         if (mPlayer == null) {
             return;
         }
         mPlayer.stop();
+        MyLog.d(TAG, "stop 2");
         mUrl = null;
         mHasPrepared = false;
         pendingSeekPos = -1;

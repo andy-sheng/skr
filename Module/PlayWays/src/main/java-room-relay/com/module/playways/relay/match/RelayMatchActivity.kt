@@ -557,6 +557,9 @@ class RelayMatchActivity : BaseActivity() {
     override fun finish() {
         super.finish()
         BgMusicManager.getInstance().destory()
+        MyLog.d(TAG,"SinglePlayer.startFrom=${SinglePlayer.startFrom} TAG=$")
+        SinglePlayer.stop(TAG)
+        SinglePlayer.removeCallback(TAG)
     }
 
     override fun destroy() {
@@ -564,9 +567,6 @@ class RelayMatchActivity : BaseActivity() {
         roomJob?.cancel()
         matchJob?.cancel()
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        BgMusicManager.getInstance().destory()
-        SinglePlayer.stop(TAG)
-        SinglePlayer.removeCallback(TAG)
     }
 
     override fun onBackPressedForActivity(): Boolean {

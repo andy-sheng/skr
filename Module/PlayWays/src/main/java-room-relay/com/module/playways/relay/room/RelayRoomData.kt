@@ -243,7 +243,6 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
 
         rsp.users?.forEachIndexed { index, userInfoModel ->
             var a = rsp.showInfos.getOrNull(index)
-            MyLog.w("chengsimin", "peerEffectModel1=${a} index=${index}")
             if (userInfoModel.userId != MyUserInfoManager.uid.toInt()) {
                 this.peerUser = RelayPlayerInfoModel()
                 this.peerUser?.userInfo = userInfoModel
@@ -258,7 +257,6 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         this.expectRoundInfo = rsp.currentRound
         this.enableNoLimitDuration = rsp.enableNoLimitDuration
         this.enterType = rsp.enterType
-        MyLog.w("chengsimin", "peerEffectModel2=${this.peerEffectModel}")
     }
 
     override fun toString(): String {
