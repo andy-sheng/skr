@@ -326,6 +326,8 @@ class RelayHomeActivity : BaseActivity() {
             if (result.errno == 0) {
                 status = result.data.getIntValue("status")
                 refreshRedPacketStatus()
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
             }
         }
     }
