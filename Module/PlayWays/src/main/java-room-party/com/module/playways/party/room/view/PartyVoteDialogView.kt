@@ -142,19 +142,23 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
 
         if (event.scope == EVoteScope.EVS_HOST_GUEST) {
             val info = H.partyRoomData?.getPlayerInfoById(MyUserInfoManager.uid.toInt())
-
-            var isContainMe = false
-            for (user in event.usersList) {
-                if (user.userInfo.userID == MyUserInfoManager.uid.toInt()) {
-                    isContainMe = true
-                    break
-                }
-            }
-
-            if (isContainMe || info == null || !info.isGuest() || !info.isHost()) {
+            if (info == null || !info.isGuest() || !info.isHost()) {
                 leftButtom.visibility = View.GONE
                 rightButtom.visibility = View.GONE
             }
+        }
+
+        var isContainMe = false
+        for (user in event.usersList) {
+            if (user.userInfo.userID == MyUserInfoManager.uid.toInt()) {
+                isContainMe = true
+                break
+            }
+        }
+
+        if (isContainMe) {
+            leftButtom.visibility = View.GONE
+            rightButtom.visibility = View.GONE
         }
     }
 
