@@ -18,7 +18,7 @@ message UserInfo {
     string description = 5; //个人描述
     bool isSystem = 6; //是否为系统
     uint32 mainLevel = 7; //主段位
-    VipInfo vipInfo    = 8; //vip类型
+    VipInfo vipInfo    = 8; //认真类型
     UserRanking ranking = 9; //排位信息
     HonorInfo honorInfo = 10;//会员信息
     UClubInfo clubInfo  = 11; //家族信息
@@ -106,6 +106,8 @@ enum EVIPType {
     EVT_UNKNOWN  = 0; //未知：没有加v`
     EVT_RED_V    = 1; //红v
     EVT_GOLDEN_V = 2; //金v
+    EVT_HAO      = 3; //“豪”徽章奖励
+    EVT_RENQI    = 4; //“人气”徽章奖励
 }
 
 // 音乐信息
