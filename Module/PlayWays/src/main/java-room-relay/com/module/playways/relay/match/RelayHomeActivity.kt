@@ -324,6 +324,11 @@ class RelayHomeActivity : BaseActivity() {
             }
 
             if (result.errno == 0) {
+                if (isOpen) {
+                    StatisticsAdapter.recordCountEvent("chorus", "redpacket_open", null)
+                } else {
+                    StatisticsAdapter.recordCountEvent("chorus", "redpacket_close", null)
+                }
                 status = result.data.getIntValue("status")
                 refreshRedPacketStatus()
             } else {
