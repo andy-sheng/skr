@@ -60,7 +60,10 @@ class AvatarView : ConstraintLayout {
                 .setBorderWidth(borderWidth.toFloat())
                 .setCircle(isCircle)
                 .build())
+        initVipInfo(model)
+    }
 
+    private fun initVipInfo(model: UserInfoModel?) {
         when {
             model?.vipInfo?.vipType == EVIPType.EVT_RED_V.value -> {
                 vipIv.visibility = View.VISIBLE
@@ -69,6 +72,14 @@ class AvatarView : ConstraintLayout {
             model?.vipInfo?.vipType == EVIPType.EVT_GOLDEN_V.value -> {
                 vipIv.visibility = View.VISIBLE
                 vipIv.setImageResource(R.drawable.vip_gold_icon)
+            }
+            model?.vipInfo?.vipType == EVIPType.EVT_HAO.value -> {
+                vipIv.visibility = View.VISIBLE
+                vipIv.setImageResource(R.drawable.vip_money_icon)
+            }
+            model?.vipInfo?.vipType == EVIPType.EVT_RENQI.value -> {
+                vipIv.visibility = View.VISIBLE
+                vipIv.setImageResource(R.drawable.vip_people_icon)
             }
             else -> {
                 vipIv.visibility = View.GONE
@@ -83,19 +94,7 @@ class AvatarView : ConstraintLayout {
                     .setBorderWidth(borderWidth.toFloat())
                     .setCircle(isCircle)
                     .build())
-            when {
-                model?.vipInfo?.vipType == EVIPType.EVT_RED_V.value -> {
-                    vipIv.visibility = View.VISIBLE
-                    vipIv.setImageResource(R.drawable.vip_red_icon)
-                }
-                model?.vipInfo?.vipType == EVIPType.EVT_GOLDEN_V.value -> {
-                    vipIv.visibility = View.VISIBLE
-                    vipIv.setImageResource(R.drawable.vip_gold_icon)
-                }
-                else -> {
-                    vipIv.visibility = View.GONE
-                }
-            }
+            initVipInfo(model)
         } else {
             bindData(model)
         }
@@ -108,19 +107,7 @@ class AvatarView : ConstraintLayout {
                 .setBorderWidth(borderWidth.toFloat())
                 .setCircle(isCircle)
                 .build())
-        when {
-            model?.vipInfo?.vipType == EVIPType.EVT_RED_V.value -> {
-                vipIv.visibility = View.VISIBLE
-                vipIv.setImageResource(R.drawable.vip_red_icon)
-            }
-            model?.vipInfo?.vipType == EVIPType.EVT_GOLDEN_V.value -> {
-                vipIv.visibility = View.VISIBLE
-                vipIv.setImageResource(R.drawable.vip_gold_icon)
-            }
-            else -> {
-                vipIv.visibility = View.GONE
-            }
-        }
+        initVipInfo(model)
     }
 
     fun setImageDrawable(drawble: Drawable) {

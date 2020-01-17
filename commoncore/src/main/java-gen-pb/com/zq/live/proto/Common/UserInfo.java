@@ -106,7 +106,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   private final Integer mainLevel;
 
   /**
-   * vip类型
+   * 认真类型
    */
   @WireField(
       tag = 8,
@@ -320,7 +320,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   }
 
   /**
-   * vip类型
+   * 认真类型
    */
   public VipInfo getVipInfo() {
     if(vipInfo==null){
@@ -409,7 +409,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   }
 
   /**
-   * vip类型
+   * 认真类型
    */
   public boolean hasVipInfo() {
     return vipInfo!=null;
@@ -519,7 +519,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     }
 
     /**
-     * vip类型
+     * 认真类型
      */
     public Builder setVipInfo(VipInfo vipInfo) {
       this.vipInfo = vipInfo;

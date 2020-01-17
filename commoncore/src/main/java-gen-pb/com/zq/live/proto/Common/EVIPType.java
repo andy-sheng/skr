@@ -24,7 +24,17 @@ public enum EVIPType implements WireEnum {
   /**
    * 金v
    */
-  EVT_GOLDEN_V(2);
+  EVT_GOLDEN_V(2),
+
+  /**
+   * “豪”徽章奖励
+   */
+  EVT_HAO(3),
+
+  /**
+   * “人气”徽章奖励
+   */
+  EVT_RENQI(4);
 
   public static final ProtoAdapter<EVIPType> ADAPTER = new ProtoAdapter_EVIPType();
 
@@ -42,6 +52,8 @@ public enum EVIPType implements WireEnum {
       case 0: return EVT_UNKNOWN;
       case 1: return EVT_RED_V;
       case 2: return EVT_GOLDEN_V;
+      case 3: return EVT_HAO;
+      case 4: return EVT_RENQI;
       default: return null;
     }
   }
