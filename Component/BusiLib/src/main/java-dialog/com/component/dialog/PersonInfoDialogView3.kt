@@ -130,11 +130,14 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         avatarIv.setDebounceViewClickListener { clickListener?.onClickAvatar(mUserInfoModel.avatar) }
         levelBg.setDebounceViewClickListener { clickListener?.onClickAvatar(mUserInfoModel.avatar) }
         moreIv.setDebounceViewClickListener { showMoreOpView() }
-        inviteIv.setDebounceViewClickListener {
-            // 点击邀请唱聊
-            StatisticsAdapter.recordCountEvent("cp", "invite2", null)
-            clickListener?.onClickDoubleInvite(mUserInfoModel)
-        }
+
+        // 去掉双人唱聊邀请
+        inviteIv.visibility = View.GONE
+//        inviteIv.setDebounceViewClickListener {
+//            // 点击邀请唱聊
+//            StatisticsAdapter.recordCountEvent("cp", "invite2", null)
+//            clickListener?.onClickDoubleInvite(mUserInfoModel)
+//        }
         followIv.setDebounceViewClickListener { clickListener?.onClickFollow(mUserId, mUserInfoModel.isFriend, mUserInfoModel.isFollow) }
         giftIv.setDebounceViewClickListener { clickListener?.onClickSendGift(mUserInfoModel) }
 

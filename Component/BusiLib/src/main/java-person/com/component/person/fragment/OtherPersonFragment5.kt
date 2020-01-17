@@ -693,10 +693,12 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
         }
 
-        mInviteIv.setDebounceViewClickListener {
-            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-            iRankingModeService.tryInviteToRelay(mUserId, mUserInfoModel.isFriend)
-        }
+        // 去掉邀请
+        mInviteIv.visibility = View.GONE
+//        mInviteIv.setDebounceViewClickListener {
+//            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+//            iRankingModeService.tryInviteToRelay(mUserId, mUserInfoModel.isFriend)
+//        }
     }
 
     override fun useEventBus(): Boolean {
