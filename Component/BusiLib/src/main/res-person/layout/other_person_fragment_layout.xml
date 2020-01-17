@@ -341,13 +341,14 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/invite_iv"
-            android:layout_width="@dimen/view_100_dp"
+            android:layout_width="@dimen/view_152_dp"
             android:layout_height="@dimen/view_40_dp"
             android:layout_centerInParent="true"
             android:background="@drawable/common_red_button_icon"
             android:gravity="center"
-            android:paddingBottom="@dimen/view_4_dp"
+            android:paddingBottom="@dimen/view_5_dp"
             android:text="邀请合唱"
+            android:visibility="gone"
             android:textColor="#A74068"
             android:textSize="@dimen/textsize_16_dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -357,12 +358,12 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/message_iv"
-            android:layout_width="@dimen/view_100_dp"
+            android:layout_width="@dimen/view_152_dp"
             android:layout_height="@dimen/view_40_dp"
             android:layout_centerInParent="true"
             android:background="@drawable/common_yellow_button_icon"
             android:gravity="center"
-            android:paddingBottom="@dimen/view_4_dp"
+            android:paddingBottom="@dimen/view_5_dp"
             android:text="发消息"
             android:textColor="#AD6C00"
             android:textSize="@dimen/textsize_16_dp"
@@ -373,12 +374,12 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/follow_iv"
-            android:layout_width="@dimen/view_100_dp"
+            android:layout_width="@dimen/view_152_dp"
             android:layout_height="@dimen/view_40_dp"
             android:layout_centerInParent="true"
             android:background="@drawable/common_yellow_button_icon"
             android:gravity="center"
-            android:paddingBottom="@dimen/view_4_dp"
+            android:paddingBottom="@dimen/view_5_dp"
             android:text="关注Ta"
             android:textColor="#AD6C00"
             android:textSize="@dimen/textsize_16_dp"
