@@ -4,7 +4,9 @@
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/skr_common_gradient_bg">
+    android:background="@drawable/skr_common_gradient_bg"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/title"
