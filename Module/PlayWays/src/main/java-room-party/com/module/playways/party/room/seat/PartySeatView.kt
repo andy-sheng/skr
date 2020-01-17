@@ -116,7 +116,7 @@ class PartySeatView : ConstraintLayout {
         seatInfo?.let {
             var model = QuickAnswerUiModel()
             model.seq = event.answer.seq
-            model.durationTime = 5000
+            model.durationTime = 1000*10
             adapter.notifyItemChanged(it.seatSeq - 1, model)
         }
     }

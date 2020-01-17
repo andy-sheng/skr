@@ -1190,6 +1190,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
         if(sb.toString().isNotEmpty()){
             sb.insert(0,"抢答结果:\n")
+        }else{
+            sb.append("抢答结果:\n无人抢答")
         }
         pretendSystemMsg(sb.toString())
         EventBus.getDefault().post(PartyQuickAnswerResultEvent(answers))
