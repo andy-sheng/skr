@@ -85,6 +85,8 @@ class RelayMatchActivity : BaseActivity() {
     var roomJob: Job? = null
     var roomInterval = 6 * 1000L
 
+    private var inviteIntervalTimeMs = 6 * 1000L // 邀请倒计时
+
     var mLoadService: LoadService<*>? = null
 
     var todayResTimes: Int = 0
@@ -223,11 +225,15 @@ class RelayMatchActivity : BaseActivity() {
                 relayMatchServerApi.sendRedPacketInvite(body)
             }
             if (result.errno == 0) {
+                inviteIntervalTimeMs = result.data.getLongValue("inviteIntervalTimeMs")
                 // 更新到已邀请
                 adapter.updateInviteStatus(itemInfo, true)
                 // 停止发送匹配
                 matchJob?.cancel()
                 // 开始邀请等待倒计时
+                if (inviteIntervalTimeMs <= 0) {
+                    inviteIntervalTimeMs = 6 * 1000L
+                }
                 showInviteCountDown(itemInfo)
             } else {
                 U.getToastUtil().showShort(result.errmsg)
@@ -243,7 +249,7 @@ class RelayMatchActivity : BaseActivity() {
                 .setCircle(true)
                 .build())
         circleCountDownView?.cancelAnim()
-        circleCountDownView?.go(0, 6 * 1000) {
+        circleCountDownView?.go(0, inviteIntervalTimeMs.toInt()) {
             // 更新恢复到未邀请状态
             circleCountDownView?.visibility = View.GONE
             inviteAvatar?.visibility = View.GONE
