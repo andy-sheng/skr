@@ -482,13 +482,17 @@ class RelayMatchActivity : BaseActivity() {
                 tryGoRelayRoom(joinRelayRoomRspModel)
             } else {
                 U.getToastUtil().showShort(result.errmsg)
-                adapter.mDataList.remove(model)
-                adapter.notifyItemRemoved(position)//注意这里
-                if (position != adapter.mDataList.size) {
-                    adapter.notifyItemRangeChanged(position, adapter.mDataList.size - position)
+                if (result.errno == 8343064 || result.errno == 8343065) {
+                    // 在等待邀请响应中，8343064
+                    // 对方在繁忙中
+                } else {
+                    adapter.mDataList.remove(model)
+                    adapter.notifyItemRemoved(position)//注意这里
+                    if (position != adapter.mDataList.size) {
+                        adapter.notifyItemRangeChanged(position, adapter.mDataList.size - position)
+                    }
+                    checkIsEmpty()
                 }
-
-                checkIsEmpty()
             }
         }
     }
