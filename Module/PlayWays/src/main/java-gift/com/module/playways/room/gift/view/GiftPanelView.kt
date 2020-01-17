@@ -440,6 +440,11 @@ open class GiftPanelView : FrameLayout {
             return
         }
 
+        if (H.isPartyRoom() && H.partyRoomData?.hostId == MyUserInfoManager.uid.toInt()) {
+            getCoinBalance()
+            getZSBalance()
+        }
+
         EventBus.getDefault().post(StartGiftCountDownEvent())
 
         setSelectArea(playerInfoModel)
