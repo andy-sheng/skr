@@ -170,7 +170,9 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     speakerAnimationIv.reset()
                 }
             }
-
+            avatarLevel.setDebounceViewClickListener {
+                listener?.clickRedPacketAvatar(mPos, mModel)
+            }
         }
 
         fun bindData(position: Int, model: RelaySelectItemInfo) {
@@ -254,6 +256,9 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         init {
             joinTv.setDebounceViewClickListener {
                 listener?.selectRoom(mPos, mModel)
+            }
+            avatarLevel.setDebounceViewClickListener {
+                listener?.clickMatchAvatar(mPos, mModel)
             }
         }
 
@@ -345,5 +350,8 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun selectRoom(position: Int, model: RelaySelectItemInfo?)
         fun selectRedPacket(position: Int, model: RelaySelectItemInfo?)
         fun clickVoiceInfo(position: Int, model: RelaySelectItemInfo?): Boolean
+
+        fun clickMatchAvatar(position: Int, model: RelaySelectItemInfo?)
+        fun clickRedPacketAvatar(position: Int, model: RelaySelectItemInfo?)
     }
 }

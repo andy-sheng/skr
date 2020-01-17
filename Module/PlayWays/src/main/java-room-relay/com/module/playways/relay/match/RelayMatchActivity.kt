@@ -31,7 +31,9 @@ import com.component.busilib.manager.BgMusicManager
 import com.component.busilib.view.CircleCountDownView
 import com.component.busilib.view.recyclercardview.CardScaleHelper
 import com.component.busilib.view.recyclercardview.SpeedRecyclerView
+import com.component.dialog.PersonInfoDialog
 import com.component.lyrics.utils.SongResUtils
+import com.component.report.fragment.QuickFeedbackFragment
 import com.dialog.view.TipsDialogView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.kingja.loadsir.callback.Callback
@@ -95,6 +97,7 @@ class RelayMatchActivity : BaseActivity() {
     var needAlert: Boolean = false  // 是否需要在次数不足显示充值弹窗
 
     var mTipsDialogView: TipsDialogView? = null
+    var mPersonInfoDialog: PersonInfoDialog? = null
 
     var playingVoiceIndex = -1
 
@@ -158,12 +161,30 @@ class RelayMatchActivity : BaseActivity() {
         })
 
         adapter.listener = object : RelayRoomAdapter.RelayRoomListener {
+            override fun clickRedPacketAvatar(position: Int, model: RelaySelectItemInfo?) {
+                model?.redpacketItem?.user?.userId?.let {
+                    mPersonInfoDialog?.dismiss(false)
+                    mPersonInfoDialog = PersonInfoDialog.Builder(this@RelayMatchActivity, QuickFeedbackFragment.FROM_RELAY_ROOM, it, false, false)
+                            .build()
+                    mPersonInfoDialog?.show()
+                }
+            }
+
+            override fun clickMatchAvatar(position: Int, model: RelaySelectItemInfo?) {
+                model?.matchItem?.user?.userId?.let {
+                    mPersonInfoDialog?.dismiss(false)
+                    mPersonInfoDialog = PersonInfoDialog.Builder(this@RelayMatchActivity, QuickFeedbackFragment.FROM_RELAY_ROOM, it, false, false)
+                            .build()
+                    mPersonInfoDialog?.show()
+                }
+            }
+
             // 点击声音标签
             override fun clickVoiceInfo(position: Int, model: RelaySelectItemInfo?): Boolean {
                 MyLog.d(TAG, "SinglePlayer.isPlaying=${SinglePlayer.isPlaying} SinglePlayer.startFrom=${SinglePlayer.startFrom}")
-                if (SinglePlayer.isPlaying && SinglePlayer.startFrom == TAG) {
+                return if (SinglePlayer.isPlaying && SinglePlayer.startFrom == TAG) {
                     stopVoicePlay("clickVoiceInfo")
-                    return false
+                    false
                 } else {
                     playingVoiceIndex = position
                     var url = model?.redpacketItem?.voiceInfo?.voiceURL
@@ -172,7 +193,7 @@ class RelayMatchActivity : BaseActivity() {
                     SinglePlayer.startPlay(TAG, url ?: "")
                     // 停止刷新列表
                     cancelTimeRoom()
-                    return true
+                    true
                 }
             }
 
@@ -482,13 +503,17 @@ class RelayMatchActivity : BaseActivity() {
                 tryGoRelayRoom(joinRelayRoomRspModel)
             } else {
                 U.getToastUtil().showShort(result.errmsg)
-                adapter.mDataList.remove(model)
-                adapter.notifyItemRemoved(position)//注意这里
-                if (position != adapter.mDataList.size) {
-                    adapter.notifyItemRangeChanged(position, adapter.mDataList.size - position)
+                if (result.errno == 8343064 || result.errno == 8343065) {
+                    // 在等待邀请响应中，8343064
+                    // 对方在繁忙中
+                } else {
+                    adapter.mDataList.remove(model)
+                    adapter.notifyItemRemoved(position)//注意这里
+                    if (position != adapter.mDataList.size) {
+                        adapter.notifyItemRangeChanged(position, adapter.mDataList.size - position)
+                    }
+                    checkIsEmpty()
                 }
-
-                checkIsEmpty()
             }
         }
     }
