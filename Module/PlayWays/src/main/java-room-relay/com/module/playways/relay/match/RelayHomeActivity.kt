@@ -325,8 +325,10 @@ class RelayHomeActivity : BaseActivity() {
 
             if (result.errno == 0) {
                 if (isOpen) {
+                    U.getToastUtil().showShort("开启红包合唱成功")
                     StatisticsAdapter.recordCountEvent("chorus", "redpacket_open", null)
                 } else {
+                    U.getToastUtil().showShort("关闭红包合唱成功")
                     StatisticsAdapter.recordCountEvent("chorus", "redpacket_close", null)
                 }
                 status = result.data.getIntValue("status")
