@@ -210,12 +210,14 @@ class PartyRightQuickAnswerView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
                             .setPressedDrawable(U.getDrawable(R.drawable.party_quick_answer_ing))
                             .setUnPressedDrawable(U.getDrawable(R.drawable.party_quick_answer_ing))
                             .build()
+                    grabIv.isEnabled = false
                 }else{
                     drawable = DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
                             .setShape(DrawableCreator.Shape.Rectangle)
                             .setPressedDrawable(U.getDrawable(R.drawable.party_qiangda_disable))
                             .setUnPressedDrawable(U.getDrawable(R.drawable.party_qiangda_enable))
                             .build()
+                    grabIv.isEnabled = true
                 }
                 grabIv.background = drawable
                 grabIv.setOnTouchListener { v, event ->
