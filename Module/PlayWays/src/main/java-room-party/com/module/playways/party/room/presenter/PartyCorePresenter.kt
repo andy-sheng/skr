@@ -10,7 +10,10 @@ import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.*
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
@@ -20,7 +23,6 @@ import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
-import com.module.playways.BaseRoomData
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.*
@@ -182,7 +184,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PResultVote) {
-        pretendSystemMsg("投票结果：${UserInfoManager.getInstance().getRemarkName(event.voteInfosList[0].user.userInfo.userID, event.voteInfosList[0].user.userInfo.nickName)} ${event.voteInfosList[0].voteCnt}票" + "\n" +
+        pretendSystemMsg("投票结果：" + "\n" +
+                "${UserInfoManager.getInstance().getRemarkName(event.voteInfosList[0].user.userInfo.userID, event.voteInfosList[0].user.userInfo.nickName)} ${event.voteInfosList[0].voteCnt}票" + "\n" +
                 "${UserInfoManager.getInstance().getRemarkName(event.voteInfosList[1].user.userInfo.userID, event.voteInfosList[1].user.userInfo.nickName)} ${event.voteInfosList[1].voteCnt}票")
     }
 
@@ -625,7 +628,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         if (mRoomData.myUserInfo?.isHost() == true || this.mRoomData.myUserInfo?.isGuest() == true) {
             if (!ZqEngineKit.getInstance().params.isAnchor) {
                 ZqEngineKit.getInstance().setClientRole(true)
-                mRoomData.isMute = false
+                if (!mRoomData.isMute) {
+                    // 我得开着麦
+                    ZqEngineKit.getInstance().adjustRecordingSignalVolume(ZqEngineKit.getInstance().params.recordingSignalVolume, false)
+                } else {
+                    ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
+                }
             }
         } else {
             if (ZqEngineKit.getInstance().params.isAnchor) {
@@ -1188,9 +1196,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             answers.add(anp)
             sb.append(anp.seq).append(".").append(anp.user?.userInfo?.nicknameRemark).append("\n")
         }
-        if(sb.toString().isNotEmpty()){
-            sb.insert(0,"抢答结果:\n")
-        }else{
+        if (sb.toString().isNotEmpty()) {
+            sb.insert(0, "抢答结果:\n")
+        } else {
             sb.append("抢答结果:\n无人抢答")
         }
         pretendSystemMsg(sb.toString())
