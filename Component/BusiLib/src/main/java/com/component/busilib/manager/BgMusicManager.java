@@ -8,6 +8,8 @@ import android.view.animation.LinearInterpolator;
 import com.common.log.MyLog;
 import com.common.player.ExoPlayer;
 import com.common.player.PlayerCallbackAdapter;
+import com.common.player.SinglePlayer;
+import com.common.player.SinglePlayerCallbackAdapter;
 import com.common.utils.U;
 
 public class BgMusicManager {
@@ -17,36 +19,21 @@ public class BgMusicManager {
     public static final String PREF_KEY_PIPEI_VOLUME_SWITCH = "pref_pipei_volume_switch";   // 音量开关
     public static final String PREF_KEY_PIPEI_VOLUME = "pref_pipei_volume";                 // 音量百分比
 
-    boolean mIsPlay;   // 音效开关
     float mMaxVolume;  // 最大音量
     boolean mIsRoom = false;   // 是否在房间内，可以直接在GraMatchSucessFragment
 
-    ExoPlayer mExoPlayer;
     ValueAnimator mAnimator;  // 用来做淡入的效果
 
     private BgMusicManager() {
-        mIsPlay = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_PIPEI_VOLUME_SWITCH, true);
         mMaxVolume = U.getPreferenceUtils().getSettingInt(PREF_KEY_PIPEI_VOLUME, 100) / 100f;
     }
 
-    private static class BgMusicManagerrHolder {
+    private static class BgMusicManagerHolder {
         private static final BgMusicManager INSTANCE = new BgMusicManager();
     }
 
     public static final BgMusicManager getInstance() {
-        return BgMusicManagerrHolder.INSTANCE;
-    }
-
-    public boolean isPlay() {
-        return mIsPlay;
-    }
-
-    public void setPlay(boolean play) {
-        mIsPlay = play;
-    }
-
-    public float getMaxVolume() {
-        return mMaxVolume;
+        return BgMusicManagerHolder.INSTANCE;
     }
 
     public void setMaxVolume(float maxVolume) {
@@ -54,8 +41,16 @@ public class BgMusicManager {
     }
 
     public void starPlay(final String path, final long msec, final String from) {
+        starPlay(path, msec, from, 0);
+    }
+
+    public void starPlay(final String path, final long msec, final String from, int deep) {
         MyLog.d(TAG, "starPlay" + " path=" + path + " msec=" + msec + " from=" + from);
-        if (!mIsPlay) {
+        if (deep >= 10) {
+            return;
+        }
+        // 音效开关
+        if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_PIPEI_VOLUME_SWITCH, true)) {
             MyLog.d(TAG, "starPlay" + " isPlay = false ");
             return;
         }
@@ -70,24 +65,15 @@ public class BgMusicManager {
             return;
         }
 
-        if (mExoPlayer != null && mExoPlayer.isPlaying()) {
-            mExoPlayer.stop();
-        }
-        if (mExoPlayer == null) {
-            mExoPlayer = new ExoPlayer();
-        }
-
-        mExoPlayer.startPlay(path);
-
+        SinglePlayer.INSTANCE.startPlay(TAG, path);
         if (msec != 0) {
-            mExoPlayer.seekTo(msec);
+            SinglePlayer.INSTANCE.seekTo(TAG, msec);
         }
 
-        mExoPlayer.setCallback(new PlayerCallbackAdapter() {
-
+        SinglePlayer.INSTANCE.addCallback(TAG, new SinglePlayerCallbackAdapter() {
             @Override
             public void onCompletion() {
-                starPlay(path, msec, from);
+                starPlay(path, msec, from, deep + 1);
             }
         });
 
@@ -99,9 +85,9 @@ public class BgMusicManager {
     }
 
     public void setRoom(boolean room) {
-        if(room!=mIsRoom){
+        if (room != mIsRoom) {
             mIsRoom = room;
-            if(mIsRoom){
+            if (mIsRoom) {
                 // 如果切换到房间内了，destroy保护一下
                 destory();
             }
@@ -109,7 +95,7 @@ public class BgMusicManager {
     }
 
     public boolean isPlaying() {
-        if (mExoPlayer != null && mExoPlayer.isPlaying()) {
+        if (SinglePlayer.INSTANCE.getStartFrom() == TAG && SinglePlayer.INSTANCE.isPlaying()) {
             return true;
         }
 
@@ -128,9 +114,7 @@ public class BgMusicManager {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 if (valueAnimator.getAnimatedValue() instanceof Float) {
-                    if (mExoPlayer != null) {
-                        mExoPlayer.setVolume((float) valueAnimator.getAnimatedValue());
-                    }
+                    SinglePlayer.INSTANCE.setVolume((float) valueAnimator.getAnimatedValue());
                 }
             }
         });
@@ -143,9 +127,7 @@ public class BgMusicManager {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                if (mExoPlayer != null) {
-                    mExoPlayer.setVolume(mMaxVolume);
-                }
+                SinglePlayer.INSTANCE.setVolume(mMaxVolume);
             }
 
             @Override
@@ -164,12 +146,8 @@ public class BgMusicManager {
 
     public void destory() {
         MyLog.d(TAG, "destory");
-        if (mExoPlayer != null) {
-            mExoPlayer.setCallback(null);
-            mExoPlayer.release();
-            mExoPlayer = null;
-        }
-
+        SinglePlayer.INSTANCE.stop(TAG);
+        SinglePlayer.INSTANCE.removeCallback(TAG);
         if (mAnimator != null) {
             mAnimator.cancel();
         }

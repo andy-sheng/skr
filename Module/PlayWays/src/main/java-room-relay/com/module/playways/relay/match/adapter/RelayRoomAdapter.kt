@@ -135,6 +135,8 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class RelayRedPacketViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
+        val TAG = "RelayRedPacketViewHolder"
+        private val audioBg: View = item.findViewById(R.id.audio_bg)
         private val speakerAnimationIv: SpeakingTipsAnimationView = item.findViewById(R.id.speaker_animation_iv)
         private val imageBg: ImageView = item.findViewById(R.id.image_bg)
         private val avatarLevel: AvatarView = item.findViewById(R.id.avatar_level)
@@ -154,18 +156,14 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             inviteTv.setDebounceViewClickListener {
                 listener?.selectRedPacket(mPos, mModel)
             }
-            speakerAnimationIv.setDebounceViewClickListener {
-                mModel?.redpacketItem?.voiceInfo?.voiceURL?.let {
-                    speakerAnimationIv.show(mModel?.redpacketItem?.voiceInfo?.duration?.toInt()
-                            ?: 3, true)
-                    if (SinglePlayer.isPlaying) {
-                        speakerAnimationIv.reset()
-                        SinglePlayer.stop("RelayRedPacketViewHolder")
-                    } else {
-                        SinglePlayer.startPlay("RelayRedPacketViewHolder", it)
-                    }
+            audioBg.setDebounceViewClickListener {
+                if(listener?.clickVoiceInfo(mPos, mModel)==true){
+                    speakerAnimationIv.show(mModel?.redpacketItem?.voiceInfo?.duration?.toInt() ?: 3000,true)
+                }else{
+                    speakerAnimationIv.reset()
                 }
             }
+
         }
 
         fun bindData(position: Int, model: RelaySelectItemInfo) {
@@ -202,11 +200,12 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             speakerAnimationIv.reset()
-            SinglePlayer.stop("RelayRedPacketViewHolder")
             if(model?.redpacketItem?.voiceInfo?.voiceURL?.isNotEmpty() == true){
                 speakerAnimationIv.visibility = View.VISIBLE
+                audioBg.visibility = View.VISIBLE
             }else{
                 speakerAnimationIv.visibility = View.GONE
+                audioBg.visibility = View.GONE
             }
         }
 
@@ -332,5 +331,6 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun getRecyclerViewPosition(): Int
         fun selectRoom(position: Int, model: RelaySelectItemInfo?)
         fun selectRedPacket(position: Int, model: RelaySelectItemInfo?)
+        fun clickVoiceInfo(position: Int, model: RelaySelectItemInfo?):Boolean
     }
 }

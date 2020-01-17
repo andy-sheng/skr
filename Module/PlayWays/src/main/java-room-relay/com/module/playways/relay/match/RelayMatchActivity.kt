@@ -16,6 +16,8 @@ import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
+import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -56,6 +58,7 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import kotlin.random.Random
 
 @Route(path = RouterConstants.ACTIVITY_RELAY_MATCH)
 class RelayMatchActivity : BaseActivity() {
@@ -136,14 +139,38 @@ class RelayMatchActivity : BaseActivity() {
 //                        loadMore = true
 //                        getRecommendRoomList()
 //                    }
-                    startTimerRoom(roomInterval)
+                    stopVoicePlay("onScrollStateChanged")
                 } else {
                     cancelTimeRoom()
                 }
             }
         })
 
+        SinglePlayer.addCallback(TAG, object : SinglePlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                stopVoicePlay("onCompletion")
+            }
+        })
+
         adapter.listener = object : RelayRoomAdapter.RelayRoomListener {
+            // 点击声音标签
+            override fun clickVoiceInfo(position: Int, model: RelaySelectItemInfo?): Boolean {
+                MyLog.d(TAG, "SinglePlayer.isPlaying=${SinglePlayer.isPlaying} SinglePlayer.startFrom=${SinglePlayer.startFrom}")
+                if (SinglePlayer.isPlaying && SinglePlayer.startFrom == TAG) {
+                    stopVoicePlay("clickVoiceInfo")
+                    return false
+                } else {
+                    var url = model?.redpacketItem?.voiceInfo?.voiceURL
+                    SinglePlayer.setVolume(1.0f)
+                    BgMusicManager.getInstance().destory()
+                    SinglePlayer.startPlay(TAG, url ?: "")
+                    // 停止刷新列表
+                    cancelTimeRoom()
+                    return true
+                }
+            }
+
             override fun selectRedPacket(position: Int, model: RelaySelectItemInfo?) {
                 model?.let {
                     sendRedPacketInvite(position, it)
@@ -213,6 +240,15 @@ class RelayMatchActivity : BaseActivity() {
         }
 
         BgMusicManager.getInstance().starPlay(model?.acc, 0, "RelayMatchActivity")
+    }
+
+    private fun stopVoicePlay(from:String) {
+        MyLog.d(TAG, "stopVoicePlay from = $from")
+        SinglePlayer.stop(TAG)
+        startTimerRoom(roomInterval)
+        if(!BgMusicManager.getInstance().isPlaying){
+            BgMusicManager.getInstance().starPlay(model?.acc, Random(System.currentTimeMillis()).nextInt(1 * 60 * 1000).toLong(), "RelayMatchActivity")
+        }
     }
 
     private fun sendRedPacketInvite(position: Int, itemInfo: RelaySelectItemInfo) {
@@ -494,6 +530,8 @@ class RelayMatchActivity : BaseActivity() {
         matchJob?.cancel()
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         BgMusicManager.getInstance().destory()
+        SinglePlayer.stop(TAG)
+        SinglePlayer.removeCallback(TAG)
     }
 
     override fun onBackPressedForActivity(): Boolean {

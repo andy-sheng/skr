@@ -32,12 +32,14 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
             R.drawable.yuyin_shengwen3,
     };
 
+    //1
     int mMsgAnimationRes[] = new int[]{
             R.drawable.msg_yuyin_1,
             R.drawable.msg_yuyin_2,
             R.drawable.msg_yuyin_3
     };
 
+    //2
     int mPostsAnimationRes[] = new int[]{
             R.drawable.posts_yuyin_1,
             R.drawable.posts_yuyin_2,

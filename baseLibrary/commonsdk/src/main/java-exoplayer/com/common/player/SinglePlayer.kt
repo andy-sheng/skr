@@ -134,6 +134,11 @@ object SinglePlayer : IPlayerEx {
         return player.isBufferingOk
     }
 
+    //0-1.0
+    fun setVolume( volume:Float){
+        player.volume = volume
+    }
+
 }
 
 open class SinglePlayerCallbackAdapter: PlayerCallbackAdapter() {

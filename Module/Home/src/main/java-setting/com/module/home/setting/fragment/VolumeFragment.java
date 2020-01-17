@@ -51,7 +51,6 @@ public class VolumeFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 U.getPreferenceUtils().setSettingBoolean(PREF_KEY_PIPEI_VOLUME_SWITCH, isChecked);
-                BgMusicManager.getInstance().setPlay(isChecked);
             }
         });
 
