@@ -34,7 +34,7 @@ class PrepareSongPresenter(@param:NotNull internal var mOnDownloadProgress: Http
         //伴奏
         val accUrl = mSongModel.acc
         if (!TextUtils.isEmpty(accUrl)) {
-            val acc = UrlRes(accUrl, SongResUtils.getACCDir(), U.getFileUtils().getSuffixFromUrl(accUrl, SongResUtils.SUFF_ACC))
+            val acc = UrlRes(accUrl, SongResUtils.getAccFileByUrl(accUrl))
             songResList.add(acc)
         }
 
@@ -48,7 +48,7 @@ class PrepareSongPresenter(@param:NotNull internal var mOnDownloadProgress: Http
         //评分文件
         val midiUrl = mSongModel.midi
         if (!TextUtils.isEmpty(midiUrl)) {
-            val midi = UrlRes(midiUrl, SongResUtils.getMIDIDir(), U.getFileUtils().getSuffixFromUrl(midiUrl, SongResUtils.SUFF_MIDI))
+            val midi = UrlRes(midiUrl, SongResUtils.getMIDIFileByUrl(midiUrl))
             songResList.add(midi)
         }
 

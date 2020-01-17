@@ -14,10 +14,7 @@ object MediaCacheManager {
     private val saveFile = U.getAppInfoUtils().getSubDirFile("acc")
     private val fileNameGenerator = FileNameGenerator { url ->
         MyLog.d(TAG, "url=$url")
-        var url2 = url
-        if (url2?.contains("song-static-1") == true) {
-            url2 = url2?.replace("song-static-1", "song-static")
-        }
+        var url2 = getOriginCdnUrl(url)
         U.getMD5Utils().MD5_16(url2) + "." + U.getFileUtils().getSuffixFromUrl(url2, "m4a")
     }
 
@@ -33,6 +30,13 @@ object MediaCacheManager {
 //            override fun onCacheAvailable(cacheFile: File?, url: String?, percentsAvailable: Int) {
 //            }
 //        },"url")
+    }
+
+    fun getOriginCdnUrl(url: String?): String? {
+        if (url?.contains("song-static-1") == true) {
+            return url?.replace("song-static-1", "song-static")
+        }
+        return url
     }
 
     fun getProxyUrl(url: String, allowFromCache: Boolean): String {

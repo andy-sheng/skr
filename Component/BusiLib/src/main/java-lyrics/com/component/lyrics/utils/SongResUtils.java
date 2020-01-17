@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.videocache.MediaCacheManager;
 
 import java.io.File;
 
@@ -120,10 +121,7 @@ public class SongResUtils {
     }
 
     private static File getFile(String dir, String url, String suff) {
-        String url2 = url;
-        if (url2 != null && url2.contains("song-static-1") == true) {
-            url2 = url2.replace("song-static-1", "song-static");
-        }
+        String url2 = MediaCacheManager.INSTANCE.getOriginCdnUrl(url);
         MyLog.i("SongResUtils", "dir=" + dir);
         File file = new File(dir + File.separator + getFileNameWithMD5(url2) + "." + suff);
         if (file.exists()) {

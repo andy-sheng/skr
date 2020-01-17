@@ -159,14 +159,29 @@
         app:layout_constraintRight_toLeftOf="@id/invite_tv"
         app:layout_constraintTop_toTopOf="@id/bottom_area" />
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/audio_bg"
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_gradient_angle="0"
+        app:bl_gradient_endColor="#94DD8B"
+        app:bl_gradient_startColor="#8FD2FF"
+        app:bl_shape="rectangle"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.component.busilib.view.SpeakingTipsAnimationView
         android:id="@+id/speaker_animation_iv"
         android:layout_width="@dimen/view_12_dp"
         android:layout_height="@dimen/view_14_dp"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:layout_marginRight="@dimen/view_12_dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="@dimen/view_1_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/audio_bg"
+        app:layout_constraintLeft_toLeftOf="@+id/audio_bg"
+        app:layout_constraintRight_toRightOf="@+id/audio_bg"
+        app:layout_constraintTop_toTopOf="@+id/audio_bg"
         speaking:animationtype="msg_audio" />
 
 </android.support.constraint.ConstraintLayout>

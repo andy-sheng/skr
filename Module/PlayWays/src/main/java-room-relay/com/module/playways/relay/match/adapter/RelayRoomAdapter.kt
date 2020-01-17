@@ -171,8 +171,6 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bindData(position: Int, model: RelaySelectItemInfo) {
             this.mPos = position
             this.mModel = model
-            speakerAnimationIv.reset()
-            SinglePlayer.stop("RelayRedPacketViewHolder")
             initBackground(model.redpacketItem?.user?.sex, imageBg, bottomArea, sexTv)
             costTv.text = "${model.redpacketItem?.costZS.toString()}/次"
             val maleDrawable = DrawableCreator.Builder()
@@ -203,6 +201,13 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 ageTv.visibility = View.GONE
             }
 
+            speakerAnimationIv.reset()
+            SinglePlayer.stop("RelayRedPacketViewHolder")
+            if(model?.redpacketItem?.voiceInfo?.voiceURL?.isNotEmpty() == true){
+                speakerAnimationIv.visibility = View.VISIBLE
+            }else{
+                speakerAnimationIv.visibility = View.GONE
+            }
         }
 
         fun setInvited(hasInvited: Boolean) {

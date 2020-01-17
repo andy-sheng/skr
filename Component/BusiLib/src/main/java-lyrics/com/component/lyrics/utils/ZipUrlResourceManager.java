@@ -149,9 +149,7 @@ public class ZipUrlResourceManager {
         currentTask = songRes;
 
         //先用临时文件路径下载
-        File file  = new File(songRes.getAbsolutPath());
-
-        U.getHttpUtils().downloadFileSync(songRes.getResUrl(), file,true, new HttpUtils.OnDownloadProgress() {
+        U.getHttpUtils().downloadFileSync(songRes.getResUrl(), songRes.outFile,true, new HttpUtils.OnDownloadProgress() {
             @Override
             public void onDownloaded(long downloaded, long length) {
                 if (onDownloadProgress != null) {
