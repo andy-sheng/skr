@@ -649,7 +649,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     fun onEvent(event: RelayRoomInviteMsg) {
         val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
         if (iRankingModeService.canShowRelayInvite(event.user.userID, event.inviteType.value)) {
-            if (event.inviteType == ERInviteType.RIT_REDPACKET_INVITE) {
+            if (event.inviteType.value == ERInviteType.RIT_REDPACKET_INVITE.value) {
                 val redPacketRelayDialogView = RedPacketRelayDialogView(U.getActivityUtils().topActivity, event)
                 redPacketRelayDialogView.clickMethod = {
                     if (it) {
