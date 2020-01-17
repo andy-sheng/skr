@@ -185,7 +185,7 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/invite_iv"
-        android:layout_width="@dimen/view_100_dp"
+        android:layout_width="@dimen/view_152_dp"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_16_dp"
@@ -194,6 +194,7 @@
         android:gravity="center"
         android:paddingBottom="@dimen/view_5_dp"
         android:text="邀请合唱"
+        android:visibility="gone"
         android:textColor="#AF436B"
         android:textSize="@dimen/textsize_16_dp"
         app:layout_constrainedWidth="true"
@@ -205,7 +206,7 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/follow_iv"
-        android:layout_width="@dimen/view_100_dp"
+        android:layout_width="@dimen/view_152_dp"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_16_dp"
@@ -225,7 +226,7 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/gift_iv"
-        android:layout_width="@dimen/view_100_dp"
+        android:layout_width="@dimen/view_152_dp"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginBottom="@dimen/view_12_dp"
