@@ -174,6 +174,7 @@ class RelayMatchActivity : BaseActivity() {
             }
 
             override fun selectRedPacket(position: Int, model: RelaySelectItemInfo?) {
+                StatisticsAdapter.recordCountEvent("chorus", "redpacket_invite", null)
                 model?.let {
                     sendRedPacketInvite(position, it)
                 }
