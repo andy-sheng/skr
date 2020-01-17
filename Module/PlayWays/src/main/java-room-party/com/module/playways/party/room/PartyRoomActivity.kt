@@ -19,8 +19,6 @@ import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
-import com.common.player.SinglePlayer
-import com.common.player.SinglePlayerCallbackAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
@@ -33,7 +31,6 @@ import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
 import com.component.toast.CommonToastView
 import com.dialog.view.TipsDialogView
-import com.engine.agora.AgoraEngineAdapter
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.BaseRoomData
@@ -84,7 +81,6 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.PartyRoom.EPGameType
 import com.zq.live.proto.PartyRoom.PBeginVote
 import com.zq.live.proto.PartyRoom.PKickoutUserMsg
-import com.zq.mediaengine.kit.ZqEngineKit
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -469,7 +465,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 } else {
                     //别人在唱
                     mGiftPanelView?.show(mRoomData.getPlayerInfoById(partyGameInfoModel?.ktv?.userID
-                            ?: 0))
+                            ?: 0)?.userInfo)
                 }
             } else {
                 //还没开始
@@ -734,9 +730,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         val info = mRoomData.getPlayerInfoById(event.model.userId)
 
         if (info != null) {
-            mGiftPanelView.show(info)
+            mGiftPanelView.show(info.userInfo)
         } else {
-            U.getToastUtil().showShort("嘉宾下麦了")
+            mGiftPanelView.show(event.model)
         }
     }
 

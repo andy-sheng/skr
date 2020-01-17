@@ -361,7 +361,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
             RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID)?.let {
                 if (it.userInfo.userId != MyUserInfoManager.uid.toInt()) {
-                    mGiftPanelView.show(it)
+                    mGiftPanelView.show(it.userInfo)
                 } else {
                     U.getToastUtil().showShort("只能给正在演唱的其他选手送礼哦～")
                 }

@@ -697,12 +697,12 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                         if (now.isPKRound && now.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
                             if (now.getsPkRoundInfoModels().size == 2) {
                                 val userId = now.getsPkRoundInfoModels()[1].userID
-                                mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, userId))
+                                mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, userId)?.userInfo)
                             } else {
-                                mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID))
+                                mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)?.userInfo)
                             }
                         } else {
-                            mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID))
+                            mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)?.userInfo)
                         }
                     } else {
                         mGiftPanelView?.show(null)
@@ -1239,7 +1239,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                                 if (requestCode == 100 && resultCode == 0) {
                                     mGiftPanelView?.updateZS()
                                     mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo?.userID
-                                            ?: 0))
+                                            ?: 0)?.userInfo)
                                 }
                             }
                         })

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 
 import com.common.core.avatar.AvatarUtils
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.image.fresco.BaseImageView
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -14,8 +15,8 @@ import com.common.view.recyclerview.DiffAdapter
 import com.module.playways.R
 import com.module.playways.room.prepare.model.PlayerInfoModel
 
-class GiftAllPlayersAdapter : DiffAdapter<PlayerInfoModel, RecyclerView.ViewHolder>() {
-    internal var mSelectedPlayerInfoModel: PlayerInfoModel? = null
+class GiftAllPlayersAdapter : DiffAdapter<UserInfoModel, RecyclerView.ViewHolder>() {
+    internal var mSelectedPlayerInfoModel: UserInfoModel? = null
 
     internal var mOnClickPlayerListener: OnClickPlayerListener? = null
 
@@ -31,7 +32,7 @@ class GiftAllPlayersAdapter : DiffAdapter<PlayerInfoModel, RecyclerView.ViewHold
         reportItemHolder.bind(model)
     }
 
-    fun setSelectedGrabPlayerInfoModel(selectedPlayerInfoModel: PlayerInfoModel?) {
+    fun setSelectedGrabPlayerInfoModel(selectedPlayerInfoModel: UserInfoModel?) {
         mSelectedPlayerInfoModel = selectedPlayerInfoModel
     }
 
@@ -47,7 +48,7 @@ class GiftAllPlayersAdapter : DiffAdapter<PlayerInfoModel, RecyclerView.ViewHold
         internal var mIvPlayerIcon: BaseImageView
         internal var mIvSelectedIcon: ImageView
 
-        internal var mPlayerInfoModel: PlayerInfoModel?=null
+        internal var mPlayerInfoModel: UserInfoModel? = null
 
         init {
             mIvPlayerIcon = itemView.findViewById<View>(R.id.iv_player_icon) as BaseImageView
@@ -69,16 +70,16 @@ class GiftAllPlayersAdapter : DiffAdapter<PlayerInfoModel, RecyclerView.ViewHold
             })
         }
 
-        fun bind(model: PlayerInfoModel) {
+        fun bind(model: UserInfoModel) {
             this.mPlayerInfoModel = model
             AvatarUtils.loadAvatarByUrl(mIvPlayerIcon,
-                    AvatarUtils.newParamsBuilder(model.userInfo.avatar)
+                    AvatarUtils.newParamsBuilder(model.avatar)
                             .setBorderColor(U.getColor(R.color.white))
                             .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                             .setCircle(true)
                             .build())
 
-            if (mSelectedPlayerInfoModel != null && mSelectedPlayerInfoModel!!.userID == mPlayerInfoModel?.userID) {
+            if (mSelectedPlayerInfoModel != null && mSelectedPlayerInfoModel!!.userId == mPlayerInfoModel?.userId) {
                 mIvSelectedIcon.visibility = View.VISIBLE
             } else {
                 mIvSelectedIcon.visibility = View.GONE
@@ -87,6 +88,6 @@ class GiftAllPlayersAdapter : DiffAdapter<PlayerInfoModel, RecyclerView.ViewHold
     }
 
     interface OnClickPlayerListener {
-        fun onClick(playerInfoModel: PlayerInfoModel?)
+        fun onClick(playerInfoModel: UserInfoModel?)
     }
 }

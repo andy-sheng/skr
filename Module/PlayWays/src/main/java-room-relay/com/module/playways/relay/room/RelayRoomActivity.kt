@@ -490,7 +490,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             if (mRoomData!!.realRoundInfo != null) {
                 val now = mRoomData!!.realRoundInfo
                 if (now != null) {
-                    mGiftPanelView?.show(mRoomData.peerUser)
+                    mGiftPanelView?.show(mRoomData.peerUser?.userInfo)
                 } else {
                     mGiftPanelView?.show(null)
                 }

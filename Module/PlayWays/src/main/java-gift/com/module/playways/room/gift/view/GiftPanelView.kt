@@ -20,6 +20,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.event.RelationChangeEvent
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.rxretrofit.*
@@ -72,7 +73,7 @@ open class GiftPanelView : FrameLayout {
     internal lateinit var mIGetGiftCountDownListener: GiftDisplayView.IGetGiftCountDownListener
 
     //当前迈上的人
-    internal var mCurMicroMan: PlayerInfoModel? = null
+    internal var mCurMicroMan: UserInfoModel? = null
 
     internal var mRoomData: BaseRoomData<*>? = null
 
@@ -103,7 +104,7 @@ open class GiftPanelView : FrameLayout {
         }
     }
 
-    private val firstPlayerInfo: PlayerInfoModel?
+    private val firstPlayerInfo: UserInfoModel?
         get() {
             val grabPlayerInfoModelList = getGrabRoomData()?.getCanGiveGiftList()
                     ?: ArrayList()
@@ -111,7 +112,7 @@ open class GiftPanelView : FrameLayout {
             if (!H.isPartyRoom()) {
                 for (grabPlayerInfoModel in grabPlayerInfoModelList) {
                     if (grabPlayerInfoModel.getUserID().toLong() != MyUserInfoManager.uid) {
-                        return grabPlayerInfoModel
+                        return grabPlayerInfoModel.userInfo
                     }
                 }
             }
@@ -119,7 +120,7 @@ open class GiftPanelView : FrameLayout {
             return null
         }
 
-    protected val playerInfoListExpectSelf: List<PlayerInfoModel>
+    protected val playerInfoListExpectSelf: List<UserInfoModel>
         get() {
             val grabPlayerInfoModelList = ArrayList(getGrabRoomData()?.getCanGiveGiftList()
                     ?: ArrayList())
@@ -132,7 +133,12 @@ open class GiftPanelView : FrameLayout {
                 }
             }
 
-            return grabPlayerInfoModelList
+            val userInfoModelList = ArrayList<UserInfoModel>()
+            grabPlayerInfoModelList.forEach {
+                userInfoModelList.add(it.userInfo)
+            }
+
+            return userInfoModelList
         }
 
     constructor(context: Context) : super(context) {
@@ -184,7 +190,7 @@ open class GiftPanelView : FrameLayout {
         mGiftPanelArea.setOnClickListener { v -> }
 
         mGiftAllPlayersAdapter.setOnClickPlayerListener(object : GiftAllPlayersAdapter.OnClickPlayerListener {
-            override fun onClick(playerInfoModel: PlayerInfoModel?) {
+            override fun onClick(playerInfoModel: UserInfoModel?) {
                 if (mAllPlayersRV.visibility != View.VISIBLE) {
                     return
                 }
@@ -209,7 +215,7 @@ open class GiftPanelView : FrameLayout {
 
         mFollowTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                UserInfoManager.getInstance().mateRelation(mCurMicroMan!!.userID, UserInfoManager.RA_BUILD, mCurMicroMan!!.userInfo.isFriend)
+                UserInfoManager.getInstance().mateRelation(mCurMicroMan!!.userId, UserInfoManager.RA_BUILD, mCurMicroMan!!.isFriend)
             }
         })
 
@@ -226,7 +232,7 @@ open class GiftPanelView : FrameLayout {
                 }
 
                 hide()
-                EventBus.getDefault().post(BuyGiftEvent(mGiftDisplayView!!.selectedGift, mCurMicroMan!!.userInfo))
+                EventBus.getDefault().post(BuyGiftEvent(mGiftDisplayView!!.selectedGift, mCurMicroMan!!))
             }
         })
 
@@ -290,9 +296,9 @@ open class GiftPanelView : FrameLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelationChangeEvent) {
         for (grabPlayerInfoModel in playerInfoListExpectSelf) {
-            if (grabPlayerInfoModel.userID == event.useId) {
-                grabPlayerInfoModel.userInfo.isFollow = event.isFollow
-                grabPlayerInfoModel.userInfo.isFriend = event.isFriend
+            if (grabPlayerInfoModel.userId == event.useId) {
+                grabPlayerInfoModel.isFollow = event.isFollow
+                grabPlayerInfoModel.isFriend = event.isFriend
             }
         }
 
@@ -429,7 +435,7 @@ open class GiftPanelView : FrameLayout {
     /**
      * @param grabPlayerInfoModel 麦上的人
      */
-    fun show(playerInfoModel: PlayerInfoModel?) {
+    fun show(playerInfoModel: UserInfoModel?) {
         MyLog.d(TAG, "show grabPlayerInfoModel=$playerInfoModel")
         if (!mHasInit) {
             inflate()
@@ -459,7 +465,7 @@ open class GiftPanelView : FrameLayout {
         visibility = View.VISIBLE
     }
 
-    protected open fun setSelectArea(playerInfoModel: PlayerInfoModel?) {
+    protected open fun setSelectArea(playerInfoModel: UserInfoModel?) {
         if (mRoomData?.realRoundInfo == null
                 || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 0
                 || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 1 && getGrabRoomData()?.getInSeatPlayerInfoList()?.get(0)?.getUserID() === MyUserInfoManager.uid.toInt()) {
@@ -469,7 +475,7 @@ open class GiftPanelView : FrameLayout {
             mRlPlayerSelectArea.visibility = View.VISIBLE
 
             if (playerInfoModel != null) {
-                if (playerInfoModel.userID.toLong() == MyUserInfoManager.uid) {
+                if (playerInfoModel.userId == MyUserInfoManager.uid.toInt()) {
                     //自己在麦上
                     selectSendGiftPlayer(null)
                 } else {
@@ -490,7 +496,7 @@ open class GiftPanelView : FrameLayout {
      *
      * @param grabPlayerInfoModel
      */
-    protected fun selectSendGiftPlayer(playerInfoModel: PlayerInfoModel?) {
+    protected fun selectSendGiftPlayer(playerInfoModel: UserInfoModel?) {
         var grabPlayerInfoModel = playerInfoModel
         //麦上没有人
         var isPlayerInMic = true
@@ -543,23 +549,23 @@ open class GiftPanelView : FrameLayout {
 
         mFollowTv.visibility = View.GONE
         mFollowTv.isEnabled = false
-        if (mCurMicroMan!!.userInfo.isFriend || mCurMicroMan!!.userInfo.isFollow) {
+        if (mCurMicroMan!!.isFriend || mCurMicroMan!!.isFollow) {
             mFollowTv.visibility = View.VISIBLE
             mFollowTv.background = mHasFollowDrawable
             mFollowTv.text = "已关注"
             mFollowTv.setTextColor(U.getColor(R.color.white_trans_50))
         } else {
-            mRelationTask = ApiMethods.subscribe(mUserInfoServerApi.getRelation(mCurMicroMan!!.userID), object : ApiObserver<ApiResult>() {
+            mRelationTask = ApiMethods.subscribe(mUserInfoServerApi.getRelation(mCurMicroMan!!.userId), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult) {
                     if (obj.errno == 0) {
                         mFollowTv.visibility = View.VISIBLE
 
                         val isFriend = obj.data!!.getBooleanValue("isFriend")
                         val isFollow = obj.data!!.getBooleanValue("isFollow")
-                        mCurMicroMan!!.userInfo.isFriend = isFriend
-                        mCurMicroMan!!.userInfo.isFollow = isFollow
+                        mCurMicroMan!!.isFriend = isFriend
+                        mCurMicroMan!!.isFollow = isFollow
 
-                        if (!mCurMicroMan!!.userInfo.isFollow && !mCurMicroMan!!.userInfo.isFriend) {
+                        if (!mCurMicroMan!!.isFollow && !mCurMicroMan!!.isFriend) {
                             mFollowTv.isEnabled = true
                             mFollowTv.background = mNeedFollowDrawable
                             mFollowTv.text = "+关注"
@@ -575,13 +581,13 @@ open class GiftPanelView : FrameLayout {
         }
 
         AvatarUtils.loadAvatarByUrl(mIvSelectedIcon,
-                AvatarUtils.newParamsBuilder(mCurMicroMan!!.userInfo.avatar)
+                AvatarUtils.newParamsBuilder(mCurMicroMan!!.avatar)
                         .setBorderColor(U.getColor(R.color.white))
                         .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                         .setCircle(true)
                         .build())
 
-        mTvSelectedName.text = mCurMicroMan!!.userInfo.nicknameRemark
+        mTvSelectedName.text = mCurMicroMan!!.nicknameRemark
     }
 
     fun getGrabRoomData(): BaseRoomData<*>? {

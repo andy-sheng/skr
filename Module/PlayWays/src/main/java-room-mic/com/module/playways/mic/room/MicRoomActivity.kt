@@ -425,12 +425,12 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 if (now.isPKRound && now.status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
                     if (now.getsPkRoundInfoModels().size == 2) {
                         val userId = now.getsPkRoundInfoModels()[1].userID
-                        mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, userId))
+                        mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, userId)?.userInfo)
                     } else {
-                        mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID))
+                        mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)?.userInfo)
                     }
                 } else {
-                    mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID))
+                    mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)?.userInfo)
                 }
             } else {
                 mGiftPanelView?.show(null)
