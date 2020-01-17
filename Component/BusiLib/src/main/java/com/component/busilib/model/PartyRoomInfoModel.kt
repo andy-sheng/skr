@@ -23,8 +23,8 @@ class PartyRoomInfoModel : Serializable {
     var topicName: String? = null
     @JSONField(name = "roomtype")
     var roomtype: Int? = null
-    @JSONField(name = "widgetkUrl")
-    var widgetkUrl: String = ""
+    @JSONField(name = "widgetUrl")
+    var widgetUrl: String = ""
 
     // 用房间id和所属id来去重
     override fun hashCode(): Int {
@@ -41,8 +41,7 @@ class PartyRoomInfoModel : Serializable {
     }
 
     override fun toString(): String {
-        return "PartyRoomInfoModel(avatarUrl=$avatarUrl, gameName=$gameName, ownerID=$ownerID, ownerName=$ownerName, playerNum=$playerNum, roomID=$roomID, roomName=$roomName, topicName=$topicName, roomtype=$roomtype, widgetkUrl='$widgetkUrl')"
+        return "PartyRoomInfoModel(avatarUrl=$avatarUrl, gameName=$gameName, ownerID=$ownerID, ownerName=$ownerName, playerNum=$playerNum, roomID=$roomID, roomName=$roomName, topicName=$topicName, roomtype=$roomtype, widgetUrl='$widgetUrl')"
     }
-
 
 }

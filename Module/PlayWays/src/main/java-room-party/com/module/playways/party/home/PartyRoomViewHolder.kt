@@ -10,6 +10,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setAnimateDebounceViewClickListener
+import com.common.image.fresco.FrescoWorker
+import com.common.image.model.BaseImage
+import com.common.image.model.ImageFactory
+import com.common.utils.ImageUtils
+import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -170,12 +175,13 @@ class PartyRoomViewHolder(item: View, var listener: PartyRoomAdapter.Listener) :
         }
         roomPlayerNumTv.text = "${model.playerNum?.toString()}"
 
-        if (TextUtils.isEmpty(model.widgetkUrl)) {
+        if (TextUtils.isEmpty(model.widgetUrl)) {
             widgetSdv.visibility = View.GONE
         } else {
             widgetSdv.visibility = View.VISIBLE
-            AvatarUtils.loadAvatarByUrl(widgetSdv, AvatarUtils.newParamsBuilder(model.widgetkUrl)
-                    .build())
+            FrescoWorker.loadImage(widgetSdv, ImageFactory.newPathImage(model.widgetUrl)
+                    .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
+                    .build<BaseImage>())
         }
     }
 
