@@ -10,22 +10,16 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.rxretrofit.ControlType;
-import com.common.rxretrofit.RequestControl;
-import com.common.utils.U;
-import com.component.toast.CommonToastView;
+import com.component.lyrics.utils.SongResUtils;
 import com.engine.CdnInfo;
 import com.engine.api.EngineServerApi;
-import com.zq.live.proto.Common.StandPlayType;
-import com.component.lyrics.utils.SongResUtils;
 import com.zq.live.proto.Common.MusicInfo;
+import com.zq.live.proto.Common.StandPlayType;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observable;
 
 public class SongModel implements Serializable {
 
@@ -176,7 +170,7 @@ public class SongModel implements Serializable {
 
     public List<CdnInfo> getAccWithCdnInfos(boolean isUseCacheFile) {
         ArrayList<CdnInfo> l = new ArrayList<>();
-        if (acc.contains("song-static")) {
+        if (acc.matches("http(s)?://song-static.*")) {
             for (CdnInfo info : cdnInfos) {
                 CdnInfo cdnInfo = new CdnInfo();
                 cdnInfo.setCdnType(info.getCdnType());

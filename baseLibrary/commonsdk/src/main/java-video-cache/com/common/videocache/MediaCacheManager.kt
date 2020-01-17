@@ -33,8 +33,8 @@ object MediaCacheManager {
     }
 
     fun getOriginCdnUrl(url: String?): String? {
-        if (url?.contains("song-static-1") == true) {
-            return url?.replace("song-static-1", "song-static")
+        if (url?.matches(Regex("http(s)?://[a-z]+-static-[0-9]+\\.inframe\\.mobi/.*")) == true) {
+            return url?.replace(Regex("-static-[0-9]+"), "-static")
         }
         return url
     }
