@@ -665,7 +665,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                             ?: 0, 2, event.inviteType.value)
                 }
 
-                redPacketRelayDialogView.showByDialog()
+                redPacketRelayDialogView.showByDialog(false)
                 redPacketRelayDialogView.starCounDown(5)
             } else {
                 val floatWindowData = FloatWindowData(FloatWindowData.Type.RELAY_INVITE)
