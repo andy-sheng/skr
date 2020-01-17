@@ -1,7 +1,6 @@
 package com.module.playways.relay.match
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -29,7 +28,6 @@ import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.manager.BgMusicManager
-import com.component.busilib.view.AvatarView
 import com.component.busilib.view.CircleCountDownView
 import com.component.busilib.view.recyclercardview.CardScaleHelper
 import com.component.busilib.view.recyclercardview.SpeedRecyclerView
