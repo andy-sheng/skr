@@ -99,7 +99,9 @@ class PartyHomeActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        partyRoomView?.initData(false)
+        if (U.getActivityUtils().topActivity == this) {
+            partyRoomView?.initData(false)
+        }
     }
 
     override fun destroy() {
