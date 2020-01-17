@@ -18,6 +18,7 @@ import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
@@ -83,6 +84,14 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
     }
 
     fun bindData(position: Int, model: PartyActorInfoModel?) {
+        if (this.mModel != null && this.mModel?.player?.userID == model?.player?.userID && this.mModel?.seat?.seatSeq == model?.seat?.seatSeq) {
+            // 同一个位置同一个人，没有必要重新初始化动画
+        } else {
+            // 所有的动画需要重置一下
+            resetEmojiArea()
+            resetQuickAnswerArea()
+            stopSpeakAnimation()
+        }
         this.mModel = model
         this.mPos = position
 
@@ -95,10 +104,6 @@ class SeatViewHolder(item: View, var listener: PartySeatAdapter.Listener?) : Rec
         nameTv.text = "${model?.player?.userInfo?.nicknameRemark}"
         refreshHot()
         refreshMute()
-        // 所有的动画需要重置一下
-        resetEmojiArea()
-        resetQuickAnswerArea()
-        stopSpeakAnimation()
     }
 
     fun refreshMute() {
