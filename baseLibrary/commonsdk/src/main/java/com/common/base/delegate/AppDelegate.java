@@ -33,6 +33,7 @@ import com.common.base.ConfigModule;
 import com.common.base.ManifestParser;
 import com.common.lifecycle.ActivityLifecycle;
 import com.common.lifecycle.ActivityLifecycleForRxLifecycle;
+import com.common.log.MyLog;
 import com.common.utils.U;
 
 import java.util.ArrayList;
@@ -125,6 +126,7 @@ public class AppDelegate implements AppLifecycles {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             String processName = U.app().getProcessName();
+            MyLog.i("onOtherProcessCreate processName="+processName);
             WebView.setDataDirectorySuffix(processName);
         }
     }
