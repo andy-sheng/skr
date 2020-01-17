@@ -628,7 +628,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         if (mRoomData.myUserInfo?.isHost() == true || this.mRoomData.myUserInfo?.isGuest() == true) {
             if (!ZqEngineKit.getInstance().params.isAnchor) {
                 ZqEngineKit.getInstance().setClientRole(true)
-                mRoomData.isMute = false
+                if (!mRoomData.isMute) {
+                    // 我得开着麦
+                    ZqEngineKit.getInstance().adjustRecordingSignalVolume(ZqEngineKit.getInstance().params.recordingSignalVolume, false)
+                } else {
+                    ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
+                }
             }
         } else {
             if (ZqEngineKit.getInstance().params.isAnchor) {
