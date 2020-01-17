@@ -14,20 +14,29 @@ class ClubMemberInfo : Serializable {
     var roleDesc: String = ""
 
     companion object {
-        fun parseFromPB(userClubInfo: com.zq.live.proto.Common.UClubInfo): ClubMemberInfo {
-            val result = ClubMemberInfo()
-            result.club = ClubInfo()
-            result.club?.clubID = userClubInfo.clubID
-            result.roleType = userClubInfo.roleType.value
-            return result
+        fun parseFromPB(userClubInfo: com.zq.live.proto.Common.UClubInfo?): ClubMemberInfo? {
+            return if (userClubInfo == null) {
+                null
+            } else {
+                val result = ClubMemberInfo()
+                result.club = ClubInfo()
+                result.club?.clubID = userClubInfo.clubID
+                result.roleType = userClubInfo.roleType.value
+                result
+            }
         }
 
-        fun parseFromPB(userClubInfo: com.zq.live.proto.Common.UserClubInfo): ClubMemberInfo {
-            val result = ClubMemberInfo()
-            result.club = ClubInfo.parseFromPB(userClubInfo.club)
-            result.roleType = userClubInfo.roleType.value
-            result.roleDesc = userClubInfo.roleDesc
-            return result
+        fun parseFromPB(userClubInfo: com.zq.live.proto.Common.UserClubInfo?): ClubMemberInfo? {
+            return if (userClubInfo == null) {
+                null
+            } else {
+                val result = ClubMemberInfo()
+                result.club = ClubInfo.parseFromPB(userClubInfo.club)
+                result.roleType = userClubInfo.roleType.value
+                result.roleDesc = userClubInfo.roleDesc
+                return result
+            }
+
         }
 
         fun toUClubInfoPB(memberInfo: ClubMemberInfo?): com.zq.live.proto.Common.UClubInfo? {

@@ -28,10 +28,10 @@ class ClubFunctionViewHolder(item: View, var listener: ClubHomeClickListener) : 
         }
 
         clubCreateIv.setAnimateDebounceViewClickListener {
-            if (clubInfo == null) {
-                listener.onClickCreatClub()
-            } else {
+            if (clubInfo != null && (clubInfo?.clubID ?: 0) > 0) {
                 listener.onClickClubInfo(clubInfo)
+            } else {
+                listener.onClickCreatClub()
             }
         }
     }
@@ -39,10 +39,10 @@ class ClubFunctionViewHolder(item: View, var listener: ClubHomeClickListener) : 
     fun bindData(clubInfo: ClubInfo?) {
         this.clubInfo = clubInfo
 
-        if (clubInfo == null) {
-            clubCreateIv.background = U.getDrawable(R.drawable.club_home_create_icon)
-        } else {
+        if (this.clubInfo != null && (this.clubInfo?.clubID ?: 0) > 0) {
             clubCreateIv.background = U.getDrawable(R.drawable.club_home_myclub_icon)
+        } else {
+            clubCreateIv.background = U.getDrawable(R.drawable.club_home_create_icon)
         }
     }
 }

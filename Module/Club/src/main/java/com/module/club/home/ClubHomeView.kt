@@ -9,6 +9,7 @@ import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.myinfo.event.MyUserInfoEvent
 import com.common.core.userinfo.model.ClubInfo
 import com.common.flutter.boost.FlutterBoostController
 import com.common.log.MyLog
@@ -218,6 +219,12 @@ class ClubHomeView(context: Context) : ConstraintLayout(context), IClubHomeView,
 
     @Subscribe(threadMode = ThreadMode.MAIN, priority = 1)
     fun onEvent(event: ClubInfoChangeMsg) {
+        // 我自己家族信息的改变
+        adapter.updateFunction(MyUserInfoManager.myUserInfo?.clubInfo?.club)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MyUserInfoEvent.UserInfoChangeEvent) {
         // 我自己家族信息的改变
         adapter.updateFunction(MyUserInfoManager.myUserInfo?.clubInfo?.club)
     }

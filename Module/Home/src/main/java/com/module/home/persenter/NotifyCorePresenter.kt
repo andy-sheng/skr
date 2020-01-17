@@ -158,7 +158,6 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         MyUserInfoManager.myUserInfo?.clubInfo = ClubMemberInfo.parseFromPB(event.clubInfo)
     }
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: GrabInviteFromSchemeEvent) {
         // TODO: 2019/3/20   一场到底邀请 口令
