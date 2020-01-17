@@ -942,6 +942,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mTipsDialogView = TipsDialogView.Builder(this)
                 .setMessageTip(warningMsg)
                 .setOkBtnTip("我知道了")
+                .setOkBtnClickListener {
+                    mTipsDialogView?.dismiss()
+                }
                 .build()
         mTipsDialogView?.showByDialog()
     }

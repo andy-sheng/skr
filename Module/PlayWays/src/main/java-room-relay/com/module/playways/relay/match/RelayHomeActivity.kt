@@ -359,7 +359,6 @@ class RelayHomeActivity : BaseActivity() {
                 relayMatchServerApi.getPlayBookList(off, limit, MyUserInfoManager.uid.toInt())
             }
             loadMore = false
-
             if (result.errno == 0) {
                 hasMore = result.data.getBooleanValue("hasMore")
                 offset = result.data.getIntValue("offset")
