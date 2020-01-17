@@ -542,14 +542,16 @@ public class AudioPlayerCapture {
             @Override
             public void run() {
                 mPcmPlayer.stop();
-                mPcmPlayer.release();
-                mPcmPlayer = null;
                 mStcMgt.reset();
 
                 // stop后发送 DETACH_NATIVE_MODULE 事件
                 AudioBufFrame frame = new AudioBufFrame(mOutFormat, null, 0);
                 frame.flags |= AVConst.FLAG_DETACH_NATIVE_MODULE;
                 mSrcPin.onFrameAvailable(frame);
+
+                // 发送 DETACH_NATIVE_MODULE 事件后再销毁
+                mPcmPlayer.release();
+                mPcmPlayer = null;
             }
         });
     }
