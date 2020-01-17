@@ -309,9 +309,14 @@ class RelayHomeActivity : BaseActivity() {
             if (result.errno == 0) {
                 status = result.data.getIntValue("status")
                 refreshRedPacketStatus()
-                if (!U.getPreferenceUtils().getSettingBoolean(KEY_PREFRE_RED_PACKET_SHOW, false)) {
+                if (status == 1) {
+                    // 红包已开启了
                     U.getPreferenceUtils().setSettingBoolean(KEY_PREFRE_RED_PACKET_SHOW, true)
-                    showRedPacketDialog()
+                } else {
+                    if (!U.getPreferenceUtils().getSettingBoolean(KEY_PREFRE_RED_PACKET_SHOW, false)) {
+                        U.getPreferenceUtils().setSettingBoolean(KEY_PREFRE_RED_PACKET_SHOW, true)
+                        showRedPacketDialog()
+                    }
                 }
             }
         }
