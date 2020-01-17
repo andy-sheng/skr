@@ -353,7 +353,6 @@ public class QuickFeedbackFragment extends BaseFragment {
     private void submitReportRoom(List<Integer> typeList, String content, List<String> picUrls) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("content", content);
-        map.put("reporterID", MyUserInfoManager.INSTANCE.getUid());
         map.put("roomID", mRoomID);
         map.put("roomName", mRoomName);
         map.put("screenshot", picUrls);
