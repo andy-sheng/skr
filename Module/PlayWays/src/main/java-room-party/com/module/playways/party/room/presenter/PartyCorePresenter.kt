@@ -1181,9 +1181,16 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         MyLog.d(TAG, "onEvent event = $event")
         mUiHandler.removeMessages(MSG_GET_QUICK_ANSWER_RESULT)
         val answers = ArrayList<PartyQuickAnswerResult>()
+        val sb = StringBuilder()
         for (an in event.answersList) {
-            answers.add(PartyQuickAnswerResult.parseFromPb(an))
+            val anp = PartyQuickAnswerResult.parseFromPb(an)
+            answers.add(anp)
+            sb.append(anp.seq).append(".").append(anp.user?.userInfo?.nicknameRemark).append("\n")
         }
+        if(sb.toString().isNotEmpty()){
+            sb.insert(0,"抢答结果:\n")
+        }
+        pretendSystemMsg(sb.toString())
         EventBus.getDefault().post(PartyQuickAnswerResultEvent(answers))
     }
 

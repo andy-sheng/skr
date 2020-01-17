@@ -1,6 +1,7 @@
 package com.module;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.module.club.IClubModuleService;
 import com.module.feeds.IFeedsModuleService;
 import com.module.msg.IMsgService;
 import com.module.post.IPostModuleService;
@@ -20,6 +21,10 @@ public class ModuleServiceManager {
 
     public IMsgService getMsgService(){
         return (IMsgService) ARouter.getInstance().build(RouterConstants.SERVICE_MSG).navigation();
+    }
+
+    public IClubModuleService getClubService(){
+        return (IClubModuleService) ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation();
     }
 
     public IFeedsModuleService getFeedsService(){

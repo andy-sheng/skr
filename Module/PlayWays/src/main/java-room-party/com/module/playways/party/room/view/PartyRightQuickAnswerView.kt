@@ -204,11 +204,19 @@ class PartyRightQuickAnswerView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
                 grabIv.isEnabled = true
                 grabIv.setImageDrawable(null)
                 var drawable: Drawable? = null
-                drawable = DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
-                        .setShape(DrawableCreator.Shape.Rectangle)
-                        .setPressedDrawable(U.getDrawable(R.drawable.party_qiangda_disable))
-                        .setUnPressedDrawable(U.getDrawable(R.drawable.party_qiangda_enable))
-                        .build()
+                if(H.partyRoomData?.myUserInfo?.isHost() == true){
+                    drawable = DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
+                            .setShape(DrawableCreator.Shape.Rectangle)
+                            .setPressedDrawable(U.getDrawable(R.drawable.party_quick_answer_ing))
+                            .setUnPressedDrawable(U.getDrawable(R.drawable.party_quick_answer_ing))
+                            .build()
+                }else{
+                    drawable = DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
+                            .setShape(DrawableCreator.Shape.Rectangle)
+                            .setPressedDrawable(U.getDrawable(R.drawable.party_qiangda_disable))
+                            .setUnPressedDrawable(U.getDrawable(R.drawable.party_qiangda_enable))
+                            .build()
+                }
                 grabIv.background = drawable
                 grabIv.setOnTouchListener { v, event ->
                     //MyLog.d(TAG, "onTouch" + " v=" + v + " event=" + event);

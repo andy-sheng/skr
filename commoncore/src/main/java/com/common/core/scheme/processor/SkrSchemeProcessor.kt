@@ -30,6 +30,7 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.idlefish.flutterboost.containers.BoostFlutterActivity
 import com.idlefish.flutterboost.containers.MyBoostFlutterActivity
+import com.module.ModuleServiceManager
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.IPlaywaysModeService
@@ -152,6 +153,10 @@ object SkrSchemeProcessor : ISchemeProcessor {
                         processCommonUrl(uri, context)
                         return ProcessResult.AcceptedAndContinue
                     }
+                    "club" -> {
+                        processClubUrl(uri, context)
+                        return ProcessResult.AcceptedAndContinue
+                    }
                 }
             }
         } else if ("rong" == scheme) {
@@ -173,6 +178,12 @@ object SkrSchemeProcessor : ISchemeProcessor {
             }
         }
         return ProcessResult.NotAccepted
+    }
+
+    private fun processClubUrl(uri: Uri, context: Context) {
+        if (uri.path == "/home") {
+            ModuleServiceManager.getInstance().clubService?.tryGoClubHomePage(SchemeUtils.getInt(uri, "clubID", 0))
+        }
     }
 
     private fun processCommonUrl(uri: Uri, context: Context) {
