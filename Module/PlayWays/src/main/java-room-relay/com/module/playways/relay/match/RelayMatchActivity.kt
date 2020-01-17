@@ -41,6 +41,7 @@ import com.module.RouterConstants
 import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.relay.match.adapter.RelayRoomAdapter
+import com.module.playways.relay.match.adapter.RelayRoomAdapter.Companion.REFRESH_TYPE_RESET_VOICE_ANIMATION
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.match.model.RelaySelectItemInfo
 import com.module.playways.relay.match.view.RelayEmptyRoomCallback
@@ -94,6 +95,8 @@ class RelayMatchActivity : BaseActivity() {
     var needAlert: Boolean = false  // 是否需要在次数不足显示充值弹窗
 
     var mTipsDialogView: TipsDialogView? = null
+
+    var playingVoiceIndex = -1
 
     /**
      * 存起该房间一些状态信息
@@ -159,6 +162,7 @@ class RelayMatchActivity : BaseActivity() {
                     stopVoicePlay("clickVoiceInfo")
                     return false
                 } else {
+                    playingVoiceIndex = position
                     var url = model?.redpacketItem?.voiceInfo?.voiceURL
                     SinglePlayer.setVolume(1.0f)
                     BgMusicManager.getInstance().destory()
@@ -246,6 +250,10 @@ class RelayMatchActivity : BaseActivity() {
         startTimerRoom(roomInterval)
         if(!BgMusicManager.getInstance().isPlaying){
             BgMusicManager.getInstance().starPlay(model?.acc, Random(System.currentTimeMillis()).nextInt(1 * 60 * 1000).toLong(), "RelayMatchActivity")
+        }
+        if(playingVoiceIndex>=0){
+            adapter.notifyItemChanged(playingVoiceIndex,REFRESH_TYPE_RESET_VOICE_ANIMATION)
+            playingVoiceIndex = -1
         }
     }
 

@@ -42,6 +42,7 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         const val REFRESH_TYPE_HAS_INVITE = 1
         const val REFRESH_TYPE_NO_INVITE = 2
+        const val REFRESH_TYPE_RESET_VOICE_ANIMATION = 3
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -86,6 +87,11 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         REFRESH_TYPE_NO_INVITE -> {
                             if (holder is RelayRedPacketViewHolder) {
                                 holder.setInvited(false)
+                            }
+                        }
+                        REFRESH_TYPE_RESET_VOICE_ANIMATION -> {
+                            if (holder is RelayRedPacketViewHolder) {
+                                holder.resetVoiceAnimation()
                             }
                         }
                     }
@@ -157,9 +163,10 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 listener?.selectRedPacket(mPos, mModel)
             }
             audioBg.setDebounceViewClickListener {
-                if(listener?.clickVoiceInfo(mPos, mModel)==true){
-                    speakerAnimationIv.show(mModel?.redpacketItem?.voiceInfo?.duration?.toInt() ?: 3000,true)
-                }else{
+                if (listener?.clickVoiceInfo(mPos, mModel) == true) {
+                    speakerAnimationIv.show(mModel?.redpacketItem?.voiceInfo?.duration?.toInt()
+                            ?: 3000, true)
+                } else {
                     speakerAnimationIv.reset()
                 }
             }
@@ -200,10 +207,10 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             speakerAnimationIv.reset()
-            if(model?.redpacketItem?.voiceInfo?.voiceURL?.isNotEmpty() == true){
+            if (model?.redpacketItem?.voiceInfo?.voiceURL?.isNotEmpty() == true) {
                 speakerAnimationIv.visibility = View.VISIBLE
                 audioBg.visibility = View.VISIBLE
-            }else{
+            } else {
                 speakerAnimationIv.visibility = View.GONE
                 audioBg.visibility = View.GONE
             }
@@ -216,6 +223,12 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             } else {
                 inviteTv.text = "邀请合唱"
                 inviteTv.isClickable = true
+            }
+        }
+
+        fun resetVoiceAnimation() {
+            if (speakerAnimationIv.visibility == View.VISIBLE) {
+                speakerAnimationIv.reset()
             }
         }
 
@@ -331,6 +344,6 @@ class RelayRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun getRecyclerViewPosition(): Int
         fun selectRoom(position: Int, model: RelaySelectItemInfo?)
         fun selectRedPacket(position: Int, model: RelaySelectItemInfo?)
-        fun clickVoiceInfo(position: Int, model: RelaySelectItemInfo?):Boolean
+        fun clickVoiceInfo(position: Int, model: RelaySelectItemInfo?): Boolean
     }
 }
