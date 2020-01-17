@@ -206,7 +206,7 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
                         }
 
                         showWinner(leftCnt, rightCnt)
-                        pretendSystemMsg("投票结果：$leftStr  $rightStr")
+                        pretendSystemMsg("投票结果：\n$leftStr\n$rightStr")
                     }
                 } else {
                     U.getToastUtil().showShort(result.errmsg)
