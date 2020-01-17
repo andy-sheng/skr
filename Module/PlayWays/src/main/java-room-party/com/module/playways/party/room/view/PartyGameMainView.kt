@@ -196,7 +196,8 @@ class PartyGameMainView(viewStub: ViewStub, protected var mRoomData: PartyRoomDa
     fun onEvent(event: EngineEvent) {
         if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_STATE_CHANGE) {
             var state = event.obj as EngineEvent.MusicStateChange
-            if (state.isPlayOk && mRoomData.realRoundInfo?.accLoadingOk == false) {
+            val isKtv = partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal
+            if (state.isPlayOk && mRoomData.realRoundInfo?.accLoadingOk == false && isKtv) {
                 mRoomData.realRoundInfo?.accLoadingOk = true
                 var progress = mRoomData.getSingCurPosition()
                 DebugLogView.println(TAG, "伴奏加载ok progress=${progress}")
