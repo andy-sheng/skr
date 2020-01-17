@@ -136,10 +136,13 @@ class RelayMatchActivity : BaseActivity() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     currentPosition = cardScaleHelper?.currentItemPos ?: 0
-//                    if (!loadMore && currentPosition > (adapter.mDataList.size - 3)) {
-//                        loadMore = true
-//                        getRecommendRoomList()
-//                    }
+                    if (currentPosition < adapter.mDataList.size && currentPosition >= 0) {
+                        if (adapter.mDataList[currentPosition].type == RelaySelectItemInfo.ST_MATCH_ITEM) {
+                            StatisticsAdapter.recordCountEvent("chorus", "common_expose", null)
+                        } else if (adapter.mDataList[currentPosition].type == RelaySelectItemInfo.ST_REDPACKET_ITEM) {
+                            StatisticsAdapter.recordCountEvent("chorus", "redpacket_expose", null)
+                        }
+                    }
                     stopVoicePlay("onScrollStateChanged")
                 } else {
                     cancelTimeRoom()
@@ -245,15 +248,15 @@ class RelayMatchActivity : BaseActivity() {
         BgMusicManager.getInstance().starPlay(model?.acc, 0, "RelayMatchActivity")
     }
 
-    private fun stopVoicePlay(from:String) {
+    private fun stopVoicePlay(from: String) {
         MyLog.d(TAG, "stopVoicePlay from = $from")
         SinglePlayer.stop(TAG)
         startTimerRoom(roomInterval)
-        if(!BgMusicManager.getInstance().isPlaying){
+        if (!BgMusicManager.getInstance().isPlaying) {
             BgMusicManager.getInstance().starPlay(model?.acc, Random(System.currentTimeMillis()).nextInt(1 * 60 * 1000).toLong(), "RelayMatchActivity")
         }
-        if(playingVoiceIndex>=0){
-            adapter.notifyItemChanged(playingVoiceIndex,REFRESH_TYPE_RESET_VOICE_ANIMATION)
+        if (playingVoiceIndex >= 0) {
+            adapter.notifyItemChanged(playingVoiceIndex, REFRESH_TYPE_RESET_VOICE_ANIMATION)
             playingVoiceIndex = -1
         }
     }
