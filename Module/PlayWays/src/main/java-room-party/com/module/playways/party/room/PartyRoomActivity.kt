@@ -940,7 +940,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     override fun showWarningDialog(warningMsg: String) {
         dismissDialog()
         mTipsDialogView = TipsDialogView.Builder(this)
-                .setMessageTip(warningMsg).build()
+                .setMessageTip(warningMsg)
+                .setOkBtnTip("我知道了")
+                .build()
         mTipsDialogView?.showByDialog()
     }
 
