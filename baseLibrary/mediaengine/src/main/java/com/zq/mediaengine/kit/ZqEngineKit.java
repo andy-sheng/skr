@@ -494,6 +494,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 if (!mConfig.isMixMusicPlaying()) {
                     return;
                 }
+                mAccRetriedCount++;
                 MyLog.i(TAG, "retry acc playback with pos: " + mAccRecoverPosition + " remainLoopCount: " + mAccRemainedLoopCount);
                 doStopAudioMixingInternal();
                 doStartAudioMixing(mAccUrlInUse, mAccRecoverPosition, mAccRemainedLoopCount);
