@@ -114,6 +114,7 @@ object LyricsManager {
             MyLog.w(TAG, "stand歌词parse完毕,耗时${System.currentTimeMillis() - b}")
             if (lyricsReader.lrcLineInfos == null || lyricsReader.lrcLineInfos.size == 0) {
                 //数据有问题，需要删除文件
+                MyLog.w(TAG, "此文件的md5结果是 ${U.getMD5Utils().getFileMD5(file)}")
                 MyLog.w(TAG, "数据有问题，删除")
                 if (file.exists()) {
                     file.delete()
