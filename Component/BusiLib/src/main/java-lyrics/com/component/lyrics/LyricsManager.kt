@@ -53,7 +53,7 @@ object LyricsManager {
      */
     fun loadStandardLyric(url: String?, processReader: ((reader: LyricsReader) -> Unit)?): Observable<LyricsReader> {
         var b = System.currentTimeMillis()
-        return Observable.create(ObservableOnSubscribe<LyricsReader> { emitter ->
+        return Observable.create(ObservableOnSubscribe<File> { emitter ->
             if (TextUtils.isEmpty(url)) {
                 if (MyLog.isDebugLogOpen()) {
                     U.getToastUtil().showShort("歌词 url==null")
@@ -63,14 +63,14 @@ object LyricsManager {
             }
             val newName = File(SongResUtils.createLyricFileName(url))
             if (newName.exists() && newName.isFile) {
-//                emitter.onNext(newName)
-//                emitter.onComplete()
+                emitter.onNext(newName)
+                emitter.onComplete()
                 return@ObservableOnSubscribe
             }
             var isSuccess = false
             isSuccess = U.getHttpUtils().downloadFileSync(url, newName, true, null, -1, 2 * 1000, 3 * 1000)
             if (isSuccess) {
-//                emitter.onNext(newName)
+                emitter.onNext(newName)
             } else {
                 MyLog.w(TAG, "使用服务器代理下载")
                 val call = mResServerApi.getLyricByUrl(url)
@@ -81,7 +81,7 @@ object LyricsManager {
                         MyLog.w(TAG, "body=$jsonObject")
                         val content = jsonObject.getString("body")
                         U.getIOUtils().writeFile(content, newName)
-//                        emitter.onNext(newName)
+                        emitter.onNext(newName)
                     } else {
                         emitter.onError(IgnoreException("代理下载，歌词为空"))
                     }
@@ -93,78 +93,38 @@ object LyricsManager {
                     return@ObservableOnSubscribe
                 }
             }
-
-            val lyricsReader = getLyricsReaderFromParseFile(newName, b, url!!)
-            if (lyricsReader.getLrcLineInfos() == null || lyricsReader.getLrcLineInfos().size == 0) {
-                //数据有问题，需要删除文件
-                MyLog.w(TAG, "此文件的md5结果是：" + U.getMD5Utils().getFileMD5(newName))
-                MyLog.w(TAG, "数据有问题，删除")
-                if (newName.exists()) {
-                    newName.delete()
-                    MyLog.w(TAG, "删除成功")
-                }
-                emitter.onError(IgnoreException("文件有问题，删除后再去下载"))
-            } else {
+            emitter.onComplete()
+        }).map { file ->
+            val lyricsReader = LyricsReader()
+            try {
+                lyricsReader.loadLrc(file)
                 processReader?.invoke(lyricsReader)
-                emitter.onNext(lyricsReader)
-                emitter.onComplete()
-            }
-        })
-//                .map { file ->
-//            val lyricsReader = LyricsReader()
-//            try {
-//                lyricsReader.loadLrc(file)
-//                processReader?.invoke(lyricsReader)
-//                if (MyLog.isDebugLogOpen()) {
-//                    if (lyricsReader.lrcLineInfos.isEmpty()) {
-//                        U.getToastUtil().showLong("时间戳歌词文件解析后内容为空 url=$url")
-//                    } else {
-////                        lyricsReader.lrcLineInfos.iterator().forEach {
-////                            it.value.lineLyrics = "${it.value.startTime}:${it.value.lineLyrics}"
-////                        }
-//                    }
-//                }
-//            } catch (e: Exception) {
-//                Log.e("LyricsManager", "" + e.toString())
-//            }
-//            MyLog.w(TAG, "stand歌词parse完毕,耗时${System.currentTimeMillis() - b}")
-//
-//            if (lyricsReader.getLrcLineInfos() == null || lyricsReader.getLrcLineInfos().size == 0) {
-//                //数据有问题，需要删除文件
-//                MyLog.w(TAG, "此文件的md5结果是：" + U.getMD5Utils().getFileMD5(file))
-//                MyLog.w(TAG, "数据有问题，删除")
-//                if (file.exists()) {
-//                    file.delete()
-//                    MyLog.w(TAG, "删除成功")
-//                }
-//            }
-//
-//            lyricsReader
-//        }
-                .subscribeOn(U.getThreadUtils().urgentIO())
-                .retryWhen(RxRetryAssist(5, ""))
-                .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    private fun getLyricsReaderFromParseFile(file: File, b: Long, url: String): LyricsReader {
-        val lyricsReader = LyricsReader()
-        try {
-            lyricsReader.loadLrc(file)
-
-            if (MyLog.isDebugLogOpen()) {
-                if (lyricsReader.lrcLineInfos.isEmpty()) {
-                    U.getToastUtil().showLong("时间戳歌词文件解析后内容为空 url=$url")
-                } else {
+                if (MyLog.isDebugLogOpen()) {
+                    if (lyricsReader.lrcLineInfos.isEmpty()) {
+                        U.getToastUtil().showLong("时间戳歌词文件解析后内容为空 url=$url")
+                    } else {
 //                        lyricsReader.lrcLineInfos.iterator().forEach {
 //                            it.value.lineLyrics = "${it.value.startTime}:${it.value.lineLyrics}"
 //                        }
+                    }
+                }
+            } catch (e: Exception) {
+                MyLog.e("LyricsManager", e)
+            }
+            MyLog.w(TAG, "stand歌词parse完毕,耗时${System.currentTimeMillis() - b}")
+            if (lyricsReader.lrcLineInfos == null || lyricsReader.lrcLineInfos.size == 0) {
+                //数据有问题，需要删除文件
+                MyLog.w(TAG, "数据有问题，删除")
+                if (file.exists()) {
+                    file.delete()
+                    MyLog.w(TAG, "删除成功")
                 }
             }
-        } catch (e: Exception) {
-            Log.e("LyricsManager", "" + e.toString())
+            lyricsReader
         }
-        MyLog.w(TAG, "stand歌词parse完毕,耗时${System.currentTimeMillis() - b}")
-        return lyricsReader
+                .subscribeOn(U.getThreadUtils().urgentIO())
+                .retryWhen(RxRetryAssist(5, ""))
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
 
