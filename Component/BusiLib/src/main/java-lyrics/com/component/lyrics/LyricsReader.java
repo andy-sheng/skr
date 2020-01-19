@@ -150,7 +150,7 @@ public class LyricsReader implements Cloneable {
             mTransliterationLrcLineInfos = LyricsUtils.getTransliterationLrc(mLyricsType, mLrcLineInfos, lyricsInfo.getTransliterationLrcLineInfos());
 
         if(mLrcLineInfos == null || mLrcLineInfos.size() == 0){
-            MyLog.d(TAG, "parser error, mLrcLineInfos is " + mLrcLineInfos);
+            MyLog.w(TAG, "parser error, mLrcLineInfos is " + mLrcLineInfos);
         }
     }
 
