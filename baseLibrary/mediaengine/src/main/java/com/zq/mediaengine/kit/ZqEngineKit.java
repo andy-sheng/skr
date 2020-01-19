@@ -485,6 +485,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAccPreparedSent = true;
         } else if (state == Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_ERROR) {
             if (mIsAccPrepared) {
+                doUploadAccStopEvent(1, errorCode);
                 mAccRecoverPosition = getAudioMixingCurrentPosition();
                 if (mConfig.isUseExternalAudio()) {
                     mAccRemainedLoopCount = mAudioPlayerCapture.getRemainedLoopCount();
