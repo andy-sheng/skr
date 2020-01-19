@@ -37,9 +37,10 @@ CalcScore::~CalcScore() {
 }
 
 int CalcScore::LoadMelp(std::string filename, int startStamp) {
+    LOGD("LoadMelp ts: %d", startStamp);
     int ret = 0;
     m_melpfilename = filename;
-    m_lastTimeStamp = startStamp;
+    m_lastTimeStamp = startStamp > 0 ? startStamp : 0;
     return ret;
 }
 
@@ -58,6 +59,16 @@ void CalcScore::Flow(float *data, int len) {
 }
 
 int CalcScore::GetScore(int curTimeStamp) {
+    // 先对输入参数做一些保护
+    if (curTimeStamp < 0) {
+        LOGE("invalid curTimeStamp: %d", curTimeStamp);
+        return 0;
+    }
+    if (m_lastTimeStamp < 0) {
+        LOGE("invalid m_lastTimeStamp: %d", m_lastTimeStamp);
+        m_lastTimeStamp = 0;
+    }
+
     float score = 0;
     double timestamp0 = getCurrentTimestamp();
     m_pitchDetector->MarkAsFinished();

@@ -147,14 +147,14 @@ Java_com_engine_score_ICbScoreProcessor_process2(JNIEnv *env, jobject instance, 
     if (scoring2 == NULL) {
         const char *melFilePath = env->GetStringUTFChars(melFile_, 0);
         scoring2 = new CalcScore(samplesPerSec);
-        scoring2->LoadMelp(melFilePath, currentTimeMills);
+        scoring2->LoadMelp(melFilePath, (int)currentTimeMills);
         env->ReleaseStringUTFChars(melFile_, melFilePath);
     }
 
     byte *data = (byte *) env->GetByteArrayElements(samplesJni, 0);
 // 2048 512 下来
     short *samples = (short *) data; // 长度只有1024了
-    curTs = currentTimeMills;
+    curTs = (int)currentTimeMills;
 //2:送入打分处理器
     if (NULL != scoring2) {
         if (channels == 2) {
