@@ -1719,6 +1719,8 @@ public class ZqEngineKit implements AgoraOutCallback {
                             }
                         }
 
+                        mConfig.setCurrentMusicTs(0);
+                        mConfig.setRecordCurrentMusicTsTs(0);
                         mConfig.setMixMusicPlaying(true);
                         mConfig.setMixMusicFilePath(filePath);
                         mConfig.setMidiPath(midiPath);

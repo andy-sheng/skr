@@ -686,8 +686,10 @@ public class Params implements Serializable {
     public long getAccTs() {
         long accTs = 0;
         if (isMixMusicPlaying() && isLrcHasStart()) {
-            accTs = getCurrentMusicTs() + getMixMusicBeginOffset() +
-                    (System.currentTimeMillis() - getRecordCurrentMusicTsTs());
+            accTs = getCurrentMusicTs() + getMixMusicBeginOffset();
+            if (getRecordCurrentMusicTsTs() > 0) {
+                accTs += System.currentTimeMillis() - getRecordCurrentMusicTsTs();
+            }
         }
         return accTs;
     }
