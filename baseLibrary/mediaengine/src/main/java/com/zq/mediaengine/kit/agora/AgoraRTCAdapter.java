@@ -855,7 +855,9 @@ public class AgoraRTCAdapter {
      * 不是做模式切换一般不用销毁所有
      */
     public void destroy(boolean destroyAll) {
+        MyLog.d(TAG, "destroyInner");
         stopStatistics();
+        MyLog.d(TAG, "destroyInner1");
         if (mRtcEngine != null) {
             mRtcEngine.stopPreview();
         }
@@ -867,15 +869,18 @@ public class AgoraRTCAdapter {
         }
         mRemoteVideoSrcPins.clear();
         if (destroyAll) {
+            MyLog.d(TAG, "destroyInner2");
             //该方法为同步调用。在等待 RtcEngine 对象资源释放后再返回。APP 不应该在 SDK 产生的回调中调用该接口，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
             RtcEngine.destroy();
             mRtcEngine = null;
 
+            MyLog.d(TAG, "destroyInner3");
             // 释放所有SrcPin
             mLocalAudioSrcPin.disconnect(true);
             mRemoteAudioSrcPin.disconnect(true);
             mLocalVideoSrcPin.disconnect(true);
         }
+        MyLog.d(TAG, "~destroyInner");
     }
 
     /**

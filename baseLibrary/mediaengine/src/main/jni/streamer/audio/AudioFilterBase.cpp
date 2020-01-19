@@ -35,8 +35,24 @@ AudioFilterBase* AudioBase::getFilter() {
     return mFilter;
 }
 
+AudioFilterBase::AudioFilterBase() :
+        mStopped(false),
+        mFrameSize(0),
+        mFifoBuffer(NULL),
+        mFifoSize(0),
+        mReadCond(NULL) {
+    pthread_mutex_init(&mReadLock, NULL);
+}
+
+AudioFilterBase::~AudioFilterBase() {
+    destroyFifo();
+    pthread_mutex_destroy(&mReadLock);
+}
+
 void AudioFilterBase::initFifo(int sampleFmt, int sampleRate, int channels) {
+    pthread_mutex_lock(&mReadLock);
     if (mFifoBuffer) {
+        pthread_mutex_unlock(&mReadLock);
         return;
     }
     mFrameSize = channels * getBytesPerSample(sampleFmt);
@@ -45,9 +61,11 @@ void AudioFilterBase::initFifo(int sampleFmt, int sampleRate, int channels) {
     audio_utils_fifo_init(&mFifo, (size_t) mFifoSize, (size_t) mFrameSize, mFifoBuffer);
     mReadCond = createThreadLock();
     waitThreadLock(mReadCond);
+    pthread_mutex_unlock(&mReadLock);
 }
 
 void AudioFilterBase::destroyFifo() {
+    pthread_mutex_lock(&mReadLock);
     if (mFifoBuffer) {
         audio_utils_fifo_deinit(&mFifo);
         free(mFifoBuffer);
@@ -55,17 +73,7 @@ void AudioFilterBase::destroyFifo() {
     }
     destroyThreadLock(mReadCond);
     mReadCond = NULL;
-}
-
-AudioFilterBase::AudioFilterBase() :
-        mStopped(false),
-        mFrameSize(0),
-        mFifoBuffer(NULL),
-        mFifoSize(0),
-        mReadCond(NULL) {}
-
-AudioFilterBase::~AudioFilterBase() {
-    destroyFifo();
+    pthread_mutex_unlock(&mReadLock);
 }
 
 /**
@@ -83,17 +91,21 @@ void AudioFilterBase::attachTo(int idx, AudioBase* dst, bool detach) {
     }
     if (detach) {
         mStopped = true;
+        pthread_mutex_lock(&mReadLock);
         if (mReadCond) {
             notifyThreadLock(mReadCond);
         }
         if (mFifoBuffer) {
             audio_utils_fifo_flush(&mFifo);
         }
+        pthread_mutex_unlock(&mReadLock);
     }
 }
 
 int AudioFilterBase::read(uint8_t* buf, int size) {
-    if (mFifoBuffer == NULL) {
+    pthread_mutex_lock(&mReadLock);
+    if (mFifoBuffer == NULL || mReadCond == NULL) {
+        pthread_mutex_unlock(&mReadLock);
         return 0;
     }
 
@@ -108,6 +120,7 @@ int AudioFilterBase::read(uint8_t* buf, int size) {
         read += audio_utils_fifo_read(&mFifo, (buf + read * mFrameSize),
                                       (size_t) (count - read));
     }
+    pthread_mutex_unlock(&mReadLock);
     return read * mFrameSize;
 }
 
@@ -128,6 +141,7 @@ int AudioFilterBase::filterInit(int sampleFmt, int sampleRate, int channels, int
 
 int AudioFilterBase::filterProcess(int sampleFmt, int sampleRate, int channels,
                                    int bufferSamples, uint8_t* inBuf, int inSize) {
+    pthread_mutex_lock(&mReadLock);
     if (mFifoBuffer && !mStopped) {
         // write fifo
         int count = inSize / mFrameSize;
@@ -140,6 +154,7 @@ int AudioFilterBase::filterProcess(int sampleFmt, int sampleRate, int channels,
             notifyThreadLock(mReadCond);
         }
     }
+    pthread_mutex_unlock(&mReadLock);
 
     int result = 0;
     pthread_mutex_lock(&mFilterLock);
