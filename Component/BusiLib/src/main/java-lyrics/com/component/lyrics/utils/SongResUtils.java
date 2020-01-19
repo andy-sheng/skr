@@ -122,7 +122,7 @@ public class SongResUtils {
 
     private static File getFile(String dir, String url, String suff) {
         String url2 = MediaCacheManager.INSTANCE.getOriginCdnUrl(url);
-        MyLog.i("SongResUtils", "dir=" + dir);
+//        MyLog.i("SongResUtils", "dir=" + dir);
         File file = new File(dir + File.separator + getFileNameWithMD5(url2) + "." + suff);
         if (file.exists()) {
             return file;

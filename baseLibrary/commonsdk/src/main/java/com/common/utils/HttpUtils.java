@@ -559,7 +559,7 @@ public class HttpUtils {
             } else {
                 if (needTempFile) {
                     if (outputFile2.renameTo(outputFile)) {
-                        MyLog.w(TAG, urlStr + " 下载成功");
+                        MyLog.w(TAG, urlStr + " 下载成功 downloaded=" + downloaded + " totalLength=" + totalLength);
                     } else {
                         MyLog.w(TAG, "重命名失败");
                     }

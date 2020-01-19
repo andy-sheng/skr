@@ -109,11 +109,10 @@ object LyricsManager {
                     }
                 }
             } catch (e: Exception) {
-                Log.e("LyricsManager", "" + e.toString())
+                MyLog.e("LyricsManager", e)
             }
             MyLog.w(TAG, "stand歌词parse完毕,耗时${System.currentTimeMillis() - b}")
-
-            if (lyricsReader.getLrcLineInfos() == null || lyricsReader.getLrcLineInfos().size == 0) {
+            if (lyricsReader.lrcLineInfos == null || lyricsReader.lrcLineInfos.size == 0) {
                 //数据有问题，需要删除文件
                 MyLog.w(TAG, "数据有问题，删除")
                 if (file.exists()) {
@@ -121,7 +120,6 @@ object LyricsManager {
                     MyLog.w(TAG, "删除成功")
                 }
             }
-
             lyricsReader
         }
                 .subscribeOn(U.getThreadUtils().urgentIO())
