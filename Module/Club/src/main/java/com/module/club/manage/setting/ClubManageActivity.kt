@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.myinfo.event.MyUserInfoEvent
 import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
@@ -28,6 +29,7 @@ import com.zq.live.proto.Common.EClubMemberRoleType
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 class ClubManageActivity : BaseActivity() {
 
@@ -171,6 +173,8 @@ class ClubManageActivity : BaseActivity() {
             if (result.errno == 0) {
                 // 退出成功
                 U.getToastUtil().showShort("家族退出成功")
+                MyUserInfoManager.myUserInfo?.clubInfo = null
+                EventBus.getDefault().post(MyUserInfoEvent.UserInfoChangeEvent())
                 for (activity in U.getActivityUtils().activityList) {
                     if (activity is ClubHomepageActivity) {
                         activity.finish()
