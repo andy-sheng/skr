@@ -90,7 +90,7 @@ public class MD5Utils {
     }
 
     public String getFileMD5(File file) {
-        if (!file.isFile()) {
+        if (file == null || !file.isFile()) {
             return null;
         }
         MessageDigest digest = null;
