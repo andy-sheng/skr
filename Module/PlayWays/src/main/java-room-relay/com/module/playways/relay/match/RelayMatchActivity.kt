@@ -522,6 +522,13 @@ class RelayMatchActivity : BaseActivity() {
 
     private fun tryGoRelayRoom(model: JoinRelayRoomRspModel) {
         MyLog.d(TAG, "tryGoRelayRoom model = $model hasMatched=$hasMatched")
+        for (activity in U.getActivityUtils().activityList) {
+            if (activity is RelayRoomActivity) {
+                MyLog.w(TAG, "合唱房间已经存在")
+                return
+            }
+        }
+
         if (!hasMatched) {
             hasMatched = true
             val intent = Intent(this, RelayRoomActivity::class.java)
@@ -557,7 +564,7 @@ class RelayMatchActivity : BaseActivity() {
     override fun finish() {
         super.finish()
         BgMusicManager.getInstance().destory()
-        MyLog.d(TAG,"SinglePlayer.startFrom=${SinglePlayer.startFrom} TAG=$")
+        MyLog.d(TAG, "SinglePlayer.startFrom=${SinglePlayer.startFrom} TAG=$")
         SinglePlayer.stop(TAG)
         SinglePlayer.removeCallback(TAG)
     }

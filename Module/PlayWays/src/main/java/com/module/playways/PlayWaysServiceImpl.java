@@ -351,26 +351,20 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     @Override
     public void tryToRelayRoomByOuterInvite(Object o) {
         if (o instanceof CNRelayEnterFromOuterInviteNotifyEvent) {
-            Intent intent = new Intent(U.app(), RelayRoomActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             JoinRelayRoomRspModel rsp = JoinRelayRoomRspModel.Companion.parseFromPB(((CNRelayEnterFromOuterInviteNotifyEvent) o).getRelayRoomEnterMsg());
             rsp.setEnterType(RelayRoomData.EnterType.INVITE);
 
-            intent.putExtra("JoinRelayRoomRspModel", rsp);
-            U.app().startActivity(intent);
+            toRelayRoomActivityWithRoomRsp(rsp);
         }
     }
 
     @Override
     public void tryToRelayRoomByRedPacketInvite(Object o) {
         if (o instanceof CNRelayEnterFromRedpacketNotifyEvent) {
-            Intent intent = new Intent(U.app(), RelayRoomActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             JoinRelayRoomRspModel rsp = JoinRelayRoomRspModel.Companion.parseFromPB(((CNRelayEnterFromRedpacketNotifyEvent) o).getRelayRoomEnterMsg());
             rsp.setEnterType(RelayRoomData.EnterType.INVITE);
 
-            intent.putExtra("JoinRelayRoomRspModel", rsp);
-            U.app().startActivity(intent);
+            toRelayRoomActivityWithRoomRsp(rsp);
         }
     }
 
@@ -587,10 +581,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                     if (checkTimer != null) {
                         checkTimer.dispose();
                     }
-                    Intent intent = new Intent(U.app(), RelayRoomActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("JoinRelayRoomRspModel", joinRelayRoomRspModel);
-                    U.app().startActivity(intent);
+                    toRelayRoomActivityWithRoomRsp(joinRelayRoomRspModel);
                 }
             }
 
@@ -606,6 +597,20 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 U.getToastUtil().showShort("请求错误");
             }
         });
+    }
+
+    private void toRelayRoomActivityWithRoomRsp(JoinRelayRoomRspModel joinRelayRoomRspModel) {
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if (activity instanceof RelayRoomActivity) {
+                MyLog.w(TAG, "合唱房间已经存在");
+                return;
+            }
+        }
+
+        Intent intent = new Intent(U.app(), RelayRoomActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("JoinRelayRoomRspModel", joinRelayRoomRspModel);
+        U.app().startActivity(intent);
     }
 
     //房间内和房间外同意的时候都调用这个，roomID > 0 的时候是房间内邀请
@@ -632,10 +637,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                                 JoinRelayRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinRelayRoomRspModel.class);
                                 rsp.setEnterType(RelayRoomData.EnterType.INVITE);
 
-                                Intent intent = new Intent(U.app(), RelayRoomActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("JoinRelayRoomRspModel", rsp);
-                                U.app().startActivity(intent);
+                                toRelayRoomActivityWithRoomRsp(rsp);
                             } else {
                                 U.getToastUtil().showShort(result.getErrmsg());
                             }
@@ -665,10 +667,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                                     JoinRelayRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinRelayRoomRspModel.class);
                                     rsp.setEnterType(RelayRoomData.EnterType.INVITE);
 
-                                    Intent intent = new Intent(U.app(), RelayRoomActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("JoinRelayRoomRspModel", rsp);
-                                    U.app().startActivity(intent);
+                                    toRelayRoomActivityWithRoomRsp(rsp);
                                 } else {
                                     U.getToastUtil().showShort(result.getErrmsg());
                                 }
@@ -695,10 +694,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                                     JoinRelayRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinRelayRoomRspModel.class);
                                     rsp.setEnterType(RelayRoomData.EnterType.INVITE);
 
-                                    Intent intent = new Intent(U.app(), RelayRoomActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("JoinRelayRoomRspModel", rsp);
-                                    U.app().startActivity(intent);
+                                    toRelayRoomActivityWithRoomRsp(rsp);
                                 } else {
                                     U.getToastUtil().showShort(result.getErrmsg());
                                 }
