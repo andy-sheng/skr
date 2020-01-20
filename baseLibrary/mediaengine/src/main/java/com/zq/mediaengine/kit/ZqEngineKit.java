@@ -813,7 +813,6 @@ public class ZqEngineKit implements AgoraOutCallback {
             if (mConfig.isEnableInEarMonitoring() && shouldStartAudioPreview()) {
                 mLocalAudioPreview.start();
             }
-            mRemoteAudioPreview.start();
         }
     }
 
@@ -1232,6 +1231,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioCapture.start();
             }
         }
+        mRemoteAudioPreview.start();
     }
 
     /**
