@@ -60,6 +60,7 @@ private:
     SLresult pausePlayer();
     SLresult resumePlayer();
     SLresult mutePlayer(bool mute);
+    SLresult setVolumeNoLock(float volume);
 
     int mSampleFmt;
     int mSampleRate;
@@ -85,6 +86,7 @@ private:
     uint8_t* mFifoBuffer;
     int mFifoSamples;
     void* mWriteCond;
+    pthread_mutex_t mPlayerLock;
 
     bool mTuneLatency;
     int64_t mLastWriteTime;

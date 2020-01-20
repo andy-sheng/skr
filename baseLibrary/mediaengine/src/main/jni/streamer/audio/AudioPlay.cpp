@@ -29,22 +29,30 @@ AudioPlay::AudioPlay():
     mSamplesWritten(0),
     mZeroSamplesEnqueue(0),
     mSamplesEnqueue(0){
+    pthread_mutex_init(&mPlayerLock, NULL);
     memset(&mSLPlayer, 0, sizeof(mSLPlayer));
 }
 
 AudioPlay::~AudioPlay() {
     LOGD("~AudioPlay");
+    pthread_mutex_lock(&mPlayerLock);
     release();
+    pthread_mutex_unlock(&mPlayerLock);
+    pthread_mutex_destroy(&mPlayerLock);
 }
 
 int AudioPlay::config(int sampleFmt, int sampleRate, int channels, int bufferSamples, int fifoSizeInMs) {
     LOGD("config %dHz %d channels, bufferSamples: %d, fifoSizeInMs: %d", sampleRate, channels, bufferSamples, fifoSizeInMs);
+    int ret = 0;
+    int threshold;
+    pthread_mutex_lock(&mPlayerLock);
     // destroy previous instance
     release();
 
     if (sampleFmt != SAMPLE_FMT_S16) {
         LOGE("AudioPlay only support SAMPLE_FMT_S16!");
-        return -1;
+        ret = -1;
+        goto EXIT;
     }
 
     mSampleFmt = sampleFmt;
@@ -62,24 +70,26 @@ int AudioPlay::config(int sampleFmt, int sampleRate, int channels, int bufferSam
     mWriteInterval = mBufferSamples * 1000000 / mSampleRate;
     mLastLogTime = 0;
 
-    //create engineObject and engineEngine
-    if(createEngine() != SL_RESULT_SUCCESS) {
+    // create engineObject and engineEngine
+    if (createEngine() != SL_RESULT_SUCCESS) {
         LOGE("[AudioPlay] CreateEngine failed");
         destroyEngine();
-        return -1;
+        ret = -1;
+        goto EXIT;
     }
 
-    if(openPlayer() != SL_RESULT_SUCCESS) {
+    if (openPlayer() != SL_RESULT_SUCCESS) {
         LOGE("[AudioPlay] openPlayer failed");
         closePlayer();
         destroyEngine();
-        return -1;
+        ret = -1;
+        goto EXIT;
     }
 
     mBuffer = (uint8_t*) malloc((size_t) (bufferSamples * mFrameSize));
     assert(mBuffer);
 
-    int threshold = mSampleRate * mFifoSizeInMs / 1000;
+    threshold = mSampleRate * mFifoSizeInMs / 1000;
     mFifoSamples = mBufferSamples * 3;
     while (mFifoSamples < threshold) {
         mFifoSamples += mBufferSamples;
@@ -96,27 +106,39 @@ int AudioPlay::config(int sampleFmt, int sampleRate, int channels, int bufferSam
     if (mStart) {
         if (startPlayer() != SL_RESULT_SUCCESS) {
             LOGE("Auto start player failed!");
-            return -1;
+            ret = -1;
+            goto EXIT;
         }
-        setVolume(mVolume);
+        setVolumeNoLock(mVolume);
         if (mMute) {
             mutePlayer(mMute);
         }
     }
-    return 0;
+
+EXIT:
+    pthread_mutex_unlock(&mPlayerLock);
+    return ret;
 }
 
 void AudioPlay::setMute(bool mute) {
     LOGD("setMute: %d", mute);
+    pthread_mutex_lock(&mPlayerLock);
     mMute = mute;
     if (mState == STATE_PLAYING || mState == STATE_PAUSE) {
         mutePlayer(mute);
     }
+    pthread_mutex_unlock(&mPlayerLock);
 }
 
 void AudioPlay::setVolume(float volume) {
     LOGD("setVolume: %f", volume);
+    pthread_mutex_lock(&mPlayerLock);
     mVolume = volume;
+    setVolumeNoLock(volume);
+    pthread_mutex_unlock(&mPlayerLock);
+}
+
+SLresult AudioPlay::setVolumeNoLock(float volume) {
     if (mState == STATE_PLAYING || mState == STATE_PAUSE) {
         int mb = lroundf(2000.f * log10(volume));
         if (mb < SL_MILLIBEL_MIN) {
@@ -133,58 +155,79 @@ void AudioPlay::setVolume(float volume) {
 
 int AudioPlay::start() {
     LOGD("start in state: %d", mState);
+    int ret = 0;
+    pthread_mutex_lock(&mPlayerLock);
     if (mState == STATE_INITIALIZED) {
         if (startPlayer() != SL_RESULT_SUCCESS) {
-            return -1;
+            ret = -1;
+            goto EXIT;
         }
-        setVolume(mVolume);
+        setVolumeNoLock(mVolume);
         if (mMute) {
             mutePlayer(mMute);
         }
     }
     mStart = true;
-    return 0;
+EXIT:
+    pthread_mutex_unlock(&mPlayerLock);
+    return ret;
 }
 
 int AudioPlay::pause() {
     LOGD("pause in state: %d", mState);
+    int ret = 0;
+    pthread_mutex_lock(&mPlayerLock);
     if (mState == STATE_PLAYING) {
         if (pausePlayer() != SL_RESULT_SUCCESS) {
-            return -1;
+            ret = -1;
+            goto EXIT;
         }
     }
-    return 0;
+EXIT:
+    pthread_mutex_unlock(&mPlayerLock);
+    return ret;
 }
 
 int AudioPlay::resume() {
     LOGD("resume in state: %d", mState);
+    int ret = 0;
+    pthread_mutex_lock(&mPlayerLock);
     if (mState == STATE_PAUSE) {
         if (resumePlayer() != SL_RESULT_SUCCESS) {
-            return -1;
+            ret = -1;
+            goto EXIT;
         }
     }
-    return 0;
+EXIT:
+    pthread_mutex_unlock(&mPlayerLock);
+    return ret;
 }
 
 int AudioPlay::stop() {
     LOGD("stop");
+    int ret = 0;
+    SLresult result;
+    pthread_mutex_lock(&mPlayerLock);
     mStart = false;
     if ((mState != STATE_PLAYING) && (mState != STATE_PAUSE)) {
-        return 0;
+        ret = 0;
+        goto EXIT;
     }
 
     // set the player's state to stopped
-    SLresult result = (*mSLPlayer.playerPlay)->SetPlayState(mSLPlayer.playerPlay,
-                                                            SL_PLAYSTATE_STOPPED);
+    result = (*mSLPlayer.playerPlay)->SetPlayState(mSLPlayer.playerPlay, SL_PLAYSTATE_STOPPED);
     if (result != SL_RESULT_SUCCESS) {
         LOGE("[stop] SetPlayState failed:%d", (int) result);
-        return -1;
+        ret = -1;
+        goto EXIT;
     }
 
     mState = STATE_INITIALIZED;
     notifyThreadLock(mWriteCond);
     audio_utils_fifo_flush(&mFifo);
-    return 0;
+EXIT:
+    pthread_mutex_unlock(&mPlayerLock);
+    return ret;
 }
 
 int AudioPlay::write(uint8_t *inBuf, int inSize, bool nonBlock) {
@@ -497,7 +540,9 @@ SLresult AudioPlay::mutePlayer(bool mute) {
 }
 
 int64_t AudioPlay::getPosition() {
+    pthread_mutex_lock(&mPlayerLock);
     if ((mState != STATE_PLAYING) && (mState != STATE_PAUSE)) {
+        pthread_mutex_unlock(&mPlayerLock);
         return 0;
     }
 
@@ -507,6 +552,7 @@ int64_t AudioPlay::getPosition() {
         LOGE("GetPosition failed:%d", (int) result);
         slPlayPos = 0;
     }
+    pthread_mutex_unlock(&mPlayerLock);
 
     int64_t writtenPos = mSamplesWritten * 1000 / mSampleRate;
     int64_t enqueuePos = mSamplesEnqueue * 1000 / mSampleRate;
