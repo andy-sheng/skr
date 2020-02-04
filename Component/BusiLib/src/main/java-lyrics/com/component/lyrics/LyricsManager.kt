@@ -1,13 +1,13 @@
 package com.component.lyrics
 
 import android.text.TextUtils
-import android.util.Log
 import com.common.core.crash.IgnoreException
 import com.common.core.global.ResServerApi
 import com.common.log.MyLog
 import com.common.rx.RxRetryAssist
 import com.common.rxretrofit.ApiManager
 import com.common.utils.U
+import com.component.lyrics.exception.LyricLoadFailedException
 import com.component.lyrics.utils.SongResUtils
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
@@ -119,6 +119,7 @@ object LyricsManager {
                     file.delete()
                     MyLog.w(TAG, "删除成功")
                 }
+                throw LyricLoadFailedException("LyricLoadFailedException exception")
             }
             lyricsReader
         }
