@@ -27,6 +27,7 @@ import okio.Okio;
 import static okhttp3.internal.Util.closeQuietly;
 
 public class ZrceLyricsFileReader extends LyricsFileReader {
+    public final static String TAG = "ZrceLyricsFileReader";
     /**
      * 歌曲名 字符串
      */
@@ -171,7 +172,39 @@ public class ZrceLyricsFileReader extends LyricsFileReader {
                 // 歌词分隔
                 String lineLyricsTemp[] = lineContent.split(regex);
                 String[] lyricsWords = getLyricsWords(lineLyricsTemp);
-                lyricsLineInfo.setLyricsWords(lyricsWords);
+
+                //监控代码
+                {
+                    try {
+                        lyricsLineInfo.setLyricsWords(lyricsWords);
+                    } catch (NullPointerException e) {
+                        //LyricsLineInfo 62行有空指针异常
+                        MyLog.w(TAG, "lineInfo is " + lineInfo);
+                        MyLog.w(TAG, "mStartIndex is " + mStartIndex);
+                        MyLog.w(TAG, "mEndIndex is " + mEndIndex);
+                        MyLog.w(TAG, "lineContent is " + lineContent);
+                        if (lineLyricsTemp != null) {
+                            MyLog.w(TAG, "lineLyricsTemp is not null");
+                            for (String lyric : lineLyricsTemp) {
+                                MyLog.w(TAG, "lineLyricsTemp lyric is " + lyric);
+                            }
+                        } else {
+                            MyLog.w(TAG, "lineLyricsTemp is null");
+                        }
+
+                        if (lyricsWords != null) {
+                            MyLog.w(TAG, "lyricsWords is not null");
+                            for (String lyric : lyricsWords) {
+                                MyLog.w(TAG, "lyricsWords lyric is " + lyric);
+                            }
+                        } else {
+                            MyLog.w(TAG, "lyricsWords is null");
+                        }
+
+                        //异常要照样抛，打一下信息之后抛异常
+                        throw e;
+                    }
+                }
 
                 // 获取每个歌词的时间
                 int wordsDisInterval[] = new int[lyricsWords.length];
