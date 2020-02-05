@@ -87,6 +87,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     ExLinearLayout mBottomContainer;
     RelativeLayout mGameArea;
     ExTextView mGameBtn;
+    RelativeLayout mPartyArea;
+    ExTextView mPartyBtn;
     RelativeLayout mMessageArea;
     ExTextView mMessageBtn;
     ExTextView mUnreadNumTv;
@@ -163,6 +165,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mBottomContainer = findViewById(R.id.bottom_container);
         mGameArea = findViewById(R.id.game_area);
         mGameBtn = findViewById(R.id.game_btn);
+        mPartyArea = findViewById(R.id.party_area);
+        mPartyBtn = findViewById(R.id.party_btn);
         mPostsArea = findViewById(R.id.posts_area);
         mPostBtn = findViewById(R.id.post_btn);
         mMessageArea = findViewById(R.id.message_area);
@@ -182,7 +186,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         mMainVp.setViewPagerCanScroll(false);
-        mMainVp.setOffscreenPageLimit(3);
+        mMainVp.setOffscreenPageLimit(4);
         checkIfFromSchema();
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
@@ -191,10 +195,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 if (position == 0) {
                     return new GameFragment3();
                 } else if (position == 1) {
-                    return ModuleServiceManager.getInstance().getPostsService().getFragment();
+                    return ((IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation()).getPartyGameFragment();
                 } else if (position == 2) {
                     return (Fragment) mMsgService.getMessageFragment();
                 } else if (position == 3) {
+                    return ModuleServiceManager.getInstance().getPostsService().getFragment();
+                } else if (position == 4) {
                     return new PersonFragment5();
                 }
                 return null;
@@ -203,9 +209,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             @Override
             public int getCount() {
                 if (mMsgService == null) {
-                    return 3;
-                } else {
                     return 4;
+                } else {
+                    return 5;
                 }
             }
         };
@@ -258,12 +264,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             });
         }
 
-        mPostsArea.setOnClickListener(new DebounceViewClickListener(100) {
+        mPartyArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
-                if (mMainVp.getCurrentItem() == 1) {
-                    EventBus.getDefault().post(new PostsWatchTabRefreshEvent());
-                }
                 mMainVp.setCurrentItem(1, false);
                 selectTab(1);
             }
@@ -284,11 +287,22 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         });
 
+        mPostsArea.setOnClickListener(new DebounceViewClickListener(100) {
+            @Override
+            public void clickValid(View v) {
+                if (mMainVp.getCurrentItem() == 3) {
+                    EventBus.getDefault().post(new PostsWatchTabRefreshEvent());
+                }
+                mMainVp.setCurrentItem(3, false);
+                selectTab(3);
+            }
+        });
+
         mPersonArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
-                mMainVp.setCurrentItem(3, false);
-                selectTab(3);
+                mMainVp.setCurrentItem(4, false);
+                selectTab(4);
             }
         });
 
@@ -416,13 +430,15 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     private void selectTab(int tabSeq) {
         Drawable drawable0 = U.getDrawable(R.drawable.ic_home_normal);
-        Drawable drawable1 = U.getDrawable(R.drawable.ic_posts_normal);
+        Drawable drawable1 = U.getDrawable(R.drawable.ic_party_normal);
         Drawable drawable2 = U.getDrawable(R.drawable.ic_chat_normal);
-        Drawable drawable3 = U.getDrawable(R.drawable.ic_me_normal);
+        Drawable drawable3 = U.getDrawable(R.drawable.ic_posts_normal);
+        Drawable drawable4 = U.getDrawable(R.drawable.ic_me_normal);
 
         mGameBtn.setSelected(false);
-        mPostBtn.setSelected(false);
+        mPartyBtn.setSelected(false);
         mMessageBtn.setSelected(false);
+        mPostBtn.setSelected(false);
         mPersonInfoBtn.setSelected(false);
 
         switch (tabSeq) {
@@ -431,23 +447,28 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 mGameBtn.setSelected(true);
                 break;
             case 1:
-                drawable1 = U.getDrawable(R.drawable.ic_posts_selected);
-                mPostBtn.setSelected(true);
+                drawable1 = U.getDrawable(R.drawable.ic_party_selected);
+                mPartyBtn.setSelected(true);
                 break;
             case 2:
                 drawable2 = U.getDrawable(R.drawable.ic_chat_selected);
                 mMessageBtn.setSelected(true);
                 break;
             case 3:
-                drawable3 = U.getDrawable(R.drawable.ic_me_selected);
+                drawable3 = U.getDrawable(R.drawable.ic_posts_selected);
+                mPostBtn.setSelected(true);
+                break;
+            case 4:
+                drawable4 = U.getDrawable(R.drawable.ic_me_selected);
                 mPersonInfoBtn.setSelected(true);
                 break;
         }
 
         setTabDrawable(mGameBtn, drawable0);
-        setTabDrawable(mPostBtn, drawable1);
+        setTabDrawable(mPartyBtn, drawable1);
         setTabDrawable(mMessageBtn, drawable2);
-        setTabDrawable(mPersonInfoBtn, drawable3);
+        setTabDrawable(mPostBtn, drawable3);
+        setTabDrawable(mPersonInfoBtn, drawable4);
     }
 
     private void setTabDrawable(ExTextView textView, Drawable drawable) {
@@ -520,7 +541,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     private void tryGoConversationList(Intent intent) {
         if (intent != null && intent.getData() != null && "conversationlist".equals(intent.getData().getPath())) {
-            mMainVp.setCurrentItem(1);
+            mMainVp.setCurrentItem(2);
         }
     }
 
@@ -597,8 +618,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PostsPublishSucessEvent event) {
         U.getActivityUtils().goHomeActivity();
-        mMainVp.setCurrentItem(3, false);
-        selectTab(3);
+        mMainVp.setCurrentItem(4, false);
+        selectTab(4);
     }
 
     /**

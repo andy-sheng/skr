@@ -3,6 +3,7 @@ package com.module.playways;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -45,6 +46,7 @@ import com.module.playways.mic.match.model.JoinMicRoomRspModel;
 import com.module.playways.mic.room.MicRoomActivity;
 import com.module.playways.mic.room.MicRoomServerApi;
 import com.module.playways.mic.room.event.MicChangeRoomEvent;
+import com.module.playways.party.home.PartyGameFragment;
 import com.module.playways.party.home.PartyRoomView;
 import com.module.playways.party.match.model.JoinPartyRoomRspModel;
 import com.module.playways.party.room.PartyRoomActivity;
@@ -537,6 +539,11 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 });
             }
         }, true);
+    }
+
+    @Override
+    public Fragment getPartyGameFragment() {
+        return new PartyGameFragment();
     }
 
     private void startCheckLoop() {

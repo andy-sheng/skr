@@ -2,6 +2,7 @@ package com.module.playways;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
 
 import com.alibaba.android.arouter.facade.template.IProvider;
 
@@ -57,4 +58,6 @@ public interface IPlaywaysModeService extends IProvider {
     void idleHandler();
 
     void tryGoRelayHome();
+
+    Fragment getPartyGameFragment();
 }

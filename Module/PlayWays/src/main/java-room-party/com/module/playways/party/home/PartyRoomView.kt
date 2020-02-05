@@ -129,23 +129,6 @@ class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context)
         })
     }
 
-    private fun loadClubListData() {
-        launch {
-            val result = subscribe(RequestControl("loadClubListData", ControlType.CancelThis)) {
-                roomServerApi.getRecommendClubList(0, cnt)
-            }
-            if (result.errno == 0) {
-                val list = JSON.parseArray(result.data.getString("items"), ClubInfo::class.java)
-                adapter.mClubList?.clear()
-                if (!list.isNullOrEmpty()) {
-                    adapter.mClubList.addAll(list)
-                }
-                adapter.notifyItemChanged(0)
-            }
-            finishLoadMoreOrRefresh()
-        }
-    }
-
     fun loadRoomListData(off: Int, isClean: Boolean) {
         launch {
             val result = subscribe(RequestControl("loadRoomListData", ControlType.CancelThis)) {
@@ -202,9 +185,9 @@ class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context)
             delay(delayTime)
             repeat(Int.MAX_VALUE) {
                 loadRoomListData(0, true)
-                if (type == TYPE_GAME_HOME) {
-                    loadClubListData()
-                }
+//                if (type == TYPE_GAME_HOME) {
+//                    loadClubListData()
+//                }
                 delay(recommendInterval)
             }
         }
