@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
@@ -11,10 +12,15 @@ import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
+import com.component.person.event.ShowPersonCardEvent;
 import com.module.playways.R;
+import com.module.playways.room.data.H;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class GiftBigContinuousView extends RelativeLayout {
     public final String TAG = "GiftBigContinuousView";
@@ -76,6 +82,19 @@ public class GiftBigContinuousView extends RelativeLayout {
             mDescTv.setText("送给 " + model.getReceiver().getNicknameRemark());
             mDescTv.setVisibility(VISIBLE);
         }
+
+        mSendAvatarIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (H.INSTANCE.isRaceRoom()) {
+                    if (!(H.INSTANCE.getRaceRoomData()).isFakeForMe(model.getSender().getUserId())) {
+                        EventBus.getDefault().post(new ShowPersonCardEvent(model.getSender().getUserId()));
+                    }
+                } else {
+                    EventBus.getDefault().post(new ShowPersonCardEvent(model.getSender().getUserId()));
+                }
+            }
+        });
 
         return true;
     }
