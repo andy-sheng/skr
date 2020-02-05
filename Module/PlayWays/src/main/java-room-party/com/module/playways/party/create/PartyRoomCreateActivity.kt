@@ -1,11 +1,14 @@
 package com.module.playways.party.create
 
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.view.MotionEvent
 import android.view.View
+import android.widget.EditText
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
@@ -25,40 +28,39 @@ import com.common.view.ex.ExTextView
 import com.common.view.ex.NoLeakEditText
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
+import com.component.person.view.CommonTagView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.playways.R
+import com.module.playways.party.create.view.GameTagView
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.room.data.H
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
 @Route(path = RouterConstants.ACTIVITY_CREATE_PARTY_ROOM)
-class PartyRoomCreateActivity : BaseActivity() {
+class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
     lateinit var titlebar: CommonTitleBar
     lateinit var nameEdittext: NoLeakEditText
     lateinit var divider: View
     lateinit var enterRoomTip: ExTextView
     lateinit var allManTv: ExTextView
     lateinit var onlyInviteTv: ExTextView
+    lateinit var directMicTv: ExTextView
+    lateinit var applicationMicTv: ExTextView
+    lateinit var divider3: View
+    lateinit var gameTip: ExTextView
+    lateinit var gameTagView: GameTagView
 
     var from: String = "create"
 
     val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
 
     var enterType = 2 // 1 只有邀请 2 无限制
-
-    val selectDrawable1 = DrawableCreator.Builder()
-            .setSelectedDrawable(U.getDrawable(R.drawable.chuangjian_xuanzhong))
-            .setUnSelectedDrawable(U.getDrawable(R.drawable.chuangjian_weixuanzhong))
-            .build()
-
-    val selectDrawable2 = DrawableCreator.Builder()
-            .setSelectedDrawable(U.getDrawable(R.drawable.chuangjian_xuanzhong))
-            .setUnSelectedDrawable(U.getDrawable(R.drawable.chuangjian_weixuanzhong))
-            .build()
+    var micType = 1 // 1 直接上麦 2 申请上麦
 
     val skrAudioPermission = SkrAudioPermission()
 
@@ -82,6 +84,11 @@ class PartyRoomCreateActivity : BaseActivity() {
         enterRoomTip = this.findViewById(R.id.enter_room_tip)
         allManTv = this.findViewById(R.id.all_man_tv)
         onlyInviteTv = this.findViewById(R.id.only_invite_tv)
+        directMicTv = this.findViewById(R.id.direct_mic_tv)
+        applicationMicTv = this.findViewById(R.id.application_mic_tv)
+        divider3 = this.findViewById(R.id.divider_3)
+        gameTip = this.findViewById(R.id.game_tip)
+        gameTagView = this.findViewById(R.id.game_tag_view)
 
         titlebar.leftTextView.setDebounceViewClickListener {
             finish()
@@ -101,6 +108,13 @@ class PartyRoomCreateActivity : BaseActivity() {
         }
         onlyInviteTv.setDebounceViewClickListener {
             trySelect(1)
+        }
+
+        directMicTv.setDebounceViewClickListener {
+            trySelectMicType(1)
+        }
+        applicationMicTv.setDebounceViewClickListener {
+            trySelectMicType(2)
         }
 
         nameEdittext.addTextChangedListener(object : TextWatcher {
@@ -126,18 +140,87 @@ class PartyRoomCreateActivity : BaseActivity() {
                 }
             }
         })
+        nameEdittext.setOnTouchListener(this);
 
-        selectDrawable1.bounds = Rect(0, 0, selectDrawable1.intrinsicWidth, selectDrawable1.intrinsicHeight)
-        selectDrawable2.bounds = Rect(0, 0, selectDrawable1.intrinsicWidth, selectDrawable1.intrinsicHeight)
-        allManTv.setCompoundDrawables(selectDrawable1, null, null, null)
-        onlyInviteTv.setCompoundDrawables(selectDrawable2, null, null, null)
+        getSelectDrawable().let {
+            it.bounds = Rect(0, 0, it.intrinsicWidth, it.intrinsicHeight)
+            allManTv.setCompoundDrawables(it, null, null, null)
+        }
+
+        getSelectDrawable().let {
+            it.bounds = Rect(0, 0, it.intrinsicWidth, it.intrinsicHeight)
+            onlyInviteTv.setCompoundDrawables(it, null, null, null)
+        }
+
+        getSelectDrawable().let {
+            it.bounds = Rect(0, 0, it.intrinsicWidth, it.intrinsicHeight)
+            directMicTv.setCompoundDrawables(it, null, null, null)
+        }
+
+        getSelectDrawable().let {
+            it.bounds = Rect(0, 0, it.intrinsicWidth, it.intrinsicHeight)
+            applicationMicTv.setCompoundDrawables(it, null, null, null)
+        }
+
         trySelect(2)
+        trySelectMicType(1)
 
         if ("change".equals(from)) {
             nameEdittext.setText(H.partyRoomData?.topicName)
 
             trySelect(H.partyRoomData?.enterPermission ?: 2)
         }
+
+        launch {
+            delay(1000)
+            val list = ArrayList<CommonTagView.TagModel>()
+            list.add(CommonTagView.TagModel(1, "K歌-3V3"))
+            list.add(CommonTagView.TagModel(2, "K歌-1V5"))
+            list.add(CommonTagView.TagModel(3, "K歌-排麦"))
+            list.add(CommonTagView.TagModel(4, "PK-成语接龙"))
+            list.add(CommonTagView.TagModel(5, "PK-爱记歌词"))
+            list.add(CommonTagView.TagModel(6, "PK-我指你唱"))
+            list.add(CommonTagView.TagModel(7, "相亲交友"))
+            list.add(CommonTagView.TagModel(8, "欢乐拍卖"))
+            gameTagView.bindData(list)
+        }
+
+    }
+
+    override fun onTouch(view: View?, motionEvent: MotionEvent?): Boolean {
+        //触摸的是EditText并且当前EditText可以滚动则将事件交给EditText处理；否则将事件交由其父类处理
+        if ((view?.getId() == R.id.name_edittext && canVerticalScroll(nameEdittext))) {
+            view.getParent().requestDisallowInterceptTouchEvent(true);
+            if (motionEvent?.getAction() == MotionEvent.ACTION_UP) {
+                view.getParent().requestDisallowInterceptTouchEvent(false);
+            }
+        }
+        return false
+    }
+
+    private fun canVerticalScroll(editText: EditText): Boolean {
+        //滚动的距离
+        val scrollY = editText.getScrollY();
+        //控件内容的总高度
+        val scrollRange = editText.getLayout().getHeight();
+        //控件实际显示的高度
+        val scrollExtent = editText.getHeight() - editText.getCompoundPaddingTop() - editText.getCompoundPaddingBottom();
+        //控件内容总高度与实际显示高度的差值
+        val scrollDifference = scrollRange - scrollExtent;
+
+        if (scrollDifference == 0) {
+            return false;
+        }
+
+        return (scrollY > 0) || (scrollY < scrollDifference - 1);
+    }
+
+
+    private fun getSelectDrawable(): Drawable {
+        return DrawableCreator.Builder()
+                .setSelectedDrawable(U.getDrawable(R.drawable.chuangjian_xuanzhong))
+                .setUnSelectedDrawable(U.getDrawable(R.drawable.chuangjian_weixuanzhong))
+                .build()
     }
 
     private fun trySelect(enterType: Int) {
@@ -148,6 +231,17 @@ class PartyRoomCreateActivity : BaseActivity() {
         } else if (enterType == 1) {
             allManTv.isSelected = false
             onlyInviteTv.isSelected = true
+        }
+    }
+
+    private fun trySelectMicType(micType: Int) {
+        this.micType = micType
+        if (micType == 1) {
+            directMicTv.isSelected = true
+            applicationMicTv.isSelected = false
+        } else if (micType == 2) {
+            directMicTv.isSelected = false
+            applicationMicTv.isSelected = true
         }
     }
 

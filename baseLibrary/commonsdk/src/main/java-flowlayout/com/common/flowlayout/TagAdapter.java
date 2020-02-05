@@ -32,6 +32,10 @@ public abstract class TagAdapter<T> {
         void onChanged();
     }
 
+    public List<T> getTagDatas() {
+        return mTagDatas;
+    }
+
     void setOnDataChangedListener(OnDataChangedListener listener) {
         mOnDataChangedListener = listener;
     }
