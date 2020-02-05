@@ -188,3 +188,15 @@ class PartyRoomViewHolder(item: View, var listener: PartyRoomAdapter.Listener) :
 }
 
 class PartyEmptyRoomViewHolder(item: View) : RecyclerView.ViewHolder(item)
+
+class PartyQuickKTVViewHolder(item: View, var listener: PartyRoomAdapter.Listener) : RecyclerView.ViewHolder(item) {
+    init {
+        item.setAnimateDebounceViewClickListener { listener.onClickQuickKTV() }
+    }
+}
+
+class PartyQuickGamePKViewHolder(item: View, var listener: PartyRoomAdapter.Listener) : RecyclerView.ViewHolder(item) {
+    init {
+        item.setAnimateDebounceViewClickListener { listener.onClickQuickGamePK() }
+    }
+}

@@ -55,6 +55,14 @@ class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context)
         recyclerView = this.findViewById(R.id.recycler_view)
 
         adapter = PartyRoomAdapter(object : PartyRoomAdapter.Listener {
+            override fun onClickQuickKTV() {
+                // 嗨唱KTV快速加入
+            }
+
+            override fun onClickQuickGamePK() {
+                // 游戏PK快速加入
+            }
+
             override fun onClickRoom(position: Int, model: PartyRoomInfoModel?) {
                 model?.roomID?.let {
                     if (type == TYPE_PARTY_HOME) {
@@ -66,11 +74,6 @@ class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context)
                     val map = HashMap<String, String>()
                     map["roomType"] = model.roomtype.toString()
                     StatisticsAdapter.recordCountEvent("party", "recommend", map)
-//                    if (model.roomtype == 1) {
-//                        StatisticsAdapter.recordCountEvent("party", "personal_room_recommend", null)
-//                    } else if (model.roomtype == 2) {
-//                        StatisticsAdapter.recordCountEvent("party", "family_room_recommend", null)
-//                    }
                 }
             }
 
