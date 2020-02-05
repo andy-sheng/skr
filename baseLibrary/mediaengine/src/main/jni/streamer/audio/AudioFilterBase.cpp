@@ -39,13 +39,14 @@ AudioFilterBase::AudioFilterBase() :
         mStopped(false),
         mFrameSize(0),
         mFifoBuffer(NULL),
-        mFifoSize(0),
-        mReadCond(NULL) {
+        mFifoSize(0) {
     pthread_mutex_init(&mReadLock, NULL);
+    pthread_cond_init(&mReadCond, NULL);
 }
 
 AudioFilterBase::~AudioFilterBase() {
     destroyFifo();
+    pthread_cond_destroy(&mReadCond);
     pthread_mutex_destroy(&mReadLock);
 }
 
@@ -59,8 +60,6 @@ void AudioFilterBase::initFifo(int sampleFmt, int sampleRate, int channels) {
     mFifoSize = sampleRate * 300 / 1000;     // 300ms
     mFifoBuffer = (uint8_t *) malloc((size_t) (mFrameSize * mFifoSize));
     audio_utils_fifo_init(&mFifo, (size_t) mFifoSize, (size_t) mFrameSize, mFifoBuffer);
-    mReadCond = createThreadLock();
-    waitThreadLock(mReadCond);
     pthread_mutex_unlock(&mReadLock);
 }
 
@@ -71,8 +70,7 @@ void AudioFilterBase::destroyFifo() {
         free(mFifoBuffer);
         mFifoBuffer = NULL;
     }
-    destroyThreadLock(mReadCond);
-    mReadCond = NULL;
+    pthread_cond_signal(&mReadCond);
     pthread_mutex_unlock(&mReadLock);
 }
 
@@ -90,11 +88,9 @@ void AudioFilterBase::attachTo(int idx, AudioBase* dst, bool detach) {
         }
     }
     if (detach) {
-        mStopped = true;
         pthread_mutex_lock(&mReadLock);
-        if (mReadCond) {
-            notifyThreadLock(mReadCond);
-        }
+        mStopped = true;
+        pthread_cond_signal(&mReadCond);
         if (mFifoBuffer) {
             audio_utils_fifo_flush(&mFifo);
         }
@@ -104,7 +100,7 @@ void AudioFilterBase::attachTo(int idx, AudioBase* dst, bool detach) {
 
 int AudioFilterBase::read(uint8_t* buf, int size) {
     pthread_mutex_lock(&mReadLock);
-    if (mFifoBuffer == NULL || mReadCond == NULL) {
+    if (mFifoBuffer == NULL || mStopped) {
         pthread_mutex_unlock(&mReadLock);
         return 0;
     }
@@ -112,7 +108,7 @@ int AudioFilterBase::read(uint8_t* buf, int size) {
     int count = size / mFrameSize;
     int read = audio_utils_fifo_read(&mFifo, buf, (size_t) count);
     while (read < count) {
-        waitThreadLock(mReadCond);
+        pthread_cond_wait(&mReadCond, &mReadLock);
         if (mStopped) {
             LOGD("read aborted!");
             break;
@@ -151,7 +147,7 @@ int AudioFilterBase::filterProcess(int sampleFmt, int sampleRate, int channels,
                  inSize, write * mFrameSize);
         }
         if (write > 0) {
-            notifyThreadLock(mReadCond);
+            pthread_cond_signal(&mReadCond);
         }
     }
     pthread_mutex_unlock(&mReadLock);

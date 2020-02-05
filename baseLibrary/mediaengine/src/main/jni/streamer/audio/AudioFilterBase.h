@@ -34,7 +34,7 @@ private:
     audio_utils_fifo mFifo;
     uint8_t* mFifoBuffer;
     int mFifoSize;
-    void* mReadCond;
+    pthread_cond_t mReadCond;
     pthread_mutex_t mReadLock;
 
     void initFifo(int sampleFmt, int sampleRate, int channels);
