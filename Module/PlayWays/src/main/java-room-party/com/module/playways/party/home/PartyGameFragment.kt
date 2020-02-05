@@ -98,6 +98,10 @@ class PartyGameFragment : BaseFragment() {
         partyRoomView?.stopTimer()
     }
 
+    override fun isInViewPager(): Boolean {
+        return true
+    }
+
     override fun destroy() {
         super.destroy()
         partyRoomView?.destory()
