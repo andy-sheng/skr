@@ -11,6 +11,9 @@ import com.common.flowlayout.TagFlowLayout
 import com.common.log.MyLog
 import com.common.view.ex.ExTextView
 import com.component.busilib.R
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 abstract class CommonTagView : ConstraintLayout {
     val TAG = "CommonTagView"

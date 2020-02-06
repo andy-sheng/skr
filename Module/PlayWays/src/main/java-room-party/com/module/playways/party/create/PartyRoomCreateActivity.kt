@@ -32,11 +32,11 @@ import com.component.person.view.CommonTagView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.playways.R
+import com.module.playways.party.create.model.PartyCreateRecommendGameModel
 import com.module.playways.party.create.view.GameTagView
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.room.data.H
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -55,12 +55,14 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
     lateinit var gameTip: ExTextView
     lateinit var gameTagView: GameTagView
 
+    val gameList = ArrayList<PartyCreateRecommendGameModel>()
+
     var from: String = "create"
 
     val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
 
     var enterType = 2 // 1 只有邀请 2 无限制
-    var micType = 1 // 1 直接上麦 2 申请上麦
+    var micType = 1 // EGSM_NEED_APPLY = 0 : 需要申请上麦 - EGSM_NO_APPLY = 1 : 不需要申请上麦
 
     val skrAudioPermission = SkrAudioPermission()
 
@@ -114,7 +116,7 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
             trySelectMicType(1)
         }
         applicationMicTv.setDebounceViewClickListener {
-            trySelectMicType(2)
+            trySelectMicType(0)
         }
 
         nameEdittext.addTextChangedListener(object : TextWatcher {
@@ -173,19 +175,7 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
 
             trySelect(H.partyRoomData?.enterPermission ?: 2)
         } else {
-            launch {
-                delay(1000)
-                val list = ArrayList<CommonTagView.TagModel>()
-                list.add(CommonTagView.TagModel(1, "K歌-3V3"))
-                list.add(CommonTagView.TagModel(2, "K歌-1V5"))
-                list.add(CommonTagView.TagModel(3, "K歌-排麦"))
-                list.add(CommonTagView.TagModel(4, "PK-成语接龙"))
-                list.add(CommonTagView.TagModel(5, "PK-爱记歌词"))
-                list.add(CommonTagView.TagModel(6, "PK-我指你唱"))
-                list.add(CommonTagView.TagModel(7, "相亲交友"))
-                list.add(CommonTagView.TagModel(8, "欢乐拍卖"))
-                gameTagView.bindData(list)
-            }
+            getRecommendGameList()
         }
     }
 
@@ -241,7 +231,7 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
         if (micType == 1) {
             directMicTv.isSelected = true
             applicationMicTv.isSelected = false
-        } else if (micType == 2) {
+        } else if (micType == 0) {
             directMicTv.isSelected = false
             applicationMicTv.isSelected = true
         }
@@ -252,10 +242,23 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
     private fun createRoom() {
         StatisticsAdapter.recordCountEvent("party", "create", null)
         var topicName = nameEdittext.text.toString().trim()
+        var ageStage = gameTagView.getSelectTag()
+        var model: PartyCreateRecommendGameModel? = null
+
+        gameList?.forEach {
+            if (ageStage == it.playID) {
+                model = it
+                return@forEach
+            }
+        }
 
         launch {
             val map = mutableMapOf(
                     "enterPermission" to enterType,
+                    "gameMode" to model?.gameMode,
+                    "getSeatMode" to micType,
+                    "playID" to model?.playID,
+                    "ruleID" to model?.ruleID,
                     "topicName" to topicName
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
@@ -295,6 +298,43 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }
+        }
+    }
+
+    private fun getRecommendGameList() {
+        launch {
+            repeatUntil(5) {
+                val map = mutableMapOf(
+                        "cnt" to 20
+                )
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val result = subscribe(RequestControl("createRoom", ControlType.CancelThis)) {
+                    roomServerApi.getRecommendGameList(body)
+                }
+
+                if (result.errno == 0) {
+                    val list = JSON.parseArray(result.data.getString("items"), PartyCreateRecommendGameModel::class.java)
+                    gameList.addAll(list)
+                    val tagList = ArrayList<CommonTagView.TagModel>();
+                    list?.forEach {
+                        val model = CommonTagView.TagModel(it.playID, it.gameDesc)
+                        tagList.add(model)
+                    }
+
+                    gameTagView.bindData(tagList)
+
+                    false
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                    true
+                }
+            }
+        }
+    }
+
+    inline fun repeatUntil(times: Int, needRepeat: (Int) -> Boolean) {
+        for (index in 0..times - 1) {
+            if (!needRepeat(index)) break
         }
     }
 

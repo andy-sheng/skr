@@ -342,4 +342,12 @@ interface PartyRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partygame/result-quick-answer")
     fun getQuickAnswerResult(@Body body: RequestBody): Call<ApiResult>
+
+    /**获取推荐游戏列表
+     *{
+     *"cnt": 0
+     *}
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partyroom/recommend-game-list")
+    fun getRecommendGameList(@Body body: RequestBody): Call<ApiResult>
 }
