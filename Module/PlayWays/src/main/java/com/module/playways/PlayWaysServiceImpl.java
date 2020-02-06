@@ -442,43 +442,18 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
     // 个人中心或者个人卡片上的邀请合唱
     @Override
-    public void tryInviteToRelay(int userID, boolean isFriend) {
+    public void tryInviteToRelay(int userID, boolean isFriend, boolean isFree) {
         skrAudioPermission.ensurePermission(new Runnable() {
             @Override
             public void run() {
-                RelayRoomServerApi relayRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi.class);
-                if (isFriend) {
+                if (isFriend || isFree) {
                     HashMap map = new HashMap();
                     map.put("inviteUserID", userID);
+                    map.put("inviteFree", true);
                     RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-                    ApiMethods.subscribe(relayRoomServerApi.sendRelayInvite(body), new ApiObserver<ApiResult>() {
-                        @Override
-                        public void process(ApiResult obj) {
-                            if (obj.getErrno() == 0) {
-                                startCheckLoop();
-                                U.getToastUtil().showShort("邀请成功");
-                            } else {
-                                if (obj.getErrno() == 8343024) {
-                                    EventBus.getDefault().post(new ShowHalfRechargeFragmentEvent());
-                                }
-
-                                U.getToastUtil().showShort(obj.getErrmsg());
-                            }
-                        }
-
-                        @Override
-                        public void onNetworkError(ErrorType errorType) {
-                            super.onNetworkError(errorType);
-                            U.getToastUtil().showShort("网络错误");
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
-                            U.getToastUtil().showShort("请求错误");
-                        }
-                    });
+                    sendInviteReq(body);
                 } else {
+                    RelayRoomServerApi relayRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi.class);
                     ApiMethods.subscribe(relayRoomServerApi.getInviteCostZS(userID), new ApiObserver<ApiResult>() {
                         @Override
                         public void process(ApiResult obj) {
@@ -495,7 +470,11 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                                             @Override
                                             public void clickValid(View v) {
                                                 tipsDialogView.dismiss(false);
-                                                tryInviteToRelay(userID, true);
+                                                HashMap map = new HashMap();
+                                                map.put("inviteUserID", userID);
+                                                map.put("inviteFree", false);
+                                                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                                                sendInviteReq(body);
                                             }
                                         })
                                         .setCancelBtnClickListener(new DebounceViewClickListener() {
@@ -518,6 +497,37 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 }
             }
         }, true);
+    }
+
+    private void sendInviteReq(RequestBody body) {
+        RelayRoomServerApi relayRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi.class);
+        ApiMethods.subscribe(relayRoomServerApi.sendRelayInvite(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    startCheckLoop();
+                    U.getToastUtil().showShort("邀请成功");
+                } else {
+                    if (obj.getErrno() == 8343024) {
+                        EventBus.getDefault().post(new ShowHalfRechargeFragmentEvent());
+                    }
+
+                    U.getToastUtil().showShort(obj.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                super.onNetworkError(errorType);
+                U.getToastUtil().showShort("网络错误");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                U.getToastUtil().showShort("请求错误");
+            }
+        });
     }
 
     @Override

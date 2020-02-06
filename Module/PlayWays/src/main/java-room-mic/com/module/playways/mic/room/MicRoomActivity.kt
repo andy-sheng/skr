@@ -660,7 +660,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 .setRoomID(mRoomData.gameId)
                 .setInviteReplyListener { userInfoModel ->
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                    iRankingModeService.tryInviteToRelay(userInfoModel.userId, userInfoModel.isFriend)
+                    iRankingModeService.tryInviteToRelay(userInfoModel.userId, userInfoModel.isFriend, false)
                 }
                 .setKickListener { userInfoModel -> showKickConfirmDialog(userInfoModel) }
                 .build()

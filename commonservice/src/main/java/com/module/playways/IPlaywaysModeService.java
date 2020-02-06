@@ -53,7 +53,7 @@ public interface IPlaywaysModeService extends IProvider {
 
     void refuseJoinRelayRoom(int peerUserID, int refuseType, int inviteType);
 
-    void tryInviteToRelay(int userID, boolean isFriend);
+    void tryInviteToRelay(int userID, boolean isFriend, boolean isFree);
 
     void idleHandler();
 

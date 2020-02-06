@@ -10,6 +10,7 @@ import retrofit2.http.*
 interface RelayRoomServerApi {
     /**
      * {
+     * "inviteFree": true,
      * "inviteUserID": 0
      * }
      * 邀请一个人合唱，房间外
