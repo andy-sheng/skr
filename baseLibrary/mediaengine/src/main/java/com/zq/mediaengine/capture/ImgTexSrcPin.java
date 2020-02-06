@@ -267,7 +267,6 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
             height = img.getWidth();
         }
 
-        boolean formatChanged = false;
         if (mImgTexFormat == null ||
                 mImgTexFormat.width != width ||
                 mImgTexFormat.height != height) {
@@ -276,7 +275,7 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
                 GLES20.glDeleteTextures(1, new int[]{mTextureId}, 0);
                 mTextureId = ImgTexFrame.NO_TEXTURE;
             }
-            formatChanged = true;
+            onFormatChanged(mImgTexFormat);
         }
 
         try {
@@ -296,10 +295,6 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
         }
         if (mTextureId == ImgTexFrame.NO_TEXTURE) {
             return;
-        }
-
-        if (formatChanged) {
-            onFormatChanged(mImgTexFormat);
         }
 
         TexTransformUtil.calTransformMatrix(mTexMatrix, 1, 1, rotate);
@@ -329,7 +324,6 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
             height = srcWidth;
         }
 
-        boolean formatChanged = false;
         if (mImgTexFormat == null ||
                 mImgTexFormat.width != width ||
                 mImgTexFormat.height != height) {
@@ -338,7 +332,7 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
                 GLES20.glDeleteTextures(1, new int[]{mTextureId}, 0);
                 mTextureId = ImgTexFrame.NO_TEXTURE;
             }
-            formatChanged = true;
+            onFormatChanged(mImgTexFormat);
         }
 
         int sw = stride / 4;
@@ -353,10 +347,6 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
 
         if (mTextureId == ImgTexFrame.NO_TEXTURE) {
             return;
-        }
-
-        if (formatChanged) {
-            onFormatChanged(mImgTexFormat);
         }
 
         // update matrix
@@ -389,7 +379,6 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
             height = srcWidth;
         }
 
-        boolean formatChanged = false;
         if (mImgTexFormat == null ||
                 mImgTexFormat.width != width ||
                 mImgTexFormat.height != height) {
@@ -398,7 +387,7 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
                 mYUVLoader.reset();
             }
             mTextureId = ImgTexFrame.NO_TEXTURE;
-            formatChanged = true;
+            onFormatChanged(mImgTexFormat);
         }
 
         if (mYUVLoader == null) {
@@ -415,10 +404,6 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
 
         if (mTextureId == ImgTexFrame.NO_TEXTURE) {
             return;
-        }
-
-        if (formatChanged) {
-            onFormatChanged(mImgTexFormat);
         }
 
         // update matrix
