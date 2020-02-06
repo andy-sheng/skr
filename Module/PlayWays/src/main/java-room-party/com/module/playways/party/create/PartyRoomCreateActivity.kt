@@ -166,25 +166,27 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
         trySelectMicType(1)
 
         if ("change".equals(from)) {
+            gameTagView.visibility = View.GONE
+            gameTip.visibility = View.GONE
+            divider3.visibility = View.GONE
             nameEdittext.setText(H.partyRoomData?.topicName)
 
             trySelect(H.partyRoomData?.enterPermission ?: 2)
+        } else {
+            launch {
+                delay(1000)
+                val list = ArrayList<CommonTagView.TagModel>()
+                list.add(CommonTagView.TagModel(1, "K歌-3V3"))
+                list.add(CommonTagView.TagModel(2, "K歌-1V5"))
+                list.add(CommonTagView.TagModel(3, "K歌-排麦"))
+                list.add(CommonTagView.TagModel(4, "PK-成语接龙"))
+                list.add(CommonTagView.TagModel(5, "PK-爱记歌词"))
+                list.add(CommonTagView.TagModel(6, "PK-我指你唱"))
+                list.add(CommonTagView.TagModel(7, "相亲交友"))
+                list.add(CommonTagView.TagModel(8, "欢乐拍卖"))
+                gameTagView.bindData(list)
+            }
         }
-
-        launch {
-            delay(1000)
-            val list = ArrayList<CommonTagView.TagModel>()
-            list.add(CommonTagView.TagModel(1, "K歌-3V3"))
-            list.add(CommonTagView.TagModel(2, "K歌-1V5"))
-            list.add(CommonTagView.TagModel(3, "K歌-排麦"))
-            list.add(CommonTagView.TagModel(4, "PK-成语接龙"))
-            list.add(CommonTagView.TagModel(5, "PK-爱记歌词"))
-            list.add(CommonTagView.TagModel(6, "PK-我指你唱"))
-            list.add(CommonTagView.TagModel(7, "相亲交友"))
-            list.add(CommonTagView.TagModel(8, "欢乐拍卖"))
-            gameTagView.bindData(list)
-        }
-
     }
 
     override fun onTouch(view: View?, motionEvent: MotionEvent?): Boolean {
