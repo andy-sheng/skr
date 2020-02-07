@@ -19,6 +19,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
+import com.common.flutter.boost.FlutterBoostController
 import com.common.log.MyLog
 import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
@@ -138,7 +139,7 @@ class RelayHomeActivity : BaseActivity() {
         }
 
         songPeopleListTv?.setDebounceViewClickListener {
-            // todo 合唱过的人
+            FlutterBoostController.openFlutterPage(RelayHomeActivity@this, "ChorusPeoplePage", null)
         }
 
         songListTv?.setDebounceViewClickListener {

@@ -21,7 +21,6 @@ interface IPartyRoomView {
     fun showVoteView(event: PBeginVote)
     fun beginQuickAnswer(begintTs: Long,endTs:Long)
     fun onChangeRoomResult(success: Boolean, errmsg: String?)
-    fun showTipsGetSeatDialog()
 //    fun turnChange()
 
 //

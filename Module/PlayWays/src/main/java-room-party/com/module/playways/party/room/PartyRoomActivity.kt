@@ -7,7 +7,6 @@ import android.support.constraint.ConstraintLayout
 import android.text.TextUtils
 import android.view.*
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
@@ -97,7 +96,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         val playerTag = "PartyRoomActivity"
     }
 
-    fun ensureActivtyTop() {
+    private fun ensureActivtyTop() {
         // 销毁其他的除排麦房页面所有界面
         for (i in U.getActivityUtils().activityList.size - 1 downTo 0) {
             val activity = U.getActivityUtils().activityList[i]
@@ -174,7 +173,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     val SP_KEY_HOST_TIP_TIMES = "sp_key_host_tips_show_times"
     val REMOVE_HOST_OP_TIP_MSG = 0x01     // 主持人操作提示
     val CHECK_GO_MIC_TIP_MSG = 0x02  // 去上麦或者换房间的提示
-    val mUiHanlder = object : Handler() {
+
+    val mUiHandler = object : Handler() {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
             when (msg?.what) {
@@ -230,7 +230,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         initChangeRoomTransitionView()
         mCorePresenter.onOpeningAnimationOver()
 
-        mUiHanlder.postDelayed(Runnable {
+        mUiHandler.postDelayed(Runnable {
             var openOpBarTimes = U.getPreferenceUtils().getSettingInt("key_open_op_bar_times", 0)
             if (openOpBarTimes < 2) {
                 mWidgetAnimationController.open()
@@ -265,14 +265,14 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     private fun checkGoMicTips() {
         if (mRoomData.joinSrc == JoinPartyRoomRspModel.JRS_QUICK_JOIN) {
-            mUiHanlder.sendEmptyMessageDelayed(CHECK_GO_MIC_TIP_MSG, 6000L)
+            mUiHandler.sendEmptyMessageDelayed(CHECK_GO_MIC_TIP_MSG, 6000L)
         }
     }
 
     private fun showGoMicTips() {
         // 用户不在麦上、有空位、房间允许观众自由上麦
         if ((mRoomData.myUserInfo?.isGuest() == false && mRoomData.myUserInfo?.isHost() == false
-                        && mRoomData.getSeatMode == 1) && !mRoomData.isFullSeat()) {
+                        && mRoomData.getSeatMode == 1) && !mRoomData.hasEmptySeat()) {
             // 不在麦上, 且不需要申请上麦，且座位还没满
             var roundInfoModel = mRoomData.realRoundInfo
             if (roundInfoModel == null) {
@@ -286,12 +286,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                     .setCancelTip("换个房间")
                     .setConfirmTip("立即上麦")
                     .setConfirmBtnClickListener {
-                        // todo 去上麦吧
-                        mTipsDialogView?.dismiss(false)
                         mCorePresenter.selfGetSeat()
+                        mTipsDialogView?.dismiss(false)
                     }
                     .setCancelBtnClickListener {
-                        // todo 换房间了
+                        mCorePresenter.changeRoom()
                         mTipsDialogView?.dismiss(false)
                     }
                     .build()
@@ -312,13 +311,13 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 layoutParams.rightMargin = 15.dp()
                 layoutParams.bottomMargin = 50.dp()
                 mMainActContainer?.addView(mHostOpTipImageView, layoutParams)
-                mUiHanlder.sendEmptyMessageDelayed(REMOVE_HOST_OP_TIP_MSG, 15000L)
+                mUiHandler.sendEmptyMessageDelayed(REMOVE_HOST_OP_TIP_MSG, 15000L)
             }
         }
     }
 
     private fun removeHostOpTips() {
-        mUiHanlder.removeMessages(REMOVE_HOST_OP_TIP_MSG)
+        mUiHandler.removeMessages(REMOVE_HOST_OP_TIP_MSG)
         if (mMainActContainer?.indexOfChild(mHostOpTipImageView) != -1) {
             mMainActContainer?.removeView(mHostOpTipImageView)
         }
@@ -341,7 +340,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
         super.destroy()
         dismissDialog()
-        mUiHanlder.removeCallbacksAndMessages(null)
+        mUiHandler.removeCallbacksAndMessages(null)
         mPartyApplyPanelView?.destory()
         mPartyMemberPanelView?.destory()
         mWidgetAnimationController.destroy()
@@ -1073,7 +1072,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 U.getToastUtil().showShort(errMsg)
             }
         } else {
-            mUiHanlder.postDelayed({
+            mUiHandler.postDelayed({
                 if (!success) {
                     U.getToastUtil().showShort(errMsg)
                 }
@@ -1090,24 +1089,5 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 //            mGrabTopContentView.onChangeRoom()
 //            adjustSelectSongView()
         }
-    }
-
-    override fun showTipsGetSeatDialog() {
-        dismissDialog()
-        mTipsDialogView = TipsDialogView.Builder(this)
-                .setTitleTip(mRoomData?.realRoundInfo?.sceneInfo?.rule?.ruleName)
-                .setMessageTip("快上麦一起玩")
-                .setOkBtnTip("换个房间")
-                .setOkBtnClickListener {
-                    mCorePresenter.changeRoom()
-                    mTipsDialogView?.dismiss()
-                }
-                .setCancelTip("立即上麦")
-                .setCancelBtnClickListener {
-                    mCorePresenter.selfGetSeat()
-                    mTipsDialogView?.dismiss()
-                }
-                .build()
-        mTipsDialogView?.showByDialog()
     }
 }

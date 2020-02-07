@@ -126,20 +126,6 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             }
         }
 
-    fun isFullSeat(): Boolean {
-        if (seats.size == 6) {
-            seats.forEach {
-                if (it.seatStatus == ESeatStatus.SS_OPEN.value && it.userID == 0) {
-                    // 座位是打开的，而且没有人
-                    return false
-                }
-            }
-            return true
-        } else {
-            return false
-        }
-    }
-
     /**
      * 本人的座位信息
      */

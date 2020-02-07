@@ -463,6 +463,13 @@ object SkrSchemeProcessor : ISchemeProcessor {
         } else if ("/jump_person_center" == path) {
             // 跳到个人中心
             EventBus.getDefault().post(JumpHomeFromSchemeEvent(3))
+        }else if("/chat" == path){
+            // 跳到私信
+            val needPop = ModuleServiceManager.getInstance().msgService.startPrivateChat(U.getActivityUtils().topActivity,
+                    SchemeUtils.getString(uri,"targetId"),
+                    SchemeUtils.getString(uri,"targetName"),
+                    true
+            )
         }
     }
 

@@ -172,13 +172,6 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
         startHeartbeat()
         startSyncGameStatus()
-        mUiHandler.postDelayed({
-            //如果是自由上麦模式且有空位且不是主持人或嘉宾，提示上麦
-            if (mRoomData?.getSeatMode == 1 && mRoomData?.hasEmptySeat() && mRoomData?.myUserInfo?.isHost() == false && mRoomData?.myUserInfo?.isGuest() == false) {
-                // 弹提示对话框
-                roomView.showTipsGetSeatDialog()
-            }
-        }, 5000)
     }
 
     private fun joinRcRoom(deep: Int) {
