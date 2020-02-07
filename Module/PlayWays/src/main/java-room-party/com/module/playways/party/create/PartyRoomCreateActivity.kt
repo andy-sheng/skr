@@ -241,12 +241,18 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
 
     private fun createRoom() {
         StatisticsAdapter.recordCountEvent("party", "create", null)
-        var topicName = nameEdittext.text.toString().trim()
         var ageStage = gameTagView.getSelectTag()
+        if (ageStage == 0) {
+            U.getToastUtil().showShort("请选择一个游戏")
+            titlebar.rightTextView.isClickable = true
+            return
+        }
+
+        var topicName = nameEdittext.text.toString().trim()
         var model: PartyCreateRecommendGameModel? = null
 
         gameList?.forEach {
-            if (ageStage == it.playID) {
+            if (ageStage == it.ruleID) {
                 model = it
                 return@forEach
             }
@@ -317,7 +323,7 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
                     gameList.addAll(list)
                     val tagList = ArrayList<CommonTagView.TagModel>();
                     list?.forEach {
-                        val model = CommonTagView.TagModel(it.playID, it.gameDesc)
+                        val model = CommonTagView.TagModel(it.ruleID, it.gameDesc)
                         tagList.add(model)
                     }
 
