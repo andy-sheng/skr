@@ -736,9 +736,14 @@ public class AudioFileCapture {
     }
 
     private void doStop() {
-        mMediaCodec.stop();
-        mMediaCodec.release();
-        mMediaExtractor.release();
+        try {
+            mMediaCodec.stop();
+            mMediaCodec.release();
+            mMediaExtractor.release();
+        } catch (Exception e) {
+            Log.w(TAG, "stop failed!");
+            e.printStackTrace();
+        }
     }
 
     private boolean doLoop() {
