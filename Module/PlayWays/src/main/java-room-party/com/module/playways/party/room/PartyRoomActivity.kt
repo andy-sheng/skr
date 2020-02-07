@@ -38,6 +38,7 @@ import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.presenter.VipEnterPresenter
+import com.module.playways.grab.room.view.GrabChangeRoomTransitionView
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
@@ -136,6 +137,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     var mSeatView: PartySeatView? = null
     var mPartySettingView: PartySettingView? = null
     var mPartyEmojiView: PartyEmojiView? = null
+    var mChangeRoomTransitionView:GrabChangeRoomTransitionView? = null
 
     lateinit var mAddSongIv: ImageView
     lateinit var mChangeSongIv: ImageView
@@ -206,7 +208,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         initMicSeatView()
         initRightOpView()
         initVipEnterView()
-
+        initChangeRoomTransitionView()
         mCorePresenter.onOpeningAnimationOver()
 
         mUiHanlder.postDelayed(Runnable {
@@ -238,6 +240,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
 
         U.getStatusBarUtil().setTransparentBar(this, false)
+    }
+
+    private fun initChangeRoomTransitionView() {
+        mChangeRoomTransitionView = GrabChangeRoomTransitionView(findViewById(R.id.change_room_transition_view))
+        mChangeRoomTransitionView?.setVisibility(View.GONE)
     }
 
     override fun onResume() {
@@ -951,5 +958,53 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     override fun beginQuickAnswer(beginTs: Long, endTs: Long) {
         mRightQuickAnswerView?.playCountDown(beginTs, endTs)
+    }
+
+    internal var mBeginChangeRoomTs: Long = 0
+
+    override fun onChangeRoomResult(success: Boolean, errMsg: String?) {
+        val t = System.currentTimeMillis() - mBeginChangeRoomTs
+        if (t > 1500) {
+            mChangeRoomTransitionView?.setVisibility(View.GONE)
+            if (!success) {
+                U.getToastUtil().showShort(errMsg)
+            }
+        } else {
+            mUiHanlder.postDelayed({
+                if (!success) {
+                    U.getToastUtil().showShort(errMsg)
+                }
+                mChangeRoomTransitionView?.setVisibility(View.GONE)
+            }, 1500 - t)
+        }
+        if (success) {
+//            initBgView()
+//            hideAllCardView()
+            mVipEnterPresenter?.switchRoom()
+            mVIPEnterView?.switchRoom()
+            // 重新决定显示mic按钮
+            mBottomContainerView?.setRoomData(mRoomData!!)
+//            mGrabTopContentView.onChangeRoom()
+//            adjustSelectSongView()
+        }
+    }
+
+    override fun showTipsGetSeatDialog() {
+        dismissDialog()
+        mTipsDialogView = TipsDialogView.Builder(this)
+                .setTitleTip(mRoomData?.realRoundInfo?.sceneInfo?.rule?.ruleName)
+                .setMessageTip("快上麦一起玩")
+                .setOkBtnTip("换个房间")
+                .setOkBtnClickListener {
+                    mCorePresenter.changeRoom()
+                    mTipsDialogView?.dismiss()
+                }
+                .setCancelTip("立即上麦")
+                .setCancelBtnClickListener {
+                    mCorePresenter.selfGetSeat()
+                    mTipsDialogView?.dismiss()
+                }
+                .build()
+        mTipsDialogView?.showByDialog()
     }
 }

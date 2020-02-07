@@ -19,6 +19,7 @@ import org.greenrobot.eventbus.EventBus
 
 class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
+    var getSeatMode = 0 // 0 需要申请上麦，1不需要申请上麦
     var quickAnswerTag: String? = null // 当前抢答的标识
     var bgmPlayingPath: String? = null // 背景音乐的播放路径
 
@@ -243,6 +244,17 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             }
         }
         return seatsMap
+    }
+
+    fun hasEmptySeat():Boolean{
+        this.seats?.let {
+            for (info in it) {
+                if(info.seatStatus == ESeatStatus.SS_OPEN.value && info.userID==0){
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     /**

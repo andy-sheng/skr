@@ -91,6 +91,12 @@ interface PartyRoomServerApi {
     fun applyForGuest(@Body body: RequestBody): Call<ApiResult>
 
     /**
+     * 自己上麦
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/apply-for-guest")
+    fun selfGetSeat(@Body body: RequestBody): Call<ApiResult>
+
+    /**
      * 响应申请嘉宾，上麦 {"applyUserID":0，"roomID": 0}
      */
     @PUT("http://dev.game.inframe.mobi/v1/partygame/get-seat")
@@ -350,4 +356,10 @@ interface PartyRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partyroom/recommend-game-list")
     fun getRecommendGameList(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 换房间
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partyroom/change-room")
+    fun changeRoom(@Body body: RequestBody): Call<ApiResult>
 }

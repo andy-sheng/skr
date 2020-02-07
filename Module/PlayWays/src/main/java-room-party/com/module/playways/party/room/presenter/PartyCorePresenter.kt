@@ -10,19 +10,19 @@ import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ControlType
-import com.common.rxretrofit.RequestControl
-import com.common.rxretrofit.subscribe
+import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
+import com.component.busilib.recommend.RA
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
+import com.module.playways.grab.room.event.SwitchRoomEvent
+import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.*
@@ -38,6 +38,7 @@ import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.GiftPresentEvent
 import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.PartyRoomMsgManager
+import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
 import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.comment.model.CommentTextModel
@@ -155,6 +156,13 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
         startHeartbeat()
         startSyncGameStatus()
+        mUiHandler.postDelayed({
+            //如果是自由上麦模式且有空位且不是主持人或嘉宾，提示上麦
+            if(mRoomData?.getSeatMode == 1 && mRoomData?.hasEmptySeat() && mRoomData?.myUserInfo?.isHost()==false && mRoomData?.myUserInfo?.isGuest()==false){
+                // 弹提示对话框
+                roomView.showTipsGetSeatDialog()
+            }
+        },5000)
     }
 
     private fun joinRcRoom(deep: Int) {
@@ -182,11 +190,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PResultVote) {
-        pretendSystemMsg("投票结果：" + "\n" +
-                "${UserInfoManager.getInstance().getRemarkName(event.voteInfosList[0].user.userInfo.userID, event.voteInfosList[0].user.userInfo.nickName)} ${event.voteInfosList[0].voteCnt}票" + "\n" +
-                "${UserInfoManager.getInstance().getRemarkName(event.voteInfosList[1].user.userInfo.userID, event.voteInfosList[1].user.userInfo.nickName)} ${event.voteInfosList[1].voteCnt}票")
+    //TODO 自由上麦
+    fun selfGetSeat() {
+
     }
 
     private fun ensureInRcRoom() {
@@ -572,6 +578,46 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
     }
 
+    private var mSwitchRooming = false
+
+    // 换房间
+    fun changeRoom(){
+        if (mSwitchRooming) {
+            U.getToastUtil().showShort("切换中")
+            return
+        }
+        //        if(true){
+        //            stopGuide();
+        //            mRoomData.setRealRoundInfo(null);
+        //            mIGrabView.hideAllCardView();
+        //            joinRoomAndInit(false);
+        //            ZqEngineKit.getInstance().unbindAllRemoteVideo();
+        //            mRoomData.checkRoundInEachMode();
+        //            mIGrabView.onChangeRoomResult(true, null);
+        //            mIGrabView.dimissKickDialog();
+        //            return;
+        //        }
+        mSwitchRooming = true
+        val map = HashMap<String, Any>()
+        map["roomID"] = mRoomData.gameId
+        map["gameMode"] = mRoomData.realRoundInfo?.sceneInfo?.rule?.ruleType ?:0
+        map["vars"] = RA.getVars()
+        map["testList"] = RA.getTestList()
+
+        launch {
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            var result = subscribe(RequestControl("changeRoom", ControlType.CancelThis)) {
+                mRoomServerApi.changeRoom(body)
+            }
+            if (result.errno == 0) {
+                val rspModel = JSON.parseObject(result.data!!.toJSONString(), JoinPartyRoomRspModel::class.java)
+                onChangeRoomSuccess(rspModel)
+            } else {
+                roomView.onChangeRoomResult(false, result.errmsg)
+            }
+            mSwitchRooming = false
+        }
+    }
     /**
      * 换房间 或者 接受邀请时 你已经在派对房了
      */
@@ -580,6 +626,17 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         mRoomData.loadFromRsp(event.mJoinGrabRoomRspModel)
         joinRoomAndInit(true)
         onOpeningAnimationOver()
+    }
+
+    private fun onChangeRoomSuccess(rspModel: JoinPartyRoomRspModel?) {
+        MyLog.d(TAG, "onChangeRoomSuccess JoinPartyRoomRspModel=$rspModel")
+        if (rspModel != null) {
+            EventBus.getDefault().post(SwitchRoomEvent())
+            mRoomData.loadFromRsp(rspModel)
+            joinRoomAndInit(false)
+            onOpeningAnimationOver()
+            roomView.onChangeRoomResult(true, null)
+        }
     }
 
     /**
@@ -1155,7 +1212,6 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         mRoomData.checkRoundInEachMode()
     }
 
-
     // 警告
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PRoomWarningMsg) {
@@ -1205,6 +1261,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         EventBus.getDefault().post(PartyQuickAnswerResultEvent(answers))
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PResultVote) {
+        pretendSystemMsg("投票结果：" + "\n" +
+                "${UserInfoManager.getInstance().getRemarkName(event.voteInfosList[0].user.userInfo.userID, event.voteInfosList[0].user.userInfo.nickName)} ${event.voteInfosList[0].voteCnt}票" + "\n" +
+                "${UserInfoManager.getInstance().getRemarkName(event.voteInfosList[1].user.userInfo.userID, event.voteInfosList[1].user.userInfo.nickName)} ${event.voteInfosList[1].voteCnt}票")
+    }
 
     // TODO sync
     /**
