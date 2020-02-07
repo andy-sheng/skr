@@ -10,7 +10,10 @@ import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.*
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
@@ -38,7 +41,6 @@ import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.GiftPresentEvent
 import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.PartyRoomMsgManager
-import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
 import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentNoticeModel
 import com.module.playways.room.room.comment.model.CommentSysModel
@@ -143,7 +145,15 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
         if (mRoomData.gameId > 0) {
             // todo 房间正在玩什么弹幕
-            pretendNoticeMsg("房间正在玩什么", "玩的规则？？？")
+            var roundInfoModel = mRoomData.realRoundInfo
+            if (roundInfoModel == null) {
+                roundInfoModel = mRoomData.expectRoundInfo
+            }
+            val gameInfoModel = roundInfoModel?.sceneInfo
+            gameInfoModel?.let {
+                pretendNoticeMsg("房间正在玩什么", it.rule?.ruleDesc ?: "")
+            }
+
             if (mRoomData.isClubHome()) {
                 pretendNoticeMsg("房间公告", "欢迎加入${mRoomData.clubInfo?.name}的主题房")
             } else {
@@ -163,11 +173,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         startSyncGameStatus()
         mUiHandler.postDelayed({
             //如果是自由上麦模式且有空位且不是主持人或嘉宾，提示上麦
-            if(mRoomData?.getSeatMode == 1 && mRoomData?.hasEmptySeat() && mRoomData?.myUserInfo?.isHost()==false && mRoomData?.myUserInfo?.isGuest()==false){
+            if (mRoomData?.getSeatMode == 1 && mRoomData?.hasEmptySeat() && mRoomData?.myUserInfo?.isHost() == false && mRoomData?.myUserInfo?.isGuest() == false) {
                 // 弹提示对话框
                 roomView.showTipsGetSeatDialog()
             }
-        },5000)
+        }, 5000)
     }
 
     private fun joinRcRoom(deep: Int) {
@@ -591,7 +601,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     private var mSwitchRooming = false
 
     // 换房间
-    fun changeRoom(){
+    fun changeRoom() {
         if (mSwitchRooming) {
             U.getToastUtil().showShort("切换中")
             return
@@ -610,7 +620,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         mSwitchRooming = true
         val map = HashMap<String, Any>()
         map["roomID"] = mRoomData.gameId
-        map["gameMode"] = mRoomData.realRoundInfo?.sceneInfo?.rule?.ruleType ?:0
+        map["gameMode"] = mRoomData.realRoundInfo?.sceneInfo?.rule?.ruleType ?: 0
         map["vars"] = RA.getVars()
         map["testList"] = RA.getTestList()
 
@@ -628,6 +638,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             mSwitchRooming = false
         }
     }
+
     /**
      * 换房间 或者 接受邀请时 你已经在派对房了
      */
