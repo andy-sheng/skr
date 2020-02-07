@@ -29,6 +29,8 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var bgmTv: TextView
     lateinit var voteTv: TextView
     lateinit var qiangdaTv: TextView
+    lateinit var punishmentTv: TextView
+    lateinit var roomSettingTv: TextView
 
     var listener: Listener? = null
 
@@ -41,6 +43,9 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
         bgmTv = parentView.findViewById(R.id.bgm_tv)
         voteTv = parentView.findViewById(R.id.vote_tv)
         qiangdaTv = parentView.findViewById(R.id.qiangda_tv)
+        punishmentTv = parentView.findViewById(R.id.punishment_tv)
+        roomSettingTv = parentView.findViewById(R.id.room_setting_tv)
+
 
         gameSettingTv.setAnimateDebounceViewClickListener {
             listener?.onClickGameSetting()
@@ -59,6 +64,12 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
         muteSettingTv.setAnimateDebounceViewClickListener {
             var b = (H.partyRoomData?.isAllMute == true)
             setAllMicMute(!b)
+        }
+        punishmentTv.setAnimateDebounceViewClickListener {
+            listener?.onClickPunishment()
+        }
+        roomSettingTv.setAnimateDebounceViewClickListener {
+            listener?.onClickRoomSetting()
         }
         bgmTv.setAnimateDebounceViewClickListener {
             FlutterBoostController.openFlutterPage(realView?.context!!, RouterConstants.FLUTTER_PAGE_PARTY_BGM_PAGE, null)
@@ -112,5 +123,7 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
         fun onClickGameSound()
         fun onClickVote()
         fun onClickQuickAnswer()
+        fun onClickPunishment()
+        fun onClickRoomSetting()
     }
 }

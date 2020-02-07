@@ -23,7 +23,11 @@ class PartyBottomWidgetAnimationController(internal var mF: PartyRoomActivity) {
 
     private val translateByOpenType: Int
         get() {
-            return (-100).dp()
+            return if (openType == OPEN_TYPE_SETTING) {
+                (-170).dp()
+            } else {
+                (-100).dp()
+            }
         }
 
     fun open(type: Int) {

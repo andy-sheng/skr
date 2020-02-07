@@ -26,6 +26,7 @@ abstract class CommentModel {
     companion object {
         val TYPE_SYSTEM = 1     // 系统消息
         val TYPE_AI = 2         // AI裁判消息
+        val TYPE_NOTICE = 3     // 房间公告或内容消息
         val TYPE_TEXT = 101     // 普通文本聊天消息
         val TYPE_LIGHT = 102    // 爆灭灯消息
         val TYPE_DYNAMIC = 103  // 特殊表情消息
@@ -43,5 +44,7 @@ abstract class CommentModel {
         val GRAB_TEXT_COLOR = U.getColor(R.color.white_trans_60)       // 文本颜色 （抢唱）
         val GRAB_SYSTEM_COLOR = Color.parseColor("#FF8AB6")  // 系统文案颜色（抢唱）
         val GRAB_SYSTEM_HIGH_COLOR = Color.parseColor("#FF8AB6")  // 系统文案的高亮颜色（抢唱)
+
+        val GAME_NOTICE_COLOR = Color.parseColor("#FFC15B")
     }
 }

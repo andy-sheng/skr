@@ -263,7 +263,6 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
                     "enterPermission" to enterType,
                     "gameMode" to model?.gameMode,
                     "getSeatMode" to micType,
-                    "playID" to model?.playID,
                     "ruleID" to model?.ruleID,
                     "topicName" to topicName
             )

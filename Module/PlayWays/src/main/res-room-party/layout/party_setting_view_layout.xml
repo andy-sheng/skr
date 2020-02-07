@@ -1,115 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_100_dp"
+    android:layout_height="@dimen/view_170_dp"
     android:background="#1F1C48">
 
-    <android.support.constraint.ConstraintLayout
+    <TextView
+        android:id="@+id/game_setting_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingRight="@dimen/view_25_dp">
+        android:drawableTop="@drawable/party_setting_game_icon"
+        android:drawablePadding="@dimen/view_8_dp"
+        android:gravity="center"
+        android:text="游戏"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toTopOf="@id/punishment_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/sound_setting_tv"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/game_setting_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_15_dp"
-            android:drawableTop="@drawable/party_setting_game_icon"
-            android:drawablePadding="@dimen/view_8_dp"
-            android:gravity="center"
-            android:text="游戏"
-            android:textColor="@color/white_trans_50"
-            android:textSize="@dimen/textsize_12_dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/sound_setting_tv"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/sound_setting_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/party_setting_sound_icon"
+        android:drawablePadding="@dimen/view_8_dp"
+        android:gravity="center"
+        android:text="音效"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toRightOf="@id/game_setting_tv"
+        app:layout_constraintRight_toLeftOf="@id/mute_setting_tv"
+        app:layout_constraintTop_toTopOf="@id/game_setting_tv" />
 
-        <TextView
-            android:id="@+id/sound_setting_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_30_dp"
-            android:drawableTop="@drawable/party_setting_sound_icon"
-            android:drawablePadding="@dimen/view_8_dp"
-            android:gravity="center"
-            android:text="音效"
-            android:textColor="@color/white_trans_50"
-            android:textSize="@dimen/textsize_12_dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/game_setting_tv"
-            app:layout_constraintRight_toLeftOf="@id/mute_setting_tv"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/mute_setting_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/party_setting_all_mute"
+        android:drawablePadding="@dimen/view_8_dp"
+        android:gravity="center"
+        android:text="全员闭麦"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toRightOf="@id/sound_setting_tv"
+        app:layout_constraintRight_toLeftOf="@id/bgm_tv"
+        app:layout_constraintTop_toTopOf="@id/game_setting_tv" />
 
-        <TextView
-            android:id="@+id/mute_setting_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_30_dp"
-            android:drawableTop="@drawable/party_setting_all_mute"
-            android:drawablePadding="@dimen/view_8_dp"
-            android:gravity="center"
-            android:text="全员闭麦"
-            android:textColor="@color/white_trans_50"
-            android:textSize="@dimen/textsize_12_dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/sound_setting_tv"
-            app:layout_constraintRight_toLeftOf="@id/bgm_tv"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/bgm_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/party_bgm"
+        android:drawablePadding="@dimen/view_8_dp"
+        android:gravity="center"
+        android:text="背景音乐"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toRightOf="@id/mute_setting_tv"
+        app:layout_constraintRight_toLeftOf="@id/vote_tv"
+        app:layout_constraintTop_toTopOf="@id/game_setting_tv" />
 
-        <TextView
-            android:id="@+id/bgm_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_30_dp"
-            android:drawableTop="@drawable/party_bgm"
-            android:drawablePadding="@dimen/view_8_dp"
-            android:gravity="center"
-            android:text="背景音乐"
-            android:textColor="@color/white_trans_50"
-            android:textSize="@dimen/textsize_12_dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/mute_setting_tv"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+    <TextView
+        android:id="@+id/vote_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/party_vote"
+        android:drawablePadding="@dimen/view_8_dp"
+        android:gravity="center"
+        android:text="投票"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toRightOf="@id/bgm_tv"
+        app:layout_constraintRight_toLeftOf="@+id/qiangda_tv"
+        app:layout_constraintTop_toTopOf="@id/game_setting_tv" />
 
-        <TextView
-            android:id="@+id/vote_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_30_dp"
-            android:drawableTop="@drawable/party_vote"
-            android:drawablePadding="@dimen/view_8_dp"
-            android:gravity="center"
-            android:text="投票"
-            android:textColor="@color/white_trans_50"
-            android:textSize="@dimen/textsize_12_dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/bgm_tv"
-            app:layout_constraintRight_toLeftOf="@+id/qiangda_tv"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/qiangda_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/party_qiangda_icon"
+        android:drawablePadding="@dimen/view_8_dp"
+        android:gravity="center"
+        android:text="抢答"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toRightOf="@id/vote_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/game_setting_tv" />
 
+    <TextView
+        android:id="@+id/punishment_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/punishment_icon"
+        android:drawablePadding="@dimen/view_8_dp"
+        android:gravity="center"
+        android:text="惩罚"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/game_setting_tv"
+        app:layout_constraintTop_toBottomOf="@id/game_setting_tv" />
 
-        <TextView
-            android:id="@+id/qiangda_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_30_dp"
-            android:drawableTop="@drawable/party_qiangda_icon"
-            android:drawablePadding="@dimen/view_8_dp"
-            android:gravity="center"
-            android:text="抢答"
-            android:textColor="@color/white_trans_50"
-            android:textSize="@dimen/textsize_12_dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/vote_tv"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-</HorizontalScrollView>
+    <TextView
+        android:id="@+id/room_setting_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/party_room_setting_icon"
+        android:drawablePadding="@dimen/view_8_dp"
+        android:gravity="center"
+        android:text="房间设置"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintTop_toTopOf="@id/punishment_tv"
+        app:layout_constraintRight_toRightOf="@id/mute_setting_tv"
+        app:layout_constraintLeft_toLeftOf="@id/mute_setting_tv"/>
+
+</android.support.constraint.ConstraintLayout>

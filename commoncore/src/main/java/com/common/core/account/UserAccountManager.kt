@@ -65,6 +65,8 @@ object UserAccountManager {
     val SYSTEM_RANK_AI = 3  //AI裁判
     val SYSTEM_AVATAR = "http://res-static.inframe.mobi/common/system2.png" //系统头像
 
+    val NOTICE_AVATAR = "http://res-static.inframe.mobi/common/notice_icon.png" //公告头像
+
     val MSG_DELAY_GET_RC_TOKEN = 10 * 1000
 
     private var mAccount: UserAccount? = null

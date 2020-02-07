@@ -66,6 +66,7 @@ class RelayHomeActivity : BaseActivity() {
     private var searchSongTv: ExTextView? = null
     private var songListTv: ExTextView? = null
     private var inviteFriendTv: ExTextView? = null
+    private var songPeopleListTv: ExTextView? = null
     private var bottomArea: Barrier? = null
     private var speedRecyclerView: SpeedRecyclerView? = null
 
@@ -106,7 +107,8 @@ class RelayHomeActivity : BaseActivity() {
 
         searchSongTv = findViewById(R.id.search_song_tv)
         songListTv = findViewById(R.id.song_list_tv)
-        inviteFriendTv = this.findViewById(R.id.invite_friend_tv)
+        songPeopleListTv = findViewById(R.id.song_people_list_tv)
+        inviteFriendTv = findViewById(R.id.invite_friend_tv)
 
         bottomArea = findViewById(R.id.bottom_area)
         speedRecyclerView = findViewById(R.id.speed_recyclerView)
@@ -133,6 +135,10 @@ class RelayHomeActivity : BaseActivity() {
                         }
                     })
                     .build())
+        }
+
+        songPeopleListTv?.setDebounceViewClickListener {
+            // todo 合唱过的人
         }
 
         songListTv?.setDebounceViewClickListener {
@@ -345,17 +351,17 @@ class RelayHomeActivity : BaseActivity() {
     }
 
     private fun refreshRedPacketStatus() {
-        when (status) {
-            1 -> {
-                relayRedPacketTv?.visibility = View.VISIBLE
-                relayRedPacketTv?.text = "已开启"
-            }
-            2 -> {
-                relayRedPacketTv?.visibility = View.VISIBLE
-                relayRedPacketTv?.text = "红包合唱"
-            }
-            else -> relayRedPacketTv?.visibility = View.GONE
-        }
+//        when (status) {
+//            1 -> {
+//                relayRedPacketTv?.visibility = View.VISIBLE
+//                relayRedPacketTv?.text = "已开启"
+//            }
+//            2 -> {
+//                relayRedPacketTv?.visibility = View.VISIBLE
+//                relayRedPacketTv?.text = "红包合唱"
+//            }
+//            else -> relayRedPacketTv?.visibility = View.GONE
+//        }
     }
 
     fun getPlayBookList(off: Int, limit: Int, clean: Boolean) {

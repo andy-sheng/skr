@@ -40,6 +40,7 @@ import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.PartyRoomMsgManager
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
 import com.module.playways.room.room.comment.model.CommentModel
+import com.module.playways.room.room.comment.model.CommentNoticeModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.comment.model.CommentTextModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
@@ -138,14 +139,18 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             MyLog.e(TAG, "房间号不合法 mRoomData.gameId=" + mRoomData.gameId)
         }
         joinRcRoom(-1)
+
+
         if (mRoomData.gameId > 0) {
+            // todo 房间正在玩什么弹幕
+            pretendNoticeMsg("房间正在玩什么", "玩的规则？？？")
             if (mRoomData.isClubHome()) {
-                pretendSystemMsg("欢迎加入${mRoomData.clubInfo?.name}的主题房")
+                pretendNoticeMsg("房间公告", "欢迎加入${mRoomData.clubInfo?.name}的主题房")
             } else {
                 if (mRoomData.notice.isNotEmpty()) {
-                    pretendSystemMsg("房间公告 ${mRoomData.notice}")
+                    pretendNoticeMsg("房间公告", mRoomData.notice)
                 } else {
-                    pretendSystemMsg("欢迎加入${mRoomData.getPlayerInfoById(mRoomData.hostId)?.userInfo?.nicknameRemark}的主题房")
+                    pretendNoticeMsg("房间公告", "欢迎加入${mRoomData.getPlayerInfoById(mRoomData.hostId)?.userInfo?.nicknameRemark}的主题房")
                 }
             }
 
@@ -198,6 +203,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     private fun ensureInRcRoom() {
         mUiHandler.removeMessages(MSG_ENSURE_IN_RC_ROOM)
         mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_IN_RC_ROOM, (30 * 1000).toLong())
+    }
+
+    fun pretendNoticeMsg(title: String, content: String) {
+        val noticeModel = CommentNoticeModel(title, content)
+        EventBus.getDefault().post(PretendCommentMsgEvent(noticeModel))
     }
 
     fun pretendSystemMsg(text: String) {
