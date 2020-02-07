@@ -502,7 +502,17 @@ public class AudioFileCapture {
                         if (mPaused) {
                             break;
                         }
-                        if (!doLoop()) {
+                        boolean eos = false;
+                        try {
+                            eos = doLoop();
+                        } catch (Exception e) {
+                            Log.e(TAG, "decode frame failed!");
+                            e.printStackTrace();
+                            mDecodeHandler.sendEmptyMessage(CMD_STOP);
+                            postError(ERROR_UNKNOWN, 0);
+                            break;
+                        }
+                        if (!eos) {
                             mDecodeHandler.sendEmptyMessage(CMD_LOOP);
                         } else {
                             postOnCompletion();
