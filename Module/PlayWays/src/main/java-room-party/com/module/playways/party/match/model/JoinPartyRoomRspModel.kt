@@ -10,6 +10,9 @@ import java.io.Serializable
 
 class JoinPartyRoomRspModel : Serializable {
 
+    @JSONField(name = "getSeatMode")
+    var getSeatMode: Int = 0
+
     @JSONField(name = "roomID")
     var roomID = 0
 

@@ -566,6 +566,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         this.enterPermission = rsp.enterPermission
         this.roomType = rsp.roomType
         this.config = rsp.config
+        this.getSeatMode = rsp.getSeatMode
         if (getMySeatInfoInParty()?.micStatus == EMicStatus.MS_CLOSE.value) {
             isMute = true
         }
