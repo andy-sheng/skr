@@ -2,6 +2,7 @@ package com.module.playways.party.room.presenter
 
 import android.os.Handler
 import android.os.Message
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
@@ -23,6 +24,7 @@ import com.component.busilib.recommend.RA
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
+import com.module.RouterConstants
 import com.module.common.ICallback
 import com.module.playways.grab.room.event.SwitchRoomEvent
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
@@ -144,14 +146,13 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
 
         if (mRoomData.gameId > 0) {
-            // todo 房间正在玩什么弹幕
             var roundInfoModel = mRoomData.realRoundInfo
             if (roundInfoModel == null) {
                 roundInfoModel = mRoomData.expectRoundInfo
             }
             val gameInfoModel = roundInfoModel?.sceneInfo
             gameInfoModel?.let {
-                pretendNoticeMsg("房间正在玩什么", it.rule?.ruleDesc ?: "")
+                pretendNoticeMsg(it.rule?.ruleName ?: "", it.rule?.ruleDesc ?: "")
             }
 
             if (mRoomData.isClubHome()) {
@@ -207,7 +208,20 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     //TODO 自由上麦
     fun selfGetSeat() {
-
+        launch {
+            val map = mutableMapOf(
+                    "roomID" to mRoomData.gameId
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("quickJoinParty", ControlType.CancelThis)) {
+                mRoomServerApi.selfGetSeat(body)
+            }
+            if (result.errno == 0) {
+                // todo 看本地是否要做即时的更新
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
     }
 
     private fun ensureInRcRoom() {

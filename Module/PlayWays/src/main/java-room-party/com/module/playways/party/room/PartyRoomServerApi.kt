@@ -10,6 +10,15 @@ import retrofit2.http.*
 interface PartyRoomServerApi {
 
     /**
+     * 快速加入房间 { ERM_SING_PK = 1 : K歌 模式 - ERM_GMAE_PK = 2 : 游戏PK 模式 - ERM_MAKE_FRIEND = 3 : 相亲交友 模式string}
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partyroom/quick-join-room")
+    fun quickJoinRoom(@Body body: RequestBody): Call<ApiResult>
+
+    /**
      * 检查是否有创建权限 { null}
      *
      * @param body

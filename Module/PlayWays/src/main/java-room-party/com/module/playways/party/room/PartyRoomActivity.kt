@@ -141,7 +141,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     var mSeatView: PartySeatView? = null
     var mPartySettingView: PartySettingView? = null
     var mPartyEmojiView: PartyEmojiView? = null
-    var mChangeRoomTransitionView:GrabChangeRoomTransitionView? = null
+    var mChangeRoomTransitionView: GrabChangeRoomTransitionView? = null
 
     lateinit var mAddSongIv: ImageView
     lateinit var mChangeSongIv: ImageView
@@ -172,13 +172,17 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     internal var mHostOpTipImageView: ImageView? = null
 
     val SP_KEY_HOST_TIP_TIMES = "sp_key_host_tips_show_times"
-    val REMOVE_HOST_OP_TIP_MSG = 0x01
+    val REMOVE_HOST_OP_TIP_MSG = 0x01     // 主持人操作提示
+    val CHECK_GO_MIC_TIP_MSG = 0x02  // 去上麦或者换房间的提示
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
             when (msg?.what) {
                 REMOVE_HOST_OP_TIP_MSG -> {
                     removeHostOpTips()
+                }
+                CHECK_GO_MIC_TIP_MSG -> {
+                    showGoMicTips()
                 }
             }
         }
@@ -256,6 +260,43 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
         U.getStatusBarUtil().setTransparentBar(this, false)
         showHostOpTips()
+        checkGoMicTips()
+    }
+
+    private fun checkGoMicTips() {
+        if (mRoomData.joinSrc == JoinPartyRoomRspModel.JRS_QUICK_JOIN) {
+            mUiHanlder.sendEmptyMessageDelayed(CHECK_GO_MIC_TIP_MSG, 6000L)
+        }
+    }
+
+    private fun showGoMicTips() {
+        // 用户不在麦上、有空位、房间允许观众自由上麦
+        if ((mRoomData.myUserInfo?.isGuest() == false && mRoomData.myUserInfo?.isHost() == false
+                        && mRoomData.getSeatMode == 1) && !mRoomData.isFullSeat()) {
+            // 不在麦上, 且不需要申请上麦，且座位还没满
+            var roundInfoModel = mRoomData.realRoundInfo
+            if (roundInfoModel == null) {
+                roundInfoModel = mRoomData.expectRoundInfo
+            }
+            val gameInfoModel = roundInfoModel?.sceneInfo
+            mTipsDialogView?.dismiss(false)
+            mTipsDialogView = TipsDialogView.Builder(this)
+                    .setTitleTip(gameInfoModel?.rule?.ruleName)
+                    .setMessageTip("快上麦一起玩吧")
+                    .setCancelTip("换个房间")
+                    .setConfirmTip("立即上麦")
+                    .setConfirmBtnClickListener {
+                        // todo 去上麦吧
+                        mTipsDialogView?.dismiss(false)
+                        mCorePresenter.selfGetSeat()
+                    }
+                    .setCancelBtnClickListener {
+                        // todo 换房间了
+                        mTipsDialogView?.dismiss(false)
+                    }
+                    .build()
+            mTipsDialogView?.showByDialog()
+        }
     }
 
     private fun showHostOpTips() {
@@ -300,6 +341,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
         super.destroy()
         dismissDialog()
+        mUiHanlder.removeCallbacksAndMessages(null)
         mPartyApplyPanelView?.destory()
         mPartyMemberPanelView?.destory()
         mWidgetAnimationController.destroy()

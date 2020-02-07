@@ -23,6 +23,8 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     var quickAnswerTag: String? = null // 当前抢答的标识
     var bgmPlayingPath: String? = null // 背景音乐的播放路径
 
+    var joinSrc: Int = 0  //标记来源  列表 JRS_LIST = 1; 邀请 JRS_INVITE = 2; 断线重连 JRS_RECONNECT  = 3; 快速进入 JRS_QUICK_JOIN = 4;
+
     var config = PartyConfigModel()
 
     var isAllMute = false // 是否设置了全员禁麦
@@ -124,6 +126,20 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             }
         }
 
+    fun isFullSeat(): Boolean {
+        if (seats.size == 6) {
+            seats.forEach {
+                if (it.seatStatus == ESeatStatus.SS_OPEN.value && it.userID == 0) {
+                    // 座位是打开的，而且没有人
+                    return false
+                }
+            }
+            return true
+        } else {
+            return false
+        }
+    }
+
     /**
      * 本人的座位信息
      */
@@ -148,9 +164,6 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                 }
             }
         }
-
-    companion object {
-    }
 
     override fun getPlayerAndWaiterInfoList(): List<PlayerInfoModel> {
         return users
@@ -246,10 +259,10 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         return seatsMap
     }
 
-    fun hasEmptySeat():Boolean{
+    fun hasEmptySeat(): Boolean {
         this.seats?.let {
             for (info in it) {
-                if(info.seatStatus == ESeatStatus.SS_OPEN.value && info.userID==0){
+                if (info.seatStatus == ESeatStatus.SS_OPEN.value && info.userID == 0) {
                     return true
                 }
             }
@@ -567,6 +580,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         this.roomType = rsp.roomType
         this.config = rsp.config
         this.getSeatMode = rsp.getSeatMode
+        this.joinSrc = rsp.joinSrc
         if (getMySeatInfoInParty()?.micStatus == EMicStatus.MS_CLOSE.value) {
             isMute = true
         }

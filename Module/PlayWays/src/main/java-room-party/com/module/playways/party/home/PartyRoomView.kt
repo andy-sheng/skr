@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.permission.SkrAudioPermission
 import com.common.core.userinfo.model.ClubInfo
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
@@ -15,17 +17,21 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
+import com.common.utils.U
 import com.component.busilib.model.PartyRoomInfoModel
 import com.module.RouterConstants
 import com.module.club.IClubModuleService
 import com.module.playways.IPartyRoomView
 import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
+import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.PartyRoomServerApi
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.*
+import okhttp3.MediaType
+import okhttp3.RequestBody
 
 // 首页的剧场(也包括一下主题房吧)
 class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context), IPartyRoomView, CoroutineScope by MainScope() {
@@ -48,6 +54,8 @@ class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context)
     private var lastLoadDateTime: Long = 0    //记录上次获取接口的时间
     private var recommendInterval: Long = 15 * 1000   // 自动更新的时间间隔
 
+    internal var skrAudioPermission = SkrAudioPermission()
+
     init {
         View.inflate(context, R.layout.party_room_view_layout, this)
 
@@ -57,10 +65,16 @@ class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context)
         adapter = PartyRoomAdapter(object : PartyRoomAdapter.Listener {
             override fun onClickQuickKTV() {
                 // 嗨唱KTV快速加入
+                skrAudioPermission.ensurePermission({
+                    quickJoinParty(1)
+                }, true)
             }
 
             override fun onClickQuickGamePK() {
                 // 游戏PK快速加入
+                skrAudioPermission.ensurePermission({
+                    quickJoinParty(2)
+                }, true)
             }
 
             override fun onClickRoom(position: Int, model: PartyRoomInfoModel?) {
@@ -145,6 +159,26 @@ class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context)
             if (!isClean) {
                 // 是加载更多
                 starTimer(recommendInterval)
+            }
+        }
+    }
+
+    fun quickJoinParty(gameMode: Int) {
+        launch {
+            val map = mutableMapOf(
+                    "gameMode" to gameMode
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("quickJoinParty", ControlType.CancelThis)) {
+                roomServerApi.quickJoinRoom(body)
+            }
+            if (result.errno == 0) {
+                var rsp = JSON.parseObject(result.data.toString(), JoinPartyRoomRspModel::class.java)
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_ROOM)
+                        .withSerializable("JoinPartyRoomRspModel", rsp)
+                        .navigation()
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
             }
         }
     }
