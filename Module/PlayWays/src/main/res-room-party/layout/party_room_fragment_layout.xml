@@ -161,7 +161,7 @@
     <ViewStub
         android:id="@+id/party_bottom_setting_viewStub"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_170_dp"
         android:layout="@layout/party_setting_view_layout"
         app:layout_constraintBottom_toBottomOf="parent" />
 

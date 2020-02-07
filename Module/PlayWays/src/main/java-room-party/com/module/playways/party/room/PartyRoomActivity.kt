@@ -430,6 +430,24 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
         mPartySettingView = PartySettingView(findViewById(R.id.party_bottom_setting_viewStub))
         mPartySettingView?.listener = object : PartySettingView.Listener {
+            override fun onClickPunishment() {
+                // todo 惩罚
+            }
+
+            override fun onClickRoomSetting() {
+                if (mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt()) == null
+                        || mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == false) {
+                    U.getToastUtil().showShort("只有主持人才能进行房间设置哦～")
+                    return
+                }
+
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(this@PartyRoomActivity, PartyRoomSettingFragment::class.java)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build())
+            }
+
             override fun onClickQuickAnswer() {
                 mCorePresenter.beginQuickAnswer()
 //                mRightQuickAnswerView?.playCountDown(System.currentTimeMillis()+3000,System.currentTimeMillis()+10000)
