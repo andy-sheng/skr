@@ -3,9 +3,11 @@ package com.module.playways.party.room
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.support.constraint.ConstraintLayout
 import android.text.TextUtils
 import android.view.*
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
@@ -21,6 +23,8 @@ import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.common.utils.dp
+import com.common.view.ex.ExConstraintLayout
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.ClubCardDialogView
@@ -142,6 +146,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     private var mVIPEnterView: VIPEnterView? = null
     // 都是dialogplus
+    private var mMainActContainer: ExConstraintLayout? = null
     private var mPersonInfoDialog: PersonInfoDialog? = null
     private var mGameRuleDialog: DialogPlus? = null
     private var mTipsDialogView: TipsDialogView? = null
@@ -162,9 +167,18 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     internal var mSkrAudioPermission = SkrAudioPermission()
 
+    internal var mHostOpTipImageView: ImageView? = null
+
+    val SP_KEY_HOST_TIP_TIMES = "sp_key_host_tips_show_times"
+    val REMOVE_HOST_OP_TIP_MSG = 0x01
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
+            when (msg?.what) {
+                REMOVE_HOST_OP_TIP_MSG -> {
+                    removeHostOpTips()
+                }
+            }
         }
     }
 
@@ -187,7 +201,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mVipEnterPresenter = VipEnterPresenter(this, mRoomData)
         addPresent(mVipEnterPresenter)
         // 请保证从下面的view往上面的view开始初始化
-        findViewById<View>(R.id.main_act_container).setOnTouchListener { v, event ->
+        mMainActContainer = findViewById(R.id.main_act_container)
+        mMainActContainer?.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 mInputContainerView.hideSoftInput()
             }
@@ -238,7 +253,34 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
 
         U.getStatusBarUtil().setTransparentBar(this, false)
+        showHostOpTips()
     }
+
+    private fun showHostOpTips() {
+        if (mRoomData.myUserInfo?.isHost() == true) {
+            val times = U.getPreferenceUtils().getSettingInt(SP_KEY_HOST_TIP_TIMES, 0)
+            if (times < 2) {
+                U.getPreferenceUtils().setSettingInt(SP_KEY_HOST_TIP_TIMES, times + 1)
+                mHostOpTipImageView = ImageView(this)
+                mHostOpTipImageView?.setImageResource(R.drawable.party_host_tips_icon)
+                val layoutParams = ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                layoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+                layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                layoutParams.rightMargin = 15.dp()
+                layoutParams.bottomMargin = 50.dp()
+                mMainActContainer?.addView(mHostOpTipImageView, layoutParams)
+                mUiHanlder.sendEmptyMessageDelayed(REMOVE_HOST_OP_TIP_MSG, 15000L)
+            }
+        }
+    }
+
+    private fun removeHostOpTips() {
+        mUiHanlder.removeMessages(REMOVE_HOST_OP_TIP_MSG)
+        if (mMainActContainer?.indexOfChild(mHostOpTipImageView) != -1) {
+            mMainActContainer?.removeView(mHostOpTipImageView)
+        }
+    }
+
 
     override fun onResume() {
         super.onResume()
@@ -400,6 +442,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             }
 
             override fun onClickMore(open: Boolean) {
+                removeHostOpTips()
                 if (open) {
                     mBottomWidgetAnimationController.open(PartyBottomWidgetAnimationController.OPEN_TYPE_SETTING)
                 } else {
@@ -785,6 +828,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                         ?: 0, model?.userInfo?.nickname)} 已成为新的主持人")
                 if ((model?.userInfo?.userId ?: 0) == MyUserInfoManager.uid.toInt()) {
                     finishTopActivity("您已成为主持人")
+                    showHostOpTips()
                 }
             } else {
                 mCorePresenter?.pretendSystemMsg("主持人已下麦，已自动结束所有游戏")
