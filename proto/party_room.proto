@@ -57,6 +57,27 @@ message PartyRoomMsg {
     PResultVote pResultVote                                     = 41; //投票结果
     PRoomWarningMsg pRoomWarningMsg                             = 42; //房间警告消息
     PRoomLockedMsg pRoomLockedMsg                               = 43; //房间封禁消息
+    PBeginPunish pBeginPunish                                   = 44; //主持人下发惩罚
+}
+
+message PBeginPunish
+{
+    PunishInfo punishInfo  = 1; //惩罚信息
+    sint64 beginTimeMs     = 2; //开始时间戳，绝对时间
+    sint64 endTimeMs       = 3; //结束时间戳，绝对时间
+}
+
+message PunishInfo
+{
+    uint32 punishID = 1; //惩罚id
+    EPunishType punishType = 2; //惩罚类型
+    string punishDesc      = 3; //惩罚内容描述
+}
+
+enum EPunishType {
+    EPUT_UNKNOWN      = 0; //未知
+    EPUT_ZHEN_XIN_HUA = 1; //真心话惩罚
+    EPUT_DA_MAO_XIAN  = 2; //大冒险惩罚
 }
 
 enum ERoomLockType {
@@ -223,6 +244,7 @@ enum EPartyRoomMsgType {
     PRT_RESULT_VOTE                  = 41; //投票结果
     PRT_ROOM_WARNING                 = 42; //房间警告消息
     PRT_ROOM_LOCKED                  = 43; //房间封禁消息
+    PRT_BEGIN_PUNISH                 = 44; //主持人下发惩罚
 }
 
 enum EEnterPermissionType {

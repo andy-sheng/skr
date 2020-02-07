@@ -181,7 +181,12 @@ public enum EPartyRoomMsgType implements WireEnum {
   /**
    * 房间封禁消息
    */
-  PRT_ROOM_LOCKED(43);
+  PRT_ROOM_LOCKED(43),
+
+  /**
+   * 主持人下发惩罚
+   */
+  PRT_BEGIN_PUNISH(44);
 
   public static final ProtoAdapter<EPartyRoomMsgType> ADAPTER = new ProtoAdapter_EPartyRoomMsgType();
 
@@ -231,6 +236,7 @@ public enum EPartyRoomMsgType implements WireEnum {
       case 41: return PRT_RESULT_VOTE;
       case 42: return PRT_ROOM_WARNING;
       case 43: return PRT_ROOM_LOCKED;
+      case 44: return PRT_BEGIN_PUNISH;
       default: return null;
     }
   }
