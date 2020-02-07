@@ -358,12 +358,15 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
 //                topicName = "${MyUserInfoManager.nickName}的派对"
 //            }
 
-            if (topicName.equals(H.partyRoomData?.topicName) && enterType == H.partyRoomData?.enterPermission) {
+            //这个限制先去掉
+//            if (topicName.equals(H.partyRoomData?.topicName) && enterType == H.partyRoomData?.enterPermission && micType == 1) {
+            if (false) {
                 finish()
             } else {
                 val map = mutableMapOf(
                         "enterPermission" to enterType,
                         "roomID" to H.partyRoomData?.gameId,
+                        "getSeatMode" to micType,
                         "topicName" to topicName
                 )
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
