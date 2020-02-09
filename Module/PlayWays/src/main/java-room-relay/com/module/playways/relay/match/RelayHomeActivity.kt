@@ -139,6 +139,7 @@ class RelayHomeActivity : BaseActivity() {
         }
 
         songPeopleListTv?.setDebounceViewClickListener {
+            StatisticsAdapter.recordCountEvent("chorus","record_click",null)
             FlutterBoostController.openFlutterPage(RelayHomeActivity@this, "ChorusPeoplePage", null)
         }
 
