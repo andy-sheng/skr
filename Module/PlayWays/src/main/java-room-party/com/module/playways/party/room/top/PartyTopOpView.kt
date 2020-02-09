@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.common.core.view.setDebounceViewClickListener
+import com.common.statistics.StatisticsAdapter
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.module.playways.R
@@ -45,6 +46,7 @@ class PartyTopOpView : RelativeLayout {
         mIvVoiceSetting = findViewById<View>(R.id.iv_voice_setting) as ImageView
 
         mChangeRoomBtn.setDebounceViewClickListener {
+            StatisticsAdapter.recordCountEvent("party", "change_room", null)
             mListener?.onClickChangeRoom()
         }
         mReportRoom.setDebounceViewClickListener {
