@@ -10,7 +10,8 @@
         android:id="@+id/close_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/back_close_white"
+        android:padding="@dimen/view_5_dp"
+        android:src="@drawable/back_close_white"
         app:layout_constraintLeft_toRightOf="@id/container"
         app:layout_constraintTop_toTopOf="parent" />
 
