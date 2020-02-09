@@ -74,6 +74,7 @@ object PartyRoomMsgManager : BaseMsgManager<EPartyRoomMsgType, PartyRoomMsg>() {
             msg.msgType == EPartyRoomMsgType.PRT_ROOM_WARNING -> EventBus.getDefault().post(msg.pRoomWarningMsg)
 
             msg.msgType == EPartyRoomMsgType.PRT_CHANGE_GET_SEAT_MODE -> EventBus.getDefault().post(msg.pChangeGetSeatMode)
+            msg.msgType == EPartyRoomMsgType.PRT_BEGIN_PUNISH -> EventBus.getDefault().post(msg.pBeginPunish)
         }
     }
 }

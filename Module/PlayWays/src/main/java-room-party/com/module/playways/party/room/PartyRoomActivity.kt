@@ -84,6 +84,7 @@ import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.PartyRoom.EPGameType
+import com.zq.live.proto.PartyRoom.PBeginPunish
 import com.zq.live.proto.PartyRoom.PBeginVote
 import com.zq.live.proto.PartyRoom.PKickoutUserMsg
 import com.zq.live.proto.PartyRoom.*
@@ -135,6 +136,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     internal lateinit var mTopContentView: PartyTopContentView
 
     internal lateinit var mGameEffectBgView: GameEffectBgView
+    internal lateinit var mPartyPunishView: PartyPunishView
 
     var mRightOpView: PartyRightOpView? = null
     var mRightQuickAnswerView: PartyRightQuickAnswerView? = null
@@ -230,6 +232,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         initRightOpView()
         initVipEnterView()
         initChangeRoomTransitionView()
+        initPunishView()
         mCorePresenter.onOpeningAnimationOver()
 
         mUiHandler.postDelayed(Runnable {
@@ -325,6 +328,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         if (mMainActContainer?.indexOfChild(mHostOpTipImageView) != -1) {
             mMainActContainer?.removeView(mHostOpTipImageView)
         }
+    }
+
+    private fun initPunishView() {
+        mPartyPunishView = PartyPunishView(findViewById(R.id.party_punish_view_layout_viewStub), mRoomData)
     }
 
     private fun initChangeRoomTransitionView() {
@@ -530,7 +537,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mPartySettingView = PartySettingView(findViewById(R.id.party_bottom_setting_viewStub))
         mPartySettingView?.listener = object : PartySettingView.Listener {
             override fun onClickPunishment() {
-                // todo 惩罚
+                mPartyPunishView.show()
+                mBottomWidgetAnimationController.close(PartyBottomWidgetAnimationController.OPEN_TYPE_SETTING)
             }
 
             override fun onClickRoomSetting() {
@@ -861,6 +869,17 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         } else {
             mGiftPanelView.show(event.model)
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PBeginPunish) {
+        MyLog.d(TAG, "PBeginPunish onEvent event = $event 1")
+        if (H.partyRoomData?.hostId == MyUserInfoManager.uid.toInt()) {
+            MyLog.d(TAG, "PBeginPunish onEvent event = $event 2")
+            return
+        }
+
+        mPartyPunishView.showWithGuest(event)
     }
 
     private fun getPartyManageHostDialogView(): PartyManageHostDialogView {

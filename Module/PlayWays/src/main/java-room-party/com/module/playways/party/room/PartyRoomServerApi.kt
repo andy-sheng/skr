@@ -371,4 +371,20 @@ interface PartyRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partyroom/change-room")
     fun changeRoom(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 按下摇杆获得题目
+     * {
+    "punishType": "EPUT_UNKNOWN",
+    "roomID": 0
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/begin-punish")
+    fun beginPunish(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 获取题目列表
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partygame/list-punish")
+    fun getPunishList(@Query("roomID") roomID: Int, @Query("punishType") punishType: Int): Call<ApiResult>
 }
