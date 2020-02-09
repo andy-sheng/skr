@@ -270,4 +270,10 @@
         android:layout_height="match_parent"
         android:inflatedId="@+id/debug_log_view"
         android:layout="@layout/debug_log_view_stub_layout" />
+
+    <ViewStub
+        android:id="@+id/party_punish_view_layout_viewStub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/party_punish_view_layout" />
 </com.common.view.ex.ExConstraintLayout>

@@ -7,7 +7,6 @@ import android.animation.ObjectAnimator
 import android.view.View
 import com.common.utils.U
 import com.module.playways.party.room.PartyRoomActivity
-import com.module.playways.relay.room.RelayRoomActivity
 import java.util.*
 
 
@@ -88,6 +87,7 @@ class PartyWidgetAnimationController(internal var mF: PartyRoomActivity) {
     private fun fillView(viewList: MutableList<View?>) {
         viewList.add(mF.mTopContentView)
         viewList.add(mF.mPartyGameMainView?.realView)
+        viewList.add(mF.mPartyPunishView?.realView)
         viewList.add(mF.mSeatView)
     }
 
