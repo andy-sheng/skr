@@ -58,6 +58,17 @@ message PartyRoomMsg {
     PRoomWarningMsg pRoomWarningMsg                             = 42; //房间警告消息
     PRoomLockedMsg pRoomLockedMsg                               = 43; //房间封禁消息
     PBeginPunish pBeginPunish                                   = 44; //主持人下发惩罚
+    PChangeGetSeatMode pChangeGetSeatMode                       = 45; //改变上麦方式
+}
+
+message PChangeGetSeatMode
+{
+    EGetSeatMode getSeatMode = 1; //最新的上麦方式
+}
+
+enum EGetSeatMode {
+    EGSM_NEED_APPLY = 0; //需要申请上麦
+    EGSM_NO_APPLY   = 1; //不需要申请上麦
 }
 
 message PBeginPunish
@@ -245,6 +256,7 @@ enum EPartyRoomMsgType {
     PRT_ROOM_WARNING                 = 42; //房间警告消息
     PRT_ROOM_LOCKED                  = 43; //房间封禁消息
     PRT_BEGIN_PUNISH                 = 44; //主持人下发惩罚
+    PRT_CHANGE_GET_SEAT_MODE         = 45; //改变上麦方式
 }
 
 enum EEnterPermissionType {
