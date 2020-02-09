@@ -173,7 +173,7 @@ class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context)
                 roomServerApi.quickJoinRoom(body)
             }
             if (result.errno == 0) {
-                var rsp = JSON.parseObject(result.data.toString(), JoinPartyRoomRspModel::class.java)
+                val rsp = JSON.parseObject(result.data.toString(), JoinPartyRoomRspModel::class.java)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_ROOM)
                         .withSerializable("JoinPartyRoomRspModel", rsp)
                         .navigation()

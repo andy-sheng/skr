@@ -264,22 +264,23 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     }
 
     private fun checkGoMicTips() {
-        if (mRoomData.joinSrc == JoinPartyRoomRspModel.JRS_QUICK_JOIN) {
+        if (mRoomData.joinSrc == JoinPartyRoomRspModel.JRS_QUICK_JOIN || mRoomData.joinSrc == JoinPartyRoomRspModel.JRS_CHANGE_ROOM) {
             mUiHandler.sendEmptyMessageDelayed(CHECK_GO_MIC_TIP_MSG, 6000L)
         }
     }
 
     private fun showGoMicTips() {
         // 用户不在麦上、有空位、房间允许观众自由上麦
-        if ((mRoomData.myUserInfo?.isGuest() == false && mRoomData.myUserInfo?.isHost() == false
-                        && mRoomData.getSeatMode == 1) && !mRoomData.hasEmptySeat()) {
+        if ((mRoomData.myUserInfo?.isGuest() != true && mRoomData.myUserInfo?.isHost() != true
+                        && mRoomData.getSeatMode == 1) && mRoomData.hasEmptySeat()) {
             // 不在麦上, 且不需要申请上麦，且座位还没满
+            MyLog.d(TAG, "need showGoMicTips")
             var roundInfoModel = mRoomData.realRoundInfo
             if (roundInfoModel == null) {
                 roundInfoModel = mRoomData.expectRoundInfo
             }
             val gameInfoModel = roundInfoModel?.sceneInfo
-            mTipsDialogView?.dismiss(false)
+            dismissDialog()
             mTipsDialogView = TipsDialogView.Builder(this)
                     .setTitleTip(gameInfoModel?.rule?.ruleName)
                     .setMessageTip("快上麦一起玩吧")

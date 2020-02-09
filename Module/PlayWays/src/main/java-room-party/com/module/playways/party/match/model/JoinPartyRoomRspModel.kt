@@ -69,6 +69,7 @@ class JoinPartyRoomRspModel : Serializable {
         const val JRS_LIST = 1  //列表
         const val JRS_INVITE = 2  //邀请
         const val JRS_RECONNECT = 3 //断线重连
-        const val JRS_QUICK_JOIN = 4 // 快速进入 换房
+        const val JRS_QUICK_JOIN = 4 // 快速进入
+        const val JRS_CHANGE_ROOM = 5 // 换房
     }
 }
