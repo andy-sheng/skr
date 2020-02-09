@@ -376,6 +376,15 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
   )
   private final PBeginPunish pBeginPunish;
 
+  /**
+   * 改变上麦方式
+   */
+  @WireField(
+      tag = 45,
+      adapter = "com.zq.live.proto.PartyRoom.PChangeGetSeatMode#ADAPTER"
+  )
+  private final PChangeGetSeatMode pChangeGetSeatMode;
+
   public PartyRoomMsg(Long timeMs, EPartyRoomMsgType msgType, Integer roomID,
       PJoinNoticeMsg pJoinNoticeMsg, PFixRoomNoticeMsg pFixRoomNoticeMsg,
       PSetRoomAdminMsg pSetRoomAdminMsg, PSetAllMemberMicMsg pSetAllMemberMicMsg,
@@ -392,8 +401,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PKTVStopMsg pKTVStopMsg, PBeginQuickAnswer pBeginQuickAnswer,
       PResponseQuickAnswer pResponseQuickAnswer, PResultQuickAnswer pResultQuickAnswer,
       PBeginVote pBeginVote, PResponseVote pResponseVote, PResultVote pResultVote,
-      PRoomWarningMsg pRoomWarningMsg, PRoomLockedMsg pRoomLockedMsg, PBeginPunish pBeginPunish) {
-    this(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, pInviteBeGuestMsg, pRspInviteBeGuestMsg, pKTVStopMsg, pBeginQuickAnswer, pResponseQuickAnswer, pResultQuickAnswer, pBeginVote, pResponseVote, pResultVote, pRoomWarningMsg, pRoomLockedMsg, pBeginPunish, ByteString.EMPTY);
+      PRoomWarningMsg pRoomWarningMsg, PRoomLockedMsg pRoomLockedMsg, PBeginPunish pBeginPunish,
+      PChangeGetSeatMode pChangeGetSeatMode) {
+    this(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, pInviteBeGuestMsg, pRspInviteBeGuestMsg, pKTVStopMsg, pBeginQuickAnswer, pResponseQuickAnswer, pResultQuickAnswer, pBeginVote, pResponseVote, pResultVote, pRoomWarningMsg, pRoomLockedMsg, pBeginPunish, pChangeGetSeatMode, ByteString.EMPTY);
   }
 
   public PartyRoomMsg(Long timeMs, EPartyRoomMsgType msgType, Integer roomID,
@@ -413,7 +423,7 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PResponseQuickAnswer pResponseQuickAnswer, PResultQuickAnswer pResultQuickAnswer,
       PBeginVote pBeginVote, PResponseVote pResponseVote, PResultVote pResultVote,
       PRoomWarningMsg pRoomWarningMsg, PRoomLockedMsg pRoomLockedMsg, PBeginPunish pBeginPunish,
-      ByteString unknownFields) {
+      PChangeGetSeatMode pChangeGetSeatMode, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -453,6 +463,7 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     this.pRoomWarningMsg = pRoomWarningMsg;
     this.pRoomLockedMsg = pRoomLockedMsg;
     this.pBeginPunish = pBeginPunish;
+    this.pChangeGetSeatMode = pChangeGetSeatMode;
   }
 
   @Override
@@ -496,6 +507,7 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     builder.pRoomWarningMsg = pRoomWarningMsg;
     builder.pRoomLockedMsg = pRoomLockedMsg;
     builder.pBeginPunish = pBeginPunish;
+    builder.pChangeGetSeatMode = pChangeGetSeatMode;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -543,7 +555,8 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
         && Internal.equals(pResultVote, o.pResultVote)
         && Internal.equals(pRoomWarningMsg, o.pRoomWarningMsg)
         && Internal.equals(pRoomLockedMsg, o.pRoomLockedMsg)
-        && Internal.equals(pBeginPunish, o.pBeginPunish);
+        && Internal.equals(pBeginPunish, o.pBeginPunish)
+        && Internal.equals(pChangeGetSeatMode, o.pChangeGetSeatMode);
   }
 
   @Override
@@ -589,6 +602,7 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       result = result * 37 + (pRoomWarningMsg != null ? pRoomWarningMsg.hashCode() : 0);
       result = result * 37 + (pRoomLockedMsg != null ? pRoomLockedMsg.hashCode() : 0);
       result = result * 37 + (pBeginPunish != null ? pBeginPunish.hashCode() : 0);
+      result = result * 37 + (pChangeGetSeatMode != null ? pChangeGetSeatMode.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -635,6 +649,7 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     if (pRoomWarningMsg != null) builder.append(", pRoomWarningMsg=").append(pRoomWarningMsg);
     if (pRoomLockedMsg != null) builder.append(", pRoomLockedMsg=").append(pRoomLockedMsg);
     if (pBeginPunish != null) builder.append(", pBeginPunish=").append(pBeginPunish);
+    if (pChangeGetSeatMode != null) builder.append(", pChangeGetSeatMode=").append(pChangeGetSeatMode);
     return builder.replace(0, 2, "PartyRoomMsg{").append('}').toString();
   }
 
@@ -1029,6 +1044,16 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
   }
 
   /**
+   * 改变上麦方式
+   */
+  public PChangeGetSeatMode getPChangeGetSeatMode() {
+    if(pChangeGetSeatMode==null){
+        return new PChangeGetSeatMode.Builder().build();
+    }
+    return pChangeGetSeatMode;
+  }
+
+  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -1294,6 +1319,13 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     return pBeginPunish!=null;
   }
 
+  /**
+   * 改变上麦方式
+   */
+  public boolean hasPChangeGetSeatMode() {
+    return pChangeGetSeatMode!=null;
+  }
+
   public static final class Builder extends Message.Builder<PartyRoomMsg, Builder> {
     private Long timeMs;
 
@@ -1370,6 +1402,8 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     private PRoomLockedMsg pRoomLockedMsg;
 
     private PBeginPunish pBeginPunish;
+
+    private PChangeGetSeatMode pChangeGetSeatMode;
 
     public Builder() {
     }
@@ -1679,9 +1713,17 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       return this;
     }
 
+    /**
+     * 改变上麦方式
+     */
+    public Builder setPChangeGetSeatMode(PChangeGetSeatMode pChangeGetSeatMode) {
+      this.pChangeGetSeatMode = pChangeGetSeatMode;
+      return this;
+    }
+
     @Override
     public PartyRoomMsg build() {
-      return new PartyRoomMsg(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, pInviteBeGuestMsg, pRspInviteBeGuestMsg, pKTVStopMsg, pBeginQuickAnswer, pResponseQuickAnswer, pResultQuickAnswer, pBeginVote, pResponseVote, pResultVote, pRoomWarningMsg, pRoomLockedMsg, pBeginPunish, super.buildUnknownFields());
+      return new PartyRoomMsg(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, pInviteBeGuestMsg, pRspInviteBeGuestMsg, pKTVStopMsg, pBeginQuickAnswer, pResponseQuickAnswer, pResultQuickAnswer, pBeginVote, pResponseVote, pResultVote, pRoomWarningMsg, pRoomLockedMsg, pBeginPunish, pChangeGetSeatMode, super.buildUnknownFields());
     }
   }
 
@@ -1730,6 +1772,7 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
           + PRoomWarningMsg.ADAPTER.encodedSizeWithTag(42, value.pRoomWarningMsg)
           + PRoomLockedMsg.ADAPTER.encodedSizeWithTag(43, value.pRoomLockedMsg)
           + PBeginPunish.ADAPTER.encodedSizeWithTag(44, value.pBeginPunish)
+          + PChangeGetSeatMode.ADAPTER.encodedSizeWithTag(45, value.pChangeGetSeatMode)
           + value.unknownFields().size();
     }
 
@@ -1773,6 +1816,7 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PRoomWarningMsg.ADAPTER.encodeWithTag(writer, 42, value.pRoomWarningMsg);
       PRoomLockedMsg.ADAPTER.encodeWithTag(writer, 43, value.pRoomLockedMsg);
       PBeginPunish.ADAPTER.encodeWithTag(writer, 44, value.pBeginPunish);
+      PChangeGetSeatMode.ADAPTER.encodeWithTag(writer, 45, value.pChangeGetSeatMode);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1827,6 +1871,7 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
           case 42: builder.setPRoomWarningMsg(PRoomWarningMsg.ADAPTER.decode(reader)); break;
           case 43: builder.setPRoomLockedMsg(PRoomLockedMsg.ADAPTER.decode(reader)); break;
           case 44: builder.setPBeginPunish(PBeginPunish.ADAPTER.decode(reader)); break;
+          case 45: builder.setPChangeGetSeatMode(PChangeGetSeatMode.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1876,6 +1921,7 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       if (builder.pRoomWarningMsg != null) builder.pRoomWarningMsg = PRoomWarningMsg.ADAPTER.redact(builder.pRoomWarningMsg);
       if (builder.pRoomLockedMsg != null) builder.pRoomLockedMsg = PRoomLockedMsg.ADAPTER.redact(builder.pRoomLockedMsg);
       if (builder.pBeginPunish != null) builder.pBeginPunish = PBeginPunish.ADAPTER.redact(builder.pBeginPunish);
+      if (builder.pChangeGetSeatMode != null) builder.pChangeGetSeatMode = PChangeGetSeatMode.ADAPTER.redact(builder.pChangeGetSeatMode);
       builder.clearUnknownFields();
       return builder.build();
     }

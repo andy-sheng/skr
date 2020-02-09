@@ -72,6 +72,8 @@ object PartyRoomMsgManager : BaseMsgManager<EPartyRoomMsgType, PartyRoomMsg>() {
             msg.msgType == EPartyRoomMsgType.PRT_RESULT_QUICK_ANSWER -> EventBus.getDefault().post(msg.pResultQuickAnswer)
             msg.msgType == EPartyRoomMsgType.PRT_ROOM_LOCKED -> EventBus.getDefault().post(msg.pRoomLockedMsg)
             msg.msgType == EPartyRoomMsgType.PRT_ROOM_WARNING -> EventBus.getDefault().post(msg.pRoomWarningMsg)
+
+            msg.msgType == EPartyRoomMsgType.PRT_CHANGE_GET_SEAT_MODE -> EventBus.getDefault().post(msg.pChangeGetSeatMode)
         }
     }
 }

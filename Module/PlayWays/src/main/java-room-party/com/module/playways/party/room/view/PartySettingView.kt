@@ -11,6 +11,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.ExViewStub
 import com.module.RouterConstants
@@ -48,6 +49,7 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
 
         gameSettingTv.setAnimateDebounceViewClickListener {
+            StatisticsAdapter.recordCountEvent("party", "tool_game_click", null)
             listener?.onClickGameSetting()
         }
 
@@ -56,22 +58,27 @@ class PartySettingView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
 
         voteTv.setAnimateDebounceViewClickListener {
+            StatisticsAdapter.recordCountEvent("party", "tool_vote_click", null)
             listener?.onClickVote()
         }
         qiangdaTv.setAnimateDebounceViewClickListener {
+            StatisticsAdapter.recordCountEvent("party", "tool_responder_click", null)
             listener?.onClickQuickAnswer()
         }
         muteSettingTv.setAnimateDebounceViewClickListener {
+            StatisticsAdapter.recordCountEvent("party", "tool_microphone_click", null)
             var b = (H.partyRoomData?.isAllMute == true)
             setAllMicMute(!b)
         }
         punishmentTv.setAnimateDebounceViewClickListener {
+            StatisticsAdapter.recordCountEvent("party", "tool_punishment_click", null)
             listener?.onClickPunishment()
         }
         roomSettingTv.setAnimateDebounceViewClickListener {
             listener?.onClickRoomSetting()
         }
         bgmTv.setAnimateDebounceViewClickListener {
+            StatisticsAdapter.recordCountEvent("party", "tool_background_music_click", null)
             FlutterBoostController.openFlutterPage(realView?.context!!, RouterConstants.FLUTTER_PAGE_PARTY_BGM_PAGE, null)
         }
     }

@@ -1048,6 +1048,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PChangeGetSeatMode) {
+        mRoomData.getSeatMode = event.getSeatMode.value
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyEnterPermissionEvent) {
         val msg = if (mRoomData.enterPermission == 2) "允许所有人进入" else "仅邀请才能加入"
         pretendSystemMsg("主持人将进房间权限修改为 ${msg}")

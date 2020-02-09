@@ -39,6 +39,7 @@ import com.common.core.upgrade.UpgradeManager;
 import com.common.flutter.boost.FlutterBoostController;
 import com.common.log.MyLog;
 import com.common.notification.event.GrabInviteNotifyEvent;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -267,6 +268,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mPartyArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
+                StatisticsAdapter.recordCountEvent("party", "tab_expose", null);
                 mMainVp.setCurrentItem(1, false);
                 selectTab(1);
             }
