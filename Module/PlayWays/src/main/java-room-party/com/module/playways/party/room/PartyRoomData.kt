@@ -19,6 +19,8 @@ import org.greenrobot.eventbus.EventBus
 
 class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
+    var gameMode = 0 //  ERM_SING_PK = 1 : K歌 模式 - ERM_GMAE_PK = 2 : 游戏PK 模式 - ERM_MAKE_FRIEND = 3 : 相亲交友 模式string
+
     var getSeatMode = 0 // 0 需要申请上麦，1不需要申请上麦
         set(value) {
             if (value != field) {
@@ -573,6 +575,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         this.roomType = rsp.roomType
         this.config = rsp.config
         this.getSeatMode = rsp.getSeatMode
+        this.gameMode = rsp.gameMode
         this.joinSrc = rsp.joinSrc
         if (getMySeatInfoInParty()?.micStatus == EMicStatus.MS_CLOSE.value) {
             isMute = true

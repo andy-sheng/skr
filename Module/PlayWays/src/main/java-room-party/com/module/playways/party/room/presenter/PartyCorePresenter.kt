@@ -627,7 +627,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         mSwitchRooming = true
         val map = HashMap<String, Any>()
         map["roomID"] = mRoomData.gameId
-        map["gameMode"] = mRoomData.realRoundInfo?.sceneInfo?.rule?.ruleType ?: 0
+        map["gameMode"] = mRoomData.gameMode
         map["vars"] = RA.getVars()
         map["testList"] = RA.getTestList()
 
