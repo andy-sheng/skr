@@ -82,6 +82,7 @@ import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.live.proto.GrabRoom.EQRoundStatus
 import com.zq.live.proto.PartyRoom.EPGameType
 import com.zq.live.proto.PartyRoom.PBeginVote
 import com.zq.live.proto.PartyRoom.PKickoutUserMsg
@@ -593,6 +594,16 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun initTopView() {
         mTopOpView = findViewById(R.id.top_op_view)
         mTopOpView.setListener(object : PartyTopOpView.Listener {
+            override fun onClickChangeRoom() {
+                if (mRoomData?.myUserInfo?.isHost() == true || mRoomData?.myUserInfo?.isGuest() == true) {
+                    U.getToastUtil().showShort("在麦上不能切房间哦～")
+                    return
+                }
+                mBeginChangeRoomTs = System.currentTimeMillis()
+                mChangeRoomTransitionView?.setVisibility(View.VISIBLE)
+                mCorePresenter?.changeRoom()
+            }
+
             override fun onClickRoomReport() {
                 U.getFragmentUtils().addFragment(
                         FragmentUtils.newAddParamsBuilder(this@PartyRoomActivity, QuickFeedbackFragment::class.java)
