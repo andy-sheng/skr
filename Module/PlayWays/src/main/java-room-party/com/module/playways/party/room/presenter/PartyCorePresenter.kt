@@ -206,7 +206,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
                     "roomID" to mRoomData.gameId
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe(RequestControl("quickJoinParty", ControlType.CancelThis)) {
+            val result = subscribe(RequestControl("selfGetSeat", ControlType.CancelThis)) {
                 mRoomServerApi.selfGetSeat(body)
             }
             if (result.errno == 0) {

@@ -83,10 +83,10 @@ import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.zq.live.proto.GrabRoom.EQRoundStatus
 import com.zq.live.proto.PartyRoom.EPGameType
 import com.zq.live.proto.PartyRoom.PBeginVote
 import com.zq.live.proto.PartyRoom.PKickoutUserMsg
+import com.zq.live.proto.PartyRoom.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -409,20 +409,25 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                             // 嘉宾 点了个空座位 没反应
                         } else {
                             // 观众
-                            dismissDialog()
-                            mTipsDialogView = TipsDialogView.Builder(this@PartyRoomActivity)
-                                    .setMessageTip("是否申请上麦")
-                                    .setConfirmTip("是")
-                                    .setCancelTip("取消")
-                                    .setConfirmBtnClickListener {
-                                        mTipsDialogView?.dismiss(false)
-                                        mRightOpView?.applyForGuest(false)
-                                    }
-                                    .setCancelBtnClickListener {
-                                        mTipsDialogView?.dismiss()
-                                    }
-                                    .build()
-                            mTipsDialogView?.showByDialog()
+                            if (mRoomData.getSeatMode == EGetSeatMode.EGSM_NO_APPLY.value) {
+                                // 产品说让直接就上去了
+                                mRightOpView?.selfGetSeat()
+                            } else {
+                                dismissDialog()
+                                mTipsDialogView = TipsDialogView.Builder(this@PartyRoomActivity)
+                                        .setMessageTip("是否申请上麦")
+                                        .setConfirmTip("是")
+                                        .setCancelTip("取消")
+                                        .setConfirmBtnClickListener {
+                                            mTipsDialogView?.dismiss(false)
+                                            mRightOpView?.applyForGuest(false)
+                                        }
+                                        .setCancelBtnClickListener {
+                                            mTipsDialogView?.dismiss()
+                                        }
+                                        .build()
+                                mTipsDialogView?.showByDialog()
+                            }
                         }
                     }
                 }
@@ -1103,5 +1108,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 //            mGrabTopContentView.onChangeRoom()
 //            adjustSelectSongView()
         }
+        // 换房间也要弹窗
+        checkGoMicTips()
     }
 }

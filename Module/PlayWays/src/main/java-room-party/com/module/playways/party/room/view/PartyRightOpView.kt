@@ -16,12 +16,10 @@ import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
-import com.module.playways.party.room.event.PartyApplyUserCntChangeEvent
-import com.module.playways.party.room.event.PartyHostChangeEvent
-import com.module.playways.party.room.event.PartyMySeatInfoChangeEvent
-import com.module.playways.party.room.event.PartyMyUserInfoChangeEvent
+import com.module.playways.party.room.event.*
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.room.data.H
+import com.zq.live.proto.PartyRoom.EGetSeatMode
 import com.zq.live.proto.PartyRoom.PApplyForGuest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -70,14 +68,37 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
             // 申请 取消 下麦
             when (micStatus) {
                 MIC_STATUS_UNAPPLY -> {
-                    applyForGuest(false)
+                    if (H.partyRoomData?.getSeatMode == EGetSeatMode.EGSM_NO_APPLY.value) {
+                        selfGetSeat()
+                    } else {
+                        applyForGuest(false)
+                    }
+
                 }
                 MIC_STATUS_WATING -> {
+                    // 取消申请
                     applyForGuest(true)
                 }
                 else -> {
                     backSeat()
                 }
+            }
+        }
+    }
+
+    fun selfGetSeat() {
+        launch {
+            val map = mutableMapOf(
+                    "roomID" to H.partyRoomData?.gameId
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("selfGetSeat", ControlType.CancelThis)) {
+                roomServerApi.selfGetSeat(body)
+            }
+            if (result.errno == 0) {
+                // todo 看本地是否要做即时的更新
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
             }
         }
     }
@@ -133,17 +154,27 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
             myInfo?.isHost() == true -> {
                 // 主持人
                 micStatus = MIC_STATUS_UNAPPLY
-                applyList.visibility = View.VISIBLE
+                if (H.partyRoomData?.getSeatMode == EGetSeatMode.EGSM_NO_APPLY.value) {
+                    // 自由上麦
+                    applyList.visibility = View.GONE
+                } else {
+                    applyList.visibility = View.VISIBLE
+                }
                 opMicTv.visibility = View.GONE
             }
             myInfo?.isGuest() == true -> {
                 // 嘉宾
                 micStatus = MIC_STATUS_ONLINE
                 opMicTv.visibility = View.VISIBLE
-                if (myInfo?.isAdmin()) {
-                    applyList.visibility = View.VISIBLE
-                } else {
+                if (H.partyRoomData?.getSeatMode == EGetSeatMode.EGSM_NO_APPLY.value) {
+                    // 自由上麦
                     applyList.visibility = View.GONE
+                } else {
+                    if (myInfo?.isAdmin()) {
+                        applyList.visibility = View.VISIBLE
+                    } else {
+                        applyList.visibility = View.GONE
+                    }
                 }
             }
             else -> {
@@ -156,10 +187,15 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
                     micStatus = MIC_STATUS_UNAPPLY
                 }
                 opMicTv.visibility = View.VISIBLE
-                if (myInfo?.isAdmin() == true) {
-                    applyList.visibility = View.VISIBLE
-                } else {
+                if (H.partyRoomData?.getSeatMode == EGetSeatMode.EGSM_NO_APPLY.value) {
+                    // 自由上麦
                     applyList.visibility = View.GONE
+                } else {
+                    if (myInfo?.isAdmin() == true) {
+                        applyList.visibility = View.VISIBLE
+                    } else {
+                        applyList.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -171,7 +207,12 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
         MyLog.d("PartyRightOpView", "refreshMicStatus from = $from")
         when (micStatus) {
             MIC_STATUS_UNAPPLY -> {
-                opMicTv.text = "申请上麦"
+                if (H.partyRoomData?.getSeatMode == EGetSeatMode.EGSM_NO_APPLY.value) {
+                    // 自由上麦
+                    opMicTv.text = "直接上麦"
+                } else {
+                    opMicTv.text = "申请上麦"
+                }
             }
             MIC_STATUS_WATING -> {
                 opMicTv.text = "取消申请"
@@ -180,6 +221,12 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
                 opMicTv.text = "下麦"
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyRoomSeatModeChangeEvent) {
+        // 上麦的方式改变了，重新绑定数据
+        bindData(true, null)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
