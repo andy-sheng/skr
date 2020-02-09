@@ -65,6 +65,7 @@ class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context)
         adapter = PartyRoomAdapter(object : PartyRoomAdapter.Listener {
             override fun onClickQuickKTV() {
                 // 嗨唱KTV快速加入
+                StatisticsAdapter.recordCountEvent("party", "sing_access", null)
                 skrAudioPermission.ensurePermission({
                     quickJoinParty(1)
                 }, true)
@@ -72,6 +73,7 @@ class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context)
 
             override fun onClickQuickGamePK() {
                 // 游戏PK快速加入
+                StatisticsAdapter.recordCountEvent("party", "game_access", null)
                 skrAudioPermission.ensurePermission({
                     quickJoinParty(2)
                 }, true)

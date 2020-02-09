@@ -20,6 +20,7 @@ import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.utils.dp
@@ -291,6 +292,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                         mTipsDialogView?.dismiss(false)
                     }
                     .setCancelBtnClickListener {
+                        StatisticsAdapter.recordCountEvent("party", "popup_change_room", null)
                         mCorePresenter.changeRoom()
                         mTipsDialogView?.dismiss(false)
                     }
