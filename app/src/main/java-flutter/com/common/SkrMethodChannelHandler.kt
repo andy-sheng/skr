@@ -6,6 +6,7 @@ import com.common.flutter.plugin.MethodHandler
 import com.common.rxretrofit.httpGet
 import com.common.rxretrofit.httpPost
 import com.common.rxretrofit.httpPut
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.component.report.fragment.QuickFeedbackFragment
@@ -116,6 +117,14 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
                         "avatar" to MyUserInfoManager.avatar,
                         "userNickname" to MyUserInfoManager.nickName)
                 )
+                return true
+            }
+            call.method == "statisticCount" -> {
+                var category = call.argument<String>("category")
+                var key = call.argument<String>("key")
+                var params = call.argument<java.util.HashMap<String, String>>("params")
+                StatisticsAdapter.recordCountEvent(category,key,params)
+                result.success(null)
                 return true
             }
 //            call.method == "addFragment" -> {
