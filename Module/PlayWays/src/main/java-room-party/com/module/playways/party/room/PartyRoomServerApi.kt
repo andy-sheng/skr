@@ -102,7 +102,7 @@ interface PartyRoomServerApi {
     /**
      * 自己上麦
      */
-    @PUT("http://dev.game.inframe.mobi/v1/partygame/apply-for-guest")
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/self-get-seat")
     fun selfGetSeat(@Body body: RequestBody): Call<ApiResult>
 
     /**
