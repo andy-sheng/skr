@@ -100,11 +100,9 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
         titlebar.rightTextView.setDebounceViewClickListener {
             titlebar.rightTextView.isClickable = false
             if (this.from == "create") {
-                titlebar.centerTextView.text = "创建房间"
                 skrAudioPermission.ensurePermission({ createRoom() }, true)
             } else if (this.from == "change") {
                 changeRoomSetting()
-                titlebar.centerTextView.text = "房间信息设置"
             }
         }
 
