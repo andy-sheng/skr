@@ -171,6 +171,7 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
         trySelectMicType(1)
 
         if ("change".equals(from)) {
+            titlebar.centerTextView.text = "房间信息设置"
             gameTagView.visibility = View.GONE
             gameTip.visibility = View.GONE
             divider3.visibility = View.GONE
