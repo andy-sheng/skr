@@ -1050,6 +1050,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PChangeGetSeatMode) {
         mRoomData.getSeatMode = event.getSeatMode.value
+        if (mRoomData.getSeatMode == EGetSeatMode.EGSM_NO_APPLY.value) {
+            pretendSystemMsg("主持人已将上麦方式设置为：直接上麦")
+        } else if (mRoomData.getSeatMode == EGetSeatMode.EGSM_NEED_APPLY.value) {
+            pretendSystemMsg("主持人已将上麦方式设置为：申请上麦")
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

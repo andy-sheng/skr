@@ -48,7 +48,7 @@ class PartyRoomView(context: Context, val type: Int) : ConstraintLayout(context)
     private val adapter: PartyRoomAdapter
     private var offset = 0
     private var hasMore = true
-    private val cnt = 10
+    private val cnt = 20
 
     private var roomJob: Job? = null
     private var lastLoadDateTime: Long = 0    //记录上次获取接口的时间

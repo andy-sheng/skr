@@ -208,6 +208,7 @@ class PartySongManageFragment : BaseFragment() {
                         ?: 0, GameModeType.GAME_MODE_PARTY)
             }
             existSongManageView?.tag = position
+            existSongManageView?.tryLoad()
             view = existSongManageView!!
         } else {
             val recommendTagModel = recommendTagModelList[position]
