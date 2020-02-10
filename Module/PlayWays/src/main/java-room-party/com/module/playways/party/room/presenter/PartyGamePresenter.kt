@@ -85,7 +85,6 @@ class PartyGamePresenter(var mRoomData: PartyRoomData, var iPartyGameView: IPart
     fun getNextPunish() {
         if ((type == zxh_type && zxhList.size == 0) || (type == dmx_type && dmxList.size == 0)) {
             U.getToastUtil().showShort("数据还未准备好，请稍后...")
-            iPartyGameView.getNextPunishFailed()
             getGameList()
             return
         }
@@ -107,7 +106,6 @@ class PartyGamePresenter(var mRoomData: PartyRoomData, var iPartyGameView: IPart
                 scrollToModel(model, duration)
             } else {
                 U.getToastUtil().showShort(result.errmsg)
-                iPartyGameView.getNextPunishFailed()
             }
         }
     }

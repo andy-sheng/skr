@@ -119,8 +119,8 @@
         android:layout_height="@dimen/view_82_dp"
         android:layout_marginLeft="@dimen/view_270_dp"
         android:layout_marginBottom="@dimen/view_30_dp"
-        app:bl_selected_drawable="@drawable/shoubing02"
-        app:bl_unSelected_drawable="@drawable/shoubing01"
+        app:bl_pressed_drawable="@drawable/shoubing02"
+        app:bl_unPressed_drawable="@drawable/shoubing01"
         app:layout_constraintBottom_toBottomOf="@+id/container"
         app:layout_constraintLeft_toLeftOf="@id/container" />
 

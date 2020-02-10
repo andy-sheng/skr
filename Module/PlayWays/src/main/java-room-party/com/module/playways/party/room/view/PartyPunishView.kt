@@ -114,7 +114,6 @@ class PartyPunishView(viewStub: ViewStub, protected var mRoomData: PartyRoomData
 
         nextPunishIv.setDebounceViewClickListener {
             presenter?.getNextPunish()
-            nextPunishIv.isSelected = true
         }
 
         closeIv.setDebounceViewClickListener {
@@ -243,8 +242,6 @@ class PartyPunishView(viewStub: ViewStub, protected var mRoomData: PartyRoomData
                 setVisibility(View.GONE)
                 raceMatchItemView.reset()
             }
-        } else {
-            nextPunishIv.isSelected = false
         }
 
         raceMatchItemView.setData(presenter?.getCurList(model.punishType), index) {
@@ -260,10 +257,6 @@ class PartyPunishView(viewStub: ViewStub, protected var mRoomData: PartyRoomData
 
         mUiHandler.removeMessages(MSG_RESULT_MUSIC)
         mUiHandler.sendEmptyMessageDelayed(MSG_RESULT_MUSIC, raceMatchItemView.getAnimationTime())
-    }
-
-    override fun getNextPunishFailed() {
-        nextPunishIv.isSelected = false
     }
 
     override fun layoutDesc(): Int {
