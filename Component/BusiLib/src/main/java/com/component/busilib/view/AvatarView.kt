@@ -81,6 +81,14 @@ class AvatarView : ConstraintLayout {
                 vipIv.visibility = View.VISIBLE
                 vipIv.setImageResource(R.drawable.vip_people_icon)
             }
+            model?.vipInfo?.vipType == EVIPType.EVT_LA_V.value -> {
+                vipIv.visibility = View.VISIBLE
+                vipIv.setImageResource(R.drawable.vip_la_icon)
+            }
+            model?.vipInfo?.vipType == EVIPType.EVT_XD_V.value -> {
+                vipIv.visibility = View.VISIBLE
+                vipIv.setImageResource(R.drawable.vip_xd_icon)
+            }
             else -> {
                 vipIv.visibility = View.GONE
             }

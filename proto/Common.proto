@@ -108,6 +108,8 @@ enum EVIPType {
     EVT_GOLDEN_V = 2; //金v
     EVT_HAO      = 3; //“豪”徽章奖励
     EVT_RENQI    = 4; //“人气”徽章奖励
+    EVT_LA_V     = 5; //“恋爱”徽章奖励
+    EVT_XD_V     = 6; //“心动”徽章奖励
 }
 
 // 音乐信息
