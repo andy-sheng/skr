@@ -30,11 +30,9 @@ class PartyPunishItemAdapter : RecyclerView.Adapter<PartyPunishItemAdapter.Party
 
     inner class PartyPunishViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val titleTv: ExTextView = itemView.findViewById(R.id.title_tv)
         private val descTv: ExTextView = itemView.findViewById(R.id.desc_tv)
 
         fun bindData(model: PartyPunishInfoModel, pos: Int) {
-            titleTv.text = if (model.punishType == 1) "【真心话】" else "【大冒险】"
             descTv.text = model.punishDesc
         }
     }
