@@ -49,6 +49,7 @@ class PartyPunishView(viewStub: ViewStub, protected var mRoomData: PartyRoomData
     lateinit var coverGroup: Group
 
     var timer: HandlerTaskTimer? = null
+    var effectLightJob: Job? = null
 
     var lastUpdateTs: Long = 0
 
@@ -184,6 +185,19 @@ class PartyPunishView(viewStub: ViewStub, protected var mRoomData: PartyRoomData
 
         if (visibility == View.GONE) {
             delayHideJob?.cancel()
+            effectLightJob?.cancel()
+        } else if (visibility == View.VISIBLE) {
+            effectLightJob?.cancel()
+            effectLightJob = launch {
+                while (true) {
+                    delay(1000)
+                    dengView.background = U.getDrawable(R.drawable.race_match_view_deng1)
+                    delay(1000)
+                    dengView.background = U.getDrawable(R.drawable.race_match_view_deng2)
+                    delay(1000)
+                    dengView.background = U.getDrawable(R.drawable.race_match_view_deng3)
+                }
+            }
         }
     }
 
@@ -275,7 +289,8 @@ class PartyPunishView(viewStub: ViewStub, protected var mRoomData: PartyRoomData
             EventBus.getDefault().unregister(this)
         }
 
-        presenter?.destroy()
+        effectLightJob?.cancel()
         raceMatchItemView.reset()
+        presenter?.destroy()
     }
 }
