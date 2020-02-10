@@ -178,6 +178,7 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
             nameEdittext.setText(H.partyRoomData?.topicName)
 
             trySelect(H.partyRoomData?.enterPermission ?: 2)
+            trySelectMicType(H.partyRoomData?.getSeatMode ?: 1)
         } else {
             getRecommendGameList()
         }
@@ -368,8 +369,7 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
 //            }
 
             //这个限制先去掉
-//            if (topicName.equals(H.partyRoomData?.topicName) && enterType == H.partyRoomData?.enterPermission && micType == 1) {
-            if (false) {
+            if (topicName.equals(H.partyRoomData?.topicName) && enterType == H.partyRoomData?.enterPermission && micType == H.partyRoomData?.getSeatMode) {
                 finish()
             } else {
                 val map = mutableMapOf(
