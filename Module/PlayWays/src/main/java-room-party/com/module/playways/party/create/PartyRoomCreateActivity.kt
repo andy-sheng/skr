@@ -324,17 +324,19 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
 
                 if (result.errno == 0) {
                     val list = JSON.parseArray(result.data.getString("items"), PartyCreateRecommendGameModel::class.java)
-                    gameList.addAll(list)
-                    val tagList = ArrayList<CommonTagView.TagModel>();
-                    list?.forEach {
-                        val model = CommonTagView.TagModel(it.ruleID, it.gameDesc)
-                        tagList.add(model)
-                    }
+                    if (list != null) {
+                        gameList.addAll(list)
+                        val tagList = ArrayList<CommonTagView.TagModel>();
+                        list?.forEach {
+                            val model = CommonTagView.TagModel(it.ruleID, it.gameDesc)
+                            tagList.add(model)
+                        }
 
-                    gameTagView.bindData(tagList)
-                    if (U.getPreferenceUtils().hasKey(SP_KEY_PRE_GAME)) {
-                        val id = U.getPreferenceUtils().getSettingInt(SP_KEY_PRE_GAME, 0)
-                        gameTagView.setSelectTag(id)
+                        gameTagView.bindData(tagList)
+                        if (U.getPreferenceUtils().hasKey(SP_KEY_PRE_GAME)) {
+                            val id = U.getPreferenceUtils().getSettingInt(SP_KEY_PRE_GAME, 0)
+                            gameTagView.setSelectTag(id)
+                        }
                     }
 
                     false
