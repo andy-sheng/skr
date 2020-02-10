@@ -178,7 +178,7 @@ class PartyBottomContainerView : BottomContainerView {
     }
 
     private fun refreshInputMic() {
-        if (roomData?.isAllMute == true) {
+        if (roomData?.isAllMute == true && roomData?.myUserInfo?.isHost()==false) {
             // 全员禁麦
             mInputBtn?.setBackgroundResource(R.drawable.relay_mute)
             ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
