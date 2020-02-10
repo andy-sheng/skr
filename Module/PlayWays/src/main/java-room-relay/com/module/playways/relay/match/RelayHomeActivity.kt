@@ -154,7 +154,7 @@ class RelayHomeActivity : BaseActivity() {
         }
 
         relayRedPacketTv?.setDebounceViewClickListener {
-            showRedPacketDialog()
+//            showRedPacketDialog()
         }
 
         val songCardMaxHeight = (U.getDisplayUtils().screenHeight - 62.dp() - 50.dp() - 36.dp() - 20.dp()) -
@@ -223,23 +223,23 @@ class RelayHomeActivity : BaseActivity() {
         }
 
         getPlayBookList(0, firstRequestPage * cnt, true)
-        getRedPacketStatus()
+//        getRedPacketStatus()
     }
 
-    private fun showRedPacketDialog() {
-        mRelayRedPacketConfirmView?.dismiss(false)
-        var isOpen = false  // 默认是未开启
-        if (status == 1) {
-            isOpen = true
-        }
-        mRelayRedPacketConfirmView = RelayRedPacketConfirmView(this, isOpen, object : ClickRedPacketListener {
-            override fun onClickRedPacket() {
-                mRelayRedPacketConfirmView?.dismiss(false)
-                updateRedPacketStatus(!isOpen)
-            }
-        })
-        mRelayRedPacketConfirmView?.showByDialog()
-    }
+//    private fun showRedPacketDialog() {
+//        mRelayRedPacketConfirmView?.dismiss(false)
+//        var isOpen = false  // 默认是未开启
+//        if (status == 1) {
+//            isOpen = true
+//        }
+//        mRelayRedPacketConfirmView = RelayRedPacketConfirmView(this, isOpen, object : ClickRedPacketListener {
+//            override fun onClickRedPacket() {
+//                mRelayRedPacketConfirmView?.dismiss(false)
+//                updateRedPacketStatus(!isOpen)
+//            }
+//        })
+//        mRelayRedPacketConfirmView?.showByDialog()
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AddSongEvent) {
@@ -308,27 +308,27 @@ class RelayHomeActivity : BaseActivity() {
         startActivity(intent)
     }
 
-    private fun getRedPacketStatus() {
-        launch {
-            val result = subscribe(RequestControl("getRedPacketStatus", ControlType.CancelThis)) {
-                relayMatchServerApi.getRedPacketStatus()
-            }
-
-            if (result.errno == 0) {
-                status = result.data.getIntValue("status")
-                refreshRedPacketStatus()
-                if (status == 1) {
-                    // 红包已开启了
-                    U.getPreferenceUtils().setSettingBoolean(KEY_PREFRE_RED_PACKET_SHOW, true)
-                } else {
-                    if (!U.getPreferenceUtils().getSettingBoolean(KEY_PREFRE_RED_PACKET_SHOW, false)) {
-                        U.getPreferenceUtils().setSettingBoolean(KEY_PREFRE_RED_PACKET_SHOW, true)
-                        showRedPacketDialog()
-                    }
-                }
-            }
-        }
-    }
+//    private fun getRedPacketStatus() {
+//        launch {
+//            val result = subscribe(RequestControl("getRedPacketStatus", ControlType.CancelThis)) {
+//                relayMatchServerApi.getRedPacketStatus()
+//            }
+//
+//            if (result.errno == 0) {
+//                status = result.data.getIntValue("status")
+//                refreshRedPacketStatus()
+//                if (status == 1) {
+//                    // 红包已开启了
+//                    U.getPreferenceUtils().setSettingBoolean(KEY_PREFRE_RED_PACKET_SHOW, true)
+//                } else {
+//                    if (!U.getPreferenceUtils().getSettingBoolean(KEY_PREFRE_RED_PACKET_SHOW, false)) {
+//                        U.getPreferenceUtils().setSettingBoolean(KEY_PREFRE_RED_PACKET_SHOW, true)
+//                        showRedPacketDialog()
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private fun updateRedPacketStatus(isOpen: Boolean) {
         launch {
