@@ -41,8 +41,9 @@
                 android:drawableTop="@drawable/ic_home_selected"
                 android:gravity="center"
                 android:textSize="@dimen/textsize_10_dp"
-                app:bl_selected_textColor="#5865A6"
-                app:bl_unSelected_textColor="#7897A5" />
+                android:text="游戏"
+                app:bl_selected_textColor="#CDA5FE"
+                app:bl_unSelected_textColor="#A5BCC7" />
         </RelativeLayout>
 
         <!--主题房-->
@@ -61,8 +62,9 @@
                 android:drawableTop="@drawable/ic_party_normal"
                 android:gravity="center"
                 android:textSize="@dimen/textsize_10_dp"
-                app:bl_selected_textColor="#E27425"
-                app:bl_unSelected_textColor="#7897A5" />
+                android:text="主题房"
+                app:bl_selected_textColor="#7AB2F2"
+                app:bl_unSelected_textColor="#A5BCC7" />
         </RelativeLayout>
 
         <!--消息-->
@@ -81,8 +83,9 @@
                 android:drawableTop="@drawable/ic_chat_normal"
                 android:gravity="center"
                 android:textSize="@dimen/textsize_10_dp"
-                app:bl_selected_textColor="#54855F"
-                app:bl_unSelected_textColor="#7897A5" />
+                android:text="消息"
+                app:bl_selected_textColor="#9ED265"
+                app:bl_unSelected_textColor="#A5BCC7" />
 
             <com.common.view.ex.ExImageView
                 android:id="@+id/message_red_dot"
@@ -127,8 +130,9 @@
                 android:drawableTop="@drawable/ic_posts_normal"
                 android:gravity="center"
                 android:textSize="@dimen/textsize_10_dp"
-                app:bl_selected_textColor="#E27425"
-                app:bl_unSelected_textColor="#7897A5" />
+                android:text="广场"
+                app:bl_selected_textColor="#F3C839"
+                app:bl_unSelected_textColor="#A5BCC7" />
         </RelativeLayout>
 
         <!--个人-->
@@ -157,8 +161,9 @@
                 android:drawableTop="@drawable/ic_me_normal"
                 android:gravity="center"
                 android:textSize="@dimen/textsize_10_dp"
-                app:bl_selected_textColor="#BC3A6B"
-                app:bl_unSelected_textColor="#7897A5" />
+                android:text="我的"
+                app:bl_selected_textColor="#FF9FC3"
+                app:bl_unSelected_textColor="#A5BCC7" />
         </RelativeLayout>
 
     </com.common.view.ex.ExLinearLayout>
