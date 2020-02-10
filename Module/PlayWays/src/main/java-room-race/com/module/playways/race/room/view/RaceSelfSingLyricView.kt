@@ -97,10 +97,13 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
         configParams.voiceScaleView = mVoiceScaleView
         configParams.lyricUrl = curSong.lyric
         configParams.lyricBeginTs = curSong.standLrcBeginT
-        configParams.lyricEndTs = curSong.standLrcBeginT + totalTs
+        // 和佳胜讨论，改成伴奏开始 + 总时间 胜哥说 prefectotal
+        configParams.lyricEndTs = curSong.beginMs+totalTs-5000
+
         configParams.accBeginTs = curSong.beginMs
         configParams.accEndTs = curSong.beginMs + totalTs
         configParams.authorName = curSong.uploaderName
+
         mLyricAndAccMatchManager!!.setArgs(configParams)
         val finalCurSong = curSong
         mLyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener() {

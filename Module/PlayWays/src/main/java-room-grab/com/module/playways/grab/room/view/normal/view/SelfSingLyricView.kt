@@ -86,10 +86,14 @@ open class SelfSingLyricView(viewStub: ViewStub) : ExViewStub(viewStub) {
         configParams.voiceScaleView = mVoiceScaleView
         configParams.lyricUrl = songModel.lyric
         configParams.lyricBeginTs = songModel.standLrcBeginT
-        configParams.lyricEndTs = songModel.standLrcBeginT + totalTs
+        configParams.lyricEndTs = songModel.beginMs+totalTs-5000
+
         configParams.accBeginTs = songModel.beginMs
         configParams.accEndTs = songModel.beginMs + totalTs
+
         configParams.authorName = songModel.uploaderName
+
+
         mLyricAndAccMatchManager!!.setArgs(configParams)
         mLyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener() {
 
