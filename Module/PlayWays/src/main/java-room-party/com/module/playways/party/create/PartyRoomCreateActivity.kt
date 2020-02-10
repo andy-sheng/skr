@@ -43,6 +43,7 @@ import okhttp3.RequestBody
 
 @Route(path = RouterConstants.ACTIVITY_CREATE_PARTY_ROOM)
 class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
+    val SP_KEY_PRE_GAME = "SP_KEY_PRE_PARTY_GAME"  // 礼物
     lateinit var titlebar: CommonTitleBar
     lateinit var nameEdittext: NoLeakEditText
     lateinit var divider: View
@@ -277,6 +278,8 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_ROOM)
                         .withSerializable("JoinPartyRoomRspModel", rsp)
                         .navigation()
+
+                U.getPreferenceUtils().setSettingInt(SP_KEY_PRE_GAME, model?.ruleID ?: 0)
                 finish()
             } else if (8436006 == result.errno) {
                 //因为创建成功就把这个界面finish了，所以只有在失败的时候isClickable = true就可以了
@@ -329,6 +332,10 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
                     }
 
                     gameTagView.bindData(tagList)
+                    if (U.getPreferenceUtils().hasKey(SP_KEY_PRE_GAME)) {
+                        val id = U.getPreferenceUtils().getSettingInt(SP_KEY_PRE_GAME, 0)
+                        gameTagView.setSelectTag(id)
+                    }
 
                     false
                 } else {
