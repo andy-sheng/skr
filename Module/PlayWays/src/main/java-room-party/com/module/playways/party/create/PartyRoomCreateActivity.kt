@@ -103,7 +103,7 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
                 skrAudioPermission.ensurePermission({ createRoom() }, true)
             } else if (this.from == "change") {
                 changeRoomSetting()
-                titlebar.centerTextView.text = "创建房间"
+                titlebar.centerTextView.text = "房间信息设置"
             }
         }
 
@@ -176,7 +176,6 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
             nameEdittext.setText(H.partyRoomData?.topicName)
 
             trySelect(H.partyRoomData?.enterPermission ?: 2)
-            trySelectMicType(H.partyRoomData?.getSeatMode ?: 1)
         } else {
             getRecommendGameList()
         }
@@ -361,7 +360,8 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
 //            }
 
             //这个限制先去掉
-            if (topicName.equals(H.partyRoomData?.topicName) && enterType == H.partyRoomData?.enterPermission && micType == H.partyRoomData?.getSeatMode) {
+//            if (topicName.equals(H.partyRoomData?.topicName) && enterType == H.partyRoomData?.enterPermission && micType == 1) {
+            if (false) {
                 finish()
             } else {
                 val map = mutableMapOf(
