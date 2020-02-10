@@ -270,6 +270,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     private fun checkGoMicTips() {
         if (mRoomData.joinSrc == JoinPartyRoomRspModel.JRS_QUICK_JOIN || mRoomData.joinSrc == JoinPartyRoomRspModel.JRS_CHANGE_ROOM) {
+            mUiHandler.removeMessages(CHECK_GO_MIC_TIP_MSG)
             mUiHandler.sendEmptyMessageDelayed(CHECK_GO_MIC_TIP_MSG, 6000L)
         }
     }
