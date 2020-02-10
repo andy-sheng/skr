@@ -103,7 +103,8 @@ class PartyGamePresenter(var mRoomData: PartyRoomData, var iPartyGameView: IPart
 
             if (result.errno == 0) {
                 val model = JSON.parseObject(result.data.getString("punishInfo"), PartyPunishInfoModel::class.java)
-                scrollToModel(model)
+                val duration = result.data.getLongValue("endTimeMs") - result.data.getLongValue("beginTimeMs")
+                scrollToModel(model, duration)
             } else {
                 U.getToastUtil().showShort(result.errmsg)
                 iPartyGameView.getNextPunishFailed()
@@ -111,7 +112,7 @@ class PartyGamePresenter(var mRoomData: PartyRoomData, var iPartyGameView: IPart
         }
     }
 
-    fun scrollToModel(model: PartyPunishInfoModel) {
+    fun scrollToModel(model: PartyPunishInfoModel, duration: Long) {
         var modelIndex = -1
         if (type == zxh_type) {
             zxhList.forEachIndexed { index, it ->
@@ -121,10 +122,10 @@ class PartyGamePresenter(var mRoomData: PartyRoomData, var iPartyGameView: IPart
             }
 
             if (modelIndex != -1) {
-                iPartyGameView.updateGame(modelIndex, zxhList[modelIndex])
+                iPartyGameView.updateGame(modelIndex, zxhList[modelIndex], duration)
             } else {
                 zxhList.add(model)
-                iPartyGameView.updateGame(zxhList.size, model)
+                iPartyGameView.updateGame(zxhList.size, model, duration)
             }
         } else {
             dmxList.forEachIndexed { index, it ->
@@ -134,10 +135,10 @@ class PartyGamePresenter(var mRoomData: PartyRoomData, var iPartyGameView: IPart
             }
 
             if (modelIndex != -1) {
-                iPartyGameView.updateGame(modelIndex, dmxList[modelIndex])
+                iPartyGameView.updateGame(modelIndex, dmxList[modelIndex], duration)
             } else {
                 dmxList.add(model)
-                iPartyGameView.updateGame(dmxList.size, model)
+                iPartyGameView.updateGame(dmxList.size, model, duration)
             }
         }
     }
