@@ -346,8 +346,8 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
         }
     }
 
-    inline fun repeatUntil(times: Int, needRepeat: (Int) -> Boolean) {
-        for (index in 0..times - 1) {
+    private inline fun repeatUntil(times: Int, needRepeat: (Int) -> Boolean) {
+        for (index in 0 until times) {
             if (!needRepeat(index)) break
         }
     }
