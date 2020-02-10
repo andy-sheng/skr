@@ -2,14 +2,13 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_84_dp">
+    android:layout_height="@dimen/view_85_dp">
 
     <com.common.view.ex.ExTextView
         android:id="@+id/title_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
+        android:paddingLeft="-5dp"
         android:text="【真心话】"
         android:textColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -20,9 +19,7 @@
         android:id="@+id/desc_tv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/view_10_dp"
-        android:paddingLeft="@dimen/view_10_dp"
-        android:paddingRight="@dimen/view_10_dp"
+        android:layout_marginBottom="@dimen/view_5_dp"
         android:text="打算什么时候结婚"
         android:textColor="@color/black_trans_60"
         android:textSize="@dimen/textsize_12_dp"

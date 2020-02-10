@@ -27,8 +27,8 @@
 
     <com.module.playways.party.room.view.PartyPunishItemListView
         android:id="@+id/race_match_item_view"
-        android:layout_width="@dimen/view_185_dp"
-        android:layout_height="@dimen/view_84_dp"
+        android:layout_width="@dimen/view_195_dp"
+        android:layout_height="@dimen/view_85_dp"
         android:layout_marginTop="@dimen/view_79_dp"
         app:layout_constraintLeft_toLeftOf="@id/container"
         app:layout_constraintRight_toRightOf="@id/container"
