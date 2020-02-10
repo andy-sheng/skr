@@ -1127,8 +1127,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             mBottomContainerView?.setRoomData(mRoomData!!)
 //            mGrabTopContentView.onChangeRoom()
 //            adjustSelectSongView()
+            // 换房间也要弹窗
+            checkGoMicTips()
         }
-        // 换房间也要弹窗
-        checkGoMicTips()
+
     }
 }
