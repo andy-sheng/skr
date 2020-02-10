@@ -21,7 +21,7 @@ import com.module.playways.race.room.view.matchview.ScrollLinearLayoutManager
 // 用recyler方式实现
 class PartyPunishItemListView : ConstraintLayout {
 
-    val totalTime: Long = 2 * 1000L  // 动画的总时间
+    val totalTime: Long = 1500L  // 动画的总时间
     // todo 调太慢会导致减速转动的时间不够
     private val fastSpeed: Float = 1f         // 调整转动速度 通过一个pixel需要的时间(fastSpeed / U.getDisplayUtils().density)
     private val slowSpeed: Float = 500f      // 最慢速度(slowSpeed / U.getDisplayUtils().density)

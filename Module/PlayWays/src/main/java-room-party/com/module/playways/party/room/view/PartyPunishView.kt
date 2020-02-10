@@ -196,7 +196,7 @@ class PartyPunishView(viewStub: ViewStub, protected var mRoomData: PartyRoomData
             presenter?.type = event.punishInfo.punishType.value
             presenter?.getGameList {
                 val model = PartyPunishInfoModel.toLocalModelFromPB(event.punishInfo)
-                presenter?.scrollToModel(model)
+                presenter?.scrollToModel(model, event.endTimeMs - event.beginTimeMs)
             }
         }
     }
@@ -209,7 +209,7 @@ class PartyPunishView(viewStub: ViewStub, protected var mRoomData: PartyRoomData
         //这里不展示
     }
 
-    override fun updateGame(index: Int, model: PartyPunishInfoModel) {
+    override fun updateGame(index: Int, model: PartyPunishInfoModel, duration: Long) {
         delayHideJob?.cancel()
         setVisibility(View.VISIBLE)
         coverGroup.visibility = View.GONE
@@ -225,7 +225,7 @@ class PartyPunishView(viewStub: ViewStub, protected var mRoomData: PartyRoomData
 
         if (H.partyRoomData?.hostId != MyUserInfoManager.uid.toInt()) {
             delayHideJob = launch {
-                delay(7000)
+                delay(duration)
                 setVisibility(View.GONE)
                 raceMatchItemView.reset()
             }
