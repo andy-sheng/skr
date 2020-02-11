@@ -44,6 +44,7 @@ import okhttp3.RequestBody
 @Route(path = RouterConstants.ACTIVITY_CREATE_PARTY_ROOM)
 class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
     val SP_KEY_PRE_GAME = "SP_KEY_PRE_PARTY_GAME"  // 礼物
+    val SP_KEY_PRE_MIC_TYPE = "SP_KEY_PRE_MIC_TYPE"  // 礼物
     lateinit var titlebar: CommonTitleBar
     lateinit var nameEdittext: NoLeakEditText
     lateinit var divider: View
@@ -178,6 +179,10 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
             trySelect(H.partyRoomData?.enterPermission ?: 2)
             trySelectMicType(H.partyRoomData?.getSeatMode ?: 1)
         } else {
+            if (U.getPreferenceUtils().hasKey(SP_KEY_PRE_MIC_TYPE)) {
+                val type = U.getPreferenceUtils().getSettingInt(SP_KEY_PRE_MIC_TYPE, 1)
+                trySelectMicType(type)
+            }
             getRecommendGameList()
         }
     }
@@ -280,6 +285,7 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
                         .navigation()
 
                 U.getPreferenceUtils().setSettingInt(SP_KEY_PRE_GAME, model?.ruleID ?: 0)
+                U.getPreferenceUtils().setSettingInt(SP_KEY_PRE_MIC_TYPE, micType)
                 finish()
             } else if (8436006 == result.errno) {
                 //因为创建成功就把这个界面finish了，所以只有在失败的时候isClickable = true就可以了
@@ -358,6 +364,7 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
         var topicName = nameEdittext.text.toString().trim()
 
         if (TextUtils.isEmpty(topicName)) {
+            titlebar.rightTextView.isClickable = true
             U.getToastUtil().showShort("房间主题不可以为空")
             return
         }
@@ -378,6 +385,11 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
                         "getSeatMode" to micType,
                         "topicName" to topicName
                 )
+
+                if (H.partyRoomData?.isPersonalHome() == true) {
+                    U.getPreferenceUtils().setSettingInt(SP_KEY_PRE_MIC_TYPE, micType)
+                }
+
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                 val result = subscribe(RequestControl("changeRoom", ControlType.CancelThis)) {
                     roomServerApi.changeRoomInfo(body)
