@@ -106,6 +106,9 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
             if (field != value) {
                 field = value
                 EventBus.getDefault().post(PartyHostChangeEvent(field))
+                if (field == MyUserInfoManager.uid.toInt()) {
+                    EventBus.getDefault().post(PartyMyUserInfoChangeEvent(null))
+                }
                 if (field == 0) {
                     isAllMute = false
                 }
