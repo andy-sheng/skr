@@ -319,7 +319,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 layoutParams.rightMargin = 15.dp()
                 layoutParams.bottomMargin = 50.dp()
                 mMainActContainer?.addView(mHostOpTipImageView, layoutParams)
+                mUiHandler.removeMessages(REMOVE_HOST_OP_TIP_MSG)
                 mUiHandler.sendEmptyMessageDelayed(REMOVE_HOST_OP_TIP_MSG, 15000L)
+                mHostOpTipImageView?.setDebounceViewClickListener {
+                    removeHostOpTips()
+                }
             }
         }
     }
