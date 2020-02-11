@@ -342,6 +342,8 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
                         if (U.getPreferenceUtils().hasKey(SP_KEY_PRE_GAME)) {
                             val id = U.getPreferenceUtils().getSettingInt(SP_KEY_PRE_GAME, 0)
                             gameTagView.setSelectTag(id)
+                        } else {
+                            gameTagView.setSelectTag(tagList[0].ageTag)
                         }
                     }
 
