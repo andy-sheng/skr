@@ -42,7 +42,7 @@ class PartyRoomAdapter(var listener: Listener, val type: Int) : RecyclerView.Ada
             if (mDataList.size == 0) {
                 return 2
             }
-            return mDataList.size + 1
+            return mDataList.size + 2
         } else {
             if (mDataList.size == 0) {
                 return 2
