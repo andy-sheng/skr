@@ -574,6 +574,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         updateSeats(rsp.seats)
         updateUsers(rsp.users)
         this.expectRoundInfo = rsp.currentRound
+        this.realRoundInfo = null
         this.enterPermission = rsp.enterPermission
         this.roomType = rsp.roomType
         this.config = rsp.config
