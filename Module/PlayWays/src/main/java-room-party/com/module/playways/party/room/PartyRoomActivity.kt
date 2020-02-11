@@ -252,10 +252,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             debugLogView.tryInflate()
         }
 
-        if (U.getPreferenceUtils().getSettingBoolean("is_first_enter_party_room", true)) {
-            U.getPreferenceUtils().setSettingBoolean("is_first_enter_party_room", false)
-            showGameRuleDialog()
-        }
+//        if (U.getPreferenceUtils().getSettingBoolean("is_first_enter_party_room", true)) {
+//            U.getPreferenceUtils().setSettingBoolean("is_first_enter_party_room", false)
+//            showGameRuleDialog()
+//        }
 
         MyUserInfoManager.myUserInfo?.let {
             if (it.ranking != null) {
