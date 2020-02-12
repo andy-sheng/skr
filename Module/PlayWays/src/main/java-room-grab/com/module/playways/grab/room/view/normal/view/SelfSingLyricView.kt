@@ -86,7 +86,14 @@ open class SelfSingLyricView(viewStub: ViewStub) : ExViewStub(viewStub) {
         configParams.voiceScaleView = mVoiceScaleView
         configParams.lyricUrl = songModel.lyric
         configParams.lyricBeginTs = songModel.standLrcBeginT
-        configParams.lyricEndTs = songModel.beginMs+totalTs-5000
+
+//        MyLog.w(TAG, "playWithAcc endTs1=${songModel.beginMs+totalTs-5000}")
+//        MyLog.w(TAG, "playWithAcc endTs2=${songModel.beginMs+totalTs}")
+//        MyLog.w(TAG, "playWithAcc endTs3=${songModel.standLrcBeginT + totalTs}")
+        //n2
+//        configParams.lyricEndTs = songModel.beginMs+totalTs-5000
+        //n1
+        configParams.lyricEndTs = songModel.beginMs+totalTs
 
         configParams.accBeginTs = songModel.beginMs
         configParams.accEndTs = songModel.beginMs + totalTs
