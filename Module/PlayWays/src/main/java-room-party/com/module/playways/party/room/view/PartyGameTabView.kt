@@ -356,7 +356,7 @@ class PartyGameTabView : ExConstraintLayout {
             EventBus.getDefault().post(PartyFinishSongManageFragmentEvent())
         } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_Free.ordinal) {
             textScrollView.visibility = View.VISIBLE
-            setMainText("", "自由麦模式，大家畅所欲言吧～")
+            setMainText("${partyGameInfoModel?.rule?.ruleName}\n", partyGameInfoModel?.rule?.ruleDesc)
             EventBus.getDefault().post(PartyFinishSongManageFragmentEvent())
         } else if (partyGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
             if (partyGameInfoModel?.ktv?.userID ?: 0 > 0) {
