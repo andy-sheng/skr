@@ -117,11 +117,12 @@ allprojects {
             }
         }
 
+        google()
+        jcenter()
+
         if (JPushEnable.toBoolean() || RomPushUseRC.toBoolean()) {
             maven { url 'http://developer.huawei.com/repo/' }
         }
-        google()
-        jcenter()
     }
 }
 
