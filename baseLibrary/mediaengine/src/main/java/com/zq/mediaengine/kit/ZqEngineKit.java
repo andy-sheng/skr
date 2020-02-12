@@ -287,7 +287,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
-        MyLog.d(TAG, "onJoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
+        MyLog.i(TAG, "onJoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
         mConfig.setJoinChannelSuccess(true);
         mIsJoiningChannel = false;
         initWhenInChannel();
@@ -1230,8 +1230,10 @@ public class ZqEngineKit implements AgoraOutCallback {
             if (mConfig.isAnchor()) {
                 mAudioCapture.start();
             }
+            if (mRemoteAudioPreview != null) {
+                mRemoteAudioPreview.start();
+            }
         }
-        mRemoteAudioPreview.start();
     }
 
     /**
