@@ -27,7 +27,7 @@ public class FeedCollectDB implements Serializable {
         this.feedSong = feedSong;
         this.user = user;
     }
-    @Generated(hash = 1737506571)
+    @Generated(hash = 543842222)
     public FeedCollectDB() {
     }
     public Long getFeedID() {
