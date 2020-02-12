@@ -278,7 +278,8 @@ public class QuickFeedbackFragment extends BaseFragment {
         if (mActionType == FEED_BACK) {
             summitFeedback(typeList, content, logUrl, picUrls);
         } else {
-            if (mFrom == FROM_PARTY_ROOM) {
+            if (mFrom == FROM_PARTY_ROOM && mTargetId == 0) {
+                // 举报来源与房间，且无举报ID
                 submitReportRoom(typeList, content, picUrls);
             } else {
                 submitReport(typeList, content, picUrls);
