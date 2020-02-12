@@ -27,7 +27,6 @@ public class GiftDB implements Serializable {
     private Integer textContinueCount;
     private Integer displayType;
     private String extra;
-
     @Generated(hash = 92592788)
     public GiftDB(Long giftID, Boolean canContinue, String description,
             String giftName, Integer giftType, String giftURL, Integer price,
@@ -135,5 +134,6 @@ public class GiftDB implements Serializable {
     public void setExtra(String extra) {
         this.extra = extra;
     }
+
 }
 

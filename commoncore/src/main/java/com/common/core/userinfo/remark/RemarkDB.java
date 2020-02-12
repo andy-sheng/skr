@@ -13,12 +13,12 @@ public class RemarkDB implements Serializable {
     @Id
     Long userID;
     String remarkContent;
-    @Keep
+    @Generated(hash = 797333107)
     public RemarkDB(Long userID, String remarkContent) {
         this.userID = userID;
         this.remarkContent = remarkContent;
     }
-    @Keep
+    @Generated(hash = 704598881)
     public RemarkDB() {
     }
     public Long getUserID() {

@@ -73,4 +73,5 @@ public String getBbb() {
 public void setBbb(String bbb) {
     this.bbb = bbb;
 }
+
 }

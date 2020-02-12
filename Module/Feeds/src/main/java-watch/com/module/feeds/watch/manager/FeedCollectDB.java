@@ -18,7 +18,7 @@ public class FeedCollectDB implements Serializable {
     Long timeMs;   // 收藏时间戳
     String feedSong;  // 歌曲信息
     String user;      // 所属
-    @Keep
+    @Generated(hash = 1589526565)
     public FeedCollectDB(Long feedID, Long feedType, Long timeMs, String feedSong,
             String user) {
         this.feedID = feedID;
@@ -27,7 +27,7 @@ public class FeedCollectDB implements Serializable {
         this.feedSong = feedSong;
         this.user = user;
     }
-    @Keep
+    @Generated(hash = 1737506571)
     public FeedCollectDB() {
     }
     public Long getFeedID() {
