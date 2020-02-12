@@ -21,6 +21,9 @@ import io.rong.imkit.widget.ProviderContainerView;
 import io.rong.imkit.widget.adapter.ConversationListAdapter;
 import io.rong.imlib.model.UserInfo;
 
+/**
+ * 自定义会话列表
+ */
 public class MyConversationListAdapter extends ConversationListAdapter {
 
     Context mContext;

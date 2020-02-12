@@ -43,6 +43,8 @@ import com.module.msg.model.RaceRoomLowMsg;
 import com.module.msg.model.RelayRoomHighMsg;
 import com.module.msg.model.RelayRoomLowMsg;
 import com.module.msg.model.SpecailOpMsg;
+import com.module.msg.test1.CustomTestMsg;
+import com.module.msg.test1.MyTestMessageItemProvider;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -196,7 +198,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 dispatchRaceRoomMsg(customChatRoomMsg);
 
                 return true;
-            }else if (message.getContent() instanceof MicRoomHighMsg) {
+            } else if (message.getContent() instanceof MicRoomHighMsg) {
 
                 MicRoomHighMsg customChatRoomMsg = (MicRoomHighMsg) message.getContent();
                 dispatchMicRoomMsg(customChatRoomMsg);
@@ -208,7 +210,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 dispatchMicRoomMsg(customChatRoomMsg);
 
                 return true;
-            }else if (message.getContent() instanceof RelayRoomHighMsg) {
+            } else if (message.getContent() instanceof RelayRoomHighMsg) {
 
                 RelayRoomHighMsg customChatRoomMsg = (RelayRoomHighMsg) message.getContent();
                 dispatchRelayRoomMsg(customChatRoomMsg);
@@ -220,7 +222,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 dispatchRelayRoomMsg(customChatRoomMsg);
 
                 return true;
-            }else if (message.getContent() instanceof PartyRoomHighMsg) {
+            } else if (message.getContent() instanceof PartyRoomHighMsg) {
 
                 PartyRoomHighMsg customChatRoomMsg = (PartyRoomHighMsg) message.getContent();
                 dispatchPartyRoomMsg(customChatRoomMsg);
@@ -232,7 +234,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 dispatchPartyRoomMsg(customChatRoomMsg);
 
                 return true;
-            }   else if (message.getContent() instanceof CustomNotificationMsg) {
+            } else if (message.getContent() instanceof CustomNotificationMsg) {
                 CustomNotificationMsg notificationMsg = (CustomNotificationMsg) message.getContent();
                 byte[] data = U.getBase64Utils().decode(notificationMsg.getContentJsonStr());
 
@@ -296,7 +298,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     event.date = jsonObject.getString("date");
                     event.extra = jsonObject.getString("extra");
                     EventBus.getDefault().post(event);
-                }else if(specailOpMsg.getMessageType() == 3){
+                } else if (specailOpMsg.getMessageType() == 3) {
                     JSONObject jsonObject = JSON.parseObject(specailOpMsg.getContentJsonStr());
                     PartyPeerAccStatusEvent event = new PartyPeerAccStatusEvent();
                     event.setUserID(jsonObject.getIntValue("userID"));
@@ -468,9 +470,9 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             } else {
                 rongKey = "e5t4ouvpec57a";
             }
-            if(MyLog.isDebugLogOpen()){
+            if (MyLog.isDebugLogOpen()) {
 
-            }else{
+            } else {
                 RLog.setLogLevel(RLog.I);
             }
 
@@ -505,6 +507,8 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
             RongIM.getInstance().registerConversationTemplate(new MyPrivateConversationProvider());
 
+            RongIM.registerMessageType(CustomTestMsg.class);
+            RongIM.registerMessageTemplate(new MyTestMessageItemProvider());
             // todo 先注释掉吧，发送方gif不显示
 //            RongIM.registerMessageTemplate(new MyGIFMessageItemProvider());
 

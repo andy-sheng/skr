@@ -13,6 +13,7 @@ import com.common.core.permission.SkrNotificationPermission;
 import com.common.core.userinfo.ResponseCallBack;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -25,8 +26,11 @@ import com.dialog.list.DialogListItem;
 import com.dialog.list.ListDialog;
 import com.module.RouterConstants;
 import com.module.home.IHomeService;
+import com.module.msg.RongMsgManager;
 import com.module.msg.api.IMsgServerApi;
 import com.module.msg.custom.MyGIFMessageItemProvider;
+import com.module.msg.model.SpecailOpMsg;
+import com.module.msg.test1.CustomTestMsg;
 import com.zq.live.proto.Common.EVIPType;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -37,6 +41,9 @@ import java.util.List;
 
 import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -80,6 +87,26 @@ public class ConversationActivity extends BaseActivity {
         mTitleBar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                if(MyLog.isDebugOpen()){
+                    // 测试自定义消息
+                    CustomTestMsg customChatRoomMsg =  CustomTestMsg.obtain("1000");
+                    Message msg = Message.obtain(mUserId, Conversation.ConversationType.PRIVATE, customChatRoomMsg);
+                    RongIM.getInstance().sendMessage(msg, "pushContent", "pushData", new IRongCallback.ISendMessageCallback() {
+                        @Override
+                        public void onAttached(Message message) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(Message message) {
+                        }
+
+                        @Override
+                        public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                        }
+                    });
+                    return;
+                }
                 finish();
             }
         });

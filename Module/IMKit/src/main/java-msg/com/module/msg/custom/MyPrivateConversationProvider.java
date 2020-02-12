@@ -22,6 +22,9 @@ import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.widget.provider.PrivateConversationProvider;
 import io.rong.imlib.model.UserInfo;
 
+/**
+ * item样式
+ */
 @ConversationProviderTag(
         conversationType = "private",
         portraitPosition = 1
