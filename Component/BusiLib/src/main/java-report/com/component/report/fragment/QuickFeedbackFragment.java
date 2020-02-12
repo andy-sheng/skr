@@ -372,11 +372,14 @@ public class QuickFeedbackFragment extends BaseFragment {
                             .build());
                     U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
                 } else {
-                    U.getToastUtil().showShort(result.getErrmsg());
-                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-                            .setImage(R.drawable.touxiangshezhishibai_icon)
-                            .setText("举报失败")
-                            .build());
+                    if (result.getErrno() == 8320995) {
+                        U.getToastUtil().showShort(result.getErrmsg());
+                    } else {
+                        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                                .setImage(R.drawable.touxiangshezhishibai_icon)
+                                .setText("举报失败")
+                                .build());
+                    }
                     U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
                 }
             }
@@ -412,11 +415,14 @@ public class QuickFeedbackFragment extends BaseFragment {
                             .build());
                     U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
                 } else {
-                    U.getToastUtil().showShort(result.getErrmsg());
-                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-                            .setImage(R.drawable.touxiangshezhishibai_icon)
-                            .setText("举报失败")
-                            .build());
+                    if (result.getErrno() == 8320994) {
+                        U.getToastUtil().showShort(result.getErrmsg());
+                    } else {
+                        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                                .setImage(R.drawable.touxiangshezhishibai_icon)
+                                .setText("举报失败")
+                                .build());
+                    }
                     U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
                 }
             }
