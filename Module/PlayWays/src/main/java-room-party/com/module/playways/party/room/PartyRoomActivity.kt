@@ -61,7 +61,7 @@ import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.presenter.PartyCorePresenter
 import com.module.playways.party.room.seat.PartySeatView
 import com.module.playways.party.room.top.PartyTopContentView
-import com.module.playways.party.room.top.PartyTopOpView
+import com.module.playways.party.room.top.PartyTopOpView2
 import com.module.playways.party.room.ui.IPartyRoomView
 import com.module.playways.party.room.ui.PartyBottomWidgetAnimationController
 import com.module.playways.party.room.ui.PartyWidgetAnimationController
@@ -132,7 +132,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     internal lateinit var mCommentView: CommentView
     internal lateinit var mGiftPanelView: GiftPanelView
     internal lateinit var mContinueSendView: ContinueSendView
-    internal lateinit var mTopOpView: PartyTopOpView
+    internal lateinit var mTopOpView: PartyTopOpView2
     internal lateinit var mTopContentView: PartyTopContentView
 
     internal lateinit var mGameEffectBgView: GameEffectBgView
@@ -613,7 +613,14 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
     private fun initTopView() {
         mTopOpView = findViewById(R.id.top_op_view)
-        mTopOpView.setListener(object : PartyTopOpView.Listener {
+        mTopOpView.setListener(object : PartyTopOpView2.Listener {
+            override fun onClickInviteRoom() {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
+                        .withInt("from", GameModeType.GAME_MODE_PARTY)
+                        .withInt("roomId", H.partyRoomData?.gameId ?: 0)
+                        .navigation()
+            }
+
             override fun onClickChangeRoom() {
                 if (mRoomData?.myUserInfo?.isHost() == true || mRoomData?.myUserInfo?.isGuest() == true) {
                     U.getToastUtil().showShort("在麦上不能切房间哦～")

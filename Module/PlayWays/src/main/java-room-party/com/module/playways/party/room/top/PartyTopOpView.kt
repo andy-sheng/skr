@@ -108,5 +108,6 @@ class PartyTopOpView : RelativeLayout {
         fun onClickRoomReport()
 
         fun onClickChangeRoom()
+
     }
 }

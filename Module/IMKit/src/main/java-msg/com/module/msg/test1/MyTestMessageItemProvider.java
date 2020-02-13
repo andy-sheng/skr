@@ -70,7 +70,9 @@ public class MyTestMessageItemProvider extends MessageProvider<CustomTestMsg> {
     @Override
     public void onItemClick(View view, int i, CustomTestMsg msg, UIMessage uiMessage) {
 //        msg.setContent(msg.getContent()+"消息已经被处理");
-        RongIM.getInstance().setMessageExtra(uiMessage.getMessageId(),uiMessage.getExtra()+"处理了");
+        uiMessage.setExtra("处理了"+uiMessage.getExtra());
+        RongIM.getInstance().setMessageExtra(uiMessage.getMessageId(),uiMessage.getExtra());
+        bindView(view,i,msg,uiMessage);
 //        RongIM.getInstance().up(Conversation.ConversationType.PRIVATE,uiMessage.getTargetId(),uiMessage.getSenderUserId(),msg);
     }
 

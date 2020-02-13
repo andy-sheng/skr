@@ -25,7 +25,7 @@
         app:statusBarColor="@color/transparent" />
 
     <!-- 包括 顶部操作菜单栏 -->
-    <com.module.playways.party.room.top.PartyTopOpView
+    <com.module.playways.party.room.top.PartyTopOpView2
         android:id="@+id/top_op_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_38_dp"
