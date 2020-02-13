@@ -87,7 +87,7 @@ public class ConversationActivity extends BaseActivity {
         mTitleBar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(MyLog.isDebugOpen()){
+                if(MyLog.isDebugLogOpen()){
                     // 测试自定义消息
                     CustomTestMsg customChatRoomMsg =  CustomTestMsg.obtain("1000");
                     Message msg = Message.obtain(mUserId, Conversation.ConversationType.PRIVATE, customChatRoomMsg);

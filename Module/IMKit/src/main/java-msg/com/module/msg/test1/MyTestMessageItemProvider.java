@@ -28,6 +28,7 @@ import io.rong.imkit.utilities.PermissionCheckUtil;
 import io.rong.imkit.widget.CircleProgressView;
 import io.rong.imkit.widget.provider.IContainerItemProvider.MessageProvider;
 import io.rong.imlib.IRongCallback.IDownloadMediaMessageCallback;
+import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.Message.MessageDirection;
 import io.rong.imlib.model.Message.SentStatus;
@@ -48,7 +49,7 @@ public class MyTestMessageItemProvider extends MessageProvider<CustomTestMsg> {
     public MyTestMessageItemProvider() {
     }
 
-    public View newView(Context context, ViewGroup group) {
+    public View  newView(Context context, ViewGroup group) {
         View view = LayoutInflater.from(context).inflate(layout.rc_item_test_message1, (ViewGroup)null);
         MyTestMessageItemProvider.ViewHolder holder = new MyTestMessageItemProvider.ViewHolder();
         holder.counterTv =  view.findViewById(id.counter_tv);
@@ -58,7 +59,7 @@ public class MyTestMessageItemProvider extends MessageProvider<CustomTestMsg> {
 
     public void bindView(View v, int position, CustomTestMsg msg, UIMessage message) {
         MyTestMessageItemProvider.ViewHolder holder = (MyTestMessageItemProvider.ViewHolder)v.getTag();
-        holder.counterTv.setText(msg.getContent()+"");
+        holder.counterTv.setText(msg.getContent()+" "+message.getExtra());
     }
 
     @Override
@@ -68,7 +69,9 @@ public class MyTestMessageItemProvider extends MessageProvider<CustomTestMsg> {
 
     @Override
     public void onItemClick(View view, int i, CustomTestMsg msg, UIMessage uiMessage) {
-        RongIMCl
+//        msg.setContent(msg.getContent()+"消息已经被处理");
+        RongIM.getInstance().setMessageExtra(uiMessage.getMessageId(),uiMessage.getExtra()+"处理了");
+//        RongIM.getInstance().up(Conversation.ConversationType.PRIVATE,uiMessage.getTargetId(),uiMessage.getSenderUserId(),msg);
     }
 
     private static class ViewHolder {
