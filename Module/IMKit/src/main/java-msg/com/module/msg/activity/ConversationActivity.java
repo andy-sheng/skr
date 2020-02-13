@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrNotificationPermission;
@@ -26,11 +27,9 @@ import com.dialog.list.DialogListItem;
 import com.dialog.list.ListDialog;
 import com.module.RouterConstants;
 import com.module.home.IHomeService;
-import com.module.msg.RongMsgManager;
 import com.module.msg.api.IMsgServerApi;
-import com.module.msg.custom.MyGIFMessageItemProvider;
+import com.module.msg.custom.club.ClubInviteMsg;
 import com.module.msg.model.SpecailOpMsg;
-import com.module.msg.test1.CustomTestMsg;
 import com.zq.live.proto.Common.EVIPType;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -89,8 +88,15 @@ public class ConversationActivity extends BaseActivity {
             public void clickValid(View v) {
                 if(MyLog.isDebugLogOpen()){
                     // 测试自定义消息
-                    CustomTestMsg customChatRoomMsg =  CustomTestMsg.obtain("1000");
+                    ClubInviteMsg customChatRoomMsg =   ClubInviteMsg.obtain("ss");
+                    SpecailOpMsg specailOpMsg = new SpecailOpMsg();
+                    specailOpMsg.setMessageType(1);
+                    specailOpMsg.setContentJsonStr("");
                     Message msg = Message.obtain(mUserId, Conversation.ConversationType.PRIVATE, customChatRoomMsg);
+                    JSONObject jo = new JSONObject();
+                    jo.put("content","张三邀请你加入家族 张三的家族");
+                    jo.put("status",0);//0未处理 1同意 2拒绝
+                    msg.setExtra(jo.toJSONString());
                     RongIM.getInstance().sendMessage(msg, "pushContent", "pushData", new IRongCallback.ISendMessageCallback() {
                         @Override
                         public void onAttached(Message message) {

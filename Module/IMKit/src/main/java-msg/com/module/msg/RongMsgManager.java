@@ -27,6 +27,8 @@ import com.component.notification.PartyPeerAccStatusEvent;
 import com.module.common.ICallback;
 import com.module.msg.activity.ConversationActivity;
 import com.module.msg.custom.MyPrivateConversationProvider;
+import com.module.msg.custom.club.ClubInviteMsg;
+import com.module.msg.custom.club.ClubInviteMessageItemProvider;
 import com.module.msg.listener.MyConversationClickListener;
 import com.module.msg.model.BroadcastRoomMsg;
 import com.module.msg.model.CustomChatCombineRoomLowLevelMsg;
@@ -507,6 +509,11 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
             RongIM.getInstance().registerConversationTemplate(new MyPrivateConversationProvider());
 
+            // 注册家族邀请消息
+            RongIM.registerMessageType(ClubInviteMsg.class);
+            RongIM.registerMessageTemplate(new ClubInviteMessageItemProvider());
+
+            // 注册test消息
             RongIM.registerMessageType(CustomTestMsg.class);
             RongIM.registerMessageTemplate(new MyTestMessageItemProvider());
             // todo 先注释掉吧，发送方gif不显示
