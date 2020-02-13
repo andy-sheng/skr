@@ -123,7 +123,7 @@ class PartyGamePresenter(var mRoomData: PartyRoomData, var iPartyGameView: IPart
                 iPartyGameView.updateGame(modelIndex, zxhList[modelIndex], duration)
             } else {
                 zxhList.add(model)
-                iPartyGameView.updateGame(zxhList.size, model, duration)
+                iPartyGameView.updateGame(zxhList.size - 1, model, duration)
             }
         } else {
             dmxList.forEachIndexed { index, it ->
@@ -136,7 +136,7 @@ class PartyGamePresenter(var mRoomData: PartyRoomData, var iPartyGameView: IPart
                 iPartyGameView.updateGame(modelIndex, dmxList[modelIndex], duration)
             } else {
                 dmxList.add(model)
-                iPartyGameView.updateGame(dmxList.size, model, duration)
+                iPartyGameView.updateGame(dmxList.size - 1, model, duration)
             }
         }
     }

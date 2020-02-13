@@ -251,12 +251,12 @@ class PartyPunishView(viewStub: ViewStub, protected var mRoomData: PartyRoomData
         mUiHandler.removeMessages(MSG_FAST_MUSIC)
         mUiHandler.sendEmptyMessage(MSG_FAST_MUSIC)
 
-        mUiHandler.removeMessages(MSG_DECR_MUSIC)
-        mUiHandler.sendEmptyMessageDelayed(MSG_DECR_MUSIC, raceMatchItemView.getFastTime())
+//        mUiHandler.removeMessages(MSG_DECR_MUSIC)
+//        mUiHandler.sendEmptyMessageDelayed(MSG_DECR_MUSIC, raceMatchItemView.totalTime - 300)
 
 
         mUiHandler.removeMessages(MSG_RESULT_MUSIC)
-        mUiHandler.sendEmptyMessageDelayed(MSG_RESULT_MUSIC, raceMatchItemView.getAnimationTime())
+        mUiHandler.sendEmptyMessageDelayed(MSG_RESULT_MUSIC, raceMatchItemView.totalTime)
     }
 
     override fun layoutDesc(): Int {
