@@ -145,6 +145,7 @@ public interface RouterConstants {
     String ACTIVITY_PARTY_ROOM = "/party/PartyRoomActivity";
     String ACTIVITY_PARTY_SELECT_GAME = "/party/PartySelectGameActivity";
     String ACTIVITY_PARTY_HOME = "/party/PartyHomeActivity";
+    String ACTIVITY_PARTY_SEARCH = "/party/PartyRoomSearchActivity";
 
     String ACTIVITY_CREATE_CLUB = "/club/CreateClubActivity";
     String ACTIVITY_LIST_CLUB = "/club/ClubListActivity";
