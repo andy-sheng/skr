@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/photo_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_6_dp"
+        android:layout_marginBottom="@dimen/view_6_dp"
+        android:text="照片"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_116_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_64_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/photo_title_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/photo_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:layout_marginBottom="@dimen/view_16_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_8_dp"
+        android:paddingRight="@dimen/view_8_dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_10_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_4_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_50"
+        app:layout_constraintBottom_toBottomOf="@id/recycler_view"
+        app:layout_constraintRight_toRightOf="@id/recycler_view" />
+
+</android.support.constraint.ConstraintLayout>
