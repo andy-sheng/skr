@@ -779,7 +779,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 sendAccStatusToPeer(true)
                 mRoomData.realRoundInfo?.accLoadingOk = true
                 var progress = mRoomData.getSingCurPosition()
-                DebugLogView.println(TAG, "伴奏加载ok progress=${progress}")
+                DebugLogView.println(TAG, "伴奏加载ok progress=${progress} shiftTs=" + mRoomData.getShiftTsForRelay())
                 if (progress != Long.MAX_VALUE) {
                     if (progress > 0) {
                         DebugLogView.println(TAG, "EngineEvent 超时上车了")

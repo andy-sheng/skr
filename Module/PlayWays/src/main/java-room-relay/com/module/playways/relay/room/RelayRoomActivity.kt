@@ -32,6 +32,7 @@ import com.component.report.fragment.QuickFeedbackFragment
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.IHomeService
+import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
@@ -252,6 +253,8 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         initVipEnterView()
         initMicSeatView()
         initRelayEnergyView()
+
+        BaseRoomData.syncServerTs()
 
         if (mRoomData.hasTimeLimit()) {
             mAddSongIv.visibility = View.VISIBLE

@@ -115,6 +115,10 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
         return Long.MAX_VALUE
     }
 
+    fun getShiftTsForRelay(): Long {
+        return shiftTsForRelay.toLong()
+    }
+
     fun hasOverThisRound(): Boolean {
         var d = (realRoundInfo?.singEndMs ?: 0) - (realRoundInfo?.singBeginMs ?: 0)
         if (d > 0) {

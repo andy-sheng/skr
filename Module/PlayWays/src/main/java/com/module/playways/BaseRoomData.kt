@@ -4,7 +4,7 @@ import com.common.core.userinfo.model.ClubInfo
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.subscribe
+import com.common.rxretrofit.subscribeSync
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent
 import com.module.playways.race.match.pbLocalModel.LocalRGameConfigMsg
 import com.module.playways.relay.room.RelayRoomServerApi
@@ -194,18 +194,15 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
         var shiftTsForRelay = 0 // 本地时间 - 服务器时间
         fun syncServerTs() {
-            if (shiftTsForRelay != 0) {
-                MyLog.d("BaseRoomData", "shiftTsForRelay=$shiftTsForRelay")
-                return
-            }
-            var serverApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
+            val serverApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
             GlobalScope.launch {
-                var t1 = System.currentTimeMillis()
-                val result = subscribe { serverApi.timestamp(0) }
+                val t1 = System.currentTimeMillis()
+                val result = subscribeSync { serverApi.timestamp(0) }
+                val t2 = System.currentTimeMillis()
                 if (result.errno == 0) {
-                    var t2 = System.currentTimeMillis()
-                    var serverTs = result.data.getIntValue("timestamp")
-                    shiftTsForRelay = (t1 + (t2 - t1) / 2 - serverTs).toInt()
+                    val serverTs = result.data.getIntValue("timestamp")
+                    shiftTsForRelay = ((t2 + t1) / 2 - serverTs).toInt()
+                    MyLog.i("BaseRoomData", "shiftTsForRelay=$shiftTsForRelay request time: " + (t2 - t1))
                 }
             }
         }
