@@ -34,6 +34,7 @@ import com.component.busilib.view.recyclercardview.CardScaleHelper
 import com.component.busilib.view.recyclercardview.SpeedRecyclerView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
+import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.relay.match.adapter.RelayHomeSongCardAdapter
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
@@ -224,6 +225,8 @@ class RelayHomeActivity : BaseActivity() {
 
         getPlayBookList(0, firstRequestPage * cnt, true)
 //        getRedPacketStatus()
+
+        BaseRoomData.syncServerTs()
     }
 
 //    private fun showRedPacketDialog() {

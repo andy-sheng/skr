@@ -92,6 +92,8 @@ class PhotoAdapter(internal var mType: Int) : RecyclerView.Adapter<RecyclerView.
             else -> {
                 val view: View = if (mType == TYPE_PERSON_CARD) {
                     LayoutInflater.from(parent.context).inflate(R.layout.photo_card_item_view_layout, parent, false)
+                } else if (mType == TYPE_PERSON_CENTER_VIEW) {
+                    LayoutInflater.from(parent.context).inflate(R.layout.photo_center_view_item_layout, parent, false)
                 } else {
                     LayoutInflater.from(parent.context).inflate(R.layout.photo_item_view_layout, parent, false)
                 }
@@ -129,7 +131,7 @@ class PhotoAdapter(internal var mType: Int) : RecyclerView.Adapter<RecyclerView.
     }
 
     override fun getItemCount(): Int {
-        if (mType == TYPE_PERSON_CARD) {
+        if (mType == TYPE_PERSON_CARD || mType == TYPE_PERSON_CENTER_VIEW) {
             return if (mDataList?.size ?: 0 > 3) {
                 3
             } else {
@@ -225,5 +227,6 @@ class PhotoAdapter(internal var mType: Int) : RecyclerView.Adapter<RecyclerView.
         val TYPE_PERSON_CARD = 1 // dialogcarnd
         val TYPE_PERSON_CENTER = 2 // 个人中心
         val TYPE_OTHER_PERSON_CENTER = 3//他人个人中心
+        val TYPE_PERSON_CENTER_VIEW = 4   // 个人中心和他人中心共用的view
     }
 }

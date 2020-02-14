@@ -11,11 +11,15 @@ import com.module.home.event.AuthSuccessEvent
 import com.module.home.feedback.FeedbackFragment
 import com.module.home.fragment.HalfRechargeFragment
 import com.module.home.fragment.PersonFragment5
+import com.module.home.fragment.PersonFragment6
 import com.module.home.game.view.openRaceActivity
 import com.module.home.updateinfo.UploadAccountInfoActivity
 import com.module.home.updateinfo.activity.EditAgeTagActivity
+import com.module.mall.event.PackageInviteCardFinishEvent
 import com.module.mall.event.SelectMallStickyEvent
 import com.module.mall.event.SelectReceiveUserFinishEvent
+import com.module.mall.model.PackageModel
+import com.module.mall.model.ProductModel
 
 import org.greenrobot.eventbus.EventBus
 
@@ -30,7 +34,7 @@ class HomeServiceImpl : IHomeService {
      */
     override fun getData(type: Int, `object`: Any?): Any? {
         if (0 == type) {
-            return PersonFragment5::class.java
+            return PersonFragment6::class.java
         } else if (1 == type) {
             return HomeActivity::class.java.simpleName
         } else if (2 == type) {
@@ -72,6 +76,10 @@ class HomeServiceImpl : IHomeService {
 
     override fun selectGiveMallUserFinish(userID: Int) {
         EventBus.getDefault().post(SelectReceiveUserFinishEvent(userID))
+    }
+
+    override fun inviteToRelationCardFinish(userID: Int) {
+        EventBus.getDefault().post(PackageInviteCardFinishEvent(userID))
     }
 
     override fun getSelectedMallName(): String {

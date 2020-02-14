@@ -7,6 +7,7 @@ import com.common.core.account.UserAccountManager
 import com.common.log.MyLog
 import com.common.utils.U
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.adapter.rxjava2.HttpException
 import retrofit2.await
 import java.net.SocketTimeoutException
@@ -18,6 +19,14 @@ const val ERROR_NETWORK_BROKEN = -2
 const val ERROR_JOB_CANCELED = -3
 
 suspend fun subscribe(rc: RequestControl? = null, api: () -> Call<ApiResult>): ApiResult {
+    return subscribe(rc, api, false)
+}
+
+suspend fun subscribeSync(rc: RequestControl? = null, api: () -> Call<ApiResult>): ApiResult {
+    return subscribe(rc, api, true)
+}
+
+suspend fun subscribe(rc: RequestControl? = null, api: () -> Call<ApiResult>, syncMode: Boolean): ApiResult {
     if (!U.getNetworkUtils().hasNetwork()) {
         return ApiResult().apply {
             errno = ERROR_NETWORK_BROKEN
@@ -43,12 +52,12 @@ suspend fun subscribe(rc: RequestControl? = null, api: () -> Call<ApiResult>): A
             }
         }
     }
-    return subscribe(rc?.key, api)
+    return subscribe(rc?.key, api, syncMode)
 }
 
-private suspend fun subscribe(apiKey: String? = null, api: () -> Call<ApiResult>): ApiResult {
+private suspend fun subscribe(apiKey: String? = null, api: () -> Call<ApiResult>, syncMode: Boolean): ApiResult {
     try {
-        val result = callReal(apiKey, api)
+        val result = callReal(apiKey, api, syncMode)
         if (result?.errno != 0) {
             if (MyLog.isDebugLogOpen()) {
                 U.getToastUtil().showShort("errno:${result?.errno} errmsg:${result?.errmsg}", -100, -1)
@@ -102,15 +111,19 @@ private suspend fun subscribe(apiKey: String? = null, api: () -> Call<ApiResult>
     }
 }
 
-private suspend fun callReal(apiKey: String?, api: () -> Call<ApiResult>): ApiResult {
+@Suppress("BlockingMethodInNonBlockingContext")
+private suspend fun callReal(apiKey: String?, api: () -> Call<ApiResult>, syncMode: Boolean): ApiResult {
     MyLog.d("ApiObserverKt", "$apiKey 开始请求")
     try {
         val call = api.invoke()
         apiKey?.let {
             requestMap.put(apiKey, call)
         }
-        // await 是关键
-        return call.await()
+        // await 会等待任务在其他线程完成, execute在当前线程同步执行
+        return if (syncMode)
+            call.execute().body()!!
+        else
+            call.await()
     } finally {
         MyLog.d("ApiObserverKt", "$apiKey 请求结束")
         apiKey?.let {

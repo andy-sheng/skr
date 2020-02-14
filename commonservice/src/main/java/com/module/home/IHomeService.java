@@ -22,5 +22,7 @@ public interface IHomeService extends IProvider {
 
     void selectGiveMallUserFinish(int userID);
 
+    void inviteToRelationCardFinish(int userID);
+
     String getSelectedMallName();
 }

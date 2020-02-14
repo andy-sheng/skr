@@ -251,7 +251,6 @@ class RelayMatchActivity : BaseActivity() {
         startMatch()
         startTimerRoom(0)
         checkResTime()
-        BaseRoomData.syncServerTs()
 
         val mLoadSir = LoadSir.Builder()
                 .addCallback(RelayEmptyRoomCallback())

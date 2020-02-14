@@ -18,6 +18,7 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.home.R
 import com.module.mall.MallServerApi
+import com.module.mall.activity.MallActivity
 import com.module.mall.adapter.ProductAdapter
 import com.module.mall.event.BuyMallSuccessEvent
 import com.module.mall.event.ShowEffectEvent
@@ -128,12 +129,16 @@ class ProductView : ExConstraintLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BuyMallSuccessEvent) {
-        if (event.productModel.displayType == displayType && event.productModel.displayType != 6) {
-            for (i in 0 until ((productAdapter?.dataList?.size) ?: 0)) {
-                if (productAdapter?.dataList?.get(i)?.goodsID == event.productModel.goodsID) {
-                    productAdapter?.dataList?.get(i)?.isBuy = true
-                    productAdapter?.notifyItemChanged(i, 1)
-                    break
+        if (event.productModel.displayType == displayType) {
+            //有的不改变状态，可以无限购买
+            if (event.productModel.displayType != MallActivity.Companion.MALL_TYPE.COIN.value
+                    && event.productModel.displayType != MallActivity.Companion.MALL_TYPE.CARD.value) {
+                for (i in 0 until ((productAdapter?.dataList?.size) ?: 0)) {
+                    if (productAdapter?.dataList?.get(i)?.goodsID == event.productModel.goodsID) {
+                        productAdapter?.dataList?.get(i)?.isBuy = true
+                        productAdapter?.notifyItemChanged(i, 1)
+                        break
+                    }
                 }
             }
         }

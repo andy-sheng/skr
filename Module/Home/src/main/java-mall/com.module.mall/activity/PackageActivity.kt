@@ -157,6 +157,7 @@ class PackageActivity : BaseActivity() {
             4 -> effectView.showBgEffect(event.productModel)
             5 -> effectView.showLightEffect(event.productModel)
             6 -> effectView.showCoinEffect(event.productModel)
+            7 -> effectView.showCoinEffect(event.productModel) //跟金币一样
         }
     }
 
@@ -166,6 +167,7 @@ class PackageActivity : BaseActivity() {
             4 -> effectView.showDefaultBgEffect()
             5 -> effectView.showDefaultLightEffect()
             6 -> effectView.showDefaultCoinEffect()
+            7 -> effectView.showDefaultCardEffect()
         }
     }
 

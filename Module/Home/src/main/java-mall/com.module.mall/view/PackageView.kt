@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
@@ -15,10 +16,13 @@ import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import com.module.RouterConstants
 import com.module.home.R
 import com.module.mall.MallServerApi
+import com.module.mall.activity.MallActivity
 import com.module.mall.adapter.PackageAdapter
 import com.module.mall.event.MallUseCoinEvent
+import com.module.mall.event.PackageInviteCardFinishEvent
 import com.module.mall.event.PackageShowEffectEvent
 import com.module.mall.event.ShowDefaultEffectEvent
 import com.module.mall.loadsir.MallEmptyCallBack
@@ -32,6 +36,8 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 class PackageView : ExConstraintLayout {
@@ -57,6 +63,8 @@ class PackageView : ExConstraintLayout {
     var selectedPackageItemId = ""
 
     var hasPostProductModel: ProductModel? = null
+    //点击去变成某种关系
+    var toRelationCardModel: PackageModel? = null
 
     constructor(context: Context?) : super(context!!)
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs)
@@ -79,7 +87,15 @@ class PackageView : ExConstraintLayout {
         recyclerView.adapter = productAdapter
         productAdapter?.notifyDataSetChanged()
         productAdapter?.useEffectMethod = {
-            useEffect(it)
+            if (it.goodsInfo?.displayType == MallActivity.Companion.MALL_TYPE.CARD.value) {
+                toRelationCardModel = it
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_RELATION)
+                        .withInt("from", 2)
+                        .navigation()
+            } else {
+                useEffect(it)
+            }
         }
 
         productAdapter?.cancelUseEffectMethod = {
@@ -121,6 +137,52 @@ class PackageView : ExConstraintLayout {
                 .build()
 
         mLoadService = mLoadSir.register(refreshLayout) { tryLoad() }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PackageInviteCardFinishEvent) {
+        if (toRelationCardModel?.goodsInfo?.displayType == displayType) {
+            inviteToRelation(event.userID, toRelationCardModel!!)
+        }
+    }
+
+    //亲故发生某种关系
+    fun inviteToRelation(userID: Int, packageModel: PackageModel) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["packetItemID"] = packageModel.packetItemID
+            map["toUserID"] = userID
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val obj = subscribe {
+                rankedServerApi.useGoods(body)
+            }
+
+            if (obj.errno == 0) {
+                offset--
+                productAdapter?.dataList?.remove(packageModel)
+                productAdapter?.notifyDataSetChanged()
+
+                if (productAdapter?.dataList?.size == 0) {
+                    mLoadService.showCallback(MallEmptyCallBack::class.java)
+                }
+
+                EventBus.getDefault().post(MallUseCoinEvent())
+                U.getToastUtil().showShort("邀请成功")
+            } else {
+                U.getToastUtil().showShort(obj.errmsg)
+            }
+        }
     }
 
     fun useEffect(packageModel: PackageModel) {
