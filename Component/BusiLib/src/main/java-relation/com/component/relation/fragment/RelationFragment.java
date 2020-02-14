@@ -40,7 +40,7 @@ import java.util.HashMap;
 public class RelationFragment extends BaseFragment {
 
     LinearLayout mContainer;
-    ExImageView mIvBack;
+    ExTextView mIvBack;
     ExImageView mAddFriendIv;
     SlidingTabLayout mRelationTab;
     NestViewPager mRelationVp;
@@ -57,6 +57,7 @@ public class RelationFragment extends BaseFragment {
     PopupWindow mPopupWindow;  // 弹窗
     RelativeLayout mSearchArea;
     RelativeLayout mInviteArea;
+    LinearLayout mTabLl;
 
     PagerAdapter mTabPagerAdapter;
 
@@ -77,7 +78,7 @@ public class RelationFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mIvBack = (ExImageView) getRootView().findViewById(R.id.iv_back);
+        mIvBack = (ExTextView) getRootView().findViewById(R.id.iv_back);
         mAddFriendIv = (ExImageView) getRootView().findViewById(R.id.add_friend_iv);
         mContainer = (LinearLayout) getRootView().findViewById(R.id.container);
         mRelationTab = (SlidingTabLayout) getRootView().findViewById(R.id.relation_tab);
@@ -91,6 +92,7 @@ public class RelationFragment extends BaseFragment {
         mFansRedDot = (ExImageView) getRootView().findViewById(R.id.fans_red_dot);
         mFollowArea = (RelativeLayout) getRootView().findViewById(R.id.follow_area);
         mFollow = (ExTextView) getRootView().findViewById(R.id.follow);
+        mTabLl = (LinearLayout) getRootView().findViewById(R.id.tab_ll);
 
         LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.add_friend_pop_window_layout, null);
         mSearchArea = (RelativeLayout) linearLayout.findViewById(R.id.search_area);
@@ -144,9 +146,17 @@ public class RelationFragment extends BaseFragment {
             }
         });
 
-        mTitleAndViewMap.put(0, new RelationView(getContext(), UserInfoManager.RELATION.FRIENDS.getValue(), mFrom));
-        mTitleAndViewMap.put(1, new RelationView(getContext(), UserInfoManager.RELATION.FOLLOW.getValue(), mFrom));
-        mTitleAndViewMap.put(2, new RelationView(getContext(), UserInfoManager.RELATION.FANS.getValue(), mFrom));
+        if (mFrom == 2) {
+            //是邀请别人变成某种关系
+            mTabLl.setVisibility(View.GONE);
+            mRelationTab.setVisibility(View.INVISIBLE);
+            mIvBack.setText("好友");
+            mTitleAndViewMap.put(0, new RelationView(getContext(), UserInfoManager.RELATION.FRIENDS.getValue(), mFrom));
+        } else {
+            mTitleAndViewMap.put(0, new RelationView(getContext(), UserInfoManager.RELATION.FRIENDS.getValue(), mFrom));
+            mTitleAndViewMap.put(1, new RelationView(getContext(), UserInfoManager.RELATION.FOLLOW.getValue(), mFrom));
+            mTitleAndViewMap.put(2, new RelationView(getContext(), UserInfoManager.RELATION.FANS.getValue(), mFrom));
+        }
 
         mRelationTab.setCustomTabView(R.layout.relation_tab_view, R.id.tab_tv);
         mRelationTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));

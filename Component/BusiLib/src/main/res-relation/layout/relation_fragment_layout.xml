@@ -5,16 +5,19 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
-    <com.common.view.ex.ExImageView
+    <com.common.view.ex.ExTextView
         android:id="@+id/iv_back"
-        android:layout_width="@dimen/view_22_dp"
-        android:layout_height="@dimen/view_22_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_40_dp"
-        android:background="@drawable/img_back"
-        android:padding="@dimen/view_16_dp" />
+        android:drawableLeft="@drawable/img_back"
+        android:drawablePadding="@dimen/view_10_dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/view_18_dp" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/add_friend_iv"
@@ -24,7 +27,7 @@
         android:layout_marginTop="@dimen/view_40_dp"
         android:layout_marginRight="@dimen/view_20_dp"
         android:background="@drawable/tianjia_friend_icon"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/container"
@@ -55,6 +58,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/tab_ll"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_52_dp"
         android:layout_marginLeft="@dimen/view_50_dp"

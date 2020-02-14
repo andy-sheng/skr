@@ -64,7 +64,15 @@ class MallActivity : BaseActivity() {
     val mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi::class.java)
 
     companion object {
-        val supportDisplayTypeSet = hashSetOf(4, 5, 6)
+        val supportDisplayTypeSet = hashSetOf(MALL_TYPE.BG_TYPE.value, MALL_TYPE.LIGHT.value, MALL_TYPE.COIN.value, MALL_TYPE.CARD.value)
+
+        enum class MALL_TYPE(val type: Int) {
+            BG_TYPE(4), LIGHT(5), COIN(6), CARD(7);
+
+            val value: Int
+                get() = type
+        }
+
     }
 
     override fun initView(savedInstanceState: Bundle?): Int {
@@ -217,9 +225,10 @@ class MallActivity : BaseActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowEffectEvent) {
         when (event.productModel.displayType) {
-            4 -> effectView.showBgEffect(event.productModel)
-            5 -> effectView.showLightEffect(event.productModel)
-            6 -> effectView.showCoinEffect(event.productModel)
+            MALL_TYPE.BG_TYPE.value -> effectView.showBgEffect(event.productModel)
+            MALL_TYPE.LIGHT.value -> effectView.showLightEffect(event.productModel)
+            MALL_TYPE.COIN.value -> effectView.showCoinEffect(event.productModel)
+            MALL_TYPE.CARD.value -> effectView.showCoinEffect(event.productModel)
         }
     }
 

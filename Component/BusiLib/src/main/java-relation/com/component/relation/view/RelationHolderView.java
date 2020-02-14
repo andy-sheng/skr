@@ -82,6 +82,25 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                     }
                 }
             });
+        } else if (mFrom == 2) {
+            mSendTv.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    if (recyclerOnItemClickListener != null) {
+                        recyclerOnItemClickListener.onItemClicked(mSendTv, position, userInfoModel);
+                    }
+                }
+            });
+            mSendTv.setVisibility(View.VISIBLE);
+            mSendTv.setText("邀请");
+            mContent.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    if (recyclerOnItemClickListener != null) {
+                        recyclerOnItemClickListener.onItemClicked(mSendTv, position, userInfoModel);
+                    }
+                }
+            });
         }
     }
 

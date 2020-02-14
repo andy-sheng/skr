@@ -134,7 +134,11 @@ public class RelationView extends RelativeLayout {
                     }
 
                 } else if (view.getId() == R.id.send_tv) {
-                    showGiveDialog(userInfoModel);
+                    if (mFrom == 1) {
+                        showGiveDialog(userInfoModel);
+                    } else if (mFrom == 2) {
+                        showInviteCardDialog(userInfoModel);
+                    }
                 }
             }
         });
@@ -170,6 +174,10 @@ public class RelationView extends RelativeLayout {
                 loadData(0);
             }
         });
+
+        if (mFrom == 2) {
+            mSearchArea.setVisibility(View.GONE);
+        }
     }
 
     private void showGiveDialog(UserInfoModel userInfoModel) {
@@ -198,6 +206,41 @@ public class RelationView extends RelativeLayout {
                     }
                 })
                 .setConfirmTip("赠送")
+                .build();
+        tipsDialogView.showByDialog();
+    }
+
+    /**
+     * 邀请好友发生关系
+     *
+     * @param userInfoModel
+     */
+    private void showInviteCardDialog(UserInfoModel userInfoModel) {
+        if (tipsDialogView != null) {
+            tipsDialogView.dismiss(false);
+        }
+
+        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+
+        tipsDialogView = new TipsDialogView.Builder((Activity) getContext())
+                .setMessageTip("是否邀请 " + userInfoModel.getNickname() + channelService.getSelectedMallName() + "?")
+                .setCancelBtnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (tipsDialogView != null) {
+                            tipsDialogView.dismiss(false);
+                        }
+                    }
+                })
+                .setCancelTip("取消")
+                .setConfirmBtnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((Activity) getContext()).finish();
+                        channelService.inviteToRelationCardFinish(userInfoModel.getUserId());
+                    }
+                })
+                .setConfirmTip("邀请")
                 .build();
         tipsDialogView.showByDialog();
     }
