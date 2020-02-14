@@ -159,6 +159,10 @@ class PartyTopContentView : ExConstraintLayout {
         }
     }
 
+    fun switchRoom() {
+        bindData()
+    }
+
     fun bindData() {
         val hostUser = H.partyRoomData?.getPlayerInfoById(H.partyRoomData?.hostId ?: 0)
         if (hostUser != null) {

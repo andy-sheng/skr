@@ -3,7 +3,7 @@ if [[ $1 == "" ]]; then
     adb shell am broadcast -a com.zq.live.FLUSH_LOG
     sleep 2
 	rm -rf logs/
-	adb pull /sdcard/ZQ_LIVE/logs ./
+	adb pull /sdcard/Android/data/com.zq.live/files/logs ./
 
 	for file in ./logs/*
 	do

@@ -83,10 +83,6 @@ import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.zq.live.proto.PartyRoom.EPGameType
-import com.zq.live.proto.PartyRoom.PBeginPunish
-import com.zq.live.proto.PartyRoom.PBeginVote
-import com.zq.live.proto.PartyRoom.PKickoutUserMsg
 import com.zq.live.proto.PartyRoom.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -1134,6 +1130,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 //            hideAllCardView()
             mVipEnterPresenter?.switchRoom()
             mVIPEnterView?.switchRoom()
+            mTopContentView.switchRoom()
             // 重新决定显示mic按钮
             mBottomContainerView?.setRoomData(mRoomData!!)
 //            mGrabTopContentView.onChangeRoom()
