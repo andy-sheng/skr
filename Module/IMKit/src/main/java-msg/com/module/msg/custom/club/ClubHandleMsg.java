@@ -1,9 +1,6 @@
 package com.module.msg.custom.club;
 
 import android.os.Parcel;
-import android.text.TextUtils;
-
-import com.common.log.MyLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,19 +14,26 @@ import io.rong.imlib.model.MentionedInfo;
 import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
 
-@MessageTag(value = "SKR:ClubInviteMsg", flag = (MessageTag.ISCOUNTED|MessageTag.ISPERSISTED))
-public class ClubInviteMsg extends MessageContent {
-    private static final String TAG = "ClubInviteMsg";
-    private String content = "";
-    private String uniqID = "";
+/**
+ * 是的，建议您在将您的自定义消息，设置成不入库的，也就是MessageTag 的注解设置为  MessageTag.STATUS ，
+ * 否者的话，在进入会话界面也会获取历史消息，就会加载出来的
+ * 不入库，只是不计入本地数据库中，在服务端还是可以查询到此消息的
+ * 消息是不会丢失的
+ */
+@MessageTag(value = "SKR:ClubHandleMsg", flag = (MessageTag.ISCOUNTED|MessageTag.ISPERSISTED))
+public class ClubHandleMsg extends MessageContent {
+    private static final String TAG = "ClubHandleMsg";
+    private String content;
+    private String msgUid;
+    private int handle;
 
-    public static final Creator<ClubInviteMsg> CREATOR = new Creator<ClubInviteMsg>() {
-        public ClubInviteMsg createFromParcel(Parcel source) {
-            return new ClubInviteMsg(source);
+    public static final Creator<ClubHandleMsg> CREATOR = new Creator<ClubHandleMsg>() {
+        public ClubHandleMsg createFromParcel(Parcel source) {
+            return new ClubHandleMsg(source);
         }
 
-        public ClubInviteMsg[] newArray(int size) {
-            return new ClubInviteMsg[size];
+        public ClubHandleMsg[] newArray(int size) {
+            return new ClubHandleMsg[size];
         }
     };
 
@@ -37,7 +41,8 @@ public class ClubInviteMsg extends MessageContent {
         JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.putOpt("content", content);
-            jsonObj.putOpt("uniqID", uniqID);
+            jsonObj.putOpt("handle", handle);
+            jsonObj.putOpt("msgUid", msgUid);
             if (this.getJSONUserInfo() != null) {
                 jsonObj.putOpt("user", this.getJSONUserInfo());
             }
@@ -57,16 +62,16 @@ public class ClubInviteMsg extends MessageContent {
         }
     }
 
-    protected ClubInviteMsg() {
+    protected ClubHandleMsg() {
     }
 
-    public static ClubInviteMsg obtain() {
-        ClubInviteMsg model = new ClubInviteMsg();
+    public static ClubHandleMsg obtain() {
+        ClubHandleMsg model = new ClubHandleMsg();
         return model;
     }
 
     // 不能没有!!!! 不然会发包失败!!!
-    public ClubInviteMsg(byte[] data) {
+    public ClubHandleMsg(byte[] data) {
         String jsonStr = null;
 
         try {
@@ -81,12 +86,17 @@ public class ClubInviteMsg extends MessageContent {
 
         try {
             JSONObject jsonObj = new JSONObject(jsonStr);
+
             if (jsonObj.has("content")) {
                 this.setContent(jsonObj.optString("content"));
             }
 
-            if (jsonObj.has("uniqID")) {
-                this.setUniqID(jsonObj.optString("uniqID"));
+            if (jsonObj.has("handle")) {
+                this.setHandle(jsonObj.optInt("handle"));
+            }
+
+            if (jsonObj.has("msgUid")) {
+                this.setMsgUid(jsonObj.optString("msgUid"));
             }
 
             if (jsonObj.has("user")) {
@@ -110,14 +120,6 @@ public class ClubInviteMsg extends MessageContent {
 
     }
 
-    public String getUniqID() {
-        return uniqID;
-    }
-
-    public void setUniqID(String uniqID) {
-        this.uniqID = uniqID;
-    }
-
     public String getContent() {
         return content;
     }
@@ -126,22 +128,40 @@ public class ClubInviteMsg extends MessageContent {
         this.content = content;
     }
 
+    public int getHandle() {
+        return handle;
+    }
+
+    public void setHandle(int handle) {
+        this.handle = handle;
+    }
+
+    public String getMsgUid() {
+        return msgUid;
+    }
+
+    public void setMsgUid(String content) {
+        this.msgUid = content;
+    }
+
     public int describeContents() {
         return 0;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         ParcelUtils.writeToParcel(dest, this.content);
-        ParcelUtils.writeToParcel(dest, this.uniqID);
+        ParcelUtils.writeToParcel(dest, this.handle);
+        ParcelUtils.writeToParcel(dest, this.msgUid);
         ParcelUtils.writeToParcel(dest, this.getUserInfo());
         ParcelUtils.writeToParcel(dest, this.getMentionedInfo());
         ParcelUtils.writeToParcel(dest, this.isDestruct() ? 1 : 0);
         ParcelUtils.writeToParcel(dest, this.getDestructTime());
     }
 
-    public ClubInviteMsg(Parcel in) {
+    public ClubHandleMsg(Parcel in) {
         this.setContent(ParcelUtils.readFromParcel(in));
-        this.setUniqID(ParcelUtils.readFromParcel(in));
+        this.setHandle(ParcelUtils.readIntFromParcel(in));
+        this.setMsgUid(ParcelUtils.readFromParcel(in));
         this.setUserInfo((UserInfo)ParcelUtils.readFromParcel(in, UserInfo.class));
         this.setMentionedInfo((MentionedInfo)ParcelUtils.readFromParcel(in, MentionedInfo.class));
         this.setDestruct(ParcelUtils.readIntFromParcel(in) == 1);

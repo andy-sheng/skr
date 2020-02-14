@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="@color/black_trans_5"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    android:padding="@dimen/view_10_dp">
+
+    <TextView
+        android:id="@+id/content_tv"
+        android:layout_width="@dimen/view_260_dp"
+        android:layout_height="wrap_content"
+        android:text="邀请"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/view_16_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/reject_tv"
+        android:layout_width="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_19_dp"
+        android:gravity="center"
+        android:text="拒绝"
+        android:textColor="#EFA74068"
+        android:textSize="@dimen/view_14_dp"
+        app:bl_corners_radius="@dimen/view_21_dp"
+        app:bl_gradient_endColor="#FF8AB6"
+        app:bl_gradient_startColor="#FFBDD6"
+        app:bl_shape="rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/agree_tv"
+        android:layout_width="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginTop="@dimen/view_19_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center"
+        android:text="加入家族"
+        android:textColor="#94612F"
+        android:textSize="@dimen/view_14_dp"
+        app:bl_corners_radius="@dimen/view_21_dp"
+        app:bl_gradient_endColor="#E9A83B"
+        app:bl_gradient_startColor="#FFD99B"
+        app:bl_shape="rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_19_dp"
+        android:gravity="center"
+        android:text="已同意加入"
+        android:textColor="#919191"
+        android:textSize="@dimen/view_19_dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content_tv" />
+
+
+</com.common.view.ex.ExConstraintLayout>

@@ -27,8 +27,11 @@ import com.component.notification.PartyPeerAccStatusEvent;
 import com.module.common.ICallback;
 import com.module.msg.activity.ConversationActivity;
 import com.module.msg.custom.MyPrivateConversationProvider;
+import com.module.msg.custom.club.ClubHandleMessageItemProvider;
+import com.module.msg.custom.club.ClubHandleMsg;
 import com.module.msg.custom.club.ClubInviteMsg;
 import com.module.msg.custom.club.ClubInviteMessageItemProvider;
+import com.module.msg.custom.club.ClubMsgProcessor;
 import com.module.msg.listener.MyConversationClickListener;
 import com.module.msg.model.BroadcastRoomMsg;
 import com.module.msg.model.CustomChatCombineRoomLowLevelMsg;
@@ -308,7 +311,12 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     event.setAccLoadingOk(jsonObject.getBooleanValue("accLoadingOk"));
                     EventBus.getDefault().post(event);
                 }
+            }else if(message.getContent() instanceof ClubHandleMsg){
+                ClubHandleMsg clubAgreeMsg = (ClubHandleMsg) message.getContent();
+                ClubMsgProcessor.process(clubAgreeMsg);
+                return true;
             }
+
             // TODO: 2019/5/19  收到消息是否处理完成，true 表示自己处理铃声和后台通知，false 走融云默认处理方式。
             if (U.getActivityUtils().isAppForeground()) {
                 return true;
@@ -512,7 +520,18 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             // 注册家族邀请消息
             RongIM.registerMessageType(ClubInviteMsg.class);
             RongIM.registerMessageTemplate(new ClubInviteMessageItemProvider());
-
+            RongIM.registerMessageType(ClubHandleMsg.class);
+            RongIM.registerMessageTemplate(new ClubHandleMessageItemProvider());
+            RongIM.getInstance().setMessageInterceptor(new RongIM.MessageInterceptor() {
+                @Override
+                public boolean intercept(Message message) {
+//                    if(message.getContent() instanceof  ClubAgreeMsg){
+//                        // 拦截同意家族邀请消息，在界面上不显示
+//                        return  true;
+//                    }
+                    return false;
+                }
+            });
             // 注册test消息
             RongIM.registerMessageType(CustomTestMsg.class);
             RongIM.registerMessageTemplate(new MyTestMessageItemProvider());

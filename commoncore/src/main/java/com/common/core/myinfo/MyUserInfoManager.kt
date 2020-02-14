@@ -67,6 +67,10 @@ object MyUserInfoManager {
     val uid: Long
         get() = myUserInfo?.userId ?: UserAccountManager.uuidAsLong
 
+    fun getUidStr():String{
+        return uid.toString()
+    }
+
     val nickName: String
         get() = myUserInfo?.userNickname ?: ""
 
