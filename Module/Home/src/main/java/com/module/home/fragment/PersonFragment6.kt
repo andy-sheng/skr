@@ -491,6 +491,7 @@ class PersonFragment6 : BaseFragment() {
 
         worksArea.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_WORKS)
+                    .withSerializable("userInfoModel", MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo))
                     .navigation()
         }
 

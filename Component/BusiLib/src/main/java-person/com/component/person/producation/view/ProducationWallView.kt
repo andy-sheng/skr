@@ -1,5 +1,6 @@
 package com.component.person.producation.view
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -17,6 +18,7 @@ import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.*
 import com.common.utils.SpanUtils
 import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExRelativeLayout
 import com.component.busilib.R
 import com.component.dialog.ShareWorksDialog
 import com.component.person.event.ChildViewPlayAudioEvent
@@ -34,7 +36,7 @@ import java.util.*
 /**
  * 作品墙view
  */
-class ProducationWallView(internal var mFragment: BaseFragment, var userInfoModel: UserInfoModel, internal var mCallBack: RequestCallBack?) : RelativeLayout(mFragment.context) {
+class ProducationWallView(internal var context: Context, var userInfoModel: UserInfoModel, internal var mCallBack: RequestCallBack?) : ExRelativeLayout(context) {
 
     val TAG = "ProducationWallView"
     val playerTag = TAG + hashCode()
@@ -158,7 +160,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
 
     private fun showShareDialog(model: ProducationModel) {
         mShareWorksDialog?.dismiss(false)
-        mShareWorksDialog = ShareWorksDialog(mFragment, model.name, false)
+        mShareWorksDialog = ShareWorksDialog(context, model.name, false)
         mShareWorksDialog?.setData(model.userID, model.nickName, model.cover, model.name, model.worksURL, model.worksID)
         mShareWorksDialog?.show()
     }
@@ -205,7 +207,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
                 super.onNetworkError(errorType)
                 loadProducationsFailed()
             }
-        }, mFragment)
+        }, this)
     }
 
 
@@ -220,7 +222,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
                     mAdapter.notifyDataSetChanged()
                 }
             }
-        }, mFragment)
+        }, this)
     }
 
     fun playProducation(model: ProducationModel, position: Int) {
@@ -236,7 +238,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
                     mAdapter.notifyDataSetChanged()
                 }
             }
-        }, mFragment, RequestControl("playWorks", ControlType.CancelThis))
+        }, this, RequestControl("playWorks", ControlType.CancelThis))
     }
 
     private fun addProducation(list: List<ProducationModel>?, newOffset: Int, totalCnt: Int, isClear: Boolean) {

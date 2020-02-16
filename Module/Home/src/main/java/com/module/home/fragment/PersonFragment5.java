@@ -671,7 +671,7 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
                     // 作品
                     UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo());
                     if (mProducationWallView == null) {
-                        mProducationWallView = new ProducationWallView(PersonFragment5.this, userInfoModel, PersonFragment5.this);
+                        mProducationWallView = new ProducationWallView(getContext(), userInfoModel, PersonFragment5.this);
                     }
                     if (container.indexOfChild(mProducationWallView) == -1) {
                         if (mProducationWallView.getParent() != null) {
