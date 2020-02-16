@@ -6,9 +6,11 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.common.core.userinfo.UserInfoServerApi
+import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
@@ -34,6 +36,7 @@ class PersonRelationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
 
     private val relationTitleTv: TextView
     private val recyclerView: RecyclerView
+    private val arrowIv: ImageView
     private val adapter: PersonRelationAdapter
 
     private val userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
@@ -44,10 +47,15 @@ class PersonRelationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
 
         relationTitleTv = this.findViewById(R.id.relation_title_tv)
         recyclerView = this.findViewById(R.id.recycler_view)
+        arrowIv = this.findViewById(R.id.arrow_iv)
+
+        arrowIv.setDebounceViewClickListener {
+            // todo 跳到fluttler页面
+        }
 
         adapter = PersonRelationAdapter(object : PersonRelationAdapter.Listener {
             override fun onClickItem(position: Int, model: RelationModel?) {
-
+                // todo 进个人主页面么？
             }
         })
         recyclerView.layoutManager = GridLayoutManager(context, 5)
