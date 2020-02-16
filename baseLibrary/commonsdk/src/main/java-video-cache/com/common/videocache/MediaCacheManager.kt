@@ -11,7 +11,7 @@ import java.io.File
 
 object MediaCacheManager {
     private val TAG = "MediaCacheManager"
-    private val saveFile = U.getAppInfoUtils().getSubDirFile("acc")
+    private val saveFile = U.getAppInfoUtils().getSubDirFile("acc2")
     private val fileNameGenerator = FileNameGenerator { url ->
         MyLog.d(TAG, "url=$url")
         var url2 = getOriginCdnUrl(url)

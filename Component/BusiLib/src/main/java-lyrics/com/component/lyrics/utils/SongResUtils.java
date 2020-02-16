@@ -62,7 +62,7 @@ public class SongResUtils {
     }
 
     public static final String getACCDir() {
-        return getRootFile() + File.separator + "acc";
+        return getRootFile() + File.separator + "acc2";
     }
 
     public static final String getORIDir() {
