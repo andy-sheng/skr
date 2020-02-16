@@ -12,12 +12,18 @@
         android:background="@color/white">
 
         <!--关系 自定义view-->
+        <com.component.person.relation.PersonRelationView
+            android:id="@+id/relation_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_90_dp"
+            android:layout_alignParentTop="true" />
+
         <!--家族-->
         <android.support.constraint.ConstraintLayout
             android:id="@+id/club_area"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_120_dp"
-            android:layout_alignParentTop="true">
+            android:layout_below="@id/relation_view">
 
             <TextView
                 android:id="@+id/club_title_tv"
@@ -68,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/club_area">
 
-            <com.component.person.view.PersonPhotoView
+            <com.component.person.photo.view.PersonPhotoView
                 android:id="@+id/photo_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -248,6 +248,7 @@ public interface UserInfoServerApi {
                                     @Query("offset") int offset,
                                     @Query("cnt") int cnt);
 
+
     /**
      * 查询照片墙
      *
@@ -444,4 +445,7 @@ public interface UserInfoServerApi {
      */
     @GET("http://dev.api.inframe.mobi/v1/mall/get-guard-info")
     Call<ApiResult> checkGuardInfo(@Query("userID") int userID);
+
+    @PUT("/v1/mall/get-simple-relation-list")
+    Call<ApiResult> getRelationInfo(@Body RequestBody body);
 }

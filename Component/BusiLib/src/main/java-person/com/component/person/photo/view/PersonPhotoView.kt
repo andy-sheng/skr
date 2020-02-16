@@ -1,17 +1,14 @@
-package com.component.person.view
+package com.component.person.photo.view
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
-import com.common.callback.Callback
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -58,7 +55,7 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
         recyclerView.adapter = photoAdapter
     }
 
-    fun initData(flag: Boolean) {
+    fun initData(userID: Long, flag: Boolean) {
         // 也设一个时间间隔吧
         val now = System.currentTimeMillis()
         if (!flag) {
@@ -66,7 +63,7 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
                 return
             }
         }
-        getPhotos(0)
+        getPhotos(userID)
     }
 
     private fun getPhotos(userID: Long) {

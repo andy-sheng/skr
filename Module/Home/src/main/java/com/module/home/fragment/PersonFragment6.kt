@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
@@ -23,7 +22,6 @@ import com.common.core.upgrade.UpgradeData
 import com.common.core.upgrade.UpgradeManager
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
-import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
@@ -37,7 +35,6 @@ import com.common.rxretrofit.ApiResult
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.utils.dp
-import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -46,10 +43,10 @@ import com.component.busilib.friends.VoiceInfoModel
 import com.component.level.utils.LevelConfigUtils
 import com.component.person.event.UploadMyVoiceInfo
 import com.component.person.model.RelationNumModel
-import com.component.person.utils.StringFromatUtils
 import com.component.person.view.CommonAudioView
 import com.component.person.view.PersonClubView
-import com.component.person.view.PersonPhotoView
+import com.component.person.photo.view.PersonPhotoView
+import com.component.person.relation.PersonRelationView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.club.IClubModuleService
@@ -94,6 +91,7 @@ class PersonFragment6 : BaseFragment() {
     lateinit var settingRedDot: ExImageView
     lateinit var walletTv: ExTextView
 
+    var relationView: PersonRelationView? = null
     lateinit var clubArea: ConstraintLayout
     lateinit var clubTitleTv: TextView
     lateinit var personClubView: PersonClubView
@@ -169,7 +167,8 @@ class PersonFragment6 : BaseFragment() {
         super.onFragmentVisible()
         // 拿个人主页，和照片
         getHomePage(false)
-        photoView?.initData(false)
+        photoView?.initData(MyUserInfoManager.uid, false)
+        relationView?.initData(MyUserInfoManager.uid, false)
     }
 
     override fun onFragmentInvisible(reason: Int) {
@@ -242,7 +241,8 @@ class PersonFragment6 : BaseFragment() {
             override fun onRefresh(refreshLayout: RefreshLayout) {
                 super.onRefresh(refreshLayout)
                 getHomePage(true)
-                photoView?.initData(true)
+                photoView?.initData(MyUserInfoManager.uid, true)
+                relationView?.initData(MyUserInfoManager.uid, true)
             }
 
             override fun onLoadMore(refreshLayout: RefreshLayout) {
@@ -515,6 +515,9 @@ class PersonFragment6 : BaseFragment() {
     }
 
     private fun initPersonArea() {
+        // 关系
+        relationView = rootView.findViewById(R.id.relation_view)
+
         // 家族
         clubArea = rootView.findViewById(R.id.club_area)
         clubTitleTv = rootView.findViewById(R.id.club_title_tv)
@@ -535,6 +538,10 @@ class PersonFragment6 : BaseFragment() {
         // 神曲
         feedsArea = rootView.findViewById(R.id.feeds_area)
         feedTitleTv = rootView.findViewById(R.id.feed_title_tv)
+
+        relationView?.setDebounceViewClickListener {
+            // todo 补一个flutter的界面
+        }
 
         clubArea.setDebounceViewClickListener {
             MyUserInfoManager.myUserInfo?.clubInfo?.club?.let {
@@ -599,5 +606,6 @@ class PersonFragment6 : BaseFragment() {
         SinglePlayer.release(playTag)
         SinglePlayer.removeCallback(playTag)
         photoView?.destory()
+        relationView?.destory()
     }
 }
