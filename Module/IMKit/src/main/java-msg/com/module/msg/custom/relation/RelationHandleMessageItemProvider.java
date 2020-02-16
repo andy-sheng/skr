@@ -1,4 +1,4 @@
-package com.module.msg.custom.club;
+package com.module.msg.custom.relation;
 
 import android.content.Context;
 import android.text.Spannable;
@@ -20,28 +20,28 @@ import io.rong.imlib.model.Message;
 //
 
 @ProviderTag(
-        messageContent = ClubHandleMsg.class,
+        messageContent = RelationHandleMsg.class,
         showReadState = true
 )
-public class ClubHandleMessageItemProvider extends MessageProvider<ClubHandleMsg> {
-    private static final String TAG = "ClubAgreeMessageItemProvider";
+public class RelationHandleMessageItemProvider extends MessageProvider<RelationHandleMsg> {
+    private static final String TAG = "RelationHandleMessageItemProvider";
 
-    public ClubHandleMessageItemProvider() {
+    public RelationHandleMessageItemProvider() {
     }
 
     public View newView(Context context, ViewGroup group) {
-        View view = LayoutInflater.from(context).inflate(R.layout.rc_item_club_handle_message, (ViewGroup)null);
-        ClubHandleMessageItemProvider.ViewHolder holder = new ClubHandleMessageItemProvider.ViewHolder(view);
+        View view = LayoutInflater.from(context).inflate(R.layout.rc_item_relation_handle_message, (ViewGroup)null);
+        RelationHandleMessageItemProvider.ViewHolder holder = new RelationHandleMessageItemProvider.ViewHolder(view);
         holder.mContentTv = (AutoLinkTextView)view.findViewById(R.id.content_tv);
         view.setTag(holder);
         return view;
     }
 
-    public void onItemClick(View view, int position, ClubHandleMsg content, UIMessage message) {
+    public void onItemClick(View view, int position, RelationHandleMsg content, UIMessage message) {
     }
 
-    public void bindView(final View v, int position, ClubHandleMsg content, final UIMessage data) {
-        ClubHandleMessageItemProvider.ViewHolder holder = (ClubHandleMessageItemProvider.ViewHolder)v.getTag();
+    public void bindView(final View v, int position, RelationHandleMsg content, final UIMessage data) {
+        RelationHandleMessageItemProvider.ViewHolder holder = (RelationHandleMessageItemProvider.ViewHolder)v.getTag();
         if (data.getMessageDirection() == Message.MessageDirection.SEND) {
             holder.mContentTv.setBackgroundResource(R.drawable.rc_ic_bubble_right);
         } else {
@@ -54,7 +54,7 @@ public class ClubHandleMessageItemProvider extends MessageProvider<ClubHandleMsg
     }
 
     @Override
-    public Spannable getContentSummary(ClubHandleMsg clubHandleMsg) {
+    public Spannable getContentSummary(RelationHandleMsg clubHandleMsg) {
         return new SpannableString(clubHandleMsg.getContent());
     }
 

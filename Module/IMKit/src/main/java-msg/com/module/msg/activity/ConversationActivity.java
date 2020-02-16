@@ -91,7 +91,7 @@ public class ConversationActivity extends BaseActivity {
                     // 测试自定义消息
                     JSONObject jo = new JSONObject();
                     jo.put("content","张三邀请你加入家族 张三的家族");
-                    jo.put("status",0);//0未处理 1同意 2拒绝
+                    jo.put("status",0); // 0未处理 1同意 2拒绝
 
                     ClubInviteMsg customChatRoomMsg =  ClubInviteMsg.obtain();
                     customChatRoomMsg.setContent(jo.toJSONString());

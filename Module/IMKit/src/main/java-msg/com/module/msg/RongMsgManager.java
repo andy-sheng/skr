@@ -32,6 +32,10 @@ import com.module.msg.custom.club.ClubHandleMsg;
 import com.module.msg.custom.club.ClubInviteMsg;
 import com.module.msg.custom.club.ClubInviteMessageItemProvider;
 import com.module.msg.custom.club.ClubMsgProcessor;
+import com.module.msg.custom.relation.RelationHandleMessageItemProvider;
+import com.module.msg.custom.relation.RelationHandleMsg;
+import com.module.msg.custom.relation.RelationInviteMessageItemProvider;
+import com.module.msg.custom.relation.RelationInviteMsg;
 import com.module.msg.listener.MyConversationClickListener;
 import com.module.msg.model.BroadcastRoomMsg;
 import com.module.msg.model.CustomChatCombineRoomLowLevelMsg;
@@ -522,6 +526,13 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.registerMessageTemplate(new ClubInviteMessageItemProvider());
             RongIM.registerMessageType(ClubHandleMsg.class);
             RongIM.registerMessageTemplate(new ClubHandleMessageItemProvider());
+
+            // 注册关系邀请消息
+            RongIM.registerMessageType(RelationInviteMsg.class);
+            RongIM.registerMessageTemplate(new RelationInviteMessageItemProvider());
+            RongIM.registerMessageType(RelationHandleMsg.class);
+            RongIM.registerMessageTemplate(new RelationHandleMessageItemProvider());
+
             RongIM.getInstance().setMessageInterceptor(new RongIM.MessageInterceptor() {
                 @Override
                 public boolean intercept(Message message) {

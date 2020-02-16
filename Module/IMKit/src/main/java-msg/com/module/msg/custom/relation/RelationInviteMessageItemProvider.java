@@ -1,4 +1,4 @@
-package com.module.msg.custom.club;
+package com.module.msg.custom.relation;
 
 import android.content.Context;
 import android.text.Spannable;
@@ -24,21 +24,21 @@ import io.rong.imlib.model.Message;
 //
 
 @ProviderTag(
-        messageContent = ClubInviteMsg.class,
+        messageContent = RelationInviteMsg.class,
         showReadState = true
 )
-public class ClubInviteMessageItemProvider extends MessageProvider<ClubInviteMsg> {
-    private static final String TAG = "ClubInviteMessageItemProvider";
+public class RelationInviteMessageItemProvider extends MessageProvider<RelationInviteMsg> {
+    private static final String TAG = "RelationInviteMessageItemProvider";
 
-    public ClubInviteMessageItemProvider() {
+    public RelationInviteMessageItemProvider() {
     }
 
-    ClubInviteMsg contentMsg;
+    RelationInviteMsg contentMsg;
     Message message;
 
     public View  newView(Context context, ViewGroup group) {
-        View view = LayoutInflater.from(context).inflate(layout.rc_item_club_invite_message, (ViewGroup)null);
-        ClubInviteMessageItemProvider.ViewHolder holder = new ClubInviteMessageItemProvider.ViewHolder(view);
+        View view = LayoutInflater.from(context).inflate(layout.rc_item_relation_invite_message, (ViewGroup)null);
+        RelationInviteMessageItemProvider.ViewHolder holder = new RelationInviteMessageItemProvider.ViewHolder(view);
         holder.mAgreeTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -55,13 +55,13 @@ public class ClubInviteMessageItemProvider extends MessageProvider<ClubInviteMsg
         return view;
     }
 
-    public void bindView(View v, int position, ClubInviteMsg msg, UIMessage message) {
+    public void bindView(View v, int position, RelationInviteMsg msg, UIMessage message) {
         this.contentMsg = msg;
         this.message = message.getMessage();
 
-        ClubInviteMessageItemProvider.ViewHolder holder = (ClubInviteMessageItemProvider.ViewHolder)v.getTag();
+        RelationInviteMessageItemProvider.ViewHolder holder = (RelationInviteMessageItemProvider.ViewHolder)v.getTag();
         holder.mContentTv.setText(msg.getContent());
-        int handle = ClubMsgProcessor.getHandle(message.getMessage());
+        int handle = RelationMsgProcessor.getHandle(message.getMessage());
         if(handle==0){
             holder.mAgreeTv.setVisibility(View.VISIBLE);
             holder.mRejectTv.setVisibility(View.VISIBLE);
@@ -70,22 +70,22 @@ public class ClubInviteMessageItemProvider extends MessageProvider<ClubInviteMsg
             holder.mAgreeTv.setVisibility(View.GONE);
             holder.mRejectTv.setVisibility(View.GONE);
             holder.mTipsTv.setVisibility(View.VISIBLE);
-            holder.mTipsTv.setText("已同意加入家族");
+            holder.mTipsTv.setText("已同意关系建立");
         }else if(handle==2){
             holder.mAgreeTv.setVisibility(View.GONE);
             holder.mRejectTv.setVisibility(View.GONE);
             holder.mTipsTv.setVisibility(View.VISIBLE);
-            holder.mTipsTv.setText("已拒绝加入家族");
+            holder.mTipsTv.setText("已拒绝关系建立");
         }
     }
 
     @Override
-    public Spannable getContentSummary(ClubInviteMsg gifMessage) {
-        return new SpannableString("[家族邀请]");
+    public Spannable getContentSummary(RelationInviteMsg msg) {
+        return new SpannableString(msg.getContent());
     }
 
     @Override
-    public void onItemClick(View view, int i, ClubInviteMsg msg, UIMessage uiMessage) {
+    public void onItemClick(View view, int i, RelationInviteMsg msg, UIMessage uiMessage) {
 //        JSONObject jo = ClubMsgProcessor.getInviteInfo(uiMessage.getMessage());
 //        if(jo!=null && jo.getIntValue("status") == 0
 //                && !uiMessage.getSenderUserId().equals(MyUserInfoManager.INSTANCE.getUidStr())){
