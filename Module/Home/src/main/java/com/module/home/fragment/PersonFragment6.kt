@@ -113,6 +113,7 @@ class PersonFragment6 : BaseFragment() {
     var fansNum = 0
     var followNum = 0
     var friendNum = 0
+    var meiLiCntTotal = 0
 
     var postNum = 0  // 帖子数
     var workNum = 0  // 作品数
@@ -163,6 +164,8 @@ class PersonFragment6 : BaseFragment() {
                     val myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel)
                     MyUserInfoLocalApi.insertOrUpdate(myUserInfo)
                     MyUserInfoManager.setMyUserInfo(myUserInfo, true, "getHomePage")
+
+                    meiLiCntTotal = result.data.getIntValue("meiLiCntTotal")
 
                     relationNumModes?.let {
                         for (mode in it) {
@@ -400,6 +403,14 @@ class PersonFragment6 : BaseFragment() {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                     .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/newVip?title=1"))
                     .greenChannel().navigation()
+        }
+
+        userInfoArrows.setAnimateDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_BUSINESS)
+                    .withSerializable("userInfoModel", MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo))
+                    .withInt("meiLiCntTotal", meiLiCntTotal)
+                    .withInt("fansNum", fansNum)
+                    .navigation()
         }
     }
 
