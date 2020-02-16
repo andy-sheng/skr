@@ -25,6 +25,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.common.videocache.MediaCacheManager
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.manager.BgMusicManager
@@ -258,12 +259,6 @@ class RelayMatchActivity : BaseActivity() {
         mLoadService = mLoadSir.register(speedRecyclerView, Callback.OnReloadListener {
             startTimerRoom(0)
         })
-
-        val accFile = SongResUtils.getAccFileByUrl(model?.acc)
-        if (!accFile.exists()) {
-            // 先下载这个伴奏备用
-            U.getHttpUtils().downloadFileAsync(model?.acc, accFile, true, null)
-        }
 
         BgMusicManager.getInstance().starPlay(model?.acc, 0, "RelayMatchActivity")
     }

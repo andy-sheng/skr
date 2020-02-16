@@ -5,7 +5,7 @@ import com.common.log.MyLog
 import com.common.mvp.PresenterEvent
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.utils.HttpUtils
-import com.common.utils.U
+import com.common.videocache.MediaCacheManager.getProxyUrl
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.model.UrlRes
 import com.component.lyrics.utils.SongResUtils
@@ -34,8 +34,11 @@ class PrepareSongPresenter(@param:NotNull internal var mOnDownloadProgress: Http
         //伴奏
         val accUrl = mSongModel.acc
         if (!TextUtils.isEmpty(accUrl)) {
-            val acc = UrlRes(accUrl, SongResUtils.getAccFileByUrl(accUrl))
-            songResList.add(acc)
+            val proxyUrl = getProxyUrl(accUrl, true)
+            if (!proxyUrl.startsWith("file")) {
+                val acc = UrlRes(proxyUrl, null)
+                songResList.add(acc)
+            }
         }
 
         //原唱

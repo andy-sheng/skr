@@ -478,33 +478,38 @@ public class HttpUtils {
      */
     public boolean downloadFileSync(String urlStr, final File outputFile,
                                     boolean needTempFile, OnDownloadProgress progress, int maxSaveSize, int connectTimeout, int readTimeout) {
-        MyLog.w(TAG, "downloadFileSync" + " urlStr=" + urlStr + " out=" + outputFile.getAbsolutePath());
+        MyLog.i(TAG, "downloadFileSync" + " urlStr=" + urlStr + " out=" + ((outputFile == null) ? "null" : outputFile.getAbsolutePath()));
         if (Looper.getMainLooper() == Looper.myLooper()) {
             throw new IllegalThreadStateException("cannot downloadFile on mainthread");
         }
-        File outputFile2 = outputFile;
-        if (needTempFile) {
-            /**
-             * 注意 .temp 不能改 为了和视频缓存的命名一致
-             */
-            outputFile2 = new File(outputFile.getParentFile(), outputFile.getName() + ".temp");
-        }
-        if (!outputFile2.exists()) {
-            File parentFile = outputFile2.getParentFile();
-            if (parentFile != null && !parentFile.exists()) {
-                parentFile.mkdirs();
-            }
-            try {
-                outputFile2.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        File outputFile2 = null;
         InputStream input = null;
         OutputStream output = null;
+        if (outputFile != null) {
+            outputFile2 = outputFile;
+            if (needTempFile) {
+                /**
+                 * 注意 .temp 不能改 为了和视频缓存的命名一致
+                 */
+                outputFile2 = new File(outputFile.getParentFile(), outputFile.getName() + ".temp");
+            }
+            if (!outputFile2.exists()) {
+                File parentFile = outputFile2.getParentFile();
+                if (parentFile != null && !parentFile.exists()) {
+                    parentFile.mkdirs();
+                }
+                try {
+                    outputFile2.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         long startDownloadMs = System.currentTimeMillis();
         try {
-            output = new FileOutputStream(outputFile2);
+            if (outputFile2 != null) {
+                output = new FileOutputStream(outputFile2);
+            }
             URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(connectTimeout);
@@ -520,11 +525,14 @@ public class HttpUtils {
             int count;
             long downloaded = 0;
             long totalLength = conn.getContentLength();
-            MyLog.w(TAG, "conn.getResponseCode()=" + conn.getResponseCode());
+            MyLog.i(TAG, "conn.getResponseCode()=" + conn.getResponseCode());
             DownloadParams downloadParams = mDownLoadMap.get(urlStr);
             while ((count = input.read(buffer)) != -1) {
-                output.write(buffer, 0, count);
+                if (output != null) {
+                    output.write(buffer, 0, count);
+                }
                 if (downloadParams != null && downloadParams.hasCancel) {
+                    MyLog.i(TAG, "download cancelled");
                     // 下载取消了
                     if (null != progress) {
                         progress.onCanceled();
@@ -540,10 +548,13 @@ public class HttpUtils {
                 downloaded += count;
                 if (maxSaveSize > 0) {
                     if (downloaded >= maxSaveSize && downloaded < totalLength) {
+                        MyLog.i(TAG, "partial download success, downloaded: " + downloaded +
+                                " maxSaveSize: " + maxSaveSize + " totalLength: " + totalLength);
                         mDownLoadMap.remove(urlStr);
                         return true;
                     }
                 }
+                //MyLog.d(TAG, "downloaded: " + downloaded + " totalLength: " + totalLength);
                 if (null != progress) {
                     progress.onDownloaded(downloaded, totalLength);
                 }
@@ -557,15 +568,15 @@ public class HttpUtils {
                 long completeDownMs = System.currentTimeMillis();
                 StatisticsAdapter.recordCalculateEvent("download", "notCompleted", completeDownMs - startDownloadMs, null);
             } else {
-                if (needTempFile) {
+                if (needTempFile && outputFile != null) {
                     if (outputFile2.renameTo(outputFile)) {
-                        MyLog.w(TAG, urlStr + " 下载成功 downloaded=" + downloaded + " totalLength=" + totalLength);
+                        MyLog.i(TAG, urlStr + " 下载成功 downloaded=" + downloaded + " totalLength=" + totalLength);
                     } else {
-                        MyLog.w(TAG, "重命名失败");
+                        MyLog.e(TAG, "重命名失败");
                     }
                 }
                 if (null != progress) {
-                    progress.onCompleted(outputFile.getAbsolutePath());
+                    progress.onCompleted((outputFile == null) ? null : outputFile.getAbsolutePath());
                     // 下载完成打点
                     long completeDownMs = System.currentTimeMillis();
                     StatisticsAdapter.recordCalculateEvent("download", "success", completeDownMs - startDownloadMs, null);

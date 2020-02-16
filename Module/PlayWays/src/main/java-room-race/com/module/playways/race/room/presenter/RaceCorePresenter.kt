@@ -19,6 +19,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.common.videocache.MediaCacheManager
 import com.component.busilib.constans.GameModeType
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.utils.SongResUtils
@@ -665,16 +666,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             }
         }
         accUrl?.let {
-            //尝试下载伴奏
-            launch(Dispatchers.IO) {
-                val f = SongResUtils.getAccFileByUrl(it)
-                if (f != null && !f.exists()) {
-                    if (!U.getHttpUtils().isDownloading(it)) {
-                        MyLog.d(TAG, "tryDownloadAccIfSelfSing 开始下载伴奏 acc=${it}")
-                        U.getHttpUtils().downloadFileSync(it, f, true, null)
-                    }
-                }
-            }
+            MediaCacheManager.preCache(it)
         }
 
     }

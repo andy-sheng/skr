@@ -34,33 +34,40 @@ object MediaCacheManager {
 
     fun getOriginCdnUrl(url: String?): String? {
         if (url?.matches(Regex("http(s)?://[a-z]+-static-[0-9]+\\.inframe\\.mobi/.*")) == true) {
-            return url?.replace(Regex("-static-[0-9]+"), "-static")
+            return url.replace(Regex("-static-[0-9]+"), "-static")
         }
         return url
     }
 
     fun getProxyUrl(url: String, allowFromCache: Boolean): String {
-        U.getHttpUtils().cancelDownload(url)
+        cancelPreCache(url)
         return httpProxyCacheServer.getProxyUrl(url, allowFromCache)
     }
 
-    private val preCacheingSet = HashSet<String>()
+    private val preCachingSet = HashSet<String>()
 
-    fun preCache(url: String) {
-        MyLog.d(TAG, "preCache url=$url cacheingNum=${preCacheingSet.size}")
-        if (preCacheingSet.size > 5) {
-            return
+    fun preCache(url: String, maxSaveSize: Int=-1) {
+        MyLog.d(TAG, "preCache url=$url size=$maxSaveSize cacheingNum=${preCachingSet.size}")
+
+        synchronized(preCachingSet) {
+            if (preCachingSet.contains(url)) {
+                MyLog.d(TAG, "preCache url=$url 已经在下载 cancel")
+                return
+            }
+            preCachingSet.add(url)
         }
-        if (preCacheingSet.contains(url)) {
-            MyLog.d(TAG, "preCache url=$url 已经在下载 cancel")
-            return
-        }
-        preCacheingSet.add(url)
         Observable.create<Unit> {
             val outFile = File(saveFile, fileNameGenerator.generate(url))
             val outFileTemp = File(saveFile, fileNameGenerator.generate(url) + ".temp")
             if (!outFile.exists() && !outFileTemp.exists()) {
-                U.getHttpUtils().downloadFileSync(url, outFile, true, null, 1024 * 1024 * 2)
+                val proxyUrl = httpProxyCacheServer.getProxyUrl(url, false)
+                val isNotCanceled: Boolean
+                synchronized(preCachingSet) {
+                    isNotCanceled = preCachingSet.contains(url)
+                }
+                if (isNotCanceled) {
+                    U.getHttpUtils().downloadFileSync(proxyUrl, null, true, null, maxSaveSize)
+                }
             }
             it.onComplete()
         }
@@ -68,7 +75,29 @@ object MediaCacheManager {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
 
-                }, {}, { preCacheingSet.remove(url) })
+                }, {}, {
+                    MyLog.d(TAG, "preCache complete, remove url from preCache: $url")
+                    synchronized(preCachingSet) {
+                        preCachingSet.remove(url)
+                    }
+                })
 
+    }
+
+    fun cancelPreCache(url: String?=null) {
+        MyLog.d(TAG, "cancelPreCache: $url")
+        if (url != null) {
+            synchronized(preCachingSet) {
+                U.getHttpUtils().cancelDownload(url)
+                preCachingSet.remove(url)
+            }
+        } else {
+            synchronized(preCachingSet) {
+                for (i in preCachingSet) {
+                    U.getHttpUtils().cancelDownload(i)
+                }
+                preCachingSet.clear()
+            }
+        }
     }
 }

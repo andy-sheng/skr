@@ -30,6 +30,7 @@ import com.common.utils.ActivityUtils
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.common.videocache.MediaCacheManager
 import com.common.view.AnimateClickListener
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.constans.GrabRoomType
@@ -119,6 +120,8 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
 
     internal var mDialogPlus: DialogPlus? = null
 
+    internal var mAccUrl: String = ""
+
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -168,8 +171,6 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     internal var mPushMsgFilter: PushMsgFilter<*> = PushMsgFilter<RoomMsg> { msg ->
         msg != null && msg.roomID == mRoomData.gameId
     }
-
-    internal var mGrabSongResPresenter: GrabSongResPresenter? = GrabSongResPresenter()
 
     init {
         GrabRoomMsgManager.getInstance().addFilter(mPushMsgFilter)
@@ -681,8 +682,9 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             }
         }, this)
 
+        mAccUrl = preAccUrl
         if (!TextUtils.isEmpty(preAccUrl)) {
-            mGrabSongResPresenter!!.tryDownloadAcc(preAccUrl)
+            MediaCacheManager.preCache(preAccUrl)
         }
     }
 
@@ -978,9 +980,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         super.destroy()
         mDestroyed = true
         Params.save2Pref(ZqEngineKit.getInstance().params)
-        if (mGrabSongResPresenter != null) {
-            mGrabSongResPresenter!!.destroy()
-        }
+        MediaCacheManager.cancelPreCache(mAccUrl)
         if (!mRoomData.isHasExitGame) {
             exitRoom("destroy")
         }

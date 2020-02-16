@@ -247,17 +247,18 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
     }
 
     private fun tryPreCache() {
+        val maxCacheSize = 2 * 1024 * 1024
         if (!mOriginalSongList.isNullOrEmpty()) {
             if (mMode == PlayMode.ORDER || mMode == PlayMode.SINGLE) {
                 val p = (mOriginPosition + 1) % mOriginalSongList.size
                 mOriginalSongList[p].playURL?.let {
-                    MediaCacheManager.preCache(it)
+                    MediaCacheManager.preCache(it, maxCacheSize)
                 }
             } else if (mMode == PlayMode.RANDOM) {
                 val p = mShufflePosition + 1
                 if (p in 0 until mShuffleSongList.size) {
                     mShuffleSongList[p].second.playURL?.let {
-                        MediaCacheManager.preCache(it)
+                        MediaCacheManager.preCache(it, maxCacheSize)
                     }
                 }
             }

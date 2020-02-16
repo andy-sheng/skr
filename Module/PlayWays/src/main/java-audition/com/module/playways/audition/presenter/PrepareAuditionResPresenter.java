@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.utils.HttpUtils;
+import com.common.videocache.MediaCacheManager;
 import com.component.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.module.playways.room.song.model.SongModel;
@@ -39,8 +40,12 @@ public class PrepareAuditionResPresenter extends RxLifeCyclePresenter {
         //伴奏
         String accUrl = mSongModel.getAcc();
         if (!TextUtils.isEmpty(accUrl)) {
-            UrlRes acc = new UrlRes(accUrl, SongResUtils.getAccFileByUrl(accUrl));
-            songResList.add(acc);
+            // 有缓存时不需要下载
+            String proxyUrl = MediaCacheManager.INSTANCE.getProxyUrl(accUrl, true);
+            if (!proxyUrl.startsWith("file")) {
+                UrlRes acc = new UrlRes(proxyUrl, null);
+                songResList.add(acc);
+            }
         }
 
         //原唱
