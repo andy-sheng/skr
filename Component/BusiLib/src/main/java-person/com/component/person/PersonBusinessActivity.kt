@@ -1,21 +1,27 @@
 package com.component.person
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
+import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.R
+import com.component.busilib.friends.VoiceInfoModel
 import com.component.busilib.view.NickNameView
 import com.component.level.utils.LevelConfigUtils
 import com.component.person.view.CommonAudioView
@@ -39,8 +45,30 @@ class PersonBusinessActivity : BaseActivity() {
     lateinit var signTv: ExTextView
 
     var userInfoModel: UserInfoModel? = null
+    var voiceInfoModel: VoiceInfoModel? = null
     var meiLiCntTotal = 0
     var fansNum = 0
+
+    private var isPlay = false
+    private var playTag = "PersonBusinessActivity" + hashCode()
+    private val playCallback = object : SinglePlayerCallbackAdapter() {
+        override fun onCompletion() {
+            super.onCompletion()
+            stopPlay()
+        }
+
+        override fun onPlaytagChange(oldPlayerTag: String?, newPlayerTag: String?) {
+            if (newPlayerTag !== playTag) {
+                stopPlay()
+            }
+        }
+    }
+
+    private fun stopPlay() {
+        isPlay = false
+        audioView.setPlay(false)
+        SinglePlayer.stop(playTag)
+    }
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.person_business_activity_layout
@@ -55,6 +83,7 @@ class PersonBusinessActivity : BaseActivity() {
         }
         meiLiCntTotal = intent.getIntExtra("meiLiCntTotal", 0)
         fansNum = intent.getIntExtra("fansNum", 0)
+        voiceInfoModel = intent.getSerializableExtra("voiceInfoModel") as VoiceInfoModel?
 
         U.getStatusBarUtil().setTransparentBar(this, false)
 
@@ -96,6 +125,38 @@ class PersonBusinessActivity : BaseActivity() {
             personTagView.setLocation(it.location)
             personTagView.setUserID(it.userId)
         }
+
+        audioView.minSize = 100.dp()
+        if (voiceInfoModel != null && voiceInfoModel?.auditStatus == VoiceInfoModel.EVAS_AUDIT_OK) {
+            // 有声音且审核通过
+            audioView.visibility = View.VISIBLE
+            audioView.bindData(voiceInfoModel?.duration ?: 0)
+        } else {
+            audioView.visibility = View.GONE
+        }
+
+        SinglePlayer.addCallback(playTag, playCallback)
+
+        audioView.setDebounceViewClickListener {
+            if (voiceInfoModel != null) {
+                if (isPlay) {
+                    // 暂停音乐
+                    stopPlay()
+                } else {
+                    // 播放音乐
+                    isPlay = true
+                    audioView.setPlay(true)
+
+                    if (!TextUtils.isEmpty(voiceInfoModel?.voiceURL)) {
+                        SinglePlayer.startPlay(playTag, voiceInfoModel?.voiceURL!!)
+                    } else {
+                        MyLog.e("PersonFragment4", "非voiceInfo 空的url")
+                    }
+                }
+            } else {
+                MyLog.e("PersonBusinessActivity", "空的voiceInfo")
+            }
+        }
     }
 
     override fun useEventBus(): Boolean {
@@ -104,5 +165,12 @@ class PersonBusinessActivity : BaseActivity() {
 
     override fun canSlide(): Boolean {
         return false
+    }
+
+    override fun destroy() {
+        super.destroy()
+        stopPlay()
+        SinglePlayer.release(playTag)
+        SinglePlayer.removeCallback(playTag)
     }
 }

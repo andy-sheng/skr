@@ -441,6 +441,7 @@ class PersonFragment6 : BaseFragment() {
                     .withSerializable("userInfoModel", MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo))
                     .withInt("meiLiCntTotal", meiLiCntTotal)
                     .withInt("fansNum", fansNum)
+                    .withSerializable("voiceInfoModel", voiceInfoModel)
                     .navigation()
         }
 
