@@ -42,13 +42,13 @@ public class RelationInviteMessageItemProvider extends MessageProvider<RelationI
         holder.mAgreeTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-
+                RelationMsgProcessor.agree(message.getUId(),contentMsg.getUniqID());
             }
         });
         holder.mRejectTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-
+                RelationMsgProcessor.reject(message.getUId(),contentMsg.getUniqID());
             }
         });
         view.setTag(holder);

@@ -36,6 +36,7 @@ import com.module.msg.custom.relation.RelationHandleMessageItemProvider;
 import com.module.msg.custom.relation.RelationHandleMsg;
 import com.module.msg.custom.relation.RelationInviteMessageItemProvider;
 import com.module.msg.custom.relation.RelationInviteMsg;
+import com.module.msg.custom.relation.RelationMsgProcessor;
 import com.module.msg.listener.MyConversationClickListener;
 import com.module.msg.model.BroadcastRoomMsg;
 import com.module.msg.model.CustomChatCombineRoomLowLevelMsg;
@@ -316,8 +317,12 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     EventBus.getDefault().post(event);
                 }
             }else if(message.getContent() instanceof ClubHandleMsg){
-                ClubHandleMsg clubAgreeMsg = (ClubHandleMsg) message.getContent();
-                ClubMsgProcessor.process(clubAgreeMsg);
+                ClubHandleMsg msg = (ClubHandleMsg) message.getContent();
+                ClubMsgProcessor.process(msg);
+                return true;
+            }else if(message.getContent() instanceof RelationHandleMsg){
+                RelationHandleMsg msg = (RelationHandleMsg) message.getContent();
+                RelationMsgProcessor.process(msg);
                 return true;
             }
 

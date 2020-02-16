@@ -16,4 +16,9 @@ public interface IMsgServerApi {
 
     @PUT("http://dev.api.inframe.mobi/v1/messenger/incr-send-msg-times")
     Observable<ApiResult> incSendMsgTimes(@Body RequestBody requestBody);
+
+    @PUT("http://dev.api.inframe.mobi/v1/mall/relation-apply-response")
+    Observable<ApiResult> relationApplyResponse(@Body RequestBody requestBody);
+
+
 }
