@@ -33,6 +33,7 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
 
     private val userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
+    private var mLastUpdateTime: Long = 0  // 上次刷新时间
 
     private val photoTitleTv: TextView
     private val recyclerView: RecyclerView
@@ -58,6 +59,13 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     }
 
     fun initData(flag: Boolean) {
+        // 也设一个时间间隔吧
+        val now = System.currentTimeMillis()
+        if (!flag) {
+            if (now - mLastUpdateTime < 60 * 1000) {
+                return
+            }
+        }
         getPhotos(0)
     }
 
@@ -65,6 +73,7 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
         ApiMethods.subscribe(userInfoServerApi.getPhotos(userID, 0, 20), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult?) {
                 if (result != null && result.errno == 0) {
+                    mLastUpdateTime = System.currentTimeMillis()
                     val list = JSON.parseArray(result.data?.getString("pic"), PhotoModel::class.java)
                     val totalCount = result.data!!.getIntValue("totalCount")
                     addPhotos(list, totalCount, true)
