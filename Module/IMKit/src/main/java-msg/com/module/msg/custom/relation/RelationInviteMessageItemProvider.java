@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.log.MyLog;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 
@@ -63,9 +65,16 @@ public class RelationInviteMessageItemProvider extends MessageProvider<RelationI
         holder.mContentTv.setText(msg.getContent());
         int handle = RelationMsgProcessor.getHandle(message.getMessage());
         if(handle==0){
-            holder.mAgreeTv.setVisibility(View.VISIBLE);
-            holder.mRejectTv.setVisibility(View.VISIBLE);
-            holder.mTipsTv.setVisibility(View.GONE);
+            if(message.getSenderUserId().equals(MyUserInfoManager.INSTANCE.getUidStr())){
+                holder.mAgreeTv.setVisibility(View.GONE);
+                holder.mRejectTv.setVisibility(View.GONE);
+                holder.mTipsTv.setVisibility(View.VISIBLE);
+                holder.mTipsTv.setText("等待对方同意");
+            }else{
+                holder.mAgreeTv.setVisibility(View.VISIBLE);
+                holder.mRejectTv.setVisibility(View.VISIBLE);
+                holder.mTipsTv.setVisibility(View.GONE);
+            }
         }else if(handle==1){
             holder.mAgreeTv.setVisibility(View.GONE);
             holder.mRejectTv.setVisibility(View.GONE);

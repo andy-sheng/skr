@@ -38,14 +38,16 @@ public class RelationMsgProcessor {
         RongIMClient.getInstance().getMessageByUid(msgUid, new RongIMClient.ResultCallback<Message>() {
             @Override
             public void onSuccess(Message message) {
-                JSONObject jo = JSON.parseObject(message.getExtra());
-                if (jo == null) {
-                    jo = new JSONObject();
+                if(message!=null){
+                    JSONObject jo = JSON.parseObject(message.getExtra());
+                    if (jo == null) {
+                        jo = new JSONObject();
+                    }
+                    jo.put("handle", contentMsg.getHandle());
+                    message.setExtra(jo.toJSONString());
+                    RongIM.getInstance().setMessageExtra(message.getMessageId(), message.getExtra());
+                    RongContext.getInstance().getEventBus().post(message);
                 }
-                jo.put("handle", contentMsg.getHandle());
-                message.setExtra(jo.toJSONString());
-                RongIM.getInstance().setMessageExtra(message.getMessageId(), message.getExtra());
-                RongContext.getInstance().getEventBus().post(message);
             }
 
             @Override
