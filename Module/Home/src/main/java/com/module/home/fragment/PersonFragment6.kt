@@ -49,6 +49,7 @@ import com.component.person.view.PersonClubView
 import com.component.person.view.PersonPhotoView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
+import com.module.club.IClubModuleService
 import com.module.home.R
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
@@ -470,23 +471,33 @@ class PersonFragment6 : BaseFragment() {
         feedTitleTv = rootView.findViewById(R.id.feed_title_tv)
 
         clubArea.setDebounceViewClickListener {
-
+            MyUserInfoManager.myUserInfo?.clubInfo?.club?.let {
+                val clubServices = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
+                clubServices.tryGoClubHomePage(it.clubID)
+            }
         }
 
         photoArea.setDebounceViewClickListener {
-
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_PHOTO)
+                    .withInt("userID", MyUserInfoManager.uid.toInt())
+                    .navigation()
         }
 
         postArea.setDebounceViewClickListener {
-
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_POST)
+                    .withSerializable("userInfoModel", MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo))
+                    .navigation()
         }
 
         worksArea.setDebounceViewClickListener {
-
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_WORKS)
+                    .navigation()
         }
 
         feedsArea.setDebounceViewClickListener {
-
+            // todo神曲做么
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_FEED)
+                    .navigation()
         }
     }
 

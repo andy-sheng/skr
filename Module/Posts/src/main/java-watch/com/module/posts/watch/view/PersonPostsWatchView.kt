@@ -17,7 +17,7 @@ import com.module.posts.more.PostsMoreDialogView
 import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.launch
 
-class PersonPostsWatchView(activity: FragmentActivity, var userInfoModel: UserInfoModel, val callback: RequestCallBack) : BasePostsWatchView(activity, TYPE_POST_PERSON), IPersonPostsWall {
+class PersonPostsWatchView(activity: FragmentActivity, var userInfoModel: UserInfoModel, val callback: RequestCallBack?) : BasePostsWatchView(activity, TYPE_POST_PERSON), IPersonPostsWall {
     override fun stopPlay() {
         SinglePlayer.stop(playerTag)
         adapter?.stopPlay()
@@ -79,7 +79,7 @@ class PersonPostsWatchView(activity: FragmentActivity, var userInfoModel: UserIn
                 }
             }
 
-            callback.onRequestSucess(hasMore)
+            callback?.onRequestSucess(hasMore)
         }
     }
 }
