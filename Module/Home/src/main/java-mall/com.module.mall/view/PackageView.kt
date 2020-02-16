@@ -16,6 +16,7 @@ import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import com.module.ModuleServiceManager
 import com.module.RouterConstants
 import com.module.home.R
 import com.module.mall.MallServerApi
@@ -28,6 +29,7 @@ import com.module.mall.event.ShowDefaultEffectEvent
 import com.module.mall.loadsir.MallEmptyCallBack
 import com.module.mall.model.PackageModel
 import com.module.mall.model.ProductModel
+import com.module.msg.IMsgService
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -157,7 +159,7 @@ class PackageView : ExConstraintLayout {
     }
 
     //亲故发生某种关系
-    fun inviteToRelation(userID: Int, packageModel: PackageModel) {
+    private fun inviteToRelation(userID: Int, packageModel: PackageModel) {
         launch {
             val map = HashMap<String, Any>()
             map["packetItemID"] = packageModel.packetItemID
@@ -179,6 +181,9 @@ class PackageView : ExConstraintLayout {
 
                 EventBus.getDefault().post(MallUseCoinEvent())
                 U.getToastUtil().showShort("邀请成功")
+                // 生成一条邀请IM消息
+                var msgService = ModuleServiceManager.getInstance().msgService
+                msgService?.sendRelationInviteMsg(userID.toString(),obj.data.getString("uniqID"),obj.data.getString("msgContent"))
             } else {
                 U.getToastUtil().showShort(obj.errmsg)
             }

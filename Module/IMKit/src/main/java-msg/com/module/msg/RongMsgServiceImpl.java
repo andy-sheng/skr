@@ -2,13 +2,23 @@ package com.module.msg;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.fastjson.JSONObject;
 import com.module.RouterConstants;
 import com.module.common.ICallback;
+import com.module.msg.custom.club.ClubInviteMsg;
+import com.module.msg.custom.relation.RelationInviteMsg;
+import com.module.msg.custom.relation.RelationMsgProcessor;
 import com.module.msg.fragment.MessageFragment2;
+
+import io.rong.imkit.RongIM;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
 
 @Route(path = RouterConstants.SERVICE_MSG, name = "消息服务")
 public class RongMsgServiceImpl implements IMsgService {
@@ -121,6 +131,11 @@ public class RongMsgServiceImpl implements IMsgService {
     @Override
     public void getBlacklistStatus(String userId, ICallback callback) {
         RongMsgManager.getInstance().getBlacklistStatus(userId, callback);
+    }
+
+    @Override
+    public void sendRelationInviteMsg(String userID, String uniqID,String content) {
+        RelationMsgProcessor.sendRelationInviteMsg(userID,uniqID,content);
     }
 
     @Override

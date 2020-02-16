@@ -109,4 +109,6 @@ public interface IMsgService extends IProvider {
     void getBlacklist(ICallback callback);
 
     void getBlacklistStatus(String userId, ICallback callback);
+
+    void sendRelationInviteMsg(String userID,  String uniqID,String content);
 }

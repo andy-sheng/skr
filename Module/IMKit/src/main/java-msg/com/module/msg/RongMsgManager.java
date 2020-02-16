@@ -322,7 +322,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 return true;
             }else if(message.getContent() instanceof RelationHandleMsg){
                 RelationHandleMsg msg = (RelationHandleMsg) message.getContent();
-                RelationMsgProcessor.process(msg);
+                RelationMsgProcessor.onReceiveHandleMsg(msg);
                 return true;
             }
 

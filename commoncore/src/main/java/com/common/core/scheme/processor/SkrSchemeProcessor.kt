@@ -157,6 +157,10 @@ object SkrSchemeProcessor : ISchemeProcessor {
                         processClubUrl(uri, context)
                         return ProcessResult.AcceptedAndContinue
                     }
+                    "party" -> {
+                        processPartyUrl(uri, context)
+                        return ProcessResult.AcceptedAndContinue
+                    }
                 }
             }
         } else if ("rong" == scheme) {
@@ -183,6 +187,13 @@ object SkrSchemeProcessor : ISchemeProcessor {
     private fun processClubUrl(uri: Uri, context: Context) {
         if (uri.path == "/home") {
             ModuleServiceManager.getInstance().clubService?.tryGoClubHomePage(SchemeUtils.getInt(uri, "clubID", 0))
+        }
+    }
+
+    private fun processPartyUrl(uri: Uri, context: Context) {
+        if (uri.path == "/listPage") {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_HOME)
+                    .navigation()
         }
     }
 
