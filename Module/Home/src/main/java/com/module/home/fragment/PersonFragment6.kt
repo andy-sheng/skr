@@ -89,7 +89,7 @@ class PersonFragment6 : BaseFragment() {
     lateinit var srlNameTv: ExTextView
     lateinit var settingIv: ImageView
     lateinit var settingRedDot: ExImageView
-    lateinit var walletIv: ImageView
+    lateinit var walletTv: ExTextView
 
     lateinit var clubArea: ConstraintLayout
     lateinit var clubTitleTv: TextView
@@ -424,14 +424,14 @@ class PersonFragment6 : BaseFragment() {
     private fun initSettingArea() {
         settingIv = rootView.findViewById(R.id.setting_iv)
         settingRedDot = rootView.findViewById(R.id.setting_red_dot)
-        walletIv = rootView.findViewById(R.id.wallet_iv)
+        walletTv = rootView.findViewById(R.id.wallet_tv)
 
         settingIv.setDebounceViewClickListener {
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_SETTING)
                     .navigation()
         }
-        walletIv.setDebounceViewClickListener {
+        walletTv.setDebounceViewClickListener {
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_WALLET)
                     .navigation()

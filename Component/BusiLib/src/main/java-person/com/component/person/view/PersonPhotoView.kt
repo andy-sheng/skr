@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.common.callback.Callback
@@ -36,6 +37,9 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     private val photoTitleTv: TextView
     private val recyclerView: RecyclerView
     private val photoNumTv: ExTextView
+    private val photoTitleArrow: ImageView
+    private val photoArrow: ImageView
+
     private val photoAdapter: PhotoAdapter
 
     init {
@@ -44,6 +48,9 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
         photoTitleTv = rootView.findViewById(R.id.photo_title_tv)
         recyclerView = this.findViewById(R.id.recycler_view)
         photoNumTv = this.findViewById(R.id.photo_num_tv)
+
+        photoTitleArrow = this.findViewById(R.id.photo_title_arrow)
+        photoArrow = this.findViewById(R.id.photo_arrow)
 
         recyclerView.layoutManager = GridLayoutManager(context, 3)
         photoAdapter = PhotoAdapter(PhotoAdapter.TYPE_PERSON_CENTER_VIEW)
@@ -71,6 +78,13 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     }
 
     private fun addPhotos(list: List<PhotoModel>?, totalCount: Int, clear: Boolean) {
+        if (totalCount == 0) {
+            photoArrow.visibility = View.GONE
+            photoTitleArrow.visibility = View.VISIBLE
+        } else {
+            photoArrow.visibility = View.VISIBLE
+            photoTitleArrow.visibility = View.GONE
+        }
         if (clear) {
             photoAdapter.mDataList?.clear()
             if (!list.isNullOrEmpty()) {
