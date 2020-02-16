@@ -27,6 +27,9 @@ import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
+import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
@@ -113,10 +116,28 @@ class PersonFragment6 : BaseFragment() {
     var fansNum = 0
     var followNum = 0
     var friendNum = 0
+    var meiLiCntTotal = 0
+
+    var voiceInfoModel: VoiceInfoModel? = null
 
     var postNum = 0  // 帖子数
     var workNum = 0  // 作品数
     var feedNum = 0  // 神曲数
+
+    private var isPlay = false
+    private var playTag = "PersonFragment6" + hashCode()
+    private val playCallback = object : SinglePlayerCallbackAdapter() {
+        override fun onCompletion() {
+            super.onCompletion()
+            stopPlay()
+        }
+
+        override fun onPlaytagChange(oldPlayerTag: String?, newPlayerTag: String?) {
+            if (newPlayerTag !== playTag) {
+                stopPlay()
+            }
+        }
+    }
 
     override fun initView(): Int {
         return R.layout.person_fragment6_layout
@@ -134,6 +155,14 @@ class PersonFragment6 : BaseFragment() {
 
         refreshUserInfoView()
         refreshClubInfo()
+
+        SinglePlayer.addCallback(playTag, playCallback)
+    }
+
+    private fun stopPlay() {
+        isPlay = false
+        audioView.setPlay(false)
+        SinglePlayer.stop(playTag)
     }
 
     override fun onFragmentVisible() {
@@ -141,6 +170,11 @@ class PersonFragment6 : BaseFragment() {
         // 拿个人主页，和照片
         getHomePage(false)
         photoView?.initData(false)
+    }
+
+    override fun onFragmentInvisible(reason: Int) {
+        super.onFragmentInvisible(reason)
+        stopPlay()
     }
 
     private fun getHomePage(flag: Boolean) {
@@ -163,6 +197,8 @@ class PersonFragment6 : BaseFragment() {
                     val myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel)
                     MyUserInfoLocalApi.insertOrUpdate(myUserInfo)
                     MyUserInfoManager.setMyUserInfo(myUserInfo, true, "getHomePage")
+
+                    meiLiCntTotal = result.data.getIntValue("meiLiCntTotal")
 
                     relationNumModes?.let {
                         for (mode in it) {
@@ -298,20 +334,18 @@ class PersonFragment6 : BaseFragment() {
     }
 
     private fun refreshVoiceInfo(voiceInfoModel: VoiceInfoModel?) {
-//        mVoiceInfoModel = voiceInfoModel
-//        if (voiceInfoModel != null) {
-//            if (voiceInfoModel.auditStatus == VoiceInfoModel.EVAS_UN_AUDIT) {
-//                // 未审核
-//                mAudioView.bindData(voiceInfoModel.duration, "审核中")
-//            } else {
-//                mAudioView.bindData(voiceInfoModel.duration)
-//            }
-//            mAudioView.setVisibility(View.VISIBLE)
-//            mEditAudio.setText("+编辑语音")
-//        } else {
-//            mEditAudio.setText("+添加声音签名")
-//            mAudioView.setVisibility(View.GONE)
-//        }
+        this.voiceInfoModel = voiceInfoModel
+        audioView.minSize = 100.dp()
+        if (voiceInfoModel != null) {
+            if (voiceInfoModel.auditStatus == VoiceInfoModel.EVAS_UN_AUDIT) {
+                // 未审核
+                audioView.bindData(voiceInfoModel.duration, "审核中")
+            } else {
+                audioView.bindData(voiceInfoModel.duration)
+            }
+        } else {
+            audioView.bindData(0, "编辑语音")
+        }
     }
 
     private fun refreshRelationInfo() {
@@ -400,6 +434,38 @@ class PersonFragment6 : BaseFragment() {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                     .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/newVip?title=1"))
                     .greenChannel().navigation()
+        }
+
+        userInfoArrows.setAnimateDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_BUSINESS)
+                    .withSerializable("userInfoModel", MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo))
+                    .withInt("meiLiCntTotal", meiLiCntTotal)
+                    .withInt("fansNum", fansNum)
+                    .withSerializable("voiceInfoModel", voiceInfoModel)
+                    .navigation()
+        }
+
+        audioView.setDebounceViewClickListener {
+            if (voiceInfoModel != null) {
+                if (isPlay) {
+                    // 暂停音乐
+                    stopPlay()
+                } else {
+                    // 播放音乐
+                    isPlay = true
+                    audioView.setPlay(true)
+
+                    if (!TextUtils.isEmpty(voiceInfoModel?.voiceURL)) {
+                        SinglePlayer.startPlay(playTag, voiceInfoModel?.voiceURL!!)
+                    } else {
+                        MyLog.e("PersonFragment4", "非voiceInfo 空的url")
+                    }
+                }
+            } else {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICE_RECORD)
+                        .withInt("from", 2)
+                        .navigation()
+            }
         }
     }
 
@@ -530,6 +596,8 @@ class PersonFragment6 : BaseFragment() {
     override fun destroy() {
         super.destroy()
         appbar?.removeOnOffsetChangedListener(appbarListener)
+        SinglePlayer.release(playTag)
+        SinglePlayer.removeCallback(playTag)
         photoView?.destory()
     }
 }
