@@ -43,7 +43,7 @@
         android:layout_marginTop="@dimen/view_19_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center"
-        android:text="加入家族"
+        android:text="同意"
         android:textColor="#94612F"
         android:textSize="@dimen/view_14_dp"
         app:bl_corners_radius="@dimen/view_21_dp"

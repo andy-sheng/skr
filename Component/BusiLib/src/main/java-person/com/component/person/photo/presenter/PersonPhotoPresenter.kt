@@ -1,35 +1,28 @@
 package com.component.person.photo.presenter
 
 import android.os.Handler
-
 import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import com.common.anim.ObjectPlayControlTemplate
-import com.common.base.BaseFragment
 import com.common.callback.Callback
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.log.MyLog
+import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.*
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
-import com.common.upload.UploadTask
 import com.common.utils.U
 import com.component.person.photo.manager.PhotoDataManager
-import com.respicker.model.ImageItem
 import com.component.person.photo.model.PhotoModel
 import com.component.person.photo.view.IPhotoWallView
-
+import com.respicker.model.ImageItem
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import java.util.ArrayList
 import java.util.HashMap
 
-import okhttp3.MediaType
-import okhttp3.RequestBody
-
-class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragment: BaseFragment) {
-
-    val TAG = "PhotoCorePresenter"
+class PersonPhotoPresenter(var mView: IPhotoWallView) : RxLifeCyclePresenter() {
 
     val mUserInfoServerApi: UserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
 
@@ -38,18 +31,18 @@ class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragme
     internal var mUploadingPhoto = false
     internal var mExceedLimit = false
 
-    internal var mPlayControlTemplate: ObjectPlayControlTemplate<PhotoModel, PhotoCorePresenter> = object : ObjectPlayControlTemplate<PhotoModel, PhotoCorePresenter>() {
-        override fun accept(cur: PhotoModel): PhotoCorePresenter? {
+    internal var mPlayControlTemplate: ObjectPlayControlTemplate<PhotoModel, PersonPhotoPresenter> = object : ObjectPlayControlTemplate<PhotoModel, PersonPhotoPresenter>() {
+        override fun accept(cur: PhotoModel): PersonPhotoPresenter? {
             MyLog.d(TAG, "accept cur=$cur mUploadingPhoto=$mUploadingPhoto")
-            if (mUploadingPhoto) {
-                return null
+            return if (mUploadingPhoto) {
+                null
             } else {
                 mUploadingPhoto = true
-                return this@PhotoCorePresenter
+                this@PersonPhotoPresenter
             }
         }
 
-        override fun onStart(pm: PhotoModel, personFragment2: PhotoCorePresenter) {
+        override fun onStart(pm: PhotoModel, personFragment2: PersonPhotoPresenter) {
             MyLog.d(TAG, "onStart" + "开始上传 PhotoModel=" + pm + " 队列还有 mPlayControlTemplate.getSize()=" + this.size)
             execUploadPhoto(pm)
         }
@@ -59,19 +52,16 @@ class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragme
         }
     }
 
-    init {
-    }
-
     @JvmOverloads
-    fun getPhotos(offset: Int, cnt: Int, callback: Callback<List<PhotoModel>>? = null) {
+    fun getPhotos(userID: Int, offset: Int, cnt: Int, callback: Callback<List<PhotoModel>>? = null) {
         MyLog.d(TAG, "getPhotos offset=$offset cnt=$cnt callback=$callback")
-        ApiMethods.subscribe(mUserInfoServerApi.getPhotos(MyUserInfoManager.uid.toInt().toLong(), offset, cnt), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mUserInfoServerApi.getPhotos(userID.toLong(), offset, cnt), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult?) {
-                if (result!!.errno == 0) {
+                if (result?.errno == 0) {
                     if (result != null && result.errno == 0) {
                         val list = JSON.parseArray(result.data?.getString("pic"), PhotoModel::class.java)
-                        val newOffset = result.data!!.getIntValue("offset")
-                        val totalCount = result.data!!.getIntValue("totalCount")
+                        val newOffset = result.data.getIntValue("offset")
+                        val totalCount = result.data.getIntValue("totalCount")
                         if (offset == 0) {
                             // 刷新拉
                             mView.addPhoto(newOffset, list, true, totalCount)
@@ -85,15 +75,15 @@ class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragme
                         }
                     }
                 } else {
-                    mView!!.loadDataFailed()
+                    mView.loadDataFailed()
                 }
             }
 
             override fun onNetworkError(errorType: ApiObserver.ErrorType) {
                 super.onNetworkError(errorType)
-                mView!!.loadDataFailed()
+                mView.loadDataFailed()
             }
-        }, mFragment, RequestControl("getPhotos", ControlType.CancelThis))
+        }, this, RequestControl("getPhotos", ControlType.CancelThis))
     }
 
     fun uploadPhotoList(imageItems: List<ImageItem>) {
@@ -117,9 +107,9 @@ class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragme
             for (photoModel in photoModels) {
                 photoModel.status = PhotoModel.STATUS_WAIT_UPLOAD
                 if (reupload) {
-                    mView!!.updatePhoto(photoModel)
+                    mView?.updatePhoto(photoModel)
                 } else {
-                    mView!!.insertPhoto(photoModel)
+                    mView?.insertPhoto(photoModel)
                 }
                 mPlayControlTemplate.add(photoModel, true)
             }
@@ -137,13 +127,13 @@ class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragme
         }
         if (mExceedLimit) {
             photo.status = PhotoModel.STATUS_FAILED_LIMIT
-            mView!!.updatePhoto(photo)
+            mView.updatePhoto(photo)
             mUploadingPhoto = false
             mPlayControlTemplate.endCurrent(photo)
             return
         }
         photo.status = PhotoModel.STATUS_UPLOADING
-        mView!!.updatePhoto(photo)
+        mView.updatePhoto(photo)
         val uploadTask = UploadParams.newBuilder(photo.localPath)
                 .setNeedCompress(true)
                 .setNeedMonitor(true)
@@ -210,7 +200,7 @@ class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragme
                         mPlayControlTemplate.endCurrent(photo)
                         mUiHandler!!.post {
                             photo.status = PhotoModel.STATUS_FAILED
-                            mView!!.updatePhoto(photo)
+                            mView.updatePhoto(photo)
                         }
                     }
                 })
@@ -239,9 +229,7 @@ class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragme
             photoModel.status = PhotoModel.STATUS_DELETE
             PhotoDataManager.delete(photoModel)
             // 还没上传成功，本地删除就好，// 上传队列还得删除
-            if (mView != null) {
-                mView!!.deletePhoto(photoModel, false)
-            }
+            mView.deletePhoto(photoModel, false)
         }
     }
 
@@ -249,17 +237,16 @@ class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragme
         PhotoDataManager.getAllPhotoFromDB { r, list ->
             for (photoModel in list) {
                 MyLog.d(TAG, "loadUnSuccessPhotoFromDB photoModel=$photoModel")
-                mView!!.insertPhoto(photoModel)
+                mView.insertPhoto(photoModel)
                 mPlayControlTemplate.add(photoModel, true)
             }
         }
     }
 
-    fun destroy() {
+    override fun destroy() {
+        super.destroy()
         if (mUiHandler != null) {
             mUiHandler!!.removeCallbacksAndMessages(null)
         }
     }
 }
-
-

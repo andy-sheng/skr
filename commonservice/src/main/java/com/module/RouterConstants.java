@@ -47,6 +47,12 @@ public interface RouterConstants {
     String ACTIVITY_OTHER_PERSON = "/busilib/OtherPersonActivity";
     String ACTIVITY_GUARD_LIST = "/busilib/GuardListActivity";
 
+    String ACTIVITY_PERSON_BUSINESS = "/busilib/PersonBusinessActivity";
+    String ACTIVITY_PERSON_PHOTO = "/busilib/PersonPhotoActivity";
+    String ACTIVITY_PERSON_WORKS = "/busilib/PersonWorksActivity";
+    String ACTIVITY_PERSON_POST = "/post/PersonPostActivity";
+    String ACTIVITY_PERSON_FEED = "/feed/PersonFeedActivity";
+
     String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
     String ACTIVITY_EMOJI = "/test/EmojiActivity";
     String ACTIVITY_TEST = "/test/TestSdkActivity";

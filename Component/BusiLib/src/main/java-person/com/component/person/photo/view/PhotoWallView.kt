@@ -156,7 +156,7 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
     }
 
 
-    override fun addPhoto(list: List<PhotoModel>?, clear: Boolean, totalNum: Int) {
+    override fun addPhoto(newOffset: Int, list: List<PhotoModel>?, clear: Boolean, totalNum: Int) {
         MyLog.d(TAG, "showPhoto list=$list clear=$clear totalNum=$totalNum")
         mLastUpdateInfo = System.currentTimeMillis()
 

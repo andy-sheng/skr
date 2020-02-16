@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.common.callback.Callback
@@ -32,10 +33,14 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
 
     private val userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
+    private var mLastUpdateTime: Long = 0  // 上次刷新时间
 
     private val photoTitleTv: TextView
     private val recyclerView: RecyclerView
     private val photoNumTv: ExTextView
+    private val photoTitleArrow: ImageView
+    private val photoArrow: ImageView
+
     private val photoAdapter: PhotoAdapter
 
     init {
@@ -45,12 +50,22 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
         recyclerView = this.findViewById(R.id.recycler_view)
         photoNumTv = this.findViewById(R.id.photo_num_tv)
 
+        photoTitleArrow = this.findViewById(R.id.photo_title_arrow)
+        photoArrow = this.findViewById(R.id.photo_arrow)
+
         recyclerView.layoutManager = GridLayoutManager(context, 3)
         photoAdapter = PhotoAdapter(PhotoAdapter.TYPE_PERSON_CENTER_VIEW)
         recyclerView.adapter = photoAdapter
     }
 
     fun initData(flag: Boolean) {
+        // 也设一个时间间隔吧
+        val now = System.currentTimeMillis()
+        if (!flag) {
+            if (now - mLastUpdateTime < 60 * 1000) {
+                return
+            }
+        }
         getPhotos(0)
     }
 
@@ -58,6 +73,7 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
         ApiMethods.subscribe(userInfoServerApi.getPhotos(userID, 0, 20), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult?) {
                 if (result != null && result.errno == 0) {
+                    mLastUpdateTime = System.currentTimeMillis()
                     val list = JSON.parseArray(result.data?.getString("pic"), PhotoModel::class.java)
                     val totalCount = result.data!!.getIntValue("totalCount")
                     addPhotos(list, totalCount, true)
@@ -71,6 +87,13 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     }
 
     private fun addPhotos(list: List<PhotoModel>?, totalCount: Int, clear: Boolean) {
+        if (totalCount == 0) {
+            photoArrow.visibility = View.GONE
+            photoTitleArrow.visibility = View.VISIBLE
+        } else {
+            photoArrow.visibility = View.VISIBLE
+            photoTitleArrow.visibility = View.GONE
+        }
         if (clear) {
             photoAdapter.mDataList?.clear()
             if (!list.isNullOrEmpty()) {

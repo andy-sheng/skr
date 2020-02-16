@@ -1,9 +1,9 @@
 package com.component.dialog;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.Gravity;
 
-import com.common.base.BaseFragment;
 import com.common.core.share.SharePlatform;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -21,7 +21,6 @@ public class ShareWorksDialog {
 
     DialogPlus mShareDialog;
 
-    BaseFragment mFragment;
     String mUrl;
     int mWorksId;
     int mUserId;
@@ -30,10 +29,9 @@ public class ShareWorksDialog {
     String mCover;
 
 
-    public ShareWorksDialog(BaseFragment fragment, String songName, boolean containSaveTips) {
-        this.mFragment = fragment;
+    public ShareWorksDialog(Context context, String songName, boolean containSaveTips) {
 
-        ShareWorksDialogView shareWorksDialogView = new ShareWorksDialogView(fragment.getContext(), songName, containSaveTips
+        ShareWorksDialogView shareWorksDialogView = new ShareWorksDialogView(context, songName, containSaveTips
                 , new ShareWorksDialogView.Listener() {
             @Override
             public void onClickQQShare() {
@@ -84,7 +82,7 @@ public class ShareWorksDialog {
             }
         });
 
-        mShareDialog = DialogPlus.newDialog(fragment.getContext())
+        mShareDialog = DialogPlus.newDialog(context)
                 .setContentHolder(new ViewHolder(shareWorksDialogView))
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
@@ -108,7 +106,7 @@ public class ShareWorksDialog {
             UMusic music = new UMusic(mUrl);
             music.setTitle("" + mSongName);
             music.setDescription(mNickName + "的撕歌精彩时刻");
-            music.setThumb(new UMImage(mFragment.getActivity(), mCover));
+            music.setThumb(new UMImage(U.getActivityUtils().getTopActivity(), mCover));
 
             StringBuilder sb = new StringBuilder();
             sb.append("http://www.skrer.mobi/user/work")
@@ -120,23 +118,23 @@ public class ShareWorksDialog {
 
             switch (sharePlatform) {
                 case QQ:
-                    new ShareAction(mFragment.getActivity()).withMedia(music)
+                    new ShareAction(U.getActivityUtils().getTopActivity()).withMedia(music)
                             .setPlatform(SHARE_MEDIA.QQ)
                             .share();
                     break;
                 case QZONE:
-                    new ShareAction(mFragment.getActivity()).withMedia(music)
+                    new ShareAction(U.getActivityUtils().getTopActivity()).withMedia(music)
                             .setPlatform(SHARE_MEDIA.QZONE)
                             .share();
                     break;
                 case WEIXIN:
-                    new ShareAction(mFragment.getActivity()).withMedia(music)
+                    new ShareAction(U.getActivityUtils().getTopActivity()).withMedia(music)
                             .setPlatform(SHARE_MEDIA.WEIXIN)
                             .share();
                     break;
 
                 case WEIXIN_CIRCLE:
-                    new ShareAction(mFragment.getActivity()).withMedia(music)
+                    new ShareAction(U.getActivityUtils().getTopActivity()).withMedia(music)
                             .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
                             .share();
                     break;

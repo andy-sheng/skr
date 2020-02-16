@@ -4,7 +4,7 @@ import com.component.person.photo.model.PhotoModel
 
 interface IPhotoWallView {
 
-    fun addPhoto(list: List<PhotoModel>?, clear: Boolean, totalNum: Int)
+    fun addPhoto(offset: Int, list: List<PhotoModel>?, clear: Boolean, totalNum: Int)
 
     fun insertPhoto(photoModel: PhotoModel)
 

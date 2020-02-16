@@ -49,6 +49,7 @@ import com.component.person.view.PersonClubView
 import com.component.person.view.PersonPhotoView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
+import com.module.club.IClubModuleService
 import com.module.home.R
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
@@ -88,7 +89,7 @@ class PersonFragment6 : BaseFragment() {
     lateinit var srlNameTv: ExTextView
     lateinit var settingIv: ImageView
     lateinit var settingRedDot: ExImageView
-    lateinit var walletIv: ImageView
+    lateinit var walletTv: ExTextView
 
     lateinit var clubArea: ConstraintLayout
     lateinit var clubTitleTv: TextView
@@ -423,14 +424,14 @@ class PersonFragment6 : BaseFragment() {
     private fun initSettingArea() {
         settingIv = rootView.findViewById(R.id.setting_iv)
         settingRedDot = rootView.findViewById(R.id.setting_red_dot)
-        walletIv = rootView.findViewById(R.id.wallet_iv)
+        walletTv = rootView.findViewById(R.id.wallet_tv)
 
         settingIv.setDebounceViewClickListener {
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_SETTING)
                     .navigation()
         }
-        walletIv.setDebounceViewClickListener {
+        walletTv.setDebounceViewClickListener {
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_WALLET)
                     .navigation()
@@ -470,23 +471,34 @@ class PersonFragment6 : BaseFragment() {
         feedTitleTv = rootView.findViewById(R.id.feed_title_tv)
 
         clubArea.setDebounceViewClickListener {
-
+            MyUserInfoManager.myUserInfo?.clubInfo?.club?.let {
+                val clubServices = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
+                clubServices.tryGoClubHomePage(it.clubID)
+            }
         }
 
         photoArea.setDebounceViewClickListener {
-
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_PHOTO)
+                    .withInt("userID", MyUserInfoManager.uid.toInt())
+                    .navigation()
         }
 
         postArea.setDebounceViewClickListener {
-
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_POST)
+                    .withSerializable("userInfoModel", MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo))
+                    .navigation()
         }
 
         worksArea.setDebounceViewClickListener {
-
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_WORKS)
+                    .withSerializable("userInfoModel", MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo))
+                    .navigation()
         }
 
         feedsArea.setDebounceViewClickListener {
-
+            // todo神曲做么
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_FEED)
+                    .navigation()
         }
     }
 
