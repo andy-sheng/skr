@@ -63,7 +63,7 @@ object MediaCacheManager {
                 val proxyUrl = httpProxyCacheServer.getProxyUrl(url, false)
                 val isNotCanceled: Boolean
                 synchronized(preCachingSet) {
-                    isNotCanceled = preCachingSet.contains(url)
+                    isNotCanceled = preCachingSet .contains(url)
                 }
                 if (isNotCanceled) {
                     U.getHttpUtils().downloadFileSync(proxyUrl, null, true, null, maxSaveSize)

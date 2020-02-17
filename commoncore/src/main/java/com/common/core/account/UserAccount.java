@@ -3,6 +3,7 @@ package com.common.core.account;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
+import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.NotNull;
 
 import java.util.Date;
@@ -34,7 +35,7 @@ public class UserAccount {
     private String secretToken;
     private String rongToken;
     private String ext;
-@Generated(hash = 15335548)
+@Keep
 public UserAccount(Long id, @NotNull String uid, String password,
         Boolean isLogOff, String thirdId, String phoneNum,
         @NotNull Integer channelId, Boolean needEditUserInfo,
@@ -52,7 +53,7 @@ public UserAccount(Long id, @NotNull String uid, String password,
     this.rongToken = rongToken;
     this.ext = ext;
 }
-@Generated(hash = 1029142458)
+@Keep
 public UserAccount() {
 }
 public Long getId() {

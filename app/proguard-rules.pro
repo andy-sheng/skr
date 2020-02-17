@@ -246,6 +246,7 @@ public static java.lang.String TABLENAME;
 
 # If you do not use SQLCipher:
 -dontwarn org.greenrobot.greendao.database.**
+-dontwarn net.sqlcipher.database.**
 # If you do not use Rx:
 -dontwarn rx.**
 

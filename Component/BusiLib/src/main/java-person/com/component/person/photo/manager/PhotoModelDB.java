@@ -27,13 +27,13 @@ public class PhotoModelDB implements Serializable {
 
     private Integer status = PhotoModel.Companion.getSTATUS_SUCCESS();
 
-    @Generated(hash = 1213024381)
+    @Keep
     public PhotoModelDB(String localPath, Integer status) {
         this.localPath = localPath;
         this.status = status;
     }
 
-    @Generated(hash = 507245802)
+    @Keep
     public PhotoModelDB() {
     }
 
