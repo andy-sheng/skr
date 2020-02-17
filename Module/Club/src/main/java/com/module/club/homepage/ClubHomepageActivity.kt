@@ -31,6 +31,7 @@ import com.component.busilib.view.MarqueeTextView
 import com.component.person.view.PersonTagView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.imagebrowse.big.BigImageBrowseFragment
+import com.module.ModuleServiceManager
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
@@ -136,9 +137,30 @@ class ClubHomepageActivity : BaseActivity() {
 
         inviteTv.setDebounceViewClickListener {
             // TODO
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
-                    .withInt("from", GameModeType.FROM_JOIN_CLUB_INVITE)
-                    .navigation()
+            var userId = 1738030
+            launch {
+                val map = mapOf(
+                        "toUserID" to userId
+                )
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val result = subscribe(RequestControl("sendInvitation", ControlType.CancelThis)) {
+                    clubServerApi.sendInvitation(body)
+                }
+                if (result.errno == 0) {
+                    U.getToastUtil().showShort("发送邀请成功")
+                    ModuleServiceManager.getInstance().msgService.sendClubInviteMsg(userId.toString()
+                            , result.data.getString("invitationID")
+                            , result.data.getLongValue("expireAt")
+                            , result.data.getString("content")
+                    )
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                }
+            }
+
+//            ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
+//                    .withInt("from", GameModeType.FROM_JOIN_CLUB_INVITE)
+//                    .navigation()
         }
 
         applyTv = this.findViewById(R.id.apply_tv)

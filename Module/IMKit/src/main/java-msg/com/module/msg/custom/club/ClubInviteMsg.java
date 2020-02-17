@@ -22,7 +22,7 @@ public class ClubInviteMsg extends MessageContent {
     private static final String TAG = "ClubInviteMsg";
     private String content = "";
     private String uniqID = "";
-
+    private long expireAt;
     public static final Creator<ClubInviteMsg> CREATOR = new Creator<ClubInviteMsg>() {
         public ClubInviteMsg createFromParcel(Parcel source) {
             return new ClubInviteMsg(source);
@@ -38,6 +38,7 @@ public class ClubInviteMsg extends MessageContent {
         try {
             jsonObj.putOpt("content", content);
             jsonObj.putOpt("uniqID", uniqID);
+            jsonObj.putOpt("expireAt",expireAt);
             if (this.getJSONUserInfo() != null) {
                 jsonObj.putOpt("user", this.getJSONUserInfo());
             }
@@ -89,6 +90,10 @@ public class ClubInviteMsg extends MessageContent {
                 this.setUniqID(jsonObj.optString("uniqID"));
             }
 
+            if (jsonObj.has("expireAt")) {
+                this.setExpireAt(jsonObj.optLong("expireAt"));
+            }
+
             if (jsonObj.has("user")) {
                 this.setUserInfo(this.parseJsonToUserInfo(jsonObj.getJSONObject("user")));
             }
@@ -108,6 +113,14 @@ public class ClubInviteMsg extends MessageContent {
             RLog.e(TAG, "JSONException " + var4.getMessage());
         }
 
+    }
+
+    public long getExpireAt() {
+        return expireAt;
+    }
+
+    public void setExpireAt(long expireAt) {
+        this.expireAt = expireAt;
     }
 
     public String getUniqID() {

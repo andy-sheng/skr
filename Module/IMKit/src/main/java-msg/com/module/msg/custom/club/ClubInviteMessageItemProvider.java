@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
+import com.module.msg.custom.relation.RelationMsgProcessor;
 
 import io.rong.imkit.R;
 import io.rong.imkit.R.layout;
@@ -37,19 +38,19 @@ public class ClubInviteMessageItemProvider extends MessageProvider<ClubInviteMsg
     ClubInviteMsg contentMsg;
     Message message;
 
-    public View  newView(Context context, ViewGroup group) {
-        View view = LayoutInflater.from(context).inflate(layout.rc_item_club_invite_message, (ViewGroup)null);
+    public View newView(Context context, ViewGroup group) {
+        View view = LayoutInflater.from(context).inflate(layout.rc_item_club_invite_message, (ViewGroup) null);
         ClubInviteMessageItemProvider.ViewHolder holder = new ClubInviteMessageItemProvider.ViewHolder(view);
         holder.mAgreeTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-
+                RelationMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),true,message.getTargetId());
             }
         });
         holder.mRejectTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-
+                RelationMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),false,message.getTargetId());
             }
         });
         view.setTag(holder);
@@ -60,31 +61,39 @@ public class ClubInviteMessageItemProvider extends MessageProvider<ClubInviteMsg
         this.contentMsg = msg;
         this.message = message.getMessage();
 
-        ClubInviteMessageItemProvider.ViewHolder holder = (ClubInviteMessageItemProvider.ViewHolder)v.getTag();
+        ClubInviteMessageItemProvider.ViewHolder holder = (ClubInviteMessageItemProvider.ViewHolder) v.getTag();
         holder.mContentTv.setText(msg.getContent());
-        int handle = ClubMsgProcessor.getHandle(message.getMessage());
-        if(handle==0){
-            if(message.getSenderUserId().equals(MyUserInfoManager.INSTANCE.getUidStr())){
+        if (msg.getExpireAt()*1000 < System.currentTimeMillis()) {
+            holder.mAgreeTv.setVisibility(View.GONE);
+            holder.mRejectTv.setVisibility(View.GONE);
+            holder.mTipsTv.setVisibility(View.VISIBLE);
+            holder.mTipsTv.setText("消息已过期");
+        } else {
+            int handle = ClubMsgProcessor.getHandle(message.getMessage());
+            if (handle == 0) {
+                if (message.getSenderUserId().equals(MyUserInfoManager.INSTANCE.getUidStr())) {
+                    holder.mAgreeTv.setVisibility(View.GONE);
+                    holder.mRejectTv.setVisibility(View.GONE);
+                    holder.mTipsTv.setVisibility(View.VISIBLE);
+                    holder.mTipsTv.setText("等待对方同意");
+                } else {
+                    holder.mAgreeTv.setVisibility(View.VISIBLE);
+                    holder.mRejectTv.setVisibility(View.VISIBLE);
+                    holder.mTipsTv.setVisibility(View.GONE);
+                }
+            } else if (handle == 1) {
                 holder.mAgreeTv.setVisibility(View.GONE);
                 holder.mRejectTv.setVisibility(View.GONE);
                 holder.mTipsTv.setVisibility(View.VISIBLE);
-                holder.mTipsTv.setText("等待对方同意");
-            }else{
-                holder.mAgreeTv.setVisibility(View.VISIBLE);
-                holder.mRejectTv.setVisibility(View.VISIBLE);
-                holder.mTipsTv.setVisibility(View.GONE);
+                holder.mTipsTv.setText("已同意加入家族");
+            } else if (handle == 2) {
+                holder.mAgreeTv.setVisibility(View.GONE);
+                holder.mRejectTv.setVisibility(View.GONE);
+                holder.mTipsTv.setVisibility(View.VISIBLE);
+                holder.mTipsTv.setText("已拒绝加入家族");
             }
-        }else if(handle==1){
-            holder.mAgreeTv.setVisibility(View.GONE);
-            holder.mRejectTv.setVisibility(View.GONE);
-            holder.mTipsTv.setVisibility(View.VISIBLE);
-            holder.mTipsTv.setText("已同意加入家族");
-        }else if(handle==2){
-            holder.mAgreeTv.setVisibility(View.GONE);
-            holder.mRejectTv.setVisibility(View.GONE);
-            holder.mTipsTv.setVisibility(View.VISIBLE);
-            holder.mTipsTv.setText("已拒绝加入家族");
         }
+
     }
 
     @Override
@@ -141,10 +150,10 @@ public class ClubInviteMessageItemProvider extends MessageProvider<ClubInviteMsg
 
 
         public ViewHolder(View rootView) {
-            mContentTv = (TextView)rootView.findViewById(R.id.content_tv);
-            mRejectTv = (ExTextView)rootView.findViewById(R.id.reject_tv);
-            mAgreeTv = (ExTextView)rootView.findViewById(R.id.agree_tv);
-            mTipsTv = (ExTextView)rootView.findViewById(R.id.tips_tv);
+            mContentTv = (TextView) rootView.findViewById(R.id.content_tv);
+            mRejectTv = (ExTextView) rootView.findViewById(R.id.reject_tv);
+            mAgreeTv = (ExTextView) rootView.findViewById(R.id.agree_tv);
+            mTipsTv = (ExTextView) rootView.findViewById(R.id.tips_tv);
         }
     }
 }
