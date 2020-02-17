@@ -63,6 +63,7 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
         return when {
             position == 0 -> INVITE_FRIEND_TYPE
             getDataByPosition(position).gameSceneType == RecommendRoomModel.EGST_MIC -> ROOM_MIC_TYPE
+            getDataByPosition(position).gameSceneType == RecommendRoomModel.EGST_PARTY -> ROOM_PARTY_TYPE
             else -> ROOM_GRAB_TYPE
         }
     }
