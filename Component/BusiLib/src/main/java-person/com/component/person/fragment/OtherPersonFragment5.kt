@@ -75,8 +75,19 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var classicsHeader: ClassicsHeader
 
     lateinit var appbar: AppBarLayout
-    lateinit var userInfoArea: ConstraintLayout
     lateinit var qinmiTv: ExTextView
+
+    lateinit var toolbar: Toolbar
+    lateinit var toolbarLayout: RelativeLayout
+
+    lateinit var ivBack: ExImageView
+    lateinit var moreBtn: ExImageView
+    lateinit var functionArea: ConstraintLayout
+    lateinit var inviteIv: ExTextView
+    lateinit var messageIv: ExTextView
+    lateinit var followIv: ExTextView
+
+    lateinit var userInfoArea: ConstraintLayout
     lateinit var nameView: NickNameView
     lateinit var levelArea: ExConstraintLayout
     lateinit var levelIv: ImageView
@@ -86,16 +97,6 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var personTagView: PersonTagView
     lateinit var divider: View
 
-    lateinit var toolbar: Toolbar
-    lateinit var toolbarLayout: RelativeLayout
-    lateinit var srlNameTv: TextView
-    lateinit var ivBack: ExImageView
-    lateinit var moreBtn: ExImageView
-    lateinit var functionArea: ConstraintLayout
-    lateinit var inviteIv: ExTextView
-    lateinit var messageIv: ExTextView
-    lateinit var followIv: ExTextView
-
     var relationView: PersonRelationView? = null
     lateinit var clubArea: ConstraintLayout
     lateinit var clubTitleTv: TextView
@@ -104,8 +105,6 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     private var photoView: PersonPhotoView? = null
     lateinit var postArea: ConstraintLayout
     lateinit var postTitleTv: TextView
-    lateinit var worksArea: ConstraintLayout
-    lateinit var worksTitleTv: TextView
     lateinit var feedsArea: ConstraintLayout
     lateinit var feedTitleTv: TextView
 
@@ -229,32 +228,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     private fun initAppBarLayoutArea() {
         appbar = rootView.findViewById(R.id.appbar)
-        userInfoArea = rootView.findViewById(R.id.user_info_area)
         qinmiTv = rootView.findViewById(R.id.qinmi_tv)
-        nameView = rootView.findViewById(R.id.name_view)
-        levelArea = rootView.findViewById(R.id.level_area)
-        levelIv = rootView.findViewById(R.id.level_iv)
-        levelDesc = rootView.findViewById(R.id.level_desc)
-        audioView = rootView.findViewById(R.id.audio_view)
-        signTv = rootView.findViewById(R.id.sign_tv)
-        personTagView = rootView.findViewById(R.id.person_tag_view)
-        divider = rootView.findViewById(R.id.divider)
-
-        audioView.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                if (isPlay) {
-                    // 暂停音乐
-                    stopPlay()
-                } else {
-                    // 播放音乐
-                    voiceInfoModel?.let {
-                        isPlay = true
-                        audioView.setPlay(true)
-                        SinglePlayer.startPlay(playTag, it.voiceURL)
-                    }
-                }
-            }
-        })
 
         qinmiTv.setDebounceViewClickListener { showQinmiTips() }
     }
@@ -262,7 +236,6 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     private fun initToolBarArea() {
         toolbar = rootView.findViewById(R.id.toolbar)
         toolbarLayout = rootView.findViewById(R.id.toolbar_layout)
-        srlNameTv = rootView.findViewById(R.id.srl_name_tv)
     }
 
     private fun initTopArea() {
@@ -394,6 +367,33 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
 
     private fun initPersonArea() {
+        // 顶部个人信息
+        userInfoArea = rootView.findViewById(R.id.user_info_area)
+        nameView = rootView.findViewById(R.id.name_view)
+        levelArea = rootView.findViewById(R.id.level_area)
+        levelIv = rootView.findViewById(R.id.level_iv)
+        levelDesc = rootView.findViewById(R.id.level_desc)
+        audioView = rootView.findViewById(R.id.audio_view)
+        signTv = rootView.findViewById(R.id.sign_tv)
+        personTagView = rootView.findViewById(R.id.person_tag_view)
+        divider = rootView.findViewById(R.id.divider)
+
+        audioView.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View) {
+                if (isPlay) {
+                    // 暂停音乐
+                    stopPlay()
+                } else {
+                    // 播放音乐
+                    voiceInfoModel?.let {
+                        isPlay = true
+                        audioView.setPlay(true)
+                        SinglePlayer.startPlay(playTag, it.voiceURL)
+                    }
+                }
+            }
+        })
+
         // 关系
         relationView = rootView.findViewById(R.id.relation_view)
 
@@ -409,11 +409,6 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         // 帖子
         postArea = rootView.findViewById(R.id.post_area)
         postTitleTv = rootView.findViewById(R.id.post_title_tv)
-
-        // 作品
-        worksArea = rootView.findViewById(R.id.works_area)
-        worksTitleTv = rootView.findViewById(R.id.works_title_tv)
-        worksArea.visibility = View.GONE
 
         // 神曲
         feedsArea = rootView.findViewById(R.id.feeds_area)
@@ -438,12 +433,6 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
         postArea.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_POST)
-                    .withSerializable("userInfoModel", infoModel)
-                    .navigation()
-        }
-
-        worksArea.setDebounceViewClickListener {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_WORKS)
                     .withSerializable("userInfoModel", infoModel)
                     .navigation()
         }
@@ -493,6 +482,13 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
             imageBg.translationY = verticalOffset.toFloat()
             if (verticalOffset < 0) {
                 bottomBg.translationY = verticalOffset.toFloat()
+                if (abs(verticalOffset) >= srollDivider) {
+                    qinmiTv.alpha = 0f
+                } else {
+                    qinmiTv.alpha = 1 - abs(verticalOffset).toFloat() / srollDivider.toFloat()
+                }
+            } else {
+                qinmiTv.alpha = 1f
             }
             if (lastVerticalOffset != verticalOffset) {
                 lastVerticalOffset = verticalOffset
@@ -507,12 +503,6 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
                     if (toolbar.visibility != View.VISIBLE) {
                         toolbar.visibility = View.VISIBLE
                         toolbarLayout.visibility = View.VISIBLE
-                    }
-
-                    if (abs(verticalOffset) >= appBarLayout.totalScrollRange) {
-                        srlNameTv.alpha = 1f
-                    } else {
-                        srlNameTv.alpha = (abs(verticalOffset) - srollDivider).toFloat() / (appBarLayout.totalScrollRange - srollDivider).toFloat()
                     }
                 } else {
                     // TODO: 2019/4/8 过程中，可以加动画，先直接显示
@@ -663,7 +653,6 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
                 .build())
         nameView.setHonorText(infoModel.nicknameRemark, infoModel.honorInfo)
         signTv.text = infoModel.signature
-        srlNameTv.text = infoModel.nicknameRemark
 
         if (infoModel.ranking != null && LevelConfigUtils.getSmallImageResoucesLevel(infoModel.ranking?.mainRanking
                         ?: 0) != 0) {
@@ -696,7 +685,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
             qinmiTv.visibility = View.VISIBLE
             qinmiTv.text = qinMiCntTotal.toString()
         } else {
-            qinmiTv.visibility = View.GONE
+            qinmiTv.visibility = View.INVISIBLE
         }
 
         val clubMemberInfo = infoModel.clubInfo
