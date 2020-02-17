@@ -66,6 +66,7 @@ public class RelationFragment extends BaseFragment {
     int mFocusNum = 0;   // 关注数
 
     int mFrom = 0;  //默认为0，1为从赠送礼物来的
+    String mExtra = "";  //默认为0，1为从赠送礼物来的
 
     InviteFriendDialog mInviteFriendDialog;
 
@@ -151,7 +152,9 @@ public class RelationFragment extends BaseFragment {
             mTabLl.setVisibility(View.GONE);
             mRelationTab.setVisibility(View.INVISIBLE);
             mIvBack.setText("好友");
-            mTitleAndViewMap.put(0, new RelationView(getContext(), UserInfoManager.RELATION.FRIENDS.getValue(), mFrom));
+            RelationView relationView = new RelationView(getContext(), UserInfoManager.RELATION.FRIENDS.getValue(), mFrom);
+            relationView.mExtra = mExtra;
+            mTitleAndViewMap.put(0, relationView);
         } else {
             mTitleAndViewMap.put(0, new RelationView(getContext(), UserInfoManager.RELATION.FRIENDS.getValue(), mFrom));
             mTitleAndViewMap.put(1, new RelationView(getContext(), UserInfoManager.RELATION.FOLLOW.getValue(), mFrom));
@@ -325,6 +328,8 @@ public class RelationFragment extends BaseFragment {
     public void setData(int type, @org.jetbrains.annotations.Nullable Object data) {
         if (type == 1) {
             mFrom = (Integer) data;
+        } else if (type == 2) {
+            mExtra = (String) data;
         }
     }
 

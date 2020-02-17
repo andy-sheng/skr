@@ -3,7 +3,6 @@ package com.common.core.userinfo;
 import com.common.rxretrofit.ApiResult;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -448,4 +447,14 @@ public interface UserInfoServerApi {
 
     @PUT("/v1/mall/get-simple-relation-list")
     Call<ApiResult> getRelationInfo(@Body RequestBody body);
+
+    /**
+     * 查询跟别人的关系(cp,闺蜜等等)
+     * {
+     * "goodsID": 0,
+     * "otherUserID": 0
+     * }
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/mall/check-relation")
+    Observable<ApiResult> checkCardRelation(@Body RequestBody body);
 }

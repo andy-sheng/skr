@@ -8,8 +8,8 @@ import com.common.base.BaseActivity;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.R;
-import com.module.RouterConstants;
 import com.component.relation.fragment.RelationFragment;
+import com.module.RouterConstants;
 
 @Route(path = RouterConstants.ACTIVITY_RELATION)
 public class RelationActivity extends BaseActivity {
@@ -27,11 +27,13 @@ public class RelationActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         Bundle bundle = getIntent().getExtras();
         int from = getIntent().getIntExtra("from", 0);
+        String extra = getIntent().getStringExtra("extra");
         U.getFragmentUtils().addFragment(
                 FragmentUtils.newAddParamsBuilder(this, RelationFragment.class)
                         .setBundle(bundle)
                         .setAddToBackStack(false)
                         .addDataBeforeAdd(1, from)
+                        .addDataBeforeAdd(2, extra)
                         .setHasAnimation(false)
                         .build());
     }
