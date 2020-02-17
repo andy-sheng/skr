@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -91,9 +92,13 @@ class PackageView : ExConstraintLayout {
         productAdapter?.useEffectMethod = {
             if (it.goodsInfo?.displayType == MallActivity.Companion.MALL_TYPE.CARD.value) {
                 toRelationCardModel = it
+                val obj = JSONObject()
+                obj.put("packetItemID", it.packetItemID)
+                obj.put("goodsName", it.goodsInfo?.goodsName)
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_RELATION)
                         .withInt("from", 2)
+                        .withString("extra", obj.toJSONString())
                         .navigation()
             } else {
                 useEffect(it)
