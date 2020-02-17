@@ -5,11 +5,13 @@ import android.os.Looper
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.component.busilib.model.PartyRoomInfoModel
 
 import com.module.playways.R
 import com.module.playways.mic.home.FriendInviteViewHolder
 import com.module.playways.mic.home.RecommendMicViewHolder
 import com.module.playways.mic.home.RecommendUserInfo
+import com.module.playways.party.home.PartyRoomViewHolder
 
 import java.util.ArrayList
 
@@ -20,6 +22,7 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
     private val INVITE_FRIEND_TYPE = 0
     private val ROOM_GRAB_TYPE = 1
     private val ROOM_MIC_TYPE = 2
+    private val ROOM_PARTY_TYPE = 3
 
     private val REFRESH_PLAY = 1
     private val REFRESH_STOP = 2
@@ -40,6 +43,10 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
             ROOM_MIC_TYPE -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recommend_item_layout, parent, false)
                 RecommendMicViewHolder(view, mOnItemClickListener)
+            }
+            ROOM_PARTY_TYPE -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.party_room_view_item_layout, parent, false)
+                PartyRoomViewHolder(view, null, mOnItemClickListener)
             }
             else -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.friend_room_grab_item_layout, parent, false)
@@ -225,5 +232,7 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
         fun onClickMicVoice(model: RecommendRoomModel?, position: Int, userInfoModel: RecommendUserInfo?, childPos: Int)
 
         fun onClickInvite()
+
+        fun onClickPartyRoom(position: Int, model: RecommendRoomModel?)
     }
 }

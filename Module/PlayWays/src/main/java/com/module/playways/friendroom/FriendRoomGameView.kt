@@ -39,6 +39,7 @@ import com.module.playways.IFriendRoomView
 import com.module.playways.R
 import com.module.playways.mic.home.RecommendMicInfoModel
 import com.module.playways.mic.home.RecommendUserInfo
+import com.module.playways.party.home.PartyRoomView
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.friend_room_view_layout.view.*
 
@@ -100,6 +101,13 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
 
         recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         friendRoomAdapter = FriendRoomAdapter(object : FriendRoomAdapter.FriendRoomClickListener {
+            override fun onClickPartyRoom(position: Int, model: RecommendRoomModel?) {
+                model?.partyRoom?.roomID?.let {
+                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                    iRankingModeService.tryGoPartyRoom(it, 1, model.partyRoom?.roomtype ?: 0)
+                }
+            }
+
             override fun onClickInvite() {
                 showShareDialog()
             }
