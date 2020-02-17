@@ -30,7 +30,6 @@ import com.module.mall.event.ShowDefaultEffectEvent
 import com.module.mall.loadsir.MallEmptyCallBack
 import com.module.mall.model.PackageModel
 import com.module.mall.model.ProductModel
-import com.module.msg.IMsgService
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -93,7 +92,7 @@ class PackageView : ExConstraintLayout {
             if (it.goodsInfo?.displayType == MallActivity.Companion.MALL_TYPE.CARD.value) {
                 toRelationCardModel = it
                 val obj = JSONObject()
-                obj.put("packetItemID", it.packetItemID)
+                obj.put("goodsID", it.goodsInfo?.goodsID)
                 obj.put("goodsName", it.goodsInfo?.goodsName)
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_RELATION)
@@ -188,7 +187,7 @@ class PackageView : ExConstraintLayout {
                 U.getToastUtil().showShort("邀请成功")
                 // 生成一条邀请IM消息
                 var msgService = ModuleServiceManager.getInstance().msgService
-                msgService?.sendRelationInviteMsg(userID.toString(),obj.data.getString("uniqID"),obj.data.getString("msgContent"))
+                msgService?.sendRelationInviteMsg(userID.toString(), obj.data.getString("uniqID"), obj.data.getString("msgContent"))
             } else {
                 U.getToastUtil().showShort(obj.errmsg)
             }

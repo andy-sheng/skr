@@ -230,7 +230,7 @@ public class RelationView extends RelativeLayout {
         if (U.getStringUtils().isJSON(mExtra)) {
             JSONObject jsonObject = JSONObject.parseObject(mExtra);
             HashMap map = new HashMap();
-            map.put("goodsID", jsonObject.getIntValue("packetItemID"));
+            map.put("goodsID", jsonObject.getIntValue("goodsID"));
             map.put("otherUserID", userInfoModel.getUserId());
             RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
             ApiMethods.subscribe(userInfoServerApi.checkCardRelation(body), new ApiObserver<ApiResult>() {
