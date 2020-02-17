@@ -316,7 +316,7 @@ class PersonFragment6 : BaseFragment() {
                 val timeDesc = SpanUtils()
                         .append("还有").setForegroundColor(Color.parseColor("#CC8B572A"))
                         .append("${MyUserInfoManager.honorInfo?.leftDays}").setForegroundColor(Color.parseColor("#FF0000"))
-                        .append("天到期").setForegroundColor(Color.parseColor("#CC8B572"))
+                        .append("天到期").setForegroundColor(Color.parseColor("#CC8B572A"))
                         .create()
             } else {
                 openHonorIv.visibility = View.VISIBLE
