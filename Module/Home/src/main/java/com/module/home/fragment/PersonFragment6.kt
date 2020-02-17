@@ -25,6 +25,7 @@ import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
+import com.common.flutter.boost.FlutterBoostController
 import com.common.log.MyLog
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
@@ -540,7 +541,7 @@ class PersonFragment6 : BaseFragment() {
         feedTitleTv = rootView.findViewById(R.id.feed_title_tv)
 
         relationView?.setDebounceViewClickListener {
-            // todo 补一个flutter的界面
+            FlutterBoostController.openFlutterPage(activity!!,"MyRelationPage",null)
         }
 
         clubArea.setDebounceViewClickListener {

@@ -26,6 +26,7 @@ import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
+import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.MarqueeTextView
 import com.component.person.view.PersonTagView
 import com.facebook.drawee.view.SimpleDraweeView
@@ -131,6 +132,15 @@ class ClubHomepageActivity : BaseActivity() {
         clubNoticeTv = this.findViewById(R.id.club_notice_tv)
 
         functionArea = this.findViewById(R.id.function_area)
+        var inviteTv:View = this.findViewById(R.id.invite_tv)
+
+        inviteTv.setDebounceViewClickListener {
+            // TODO
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
+                    .withInt("from", GameModeType.FROM_JOIN_CLUB_INVITE)
+                    .navigation()
+        }
+
         applyTv = this.findViewById(R.id.apply_tv)
         applyRedIv = this.findViewById(R.id.apply_red_iv)
         memberTv = this.findViewById(R.id.member_tv)

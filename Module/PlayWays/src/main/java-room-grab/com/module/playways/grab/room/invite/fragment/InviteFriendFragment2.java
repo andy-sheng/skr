@@ -41,7 +41,6 @@ import java.util.HashMap;
 public class InviteFriendFragment2 extends BaseFragment {
     public final String TAG = "InviteFriendFragment2";
 
-
     SlidingTabLayout mInviteTab;
     NestViewPager mInviteVp;
     ExImageView mIvBack;
