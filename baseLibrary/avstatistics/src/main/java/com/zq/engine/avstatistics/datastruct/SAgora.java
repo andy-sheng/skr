@@ -156,7 +156,7 @@ public class SAgora //all struct related to Agora is defined here!
 
         public long totalAbsPCM =0; //用于保留计算的中间值，非log输出
 
-        public final static long STATISTIC_SPAN_SETTTING = 200; //ms 统计时间间隔的设定值
+        public final static long STATISTIC_SPAN_SETTTING = 1000; //ms 统计时间间隔的设定值
 
         public String toString() {
 

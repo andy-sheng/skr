@@ -1,5 +1,6 @@
 package com.common.videocache
 
+import android.text.TextUtils
 import com.common.log.MyLog
 import com.common.utils.U
 import com.danikula.videocache.HttpProxyCacheServer
@@ -60,12 +61,12 @@ object MediaCacheManager {
             val outFile = File(saveFile, fileNameGenerator.generate(url))
             val outFileTemp = File(saveFile, fileNameGenerator.generate(url) + ".temp")
             if (!outFile.exists() && !outFileTemp.exists()) {
-                val proxyUrl = httpProxyCacheServer.getProxyUrl(url, false)
+                val proxyUrl = httpProxyCacheServer.getProxyUrl(url, true)
                 val isNotCanceled: Boolean
                 synchronized(preCachingSet) {
                     isNotCanceled = preCachingSet .contains(url)
                 }
-                if (isNotCanceled) {
+                if (isNotCanceled && !proxyUrl.startsWith("file")) {
                     U.getHttpUtils().downloadFileSync(proxyUrl, null, true, null, maxSaveSize)
                 }
             }
