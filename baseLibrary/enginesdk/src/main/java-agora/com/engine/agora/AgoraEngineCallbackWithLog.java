@@ -304,6 +304,9 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onRemoteAudioStats(RemoteAudioStats stats) {
+        MyLog.d(TAG, "onRemoteAudioStats" + " uid=" + stats.uid +
+                " quality=" + stats.quality + " jitterBufferDelay=" + stats.jitterBufferDelay +
+                " networkTransportDelay=" + stats.networkTransportDelay + " loss=" + stats.audioLossRate);
 //        if(vLogShow) {
             SDataManager.getInstance().getDataHolder().addRemoteAudioStats(stats);
 //        }

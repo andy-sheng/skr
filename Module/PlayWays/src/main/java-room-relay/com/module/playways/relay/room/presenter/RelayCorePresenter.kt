@@ -76,7 +76,11 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         internal val MSG_TURN_CHANGE_PREPARE = 23 // 快到时间了 准备切换
 
         internal val MSG_MY_ACC_LOADING_FAILED = 24 // 我的伴奏下载失败
+
+        internal val MSG_TURN_PRECHANGE_VOLUME = 25 // 对轮次切换，提前进行音量调整
     }
+
+    internal var mEnablePreChangeVolume = true
 
     internal var mAbsenTimes = 0
 
@@ -102,6 +106,9 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 }
                 MSG_TURN_CHANGE_PREPARE -> {
                     turnChangePrepare()
+                }
+                MSG_TURN_PRECHANGE_VOLUME -> {
+                    turnPreChangeVolume(msg.obj as Boolean)
                 }
                 MSG_MY_ACC_LOADING_FAILED -> {
                     if (mRoomData.realRoundInfo?.roundSeq == msg.arg1) {
@@ -310,44 +317,76 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         roomView.turnMyChangePrepare()
     }
 
+    private fun fadeVolume(isPlayout: Boolean, isFadeIn: Boolean) {
+        val duration = 1000L
+        val fromVolume: Int
+        val toVolume:Int
+
+        if (isFadeIn) {
+            fromVolume = 0
+            toVolume = if (isPlayout) {
+                ZqEngineKit.getInstance().params.audioMixingPlayoutVolume
+            } else {
+                RelayRoomData.MUSIC_PUBLISH_VOLUME
+            }
+        } else {
+            toVolume = 0
+            fromVolume = if (isPlayout) {
+                ZqEngineKit.getInstance().params.audioMixingPlayoutVolume
+            } else {
+                RelayRoomData.MUSIC_PUBLISH_VOLUME
+            }
+        }
+
+        val animation = ValueAnimator.ofInt(fromVolume, toVolume)
+        animation.addUpdateListener {
+            val v = it.animatedValue as Int
+            if (isPlayout) {
+                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(v, false)
+            } else {
+                ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(v, false)
+            }
+        }
+        animation.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) {
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+                if (isPlayout) {
+                    ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(toVolume, false)
+                } else {
+                    ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(toVolume, false)
+                }
+            }
+
+            override fun onAnimationStart(animation: Animator?) {
+                if (isPlayout) {
+                    ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(toVolume, false)
+                } else {
+                    ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(toVolume, false)
+                }
+            }
+        })
+        animation.duration = duration
+        animation.start()
+    }
+
     private fun turnChange() {
         DebugLogView.println(TAG, "turnChange 开始轮换 progress=${mRoomData?.getSingCurPosition()}")
         if (mRoomData.isSingByMeNow()) {
             DebugLogView.println(TAG, "turnChange 当前是我唱 开启音量")
             if (mRoomData?.lastSingerID == mRoomData.peerUser?.userID) {
                 // 确实有切换，声音渐变处理
-                val animation1 = ValueAnimator.ofInt(0, ZqEngineKit.getInstance().params.audioMixingPlayoutVolume)
-                animation1.addUpdateListener {
-                    var v = it.animatedValue as Int
-                    ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(v, false)
+                if (mEnablePreChangeVolume) {
+                    // 到切换时间点再调高远端音量
+                    fadeVolume(isPlayout = false, isFadeIn = true)
+                } else {
+                    fadeVolume(isPlayout = true, isFadeIn = true)
+                    fadeVolume(isPlayout = false, isFadeIn = true)
                 }
-
-                val animation2 = ValueAnimator.ofInt(0, RelayRoomData.MUSIC_PUBLISH_VOLUME)
-                animation2.addUpdateListener {
-                    var v = it.animatedValue as Int
-                    ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(v, false)
-                }
-                val a = AnimatorSet()
-                a.duration = 1000
-                a.playTogether(animation1, animation2)
-                a.addListener(object : Animator.AnimatorListener {
-                    override fun onAnimationRepeat(animation: Animator?) {
-                    }
-
-                    override fun onAnimationStart(animation: Animator?) {
-                    }
-
-                    override fun onAnimationEnd(animation: Animator?) {
-                        ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(RelayRoomData.MUSIC_PUBLISH_VOLUME, false)
-                        ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(ZqEngineKit.getInstance().params.playbackSignalVolume, false)
-                    }
-
-                    override fun onAnimationCancel(animation: Animator?) {
-                        ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(RelayRoomData.MUSIC_PUBLISH_VOLUME, false)
-                        ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(ZqEngineKit.getInstance().params.playbackSignalVolume, false)
-                    }
-                })
-                a.start()
             } else {
                 ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(RelayRoomData.MUSIC_PUBLISH_VOLUME, false)
                 ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(ZqEngineKit.getInstance().params.playbackSignalVolume, false)
@@ -358,38 +397,13 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             if (mRoomData.realRoundInfo?.peerAccLoadingOk == true) {
                 if (mRoomData?.lastSingerID == MyUserInfoManager.uid.toInt()) {
                     // 确实有切换，声音渐变处理
-                    val animation1 = ValueAnimator.ofInt(ZqEngineKit.getInstance().params.audioMixingPlayoutVolume, 0)
-                    animation1.addUpdateListener {
-                        var v = it.animatedValue as Int
-                        ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(v, false)
+                    if (mEnablePreChangeVolume) {
+                        // 到切换时间点再调低本地音量
+                        fadeVolume(isPlayout = true, isFadeIn = false)
+                    } else {
+                        fadeVolume(isPlayout = true, isFadeIn = false)
+                        fadeVolume(isPlayout = false, isFadeIn = false)
                     }
-
-                    val animation2 = ValueAnimator.ofInt(RelayRoomData.MUSIC_PUBLISH_VOLUME, 0)
-                    animation2.addUpdateListener {
-                        var v = it.animatedValue as Int
-                        ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(v, false)
-                    }
-                    val a = AnimatorSet()
-                    a.duration = 1000
-                    a.playTogether(animation1, animation2)
-                    a.addListener(object : Animator.AnimatorListener {
-                        override fun onAnimationRepeat(animation: Animator?) {
-                        }
-
-                        override fun onAnimationStart(animation: Animator?) {
-                        }
-
-                        override fun onAnimationEnd(animation: Animator?) {
-                            ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
-                            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
-                        }
-
-                        override fun onAnimationCancel(animation: Animator?) {
-                            ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
-                            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
-                        }
-                    })
-                    a.start()
                 } else {
                     ZqEngineKit.getInstance().adjustAudioMixingPublishVolume(0, false)
                     ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(0, false)
@@ -405,17 +419,36 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
 
     private fun launcherNextTurn() {
         // 算出下一次轮次切换的时间
-        var nextTs = mRoomData.getNextTurnChangeTs()
+        val nextTs = mRoomData.getNextTurnChangeTs()
         if (nextTs > 0) {
             DebugLogView.println(TAG, "${nextTs}ms 后进行轮次切换")
-            if (mRoomData.getSingerIdNow() == mRoomData.peerUser?.userID) {
+            val nextIsMyTurn = mRoomData.getSingerIdNow() == mRoomData.peerUser?.userID
+            if (nextIsMyTurn) {
                 mUiHandler.removeMessages(MSG_TURN_CHANGE_PREPARE)
                 mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE_PREPARE, nextTs - 3000)
+            }
+            if (mEnablePreChangeVolume) {
+                mUiHandler.removeMessages(MSG_TURN_PRECHANGE_VOLUME)
+                val msg = mUiHandler.obtainMessage(MSG_TURN_PRECHANGE_VOLUME, nextIsMyTurn)
+                var delayTime = nextTs - 2000
+//                // 发送端再提前200ms降低音量（传输延迟）
+//                if (!nextIsMyTurn) delayTime -= 200
+                mUiHandler.sendMessageDelayed(msg, delayTime)
             }
             mUiHandler.removeMessages(MSG_TURN_CHANGE)
             mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE, nextTs)
         } else {
             DebugLogView.println(TAG, "${nextTs} 没有轮次切换了")
+        }
+    }
+
+    private fun turnPreChangeVolume(nextIsMyTurn: Boolean) {
+        if (nextIsMyTurn) {
+            DebugLogView.println(TAG, "马上到我了，提前调高本地伴奏音量")
+            fadeVolume(isPlayout = true, isFadeIn = true)
+        } else {
+            DebugLogView.println(TAG, "马上该对端了，提前调低远端伴奏音量")
+            fadeVolume(isPlayout = false, isFadeIn = false)
         }
     }
 
@@ -754,6 +787,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     private fun closeEngine() {
         if (mRoomData.gameId > 0) {
             ZqEngineKit.getInstance().stopAudioMixing()
+            mUiHandler.removeMessages(MSG_TURN_PRECHANGE_VOLUME)
             mUiHandler.removeMessages(MSG_TURN_CHANGE)
             mUiHandler.removeMessages(MSG_TURN_CHANGE_PREPARE)
             mUiHandler.removeMessages(MSG_LAUNER_MUSIC)
