@@ -29,7 +29,7 @@ public class RelationAdapter extends RecyclerView.Adapter {
     public static Drawable mFollowDrawable;  // 已关注
     public static Drawable mFriendDrawable;  // 好友
 
-    public int mFrom = 0;  //默认为0，1为从赠送礼物来的
+    public int mFrom = 0;  //默认为0，1为从赠送礼物来的,2为申请变成某种关系
 
     public RelationAdapter(int mode, RecyclerOnItemClickListener mRecyclerOnItemClickListener) {
         this.mMode = mode;
@@ -63,7 +63,7 @@ public class RelationAdapter extends RecyclerView.Adapter {
 
     public void setData(List<UserInfoModel> list) {
         mUserInfos.clear();
-        if(list!=null) {
+        if (list != null) {
             mUserInfos.addAll(list);
         }
         notifyDataSetChanged();

@@ -118,6 +118,7 @@ public class RelationView extends RelativeLayout {
                         .setUseOldFragmentIfExist(false)
                         .setBundle(bundle)
                         .addDataBeforeAdd(1, mFrom)
+                        .addDataBeforeAdd(2, mExtra)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
@@ -190,10 +191,6 @@ public class RelationView extends RelativeLayout {
                 loadData(0);
             }
         });
-
-        if (mFrom == 2) {
-            mSearchArea.setVisibility(View.GONE);
-        }
     }
 
     private void showGiveDialog(UserInfoModel userInfoModel) {
