@@ -22,6 +22,7 @@ import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.userinfo.event.RemarkChangeEvent
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
+import com.common.flutter.boost.FlutterBoostController
 import com.common.log.MyLog
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
@@ -416,6 +417,9 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
         relationView?.setDebounceViewClickListener {
             // todo 补一个flutter的界面
+            FlutterBoostController.openFlutterPage(activity!!,"OtherRelationPage", mutableMapOf(
+                    "targetId" to userId
+            ))
         }
 
         clubArea.setDebounceViewClickListener {
