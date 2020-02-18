@@ -146,6 +146,7 @@ public class ClubInviteMsg extends MessageContent {
     public void writeToParcel(Parcel dest, int flags) {
         ParcelUtils.writeToParcel(dest, this.content);
         ParcelUtils.writeToParcel(dest, this.uniqID);
+        ParcelUtils.writeToParcel(dest, this.expireAt);
         ParcelUtils.writeToParcel(dest, this.getUserInfo());
         ParcelUtils.writeToParcel(dest, this.getMentionedInfo());
         ParcelUtils.writeToParcel(dest, this.isDestruct() ? 1 : 0);
@@ -155,6 +156,7 @@ public class ClubInviteMsg extends MessageContent {
     public ClubInviteMsg(Parcel in) {
         this.setContent(ParcelUtils.readFromParcel(in));
         this.setUniqID(ParcelUtils.readFromParcel(in));
+        this.setExpireAt(ParcelUtils.readLongFromParcel(in));
         this.setUserInfo((UserInfo)ParcelUtils.readFromParcel(in, UserInfo.class));
         this.setMentionedInfo((MentionedInfo)ParcelUtils.readFromParcel(in, MentionedInfo.class));
         this.setDestruct(ParcelUtils.readIntFromParcel(in) == 1);
