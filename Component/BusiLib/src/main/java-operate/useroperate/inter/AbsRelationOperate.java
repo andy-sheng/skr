@@ -1,8 +1,10 @@
 package useroperate.inter;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import com.common.base.BaseActivity;
+import com.common.callback.Callback;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -45,7 +47,17 @@ public abstract class AbsRelationOperate implements IOperateStub<UserInfoModel> 
                     @Override
                     public void clickValid(View v) {
                         if (mOnClickListener != null) {
-                            mOnClickListener.click(mBaseActivityWeakReference, v, position, userInfoModel);
+                            mOnClickListener.clickRelationBtn(mBaseActivityWeakReference, v, position, userInfoModel, new Callback<String>() {
+                                @Override
+                                public void onCallback(int r, String obj) {
+                                    if (r == 1) {
+                                        if (!TextUtils.isEmpty(obj)) {
+                                            mFollowTv.setText(obj);
+                                            mFollowTv.setEnabled(false);
+                                        }
+                                    }
+                                }
+                            });
                         }
                     }
                 });
@@ -64,6 +76,6 @@ public abstract class AbsRelationOperate implements IOperateStub<UserInfoModel> 
     }
 
     public interface ClickListener {
-        void click(WeakReference<BaseActivity> weakReference, View view, int pos, UserInfoModel userInfoModel);
+        void clickRelationBtn(WeakReference<BaseActivity> weakReference, View view, int pos, UserInfoModel userInfoModel, Callback<String> callback);
     }
 }

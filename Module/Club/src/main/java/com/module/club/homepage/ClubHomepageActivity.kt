@@ -12,21 +12,21 @@ import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.callback.Callback
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.ClubMemberInfo
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
-import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.MarqueeTextView
 import com.component.person.view.PersonTagView
 import com.facebook.drawee.view.SimpleDraweeView
@@ -49,10 +49,15 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import useroperate.OperateFriendActivity
+import useroperate.def.DefaultFansOperateStub
+import useroperate.def.DefaultFriendOperateStub
+import useroperate.inter.AbsRelationOperate
+import useroperate.inter.IOperateStub
+import java.lang.ref.WeakReference
 import kotlin.math.abs
 
-class ClubHomepageActivity : BaseActivity() {
-
+class ClubHomepageActivity : BaseActivity(), AbsRelationOperate.ClickListener {
     private val SP_KEY_APPLY_WATER_LEVEL = "sp_key_apply_water_level"               // 申请水位
     private val SP_KEY_APPLY_WATER_LEVEL_CLUBID = "sp_key_apply_water_level_clubid" // 申请水位对应的clubID
 
@@ -136,31 +141,11 @@ class ClubHomepageActivity : BaseActivity() {
         var inviteTv:View = this.findViewById(R.id.invite_tv)
 
         inviteTv.setDebounceViewClickListener {
-            // TODO
-            var userId = 1738030
-            launch {
-                val map = mapOf(
-                        "toUserID" to userId
-                )
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                val result = subscribe(RequestControl("sendInvitation", ControlType.CancelThis)) {
-                    clubServerApi.sendInvitation(body)
-                }
-                if (result.errno == 0) {
-                    U.getToastUtil().showShort("发送邀请成功")
-                    ModuleServiceManager.getInstance().msgService.sendClubInviteMsg(userId.toString()
-                            , result.data.getString("invitationID")
-                            , result.data.getLongValue("expireAt")
-                            , result.data.getString("content")
-                    )
-                } else {
-                    U.getToastUtil().showShort(result.errmsg)
-                }
-            }
-
-//            ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
-//                    .withInt("from", GameModeType.FROM_JOIN_CLUB_INVITE)
-//                    .navigation()
+            val list = mutableListOf<IOperateStub<UserInfoModel>>(
+                    DefaultFriendOperateStub("邀请", ClubHomepageActivity@ this),
+                    DefaultFansOperateStub("邀请", ClubHomepageActivity@ this)
+            )
+            OperateFriendActivity.open(ClubHomepageActivity@this, list)
         }
 
         applyTv = this.findViewById(R.id.apply_tv)
@@ -226,6 +211,29 @@ class ClubHomepageActivity : BaseActivity() {
             memberView?.initData()
         } else {
             checkApplyRed()
+        }
+    }
+
+    override fun clickRelationBtn(weakReference: WeakReference<BaseActivity>?, view: View?, pos: Int, userInfoModel: UserInfoModel?, callback: Callback<String>?) {
+        launch {
+            val map = mapOf(
+                    "toUserID" to userInfoModel?.userId
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("sendInvitation", ControlType.CancelThis)) {
+                clubServerApi.sendInvitation(body)
+            }
+            if (result.errno == 0) {
+                U.getToastUtil().showShort("发送邀请成功")
+                ModuleServiceManager.getInstance().msgService.sendClubInviteMsg(userInfoModel?.userId?.toString()
+                        , result.data.getString("invitationID")
+                        , result.data.getLongValue("expireAt")
+                        , result.data.getString("content")
+                )
+                callback?.onCallback(1,"已邀请")
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
         }
     }
 

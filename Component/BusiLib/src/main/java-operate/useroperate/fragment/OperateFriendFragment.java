@@ -18,6 +18,7 @@ import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,10 +34,10 @@ public class OperateFriendFragment extends BaseFragment {
     ExImageView mIvBack;
     List<IOperateStub<UserInfoModel>> mIOperateStubList;
 
-    HashMap<Integer, String> mTitleList = new HashMap<>();
-    HashMap<Integer, OperateFriendView> mTitleAndViewMap = new HashMap<>();
+//    HashMap<Integer, String> mTitleList = new HashMap<>();
+//    HashMap<Integer, OperateFriendView> mTitleAndViewMap = new HashMap<>();
     PagerAdapter mTabPagerAdapter;
-
+    List<OperateFriendView>  mOperateFriendViews= new ArrayList<>();
     @Override
     public int initView() {
         return R.layout.operate_friend_fragment;
@@ -62,24 +63,22 @@ public class OperateFriendFragment extends BaseFragment {
         mInviteTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(28));
         mInviteTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(14));
 
+        mOperateFriendViews.clear();
         for (IOperateStub<UserInfoModel> stub : mIOperateStubList) {
             switch (stub.getFriendType()) {
                 case 0:
-                    mTitleList.put(0, stub.getTitle());
-                    mTitleAndViewMap.put(0, new OperateFriendView(this, UserInfoManager.RELATION.FRIENDS.getValue(), stub));
+                    mOperateFriendViews.add(new OperateFriendView(this, UserInfoManager.RELATION.FRIENDS.getValue(), stub));
                     break;
                 case 1:
-                    mTitleList.put(1, stub.getTitle());
-                    mTitleAndViewMap.put(1, new OperateFriendView(this, UserInfoManager.RELATION.FOLLOW.getValue(), stub));
+                    mOperateFriendViews.add( new OperateFriendView(this, UserInfoManager.RELATION.FOLLOW.getValue(), stub));
                     break;
                 case 2:
-                    mTitleList.put(2, stub.getTitle());
-                    mTitleAndViewMap.put(2, new OperateFriendView(this, UserInfoManager.RELATION.FANS.getValue(), stub));
+                    mOperateFriendViews.add( new OperateFriendView(this, UserInfoManager.RELATION.FANS.getValue(), stub));
                     break;
             }
         }
 
-        if (mTitleList.size() > 1) {
+        if (mOperateFriendViews.size() > 1) {
             mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
         } else {
             mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.transparent));
@@ -97,7 +96,7 @@ public class OperateFriendFragment extends BaseFragment {
             @Override
             public Object instantiateItem(@NonNull ViewGroup container, int position) {
                 MyLog.d(TAG, "instantiateItem" + " container=" + container + " position=" + position);
-                View view = mTitleAndViewMap.get(position);
+                View view = mOperateFriendViews.get(position);
                 if (container.indexOfChild(view) == -1) {
                     container.addView(view);
                 }
@@ -107,12 +106,13 @@ public class OperateFriendFragment extends BaseFragment {
             @Nullable
             @Override
             public CharSequence getPageTitle(int position) {
-                return mTitleList.get(position);
+
+                return mOperateFriendViews.get(position).stub.getTitle();
             }
 
             @Override
             public int getCount() {
-                return mTitleAndViewMap.size();
+                return mOperateFriendViews.size();
             }
 
             @Override

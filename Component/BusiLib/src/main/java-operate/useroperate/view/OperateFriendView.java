@@ -50,6 +50,7 @@ public class OperateFriendView extends RelativeLayout implements IOperateFriendV
 
     BaseFragment mBaseFragment;
     LoadService mLoadService;
+    public IOperateStub stub;
 
     public OperateFriendView(BaseFragment fragment, int mode, IOperateStub<UserInfoModel> stub) {
         super(fragment.getContext());
@@ -59,6 +60,7 @@ public class OperateFriendView extends RelativeLayout implements IOperateFriendV
     private void init(BaseFragment fragment, int mode, IOperateStub<UserInfoModel> stub) {
         this.mBaseFragment = fragment;
         this.mMode = mode;
+        this.stub = stub;
         inflate(fragment.getContext(), R.layout.operate_view_layout, this);
 
         mRefreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);

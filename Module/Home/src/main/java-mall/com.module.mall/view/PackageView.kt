@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.callback.Callback
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.rxretrofit.*
 import com.common.utils.U
@@ -149,11 +150,12 @@ class PackageView : ExConstraintLayout, AbsRelationOperate.ClickListener {
         mLoadService = mLoadSir.register(refreshLayout) { tryLoad() }
     }
 
-    override fun click(weakReference: WeakReference<BaseActivity>?, view: View?, pos: Int, userInfoModel: UserInfoModel?) {
+    override fun clickRelationBtn(weakReference: WeakReference<BaseActivity>?, view: View?, pos: Int, userInfoModel: UserInfoModel?, callback: Callback<String>?) {
         userInfoModel?.let {
             checkRelation(userInfoModel, weakReference)
         }
     }
+
 
     private fun checkRelation(userInfoModel: UserInfoModel, weakReference: WeakReference<BaseActivity>?) {
         val map = mutableMapOf("goodsID" to toRelationCardModel?.goodsInfo?.goodsID, "otherUserID" to userInfoModel.userId)

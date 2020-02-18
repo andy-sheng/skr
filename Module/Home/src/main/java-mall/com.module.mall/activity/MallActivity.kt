@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.base.FragmentDataListener
+import com.common.callback.Callback
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
@@ -39,7 +40,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import useroperate.OperateFriendActivity
-import useroperate.def.DefaultFanOperateStub
+import useroperate.def.DefaultFansOperateStub
 import useroperate.def.DefaultFollowOperateStub
 import useroperate.def.DefaultFriendOperateStub
 import useroperate.inter.AbsRelationOperate
@@ -51,6 +52,7 @@ import kotlin.collections.set
 
 @Route(path = RouterConstants.ACTIVITY_MALL_MALL)
 class MallActivity : BaseActivity(), AbsRelationOperate.ClickListener {
+
     lateinit var title: CommonTitleBar
     lateinit var btnBack: ImageView
     lateinit var mallTv: ExTextView
@@ -257,14 +259,14 @@ class MallActivity : BaseActivity(), AbsRelationOperate.ClickListener {
 
         val list = mutableListOf<IOperateStub<UserInfoModel>>(DefaultFriendOperateStub("赠送", PackageView@ this)
                 , DefaultFollowOperateStub("赠送", PackageView@ this)
-                , DefaultFanOperateStub("赠送", PackageView@ this))
+                , DefaultFansOperateStub("赠送", PackageView@ this))
 
         OperateFriendActivity.open(this, list)
 
         EventBus.getDefault().postSticky(SelectMallStickyEvent(event.productModel, event.price))
     }
 
-    override fun click(weakReference: WeakReference<BaseActivity>?, view: View?, pos: Int, userInfoModel: UserInfoModel?) {
+    override fun clickRelationBtn(weakReference: WeakReference<BaseActivity>?, view: View?, pos: Int, userInfoModel: UserInfoModel?, callback: Callback<String>?) {
         userInfoModel?.let {
             showGiveDialog(it, weakReference)
         }
