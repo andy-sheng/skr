@@ -196,6 +196,7 @@ class PackageView : ExConstraintLayout, AbsRelationOperate.ClickListener {
                         if (tipsDialogView != null) {
                             tipsDialogView?.dismiss(false)
                         }
+                        tipsDialogView = null
                     }
                     .setCancelTip("取消")
                     .setConfirmBtnClickListener {

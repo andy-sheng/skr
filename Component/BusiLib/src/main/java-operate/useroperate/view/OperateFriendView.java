@@ -1,5 +1,6 @@
 package useroperate.view;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -8,11 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.utils.FragmentUtils;
+import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
+import com.component.relation.fragment.SearchFriendFragment;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -26,6 +31,7 @@ import useroperate.adapter.OperateFirendAdapter;
 import useroperate.callback.OperateFansEmptyCallback;
 import useroperate.callback.OperateFollowEmptyCallback;
 import useroperate.callback.OperateFriendsEmptyCallback;
+import useroperate.fragment.OperateSearchFragment;
 import useroperate.inter.IOperateFriendView;
 import useroperate.inter.IOperateStub;
 
@@ -67,18 +73,16 @@ public class OperateFriendView extends RelativeLayout implements IOperateFriendV
 
             @Override
             public void onClickSearch() {
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_FROM, mFrom);
-//                bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_MODE, mMode);
-//                bundle.putSerializable(InviteSearchFragment.INVITE_ROOM_ID, mRoomID);
-//                bundle.putSerializable(InviteSearchFragment.INVITE_TAG_ID, mTagID);
-//                U.getFragmentUtils().addFragment(FragmentUtils
-//                        .newAddParamsBuilder((BaseActivity) getContext(), InviteSearchFragment.class)
-//                        .setUseOldFragmentIfExist(false)
-//                        .setBundle(bundle)
-//                        .setAddToBackStack(true)
-//                        .setHasAnimation(true)
-//                        .build());
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(SearchFriendFragment.BUNDLE_SEARCH_MODE, mMode);
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newAddParamsBuilder((BaseActivity) getContext(), OperateSearchFragment.class)
+                        .setUseOldFragmentIfExist(false)
+                        .setBundle(bundle)
+                        .addDataBeforeAdd(1, stub)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
             }
         }, true, stub, mMode);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

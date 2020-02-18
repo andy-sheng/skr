@@ -231,6 +231,8 @@ public class OperateFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerVie
     public interface OnInviteClickListener {
         void onClick(UserInfoModel model, ExTextView view);
 
-        void onClickSearch();
+        default void onClickSearch() {
+
+        }
     }
 }
