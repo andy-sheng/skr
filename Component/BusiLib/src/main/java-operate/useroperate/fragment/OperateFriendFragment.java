@@ -10,9 +10,6 @@ import android.view.ViewGroup;
 import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
-import useroperate.OperateFriendActivity;
-import useroperate.inter.IOperateStub;
-import useroperate.view.OperateFriendView;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -23,6 +20,10 @@ import com.component.busilib.R;
 
 import java.util.HashMap;
 import java.util.List;
+
+import useroperate.OperateFriendActivity;
+import useroperate.inter.IOperateStub;
+import useroperate.view.OperateFriendView;
 
 public class OperateFriendFragment extends BaseFragment {
     public final String TAG = "OperateFriendFragment";
@@ -51,14 +52,6 @@ public class OperateFriendFragment extends BaseFragment {
         mInviteTab = getRootView().findViewById(R.id.invite_tab);
         mInviteVp = getRootView().findViewById(R.id.invite_vp);
         mIvBack = getRootView().findViewById(R.id.iv_back);
-
-//        mInviteTab.setCustomTabView(R.layout.operate_tab_view, R.id.tab_tv);
-//        mInviteTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
-//        mInviteTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE);
-//        mInviteTab.setIndicatorWidth(U.getDisplayUtils().dip2px(67));
-//        mInviteTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(12));
-//        mInviteTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(28));
-//        mInviteTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(14));
 
         mInviteTab.setCustomTabView(R.layout.operate_tab_view, R.id.tab_tv);
         mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));

@@ -45,6 +45,10 @@ class OperateFriendActivity : BaseActivity() {
         operateList = null
     }
 
+    override fun canSlide(): Boolean {
+        return false
+    }
+
     override fun useEventBus(): Boolean {
         return false
     }
