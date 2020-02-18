@@ -30,13 +30,10 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
     int position;
     UserInfoModel userInfoModel;
 
-    public int mFrom = 0;  //默认为0，1为从赠送礼物来的
-
-    public RelationHolderView(View itemView, int mode, final RecyclerOnItemClickListener recyclerOnItemClickListener, int from) {
+    public RelationHolderView(View itemView, int mode, final RecyclerOnItemClickListener recyclerOnItemClickListener) {
         super(itemView);
 
         this.mMode = mode;
-        this.mFrom = from;
         mContent = itemView.findViewById(R.id.content);
         mAvatarIv = itemView.findViewById(R.id.avatar_iv);
         mNickNameTv = itemView.findViewById(R.id.nickname_tv);
@@ -62,27 +59,6 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                 }
             }
         });
-
-        if (mFrom == 1) {
-            mSendTv.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    if (recyclerOnItemClickListener != null) {
-                        recyclerOnItemClickListener.onItemClicked(mSendTv, position, userInfoModel);
-                    }
-                }
-            });
-            mSendTv.setVisibility(View.VISIBLE);
-
-            mContent.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    if (recyclerOnItemClickListener != null) {
-                        recyclerOnItemClickListener.onItemClicked(mSendTv, position, userInfoModel);
-                    }
-                }
-            });
-        }
     }
 
     public void bind(int position, UserInfoModel userInfoModel) {
@@ -127,10 +103,6 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                     mFollowTv.setVisibility(View.GONE);
                 }
             }
-        }
-
-        if (mFrom == 1) {
-            mFollowTv.setVisibility(View.GONE);
         }
 
         // 只是关心在线和离线

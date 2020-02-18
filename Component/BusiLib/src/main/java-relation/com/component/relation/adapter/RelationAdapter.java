@@ -29,8 +29,6 @@ public class RelationAdapter extends RecyclerView.Adapter {
     public static Drawable mFollowDrawable;  // 已关注
     public static Drawable mFriendDrawable;  // 好友
 
-    public int mFrom = 0;  //默认为0，1为从赠送礼物来的,2为申请变成某种关系
-
     public RelationAdapter(int mode, RecyclerOnItemClickListener mRecyclerOnItemClickListener) {
         this.mMode = mode;
         this.mRecyclerOnItemClickListener = mRecyclerOnItemClickListener;
@@ -77,7 +75,7 @@ public class RelationAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.relation_view_holder_item, parent, false);
-        RelationHolderView viewHolder = new RelationHolderView(view, mMode, mRecyclerOnItemClickListener, mFrom);
+        RelationHolderView viewHolder = new RelationHolderView(view, mMode, mRecyclerOnItemClickListener);
         return viewHolder;
     }
 

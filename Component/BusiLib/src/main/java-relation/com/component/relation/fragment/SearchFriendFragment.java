@@ -130,7 +130,6 @@ public class SearchFriendFragment extends BaseFragment {
                 }
             }
         });
-        mRelationAdapter.mFrom = mFrom;
         mRecyclerView.setAdapter(mRelationAdapter);
 
         if (mMode == UserInfoManager.RELATION.FANS.getValue()) {

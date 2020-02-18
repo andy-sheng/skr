@@ -35,8 +35,6 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import useroperate.OperateFriendActivity
-import useroperate.def.DefaultFanOperateStub
-import useroperate.def.DefaultFollowOperateStub
 import useroperate.def.DefaultFriendOperateStub
 import useroperate.inter.AbsRelationOperate
 import useroperate.inter.IOperateStub
@@ -103,10 +101,7 @@ class PackageView : ExConstraintLayout, AbsRelationOperate.ClickListener {
 //                        .withInt("from", 2)
 //                        .withString("extra", obj.toJSONString())
 //                        .navigation()
-                val list = mutableListOf<IOperateStub<UserInfoModel>>(DefaultFriendOperateStub("邀请", PackageView@ this)
-                        , DefaultFollowOperateStub("邀请", PackageView@ this)
-                        , DefaultFanOperateStub("邀请", PackageView@ this))
-
+                val list = mutableListOf<IOperateStub<UserInfoModel>>(DefaultFriendOperateStub("邀请", PackageView@ this))
                 OperateFriendActivity.open(context as BaseActivity, list)
             } else {
                 useEffect(it)
