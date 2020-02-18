@@ -1,5 +1,6 @@
 package com.module.feeds.watch.watchview
 
+import android.content.Context
 import android.view.View
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, val callBack: RequestCallBack?) : BaseWatchView(fragment, TYPE_PERSON), IPersonFeedsWall {
+class PersonWatchView(context: Context, var userInfoModel: UserInfoModel, val callBack: RequestCallBack?) : BaseWatchView(context, TYPE_PERSON), IPersonFeedsWall {
 
 
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
@@ -45,13 +46,13 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
 
     override fun clickMore(position: Int, it: FeedsWatchModel) {
         if (userInfoModel.userId.toLong() == MyUserInfoManager.uid) {
-            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_PERSON, it, null)
+            mFeedsMoreDialogView = FeedsMoreDialogView(U.getActivityUtils().topActivity, FeedsMoreDialogView.FROM_PERSON, it, null)
                     .apply {
                         mCopyReportTv.text = "删除"
                         mCopyReportTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
                                 dismiss(false)
-                                mTipsDialogView = TipsDialogView.Builder(fragment.activity)
+                                mTipsDialogView = TipsDialogView.Builder(context)
                                         .setMessageTip("是否确定删除该神曲")
                                         .setConfirmTip("确认删除")
                                         .setCancelTip("取消")
@@ -72,7 +73,7 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
                         })
                     }
         } else {
-            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_OTHER_PERSON, it, null)
+            mFeedsMoreDialogView = FeedsMoreDialogView(U.getActivityUtils().topActivity, FeedsMoreDialogView.FROM_OTHER_PERSON, it, null)
         }
         mFeedsMoreDialogView?.showByDialog()
     }

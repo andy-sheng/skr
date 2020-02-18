@@ -14,8 +14,8 @@ import com.module.feeds.watch.watchview.PersonWatchView
 
 @Route(path = RouterConstants.SERVICE_FEEDS, name = "测试服务")
 class FeedsServiceImpl : IFeedsModuleService {
-    override fun getPersonFeedsWall(basefragment: Any?, userInfo: Any?, requestCall: Any?): IPersonFeedsWall {
-        return PersonWatchView(basefragment as BaseFragment, userInfo as UserInfoModel, requestCall as RequestCallBack)
+    override fun getPersonFeedsWall(context: Any?, userInfo: Any?, requestCall: Any?): IPersonFeedsWall {
+        return PersonWatchView(context as Context, userInfo as UserInfoModel, requestCall as RequestCallBack?)
     }
 
     val TAG = "FeedsServiceImpl"

@@ -45,8 +45,8 @@ class FeedsWatchFragment : BaseFragment() {
     private lateinit var mFeedVp: NestViewPager
     private lateinit var mTabPagerAdapter: PagerAdapter
 
-    val mFollowFeedsView: FollowWatchView by lazy { FollowWatchView(this) }       //关注
-    val mRecommendFeedsView: RecommendWatchView by lazy { RecommendWatchView(this) }   //推荐
+    val mFollowFeedsView: FollowWatchView by lazy { FollowWatchView(context!!) }       //关注
+    val mRecommendFeedsView: RecommendWatchView by lazy { RecommendWatchView(context!!) }   //推荐
     val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
     val initPostion = 1
     // 保持 init Postion 一致

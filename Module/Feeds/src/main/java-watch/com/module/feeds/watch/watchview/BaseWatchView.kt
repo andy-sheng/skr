@@ -1,5 +1,6 @@
 package com.module.feeds.watch.watchview
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -67,7 +68,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
-abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayout(fragment.context!!), CoroutineScope by MainScope() {
+abstract class BaseWatchView(context: Context, val type: Int) : ConstraintLayout(context), CoroutineScope by MainScope() {
     val TAG = when (type) {
         TYPE_PERSON -> "PersonWatchView"
         TYPE_FOLLOW -> "FollowWatchView"
@@ -164,7 +165,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             override fun onClickShareListener(position: Int, watchModel: FeedsWatchModel?) {
                 // 分享
                 watchModel?.let {
-                    mSharePanel = SharePanel(fragment.activity)
+                    mSharePanel = SharePanel(U.getActivityUtils().topActivity)
                             .apply {
                                 mTitle = it.song?.workName
                                 mDes = it.user?.nickname
@@ -344,7 +345,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         if (watchModel != null && watchModel.status == 2) {
             isSeleted = false
             startPlay(position, watchModel)
-            fragment.activity?.let { fragmentActivity ->
+            U.getActivityUtils().topActivity?.let { fragmentActivity ->
                 var from = FeedPage.UNKNOW
                 when (type) {
                     TYPE_RECOMMEND -> from = FeedPage.DETAIL_FROM_RECOMMEND

@@ -657,7 +657,7 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
                     UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo());
                     if (mFeedsWallView == null) {
                         IFeedsModuleService feedsModuleService = ModuleServiceManager.getInstance().getFeedsService();
-                        mFeedsWallView = feedsModuleService.getPersonFeedsWall(PersonFragment5.this, userInfoModel, PersonFragment5.this);
+                        mFeedsWallView = feedsModuleService.getPersonFeedsWall(getContext(), userInfoModel, PersonFragment5.this);
                     }
                     View childView = (View) mFeedsWallView;
                     if (container.indexOfChild(childView) == -1) {

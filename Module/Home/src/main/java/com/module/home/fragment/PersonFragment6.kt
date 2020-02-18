@@ -572,6 +572,7 @@ class PersonFragment6 : BaseFragment() {
         feedsArea.setDebounceViewClickListener {
             // todo神曲做么
             ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_FEED)
+                    .withSerializable("userInfoModel",  MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo))
                     .navigation()
         }
     }

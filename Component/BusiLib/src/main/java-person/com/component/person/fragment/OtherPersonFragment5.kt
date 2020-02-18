@@ -440,6 +440,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         feedsArea.setDebounceViewClickListener {
             // todo神曲做么
             ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_FEED)
+                    .withSerializable("userInfoModel", infoModel)
                     .navigation()
         }
     }
