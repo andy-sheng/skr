@@ -273,6 +273,7 @@ class MallActivity : BaseActivity(), AbsRelationOperate.ClickListener {
     private fun showGiveDialog(userInfoModel: UserInfoModel, weakReference: WeakReference<BaseActivity>?) {
         if (tipsDialogView != null) {
             tipsDialogView?.dismiss(false)
+            tipsDialogView = null
         }
 
         val channelService = ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation() as IHomeService

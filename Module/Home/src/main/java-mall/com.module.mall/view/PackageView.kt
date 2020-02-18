@@ -187,6 +187,7 @@ class PackageView : ExConstraintLayout, AbsRelationOperate.ClickListener {
     private fun showInviteCardDialog(userInfoModel: UserInfoModel, msg: String, weakReference: WeakReference<BaseActivity>?) {
         if (tipsDialogView != null) {
             tipsDialogView?.dismiss(false)
+            tipsDialogView = null
         }
 
         weakReference?.get()?.let {
