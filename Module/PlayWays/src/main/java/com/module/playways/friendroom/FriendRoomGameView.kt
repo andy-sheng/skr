@@ -66,7 +66,7 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
     var mRecommendTimer: HandlerTaskTimer? = null
     var mRecommendInterval: Int = 0
 
-    var mLoadService: LoadService<*>
+//    var mLoadService: LoadService<*>
     var mInviteFriendDialog: InviteFriendDialog? = null
 
     internal var mLastLoadDateTime: Long = 0    //记录上次获取接口的时间
@@ -220,12 +220,12 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
         }
         SinglePlayer.addCallback(playerTag, playCallback)
 
-        val mLoadSir = LoadSir.Builder()
-                .addCallback(EmptyCallback(R.drawable.more_friend_empty_icon, "暂时没有房间了～", "#FFFFFF"))
-                .build()
-        mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
-            initData(true)
-        })
+//        val mLoadSir = LoadSir.Builder()
+//                .addCallback(EmptyCallback(R.drawable.more_friend_empty_icon, "暂时没有房间了～", "#FFFFFF"))
+//                .build()
+//        mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
+//            initData(true)
+//        })
     }
 
     fun showShareDialog() {
@@ -408,11 +408,11 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
             }
         }
 
-        if (!friendRoomAdapter?.mDataList.isNullOrEmpty()) {
-            mLoadService.showSuccess()
-        } else {
-            mLoadService.showCallback(EmptyCallback::class.java)
-        }
+//        if (!friendRoomAdapter?.mDataList.isNullOrEmpty()) {
+//            mLoadService.showSuccess()
+//        } else {
+//            mLoadService.showCallback(EmptyCallback::class.java)
+//        }
     }
 
     override fun onDetachedFromWindow() {

@@ -13,8 +13,8 @@ interface PartyRoomServerApi {
      * 搜索主题房
      *
      */
-    @GET("http://dev.api.inframe.mobi/v1/club/search-club")
-    fun searchPartyRoom(@Query("keyword") keyword: String): Observable<ApiResult>
+    @PUT("http://dev.api.inframe.mobi/v1/partyroom/search")
+    fun searchPartyRoom(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 快速加入房间 { ERM_SING_PK = 1 : K歌 模式 - ERM_GMAE_PK = 2 : 游戏PK 模式 - ERM_MAKE_FRIEND = 3 : 相亲交友 模式string}
