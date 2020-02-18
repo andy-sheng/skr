@@ -2,8 +2,10 @@ package com.component.person.utils
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.drawable.DrawableCreator
+import com.component.busilib.R
 import com.component.person.model.RelationInfo
 
 object RelationResUtils {
@@ -21,42 +23,12 @@ object RelationResUtils {
 
     fun getDrawable(relationType: Int?): Drawable? {
         return when (relationType) {
-            RelationInfo.DJK_CP -> cpDrawable
-            RelationInfo.DJK_Bai_Shi -> shituDrawable
-            RelationInfo.DJK_Shou_Tu -> shituDrawable
-            RelationInfo.DJK_Gui_Mi -> guimiDrawable
-            RelationInfo.DJK_Ji_You -> jiyouDrawable
+            RelationInfo.DJK_CP -> U.getDrawable(R.drawable.relation_cp_icon)
+            RelationInfo.DJK_Bai_Shi -> U.getDrawable(R.drawable.relation_shifu_icon)
+            RelationInfo.DJK_Shou_Tu -> U.getDrawable(R.drawable.relation_tudi_icon)
+            RelationInfo.DJK_Gui_Mi -> U.getDrawable(R.drawable.relation_guimi_icon)
+            RelationInfo.DJK_Ji_You -> U.getDrawable(R.drawable.relation_jiyou_icon)
             else -> null
         }
     }
-
-    // cp按钮背景
-    val cpDrawable: Drawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#FF8AB6"))
-            .setCornersRadius(4.dp().toFloat())
-            .build()
-
-    // 师徒按钮背景
-    val shituDrawable: Drawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#B1AC99"))
-            .setCornersRadius(4.dp().toFloat())
-            .build()
-
-    // 守护标签背景
-    val guardDrawable: Drawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#7088FF"))
-            .setCornersRadius(4.dp().toFloat())
-            .build()
-
-    // 闺蜜标签背景
-    val guimiDrawable: Drawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#E55088"))
-            .setCornersRadius(4.dp().toFloat())
-            .build()
-
-    // 基友标签背景
-    val jiyouDrawable: Drawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#61B14F"))
-            .setCornersRadius(4.dp().toFloat())
-            .build()
 }

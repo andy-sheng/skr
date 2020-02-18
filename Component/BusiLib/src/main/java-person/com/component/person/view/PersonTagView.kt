@@ -75,8 +75,8 @@ class PersonTagView : ConstraintLayout {
                     tagModel.type == SEX_TAG -> {
                         descIv.visibility = View.VISIBLE
                         when (sex) {
-                            ESex.SX_MALE.value -> descIv.background = U.getDrawable(R.drawable.sex_male_icon)
-                            ESex.SX_FEMALE.value -> descIv.background = U.getDrawable(R.drawable.sex_female_icon)
+                            ESex.SX_MALE.value -> descIv.background = U.getDrawable(R.drawable.tag_male_icon)
+                            ESex.SX_FEMALE.value -> descIv.background = U.getDrawable(R.drawable.tag_female_icon)
                             else -> descIv.visibility = View.GONE
                         }
 

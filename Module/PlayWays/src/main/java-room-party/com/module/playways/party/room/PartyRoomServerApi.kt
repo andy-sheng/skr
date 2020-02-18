@@ -13,7 +13,7 @@ interface PartyRoomServerApi {
      * 搜索主题房
      *
      */
-    @PUT("http://dev.api.inframe.mobi/v1/partyroom/search-by-roomid")
+    @PUT("http://dev.api.inframe.mobi/v1/partyroom/search")
     fun searchPartyRoom(@Body body: RequestBody): Observable<ApiResult>
 
     /**

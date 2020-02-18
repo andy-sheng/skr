@@ -61,7 +61,6 @@ class PartyRoomSearchActivity : BaseActivity() {
 
         adapter = PartyRoomSearchAdapter(object : PartyRoomSearchAdapter.Listener {
             override fun onClickItem(position: Int, model: PartyRoomInfoModel?) {
-                // todo 点击进入房间
                 model?.roomID?.let {
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                     iRankingModeService.tryGoPartyRoom(it, 1, model.roomtype ?: 0)
@@ -114,21 +113,20 @@ class PartyRoomSearchActivity : BaseActivity() {
     }
 
     private fun initPublishSubject() {
-        // todo 等一个新接口吧
         publishSubject = PublishSubject.create<SearchModel>()
         ApiMethods.subscribe(
                 publishSubject?.debounce(200, TimeUnit.MILLISECONDS)?.filter(Predicate<SearchModel> { s -> !TextUtils.isEmpty(s.searchContent) })?.switchMap(Function<SearchModel, ObservableSource<ApiResult>> { model ->
                     isAutoSearch = model.isAutoSearch
                     val partyRoomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
                     val map = mutableMapOf(
-                            "roomID" to model.searchContent
+                            "searchStr" to model.searchContent
                     )
                     val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                     partyRoomServerApi.searchPartyRoom(body)
                 }), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
-                    val list = JSON.parseArray(result.data!!.getString("items"), PartyRoomInfoModel::class.java)
+                    val list = JSON.parseArray(result.data!!.getString("roomInfo"), PartyRoomInfoModel::class.java)
                     adapter?.mDataList?.clear()
                     if (!list.isNullOrEmpty()) {
                         adapter?.mDataList?.addAll(list)
