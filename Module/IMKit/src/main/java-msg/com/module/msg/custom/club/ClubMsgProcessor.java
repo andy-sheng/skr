@@ -38,7 +38,7 @@ public class ClubMsgProcessor {
     public static void handle(String msgUid, String reqID, boolean agree,String targetId) {
         IMsgServerApi iMsgServerApi = ApiManager.getInstance().createService(IMsgServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
-        map.put("fromUserID", targetId);
+        map.put("fromUserID", Integer.parseInt(targetId));
         map.put("invitationID", reqID);
 //        map.put("responseType", agree ? 1 : 2);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
