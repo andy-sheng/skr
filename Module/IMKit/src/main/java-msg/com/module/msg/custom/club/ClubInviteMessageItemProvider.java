@@ -44,13 +44,13 @@ public class ClubInviteMessageItemProvider extends MessageProvider<ClubInviteMsg
         holder.mAgreeTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                RelationMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),true,message.getTargetId());
+                ClubMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),true,message.getTargetId());
             }
         });
         holder.mRejectTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                RelationMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),false,message.getTargetId());
+                ClubMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),false,message.getTargetId());
             }
         });
         view.setTag(holder);
