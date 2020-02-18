@@ -448,6 +448,9 @@ public interface UserInfoServerApi {
     @PUT("/v1/mall/get-simple-relation-list")
     Call<ApiResult> getRelationInfo(@Body RequestBody body);
 
+    @PUT("/v1/mall/get-simple-relation-list")
+    Observable<ApiResult> getAllRelationInfo(@Body RequestBody body);
+
     /**
      * 查询跟别人的关系(cp,闺蜜等等)
      * {

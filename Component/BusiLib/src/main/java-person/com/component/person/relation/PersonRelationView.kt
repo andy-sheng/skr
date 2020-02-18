@@ -3,6 +3,7 @@ package com.component.person.relation
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
@@ -56,7 +57,7 @@ class PersonRelationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
                 // todo 进个人主页面么？
             }
         })
-        recyclerView.layoutManager = GridLayoutManager(context, 5)
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
     }
 

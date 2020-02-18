@@ -3,6 +3,7 @@ package com.component.dialog
 import android.content.Context
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
@@ -23,11 +24,9 @@ import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
+import com.common.flutter.boost.FlutterBoostController
 import com.common.notification.event.FollowNotifyEvent
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.ex.ExImageView
@@ -38,10 +37,12 @@ import com.component.busilib.view.MarqueeTextView
 import com.component.level.utils.LevelConfigUtils
 import com.component.person.event.ShowPersonCardEvent
 import com.component.person.event.UploadHomePageEvent
+import com.component.person.model.RelationModel
 import com.component.person.model.RelationNumModel
 import com.component.person.model.ScoreDetailModel
 import com.component.person.photo.adapter.PhotoAdapter
 import com.component.person.photo.model.PhotoModel
+import com.component.person.relation.PersonRelationAdapter
 import com.facebook.drawee.view.SimpleDraweeView
 import com.component.person.view.PersonMoreOpView
 
@@ -52,6 +53,9 @@ import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.RouterConstants
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -68,7 +72,8 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
     private val qinmiTv: TextView
 
     private val personTagView: PersonTagView
-    private val guardView: GuardView
+    private val relationView: RecyclerView
+    private val emptyRelationTv: ExTextView
     private val personClubName: TextView
     private val photoViewBg: ExImageView
     private val photoView: RecyclerView
@@ -90,6 +95,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
 
     private val mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
 
+    private var relationAdapter: PersonRelationAdapter? = null
     private var photoAdapter: PhotoAdapter? = null
     private var mOffset = 0
     private var mHasMore = false
@@ -114,7 +120,8 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         qinmiTv = this.findViewById(R.id.qinmi_tv)
 
         personTagView = this.findViewById(R.id.person_tag_view)
-        guardView = this.findViewById(R.id.guard_view)
+        relationView = this.findViewById(R.id.relation_view)
+        emptyRelationTv = this.findViewById(R.id.empty_relation_tv)
         personClubName = this.findViewById(R.id.person_club_name)
         photoViewBg = this.findViewById(R.id.photo_view_bg)
         photoView = this.findViewById(R.id.photo_view)
@@ -145,34 +152,36 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
             clickListener?.showClubInfoCard(mUserInfoModel.clubInfo?.club?.clubID ?: 0)
         }
 
-        guardView.clickListener = {
-            if (it == null) {
-                // 去守护
-                EventBus.getDefault().post(UploadHomePageEvent())
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$mUserId"))
-                        .navigation()
+        // 关系
+        relationView.isFocusableInTouchMode = false
+        relationView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        relationAdapter = PersonRelationAdapter(object : PersonRelationAdapter.Listener {
+            override fun onClickItem(position: Int, model: RelationModel?) {
+                // todo 要能点击么
+            }
+        })
+        relationView.adapter = relationAdapter
+        relationView.setDebounceViewClickListener {
+            if (mUserId == MyUserInfoManager.uid.toInt()) {
+                FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "MyRelationPage", null)
             } else {
-                // 跳到个人卡片
-                if (it.userId == MyUserInfoManager.uid.toInt()) {
-                    EventBus.getDefault().post(UploadHomePageEvent())
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                            .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://dev.app.inframe.mobi/user/protector?title=1&userID=$mUserId"))
-                            .navigation()
-                } else {
-                    EventBus.getDefault().post(ShowPersonCardEvent(it.userId, false))
-                }
-
+                FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "OtherRelationPage", mutableMapOf(
+                        "targetId" to mUserId
+                ))
             }
         }
 
-        guardView.clickMore = {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_GUARD_LIST)
-                    .withInt("userID", it)
-                    .withInt("from", 0)
-                    .navigation()
+        emptyRelationTv.setDebounceViewClickListener {
+            if (mUserId == MyUserInfoManager.uid.toInt()) {
+                FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "MyRelationPage", null)
+            } else {
+                FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "OtherRelationPage", mutableMapOf(
+                        "targetId" to mUserId
+                ))
+            }
         }
 
+        // 照片
         photoView.isFocusableInTouchMode = false
         photoView.layoutManager = GridLayoutManager(context, 3)
         photoAdapter = PhotoAdapter(PhotoAdapter.TYPE_PERSON_CARD)
@@ -264,6 +273,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
 
         getHomePage(mUserId)
         getPhotos(0)
+        getRelationInfo()
     }
 
     private fun showMoreOpView() {
@@ -362,17 +372,12 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
                     showUserLevel(scoreDetailModel)
                     showUserRelationNum(relationNumModes)
                     showCharmsAndQinMiTag(meiLiCntTotal, qinMiCntTotal)
-                    showGuardList(guardList, guardCntTotal)
                     refreshFollow()
                 } else {
                     uploadHomePageFlag = false
                 }
             }
         }, mContext as BaseActivity)
-    }
-
-    private fun showGuardList(guardList: List<UserInfoModel>?, guardCntTotal: Int) {
-        guardView.bindData(mUserId, guardList, guardCntTotal)
     }
 
     @JvmOverloads
@@ -389,6 +394,36 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
                         addPhotos(list, totalCount, false)
                     }
                     callback?.onCallback(0, list)
+                }
+            }
+
+            override fun onNetworkError(errorType: ApiObserver.ErrorType) {
+                super.onNetworkError(errorType)
+            }
+        })
+    }
+
+    private fun getRelationInfo() {
+        val map = mutableMapOf(
+                "userID" to mUserId
+        )
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        ApiMethods.subscribe(mUserInfoServerApi.getAllRelationInfo(body), object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult?) {
+                if (result != null && result.errno == 0) {
+                    val list = JSON.parseArray(result.data.getString("relationList"), RelationModel::class.java)
+                    if (list.isNullOrEmpty()) {
+                        relationView.visibility = View.GONE
+                        emptyRelationTv.visibility = View.VISIBLE
+                        relationAdapter?.mDataList?.clear()
+                        relationAdapter?.notifyDataSetChanged()
+                    } else {
+                        relationView.visibility = View.VISIBLE
+                        emptyRelationTv.visibility = View.GONE
+                        relationAdapter?.mDataList?.clear()
+                        relationAdapter?.mDataList?.addAll(list)
+                        relationAdapter?.notifyDataSetChanged()
+                    }
                 }
             }
 
