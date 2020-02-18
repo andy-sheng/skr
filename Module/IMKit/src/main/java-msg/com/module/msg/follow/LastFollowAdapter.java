@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -21,7 +19,6 @@ import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.view.AvatarView;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.zq.live.proto.Common.ESex;
 
 import io.rong.imkit.R;

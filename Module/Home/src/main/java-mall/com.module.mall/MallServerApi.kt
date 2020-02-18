@@ -1,6 +1,7 @@
 package com.module.mall
 
 import com.common.rxretrofit.ApiResult
+import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -68,4 +69,14 @@ interface MallServerApi {
      */
     @PUT("http://sandbox.api.inframe.mobi/v1/mall/present-goods")
     fun presentGoods(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 查询跟别人的关系(cp,闺蜜等等)
+     * {
+     * "goodsID": 0,
+     * "otherUserID": 0
+     * }
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/mall/check-relation")
+    fun checkCardRelation(@Body body: RequestBody): Observable<ApiResult>
 }

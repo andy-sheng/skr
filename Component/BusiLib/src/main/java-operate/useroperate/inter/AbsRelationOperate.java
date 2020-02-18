@@ -1,12 +1,12 @@
-package com.common.core.useroperate.inter;
+package useroperate.inter;
 
 import android.view.View;
-import android.widget.TextView;
 
 import com.common.base.BaseActivity;
-import com.common.core.R;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExTextView;
+import com.component.busilib.R;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,24 +28,20 @@ public abstract class AbsRelationOperate implements IOperateStub<UserInfoModel> 
         return mText;
     }
 
-    public int getLayoutId() {
-        return mLayoutId;
-    }
-
     @Override
     public IOperateHolder<UserInfoModel> getHolder() {
         return new IOperateHolder<UserInfoModel>() {
             int position;
             UserInfoModel userInfoModel;
-            TextView operateView;
+            ExTextView mFollowTv;
             WeakReference<BaseActivity> mBaseActivityWeakReference;
 
             @Override
             public void init(WeakReference<BaseActivity> weakReference, View view) {
                 mBaseActivityWeakReference = weakReference;
-                operateView = view.findViewById(R.id.agentweb_webview_id);
-                operateView.setText(mText);
-                operateView.setOnClickListener(new DebounceViewClickListener() {
+                mFollowTv = view.findViewById(R.id.operate_tv);
+                mFollowTv.setText(mText);
+                mFollowTv.setOnClickListener(new DebounceViewClickListener() {
                     @Override
                     public void clickValid(View v) {
                         if (mOnClickListener != null) {

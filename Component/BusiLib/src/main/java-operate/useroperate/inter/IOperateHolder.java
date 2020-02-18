@@ -1,4 +1,4 @@
-package com.common.core.useroperate.inter;
+package useroperate.inter;
 
 import android.view.View;
 

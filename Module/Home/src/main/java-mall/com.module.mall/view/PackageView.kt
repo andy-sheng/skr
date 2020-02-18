@@ -6,25 +6,21 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
-import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.JSONObject
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ControlType
-import com.common.rxretrofit.RequestControl
-import com.common.rxretrofit.subscribe
+import com.common.base.BaseActivity
+import com.common.core.userinfo.model.UserInfoModel
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
+import com.dialog.view.TipsDialogView
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.ModuleServiceManager
-import com.module.RouterConstants
 import com.module.home.R
 import com.module.mall.MallServerApi
 import com.module.mall.activity.MallActivity
 import com.module.mall.adapter.PackageAdapter
 import com.module.mall.event.MallUseCoinEvent
-import com.module.mall.event.PackageInviteCardFinishEvent
 import com.module.mall.event.PackageShowEffectEvent
 import com.module.mall.event.ShowDefaultEffectEvent
 import com.module.mall.loadsir.MallEmptyCallBack
@@ -38,11 +34,17 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+import useroperate.OperateFriendActivity
+import useroperate.def.DefaultFanOperateStub
+import useroperate.def.DefaultFollowOperateStub
+import useroperate.def.DefaultFriendOperateStub
+import useroperate.inter.AbsRelationOperate
+import useroperate.inter.IOperateStub
+import java.lang.ref.WeakReference
 import java.util.*
 
-class PackageView : ExConstraintLayout {
+
+class PackageView : ExConstraintLayout, AbsRelationOperate.ClickListener {
     val TAG = "PackageView" + hashCode()
     var recyclerView: RecyclerView
     var refreshLayout: SmartRefreshLayout
@@ -68,6 +70,8 @@ class PackageView : ExConstraintLayout {
     //点击去变成某种关系
     var toRelationCardModel: PackageModel? = null
 
+    internal var tipsDialogView: TipsDialogView? = null
+
     constructor(context: Context?) : super(context!!)
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context!!, attrs, defStyleAttr)
@@ -91,14 +95,19 @@ class PackageView : ExConstraintLayout {
         productAdapter?.useEffectMethod = {
             if (it.goodsInfo?.displayType == MallActivity.Companion.MALL_TYPE.CARD.value) {
                 toRelationCardModel = it
-                val obj = JSONObject()
-                obj.put("goodsID", it.goodsInfo?.goodsID)
-                obj.put("goodsName", it.goodsInfo?.goodsName)
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_RELATION)
-                        .withInt("from", 2)
-                        .withString("extra", obj.toJSONString())
-                        .navigation()
+//                val obj = JSONObject()
+//                obj.put("goodsID", it.goodsInfo?.goodsID)
+//                obj.put("goodsName", it.goodsInfo?.goodsName)
+//                ARouter.getInstance()
+//                        .build(RouterConstants.ACTIVITY_OPERATE_FRIEND)
+//                        .withInt("from", 2)
+//                        .withString("extra", obj.toJSONString())
+//                        .navigation()
+                val list = mutableListOf<IOperateStub<UserInfoModel>>(DefaultFriendOperateStub("邀请", PackageView@ this)
+                        , DefaultFollowOperateStub("邀请", PackageView@ this)
+                        , DefaultFanOperateStub("邀请", PackageView@ this))
+
+                OperateFriendActivity.open(context as BaseActivity, list)
             } else {
                 useEffect(it)
             }
@@ -145,21 +154,65 @@ class PackageView : ExConstraintLayout {
         mLoadService = mLoadSir.register(refreshLayout) { tryLoad() }
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        EventBus.getDefault().unregister(this)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PackageInviteCardFinishEvent) {
-        if (toRelationCardModel?.goodsInfo?.displayType == displayType) {
-            inviteToRelation(event.userID, toRelationCardModel!!)
+    override fun click(weakReference: WeakReference<BaseActivity>?, view: View?, pos: Int, userInfoModel: UserInfoModel?) {
+        userInfoModel?.let {
+            checkRelation(userInfoModel, weakReference)
         }
+    }
+
+    private fun checkRelation(userInfoModel: UserInfoModel, weakReference: WeakReference<BaseActivity>?) {
+        val map = mutableMapOf("goodsID" to toRelationCardModel?.goodsInfo?.goodsID, "otherUserID" to userInfoModel.userId)
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        ApiMethods.subscribe(rankedServerApi.checkCardRelation(body), object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult) {
+                if (result.errno == 0) {
+                    val msg = result.data!!.getString("noticeMsg")
+                    showInviteCardDialog(userInfoModel, msg, weakReference)
+                } else {
+                    //ErrAlreadyHasRelation           = 8428114; //对方已是你的闺蜜，不能再发送邀请哦～
+                    //ErrApplyAfter24Hour             = 8428115; //24小时之后才能再次发送关系申请哦～
+                    //ErrAlreadyHasOtherRelation      = 8428116; //对方已是你的闺蜜，对方接受邀请将自动解除你们原来的关系哦～
+                    if (8428114 == result.errno) {
+                        U.getToastUtil().showShort(result.errmsg)
+                    } else if (8428115 == result.errno) {
+                        U.getToastUtil().showShort(result.errmsg)
+                    } else if (8428116 == result.errno) {
+                        showInviteCardDialog(userInfoModel, result.errmsg, weakReference)
+                    }
+                }
+            }
+        }, RequestControl("checkCardRelation", ControlType.CancelLast))
+    }
+
+    /**
+     * 邀请好友发生关系
+     *
+     * @param userInfoModel
+     */
+    private fun showInviteCardDialog(userInfoModel: UserInfoModel, msg: String, weakReference: WeakReference<BaseActivity>?) {
+        if (tipsDialogView != null) {
+            tipsDialogView?.dismiss(false)
+        }
+
+        weakReference?.get()?.let {
+            tipsDialogView = TipsDialogView.Builder(it)
+                    .setMessageTip(msg)
+                    .setCancelBtnClickListener {
+                        if (tipsDialogView != null) {
+                            tipsDialogView?.dismiss(false)
+                        }
+                    }
+                    .setCancelTip("取消")
+                    .setConfirmBtnClickListener {
+                        weakReference?.get()?.finish()
+                        tipsDialogView = null
+                        inviteToRelation(userInfoModel.userId, toRelationCardModel!!)
+                    }
+                    .setConfirmTip("邀请")
+                    .build()
+            tipsDialogView?.showByDialog()
+        }
+
     }
 
     //亲故发生某种关系
@@ -183,7 +236,6 @@ class PackageView : ExConstraintLayout {
                     mLoadService.showCallback(MallEmptyCallBack::class.java)
                 }
 
-                EventBus.getDefault().post(MallUseCoinEvent())
                 U.getToastUtil().showShort("邀请成功")
                 // 生成一条邀请IM消息
                 var msgService = ModuleServiceManager.getInstance().msgService
