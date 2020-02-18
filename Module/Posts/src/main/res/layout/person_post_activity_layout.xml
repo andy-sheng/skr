@@ -33,6 +33,18 @@
         app:layout_constraintLeft_toRightOf="@id/back_iv"
         app:layout_constraintTop_toTopOf="@id/back_iv" />
 
+    <TextView
+        android:id="@+id/create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:textColor="@color/black_trans_80"
+        android:text="发帖"
+        android:textSize="@dimen/textsize_16_dp"
+        app:layout_constraintBottom_toBottomOf="@id/back_iv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/back_iv" />
+
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
