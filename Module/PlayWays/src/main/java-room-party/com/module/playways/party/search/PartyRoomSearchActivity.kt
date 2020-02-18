@@ -31,6 +31,8 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Function
 import io.reactivex.functions.Predicate
 import io.reactivex.subjects.PublishSubject
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import java.util.concurrent.TimeUnit
 
 @Route(path = RouterConstants.ACTIVITY_PARTY_SEARCH)
@@ -118,7 +120,11 @@ class PartyRoomSearchActivity : BaseActivity() {
                 publishSubject?.debounce(200, TimeUnit.MILLISECONDS)?.filter(Predicate<SearchModel> { s -> !TextUtils.isEmpty(s.searchContent) })?.switchMap(Function<SearchModel, ObservableSource<ApiResult>> { model ->
                     isAutoSearch = model.isAutoSearch
                     val partyRoomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
-                    partyRoomServerApi.searchPartyRoom(model.searchContent)
+                    val map = mutableMapOf(
+                            "roomID" to model.searchContent
+                    )
+                    val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                    partyRoomServerApi.searchPartyRoom(body)
                 }), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
