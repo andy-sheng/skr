@@ -185,6 +185,24 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         }
         startHeartbeat()
         startSyncGameStatus()
+        // 查下对端版本号
+        queryPeerAppVersion()
+    }
+
+    private fun queryPeerAppVersion() {
+        if((mRoomData?.peerUser?.userID?:0)>0 && mRoomData?.peerAppVersionCode <=0){
+            val map = HashMap<String, Any>()
+            map["userIDs"] = listOf(mRoomData?.peerUser?.userID)
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            launch {
+                var result = subscribe { mRoomServerApi.queryAppVersion(body) }
+                if (result.errno == 0) {
+                    mRoomData?.peerAppVersionCode = result.data.getJSONArray("versions")
+                            .getJSONObject(0).getIntValue("versionCode")
+                }
+            }
+        }
     }
 
 //    fun changeMatchState(isChecked: Boolean) {
@@ -268,6 +286,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
      * 如果确定是自己唱了,预先可以做的操作
      */
     private fun preOpWhenSelfRound() {
+        queryPeerAppVersion()
         var progress = mRoomData.getSingCurPosition()
         DebugLogView.println(TAG, "preOpWhenSelfRound progress=$progress")
         if (progress == Long.MAX_VALUE) {
