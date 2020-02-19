@@ -81,8 +81,6 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         internal val MSG_TURN_PRECHANGE_VOLUME = 25 // 对轮次切换，提前进行音量调整
     }
 
-    internal var mEnablePreChangeVolume = false
-
     internal var mAbsenTimes = 0
 
     internal var mRoomServerApi = ApiManager.getInstance().createService(RelayRoomServerApi::class.java)
@@ -189,9 +187,9 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     }
 
     private fun queryPeerAppVersion() {
-        if ((mRoomData?.peerUser?.userID?:0) > 0 && (mRoomData?.peerAppVersionCode <= 0 || mRoomData?.myAppVersionCode <= 0)) {
+        if ((mRoomData?.peerUser?.userID?:0) > 0 && mRoomData?.peerAppVersionCode <= 0) {
             val map = HashMap<String, Any>()
-            map["userIDs"] = listOf(mRoomData?.peerUser?.userID, 0)//MyUserInfoManager.uid.toInt())
+            map["userIDs"] = listOf(mRoomData?.peerUser?.userID, MyUserInfoManager.uid.toInt())
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             launch {
@@ -201,19 +199,20 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                         val versionArray = result.data.getJSONArray("versions")
                         val peerVer = versionArray.getJSONObject(0).getIntValue("versionCode")
                         val myVer = versionArray.getJSONObject(1).getIntValue("versionCode")
-                        mRoomData?.peerAppVersionCode = peerVer
-                        mRoomData?.myAppVersionCode = myVer
-                        val supportedVersion = 3009000
-                        mEnablePreChangeVolume = mRoomData?.peerAppVersionCode >= supportedVersion &&
-                                mRoomData?.myAppVersionCode >= supportedVersion
-                        MyLog.i(TAG, "Got version from server, support:${mEnablePreChangeVolume} " +
-                                "peer:${mRoomData?.peerAppVersionCode} my:${mRoomData?.myAppVersionCode}")
+                        MyLog.i(TAG, "Got version from server, peer:${peerVer} my:${myVer}")
+                        if (myVer == U.getAppInfoUtils().versionCode) {
+                            mRoomData?.peerAppVersionCode = peerVer
+                        }
                     } catch (e:Exception) {
                         e.printStackTrace()
                     }
                 }
             }
         }
+    }
+
+    private fun isEnablePreChangeVolume(): Boolean {
+        return mRoomData?.peerAppVersionCode >= 3009000
     }
 
 //    fun changeMatchState(isChecked: Boolean) {
@@ -410,7 +409,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             DebugLogView.println(TAG, "turnChange 当前是我唱 开启音量")
             if (mRoomData?.lastSingerID == mRoomData.peerUser?.userID) {
                 // 确实有切换，声音渐变处理
-                if (mEnablePreChangeVolume) {
+                if (isEnablePreChangeVolume()) {
                     // 到切换时间点再调高远端音量
                     fadeVolume(isPlayout = false, isFadeIn = true)
                 } else {
@@ -427,7 +426,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             if (mRoomData.realRoundInfo?.peerAccLoadingOk == true) {
                 if (mRoomData?.lastSingerID == MyUserInfoManager.uid.toInt()) {
                     // 确实有切换，声音渐变处理
-                    if (mEnablePreChangeVolume) {
+                    if (isEnablePreChangeVolume()) {
                         // 到切换时间点再调低本地音量
                         fadeVolume(isPlayout = true, isFadeIn = false)
                     } else {
@@ -457,7 +456,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
                 mUiHandler.removeMessages(MSG_TURN_CHANGE_PREPARE)
                 mUiHandler.sendEmptyMessageDelayed(MSG_TURN_CHANGE_PREPARE, nextTs - 3000)
             }
-            if (mEnablePreChangeVolume) {
+            if (isEnablePreChangeVolume()) {
                 mUiHandler.removeMessages(MSG_TURN_PRECHANGE_VOLUME)
                 val msg = mUiHandler.obtainMessage(MSG_TURN_PRECHANGE_VOLUME, nextIsMyTurn)
                 var delayTime = nextTs - 2000
@@ -473,7 +472,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     }
 
     private fun turnPreChangeVolume(nextIsMyTurn: Boolean) {
-        if (!mEnablePreChangeVolume) {
+        if (!isEnablePreChangeVolume()) {
             return
         }
         if (nextIsMyTurn) {
