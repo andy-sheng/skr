@@ -245,8 +245,8 @@ abstract class BaseWatchView(context: Context, val type: Int) : ConstraintLayout
         }, type)
 
         mRefreshLayout.apply {
-            setEnableRefresh(type != TYPE_PERSON)
-            setEnableLoadMore(type != TYPE_PERSON)
+            setEnableRefresh(true)
+            setEnableLoadMore(true)
             setEnableLoadMoreWhenContentNotFull(false)
             setEnableOverScrollDrag(type != TYPE_PERSON)
             setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
