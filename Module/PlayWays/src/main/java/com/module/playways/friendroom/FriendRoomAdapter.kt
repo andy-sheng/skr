@@ -88,6 +88,9 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
                         holder.stopPlay()
                     }
                 }
+                if (holder is PartyRoomViewHolder) {
+                    holder.bindData(position, friendRoomModel)
+                }
             }
         } else {
             // 局部更新
