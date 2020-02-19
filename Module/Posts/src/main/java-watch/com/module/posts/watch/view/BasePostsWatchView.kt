@@ -339,10 +339,10 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
         })
         refreshLayout.apply {
-            setEnableRefresh(type != TYPE_POST_PERSON && type != TYPE_POST_TOPIC)
-            setEnableLoadMore(type != TYPE_POST_PERSON && type != TYPE_POST_TOPIC)
+            setEnableRefresh(type != TYPE_POST_TOPIC)
+            setEnableLoadMore(type != TYPE_POST_TOPIC)
             setEnableLoadMoreWhenContentNotFull(false)
-            setEnableOverScrollDrag(type != TYPE_POST_PERSON && type != TYPE_POST_TOPIC)
+            setEnableOverScrollDrag(type != TYPE_POST_TOPIC)
             setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
                     getMorePosts()
@@ -388,7 +388,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         }
     }
 
-    private fun postPlayEvent(){
+    private fun postPlayEvent() {
         if (type == TYPE_POST_PERSON) {
             EventBus.getDefault().post(ChildViewPlayAudioEvent())
         }

@@ -79,6 +79,7 @@ class PersonPostsWatchView(activity: FragmentActivity, var userInfoModel: UserIn
                 }
             }
 
+            finishRefreshOrLoadMore()
             callback?.onRequestSucess(hasMore)
         }
     }
