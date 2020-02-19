@@ -20,7 +20,7 @@ class PartyRoomAdapter(var listener: Listener, val type: Int) : RecyclerView.Ada
         return when (viewType) {
             ITEM_TYPE_ROOM -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.party_room_view_item_layout, parent, false)
-                PartyRoomViewHolder(view, listener, null)
+                PartyRoomViewHolder(view, listener)
             }
             ITEM_TYPE_QUICK_KTV -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.party_quick_ktv_item_layout, parent, false)

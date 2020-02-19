@@ -66,7 +66,7 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
     var mRecommendTimer: HandlerTaskTimer? = null
     var mRecommendInterval: Int = 0
 
-//    var mLoadService: LoadService<*>
+    //    var mLoadService: LoadService<*>
     var mInviteFriendDialog: InviteFriendDialog? = null
 
     internal var mLastLoadDateTime: Long = 0    //记录上次获取接口的时间
@@ -102,9 +102,9 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
         recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         friendRoomAdapter = FriendRoomAdapter(object : FriendRoomAdapter.FriendRoomClickListener {
             override fun onClickPartyRoom(position: Int, model: RecommendRoomModel?) {
-                model?.partyRoom?.roomID?.let {
+                model?.partyRoom?.roomInfoModel?.roomID?.let {
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                    iRankingModeService.tryGoPartyRoom(it, 1, model.partyRoom?.roomtype ?: 0)
+                    iRankingModeService.tryGoPartyRoom(it, 1, model.partyRoom?.roomInfoModel?.roomtype ?: 0)
                 }
             }
 
