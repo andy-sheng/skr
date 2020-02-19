@@ -54,12 +54,10 @@ import com.component.level.utils.LevelConfigUtils;
 import com.component.person.event.ChildViewPlayAudioEvent;
 import com.component.person.event.UploadMyVoiceInfo;
 import com.component.person.model.RelationNumModel;
-import com.component.person.model.ScoreDetailModel;
 import com.component.person.photo.view.PhotoWallView;
 import com.component.person.producation.view.ProducationWallView;
 import com.component.person.view.CommonAudioView;
 import com.component.person.view.GuardView;
-import com.component.person.view.PersonTagView;
 import com.component.person.view.RequestCallBack;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.ModuleServiceManager;
@@ -72,7 +70,6 @@ import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
 import com.module.post.IPersonPostsWall;
 import com.module.post.IPostModuleService;
-import com.orhanobut.dialogplus.DialogPlus;
 import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
 import com.respicker.model.ImageItem;
@@ -294,7 +291,7 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
                     mFeedsWallView.getFeeds(true);
                 }
                 if (mProducationWallView != null && mPersonVp.getCurrentItem() == 3) {
-                    mProducationWallView.getProducations(true);
+                    mProducationWallView.getProductions(true);
                 }
             }
 
@@ -311,7 +308,7 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
                     mFeedsWallView.getMoreFeeds();
                 }
                 if (mProducationWallView != null && mPersonVp.getCurrentItem() == 3) {
-                    mProducationWallView.getMoreProducations();
+                    mProducationWallView.getMoreProductions();
                 }
             }
 
@@ -782,7 +779,7 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
             }
             if (mProducationWallView != null) {
                 mSmartRefresh.setEnableLoadMore(mProducationWallView.getHasMore());
-                mProducationWallView.getProducations(false);
+                mProducationWallView.getProductions(false);
             }
         }
     }
