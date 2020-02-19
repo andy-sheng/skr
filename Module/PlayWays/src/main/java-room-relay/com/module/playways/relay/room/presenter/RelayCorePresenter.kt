@@ -190,9 +190,9 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     }
 
     private fun queryPeerAppVersion() {
-        if((mRoomData?.peerUser?.userID?:1705476)>0){
+        if((mRoomData?.peerUser?.userID?:0)>0 && mRoomData?.peerAppVersionCode <=0){
             val map = HashMap<String, Any>()
-            map["userIDs"] = listOf(1705476)
+            map["userIDs"] = listOf(mRoomData?.peerUser?.userID)
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             launch {
@@ -286,6 +286,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
      * 如果确定是自己唱了,预先可以做的操作
      */
     private fun preOpWhenSelfRound() {
+        queryPeerAppVersion()
         var progress = mRoomData.getSingCurPosition()
         DebugLogView.println(TAG, "preOpWhenSelfRound progress=$progress")
         if (progress == Long.MAX_VALUE) {
