@@ -81,7 +81,7 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         internal val MSG_TURN_PRECHANGE_VOLUME = 25 // 对轮次切换，提前进行音量调整
     }
 
-    internal var mEnablePreChangeVolume = true
+    internal var mEnablePreChangeVolume = false
 
     internal var mAbsenTimes = 0
 
