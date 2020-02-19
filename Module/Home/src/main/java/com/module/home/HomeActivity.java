@@ -62,6 +62,7 @@ import com.module.home.fragment.PersonFragment5;
 import com.module.home.fragment.PersonFragment6;
 import com.module.home.game.GameFragment3;
 import com.module.home.persenter.CheckInPresenter;
+import com.module.home.persenter.EnterHomeDialogPresenter;
 import com.module.home.persenter.HomeCorePresenter;
 import com.module.home.persenter.NotifyCorePresenter;
 import com.module.home.persenter.RedPkgPresenter;
@@ -106,6 +107,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     HomeCorePresenter mHomePresenter;
     NotifyCorePresenter mNotifyCorePresenter;
     RedPkgPresenter mRedPkgPresenter;
+    EnterHomeDialogPresenter mEnterHomeDialogPresenter;
     CheckInPresenter mCheckInPresenter;
     VipReceiveCoinPresenter mVipReceiveCoinPresenter;
 
@@ -320,6 +322,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mVipReceiveCoinPresenter = new VipReceiveCoinPresenter(this);
 
         addPresent(mVipReceiveCoinPresenter);
+
+        mEnterHomeDialogPresenter = new EnterHomeDialogPresenter(this);
+        addPresent(mEnterHomeDialogPresenter);
 
         mMainVp.setCurrentItem(0, false);
 
@@ -566,6 +571,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mRedPkgPresenter.checkRedPkg();
         mCheckInPresenter.check();
         mVipReceiveCoinPresenter.checkVip();
+        mEnterHomeDialogPresenter.check();
 
         if (UserAccountManager.INSTANCE.hasAccount()) {
             mMainActContainer.setVisibility(View.VISIBLE);
