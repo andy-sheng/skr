@@ -20,5 +20,10 @@ public interface IMsgServerApi {
     @PUT("http://dev.api.inframe.mobi/v1/mall/relation-apply-response")
     Observable<ApiResult> relationApplyResponse(@Body RequestBody requestBody);
 
+    @PUT("http://dev.api.inframe.mobi/v1/club/refuse-invitation")
+    Observable<ApiResult> clubRefuse(@Body RequestBody requestBody);
+
+    @PUT("http://dev.api.inframe.mobi/v1/club/accept-invitation")
+    Observable<ApiResult> clubAgree(@Body RequestBody requestBody);
 
 }

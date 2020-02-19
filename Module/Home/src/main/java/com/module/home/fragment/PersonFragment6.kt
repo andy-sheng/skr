@@ -25,6 +25,7 @@ import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
+import com.common.flutter.boost.FlutterBoostController
 import com.common.log.MyLog
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
@@ -315,7 +316,7 @@ class PersonFragment6 : BaseFragment() {
                 val timeDesc = SpanUtils()
                         .append("还有").setForegroundColor(Color.parseColor("#CC8B572A"))
                         .append("${MyUserInfoManager.honorInfo?.leftDays}").setForegroundColor(Color.parseColor("#FF0000"))
-                        .append("天到期").setForegroundColor(Color.parseColor("#CC8B572"))
+                        .append("天到期").setForegroundColor(Color.parseColor("#CC8B572A"))
                         .create()
             } else {
                 openHonorIv.visibility = View.VISIBLE
@@ -540,7 +541,7 @@ class PersonFragment6 : BaseFragment() {
         feedTitleTv = rootView.findViewById(R.id.feed_title_tv)
 
         relationView?.setDebounceViewClickListener {
-            // todo 补一个flutter的界面
+            FlutterBoostController.openFlutterPage(activity!!,"MyRelationPage",null)
         }
 
         clubArea.setDebounceViewClickListener {
@@ -571,6 +572,7 @@ class PersonFragment6 : BaseFragment() {
         feedsArea.setDebounceViewClickListener {
             // todo神曲做么
             ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_FEED)
+                    .withSerializable("userInfoModel",  MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo))
                     .navigation()
         }
     }

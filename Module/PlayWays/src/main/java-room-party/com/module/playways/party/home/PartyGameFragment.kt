@@ -28,6 +28,7 @@ class PartyGameFragment : BaseFragment() {
 
     lateinit var title: CommonTitleBar
     lateinit var createRoom: ImageView
+    lateinit var searchRoom: ImageView
     lateinit var contentArea: RelativeLayout
 
     private val partyRoomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
@@ -42,6 +43,7 @@ class PartyGameFragment : BaseFragment() {
     override fun initData(savedInstanceState: Bundle?) {
         title = rootView.findViewById(R.id.title)
         createRoom = rootView.findViewById(R.id.create_room)
+        searchRoom = rootView.findViewById(R.id.search_room)
         contentArea = rootView.findViewById(R.id.content_area)
 
         createRoom.setDebounceViewClickListener {
@@ -79,6 +81,12 @@ class PartyGameFragment : BaseFragment() {
                     }
                 }
             }
+        }
+
+        searchRoom.setDebounceViewClickListener {
+            partyRoomView?.stopTimer()
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_SEARCH)
+                    .navigation()
         }
 
         if (partyRoomView == null) {

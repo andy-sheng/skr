@@ -181,10 +181,29 @@
                                 android:layout_height="@dimen/view_75_dp">
 
                                 <com.common.view.ex.ExTextView
+                                    android:id="@+id/invite_tv"
+                                    android:layout_width="@dimen/view_88_dp"
+                                    android:layout_height="@dimen/view_36_dp"
+                                    android:drawableLeft="@drawable/club_home_invite"
+                                    android:gravity="center"
+                                    android:paddingLeft="@dimen/view_12_dp"
+                                    android:text="邀请"
+                                    android:textColor="@color/white_trans_80"
+                                    android:textSize="@dimen/textsize_14_dp"
+                                    android:textStyle="bold"
+                                    app:bl_corners_radius="@dimen/view_18_dp"
+                                    app:bl_shape="rectangle"
+                                    app:bl_solid_color="#526AE3"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toLeftOf="@id/apply_tv"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.common.view.ex.ExTextView
                                     android:id="@+id/apply_tv"
                                     android:layout_width="@dimen/view_88_dp"
                                     android:layout_height="@dimen/view_36_dp"
-                                    android:drawableLeft="@drawable/club_apply_icon"
+                                    android:drawableLeft="@drawable/club_home_apply"
                                     android:gravity="center"
                                     android:paddingLeft="@dimen/view_12_dp"
                                     android:text="申请"
@@ -195,7 +214,7 @@
                                     app:bl_shape="rectangle"
                                     app:bl_solid_color="#526AE3"
                                     app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintLeft_toRightOf="@id/invite_tv"
                                     app:layout_constraintRight_toLeftOf="@id/member_tv"
                                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -213,7 +232,7 @@
                                     android:id="@+id/member_tv"
                                     android:layout_width="@dimen/view_88_dp"
                                     android:layout_height="@dimen/view_36_dp"
-                                    android:drawableLeft="@drawable/club_member_icon"
+                                    android:drawableLeft="@drawable/club_home_member"
                                     android:gravity="center"
                                     android:paddingLeft="@dimen/view_12_dp"
                                     android:text="成员"
@@ -232,7 +251,7 @@
                                     android:id="@+id/contribution_tv"
                                     android:layout_width="@dimen/view_88_dp"
                                     android:layout_height="@dimen/view_36_dp"
-                                    android:drawableLeft="@drawable/club_contribution_icon"
+                                    android:drawableLeft="@drawable/club_home_gongxian"
                                     android:gravity="center"
                                     android:paddingLeft="@dimen/view_12_dp"
                                     android:text="贡献"

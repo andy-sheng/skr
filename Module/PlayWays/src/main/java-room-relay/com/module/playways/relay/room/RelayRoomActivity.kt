@@ -9,9 +9,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
 import com.common.anim.svga.SvgaParserAdapter
 import com.common.base.BaseActivity
 import com.common.base.FragmentDataListener
+import com.common.core.kouling.SkrKouLingUtils
+import com.common.core.kouling.api.KouLingServerApi
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
@@ -21,6 +24,8 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.flutter.boost.FlutterBoostController
 import com.common.log.DebugLogView
 import com.common.log.MyLog
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ApiResult
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.DiffuseView
@@ -35,6 +40,7 @@ import com.module.home.IHomeService
 import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.grab.room.inter.IGrabVipView
+import com.module.playways.grab.room.invite.IInviteCallBack
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.GrabScoreTipsView
@@ -45,6 +51,7 @@ import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.mic.room.model.RoomInviteMusicModel
 import com.module.playways.mic.room.top.RoomInviteView
+import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.relay.match.RelayHomeActivity
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel
 import com.module.playways.relay.room.bottom.RelayBottomContainerView
@@ -78,15 +85,20 @@ import com.module.playways.view.ZanView
 import com.opensource.svgaplayer.*
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.RelayRoom.ERRoundStatus
 import com.zq.live.proto.RelayRoom.RAddMusicMsg
 import com.zq.live.proto.RelayRoom.RReqAddMusicMsg
+import io.reactivex.Observable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.set
 
 
 @Route(path = RouterConstants.ACTIVITY_RELAY_ROOM)
@@ -570,12 +582,54 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
             }
 
             override fun clickInvite() {
+//                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this@RelayRoomActivity, InviteFriendFragment2::class.java)
+//                        .setAddToBackStack(true)
+//                        .setHasAnimation(true)
+//                        .addDataBeforeAdd(0, GameModeType.GAME_MODE_RELAY)
+//                        .addDataBeforeAdd(1, mRoomData!!.gameId)
+//                        .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
+//                        .build())
+
+
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this@RelayRoomActivity, InviteFriendFragment2::class.java)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
-                        .addDataBeforeAdd(0, GameModeType.GAME_MODE_RELAY)
-                        .addDataBeforeAdd(1, mRoomData!!.gameId)
-                        .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
+                        .addDataBeforeAdd(0, object : IInviteCallBack {
+                            override fun getFrom(): Int {
+                                return GameModeType.GAME_MODE_RELAY
+                            }
+
+                            override fun getInviteDialogText(kouling: String?): String {
+                                return SkrKouLingUtils.genJoinRelayRoomText(kouling)
+                            }
+
+                            override fun getShareTitle(): String {
+                                return "合唱房间已开，就等你来玩"
+                            }
+
+                            override fun getShareDes(): String {
+                                return "我在撕歌skr开了一个合唱房间，快来一起耍呀～"
+                            }
+
+                            override fun getInviteObservable(model: UserInfoModel): Observable<ApiResult> {
+                                MyLog.d(TAG, "inviteRelayFriend roomID=${mRoomData?.gameId} model=$model")
+                                val map = HashMap<String, Any>()
+                                map["roomID"] = mRoomData?.gameId
+                                map["inviteUserID"] = model.userId
+
+                                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                                return ApiManager.getInstance().createService(PartyRoomServerApi::class.java).relayRoominvite(body)
+                            }
+
+                            override fun getRoomID(): Int {
+                                return mRoomData?.gameId
+                            }
+
+                            override fun getKouLingTokenObservable(): Observable<ApiResult> {
+                                val code = String.format("inframeskr://room/joinrelay?owner=%s&gameId=%s&ask=1", MyUserInfoManager.uid, mRoomData.gameId)
+                                return ApiManager.getInstance().createService(KouLingServerApi::class.java).setTokenByCode(code)
+                            }
+                        })
                         .build())
             }
         }

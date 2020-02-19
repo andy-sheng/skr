@@ -20,7 +20,6 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
@@ -30,6 +29,7 @@ import com.component.busilib.view.MarqueeTextView
 import com.component.person.view.PersonTagView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.imagebrowse.big.BigImageBrowseFragment
+import com.module.ModuleServiceManager
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
@@ -47,10 +47,11 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import useroperate.OperateFriendActivity
+import useroperate.inter.AbsRelationOperate
 import kotlin.math.abs
 
 class ClubHomepageActivity : BaseActivity() {
-
     private val SP_KEY_APPLY_WATER_LEVEL = "sp_key_apply_water_level"               // 申请水位
     private val SP_KEY_APPLY_WATER_LEVEL_CLUBID = "sp_key_apply_water_level_clubid" // 申请水位对应的clubID
 
@@ -131,6 +132,37 @@ class ClubHomepageActivity : BaseActivity() {
         clubNoticeTv = this.findViewById(R.id.club_notice_tv)
 
         functionArea = this.findViewById(R.id.function_area)
+        var inviteTv: View = this.findViewById(R.id.invite_tv)
+
+        inviteTv.setDebounceViewClickListener {
+            OperateFriendActivity.open(OperateFriendActivity.Companion.Builder()
+                    .setEnableFans(true)
+                    .setEnableFriend(true)
+                    .setText("邀请")
+                    .setListener(AbsRelationOperate.ClickListener { _, _, _, userInfoModel, callback ->
+                        launch {
+                            val map = mapOf(
+                                    "toUserID" to userInfoModel?.userId
+                            )
+                            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                            val result = subscribe(RequestControl("sendInvitation", ControlType.CancelThis)) {
+                                clubServerApi.sendInvitation(body)
+                            }
+                            if (result.errno == 0) {
+                                U.getToastUtil().showShort("发送邀请成功")
+                                ModuleServiceManager.getInstance().msgService.sendClubInviteMsg(userInfoModel?.userId?.toString()
+                                        , result.data.getString("invitationID")
+                                        , result.data.getLongValue("expireAt")
+                                        , result.data.getString("content")
+                                )
+                                callback?.onCallback(1, "已邀请")
+                            } else {
+                                U.getToastUtil().showShort(result.errmsg)
+                            }
+                        }
+                    }))
+        }
+
         applyTv = this.findViewById(R.id.apply_tv)
         applyRedIv = this.findViewById(R.id.apply_red_iv)
         memberTv = this.findViewById(R.id.member_tv)

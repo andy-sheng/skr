@@ -25,7 +25,7 @@ import com.module.playways.R
 import com.module.playways.friendroom.FriendRoomAdapter
 import com.module.playways.friendroom.RecommendRoomModel
 
-class PartyRoomViewHolder(item: View, var listener: PartyRoomAdapter.Listener?, var mOnItemClickListener: FriendRoomAdapter.FriendRoomClickListener?) : RecyclerView.ViewHolder(item) {
+class PartyRoomViewHolder(item: View, var listener: PartyRoomAdapter.Listener?) : RecyclerView.ViewHolder(item) {
 
     private val contentBg: ConstraintLayout = item.findViewById(R.id.content_bg)
     private val topIconIv: ImageView = item.findViewById(R.id.top_icon_iv)
@@ -39,20 +39,10 @@ class PartyRoomViewHolder(item: View, var listener: PartyRoomAdapter.Listener?, 
 
     var mPos = -1
     var mModel: PartyRoomInfoModel? = null
-    var mRecommendRoomModel: RecommendRoomModel? = null
 
     init {
         item.setAnimateDebounceViewClickListener {
             listener?.onClickRoom(mPos, mModel)
-            mOnItemClickListener?.onClickPartyRoom(mPos, mRecommendRoomModel)
-        }
-    }
-
-    fun bindData(position: Int, model: RecommendRoomModel) {
-        this.mPos = position
-        this.mRecommendRoomModel = model
-        model.partyRoom?.let {
-            bindData(position, it)
         }
     }
 

@@ -1,6 +1,5 @@
 package com.component.relation.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,22 +11,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseActivity;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.event.RemarkChangeEvent;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
-import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiMethods;
-import com.common.rxretrofit.ApiObserver;
-import com.common.rxretrofit.ApiResult;
-import com.common.rxretrofit.ControlType;
-import com.common.rxretrofit.RequestControl;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -44,7 +34,6 @@ import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.module.RouterConstants;
-import com.module.home.IHomeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -56,11 +45,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.HashMap;
 import java.util.List;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 public class RelationView extends RelativeLayout {
 
@@ -74,8 +59,6 @@ public class RelationView extends RelativeLayout {
     RecyclerView mRecyclerView;
     SmartRefreshLayout mRefreshLayout;
 
-    private UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
-
     LoadService mLoadService;
 
     RelationAdapter mRelationAdapter;
@@ -86,20 +69,16 @@ public class RelationView extends RelativeLayout {
 
     boolean hasInitData = false;
 
-    int mFrom = 0;  //默认为0，1为从赠送礼物来的
     public String mExtra = "";
 
-    TipsDialogView tipsDialogView;
-
-    public RelationView(Context context, int mode, int from) {
+    public RelationView(Context context, int mode) {
         super(context);
-        init(context, mode, from);
+        init(context, mode);
     }
 
-    private void init(Context context, int mode, int from) {
+    private void init(Context context, int mode) {
         inflate(context, R.layout.relation_view, this);
         this.mMode = mode;
-        this.mFrom = from;
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -117,7 +96,7 @@ public class RelationView extends RelativeLayout {
                         .newAddParamsBuilder((BaseActivity) getContext(), SearchFriendFragment.class)
                         .setUseOldFragmentIfExist(false)
                         .setBundle(bundle)
-                        .addDataBeforeAdd(1, mFrom)
+                        .addDataBeforeAdd(2, mExtra)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
@@ -149,16 +128,9 @@ public class RelationView extends RelativeLayout {
                         unFollow(userInfoModel);
                     }
 
-                } else if (view.getId() == R.id.send_tv) {
-                    if (mFrom == 1) {
-                        showGiveDialog(userInfoModel);
-                    } else if (mFrom == 2) {
-                        checkRelation(userInfoModel);
-                    }
                 }
             }
         });
-        mRelationAdapter.mFrom = mFrom;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mRelationAdapter);
 
@@ -190,105 +162,6 @@ public class RelationView extends RelativeLayout {
                 loadData(0);
             }
         });
-
-        if (mFrom == 2) {
-            mSearchArea.setVisibility(View.GONE);
-        }
-    }
-
-    private void showGiveDialog(UserInfoModel userInfoModel) {
-        if (tipsDialogView != null) {
-            tipsDialogView.dismiss(false);
-        }
-
-        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
-
-        tipsDialogView = new TipsDialogView.Builder((Activity) getContext())
-                .setMessageTip("是否赠送给" + userInfoModel.getNickname() + channelService.getSelectedMallName() + "?")
-                .setCancelBtnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tipsDialogView != null) {
-                            tipsDialogView.dismiss(false);
-                        }
-                    }
-                })
-                .setCancelTip("取消")
-                .setConfirmBtnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        channelService.selectGiveMallUserFinish(userInfoModel.getUserId());
-                        ((Activity) getContext()).finish();
-                    }
-                })
-                .setConfirmTip("赠送")
-                .build();
-        tipsDialogView.showByDialog();
-    }
-
-    private void checkRelation(UserInfoModel userInfoModel) {
-        if (U.getStringUtils().isJSON(mExtra)) {
-            JSONObject jsonObject = JSONObject.parseObject(mExtra);
-            HashMap map = new HashMap();
-            map.put("goodsID", jsonObject.getIntValue("goodsID"));
-            map.put("otherUserID", userInfoModel.getUserId());
-            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-            ApiMethods.subscribe(userInfoServerApi.checkCardRelation(body), new ApiObserver<ApiResult>() {
-                @Override
-                public void process(ApiResult result) {
-                    if (result.getErrno() == 0) {
-                        String msg = result.getData().getString("noticeMsg");
-                        showInviteCardDialog(userInfoModel, msg);
-                    } else {
-                        //ErrAlreadyHasRelation           = 8428114; //对方已是你的闺蜜，不能再发送邀请哦～
-                        //ErrApplyAfter24Hour             = 8428115; //24小时之后才能再次发送关系申请哦～
-                        //ErrAlreadyHasOtherRelation      = 8428116; //对方已是你的闺蜜，对方接受邀请将自动解除你们原来的关系哦～
-                        if (8428114 == result.getErrno()) {
-                            U.getToastUtil().showShort(result.getErrmsg());
-                        } else if (8428115 == result.getErrno()) {
-                            U.getToastUtil().showShort(result.getErrmsg());
-                        } else if (8428116 == result.getErrno()) {
-                            showInviteCardDialog(userInfoModel, result.getErrmsg());
-                        }
-                    }
-                }
-            }, new RequestControl("checkCardRelation", ControlType.CancelLast));
-        }
-    }
-
-    /**
-     * 邀请好友发生关系
-     *
-     * @param userInfoModel
-     */
-    private void showInviteCardDialog(UserInfoModel userInfoModel, String msg) {
-        if (tipsDialogView != null) {
-            tipsDialogView.dismiss(false);
-        }
-
-        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
-
-        tipsDialogView = new TipsDialogView.Builder((Activity) getContext())
-                .setMessageTip(msg)
-                .setCancelBtnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tipsDialogView != null) {
-                            tipsDialogView.dismiss(false);
-                        }
-                    }
-                })
-                .setCancelTip("取消")
-                .setConfirmBtnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ((Activity) getContext()).finish();
-                        channelService.inviteToRelationCardFinish(userInfoModel.getUserId());
-                    }
-                })
-                .setConfirmTip("邀请")
-                .build();
-        tipsDialogView.showByDialog();
     }
 
     private void unFollow(final UserInfoModel userInfoModel) {

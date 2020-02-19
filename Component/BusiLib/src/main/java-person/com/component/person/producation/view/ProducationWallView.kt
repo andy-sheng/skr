@@ -6,13 +6,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
-import android.widget.RelativeLayout
 import com.alibaba.fastjson.JSON
-import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.UserInfoModel
-import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.*
@@ -170,7 +167,7 @@ class ProducationWallView(internal var context: Context, var userInfoModel: User
         SinglePlayer.stop(playerTag)
     }
 
-    fun getProducations(isFlag: Boolean) {
+    fun getProductions(isFlag: Boolean) {
         val now = System.currentTimeMillis()
         if (!isFlag && mAdapter.dataList.isNotEmpty()) {
             // 10分钟更新一次吧
@@ -179,14 +176,14 @@ class ProducationWallView(internal var context: Context, var userInfoModel: User
             }
         }
 
-        getProducations(0)
+        getProductions(0)
     }
 
-    fun getMoreProducations() {
-        getProducations(offset)
+    fun getMoreProductions() {
+        getProductions(offset)
     }
 
-    private fun getProducations(offset: Int) {
+    private fun getProductions(offset: Int) {
         ApiMethods.subscribe(mUserInfoServerApi.getWorks(userInfoModel.userId, offset, DEFAUAT_CNT), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {

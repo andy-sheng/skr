@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.common.log.MyLog;
+
 import io.rong.imkit.R;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
@@ -49,7 +51,13 @@ public class ClubHandleMessageItemProvider extends MessageProvider<ClubHandleMsg
         }
 
         final AutoLinkTextView textView = holder.mContentTv;
-        textView.setText(content.getContent());
+
+        if(MyLog.isDebugLogOpen()){
+            textView.setText(content.getContent()+" "+content.getMsgUid());
+        }else{
+            textView.setText(content.getContent());
+        }
+
         textView.stripUnderlines();
     }
 

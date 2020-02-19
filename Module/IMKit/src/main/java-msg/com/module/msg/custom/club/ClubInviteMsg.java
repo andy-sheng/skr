@@ -22,7 +22,7 @@ public class ClubInviteMsg extends MessageContent {
     private static final String TAG = "ClubInviteMsg";
     private String content = "";
     private String uniqID = "";
-
+    private long expireAt;
     public static final Creator<ClubInviteMsg> CREATOR = new Creator<ClubInviteMsg>() {
         public ClubInviteMsg createFromParcel(Parcel source) {
             return new ClubInviteMsg(source);
@@ -38,6 +38,7 @@ public class ClubInviteMsg extends MessageContent {
         try {
             jsonObj.putOpt("content", content);
             jsonObj.putOpt("uniqID", uniqID);
+            jsonObj.putOpt("expireAt",expireAt);
             if (this.getJSONUserInfo() != null) {
                 jsonObj.putOpt("user", this.getJSONUserInfo());
             }
@@ -89,6 +90,10 @@ public class ClubInviteMsg extends MessageContent {
                 this.setUniqID(jsonObj.optString("uniqID"));
             }
 
+            if (jsonObj.has("expireAt")) {
+                this.setExpireAt(jsonObj.optLong("expireAt"));
+            }
+
             if (jsonObj.has("user")) {
                 this.setUserInfo(this.parseJsonToUserInfo(jsonObj.getJSONObject("user")));
             }
@@ -108,6 +113,14 @@ public class ClubInviteMsg extends MessageContent {
             RLog.e(TAG, "JSONException " + var4.getMessage());
         }
 
+    }
+
+    public long getExpireAt() {
+        return expireAt;
+    }
+
+    public void setExpireAt(long expireAt) {
+        this.expireAt = expireAt;
     }
 
     public String getUniqID() {
@@ -133,6 +146,7 @@ public class ClubInviteMsg extends MessageContent {
     public void writeToParcel(Parcel dest, int flags) {
         ParcelUtils.writeToParcel(dest, this.content);
         ParcelUtils.writeToParcel(dest, this.uniqID);
+        ParcelUtils.writeToParcel(dest, this.expireAt);
         ParcelUtils.writeToParcel(dest, this.getUserInfo());
         ParcelUtils.writeToParcel(dest, this.getMentionedInfo());
         ParcelUtils.writeToParcel(dest, this.isDestruct() ? 1 : 0);
@@ -142,6 +156,7 @@ public class ClubInviteMsg extends MessageContent {
     public ClubInviteMsg(Parcel in) {
         this.setContent(ParcelUtils.readFromParcel(in));
         this.setUniqID(ParcelUtils.readFromParcel(in));
+        this.setExpireAt(ParcelUtils.readLongFromParcel(in));
         this.setUserInfo((UserInfo)ParcelUtils.readFromParcel(in, UserInfo.class));
         this.setMentionedInfo((MentionedInfo)ParcelUtils.readFromParcel(in, MentionedInfo.class));
         this.setDestruct(ParcelUtils.readIntFromParcel(in) == 1);

@@ -1,5 +1,6 @@
 package com.module.feeds.watch.watchview
 
+import android.content.Context
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
@@ -18,7 +19,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 // 流布局
-class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_RECOMMEND) {
+class RecommendWatchView(context: Context) : BaseWatchView(context, TYPE_RECOMMEND) {
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
 
     private var mOffset = 0   //偏移量
@@ -36,10 +37,10 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
     override fun clickMore(position: Int, it: FeedsWatchModel) {
         mFeedsMoreDialogView?.dismiss(false)
         if (it.user?.userId == MyUserInfoManager.uid.toInt()) {
-            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, true)
+            mFeedsMoreDialogView = FeedsMoreDialogView(U.getActivityUtils().topActivity, FeedsMoreDialogView.FROM_FEED_HOME, it, true)
             mFeedsMoreDialogView?.showByDialog()
         } else {
-            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, null)
+            mFeedsMoreDialogView = FeedsMoreDialogView(U.getActivityUtils().topActivity, FeedsMoreDialogView.FROM_FEED_HOME, it, null)
             mFeedsMoreDialogView?.showByDialog()
         }
     }

@@ -310,7 +310,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                         if (activity is SchemeSdkActivity) {
                             activity = U.getActivityUtils().homeActivity
                         }
-                        val confirmDialog = ConfirmDialog(activity, userInfoModel, ConfirmDialog.TYPE_PARTY_INVITE_CONFIRM)
+                        val confirmDialog = ConfirmDialog(activity, userInfoModel, ConfirmDialog.TYPE_RELAY_INVITE_CONFIRM)
                         confirmDialog.setListener {
                             Observable.timer(500, TimeUnit.MILLISECONDS)
                                     .compose(this@NotifyCorePresenter.bindUntilEvent(PresenterEvent.DESTROY))

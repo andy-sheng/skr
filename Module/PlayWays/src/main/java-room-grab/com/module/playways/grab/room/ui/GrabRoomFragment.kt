@@ -15,9 +15,12 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.base.FragmentDataListener
+import com.common.core.kouling.SkrKouLingUtils
+import com.common.core.kouling.api.KouLingServerApi
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
@@ -27,6 +30,7 @@ import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ApiResult
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
@@ -35,7 +39,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.busilib.beauty.FROM_IN_GRAB_ROOM
-import com.component.busilib.constans.GameModeType
+import com.component.busilib.constans.GameModeType.GAME_MODE_GRAB
 import com.component.busilib.constans.GrabRoomType
 import com.component.busilib.manager.BgMusicManager
 import com.component.busilib.view.GameEffectBgView
@@ -51,6 +55,7 @@ import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
 import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.GrabRoomData
+import com.module.playways.grab.room.GrabRoomServerApi
 import com.module.playways.grab.room.activity.GrabRoomActivity
 import com.module.playways.grab.room.bottom.GrabBottomContainerView
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent
@@ -59,6 +64,7 @@ import com.module.playways.grab.room.event.GrabWantInviteEvent
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent
 import com.module.playways.grab.room.inter.IGrabRoomView
 import com.module.playways.grab.room.inter.IGrabVipView
+import com.module.playways.grab.room.invite.IInviteCallBack
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.grab.room.presenter.GrabCorePresenter
@@ -102,6 +108,9 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.GrabRoom.EQRoundStatus
 import com.zq.live.proto.GrabRoom.EQUserRole
+import io.reactivex.Observable
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -811,10 +820,50 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
-                .addDataBeforeAdd(0, GameModeType.GAME_MODE_GRAB)
-                .addDataBeforeAdd(1, mRoomData!!.gameId)
-                .addDataBeforeAdd(2, if (mRoomData!!.isVideoRoom) EMsgRoomMediaType.EMR_VIDEO.value else EMsgRoomMediaType.EMR_AUDIO.value)
-                .addDataBeforeAdd(3, mRoomData!!.tagId)
+                .addDataBeforeAdd(0, object : IInviteCallBack {
+                    override fun getFrom(): Int {
+                        return GAME_MODE_GRAB
+                    }
+
+                    override fun getInviteDialogText(kouling: String?): String {
+                        return SkrKouLingUtils.genJoinGrabGameKouling(kouling)
+                    }
+
+                    override fun getShareTitle(): String {
+                        return "房间已开,就等你来唱"
+                    }
+
+                    override fun getShareDes(): String {
+                        return "我在撕歌skr开了一个嗨唱包房，快来一起耍呀～"
+                    }
+
+                    override fun getInviteObservable(model: UserInfoModel): Observable<ApiResult> {
+                        val mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi::class.java)
+                        val map = HashMap<String, Any>()
+                        map["roomID"] = mRoomData?.gameId ?: 0
+                        map["tagID"] = mRoomData?.tagId ?: 0
+                        map["userID"] = model.getUserId()
+
+                        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                        return mGrabRoomServerApi.inviteFriend(body)
+                    }
+
+                    override fun getRoomID(): Int {
+                        return mRoomData?.gameId ?: 0
+                    }
+
+                    override fun getKouLingTokenObservable(): Observable<ApiResult> {
+                        val code = String.format("inframeskr://room/grabjoin?owner=%s&gameId=%s&tagId=%s&ask=1&mediaType=%s",
+                                MyUserInfoManager.uid, mRoomData?.gameId
+                                ?: 0, mRoomData?.tagId, if (mRoomData!!.isVideoRoom) EMsgRoomMediaType.EMR_VIDEO.value else EMsgRoomMediaType.EMR_AUDIO.value)
+                        val kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi::class.java)
+                        return kouLingServerApi.setTokenByCode(code)
+                    }
+
+                    override fun needShowFans(): Boolean {
+                        return true
+                    }
+                })
                 .build()
         )
 

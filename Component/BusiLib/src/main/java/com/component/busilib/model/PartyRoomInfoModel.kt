@@ -2,7 +2,16 @@ package com.component.busilib.model
 
 import java.io.Serializable
 import com.alibaba.fastjson.annotation.JSONField
+import com.common.core.userinfo.model.UserInfoModel
 
+class RecommendPartyInfoModel : Serializable {
+    @JSONField(name = "category")
+    var category: Int = 0   // 分类
+    @JSONField(name = "roomInfo")
+    var roomInfoModel: PartyRoomInfoModel? = null
+    @JSONField(name = "userInfo")
+    var userInfo: UserInfoModel? = null
+}
 
 class PartyRoomInfoModel : Serializable {
     @JSONField(name = "avatarUrl")

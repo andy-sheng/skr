@@ -318,7 +318,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 }
             }else if(message.getContent() instanceof ClubHandleMsg){
                 ClubHandleMsg msg = (ClubHandleMsg) message.getContent();
-                ClubMsgProcessor.process(msg);
+                ClubMsgProcessor.onReceiveHandleMsg(msg);
                 return true;
             }else if(message.getContent() instanceof RelationHandleMsg){
                 RelationHandleMsg msg = (RelationHandleMsg) message.getContent();

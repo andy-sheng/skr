@@ -7,7 +7,7 @@ import com.alibaba.android.arouter.facade.template.IProvider;
 public interface  IFeedsModuleService extends IProvider {
     Fragment getFragment();
 
-    IPersonFeedsWall getPersonFeedsWall(Object basefragment, Object userInfo, Object requestCall);
+    IPersonFeedsWall getPersonFeedsWall(Object context, Object userInfo, Object requestCall);
 
     Fragment getLikeWorkFragment();
 

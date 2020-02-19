@@ -87,40 +87,40 @@ public class ConversationActivity extends BaseActivity {
         mTitleBar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(MyLog.isDebugLogOpen()){
-                    // 测试自定义消息
-                    JSONObject jo = new JSONObject();
-                    jo.put("content","张三邀请你加入家族 张三的家族");
-                    jo.put("status",0); // 0未处理 1同意 2拒绝
-
-                    ClubInviteMsg customChatRoomMsg =  ClubInviteMsg.obtain();
-                    customChatRoomMsg.setContent(jo.toJSONString());
-                    Message msg = Message.obtain(mUserId, Conversation.ConversationType.PRIVATE, customChatRoomMsg);
-
-                    msg.setExtra(jo.toJSONString());
-                    RongIM.getInstance().sendMessage(msg, "pushContent", "pushData", new IRongCallback.ISendMessageCallback() {
-                        @Override
-                        public void onAttached(Message message) {
-
-                        }
-
-                        @Override
-                        public void onSuccess(Message message) {
-                            // 发成功后 强制存下数据库 不然再进列表又是空的了
-                            RongIM.getInstance().setMessageExtra(message.getMessageId(),message.getExtra());
-                            Log.d("CSM","message.getExtra()="+message.getExtra()
-                                    +" msgId="+message.getMessageId()
-                                    +" uId="+message.getUId()
-                            );
-
-                        }
-
-                        @Override
-                        public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                        }
-                    });
-                    return;
-                }
+//                if(MyLog.isDebugLogOpen()){
+//                    // 测试自定义消息
+//                    JSONObject jo = new JSONObject();
+//                    jo.put("content","张三邀请你加入家族 张三的家族");
+//                    jo.put("status",0); // 0未处理 1同意 2拒绝
+//
+//                    ClubInviteMsg customChatRoomMsg =  ClubInviteMsg.obtain();
+//                    customChatRoomMsg.setContent(jo.toJSONString());
+//                    Message msg = Message.obtain(mUserId, Conversation.ConversationType.PRIVATE, customChatRoomMsg);
+//
+//                    msg.setExtra(jo.toJSONString());
+//                    RongIM.getInstance().sendMessage(msg, "pushContent", "pushData", new IRongCallback.ISendMessageCallback() {
+//                        @Override
+//                        public void onAttached(Message message) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onSuccess(Message message) {
+//                            // 发成功后 强制存下数据库 不然再进列表又是空的了
+//                            RongIM.getInstance().setMessageExtra(message.getMessageId(),message.getExtra());
+//                            Log.d("CSM","message.getExtra()="+message.getExtra()
+//                                    +" msgId="+message.getMessageId()
+//                                    +" uId="+message.getUId()
+//                            );
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+//                        }
+//                    });
+//                    return;
+//                }
                 finish();
             }
         });

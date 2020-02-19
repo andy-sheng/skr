@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.module.RouterConstants;
 import com.module.common.ICallback;
 import com.module.msg.custom.club.ClubInviteMsg;
+import com.module.msg.custom.club.ClubMsgProcessor;
 import com.module.msg.custom.relation.RelationInviteMsg;
 import com.module.msg.custom.relation.RelationMsgProcessor;
 import com.module.msg.fragment.MessageFragment2;
@@ -136,6 +137,11 @@ public class RongMsgServiceImpl implements IMsgService {
     @Override
     public void sendRelationInviteMsg(String userID, String uniqID,String content) {
         RelationMsgProcessor.sendRelationInviteMsg(userID,uniqID,content);
+    }
+
+    @Override
+    public void sendClubInviteMsg(String userID, String uniqID, long expireAt, String content) {
+        ClubMsgProcessor.sendClubInviteMsg(userID,uniqID,expireAt,content);
     }
 
     @Override

@@ -14,6 +14,8 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.core.kouling.SkrKouLingUtils;
+import com.common.core.kouling.api.KouLingServerApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.rxretrofit.ApiManager;
@@ -34,6 +36,7 @@ import com.module.msg.follow.LastNewsModel;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.rong.imkit.R;
 import io.rong.imlib.model.Conversation;
 
@@ -136,7 +139,20 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
 
     private void showShareDialog() {
         if (mInviteFriendDialog == null) {
-            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_FRIEND, 0, 0, 0, null);
+//            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_FRIEND, 0, 0, 0, null);
+            mInviteFriendDialog = new InviteFriendDialog(getContext(), "", new InviteFriendDialog.IInviteDialogCallBack() {
+                @Override
+                public Observable<ApiResult> getKouLingTokenObservable() {
+                    String code = String.format("inframeskr://relation/bothfollow?inviterId=%s", MyUserInfoManager.INSTANCE.getUid());
+                    KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
+                    return kouLingServerApi.setTokenByCode(code);
+                }
+
+                @Override
+                public String getInviteDialogText(String kouling) {
+                    return SkrKouLingUtils.genReqFollowKouling(kouling);
+                }
+            });
         }
         mInviteFriendDialog.show();
     }

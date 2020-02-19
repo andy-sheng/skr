@@ -1,10 +1,8 @@
 package com.module.playways.party.room.view
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.view.Gravity
 import android.view.View
-import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
@@ -14,10 +12,10 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
-import com.component.busilib.constans.GameModeType
 import com.component.person.event.ShowPersonCardEvent
-import com.module.RouterConstants
 import com.module.playways.R
+import com.module.playways.grab.room.invite.IInviteCallBack
+import com.module.playways.grab.room.invite.InviteFriendActivity
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.model.PartyActorInfoModel
 import com.module.playways.room.data.H
@@ -35,7 +33,7 @@ import org.greenrobot.eventbus.EventBus
  *  关闭座位，邀请上麦，取消
  *  打开座位，取消
  */
-class PartyManageDialogView(context: Context, model: PartyActorInfoModel?) : ExConstraintLayout(context) {
+class PartyManageDialogView(context: Context, model: PartyActorInfoModel?, val inviteCallBack : IInviteCallBack) : ExConstraintLayout(context) {
 
     private val function1: ExTextView
     private val function2: ExTextView
@@ -126,14 +124,16 @@ class PartyManageDialogView(context: Context, model: PartyActorInfoModel?) : ExC
                 //空席位
                 function1.visibility = View.VISIBLE
                 function1.text = "关闭座位"
-                function2.visibility = View.VISIBLE
+                function2.visibility = View.GONE
                 function2.text = "邀请好友"
                 function2.setDebounceViewClickListener {
                     mDialogPlus?.dismiss()
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
-                            .withInt("from", GameModeType.GAME_MODE_PARTY)
-                            .withInt("roomId", H.partyRoomData?.gameId ?: 0)
-                            .navigation()
+//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
+//                            .withInt("from", GameModeType.GAME_MODE_PARTY)
+//                            .withInt("roomId", H.partyRoomData?.gameId ?: 0)
+//                            .navigation()
+
+                    InviteFriendActivity.open(inviteCallBack)
                 }
                 function3.visibility = View.GONE
             }

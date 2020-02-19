@@ -36,7 +36,6 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
-import com.component.busilib.constans.GameModeType
 import com.component.dialog.PersonInfoDialog
 import com.component.report.fragment.QuickFeedbackFragment
 import com.dialog.view.TipsDialogView
@@ -55,11 +54,9 @@ import com.module.playways.doubleplay.pushEvent.DoubleEndCombineRoomPushEvent
 import com.module.playways.doubleplay.view.DoubleChatSenceView
 import com.module.playways.doubleplay.view.DoubleGameSenceView
 import com.module.playways.doubleplay.view.DoubleSingSenceView
-import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.view.ZanView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.Common.ESceneType
 import com.zq.mediaengine.kit.ZqEngineKit
 import org.greenrobot.eventbus.EventBus
@@ -182,14 +179,14 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mLeftAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 if (!mRoomData!!.isRoomPrepared()) {
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .addDataBeforeAdd(0, GameModeType.GAME_MODE_DOUBLE)
-                            .addDataBeforeAdd(1, mRoomData!!.gameId)
-                            .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
-                            .build()
-                    )
+//                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
+//                            .setAddToBackStack(true)
+//                            .setHasAnimation(true)
+//                            .addDataBeforeAdd(0, GameModeType.GAME_MODE_DOUBLE)
+//                            .addDataBeforeAdd(1, mRoomData!!.gameId)
+//                            .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
+//                            .build()
+//                    )
                     return
                 }
 
@@ -249,13 +246,13 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                 unLockSelf()
                 toInviteUI()
                 mLeftNameTv?.setDebounceViewClickListener {
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .addDataBeforeAdd(0, GameModeType.GAME_MODE_DOUBLE)
-                            .addDataBeforeAdd(1, mRoomData!!.gameId)
-                            .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
-                            .build())
+//                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
+//                            .setAddToBackStack(true)
+//                            .setHasAnimation(true)
+//                            .addDataBeforeAdd(0, GameModeType.GAME_MODE_DOUBLE)
+//                            .addDataBeforeAdd(1, mRoomData!!.gameId)
+//                            .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
+//                            .build())
                 }
             }
         } else {

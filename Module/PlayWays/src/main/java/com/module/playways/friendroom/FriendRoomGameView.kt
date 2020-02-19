@@ -1,7 +1,6 @@
 package com.module.playways.friendroom
 
 import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -10,6 +9,9 @@ import android.view.View
 import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.core.kouling.SkrKouLingUtils
+import com.common.core.kouling.api.KouLingServerApi
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
 import com.common.log.MyLog
@@ -23,23 +25,20 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
-import com.component.busilib.callback.EmptyCallback
-import com.component.busilib.friends.*
+import com.component.busilib.friends.GrabSongApi
+import com.component.busilib.friends.SpecialModel
 import com.component.busilib.recommend.RA
 import com.component.busilib.verify.SkrVerifyUtils
-import com.kingja.loadsir.callback.Callback
-import com.kingja.loadsir.core.LoadService
-import com.kingja.loadsir.core.LoadSir
+import com.component.dialog.InviteFriendDialog
+import com.component.dialog.InviteFriendDialogView
 import com.module.RouterConstants
+import com.module.playways.IFriendRoomView
 import com.module.playways.IPlaywaysModeService
+import com.module.playways.R
+import com.module.playways.mic.home.RecommendUserInfo
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import com.component.dialog.InviteFriendDialog
-import com.module.playways.IFriendRoomView
-import com.module.playways.R
-import com.module.playways.mic.home.RecommendMicInfoModel
-import com.module.playways.mic.home.RecommendUserInfo
-import com.module.playways.party.home.PartyRoomView
+import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.friend_room_view_layout.view.*
 
@@ -66,7 +65,7 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
     var mRecommendTimer: HandlerTaskTimer? = null
     var mRecommendInterval: Int = 0
 
-    var mLoadService: LoadService<*>
+    //    var mLoadService: LoadService<*>
     var mInviteFriendDialog: InviteFriendDialog? = null
 
     internal var mLastLoadDateTime: Long = 0    //记录上次获取接口的时间
@@ -102,9 +101,9 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
         recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         friendRoomAdapter = FriendRoomAdapter(object : FriendRoomAdapter.FriendRoomClickListener {
             override fun onClickPartyRoom(position: Int, model: RecommendRoomModel?) {
-                model?.partyRoom?.roomID?.let {
+                model?.partyRoom?.roomInfoModel?.roomID?.let {
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                    iRankingModeService.tryGoPartyRoom(it, 1, model.partyRoom?.roomtype ?: 0)
+                    iRankingModeService.tryGoPartyRoom(it, 1, model.partyRoom?.roomInfoModel?.roomtype ?: 0)
                 }
             }
 
@@ -220,17 +219,27 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
         }
         SinglePlayer.addCallback(playerTag, playCallback)
 
-        val mLoadSir = LoadSir.Builder()
-                .addCallback(EmptyCallback(R.drawable.more_friend_empty_icon, "暂时没有房间了～", "#FFFFFF"))
-                .build()
-        mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
-            initData(true)
-        })
+//        val mLoadSir = LoadSir.Builder()
+//                .addCallback(EmptyCallback(R.drawable.more_friend_empty_icon, "暂时没有房间了～", "#FFFFFF"))
+//                .build()
+//        mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
+//            initData(true)
+//        })
     }
 
     fun showShareDialog() {
         if (mInviteFriendDialog == null) {
-            mInviteFriendDialog = InviteFriendDialog(context, InviteFriendDialog.INVITE_GRAB_FRIEND, 0, 0, 0, null)
+            mInviteFriendDialog = InviteFriendDialog(context, "", object : InviteFriendDialog.IInviteDialogCallBack {
+                override fun getKouLingTokenObservable(): Observable<ApiResult> {
+                    val code = String.format("inframeskr://relation/bothfollow?inviterId=%s", MyUserInfoManager.uid)
+                    val kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi::class.java)
+                    return kouLingServerApi.setTokenByCode(code)
+                }
+
+                override fun getInviteDialogText(kouling: String): String {
+                    return SkrKouLingUtils.genReqFollowKouling(kouling)
+                }
+            })
         }
         mInviteFriendDialog?.show()
     }
@@ -408,11 +417,11 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
             }
         }
 
-        if (!friendRoomAdapter?.mDataList.isNullOrEmpty()) {
-            mLoadService.showSuccess()
-        } else {
-            mLoadService.showCallback(EmptyCallback::class.java)
-        }
+//        if (!friendRoomAdapter?.mDataList.isNullOrEmpty()) {
+//            mLoadService.showSuccess()
+//        } else {
+//            mLoadService.showCallback(EmptyCallback::class.java)
+//        }
     }
 
     override fun onDetachedFromWindow() {

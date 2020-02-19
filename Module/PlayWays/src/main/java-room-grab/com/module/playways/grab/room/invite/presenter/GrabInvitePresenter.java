@@ -91,139 +91,139 @@ public class GrabInvitePresenter {
     }
 
 
-    public void inviteGrabFriend(int roomID, int tagID, UserInfoModel model, ExTextView view) {
-        MyLog.d(TAG, "inviteGrabFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("roomID", roomID);
-        map.put("tagID", tagID);
-        map.put("userID", model.getUserId());
-
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-
-        ApiMethods.subscribe(mGrabRoomServerApi.inviteFriend(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                MyLog.d(TAG, "process" + " result=" + result.getErrno());
-                if (result.getErrno() == 0) {
-                    // 更新视图
-                    mIGrabInviteView.updateInvited(view);
-                } else {
-                    MyLog.w(TAG, "inviteFriend failed, " + " traceid is " + result.getTraceId());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.e(TAG, e);
-            }
-        }, mBaseFragment);
-    }
-
-    public void inviteDoubleFriend(int roomID, UserInfoModel model, ExTextView view) {
-        MyLog.d(TAG, "inviteDoubleFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("roomID", roomID);
-        map.put("inviteUserID", model.getUserId());
-
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-
-        ApiMethods.subscribe(mDoubleRoomServerApi.roomSendInvite(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                MyLog.d(TAG, "process" + " result=" + result.getErrno());
-                if (result.getErrno() == 0) {
-                    // 更新视图
-                    mIGrabInviteView.updateInvited(view);
-                } else {
-                    MyLog.w(TAG, "inviteFriend failed, " + " traceid is " + result.getTraceId());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.e(TAG, e);
-            }
-        }, mBaseFragment);
-    }
-
-    public void inviteMicFriend(int roomID, UserInfoModel model, ExTextView view) {
-        MyLog.d(TAG, "inviteMicFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("roomID", roomID);
-        map.put("userID", model.getUserId());
-
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-
-        ApiMethods.subscribe(mDoubleRoomServerApi.micRoomSendInvite(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                MyLog.d(TAG, "process" + " result=" + result.getErrno());
-                if (result.getErrno() == 0) {
-                    // 更新视图
-                    mIGrabInviteView.updateInvited(view);
-                } else {
-                    MyLog.w(TAG, "inviteMicFriend failed, " + " traceid is " + result.getTraceId());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.e(TAG, e);
-            }
-        }, mBaseFragment);
-    }
-
-    public void invitePartyFriend(int roomID, UserInfoModel model, ExTextView view) {
-        MyLog.d(TAG, "inviteMicFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("roomID", roomID);
-        map.put("userID", model.getUserId());
-
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-
-        ApiMethods.subscribe(ApiManager.getInstance().createService(PartyRoomServerApi.class).invite(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                MyLog.d(TAG, "process" + " result=" + result.getErrno());
-                if (result.getErrno() == 0) {
-                    // 更新视图
-                    mIGrabInviteView.updateInvited(view);
-                } else {
-                    MyLog.w(TAG, "inviteMicFriend failed, " + " traceid is " + result.getTraceId());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.e(TAG, e);
-            }
-        }, mBaseFragment);
-    }
-
-    public void inviteRelayFriend(int roomID, UserInfoModel model, ExTextView view) {
-        MyLog.d(TAG, "inviteRelayFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("roomID", roomID);
-        map.put("inviteUserID", model.getUserId());
-
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-
-        ApiMethods.subscribe(ApiManager.getInstance().createService(PartyRoomServerApi.class).relayRoominvite(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                MyLog.d(TAG, "process" + " result=" + result.getErrno());
-                if (result.getErrno() == 0) {
-                    // 更新视图
-                    mIGrabInviteView.updateInvited(view);
-                } else {
-                    MyLog.w(TAG, "inviteMicFriend failed, " + " traceid is " + result.getTraceId());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.e(TAG, e);
-            }
-        }, mBaseFragment);
-    }
+//    public void inviteGrabFriend(int roomID, int tagID, UserInfoModel model, ExTextView view) {
+//        MyLog.d(TAG, "inviteGrabFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("roomID", roomID);
+//        map.put("tagID", tagID);
+//        map.put("userID", model.getUserId());
+//
+//        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+//
+//        ApiMethods.subscribe(mGrabRoomServerApi.inviteFriend(body), new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//                MyLog.d(TAG, "process" + " result=" + result.getErrno());
+//                if (result.getErrno() == 0) {
+//                    // 更新视图
+//                    mIGrabInviteView.updateInvited(view);
+//                } else {
+//                    MyLog.w(TAG, "inviteFriend failed, " + " traceid is " + result.getTraceId());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                MyLog.e(TAG, e);
+//            }
+//        }, mBaseFragment);
+//    }
+//
+//    public void inviteDoubleFriend(int roomID, UserInfoModel model, ExTextView view) {
+//        MyLog.d(TAG, "inviteDoubleFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("roomID", roomID);
+//        map.put("inviteUserID", model.getUserId());
+//
+//        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+//
+//        ApiMethods.subscribe(mDoubleRoomServerApi.roomSendInvite(body), new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//                MyLog.d(TAG, "process" + " result=" + result.getErrno());
+//                if (result.getErrno() == 0) {
+//                    // 更新视图
+//                    mIGrabInviteView.updateInvited(view);
+//                } else {
+//                    MyLog.w(TAG, "inviteFriend failed, " + " traceid is " + result.getTraceId());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                MyLog.e(TAG, e);
+//            }
+//        }, mBaseFragment);
+//    }
+//
+//    public void inviteMicFriend(int roomID, UserInfoModel model, ExTextView view) {
+//        MyLog.d(TAG, "inviteMicFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("roomID", roomID);
+//        map.put("userID", model.getUserId());
+//
+//        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+//
+//        ApiMethods.subscribe(mDoubleRoomServerApi.micRoomSendInvite(body), new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//                MyLog.d(TAG, "process" + " result=" + result.getErrno());
+//                if (result.getErrno() == 0) {
+//                    // 更新视图
+//                    mIGrabInviteView.updateInvited(view);
+//                } else {
+//                    MyLog.w(TAG, "inviteMicFriend failed, " + " traceid is " + result.getTraceId());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                MyLog.e(TAG, e);
+//            }
+//        }, mBaseFragment);
+//    }
+//
+//    public void invitePartyFriend(int roomID, UserInfoModel model, ExTextView view) {
+//        MyLog.d(TAG, "inviteMicFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("roomID", roomID);
+//        map.put("userID", model.getUserId());
+//
+//        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+//
+//        ApiMethods.subscribe(ApiManager.getInstance().createService(PartyRoomServerApi.class).invite(body), new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//                MyLog.d(TAG, "process" + " result=" + result.getErrno());
+//                if (result.getErrno() == 0) {
+//                    // 更新视图
+//                    mIGrabInviteView.updateInvited(view);
+//                } else {
+//                    MyLog.w(TAG, "inviteMicFriend failed, " + " traceid is " + result.getTraceId());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                MyLog.e(TAG, e);
+//            }
+//        }, mBaseFragment);
+//    }
+//
+//    public void inviteRelayFriend(int roomID, UserInfoModel model, ExTextView view) {
+//        MyLog.d(TAG, "inviteRelayFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("roomID", roomID);
+//        map.put("inviteUserID", model.getUserId());
+//
+//        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+//
+//        ApiMethods.subscribe(ApiManager.getInstance().createService(PartyRoomServerApi.class).relayRoominvite(body), new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//                MyLog.d(TAG, "process" + " result=" + result.getErrno());
+//                if (result.getErrno() == 0) {
+//                    // 更新视图
+//                    mIGrabInviteView.updateInvited(view);
+//                } else {
+//                    MyLog.w(TAG, "inviteMicFriend failed, " + " traceid is " + result.getTraceId());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                MyLog.e(TAG, e);
+//            }
+//        }, mBaseFragment);
+//    }
 }

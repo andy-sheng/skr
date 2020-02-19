@@ -32,12 +32,22 @@
         android:id="@+id/create_room"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_14_dp"
-        android:background="@drawable/party_home_create_icon"
+        android:padding="@dimen/view_10_dp"
+        android:src="@drawable/party_home_create_icon"
         app:layout_constraintBottom_toBottomOf="@id/title_tv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/title_tv" />
+
+    <ImageView
+        android:id="@+id/search_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/view_10_dp"
+        android:src="@drawable/party_home_search_icon"
+        app:layout_constraintBottom_toBottomOf="@id/create_room"
+        app:layout_constraintRight_toLeftOf="@id/create_room"
+        app:layout_constraintTop_toTopOf="@id/create_room" />
 
     <RelativeLayout
         android:id="@+id/content_area"

@@ -6,21 +6,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.common.core.kouling.SkrKouLingUtils;
-import com.common.core.myinfo.MyUserInfoManager;
-import com.common.log.MyLog;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
-import com.module.common.ICallback;
-
-import static com.component.dialog.InviteFriendDialog.INVITE_DOUBLE_GAME;
-import static com.component.dialog.InviteFriendDialog.INVITE_GRAB_FRIEND;
-import static com.component.dialog.InviteFriendDialog.INVITE_GRAB_GAME;
-import static com.component.dialog.InviteFriendDialog.INVITE_MIC_GAME;
-import static com.component.dialog.InviteFriendDialog.INVITE_PARTY_GAME;
-import static com.component.dialog.InviteFriendDialog.INVITE_RELAY_GAME;
 
 public class InviteFriendDialogView extends ConstraintLayout {
     public final String TAG = "InviteFriendDialogView";
@@ -30,22 +22,16 @@ public class InviteFriendDialogView extends ConstraintLayout {
     ExTextView mTvText;
     TextView mTvQqShare;
     TextView mTvWeixinShare;
-
-    private int mType;      //类别
-    private int mMediaType;
-    private int mGameId;    //游戏id
-    private int mTagID;
     private String mKouLingToken = "";  //口令
 
     Listener mListener;
 
-    public InviteFriendDialogView(Context context, int type, int gameId, int tagID, int mediaType, String kouLingToken) {
+    InviteFriendDialog.IInviteDialogCallBack mInviteCallBack;
+
+    public InviteFriendDialogView(Context context, String kouLingToken, InviteFriendDialog.IInviteDialogCallBack inviteCallBack) {
         super(context);
-        this.mType = type;
-        this.mGameId = gameId;
-        this.mTagID = tagID;
-        this.mMediaType = mediaType;
         this.mKouLingToken = kouLingToken;
+        this.mInviteCallBack = inviteCallBack;
         init(context);
     }
 
@@ -61,138 +47,24 @@ public class InviteFriendDialogView extends ConstraintLayout {
         if (!TextUtils.isEmpty(mKouLingToken)) {
             mTvKouling.setText(mKouLingToken);
         } else {
-            if (mType == INVITE_GRAB_GAME) {
-                if (mGameId == 0) {
-                    MyLog.w(TAG, "init" + " context=" + context + "mGameId = 0");
-                    return;
+            ApiMethods.subscribe(mInviteCallBack.getKouLingTokenObservable(), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult obj) {
+                    if (obj.getErrno() == 0) {
+                        mKouLingToken = obj.getData().getString("token");
+                        mTvKouling.setText(mKouLingToken);
+                    } else {
+                        U.getToastUtil().showShort(obj.getErrmsg());
+                    }
                 }
-                SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, mTagID, mMediaType, new ICallback() {
-                    @Override
-                    public void onSucess(Object obj) {
-                        if (obj != null) {
-                            mKouLingToken = (String) obj;
-                            mTvKouling.setText(mKouLingToken);
-                        } else {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    }
-
-                    @Override
-                    public void onFailed(Object obj, int errcode, String message) {
-                        U.getToastUtil().showShort("口令生成失败");
-                    }
-                });
-            } else if (mType == INVITE_DOUBLE_GAME) {
-                if (mGameId == 0) {
-                    MyLog.w(TAG, "init" + " context=" + context + "mGameId = 0");
-                    return;
-                }
-                SkrKouLingUtils.genJoinDoubleGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, mMediaType, new ICallback() {
-                    @Override
-                    public void onSucess(Object obj) {
-                        if (obj != null) {
-                            mKouLingToken = (String) obj;
-                            mTvKouling.setText(mKouLingToken);
-                        } else {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    }
-
-                    @Override
-                    public void onFailed(Object obj, int errcode, String message) {
-                        U.getToastUtil().showShort("口令生成失败");
-                    }
-                });
-            } else if (mType == INVITE_GRAB_FRIEND) {
-                SkrKouLingUtils.genNormalReqFollowKouling((int) MyUserInfoManager.INSTANCE.getUid(), new ICallback() {
-                    @Override
-                    public void onSucess(Object obj) {
-                        if (obj != null) {
-                            mKouLingToken = (String) obj;
-                            mTvKouling.setText(mKouLingToken);
-                        } else {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    }
-
-                    @Override
-                    public void onFailed(Object obj, int errcode, String message) {
-                        U.getToastUtil().showShort("口令生成失败");
-                    }
-                });
-            } else if (mType == INVITE_MIC_GAME) {
-                SkrKouLingUtils.genJoinMicRoomKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, new ICallback() {
-                    @Override
-                    public void onSucess(Object obj) {
-                        if (obj != null) {
-                            mKouLingToken = (String) obj;
-                            mTvKouling.setText(mKouLingToken);
-                        } else {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    }
-
-                    @Override
-                    public void onFailed(Object obj, int errcode, String message) {
-                        U.getToastUtil().showShort("口令生成失败");
-                    }
-                });
-            } else if (mType == INVITE_PARTY_GAME) {
-                SkrKouLingUtils.genJoinPartyGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, mMediaType, new ICallback() {
-                    @Override
-                    public void onSucess(Object obj) {
-                        if (obj != null) {
-                            mKouLingToken = (String) obj;
-                            mTvKouling.setText(mKouLingToken);
-                        } else {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    }
-
-                    @Override
-                    public void onFailed(Object obj, int errcode, String message) {
-                        U.getToastUtil().showShort("口令生成失败");
-                    }
-                });
-            } else if (mType == INVITE_RELAY_GAME) {
-                SkrKouLingUtils.genJoinRelayRoomKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, new ICallback() {
-                    @Override
-                    public void onSucess(Object obj) {
-                        if (obj != null) {
-                            mKouLingToken = (String) obj;
-                            mTvKouling.setText(mKouLingToken);
-                        } else {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    }
-
-                    @Override
-                    public void onFailed(Object obj, int errcode, String message) {
-                        U.getToastUtil().showShort("口令生成失败");
-                    }
-                });
-            }
+            });
         }
 
         mTvQqShare.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {
-                    String text = "";
-                    if (mType == INVITE_GRAB_FRIEND) {
-                        text = SkrKouLingUtils.genReqFollowKouling(mKouLingToken);
-                    } else if (mType == INVITE_GRAB_GAME) {
-                        text = SkrKouLingUtils.genJoinGrabGameKouling(mKouLingToken);
-                    } else if (mType == INVITE_DOUBLE_GAME) {
-                        text = SkrKouLingUtils.genJoinDoubleGameKouling(mKouLingToken);
-                    } else if (mType == INVITE_MIC_GAME) {
-                        text = SkrKouLingUtils.genJoinMicRoomText(mKouLingToken);
-                    } else if (mType == INVITE_PARTY_GAME) {
-                        text = SkrKouLingUtils.genJoinPartyRoomText(mKouLingToken);
-                    } else if (mType == INVITE_RELAY_GAME) {
-                        text = SkrKouLingUtils.genJoinRelayRoomText(mKouLingToken);
-                    }
-
+                    String text = mInviteCallBack.getInviteDialogText(mKouLingToken);
                     mListener.onClickQQShare(text);
                 }
             }
@@ -202,21 +74,7 @@ public class InviteFriendDialogView extends ConstraintLayout {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {
-                    String text = "";
-                    if (mType == INVITE_GRAB_FRIEND) {
-                        text = SkrKouLingUtils.genReqFollowKouling(mKouLingToken);
-                    } else if (mType == INVITE_GRAB_GAME) {
-                        text = SkrKouLingUtils.genJoinGrabGameKouling(mKouLingToken);
-                    } else if (mType == INVITE_DOUBLE_GAME) {
-                        text = SkrKouLingUtils.genJoinDoubleGameKouling(mKouLingToken);
-                    } else if (mType == INVITE_MIC_GAME) {
-                        text = SkrKouLingUtils.genJoinMicRoomText(mKouLingToken);
-                    } else if (mType == INVITE_PARTY_GAME) {
-                        text = SkrKouLingUtils.genJoinPartyRoomText(mKouLingToken);
-                    } else if (mType == INVITE_RELAY_GAME) {
-                        text = SkrKouLingUtils.genJoinRelayRoomText(mKouLingToken);
-                    }
-
+                    String text = mInviteCallBack.getInviteDialogText(mKouLingToken);
                     mListener.onClickWeixinShare(text);
                 }
             }

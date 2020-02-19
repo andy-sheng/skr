@@ -2,7 +2,7 @@ package com.component.person.relation
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
@@ -10,15 +10,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.common.core.userinfo.UserInfoServerApi
-import com.common.core.view.setDebounceViewClickListener
-import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.view.ex.ExConstraintLayout
 import com.component.busilib.R
-import com.component.busilib.recommend.RA
 import com.component.person.model.RelationModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -35,6 +31,7 @@ class PersonRelationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
 
     private val relationTitleTv: TextView
+    private val titleArrowIv: ImageView
     private val recyclerView: RecyclerView
     private val arrowIv: ImageView
     private val adapter: PersonRelationAdapter
@@ -46,19 +43,16 @@ class PersonRelationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
         View.inflate(context, R.layout.person_relation_view_layout, this)
 
         relationTitleTv = this.findViewById(R.id.relation_title_tv)
+        titleArrowIv = this.findViewById(R.id.title_arrow_iv)
         recyclerView = this.findViewById(R.id.recycler_view)
         arrowIv = this.findViewById(R.id.arrow_iv)
-
-        arrowIv.setDebounceViewClickListener {
-            // todo 跳到fluttler页面
-        }
 
         adapter = PersonRelationAdapter(object : PersonRelationAdapter.Listener {
             override fun onClickItem(position: Int, model: RelationModel?) {
                 // todo 进个人主页面么？
             }
         })
-        recyclerView.layoutManager = GridLayoutManager(context, 5)
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
     }
 
@@ -81,16 +75,20 @@ class PersonRelationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe(RequestControl("getRelationInfo", ControlType.CancelThis)) {
-                userInfoServerApi.getRelationInfo(body)
+                userInfoServerApi.getAllRelationInfoKt(body)
             }
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("relationList"), RelationModel::class.java)
                 if (list.isNullOrEmpty()) {
-                    visibility = View.GONE
+                    recyclerView.visibility = View.GONE
+                    arrowIv.visibility = View.GONE
+                    titleArrowIv.visibility = View.VISIBLE
                     adapter.mDataList.clear()
                     adapter.notifyDataSetChanged()
                 } else {
-                    visibility = View.VISIBLE
+                    recyclerView.visibility = View.VISIBLE
+                    arrowIv.visibility = View.VISIBLE
+                    titleArrowIv.visibility = View.GONE
                     adapter.mDataList.clear()
                     adapter.mDataList.addAll(list)
                     adapter.notifyDataSetChanged()

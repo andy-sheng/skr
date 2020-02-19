@@ -220,12 +220,7 @@ object UserAccountManager {
         StatisticsAdapter.recordCountEvent("signup", "api_begin", null)
         val userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi::class.java)
         // 1 为手机登录
-        var deviceId: String? = U.getDeviceUtils().imei
-        if (TextUtils.isEmpty(deviceId)) {
-            deviceId = ""
-        } else {
-            deviceId = U.getMD5Utils().MD5_32(deviceId)
-        }
+        val deviceId = U.getDeviceUtils().deviceID
         userAccountServerApi.login(1, phoneNum, verifyCode, 20, U.getChannelUtils().channel, deviceId)
                 .subscribeOn(Schedulers.io())
                 .subscribe(object : ApiObserver<ApiResult>() {
@@ -266,14 +261,7 @@ object UserAccountManager {
     fun loginByThirdPart(mode: Int, accessToken: String, openId: String, callback: Callback<ApiResult>?) {
         StatisticsAdapter.recordCountEvent("signup", "api_begin", null)
         val userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi::class.java)
-        var deviceId: String? = U.getDeviceUtils().imei
-        //        MyLog.d(TAG, "mimusic md5 = " + getMd5Digest(deviceId.getBytes()));
-        //        MyLog.d(TAG, "skr md5 = " + U.getMD5Utils().MD5_32(deviceId));
-        if (TextUtils.isEmpty(deviceId)) {
-            deviceId = ""
-        } else {
-            deviceId = U.getMD5Utils().MD5_32(deviceId)
-        }
+        val deviceId = U.getDeviceUtils().deviceID
         userAccountServerApi.loginWX(mode, accessToken, openId, 20, U.getChannelUtils().channel, deviceId)
                 .subscribeOn(Schedulers.io())
                 .subscribe(object : ApiObserver<ApiResult>() {
@@ -449,7 +437,7 @@ object UserAccountManager {
             MyLog.d(TAG, "rcKickedByOthers times=$times,超过重试次数了")
             return
         }
-        if(Looper.getMainLooper() == Looper.myLooper()){
+        if (Looper.getMainLooper() == Looper.myLooper()) {
             Observable.create<Boolean> {
                 rcKickedByOthers(times)
                 it.onComplete()

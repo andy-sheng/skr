@@ -1341,9 +1341,9 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         if (gameOverTimeMs > 0) {
             mRoomData.emptySeats()
             if (mRoomData.isClubHome()) {
-                DebugLogView.println(TAG, "gameOverTimeMs=${gameOverTimeMs} 游戏结束时间>0 ，游戏结束")
+                DebugLogView.println(TAG, "gameOverTimeMs=${gameOverTimeMs} 游戏结束时间>0,")
             } else {
-                DebugLogView.println(TAG, "gameOverTimeMs=${gameOverTimeMs} 游戏结束时间>0")
+                DebugLogView.println(TAG, "gameOverTimeMs=${gameOverTimeMs} 游戏结束时间>0,游戏结束")
             }
             mRoomData.gameOverTs = gameOverTimeMs
             // 游戏结束了，停服了

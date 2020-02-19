@@ -2,6 +2,7 @@ package com.module.playways.friendroom
 
 import com.alibaba.fastjson.annotation.JSONField
 import com.component.busilib.model.PartyRoomInfoModel
+import com.component.busilib.model.RecommendPartyInfoModel
 import com.module.playways.mic.home.RecommendMicInfoModel
 import com.module.playways.mic.home.RecommendMicRoomModel
 import java.io.Serializable
@@ -20,7 +21,7 @@ class RecommendRoomModel : Serializable {
     @JSONField(name = "standRoomList")
     var grabRoom: RecommendGrabRoomModel? = null
     @JSONField(name = "partyRoomList")
-    var partyRoom: PartyRoomInfoModel? = null
+    var partyRoom: RecommendPartyInfoModel? = null
 
     override fun toString(): String {
         return "RecommendRoomModel(gameSceneType=$gameSceneType, micRoom=$micRoom, grabRoom=$grabRoom)"

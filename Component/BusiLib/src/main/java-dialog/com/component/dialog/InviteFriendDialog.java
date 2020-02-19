@@ -5,26 +5,23 @@ import android.content.Intent;
 import android.view.Gravity;
 
 import com.common.clipboard.ClipboardUtils;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.component.busilib.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+
+import io.reactivex.Observable;
 
 /**
  * 邀请好友
  */
 public class InviteFriendDialog {
 
-    public final static int INVITE_GRAB_GAME = 1;
-    public final static int INVITE_GRAB_FRIEND = 2;
-    public final static int INVITE_DOUBLE_GAME = 3;
-    public final static int INVITE_MIC_GAME = 4;
-    public final static int INVITE_PARTY_GAME = 5;
-    public final static int INVITE_RELAY_GAME = 6;
     DialogPlus mShareDialog;
 
-    public InviteFriendDialog(Context context, int type, int gameId, int tagId, int mediaType, String kouLingToken) {
-        InviteFriendDialogView inviteFriendDialogView = new InviteFriendDialogView(context, type, gameId, tagId, mediaType, kouLingToken);
+    public InviteFriendDialog(Context context, String kouLingToken, IInviteDialogCallBack inviteCallBack) {
+        InviteFriendDialogView inviteFriendDialogView = new InviteFriendDialogView(context, kouLingToken, inviteCallBack);
 
         inviteFriendDialogView.setListener(new InviteFriendDialogView.Listener() {
             @Override
@@ -84,6 +81,14 @@ public class InviteFriendDialog {
         if (mShareDialog != null) {
             mShareDialog.show();
         }
+    }
+
+    public interface IInviteDialogCallBack {
+        //获得口令接口
+        Observable<ApiResult> getKouLingTokenObservable();
+
+        //在分享弹窗以文字的形式在qq,微信好友分享，就是聊天形式
+        String getInviteDialogText(String kouling);
     }
 }
 

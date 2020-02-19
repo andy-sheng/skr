@@ -5,6 +5,7 @@ import org.greenrobot.greendao.annotation.Id;
 
 import java.io.Serializable;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Keep;
 
 
 @Entity(
@@ -27,7 +28,7 @@ public class GiftDB implements Serializable {
     private Integer textContinueCount;
     private Integer displayType;
     private String extra;
-    @Generated(hash = 92592788)
+    @Keep
     public GiftDB(Long giftID, Boolean canContinue, String description,
             String giftName, Integer giftType, String giftURL, Integer price,
             Integer sortID, String sourceURL, Float realPrice, Boolean play,
@@ -47,7 +48,7 @@ public class GiftDB implements Serializable {
         this.displayType = displayType;
         this.extra = extra;
     }
-    @Generated(hash = 2046579016)
+    @Keep
     public GiftDB() {
     }
     public Long getGiftID() {

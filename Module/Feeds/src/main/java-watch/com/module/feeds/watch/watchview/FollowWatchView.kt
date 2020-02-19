@@ -1,5 +1,6 @@
 package com.module.feeds.watch.watchview
 
+import android.content.Context
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOLLOW) {
+class FollowWatchView(context: Context) : BaseWatchView(context, TYPE_FOLLOW) {
 
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
 
@@ -37,10 +38,10 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
     override fun clickMore(position: Int, it: FeedsWatchModel) {
         mFeedsMoreDialogView?.dismiss(false)
         if (it.user?.userId == MyUserInfoManager.uid.toInt()) {
-            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, true)
+            mFeedsMoreDialogView = FeedsMoreDialogView(U.getActivityUtils().topActivity, FeedsMoreDialogView.FROM_FEED_HOME, it, true)
             mFeedsMoreDialogView?.showByDialog()
         } else {
-            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, null)
+            mFeedsMoreDialogView = FeedsMoreDialogView(U.getActivityUtils().topActivity, FeedsMoreDialogView.FROM_FEED_HOME, it, null)
             mFeedsMoreDialogView?.showByDialog()
         }
     }

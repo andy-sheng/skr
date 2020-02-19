@@ -30,6 +30,7 @@ class PartyHomeActivity : BaseActivity() {
     lateinit var title: CommonTitleBar
     lateinit var backIv: ImageView
     lateinit var createRoom: ImageView
+    lateinit var searchRoom: ImageView
     lateinit var contentArea: RelativeLayout
 
     private val partyRoomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
@@ -47,6 +48,7 @@ class PartyHomeActivity : BaseActivity() {
         title = findViewById(R.id.title)
         backIv = findViewById(R.id.back_iv)
         createRoom = findViewById(R.id.create_room)
+        searchRoom = findViewById(R.id.search_room)
         contentArea = findViewById(R.id.content_area)
 
         backIv.setDebounceViewClickListener {
@@ -88,6 +90,12 @@ class PartyHomeActivity : BaseActivity() {
                     }
                 }
             }
+        }
+
+        searchRoom.setDebounceViewClickListener {
+            partyRoomView?.stopTimer()
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_SEARCH)
+                    .navigation()
         }
 
         if (partyRoomView == null) {

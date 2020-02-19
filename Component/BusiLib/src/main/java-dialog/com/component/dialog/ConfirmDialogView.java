@@ -135,12 +135,23 @@ public class ConfirmDialogView extends RelativeLayout {
 
             mCancleTv.setText("忽略");
             mConfirmTv.setText("同意");
-        }else if (type == ConfirmDialog.TYPE_PARTY_INVITE_CONFIRM) {
+        } else if (type == ConfirmDialog.TYPE_PARTY_INVITE_CONFIRM) {
             mKickMaskIv.setVisibility(GONE);
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(lightColor)
                     .append("\n")
                     .append("邀请你加入ta的主题房").setForegroundColor(normalColor)
+                    .create();
+            mContentTv.setText(stringBuilder);
+
+            mCancleTv.setText("忽略");
+            mConfirmTv.setText("同意");
+        } else if (type == ConfirmDialog.TYPE_RELAY_INVITE_CONFIRM) {
+            mKickMaskIv.setVisibility(GONE);
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(lightColor)
+                    .append("\n")
+                    .append("邀请你加入ta的合唱房").setForegroundColor(normalColor)
                     .create();
             mContentTv.setText(stringBuilder);
 

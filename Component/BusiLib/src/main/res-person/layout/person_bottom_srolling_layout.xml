@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <!--关系 自定义view-->
+        <com.component.person.relation.PersonRelationView
+            android:id="@+id/relation_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
+
+        <!--家族-->
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/club_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_120_dp"
+            android:layout_below="@id/relation_view">
+
+            <TextView
+                android:id="@+id/club_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:layout_marginTop="@dimen/view_6_dp"
+                android:text="家族"
+                android:textColor="@color/black_trans_80"
+                android:textSize="@dimen/textsize_14_dp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.component.person.view.PersonClubView
+                android:id="@+id/person_club_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/club_title_tv" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:background="@drawable/person_right_arrow_black"
+                app:layout_constraintBottom_toBottomOf="@id/person_club_view"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/person_club_view" />
+
+            <View
+                android:layout_width="@dimen/view_0_dp"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_marginLeft="@dimen/view_12_dp"
+                android:layout_marginRight="@dimen/view_12_dp"
+                android:background="@color/black_trans_10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+        <!--照片 自定义view-->
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/photo_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/club_area">
+
+            <com.component.person.photo.view.PersonPhotoView
+                android:id="@+id/photo_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="@dimen/view_0_dp"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_marginLeft="@dimen/view_12_dp"
+                android:layout_marginRight="@dimen/view_12_dp"
+                android:background="@color/black_trans_10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+        <!--帖子-->
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/post_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_70_dp"
+            android:layout_below="@id/photo_area">
+
+            <TextView
+                android:id="@+id/post_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:text="帖子"
+                android:textColor="@color/black_trans_80"
+                android:textSize="@dimen/textsize_14_dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:background="@drawable/person_right_arrow_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="@dimen/view_0_dp"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_marginLeft="@dimen/view_12_dp"
+                android:layout_marginRight="@dimen/view_12_dp"
+                android:background="@color/black_trans_10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+
+        <!--本地作品-->
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/works_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_70_dp"
+            android:layout_below="@id/post_area">
+
+            <TextView
+                android:id="@+id/works_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:text="本地作品"
+                android:textColor="@color/black_trans_80"
+                android:textSize="@dimen/textsize_14_dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:background="@drawable/person_right_arrow_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="@dimen/view_0_dp"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_marginLeft="@dimen/view_12_dp"
+                android:layout_marginRight="@dimen/view_12_dp"
+                android:background="@color/black_trans_10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+
+        <!--神曲-->
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/feeds_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_70_dp"
+            android:layout_below="@id/works_area">
+
+            <TextView
+                android:id="@+id/feed_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:text="神曲"
+                android:textColor="@color/black_trans_80"
+                android:textSize="@dimen/textsize_14_dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:background="@drawable/person_right_arrow_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="@dimen/view_0_dp"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_marginLeft="@dimen/view_12_dp"
+                android:layout_marginRight="@dimen/view_12_dp"
+                android:background="@color/black_trans_10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

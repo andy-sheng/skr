@@ -23,6 +23,9 @@ class PersonRelationAdapter(val listener: Listener?) : RecyclerView.Adapter<Pers
     }
 
     override fun getItemCount(): Int {
+        if (mDataList.size > 5) {
+            return 5
+        }
         return mDataList.size
     }
 

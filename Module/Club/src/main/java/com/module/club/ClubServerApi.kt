@@ -150,5 +150,7 @@ interface ClubServerApi {
     @GET("http://dev.api.inframe.mobi/v1/club/search-club")
     fun searchClub(@Query("keyword") keyword: String): Observable<ApiResult>
 
+    @PUT("http://dev.api.inframe.mobi/v1/club/send-invitation")
+    fun sendInvitation(@Body body: RequestBody): Call<ApiResult>
 
 }

@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.base.FragmentDataListener
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.rxretrofit.*
@@ -22,6 +23,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
+import com.module.home.IHomeService
 import com.module.home.R
 import com.module.home.WalletServerApi
 import com.module.home.fragment.HalfRechargeFragment
@@ -36,12 +38,16 @@ import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import useroperate.OperateFriendActivity
+import useroperate.inter.AbsRelationOperate
+import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.set
 
 @Route(path = RouterConstants.ACTIVITY_MALL_MALL)
 class MallActivity : BaseActivity() {
+
     lateinit var title: CommonTitleBar
     lateinit var btnBack: ImageView
     lateinit var mallTv: ExTextView
@@ -241,12 +247,52 @@ class MallActivity : BaseActivity() {
 
         giveMallEvent = event
 
-        ARouter.getInstance()
-                .build(RouterConstants.ACTIVITY_RELATION)
-                .withInt("from", 1)
-                .navigation()
+//        ARouter.getInstance()
+//                .build(RouterConstants.ACTIVITY_RELATION)
+//                .withInt("from", 1)
+//                .navigation()
+
+        OperateFriendActivity.open(OperateFriendActivity.Companion.Builder()
+                .setEnableFans(true)
+                .setEnableFriend(true)
+                .setEnableFollow(true)
+                .setText("赠送")
+                .setListener(AbsRelationOperate.ClickListener { weakReference, _, _, userInfoModel, _ ->
+                    userInfoModel?.let {
+                        showGiveDialog(it, weakReference)
+                    }
+                }))
 
         EventBus.getDefault().postSticky(SelectMallStickyEvent(event.productModel, event.price))
+    }
+
+    private fun showGiveDialog(userInfoModel: UserInfoModel, weakReference: WeakReference<BaseActivity>?) {
+        if (tipsDialogView != null) {
+            tipsDialogView?.dismiss(false)
+            tipsDialogView = null
+        }
+
+        val channelService = ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation() as IHomeService
+
+        weakReference?.get()?.let {
+            tipsDialogView = TipsDialogView.Builder(it)
+                    .setMessageTip("是否赠送给" + userInfoModel.nickname + channelService.selectedMallName + "?")
+                    .setCancelBtnClickListener {
+                        if (tipsDialogView != null) {
+                            tipsDialogView?.dismiss(false)
+                        }
+                        tipsDialogView = null
+                    }
+                    .setCancelTip("取消")
+                    .setConfirmBtnClickListener {
+                        giveMall(userInfoModel.userId)
+                        weakReference?.get()?.finish()
+                        tipsDialogView = null
+                    }
+                    .setConfirmTip("赠送")
+                    .build()
+            tipsDialogView?.showByDialog()
+        }
     }
 
     fun giveMall(userID: Int) {
@@ -284,12 +330,6 @@ class MallActivity : BaseActivity() {
                 }
             }
         }
-    }
-
-    //选完用户了
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: SelectReceiveUserFinishEvent) {
-        giveMall(event.userID)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

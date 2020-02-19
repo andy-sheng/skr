@@ -5,13 +5,11 @@ import android.os.Looper
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.component.busilib.model.PartyRoomInfoModel
 
 import com.module.playways.R
 import com.module.playways.mic.home.FriendInviteViewHolder
 import com.module.playways.mic.home.RecommendMicViewHolder
 import com.module.playways.mic.home.RecommendUserInfo
-import com.module.playways.party.home.PartyRoomViewHolder
 
 import java.util.ArrayList
 
@@ -45,8 +43,8 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
                 RecommendMicViewHolder(view, mOnItemClickListener)
             }
             ROOM_PARTY_TYPE -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.party_room_view_item_layout, parent, false)
-                PartyRoomViewHolder(view, null, mOnItemClickListener)
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.party_recommend_item_layout, parent, false)
+                RecommendPartyViewHolder(view, mOnItemClickListener)
             }
             else -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.friend_room_grab_item_layout, parent, false)
@@ -87,6 +85,9 @@ class FriendRoomAdapter(var mOnItemClickListener: FriendRoomClickListener) : Rec
                     } else {
                         holder.stopPlay()
                     }
+                }
+                if (holder is RecommendPartyViewHolder) {
+                    holder.bindData(friendRoomModel, position)
                 }
             }
         } else {

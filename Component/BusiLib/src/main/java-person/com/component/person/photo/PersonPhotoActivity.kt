@@ -17,6 +17,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.component.busilib.R
+import com.component.busilib.callback.EmptyCallback
 import com.component.person.photo.adapter.PhotoAdapter
 import com.component.person.photo.model.PhotoModel
 import com.component.person.photo.presenter.PersonPhotoPresenter
@@ -27,6 +28,8 @@ import com.component.person.photo.view.PhotoWallView
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
@@ -47,6 +50,8 @@ class PersonPhotoActivity : BaseActivity(), IPhotoWallView {
 
     var adapter: PhotoAdapter? = null
     var presenter: PersonPhotoPresenter? = null
+
+    private var mLoadService: LoadService<*>? = null
 
     var userID: Int = 0
 
@@ -92,9 +97,13 @@ class PersonPhotoActivity : BaseActivity(), IPhotoWallView {
             })
         }
 
-
         presenter = PersonPhotoPresenter(this)
         addPresent(presenter)
+
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.photo_wall_empty_icon, "暂无照片", "#80000000"))
+                .build()
+        mLoadService = mLoadSir.register(refreshLayout) { getPhotos(true) }
 
         adapter = if (userID == MyUserInfoManager.uid.toInt()) {
             PhotoAdapter(PhotoAdapter.TYPE_PERSON_CENTER)
@@ -228,10 +237,6 @@ class PersonPhotoActivity : BaseActivity(), IPhotoWallView {
         mLastUpdateInfo = System.currentTimeMillis()
 
         if (list != null && list.isNotEmpty()) {
-            // 有数据
-            if (userID != MyUserInfoManager.uid.toInt() && recyclerView.layoutManager !is GridLayoutManager) {
-                recyclerView.layoutManager = GridLayoutManager(context, 3)
-            }
             mHasMore = true
             if (clear) {
                 adapter?.dataList?.clear()
@@ -242,13 +247,16 @@ class PersonPhotoActivity : BaseActivity(), IPhotoWallView {
             }
         } else {
             mHasMore = false
+        }
+
+        if (userID != MyUserInfoManager.uid.toInt()) {
             if (adapter?.dataList != null && (adapter?.dataList?.size ?: 0) > 0) {
                 // 没有更多了
+                mLoadService?.showSuccess()
             } else {
                 // 没有数据
-                if (userID != MyUserInfoManager.uid.toInt() && recyclerView.layoutManager !is LinearLayoutManager) {
-                    recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                }
+                mLoadService?.showCallback(EmptyCallback::class.java)
+
             }
         }
     }

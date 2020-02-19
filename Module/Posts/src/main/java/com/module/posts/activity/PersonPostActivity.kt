@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
@@ -20,6 +22,7 @@ import com.module.posts.watch.view.PersonPostsWatchView
 class PersonPostActivity : BaseActivity() {
 
     lateinit var backIv: ImageView
+    lateinit var create: TextView
     lateinit var divider: View
     lateinit var content: RelativeLayout
 
@@ -39,11 +42,18 @@ class PersonPostActivity : BaseActivity() {
         }
 
         backIv = findViewById(R.id.back_iv)
+        create = findViewById(R.id.create)
         divider = findViewById(R.id.divider)
         content = findViewById(R.id.content)
 
         backIv.setDebounceViewClickListener {
             finish()
+        }
+
+        create.setDebounceViewClickListener {
+            ARouter.getInstance()
+                    .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
+                    .navigation()
         }
 
         if (watchView == null) {
