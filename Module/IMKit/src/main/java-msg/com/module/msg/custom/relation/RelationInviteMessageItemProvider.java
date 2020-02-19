@@ -12,6 +12,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
+import com.module.msg.custom.club.ClubInviteMsg;
 
 import io.rong.imkit.R;
 import io.rong.imkit.R.layout;
@@ -35,57 +36,17 @@ public class RelationInviteMessageItemProvider extends MessageProvider<RelationI
     public RelationInviteMessageItemProvider() {
     }
 
-    RelationInviteMsg contentMsg;
-    Message message;
 
     public View  newView(Context context, ViewGroup group) {
         View view = LayoutInflater.from(context).inflate(layout.rc_item_relation_invite_message, (ViewGroup)null);
         RelationInviteMessageItemProvider.ViewHolder holder = new RelationInviteMessageItemProvider.ViewHolder(view);
-        holder.mAgreeTv.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                RelationMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),true,message.getTargetId());
-            }
-        });
-        holder.mRejectTv.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                RelationMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),false,message.getTargetId());
-            }
-        });
         view.setTag(holder);
         return view;
     }
 
     public void bindView(View v, int position, RelationInviteMsg msg, UIMessage message) {
-        this.contentMsg = msg;
-        this.message = message.getMessage();
-
         RelationInviteMessageItemProvider.ViewHolder holder = (RelationInviteMessageItemProvider.ViewHolder)v.getTag();
-        holder.mContentTv.setText(msg.getContent());
-        int handle = RelationMsgProcessor.getHandle(message.getMessage());
-        if(handle==0){
-            if(message.getSenderUserId().equals(MyUserInfoManager.INSTANCE.getUidStr())){
-                holder.mAgreeTv.setVisibility(View.GONE);
-                holder.mRejectTv.setVisibility(View.GONE);
-                holder.mTipsTv.setVisibility(View.VISIBLE);
-                holder.mTipsTv.setText("等待对方同意");
-            }else{
-                holder.mAgreeTv.setVisibility(View.VISIBLE);
-                holder.mRejectTv.setVisibility(View.VISIBLE);
-                holder.mTipsTv.setVisibility(View.GONE);
-            }
-        }else if(handle==1){
-            holder.mAgreeTv.setVisibility(View.GONE);
-            holder.mRejectTv.setVisibility(View.GONE);
-            holder.mTipsTv.setVisibility(View.VISIBLE);
-            holder.mTipsTv.setText("已同意关系建立");
-        }else if(handle==2){
-            holder.mAgreeTv.setVisibility(View.GONE);
-            holder.mRejectTv.setVisibility(View.GONE);
-            holder.mTipsTv.setVisibility(View.VISIBLE);
-            holder.mTipsTv.setText("已拒绝关系建立");
-        }
+        holder.bindData(msg,message);
     }
 
     @Override
@@ -140,12 +101,56 @@ public class RelationInviteMessageItemProvider extends MessageProvider<RelationI
         ExTextView mAgreeTv;
         ExTextView mTipsTv;
 
+        RelationInviteMsg contentMsg;
+        Message message;
 
         public ViewHolder(View rootView) {
             mContentTv = (TextView)rootView.findViewById(R.id.content_tv);
             mRejectTv = (ExTextView)rootView.findViewById(R.id.reject_tv);
             mAgreeTv = (ExTextView)rootView.findViewById(R.id.agree_tv);
             mTipsTv = (ExTextView)rootView.findViewById(R.id.tips_tv);
+            mAgreeTv.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    RelationMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),true,message.getTargetId());
+                }
+            });
+            mRejectTv.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    RelationMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),false,message.getTargetId());
+                }
+            });
+        }
+
+        public void bindData(RelationInviteMsg msg, UIMessage message) {
+            this.contentMsg = msg;
+            this.message = message.getMessage();
+
+            mContentTv.setText(msg.getContent());
+            int handle = RelationMsgProcessor.getHandle(message.getMessage());
+            if(handle==0){
+                if(message.getSenderUserId().equals(MyUserInfoManager.INSTANCE.getUidStr())){
+                    mAgreeTv.setVisibility(View.GONE);
+                    mRejectTv.setVisibility(View.GONE);
+                    mTipsTv.setVisibility(View.VISIBLE);
+                    mTipsTv.setText("等待对方同意");
+                }else{
+                    mAgreeTv.setVisibility(View.VISIBLE);
+                    mRejectTv.setVisibility(View.VISIBLE);
+                    mTipsTv.setVisibility(View.GONE);
+                }
+            }else if(handle==1){
+                mAgreeTv.setVisibility(View.GONE);
+                mRejectTv.setVisibility(View.GONE);
+                mTipsTv.setVisibility(View.VISIBLE);
+                mTipsTv.setText("已同意关系建立");
+            }else if(handle==2){
+                mAgreeTv.setVisibility(View.GONE);
+                mRejectTv.setVisibility(View.GONE);
+                mTipsTv.setVisibility(View.VISIBLE);
+                mTipsTv.setText("已拒绝关系建立");
+            }
         }
     }
 }
