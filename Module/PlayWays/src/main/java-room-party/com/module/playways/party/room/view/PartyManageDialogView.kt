@@ -124,7 +124,7 @@ class PartyManageDialogView(context: Context, model: PartyActorInfoModel?, val i
                 //空席位
                 function1.visibility = View.VISIBLE
                 function1.text = "关闭座位"
-                function2.visibility = View.VISIBLE
+                function2.visibility = View.GONE
                 function2.text = "邀请好友"
                 function2.setDebounceViewClickListener {
                     mDialogPlus?.dismiss()
