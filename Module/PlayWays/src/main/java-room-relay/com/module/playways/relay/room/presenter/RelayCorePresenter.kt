@@ -480,8 +480,12 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
             DebugLogView.println(TAG, "马上到我了，提前调高本地伴奏音量")
             fadeVolume(isPlayout = true, isFadeIn = true)
         } else {
-            DebugLogView.println(TAG, "马上该对端了，提前调低远端伴奏音量")
-            fadeVolume(isPlayout = false, isFadeIn = false)
+            if (mRoomData.realRoundInfo?.peerAccLoadingOk == true) {
+                DebugLogView.println(TAG, "马上该对端了，提前调低远端伴奏音量")
+                fadeVolume(isPlayout = false, isFadeIn = false)
+            } else {
+                DebugLogView.println(TAG, "马上该对端了，对端的伴奏坏了，我不做处理")
+            }
         }
     }
 
