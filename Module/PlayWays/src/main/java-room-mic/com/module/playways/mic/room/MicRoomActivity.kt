@@ -721,10 +721,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicWantInviteEvent) {
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
-                .withInt("from", GameModeType.GAME_MODE_MIC)
-                .withInt("roomId", mRoomData!!.gameId)
-                .navigation()
+//        ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
+//                .withInt("from", GameModeType.GAME_MODE_MIC)
+//                .withInt("roomId", mRoomData!!.gameId)
+//                .navigation()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

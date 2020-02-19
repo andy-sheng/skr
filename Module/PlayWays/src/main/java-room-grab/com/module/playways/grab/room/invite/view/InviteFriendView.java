@@ -1,20 +1,19 @@
 package com.module.playways.grab.room.invite.view;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.utils.FragmentUtils;
-import com.common.utils.U;
+import com.common.log.MyLog;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.view.ex.ExTextView;
-import com.component.busilib.constans.GameModeType;
 import com.component.relation.callback.FansEmptyCallback;
 import com.component.relation.callback.FriendsEmptyCallback;
 import com.kingja.loadsir.callback.Callback;
@@ -22,8 +21,8 @@ import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
 import com.module.playways.grab.room.inter.IGrabInviteView;
+import com.module.playways.grab.room.invite.IInviteCallBack;
 import com.module.playways.grab.room.invite.adapter.InviteFirendAdapter;
-import com.module.playways.grab.room.invite.fragment.InviteSearchFragment;
 import com.module.playways.grab.room.invite.presenter.GrabInvitePresenter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -45,21 +44,22 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
 
     GrabInvitePresenter mGrabInvitePresenter;
     BaseFragment mBaseFragment;
-    int mRoomID;
-    int mTagID;
+    //    int mRoomID;
+//    int mTagID;
     LoadService mLoadService;
 
-    public InviteFriendView(BaseFragment fragment, int from, int roomID, int tagID, int mode) {
+    IInviteCallBack mInviteCallBack;
+
+    public InviteFriendView(BaseFragment fragment, int from, int mode, IInviteCallBack inviteCallBack) {
         super(fragment.getContext());
-        init(fragment, from, roomID, tagID, mode);
+        init(fragment, from, mode, inviteCallBack);
     }
 
-    private void init(BaseFragment fragment, int from, int roomID, int tagID, int mode) {
+    private void init(BaseFragment fragment, int from, int mode, IInviteCallBack inviteCallBack) {
         this.mFrom = from;
         this.mBaseFragment = fragment;
-        this.mRoomID = roomID;
-        this.mTagID = tagID;
         this.mMode = mode;
+        this.mInviteCallBack = inviteCallBack;
         inflate(fragment.getContext(), R.layout.invite_view_layout, this);
 
         mRefreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
@@ -69,39 +69,58 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
 
             @Override
             public void onClick(UserInfoModel model, ExTextView view) {
-                if (mFrom == GameModeType.GAME_MODE_GRAB) {
-                    mGrabInvitePresenter.inviteGrabFriend(mRoomID, mTagID, model, view);
-                } else if (mFrom == GameModeType.GAME_MODE_DOUBLE) {
-                    mGrabInvitePresenter.inviteDoubleFriend(mRoomID, model, view);
-                } else if (mFrom == GameModeType.GAME_MODE_MIC) {
-                    mGrabInvitePresenter.inviteMicFriend(mRoomID, model, view);
-                } else if (mFrom == GameModeType.GAME_MODE_PARTY) {
-                    mGrabInvitePresenter.invitePartyFriend(mRoomID, model, view);
-                } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
-                    mGrabInvitePresenter.inviteRelayFriend(mRoomID, model, view);
-                }
+//                if (mFrom == GameModeType.GAME_MODE_GRAB) {
+//                    mGrabInvitePresenter.inviteGrabFriend(mRoomID, mTagID, model, view);
+//                } else if (mFrom == GameModeType.GAME_MODE_DOUBLE) {
+//                    mGrabInvitePresenter.inviteDoubleFriend(mRoomID, model, view);
+//                } else if (mFrom == GameModeType.GAME_MODE_MIC) {
+//                    mGrabInvitePresenter.inviteMicFriend(mRoomID, model, view);
+//                } else if (mFrom == GameModeType.GAME_MODE_PARTY) {
+//                    mGrabInvitePresenter.invitePartyFriend(mRoomID, model, view);
+//                } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
+//                    mGrabInvitePresenter.inviteRelayFriend(mRoomID, model, view);
+//                }
+
+                ApiMethods.subscribe(mInviteCallBack.getInviteObservable(model), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+                        MyLog.d("InviteFriendView", "process" + " result=" + result.getErrno());
+                        if (result.getErrno() == 0) {
+                            // 更新视图
+                            updateInvited(view);
+                        } else {
+                            MyLog.w("InviteFriendView", "inviteFriend failed, " + " traceid is " + result.getTraceId());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.e("InviteFriendView", e);
+                    }
+                }, mBaseFragment);
             }
 
             @Override
             public void onClickSearch() {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_FROM, mFrom);
-                bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_MODE, mMode);
-                bundle.putSerializable(InviteSearchFragment.INVITE_ROOM_ID, mRoomID);
-                bundle.putSerializable(InviteSearchFragment.INVITE_TAG_ID, mTagID);
-                U.getFragmentUtils().addFragment(FragmentUtils
-                        .newAddParamsBuilder((BaseActivity) getContext(), InviteSearchFragment.class)
-                        .setUseOldFragmentIfExist(false)
-                        .setBundle(bundle)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .build());
+                //todo 搜索需要改
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_FROM, mFrom);
+//                bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_MODE, mMode);
+//                bundle.putSerializable(InviteSearchFragment.INVITE_ROOM_ID, mRoomID);
+//                bundle.putSerializable(InviteSearchFragment.INVITE_TAG_ID, mTagID);
+//                U.getFragmentUtils().addFragment(FragmentUtils
+//                        .newAddParamsBuilder((BaseActivity) getContext(), InviteSearchFragment.class)
+//                        .setUseOldFragmentIfExist(false)
+//                        .setBundle(bundle)
+//                        .setAddToBackStack(true)
+//                        .setHasAnimation(true)
+//                        .build());
             }
         }, true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mInviteFirendAdapter);
 
-        mGrabInvitePresenter = new GrabInvitePresenter(mBaseFragment, this, mRoomID, mFrom);
+        mGrabInvitePresenter = new GrabInvitePresenter(mBaseFragment, this, mInviteCallBack.getRoomID(), mInviteCallBack.getFrom());
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);

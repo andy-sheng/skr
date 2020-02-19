@@ -9,8 +9,11 @@ import android.view.*
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.base.FragmentDataListener
+import com.common.core.kouling.SkrKouLingUtils
+import com.common.core.kouling.api.KouLingServerApi
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
@@ -20,6 +23,8 @@ import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ApiResult
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
@@ -41,6 +46,8 @@ import com.module.playways.BaseRoomData
 import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
 import com.module.playways.grab.room.inter.IGrabVipView
+import com.module.playways.grab.room.invite.IInviteCallBack
+import com.module.playways.grab.room.invite.InviteFriendActivity
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.GrabChangeRoomTransitionView
 import com.module.playways.grab.room.view.VIPEnterView
@@ -84,6 +91,9 @@ import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.PartyRoom.*
+import io.reactivex.Observable
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -607,14 +617,50 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 //        EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), mRoomData.peerUser?.userInfo))
     }
 
+    val mInviteCallBack = object : IInviteCallBack {
+        override fun getFrom(): Int {
+            return GameModeType.GAME_MODE_PARTY
+        }
+
+        override fun getInviteDialogText(kouling: String?): String {
+            return SkrKouLingUtils.genJoinPartyRoomText(kouling)
+        }
+
+        override fun getShareTitle(): String {
+            return "主题房已开，就等你来玩"
+        }
+
+        override fun getShareDes(): String {
+            return "我在撕歌skr开了一个主题房，快来一起耍呀～"
+        }
+
+        override fun getInviteObservable(model: UserInfoModel?): Observable<ApiResult> {
+            MyLog.d(TAG, "inviteMicFriend roomID=${H.partyRoomData?.gameId ?: 0} model=$model")
+            val map = mutableMapOf("roomID" to H.partyRoomData?.gameId, "userID" to model?.getUserId())
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            return ApiManager.getInstance().createService(PartyRoomServerApi::class.java).invite(body)
+        }
+
+        override fun getRoomID(): Int {
+            return H.partyRoomData?.gameId ?: 0
+        }
+
+        override fun getKouLingTokenObservable(): Observable<ApiResult> {
+            val code = String.format("inframeskr://room/joinparty?owner=%s&gameId=%s&ask=1&mediaType=%s", MyUserInfoManager.uid, mRoomData.gameId, 0)
+            return ApiManager.getInstance().createService(KouLingServerApi::class.java).setTokenByCode(code)
+        }
+    }
+
     private fun initTopView() {
         mTopOpView = findViewById(R.id.top_op_view)
         mTopOpView.setListener(object : PartyTopOpView2.Listener {
             override fun onClickInviteRoom() {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
-                        .withInt("from", GameModeType.GAME_MODE_PARTY)
-                        .withInt("roomId", H.partyRoomData?.gameId ?: 0)
-                        .navigation()
+//                ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
+//                        .withInt("from", GameModeType.GAME_MODE_PARTY)
+//                        .withInt("roomId", H.partyRoomData?.gameId ?: 0)
+//                        .navigation()
+
+                InviteFriendActivity.open(mInviteCallBack)
             }
 
             override fun onClickChangeRoom() {
@@ -859,7 +905,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private fun showPartyManageView(model: PartyActorInfoModel?) {
         dismissDialog()
         mInputContainerView.hideSoftInput()
-        mPartyManageDialogView = PartyManageDialogView(this, model)
+        mPartyManageDialogView = PartyManageDialogView(this, model, mInviteCallBack)
         mPartyManageDialogView?.showByDialog()
     }
 

@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.base.BaseFragment;
-import com.common.core.kouling.SkrKouLingUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.share.SharePlatform;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -23,8 +25,8 @@ import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.constans.GameModeType;
 import com.component.dialog.InviteFriendDialog;
-import com.module.common.ICallback;
 import com.module.playways.R;
+import com.module.playways.grab.room.invite.IInviteCallBack;
 import com.module.playways.grab.room.invite.InviteFriendActivity;
 import com.module.playways.grab.room.invite.model.ShareModel;
 import com.module.playways.grab.room.invite.view.InviteFriendView;
@@ -54,9 +56,8 @@ public class InviteFriendFragment2 extends BaseFragment {
 
     String mKouLingToken = "";
     int mFrom;
-    int mGameID;
-    int mTagID;
-    int mMediaType;
+
+    IInviteCallBack mInviteCallBack;
 
     @Override
     public int initView() {
@@ -65,7 +66,17 @@ public class InviteFriendFragment2 extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        if (mInviteCallBack == null) {
+            if (getActivity() instanceof InviteFriendActivity) {
+                getActivity().finish();
+            } else {
+                finish();
+            }
 
+            return;
+        }
+
+        mFrom = mInviteCallBack.getFrom();
         mInviteTab = getRootView().findViewById(R.id.invite_tab);
         mInviteVp = getRootView().findViewById(R.id.invite_vp);
         mIvBack = getRootView().findViewById(R.id.iv_back);
@@ -83,12 +94,12 @@ public class InviteFriendFragment2 extends BaseFragment {
             mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
             mTitleList.put(0, "好友");
             mTitleList.put(1, "粉丝");
-            mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, mGameID, mTagID, UserInfoManager.RELATION.FRIENDS.getValue()));
-            mTitleAndViewMap.put(1, new InviteFriendView(this, mFrom, mGameID, mTagID, UserInfoManager.RELATION.FANS.getValue()));
+            mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, UserInfoManager.RELATION.FRIENDS.getValue(), mInviteCallBack));
+            mTitleAndViewMap.put(1, new InviteFriendView(this, mFrom, UserInfoManager.RELATION.FANS.getValue(), mInviteCallBack));
         } else if (mFrom == GameModeType.GAME_MODE_PARTY || mFrom == GameModeType.GAME_MODE_DOUBLE || mFrom == GameModeType.GAME_MODE_RELAY) {
             mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.transparent));
             mTitleList.put(0, "好友");
-            mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, mGameID, mTagID, UserInfoManager.RELATION.FRIENDS.getValue()));
+            mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, UserInfoManager.RELATION.FRIENDS.getValue(), mInviteCallBack));
         }
 
 
@@ -194,63 +205,20 @@ public class InviteFriendFragment2 extends BaseFragment {
             }
         });
 
-        if (mFrom == GameModeType.GAME_MODE_GRAB) {
-            SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameID, mTagID, mMediaType, new ICallback() {
-                @Override
-                public void onSucess(Object obj) {
-                    if (obj != null) {
-                        mKouLingToken = (String) obj;
-                    }
+        //SkrKouLingUtils.genNormalJoinGrabGameKouling
+        //SkrKouLingUtils.genJoinDoubleGameKouling
+        //SkrKouLingUtils.genJoinMicRoomKouling
+        //SkrKouLingUtils.genJoinRelayRoomKouling
+        ApiMethods.subscribe(mInviteCallBack.getKouLingTokenObservable(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    mKouLingToken = obj.getData().getString("token");
+                } else {
+                    U.getToastUtil().showShort(obj.getErrmsg());
                 }
-
-                @Override
-                public void onFailed(Object obj, int errcode, String message) {
-
-                }
-            });
-        } else if (mFrom == GameModeType.GAME_MODE_DOUBLE) {
-            SkrKouLingUtils.genJoinDoubleGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameID, mMediaType, new ICallback() {
-                @Override
-                public void onSucess(Object obj) {
-                    if (obj != null) {
-                        mKouLingToken = (String) obj;
-                    }
-                }
-
-                @Override
-                public void onFailed(Object obj, int errcode, String message) {
-
-                }
-            });
-        } else if (mFrom == GameModeType.GAME_MODE_MIC) {
-            SkrKouLingUtils.genJoinMicRoomKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameID, new ICallback() {
-                @Override
-                public void onSucess(Object obj) {
-                    if (obj != null) {
-                        mKouLingToken = (String) obj;
-                    }
-                }
-
-                @Override
-                public void onFailed(Object obj, int errcode, String message) {
-
-                }
-            });
-        } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
-            SkrKouLingUtils.genJoinRelayRoomKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameID, new ICallback() {
-                @Override
-                public void onSucess(Object obj) {
-                    if (obj != null) {
-                        mKouLingToken = (String) obj;
-                    }
-                }
-
-                @Override
-                public void onFailed(Object obj, int errcode, String message) {
-
-                }
-            });
-        }
+            }
+        });
     }
 
 
@@ -274,22 +242,9 @@ public class InviteFriendFragment2 extends BaseFragment {
         } else {
             web.setThumb(new UMImage(getActivity(), "http://res-static.inframe.mobi/common/skr_logo2.png"));
         }
-        if (mFrom == GameModeType.GAME_MODE_GRAB) {
-            web.setTitle("房间已开,就等你来唱");
-            web.setDescription("我在撕歌skr开了一个嗨唱包房，快来一起耍呀～");
-        } else if (mFrom == GameModeType.GAME_MODE_DOUBLE) {
-            web.setTitle("房间已开，只等你来");
-            web.setDescription("我在撕歌skr开了一个专属我们的唱聊房间，一起边唱边聊吧～");
-        } else if (mFrom == GameModeType.GAME_MODE_MIC) {
-            web.setTitle("房间已开，就等你来唱");
-            web.setDescription("我在撕歌skr开了一个专属我们的小k房，快来一起耍呀～");
-        } else if (mFrom == GameModeType.GAME_MODE_PARTY) {
-            web.setTitle("主题房已开，就等你来玩");
-            web.setDescription("我在撕歌skr开了一个主题房，快来一起耍呀～");
-        } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
-            web.setTitle("合唱房间已开，就等你来玩");
-            web.setDescription("我在撕歌skr开了一个合唱房间，快来一起耍呀～");
-        }
+
+        web.setTitle(mInviteCallBack.getShareTitle());
+        web.setDescription(mInviteCallBack.getShareDes());
 
         switch (sharePlatform) {
             case QQ:
@@ -318,18 +273,7 @@ public class InviteFriendFragment2 extends BaseFragment {
 
     private void showShareDialog() {
         if (mInviteFriendDialog == null) {
-            if (mFrom == GameModeType.GAME_MODE_DOUBLE) {
-                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_DOUBLE_GAME, mGameID, 0, mMediaType, mKouLingToken);
-            } else if (mFrom == GameModeType.GAME_MODE_GRAB) {
-                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
-            } else if (mFrom == GameModeType.GAME_MODE_MIC) {
-                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_MIC_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
-            } else if (mFrom == GameModeType.GAME_MODE_PARTY) {
-                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_PARTY_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
-            } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
-                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_RELAY_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
-            }
-
+            mInviteFriendDialog = new InviteFriendDialog(getContext(), mKouLingToken, mInviteCallBack);
         }
         mInviteFriendDialog.show();
     }
@@ -338,13 +282,7 @@ public class InviteFriendFragment2 extends BaseFragment {
     public void setData(int type, @Nullable Object data) {
         super.setData(type, data);
         if (type == 0) {
-            mFrom = (Integer) data;
-        } else if (type == 1) {
-            mGameID = (Integer) data;
-        } else if (type == 2) {
-            mMediaType = (Integer) data;
-        } else if (type == 3) {
-            mTagID = (Integer) data;
+            mInviteCallBack = (IInviteCallBack) data;
         }
     }
 
