@@ -185,6 +185,24 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         }
         startHeartbeat()
         startSyncGameStatus()
+        // 查下对端版本号
+        queryPeerAppVersion()
+    }
+
+    private fun queryPeerAppVersion() {
+        if((mRoomData?.peerUser?.userID?:1705476)>0){
+            val map = HashMap<String, Any>()
+            map["userIDs"] = listOf(1705476)
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            launch {
+                var result = subscribe { mRoomServerApi.queryAppVersion(body) }
+                if (result.errno == 0) {
+                    mRoomData?.peerAppVersionCode = result.data.getJSONArray("versions")
+                            .getJSONObject(0).getIntValue("versionCode")
+                }
+            }
+        }
     }
 
 //    fun changeMatchState(isChecked: Boolean) {

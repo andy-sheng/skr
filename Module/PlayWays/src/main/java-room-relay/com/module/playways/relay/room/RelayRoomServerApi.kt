@@ -83,4 +83,10 @@ interface RelayRoomServerApi {
 
     @PUT("http://dev.game.inframe.mobi/v1/relaygame/pk-commit-segment-result")
     fun sendPkPerSegmentResult(@Body body: RequestBody): Call<ApiResult>
+
+
+    @POST("http://dev.kconf.inframe.mobi/v1/kconf/query-app-verison")
+    fun queryAppVersion(@Body body: RequestBody): Call<ApiResult>
+
+
 }

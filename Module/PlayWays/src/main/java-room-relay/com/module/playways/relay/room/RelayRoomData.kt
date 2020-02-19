@@ -56,6 +56,8 @@ class RelayRoomData : BaseRoomData<RelayRoundInfoModel>() {
      */
     var configModel = RelayConfigModel()// 一唱到底配置
     var peerUser: RelayPlayerInfoModel? = null
+    var peerAppVersionCode:Int = 3008000
+
     var enableNoLimitDuration: Boolean = false    // 开启没有限制的持续时间
 
     var unLockMe = false // 我是否解锁
