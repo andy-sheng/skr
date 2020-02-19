@@ -12,7 +12,6 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.base.FragmentDataListener
-import com.common.callback.Callback
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
@@ -40,18 +39,14 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import useroperate.OperateFriendActivity
-import useroperate.def.DefaultFansOperateStub
-import useroperate.def.DefaultFollowOperateStub
-import useroperate.def.DefaultFriendOperateStub
 import useroperate.inter.AbsRelationOperate
-import useroperate.inter.IOperateStub
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.set
 
 @Route(path = RouterConstants.ACTIVITY_MALL_MALL)
-class MallActivity : BaseActivity(), AbsRelationOperate.ClickListener {
+class MallActivity : BaseActivity() {
 
     lateinit var title: CommonTitleBar
     lateinit var btnBack: ImageView
@@ -257,19 +252,18 @@ class MallActivity : BaseActivity(), AbsRelationOperate.ClickListener {
 //                .withInt("from", 1)
 //                .navigation()
 
-        val list = mutableListOf<IOperateStub<UserInfoModel>>(DefaultFriendOperateStub("赠送", PackageView@ this)
-                , DefaultFollowOperateStub("赠送", PackageView@ this)
-                , DefaultFansOperateStub("赠送", PackageView@ this))
-
-        OperateFriendActivity.open(this, list)
+        OperateFriendActivity.open(OperateFriendActivity.Companion.Builder()
+                .setEnableFans(true)
+                .setEnableFriend(true)
+                .setEnableFollow(true)
+                .setText("赠送")
+                .setListener(AbsRelationOperate.ClickListener { weakReference, _, _, userInfoModel, _ ->
+                    userInfoModel?.let {
+                        showGiveDialog(it, weakReference)
+                    }
+                }))
 
         EventBus.getDefault().postSticky(SelectMallStickyEvent(event.productModel, event.price))
-    }
-
-    override fun clickRelationBtn(weakReference: WeakReference<BaseActivity>?, view: View?, pos: Int, userInfoModel: UserInfoModel?, callback: Callback<String>?) {
-        userInfoModel?.let {
-            showGiveDialog(it, weakReference)
-        }
     }
 
     private fun showGiveDialog(userInfoModel: UserInfoModel, weakReference: WeakReference<BaseActivity>?) {

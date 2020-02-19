@@ -8,7 +8,6 @@ import android.util.AttributeSet
 import android.view.View
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
-import com.common.callback.Callback
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.rxretrofit.*
 import com.common.utils.U
@@ -43,7 +42,7 @@ import java.lang.ref.WeakReference
 import java.util.*
 
 
-class PackageView : ExConstraintLayout, AbsRelationOperate.ClickListener {
+class PackageView : ExConstraintLayout {
     val TAG = "PackageView" + hashCode()
     var recyclerView: RecyclerView
     var refreshLayout: SmartRefreshLayout
@@ -94,16 +93,15 @@ class PackageView : ExConstraintLayout, AbsRelationOperate.ClickListener {
         productAdapter?.useEffectMethod = {
             if (it.goodsInfo?.displayType == MallActivity.Companion.MALL_TYPE.CARD.value) {
                 toRelationCardModel = it
-//                val obj = JSONObject()
-//                obj.put("goodsID", it.goodsInfo?.goodsID)
-//                obj.put("goodsName", it.goodsInfo?.goodsName)
-//                ARouter.getInstance()
-//                        .build(RouterConstants.ACTIVITY_OPERATE_FRIEND)
-//                        .withInt("from", 2)
-//                        .withString("extra", obj.toJSONString())
-//                        .navigation()
-                val list = mutableListOf<IOperateStub<UserInfoModel>>(DefaultFriendOperateStub("邀请", PackageView@ this))
-                OperateFriendActivity.open(context as BaseActivity, list)
+
+                OperateFriendActivity.open(OperateFriendActivity.Companion.Builder()
+                        .setEnableFriend(true)
+                        .setText("邀请")
+                        .setListener(AbsRelationOperate.ClickListener { weakReference, _, _, userInfoModel, _ ->
+                            userInfoModel?.let {
+                                checkRelation(userInfoModel, weakReference)
+                            }
+                        }))
             } else {
                 useEffect(it)
             }
@@ -149,13 +147,6 @@ class PackageView : ExConstraintLayout, AbsRelationOperate.ClickListener {
 
         mLoadService = mLoadSir.register(refreshLayout) { tryLoad() }
     }
-
-    override fun clickRelationBtn(weakReference: WeakReference<BaseActivity>?, view: View?, pos: Int, userInfoModel: UserInfoModel?, callback: Callback<String>?) {
-        userInfoModel?.let {
-            checkRelation(userInfoModel, weakReference)
-        }
-    }
-
 
     private fun checkRelation(userInfoModel: UserInfoModel, weakReference: WeakReference<BaseActivity>?) {
         val map = mutableMapOf("goodsID" to toRelationCardModel?.goodsInfo?.goodsID, "otherUserID" to userInfoModel.userId)
