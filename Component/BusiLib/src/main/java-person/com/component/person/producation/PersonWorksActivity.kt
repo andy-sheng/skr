@@ -63,7 +63,7 @@ class PersonWorksActivity : BaseActivity() {
         watchView?.layoutParams = ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         content.addView(watchView)
 
-        watchView?.getProducations(true)
+        watchView?.getProductions(true)
     }
 
     override fun destroy() {
