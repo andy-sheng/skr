@@ -38,7 +38,7 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/image_bg"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_500_dp"
+        android:layout_height="@dimen/view_375_dp"
         android:background="#404A9A"
         app:layout_collapseMode="parallax"
         app:layout_collapseParallaxMultiplier="0.5" />
