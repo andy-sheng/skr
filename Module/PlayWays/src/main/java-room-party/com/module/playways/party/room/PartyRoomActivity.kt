@@ -649,6 +649,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             val code = String.format("inframeskr://room/joinparty?owner=%s&gameId=%s&ask=1&mediaType=%s", MyUserInfoManager.uid, mRoomData.gameId, 0)
             return ApiManager.getInstance().createService(KouLingServerApi::class.java).setTokenByCode(code)
         }
+
+        override fun needShowFans(): Boolean {
+            return true
+        }
     }
 
     private fun initTopView() {

@@ -859,6 +859,10 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                         val kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi::class.java)
                         return kouLingServerApi.setTokenByCode(code)
                     }
+
+                    override fun needShowFans(): Boolean {
+                        return true
+                    }
                 })
                 .build()
         )

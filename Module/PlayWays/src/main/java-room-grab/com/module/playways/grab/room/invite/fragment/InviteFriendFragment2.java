@@ -23,7 +23,6 @@ import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
-import com.component.busilib.constans.GameModeType;
 import com.component.dialog.InviteFriendDialog;
 import com.module.playways.R;
 import com.module.playways.grab.room.invite.IInviteCallBack;
@@ -38,7 +37,8 @@ import com.umeng.socialize.media.UMWeb;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InviteFriendFragment2 extends BaseFragment {
     public final String TAG = "InviteFriendFragment2";
@@ -48,8 +48,8 @@ public class InviteFriendFragment2 extends BaseFragment {
     ExImageView mIvBack;
     InviteShareFriendView mShareView;
 
-    HashMap<Integer, String> mTitleList = new HashMap<>();
-    HashMap<Integer, InviteFriendView> mTitleAndViewMap = new HashMap<>();
+    List<String> mTitleList = new ArrayList<>();
+    List<InviteFriendView> mTitleAndViewMap = new ArrayList<>();
     PagerAdapter mTabPagerAdapter;
 
     InviteFriendDialog mInviteFriendDialog;
@@ -90,18 +90,19 @@ public class InviteFriendFragment2 extends BaseFragment {
         mInviteTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(28));
         mInviteTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(14));
 
-        if (mFrom == GameModeType.GAME_MODE_GRAB || mFrom == GameModeType.GAME_MODE_MIC || mFrom == GameModeType.GAME_MODE_PARTY) {
-            mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
-            mTitleList.put(0, "好友");
-            mTitleList.put(1, "粉丝");
-            mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, UserInfoManager.RELATION.FRIENDS.getValue(), mInviteCallBack));
-            mTitleAndViewMap.put(1, new InviteFriendView(this, mFrom, UserInfoManager.RELATION.FANS.getValue(), mInviteCallBack));
-        } else if (mFrom == GameModeType.GAME_MODE_DOUBLE || mFrom == GameModeType.GAME_MODE_RELAY) {
-            mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.transparent));
-            mTitleList.put(0, "好友");
-            mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, UserInfoManager.RELATION.FRIENDS.getValue(), mInviteCallBack));
+        mTitleList.add("好友");
+        mTitleAndViewMap.add(new InviteFriendView(this, mFrom, UserInfoManager.RELATION.FRIENDS.getValue(), mInviteCallBack));
+
+        if (mInviteCallBack.needShowFans()) {
+            mTitleList.add("粉丝");
+            mTitleAndViewMap.add(new InviteFriendView(this, mFrom, UserInfoManager.RELATION.FANS.getValue(), mInviteCallBack));
         }
 
+        if (mTitleAndViewMap.size() > 1) {
+            mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
+        } else {
+            mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.transparent));
+        }
 
         mTabPagerAdapter = new PagerAdapter() {
 

@@ -1,7 +1,6 @@
 package com.module.playways.grab.room.invite;
 
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiResult;
 import com.component.dialog.InviteFriendDialog;
 
@@ -21,4 +20,8 @@ public interface IInviteCallBack extends InviteFriendDialog.IInviteDialogCallBac
 
     //也是gameType
     int getFrom();
+
+    default boolean needShowFans() {
+        return false;
+    }
 }
