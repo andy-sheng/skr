@@ -90,13 +90,13 @@ public class InviteFriendFragment2 extends BaseFragment {
         mInviteTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(28));
         mInviteTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(14));
 
-        if (mFrom == GameModeType.GAME_MODE_GRAB || mFrom == GameModeType.GAME_MODE_MIC) {
+        if (mFrom == GameModeType.GAME_MODE_GRAB || mFrom == GameModeType.GAME_MODE_MIC || mFrom == GameModeType.GAME_MODE_PARTY) {
             mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
             mTitleList.put(0, "好友");
             mTitleList.put(1, "粉丝");
             mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, UserInfoManager.RELATION.FRIENDS.getValue(), mInviteCallBack));
             mTitleAndViewMap.put(1, new InviteFriendView(this, mFrom, UserInfoManager.RELATION.FANS.getValue(), mInviteCallBack));
-        } else if (mFrom == GameModeType.GAME_MODE_PARTY || mFrom == GameModeType.GAME_MODE_DOUBLE || mFrom == GameModeType.GAME_MODE_RELAY) {
+        } else if (mFrom == GameModeType.GAME_MODE_DOUBLE || mFrom == GameModeType.GAME_MODE_RELAY) {
             mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.transparent));
             mTitleList.put(0, "好友");
             mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, UserInfoManager.RELATION.FRIENDS.getValue(), mInviteCallBack));
