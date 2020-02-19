@@ -60,6 +60,7 @@ import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.Exception
 import kotlin.math.abs
 
 
@@ -185,21 +186,31 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
         }
         startHeartbeat()
         startSyncGameStatus()
-        // 查下对端版本号
-        queryPeerAppVersion()
     }
 
     private fun queryPeerAppVersion() {
-        if((mRoomData?.peerUser?.userID?:0)>0 && mRoomData?.peerAppVersionCode <=0){
+        if ((mRoomData?.peerUser?.userID?:0) > 0 && (mRoomData?.peerAppVersionCode <= 0 || mRoomData?.myAppVersionCode <= 0)) {
             val map = HashMap<String, Any>()
-            map["userIDs"] = listOf(mRoomData?.peerUser?.userID)
+            map["userIDs"] = listOf(mRoomData?.peerUser?.userID, 0)//MyUserInfoManager.uid.toInt())
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             launch {
-                var result = subscribe { mRoomServerApi.queryAppVersion(body) }
+                val result = subscribe { mRoomServerApi.queryAppVersion(body) }
                 if (result.errno == 0) {
-                    mRoomData?.peerAppVersionCode = result.data.getJSONArray("versions")
-                            .getJSONObject(0).getIntValue("versionCode")
+                    try {
+                        val versionArray = result.data.getJSONArray("versions")
+                        val peerVer = versionArray.getJSONObject(0).getIntValue("versionCode")
+                        val myVer = versionArray.getJSONObject(1).getIntValue("versionCode")
+                        mRoomData?.peerAppVersionCode = peerVer
+                        mRoomData?.myAppVersionCode = myVer
+                        val supportedVersion = 3009000
+                        mEnablePreChangeVolume = mRoomData?.peerAppVersionCode >= supportedVersion &&
+                                mRoomData?.myAppVersionCode >= supportedVersion
+                        MyLog.i(TAG, "Got version from server, support:${mEnablePreChangeVolume} " +
+                                "peer:${mRoomData?.peerAppVersionCode} my:${mRoomData?.myAppVersionCode}")
+                    } catch (e:Exception) {
+                        e.printStackTrace()
+                    }
                 }
             }
         }
@@ -462,6 +473,9 @@ class RelayCorePresenter(var mRoomData: RelayRoomData, var roomView: IRelayRoomV
     }
 
     private fun turnPreChangeVolume(nextIsMyTurn: Boolean) {
+        if (!mEnablePreChangeVolume) {
+            return
+        }
         if (nextIsMyTurn) {
             DebugLogView.println(TAG, "马上到我了，提前调高本地伴奏音量")
             fadeVolume(isPlayout = true, isFadeIn = true)
