@@ -20,6 +20,7 @@ import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.utils.UserInfoDataUtils;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -29,15 +30,14 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.component.busilib.callback.EmptyCallback;
-import com.component.busilib.constans.GameModeType;
 import com.component.busilib.model.SearchModel;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
+import com.module.playways.grab.room.invite.IInviteCallBack;
 import com.module.playways.grab.room.invite.adapter.InviteFirendAdapter;
-import com.module.playways.grab.room.invite.presenter.InviteSearchPresenter;
 import com.module.playways.grab.room.invite.view.IInviteSearchView;
 
 import java.util.List;
@@ -55,14 +55,10 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
 
     public static String INVITE_SEARCH_FROM = "invite_search_from";
     public static String INVITE_SEARCH_MODE = "invite_search_mode";
-    public static String INVITE_ROOM_ID = "invite_room_id";
-    public static String INVITE_TAG_ID = "invite_tag_id";
 
     private int mMode;
     private int mRoomID;
     private int mFrom;
-    private int mTagID;
-//    private int mGameMode;
 
     RelativeLayout mSearchArea;
     TextView mCancleTv;
@@ -73,10 +69,10 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
 
     PublishSubject<SearchModel> mPublishSubject;
 
-    InviteSearchPresenter mPresenter;
-
     private Boolean isAutoSearch = false;      // 标记是否是自动搜索
     private LoadService mLoadService;
+
+    IInviteCallBack mInviteCallBack;
 
     @Override
     public int initView() {
@@ -91,31 +87,35 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
         mRecyclerView = getRootView().findViewById(R.id.recycler_view);
 
         mSearchContent.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+        mRoomID = mInviteCallBack.getRoomID();
+        mFrom = mInviteCallBack.getFrom();
+
         Bundle bundle = getArguments();
         if (bundle != null) {
             mMode = bundle.getInt(INVITE_SEARCH_MODE);
-            mRoomID = bundle.getInt(INVITE_ROOM_ID);
-            mFrom = bundle.getInt(INVITE_SEARCH_FROM);
-            mTagID = bundle.getInt(INVITE_TAG_ID);
         }
 
-
-        mPresenter = new InviteSearchPresenter(this);
-        addPresent(mPresenter);
         mInviteFirendAdapter = new InviteFirendAdapter(new InviteFirendAdapter.OnInviteClickListener() {
             @Override
             public void onClick(UserInfoModel model, ExTextView view) {
-                if (mFrom == GameModeType.GAME_MODE_GRAB) {
-                    mPresenter.inviteFriend(mRoomID, mTagID, model, view);
-                } else if (mFrom == GameModeType.GAME_MODE_DOUBLE) {
-                    mPresenter.inviteDoubleFriend(mRoomID, model, view);
-                } else if (mFrom == GameModeType.GAME_MODE_MIC) {
-                    mPresenter.inviteMicFriend(mRoomID, model, view);
-                } else if (mFrom == GameModeType.GAME_MODE_PARTY) {
-                    mPresenter.invitePartyriend(mRoomID, model, view);
-                } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
-                    mPresenter.inviteRelayFriend(mRoomID, model, view);
-                }
+                ApiMethods.subscribe(mInviteCallBack.getInviteObservable(model), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+                        MyLog.d(TAG, "process" + " result=" + result.getErrno());
+                        if (result.getErrno() == 0) {
+                            // 更新视图
+                            updateInvited(view);
+                        } else {
+                            MyLog.w(TAG, "inviteFriend failed, " + " traceid is " + result.getTraceId());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.e(TAG, e);
+                    }
+                }, InviteSearchFragment.this);
             }
 
             @Override
@@ -258,6 +258,18 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
 
         if (mInviteFirendAdapter.getDataList() != null && mInviteFirendAdapter.getDataList().size() > 0) {
             mLoadService.showSuccess();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void setData(int type, @org.jetbrains.annotations.Nullable Object data) {
+        if (type == 0) {
+            mInviteCallBack = (IInviteCallBack) data;
         }
     }
 

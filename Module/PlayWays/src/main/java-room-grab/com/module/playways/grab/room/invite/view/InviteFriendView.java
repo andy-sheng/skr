@@ -1,11 +1,13 @@
 package com.module.playways.grab.room.invite.view;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -13,6 +15,8 @@ import com.common.log.MyLog;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.FragmentUtils;
+import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.relation.callback.FansEmptyCallback;
 import com.component.relation.callback.FriendsEmptyCallback;
@@ -23,6 +27,7 @@ import com.module.playways.R;
 import com.module.playways.grab.room.inter.IGrabInviteView;
 import com.module.playways.grab.room.invite.IInviteCallBack;
 import com.module.playways.grab.room.invite.adapter.InviteFirendAdapter;
+import com.module.playways.grab.room.invite.fragment.InviteSearchFragment;
 import com.module.playways.grab.room.invite.presenter.GrabInvitePresenter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -69,18 +74,6 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
 
             @Override
             public void onClick(UserInfoModel model, ExTextView view) {
-//                if (mFrom == GameModeType.GAME_MODE_GRAB) {
-//                    mGrabInvitePresenter.inviteGrabFriend(mRoomID, mTagID, model, view);
-//                } else if (mFrom == GameModeType.GAME_MODE_DOUBLE) {
-//                    mGrabInvitePresenter.inviteDoubleFriend(mRoomID, model, view);
-//                } else if (mFrom == GameModeType.GAME_MODE_MIC) {
-//                    mGrabInvitePresenter.inviteMicFriend(mRoomID, model, view);
-//                } else if (mFrom == GameModeType.GAME_MODE_PARTY) {
-//                    mGrabInvitePresenter.invitePartyFriend(mRoomID, model, view);
-//                } else if (mFrom == GameModeType.GAME_MODE_RELAY) {
-//                    mGrabInvitePresenter.inviteRelayFriend(mRoomID, model, view);
-//                }
-
                 ApiMethods.subscribe(mInviteCallBack.getInviteObservable(model), new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult result) {
@@ -102,19 +95,16 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
 
             @Override
             public void onClickSearch() {
-                //todo 搜索需要改
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_FROM, mFrom);
-//                bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_MODE, mMode);
-//                bundle.putSerializable(InviteSearchFragment.INVITE_ROOM_ID, mRoomID);
-//                bundle.putSerializable(InviteSearchFragment.INVITE_TAG_ID, mTagID);
-//                U.getFragmentUtils().addFragment(FragmentUtils
-//                        .newAddParamsBuilder((BaseActivity) getContext(), InviteSearchFragment.class)
-//                        .setUseOldFragmentIfExist(false)
-//                        .setBundle(bundle)
-//                        .setAddToBackStack(true)
-//                        .setHasAnimation(true)
-//                        .build());
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_MODE, mMode);
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newAddParamsBuilder((BaseActivity) getContext(), InviteSearchFragment.class)
+                        .setUseOldFragmentIfExist(false)
+                        .setBundle(bundle)
+                        .setAddToBackStack(true)
+                        .addDataBeforeAdd(0, mInviteCallBack)
+                        .setHasAnimation(true)
+                        .build());
             }
         }, true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
