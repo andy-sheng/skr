@@ -5,10 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/view_10_dp"
     android:layout_marginRight="@dimen/view_10_dp"
-    android:layout_marginBottom="@dimen/view_12_dp"
-    app:bl_corners_radius="@dimen/view_8_dp"
-    app:bl_shape="rectangle"
-    app:bl_solid_color="@color/black_trans_10">
+    android:layout_marginBottom="@dimen/view_12_dp">
 
     <ImageView
         android:id="@+id/more_iv"
