@@ -2,7 +2,6 @@ package com.component.person.relation
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
@@ -11,15 +10,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.common.core.userinfo.UserInfoServerApi
-import com.common.core.view.setDebounceViewClickListener
-import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.view.ex.ExConstraintLayout
 import com.component.busilib.R
-import com.component.busilib.recommend.RA
 import com.component.person.model.RelationModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -80,7 +75,7 @@ class PersonRelationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe(RequestControl("getRelationInfo", ControlType.CancelThis)) {
-                userInfoServerApi.getRelationInfo(body)
+                userInfoServerApi.getAllRelationInfoKt(body)
             }
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("relationList"), RelationModel::class.java)

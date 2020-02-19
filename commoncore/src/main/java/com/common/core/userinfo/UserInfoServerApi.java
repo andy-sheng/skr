@@ -446,7 +446,7 @@ public interface UserInfoServerApi {
     Call<ApiResult> checkGuardInfo(@Query("userID") int userID);
 
     @PUT("/v1/mall/get-simple-relation-list")
-    Call<ApiResult> getRelationInfo(@Body RequestBody body);
+    Call<ApiResult> getAllRelationInfoKt(@Body RequestBody body);
 
     @PUT("/v1/mall/get-simple-relation-list")
     Observable<ApiResult> getAllRelationInfo(@Body RequestBody body);
