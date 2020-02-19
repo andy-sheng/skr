@@ -16,23 +16,24 @@
         android:id="@+id/weixin_iv"
         android:layout_width="@dimen/view_37_dp"
         android:layout_height="@dimen/view_37_dp"
-        android:layout_marginLeft="@dimen/view_12_dp"
         android:layout_marginTop="@dimen/view_14_dp"
         android:background="@drawable/icon_weixin"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/qq_iv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/qq_iv"
         android:layout_width="@dimen/view_37_dp"
         android:layout_height="@dimen/view_37_dp"
-        android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_14_dp"
         android:background="@drawable/icon_qq"
         app:layout_constraintLeft_toRightOf="@id/weixin_iv"
+        app:layout_constraintRight_toLeftOf="@id/invite_tv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/invite_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/view_20_dp"
