@@ -432,7 +432,7 @@ class PersonFragment6 : BaseFragment() {
                     .greenChannel().navigation()
         }
 
-        honorTimeTv.setAnimateDebounceViewClickListener {
+        honorBgIv.setAnimateDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                     .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/newVip?title=1"))
                     .greenChannel().navigation()
