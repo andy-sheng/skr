@@ -10,6 +10,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.component.report.fragment.QuickFeedbackFragment
+import com.module.ModuleServiceManager
 import com.module.playways.party.bgmusic.getLocalMusicInfo
 import com.module.playways.room.data.H
 import com.zq.mediaengine.kit.ZqEngineKit
@@ -124,6 +125,14 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
                 var key = call.argument<String>("key")
                 var params = call.argument<java.util.HashMap<String, String>>("params")
                 StatisticsAdapter.recordCountEvent(category,key,params)
+                result.success(null)
+                return true
+            }
+            call.method == "sendRelationApplyMsg" -> {
+                var userID = call.argument<String>("userID")
+                var uniqID = call.argument<String>("uniqID")
+                var content = call.argument<String>("content")
+                ModuleServiceManager.getInstance().msgService.sendRelationInviteMsg(userID,uniqID, content)
                 result.success(null)
                 return true
             }
