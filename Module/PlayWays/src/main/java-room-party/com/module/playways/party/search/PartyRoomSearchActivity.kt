@@ -61,6 +61,7 @@ class PartyRoomSearchActivity : BaseActivity() {
 
         adapter = PartyRoomSearchAdapter(object : PartyRoomSearchAdapter.Listener {
             override fun onClickItem(position: Int, model: PartyRoomInfoModel?) {
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PartyRoomSearchActivity)
                 model?.roomID?.let {
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                     iRankingModeService.tryGoPartyRoom(it, 1, model.roomtype ?: 0)
