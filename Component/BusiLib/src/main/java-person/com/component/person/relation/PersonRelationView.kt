@@ -1,6 +1,7 @@
 package com.component.person.relation
 
 import android.content.Context
+import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -8,6 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.rxretrofit.ApiManager
@@ -16,6 +18,7 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.component.busilib.R
 import com.component.person.model.RelationModel
+import com.module.RouterConstants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -49,7 +52,14 @@ class PersonRelationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
 
         adapter = PersonRelationAdapter(object : PersonRelationAdapter.Listener {
             override fun onClickItem(position: Int, model: RelationModel?) {
-                // todo 进个人主页面么？
+                model?.user?.let {
+                    val bundle = Bundle()
+                    bundle.putInt("bundle_user_id", it.userId)
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation()
+                }
             }
         })
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
