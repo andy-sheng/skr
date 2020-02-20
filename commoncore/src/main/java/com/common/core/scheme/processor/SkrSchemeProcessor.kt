@@ -16,6 +16,7 @@ import com.common.core.scheme.SchemeConstants
 import com.common.core.scheme.SchemeUtils
 import com.common.core.scheme.event.*
 import com.common.log.MyLog
+import com.common.rxretrofit.ApiManager
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.idlefish.flutterboost.containers.MyBoostFlutterActivity
@@ -544,10 +545,15 @@ object SkrSchemeProcessor : ISchemeProcessor {
                 MyLog.w(TAG, "processWebUrl url is empty")
                 return
             }
-            val url = SchemeUtils.getString(uri, SchemeConstants.PARAM_URL)
+            var url = SchemeUtils.getString(uri, SchemeConstants.PARAM_URL)
             val showShare = SchemeUtils.getInt(uri, SchemeConstants.PARAM_SHOW_SHARE, 0)
+            url = url.replace("@@","?")
+            url = url.replace("@","&")
+            url = ApiManager.getInstance().findRealUrlByChannel(url)
+            MyLog.i(TAG, "url=$url")
+
             ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                    .withString("url", url)
+                    .withString("url",url)
                     .withBoolean("showShare", showShare == 1)
                     .greenChannel().navigation()
         } else {

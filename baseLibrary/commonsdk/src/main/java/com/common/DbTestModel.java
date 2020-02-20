@@ -1,7 +1,7 @@
 package com.common;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.NotNull;
@@ -9,6 +9,7 @@ import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Transient;
 
 import java.util.Date;
+import org.greenrobot.greendao.annotation.Generated;
 
 
 @Entity(indexes = {
@@ -30,7 +31,7 @@ public class DbTestModel {
     @Transient
     private int aa;
 
-@Generated(hash = 826493265)
+@Keep
 public DbTestModel(Long id, @NotNull String text, Date date, String bbb) {
     this.id = id;
     this.text = text;
@@ -38,7 +39,7 @@ public DbTestModel(Long id, @NotNull String text, Date date, String bbb) {
     this.bbb = bbb;
 }
 
-@Generated(hash = 269271565)
+@Keep
 public DbTestModel() {
 }
 
