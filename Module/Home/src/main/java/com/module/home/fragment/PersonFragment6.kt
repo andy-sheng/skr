@@ -153,7 +153,6 @@ class PersonFragment6 : BaseFragment() {
         initScrollAndRefresh()
 
         refreshUserInfoView()
-        refreshClubInfo()
 
         SinglePlayer.addCallback(playTag, playCallback)
     }
@@ -331,6 +330,8 @@ class PersonFragment6 : BaseFragment() {
             } else {
                 levelArea.visibility = View.GONE
             }
+
+            refreshClubInfo()
         }
     }
 
@@ -589,12 +590,6 @@ class PersonFragment6 : BaseFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvnet(userInfoChangeEvent: MyUserInfoEvent.UserInfoChangeEvent) {
         refreshUserInfoView()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: ClubInfoChangeMsg) {
-        // 我自己家族信息的改变
-        refreshClubInfo()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
