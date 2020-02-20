@@ -14,11 +14,11 @@ class RelationModel : Serializable {
 class RelationInfo : Serializable {
     companion object {
         // relationType 的值
-        const val DJK_CP = 1   // 关系 CP
-        const val DJK_Ji_You = 2  // 关系基友
-        const val DJK_Bai_Shi = 3  // 关系 拜师
-        const val DJK_Shou_Tu = 4   // 关系 收徒
-        const val DJK_Gui_Mi = 5  // 关系 闺蜜
+        const val DJK_CP = 7001   // 关系 CP
+        const val DJK_Ji_You = 7002  // 关系基友
+        const val DJK_Bai_Shi = 7003  // 关系 徒弟
+        const val DJK_Shou_Tu = 7004   // 关系 师傅
+        const val DJK_Gui_Mi = 7005  // 关系 闺蜜
 
         // displayType 的值
         const val GDT_SHENG_WEN = 1   // 声纹

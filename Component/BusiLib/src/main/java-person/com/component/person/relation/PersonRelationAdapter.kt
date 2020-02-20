@@ -8,7 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
+import com.common.utils.U
 import com.component.busilib.R
+import com.component.person.model.RelationInfo
 import com.component.person.model.RelationModel
 import com.component.person.utils.RelationResUtils
 import com.facebook.drawee.view.SimpleDraweeView
@@ -58,13 +60,21 @@ class PersonRelationAdapter(val listener: Listener?) : RecyclerView.Adapter<Pers
             AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.user?.avatar)
                     .setCircle(true)
                     .build())
-            if (RelationResUtils.getDrawable(model.relationInfo?.relationType) != null) {
-                relationTag.visibility = View.VISIBLE
-                relationTag.text = RelationResUtils.getDesc(model.relationInfo?.relationType)
-                relationTag.background = RelationResUtils.getDrawable(model.relationInfo?.relationType)
-            } else {
-                relationTag.visibility = View.GONE
+            // 得先判断道具卡是不是守护
+            if(model.relationInfo?.displayType == RelationInfo.GDT_GUARD){
+                relationTag.visibility = View.VISIBLE;
+                relationTag.text = "守护"
+                relationTag.background = U.getDrawable(R.drawable.relation_guard_icon)
+            }else{
+                if (RelationResUtils.getDrawable(model.relationInfo?.relationType) != null) {
+                    relationTag.visibility = View.VISIBLE
+                    relationTag.text = RelationResUtils.getDesc(model.relationInfo?.relationType)
+                    relationTag.background = RelationResUtils.getDrawable(model.relationInfo?.relationType)
+                } else {
+                    relationTag.visibility = View.GONE
+                }
             }
+
         }
     }
 
