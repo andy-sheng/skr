@@ -16,7 +16,7 @@ interface MallServerApi {
      *
      * @return
      */
-    @GET("http://sandbox.api.inframe.mobi/v2/mall/display-type-tag")
+    @GET("http://sandbox.api.inframe.mobi/v3/mall/display-type-tag")
     fun getMallDisplayTags(): Call<ApiResult>
 
     /**
