@@ -40,6 +40,7 @@ class PersonBusinessActivity : BaseActivity() {
     lateinit var levelIv: ImageView
     lateinit var levelDesc: TextView
     lateinit var audioView: CommonAudioView
+    lateinit var audioEditIv: ImageView
     lateinit var personTagView: PersonTagView
     lateinit var divider: View
     lateinit var signTv: ExTextView
@@ -95,6 +96,7 @@ class PersonBusinessActivity : BaseActivity() {
         levelIv = findViewById(R.id.level_iv)
         levelDesc = findViewById(R.id.level_desc)
         audioView = findViewById(R.id.audio_view)
+        audioEditIv = findViewById(R.id.audio_edit_iv)
         personTagView = findViewById(R.id.person_tag_view)
         divider = findViewById(R.id.divider)
         signTv = findViewById(R.id.sign_tv)
@@ -130,8 +132,10 @@ class PersonBusinessActivity : BaseActivity() {
         if (voiceInfoModel != null && voiceInfoModel?.auditStatus == VoiceInfoModel.EVAS_AUDIT_OK) {
             // 有声音且审核通过
             audioView.visibility = View.VISIBLE
+            audioEditIv.visibility = View.VISIBLE
             audioView.bindData(voiceInfoModel?.duration ?: 0)
         } else {
+            audioEditIv.visibility = View.GONE
             audioView.visibility = View.GONE
         }
 
@@ -156,6 +160,12 @@ class PersonBusinessActivity : BaseActivity() {
             } else {
                 MyLog.e("PersonBusinessActivity", "空的voiceInfo")
             }
+        }
+
+        audioEditIv.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICE_RECORD)
+                    .withInt("from", 2)
+                    .navigation()
         }
     }
 
