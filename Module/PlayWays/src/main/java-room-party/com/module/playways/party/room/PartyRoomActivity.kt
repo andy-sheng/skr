@@ -73,6 +73,7 @@ import com.module.playways.party.room.ui.IPartyRoomView
 import com.module.playways.party.room.ui.PartyBottomWidgetAnimationController
 import com.module.playways.party.room.ui.PartyWidgetAnimationController
 import com.module.playways.party.room.view.*
+import com.module.playways.party.search.PartyRoomSearchActivity
 import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
@@ -120,6 +121,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             }
 
             if (activity is PartyHomeActivity) {
+                continue
+            }
+            if(activity is PartyRoomSearchActivity){
                 continue
             }
             activity.finish()
@@ -738,7 +742,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 quitGame()
             }
         })
-
+        mTopOpView.bindData()
         mTopContentView = findViewById(R.id.top_content_view)
         mTopContentView.roomData = mRoomData
         mTopContentView.bindData()

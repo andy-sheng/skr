@@ -91,6 +91,15 @@ class PartyTopOpView2 : ConstraintLayout {
         })
     }
 
+    fun bindData(){
+        if(H.partyRoomData?.myUserInfo?.isHost()==true ||
+                H.partyRoomData?.myUserInfo?.isGuest()==true){
+            changeRoomIv.visibility = View.GONE
+        }else{
+            changeRoomIv.visibility = View.VISIBLE
+        }
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         EventBus.getDefault().register(this)
