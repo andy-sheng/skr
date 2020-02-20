@@ -157,19 +157,16 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         relationView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         relationAdapter = PersonRelationAdapter(object : PersonRelationAdapter.Listener {
             override fun onClickItem(position: Int, model: RelationModel?) {
-                // todo 要能点击么
+                if (mUserId == MyUserInfoManager.uid.toInt()) {
+                    FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "MyRelationPage", null)
+                } else {
+                    FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "OtherRelationPage", mutableMapOf(
+                            "targetId" to mUserId
+                    ))
+                }
             }
         })
         relationView.adapter = relationAdapter
-        relationView.setDebounceViewClickListener {
-            if (mUserId == MyUserInfoManager.uid.toInt()) {
-                FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "MyRelationPage", null)
-            } else {
-                FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "OtherRelationPage", mutableMapOf(
-                        "targetId" to mUserId
-                ))
-            }
-        }
 
         emptyRelationTv.setDebounceViewClickListener {
             if (mUserId == MyUserInfoManager.uid.toInt()) {
