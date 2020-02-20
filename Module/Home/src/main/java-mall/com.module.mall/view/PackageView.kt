@@ -18,6 +18,7 @@ import com.kingja.loadsir.core.LoadSir
 import com.module.ModuleServiceManager
 import com.module.home.R
 import com.module.mall.MallServerApi
+import com.module.mall.RelationCardUtils
 import com.module.mall.activity.MallActivity
 import com.module.mall.adapter.PackageAdapter
 import com.module.mall.event.MallUseCoinEvent
@@ -35,9 +36,7 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import useroperate.OperateFriendActivity
-import useroperate.def.DefaultFriendOperateStub
 import useroperate.inter.AbsRelationOperate
-import useroperate.inter.IOperateStub
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -95,7 +94,7 @@ class PackageView : ExConstraintLayout {
                 toRelationCardModel = it
 
                 OperateFriendActivity.open(OperateFriendActivity.Companion.Builder()
-                        .setEnableFriend(true)
+                        .setIsEnableFriend(true)
                         .setText("邀请")
                         .setListener(AbsRelationOperate.ClickListener { weakReference, _, _, userInfoModel, _ ->
                             userInfoModel?.let {

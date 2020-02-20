@@ -18,24 +18,24 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
+import com.common.callback.Callback;
 import com.common.core.account.UserAccountManager;
-import com.common.core.global.event.ShowDialogInHomeEvent;
 import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.scheme.SchemeSdkActivity;
+import com.common.core.scheme.event.InviteRelationCardSchemeEvent;
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.flutter.boost.FlutterBoostController;
 import com.common.log.MyLog;
 import com.common.notification.event.GrabInviteNotifyEvent;
@@ -43,7 +43,6 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExConstraintLayout;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExLinearLayout;
 import com.common.view.ex.ExTextView;
@@ -58,7 +57,6 @@ import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.event.SkipGuideHomepageEvent;
-import com.module.home.fragment.PersonFragment5;
 import com.module.home.fragment.PersonFragment6;
 import com.module.home.game.GameFragment3;
 import com.module.home.persenter.CheckInPresenter;
@@ -69,16 +67,20 @@ import com.module.home.persenter.RedPkgPresenter;
 import com.module.home.persenter.VipReceiveCoinPresenter;
 import com.module.home.view.IHomeActivity;
 import com.module.home.view.INotifyView;
+import com.module.mall.RelationCardUtils;
 import com.module.msg.IMsgService;
 import com.module.playways.IPlaywaysModeService;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
+
+import useroperate.OperateFriendActivity;
+import useroperate.inter.AbsRelationOperate;
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener, INotifyView {
@@ -122,6 +124,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     int giftRedDotValue;
 
     NotificationManager mNManager;
+
+    RelationCardUtils mRelationCardUtils;
 
     SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission();
 
@@ -599,6 +603,23 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 //            // 后台到前台了
 //            mHomePresenter.checkPermiss(this);
 //        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(InviteRelationCardSchemeEvent inviteRelationCardSchemeEvent) {
+        OperateFriendActivity.Companion.open(new OperateFriendActivity.Companion.Builder()
+                .setIsEnableFriend(true).setText("邀请").setListener(new AbsRelationOperate.ClickListener() {
+                    @Override
+                    public void clickRelationBtn(WeakReference<BaseActivity> weakReference, View view, int pos, UserInfoModel userInfoModel, Callback<String> callback) {
+                        if (userInfoModel != null) {
+                            if (mRelationCardUtils == null) {
+                                mRelationCardUtils = new RelationCardUtils();
+                            }
+
+                            mRelationCardUtils.checkRelation(userInfoModel, weakReference, inviteRelationCardSchemeEvent.getGoodsID(), inviteRelationCardSchemeEvent.getPacketID());
+                        }
+                    }
+                }));
     }
 
     /**

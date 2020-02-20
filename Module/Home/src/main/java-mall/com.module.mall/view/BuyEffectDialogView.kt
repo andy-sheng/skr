@@ -12,7 +12,6 @@ import com.common.image.fresco.BaseImageView
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.module.home.R
-import com.module.mall.activity.MallActivity
 import com.module.mall.event.BuyMallEvent
 import com.module.mall.event.GiveMallEvent
 import com.module.mall.model.ProductModel
@@ -138,12 +137,7 @@ class BuyEffectDialogView : ConstraintLayout {
             buyTv.alpha = 1.0f
         }
 
-        //关系卡
-        if (model.displayType == MallActivity.Companion.MALL_TYPE.CARD.value) {
-            buyGive.visibility = View.GONE
-        } else {
-            buyGive.visibility = View.VISIBLE
-        }
+        buyGive.visibility = View.VISIBLE
     }
 
     fun dismiss() {

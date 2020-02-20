@@ -147,6 +147,10 @@ object SkrSchemeProcessor : ISchemeProcessor {
                         processPartyUrl(uri, context)
                         return ProcessResult.AcceptedAndContinue
                     }
+                    "card_relation" -> {
+                        processCardRelationUrl(uri, context)
+                        return ProcessResult.AcceptedAndContinue
+                    }
                 }
             }
         } else if ("rong" == scheme) {
@@ -180,6 +184,14 @@ object SkrSchemeProcessor : ISchemeProcessor {
         if (uri.path == "/listPage") {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_HOME)
                     .navigation()
+        }
+    }
+
+    private fun processCardRelationUrl(uri: Uri, context: Context) {
+        if (uri.path == "/invite") {
+            val goodsID = SchemeUtils.getInt(uri, "goodsID", 0)
+            val packetID = SchemeUtils.getString(uri, "packetID")
+            EventBus.getDefault().post(InviteRelationCardSchemeEvent(goodsID, packetID))
         }
     }
 

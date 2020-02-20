@@ -27,15 +27,15 @@ class OperateFriendActivity : BaseActivity() {
         fun open(builder: Builder) {
             operateList = mutableListOf()
             if (builder.enableFriend) {
-                operateList?.add(DefaultFriendOperateStub(builder.text, builder.listener))
+                operateList?.add(DefaultFriendOperateStub(builder.content, builder.clickListener))
             }
 
             if (builder.enableFollow) {
-                operateList?.add(DefaultFollowOperateStub(builder.text, builder.listener))
+                operateList?.add(DefaultFollowOperateStub(builder.content, builder.clickListener))
             }
 
             if (builder.enableFans) {
-                operateList?.add(DefaultFansOperateStub(builder.text, builder.listener))
+                operateList?.add(DefaultFansOperateStub(builder.content, builder.clickListener))
             }
 
             val intent = Intent(U.app(), OperateFriendActivity::class.java)
@@ -47,33 +47,33 @@ class OperateFriendActivity : BaseActivity() {
             var enableFriend: Boolean = false
             var enableFollow: Boolean = false
             var enableFans: Boolean = false
-            var text: String = "邀请"
-            var listener: AbsRelationOperate.ClickListener? = null
+            var content: String = "邀请"
+            var clickListener: AbsRelationOperate.ClickListener? = null
 
             constructor()
 
-            fun setEnableFriend(enableFriend: Boolean): Builder {
+            fun setIsEnableFriend(enableFriend: Boolean): Builder {
                 this.enableFriend = enableFriend
                 return this
             }
 
-            fun setEnableFollow(enableFollow: Boolean): Builder {
+            fun setIsEnableFollow(enableFollow: Boolean): Builder {
                 this.enableFollow = enableFollow
                 return this
             }
 
-            fun setEnableFans(enableFans: Boolean): Builder {
+            fun setIsEnableFans(enableFans: Boolean): Builder {
                 this.enableFans = enableFans
                 return this
             }
 
             fun setText(text: String): Builder {
-                this.text = text
+                this.content = text
                 return this
             }
 
             fun setListener(listener: AbsRelationOperate.ClickListener): Builder {
-                this.listener = listener
+                this.clickListener = listener
                 return this
             }
         }

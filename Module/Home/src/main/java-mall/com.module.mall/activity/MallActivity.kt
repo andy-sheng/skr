@@ -271,9 +271,9 @@ class MallActivity : BaseActivity() {
 //                .navigation()
 
         OperateFriendActivity.open(OperateFriendActivity.Companion.Builder()
-                .setEnableFans(true)
-                .setEnableFriend(true)
-                .setEnableFollow(true)
+                .setIsEnableFans(true)
+                .setIsEnableFriend(true)
+                .setIsEnableFollow(true)
                 .setText("赠送")
                 .setListener(AbsRelationOperate.ClickListener { weakReference, _, _, userInfoModel, _ ->
                     userInfoModel?.let {

@@ -136,8 +136,8 @@ class ClubHomepageActivity : BaseActivity() {
 
         inviteTv.setDebounceViewClickListener {
             OperateFriendActivity.open(OperateFriendActivity.Companion.Builder()
-                    .setEnableFans(true)
-                    .setEnableFriend(true)
+                    .setIsEnableFans(true)
+                    .setIsEnableFriend(true)
                     .setText("邀请")
                     .setListener(AbsRelationOperate.ClickListener { _, _, _, userInfoModel, callback ->
                         launch {
