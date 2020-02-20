@@ -132,7 +132,9 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
                 var userID = call.argument<String>("userID")
                 var uniqID = call.argument<String>("uniqID")
                 var content = call.argument<String>("content")
-                ModuleServiceManager.getInstance().msgService.sendRelationInviteMsg(userID,uniqID, content)
+                var expireAt = call.argument<Int>("expireAt")
+                var dayAfter = (System.currentTimeMillis()+24*60*60*1000)/1000
+                ModuleServiceManager.getInstance().msgService.sendRelationInviteMsg(userID,uniqID, content,expireAt?.toLong()?:dayAfter)
                 result.success(null)
                 return true
             }

@@ -47,7 +47,10 @@ public class RelationMsgProcessor {
                 if (obj.getErrno() == 0) {
                     // 请求成功，构造IM消息
                     sendRelationHandleMsg(targetId,msgUid,agree?1:2,obj.getData().getString("msgContent"));
-                } else {
+                } else if(obj.getErrno() == 8428113){
+                    // 消息过期了
+
+                }else {
                     U.getToastUtil().showShort(obj.getErrmsg());
                 }
             }
@@ -81,10 +84,11 @@ public class RelationMsgProcessor {
         });
     }
 
-    public static void sendRelationInviteMsg(String userID, String uniqID, String content) {
+    public static void sendRelationInviteMsg(String userID, String uniqID, String content,long expireAt) {
         RelationInviteMsg contentMsg =  RelationInviteMsg.obtain();
         contentMsg.setContent(content);
         contentMsg.setUniqID(uniqID);
+        contentMsg.setExpireAt(expireAt);
         Message msg = Message.obtain(userID, Conversation.ConversationType.PRIVATE, contentMsg);
 
         RongIM.getInstance().sendMessage(msg, "pushContent"+content, "pushData"+content, new IRongCallback.ISendMessageCallback() {

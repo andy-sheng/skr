@@ -126,30 +126,36 @@ public class RelationInviteMessageItemProvider extends MessageProvider<RelationI
         public void bindData(RelationInviteMsg msg, UIMessage message) {
             this.contentMsg = msg;
             this.message = message.getMessage();
-
             mContentTv.setText(msg.getContent());
-            int handle = RelationMsgProcessor.getHandle(message.getMessage());
-            if(handle==0){
-                if(message.getSenderUserId().equals(MyUserInfoManager.INSTANCE.getUidStr())){
+            if (msg.getExpireAt()*1000 < System.currentTimeMillis()) {
+                mAgreeTv.setVisibility(View.GONE);
+                mRejectTv.setVisibility(View.GONE);
+                mTipsTv.setVisibility(View.VISIBLE);
+                mTipsTv.setText("消息已过期");
+            } else {
+                int handle = RelationMsgProcessor.getHandle(message.getMessage());
+                if(handle==0){
+                    if(message.getSenderUserId().equals(MyUserInfoManager.INSTANCE.getUidStr())){
+                        mAgreeTv.setVisibility(View.GONE);
+                        mRejectTv.setVisibility(View.GONE);
+                        mTipsTv.setVisibility(View.VISIBLE);
+                        mTipsTv.setText("等待对方同意");
+                    }else{
+                        mAgreeTv.setVisibility(View.VISIBLE);
+                        mRejectTv.setVisibility(View.VISIBLE);
+                        mTipsTv.setVisibility(View.GONE);
+                    }
+                }else if(handle==1){
                     mAgreeTv.setVisibility(View.GONE);
                     mRejectTv.setVisibility(View.GONE);
                     mTipsTv.setVisibility(View.VISIBLE);
-                    mTipsTv.setText("等待对方同意");
-                }else{
-                    mAgreeTv.setVisibility(View.VISIBLE);
-                    mRejectTv.setVisibility(View.VISIBLE);
-                    mTipsTv.setVisibility(View.GONE);
+                    mTipsTv.setText("已同意关系建立");
+                }else if(handle==2){
+                    mAgreeTv.setVisibility(View.GONE);
+                    mRejectTv.setVisibility(View.GONE);
+                    mTipsTv.setVisibility(View.VISIBLE);
+                    mTipsTv.setText("已拒绝关系建立");
                 }
-            }else if(handle==1){
-                mAgreeTv.setVisibility(View.GONE);
-                mRejectTv.setVisibility(View.GONE);
-                mTipsTv.setVisibility(View.VISIBLE);
-                mTipsTv.setText("已同意关系建立");
-            }else if(handle==2){
-                mAgreeTv.setVisibility(View.GONE);
-                mRejectTv.setVisibility(View.GONE);
-                mTipsTv.setVisibility(View.VISIBLE);
-                mTipsTv.setText("已拒绝关系建立");
             }
         }
     }

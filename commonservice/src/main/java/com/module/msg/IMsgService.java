@@ -110,7 +110,7 @@ public interface IMsgService extends IProvider {
 
     void getBlacklistStatus(String userId, ICallback callback);
 
-    void sendRelationInviteMsg(String userID, String uniqID,String content);
+    void sendRelationInviteMsg(String userID, String uniqID,String content,long expireAt);
 
     void sendClubInviteMsg(String userID, String uniqID,long expireAt,String content);
 }

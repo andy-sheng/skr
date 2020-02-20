@@ -228,7 +228,8 @@ class PackageView : ExConstraintLayout {
                 U.getToastUtil().showShort("邀请成功")
                 // 生成一条邀请IM消息
                 var msgService = ModuleServiceManager.getInstance().msgService
-                msgService?.sendRelationInviteMsg(userID.toString(), obj.data.getString("uniqID"), obj.data.getString("msgContent"))
+                msgService?.sendRelationInviteMsg(userID.toString(), obj.data.getString("uniqID")
+                        , obj.data.getString("msgContent"), obj.data.getLongValue("expireAt"))
             } else {
                 U.getToastUtil().showShort(obj.errmsg)
             }
