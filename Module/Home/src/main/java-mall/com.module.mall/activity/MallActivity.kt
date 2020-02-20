@@ -183,7 +183,25 @@ class MallActivity : BaseActivity() {
 
         viewpager.adapter = pagerAdapter
         tagTab.setViewPager(viewpager)
-        viewList?.get(0)?.selected()
+
+        val paramTag = intent.getIntExtra("tag", 0)
+        if (supportDisplayTypeSet.contains(paramTag)) {
+            var exist = false
+            list?.forEachIndexed { index, mallTag ->
+                if (paramTag == mallTag.displayType) {
+                    viewpager.setCurrentItem(index, false)
+                    viewList?.get(index)?.selected()
+                    exist = true
+                    return@forEachIndexed
+                }
+            }
+
+            if (!exist) {
+                viewList?.get(0)?.selected()
+            }
+        } else {
+            viewList?.get(0)?.selected()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

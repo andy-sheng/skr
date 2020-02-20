@@ -2,42 +2,28 @@ package com.common.core.scheme.processor
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.text.TextUtils
-
 import com.alibaba.android.arouter.launcher.ARouter
-import com.common.base.BaseFragment
 import com.common.core.R
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.scheme.SchemeConstants
 import com.common.core.scheme.SchemeUtils
-import com.common.core.scheme.event.BothRelationFromSchemeEvent
-import com.common.core.scheme.event.DoubleInviteFromSchemeEvent
-import com.common.core.scheme.event.GrabInviteFromSchemeEvent
-import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent
-import com.common.core.scheme.event.JumpHomeFromSchemeEvent
-import com.common.core.scheme.event.MicInviteFromSchemeEvent
-import com.common.core.scheme.event.PartyInviteFromSchemeEvent
-import com.common.core.scheme.event.RelayInviteFromSchemeEvent
+import com.common.core.scheme.event.*
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
-import com.idlefish.flutterboost.containers.BoostFlutterActivity
 import com.idlefish.flutterboost.containers.MyBoostFlutterActivity
 import com.module.ModuleServiceManager
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.IPlaywaysModeService
-
 import org.greenrobot.eventbus.EventBus
-
-import java.util.HashMap
 
 /**
  * Created by lan on 16/10/26.
@@ -52,9 +38,9 @@ object SkrSchemeProcessor : ISchemeProcessor {
     private var mSkrAudioPermission = SkrAudioPermission()
 
     override fun process(uri: Uri, context: Context, beforeHomeExistJudge: Boolean): ProcessResult {
-        //inframesker://game/match?from=h5
-        //inframesker://person/homepage?from=h5
-        //其中scheme为inframesker, host为game , relativePath为match, query为from=h5.
+        //inframeskr://game/match?from=h5
+        //inframeskr://person/homepage?from=h5
+        //其中scheme为inframeskr, host为game , relativePath为match, query为from=h5.
         val scheme = uri.scheme
         MyLog.w(TAG, "process uri=" + uri!!)
         if (TextUtils.isEmpty(scheme)) {
@@ -261,6 +247,7 @@ object SkrSchemeProcessor : ISchemeProcessor {
     }
 
     private fun processMallUrl(uri: Uri) {
+        //inframeskr://mall/mall?mall_tag=7
         val path = uri.path
         if (SchemeConstants.PATH_PACKAGE == path) {
             try {
@@ -270,6 +257,15 @@ object SkrSchemeProcessor : ISchemeProcessor {
                 e.printStackTrace()
             }
 
+        } else if (SchemeConstants.PATH_MALL == path) {
+            try {
+                val tag = SchemeUtils.getInt(uri, SchemeConstants.PARAM_MALL_TAG, 0)
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_MALL_MALL)
+                        .withInt("tag", tag)
+                        .navigation()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -435,7 +431,7 @@ object SkrSchemeProcessor : ISchemeProcessor {
             val roomId = SchemeUtils.getInt(uri, "gameId", 0)
             val ask = SchemeUtils.getInt(uri, "ask", 0)
             val mediaType = SchemeUtils.getInt(uri, "mediaType", 0)
-            if (roomId > 0 && ownerId>0) {
+            if (roomId > 0 && ownerId > 0) {
                 if (ownerId.toLong() == MyUserInfoManager.uid) {
                     MyLog.d(TAG, "processRoomUrl 房主id是自己，可能从口令粘贴板过来的，忽略")
                     return
@@ -446,7 +442,7 @@ object SkrSchemeProcessor : ISchemeProcessor {
                 event.roomId = roomId
                 event.mediaType = mediaType
                 EventBus.getDefault().post(event)
-            }else{
+            } else {
                 MyLog.i(TAG, "roomId > 0 && ownerId>0 == false")
             }
         } else if ("/joinrelay" == path) {
@@ -477,11 +473,11 @@ object SkrSchemeProcessor : ISchemeProcessor {
         } else if ("/jump_person_center" == path) {
             // 跳到个人中心
             EventBus.getDefault().post(JumpHomeFromSchemeEvent(3))
-        }else if("/chat" == path){
+        } else if ("/chat" == path) {
             // 跳到私信
             val needPop = ModuleServiceManager.getInstance().msgService.startPrivateChat(U.getActivityUtils().topActivity,
-                    SchemeUtils.getString(uri,"targetId"),
-                    SchemeUtils.getString(uri,"targetName"),
+                    SchemeUtils.getString(uri, "targetId"),
+                    SchemeUtils.getString(uri, "targetName"),
                     true
             )
         }

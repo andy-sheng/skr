@@ -45,6 +45,7 @@ public class SchemeConstants {
     public static final String PATH_OTHER_USER_DETAIL = "/otherProfile";
     public static final String PATH_RECHARGE = "/recharge";
     public static final String PATH_PACKAGE = "/package";
+    public static final String PATH_MALL = "/mall";
     public static final String PATH_HOME = "/home";
 
     //param
@@ -57,6 +58,7 @@ public class SchemeConstants {
     public static final String PARAM_FROM = "from";
     public static final String PARAM_POSTS_ID = "postsId";
     public static final String PARAM_USER_ID = "userId";
+    public static final String PARAM_MALL_TAG = "mall_tag";
 
 
     /**
