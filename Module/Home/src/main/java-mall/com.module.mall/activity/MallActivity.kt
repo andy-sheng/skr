@@ -365,8 +365,7 @@ class MallActivity : BaseActivity() {
             }
 
             if (obj.errno == 0) {
-
-                if (event.productModel.displayType != 6) {
+                if (event.productModel.displayType != MALL_TYPE.COIN.value && event.productModel.displayType != MALL_TYPE.CARD.value) {
                     if (event.price.buyType == 1) {
                         event.productModel.buyStatus = 1
                     } else if (event.price.buyType == 2) {
