@@ -9,12 +9,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setDebounceViewClickListener
+import com.common.image.fresco.FrescoWorker
+import com.common.image.model.ImageFactory
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.component.level.utils.LevelConfigUtils
+import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 
@@ -25,6 +28,7 @@ class RecommendPartyViewHolder(item: View, roomListener: FriendRoomAdapter.Frien
     val levelBg: ImageView = item.findViewById(R.id.level_bg)
     val topIconIv: ImageView = item.findViewById(R.id.top_icon_iv)
     val roomNameTv: TextView = item.findViewById(R.id.room_name_tv)
+    val recommendTagSdv: SimpleDraweeView = item.findViewById(R.id.recommend_tag_sdv)
     val tagTv: ExTextView = item.findViewById(R.id.tag_tv)
     val bottomArea: ExImageView = item.findViewById(R.id.bottom_area)
     val audienceIv: ImageView = item.findViewById(R.id.audience_iv)
@@ -57,6 +61,15 @@ class RecommendPartyViewHolder(item: View, roomListener: FriendRoomAdapter.Frien
                     ?: 0))
         } else {
             levelBg.visibility = View.GONE
+        }
+
+        if (!TextUtils.isEmpty(model.partyRoom?.roomInfoModel?.roomTagURL)) {
+            recommendTagSdv.visibility = View.VISIBLE
+            FrescoWorker.loadImage(recommendTagSdv, ImageFactory.newPathImage(model.partyRoom?.roomInfoModel?.roomTagURL)
+                    .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
+                    .build())
+        } else {
+            recommendTagSdv.visibility = View.GONE
         }
 
         if (model.partyRoom?.roomInfoModel?.roomtype == 1) {

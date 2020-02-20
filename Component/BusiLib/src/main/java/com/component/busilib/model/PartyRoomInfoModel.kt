@@ -34,6 +34,8 @@ class PartyRoomInfoModel : Serializable {
     var roomtype: Int? = null
     @JSONField(name = "widgetUrl")
     var widgetUrl: String = ""
+    @JSONField(name = "roomTagURL")
+    var roomTagURL: String = ""
 
     // 用房间id和所属id来去重
     override fun hashCode(): Int {
