@@ -22,12 +22,14 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     var gameMode = 0 //  ERM_SING_PK = 1 : K歌 模式 - ERM_GMAE_PK = 2 : 游戏PK 模式 - ERM_MAKE_FRIEND = 3 : 相亲交友 模式string
 
     var getSeatMode = 0 // 0 需要申请上麦，1不需要申请上麦
-        set(value) {
-            if (value != field) {
-                field = value
-                EventBus.getDefault().post(PartyRoomSeatModeChangeEvent())
-            }
+        private set
+
+    fun setGetSeatMode(getSeatMode:Int,notice:Boolean){
+        this.getSeatMode = getSeatMode
+        if(notice){
+            EventBus.getDefault().post(PartyRoomSeatModeChangeEvent())
         }
+    }
 
     var quickAnswerTag: String? = null // 当前抢答的标识
     var bgmPlayingPath: String? = null // 背景音乐的播放路径
@@ -44,30 +46,40 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
                 EventBus.getDefault().post(PartyRoomAllMuteEvent())
             }
         }
+
+    //房间名称
     var roomName = ""
-        //房间名称
-        set(value) {
-            if (value != field) {
-                field = value
-                EventBus.getDefault().post(PartyRoomNameChangeEvent())
-            }
+        private set
+
+    fun setRoomName(roomName:String,notice:Boolean){
+        this.roomName = roomName
+        if(notice){
+            EventBus.getDefault().post(PartyRoomNameChangeEvent())
         }
+    }
+
+    //房间主题
     var topicName = ""
-        //房间主题
-        set(value) {
-            if (value != field) {
-                field = value
-                EventBus.getDefault().post(PartyTopicNameChangeEvent())
-            }
+        private set
+
+    fun setTopicName(topicName:String,notice:Boolean){
+        this.topicName = topicName
+        if(notice){
+            EventBus.getDefault().post(PartyTopicNameChangeEvent())
         }
+    }
+
+    // 房间公告
     var notice = ""
-        // 房间公告
-        set(value) {
-            if (value != field) {
-                field = value
-                EventBus.getDefault().post(PartyNoticeChangeEvent())
-            }
+        private set
+
+    fun setNotice(notice:String,notify:Boolean){
+        this.notice = notice
+        if(notify){
+            EventBus.getDefault().post(PartyNoticeChangeEvent())
         }
+    }
+
     var onlineUserCnt = 0 //在线人数
         set(value) {
             if (value != field) {
@@ -84,12 +96,15 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
         }
 
     var enterPermission = 2 // 2都可以进入  1 只有邀请能进
-        set(value) {
-            if (value != field) {
-                field = value
-                EventBus.getDefault().post(PartyEnterPermissionEvent())
-            }
+        private set
+
+    fun setEnterPermission(enterPermission:Int,notify:Boolean){
+        this.enterPermission = enterPermission
+        if(notify){
+            EventBus.getDefault().post(PartyEnterPermissionChangeEvent())
         }
+    }
+
 
     var roomType: Int? = 0 // 1是个人房 2是家族房
 

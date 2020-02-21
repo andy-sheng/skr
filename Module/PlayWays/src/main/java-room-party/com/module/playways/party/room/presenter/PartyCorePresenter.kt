@@ -2,7 +2,6 @@ package com.module.playways.party.room.presenter
 
 import android.os.Handler
 import android.os.Message
-import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
@@ -24,7 +23,6 @@ import com.component.busilib.recommend.RA
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.ModuleServiceManager
-import com.module.RouterConstants
 import com.module.common.ICallback
 import com.module.playways.grab.room.event.SwitchRoomEvent
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
@@ -1024,7 +1022,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PFixRoomNoticeMsg) {
         MyLog.d(TAG, "onEvent event = $event")
-        mRoomData.notice = event.newRoomNotice
+        mRoomData.setNotice(event.newRoomNotice,true)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1034,7 +1032,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PChangeRoomTopicMsg) {
-        mRoomData.topicName = event.newTopic
+        mRoomData.setTopicName(event.newTopic,true)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1044,12 +1042,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PChangeRoomEnterPermissionMsg) {
-        mRoomData.enterPermission = event.permission.value
+        mRoomData.setEnterPermission(event.permission.value,true)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PChangeGetSeatMode) {
-        mRoomData.getSeatMode = event.getSeatMode.value
+        mRoomData.setGetSeatMode(event.getSeatMode.value,true)
         if (mRoomData.getSeatMode == EGetSeatMode.EGSM_NO_APPLY.value) {
             pretendSystemMsg("主持人已将上麦方式设置为：直接上麦")
         } else if (mRoomData.getSeatMode == EGetSeatMode.EGSM_NEED_APPLY.value) {
@@ -1058,7 +1056,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PartyEnterPermissionEvent) {
+    fun onEvent(event: PartyEnterPermissionChangeEvent) {
         val msg = if (mRoomData.enterPermission == 2) "允许所有人进入" else "仅邀请才能加入"
         pretendSystemMsg("主持人将进房间权限修改为 ${msg}")
     }
@@ -1066,7 +1064,6 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PSetRoomAdminMsg) {
         MyLog.d(TAG, "onEvent event = $event")
-
         if (event.setType == ESetAdminType.SAT_ADD) {
             pretendSystemMsg("${event.user.userInfo.nickName} 被主持人设置为管理员")
         } else {
