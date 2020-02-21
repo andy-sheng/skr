@@ -63,12 +63,10 @@ class PersonRelationAdapter(val listener: Listener?) : RecyclerView.Adapter<Pers
             // 得先判断道具卡是不是守护
             if(model.relationInfo?.displayType == RelationInfo.GDT_GUARD){
                 relationTag.visibility = View.VISIBLE;
-                relationTag.text = "守护"
                 relationTag.background = U.getDrawable(R.drawable.relation_guard_icon)
             }else{
                 if (RelationResUtils.getDrawable(model.relationInfo?.relationType) != null) {
                     relationTag.visibility = View.VISIBLE
-                    relationTag.text = RelationResUtils.getDesc(model.relationInfo?.relationType)
                     relationTag.background = RelationResUtils.getDrawable(model.relationInfo?.relationType)
                 } else {
                     relationTag.visibility = View.GONE
