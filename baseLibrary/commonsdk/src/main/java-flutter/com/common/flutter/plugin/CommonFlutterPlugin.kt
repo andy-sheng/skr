@@ -29,11 +29,11 @@ object CommonFlutterPlugin : MethodCallHandler {
         listeners.remove(l)
     }
 
-    override fun onMethodCall(methodCall: MethodCall, result: MethodChannel.Result) {
+    override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         for (h in listeners) {
-            val rsp = h.handle(methodCall, result)
+            val rsp = h.handle(call, result)
             if (rsp) {
-                MyLog.d("CommonFlutterPlugin", "${methodCall.method}被${h.name}处理")
+                MyLog.d("CommonFlutterPlugin", "${call.method}被${h.name}处理")
                 return
             }
         }
@@ -49,7 +49,7 @@ abstract class MethodHandler {
         this.name = name
     }
 
-    abstract fun handle(methodCall: MethodCall, result: MethodChannel.Result): Boolean
+    abstract fun handle(call: MethodCall, result: MethodChannel.Result): Boolean
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

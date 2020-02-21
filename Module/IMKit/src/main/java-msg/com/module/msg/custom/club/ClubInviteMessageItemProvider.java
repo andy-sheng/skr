@@ -45,7 +45,7 @@ public class ClubInviteMessageItemProvider extends MessageProvider<ClubInviteMsg
 
     public void bindView(View v, int position, ClubInviteMsg msg, UIMessage message) {
         ClubInviteMessageItemProvider.ViewHolder holder = (ClubInviteMessageItemProvider.ViewHolder) v.getTag();
-        holder.bindData(msg,message);
+        holder.bindData(msg, message);
     }
 
     @Override
@@ -111,13 +111,13 @@ public class ClubInviteMessageItemProvider extends MessageProvider<ClubInviteMsg
             mAgreeTv.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    ClubMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),true,message.getTargetId());
+                    ClubMsgProcessor.handle(message.getUId(), contentMsg.getUniqID(), true, message.getTargetId());
                 }
             });
             mRejectTv.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    ClubMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),false,message.getTargetId());
+                    ClubMsgProcessor.handle(message.getUId(), contentMsg.getUniqID(), false, message.getTargetId());
                 }
             });
         }
@@ -126,20 +126,21 @@ public class ClubInviteMessageItemProvider extends MessageProvider<ClubInviteMsg
             this.contentMsg = msg;
             this.message = message.getMessage();
 
-            if(MyLog.isDebugLogOpen()){
-                mContentTv.setText(msg.getContent() + " "+message.getUId());
-            }else{
+            if (MyLog.isDebugLogOpen()) {
+                mContentTv.setText(msg.getContent() + " " + message.getUId());
+            } else {
                 mContentTv.setText(msg.getContent());
             }
 
-            if (msg.getExpireAt()*1000 < System.currentTimeMillis()) {
-                mAgreeTv.setVisibility(View.GONE);
-                mRejectTv.setVisibility(View.GONE);
-                mTipsTv.setVisibility(View.VISIBLE);
-                mTipsTv.setText("消息已过期");
-            } else {
-                int handle = ClubMsgProcessor.getHandle(message.getMessage());
-                if (handle == 0) {
+
+            int handle = ClubMsgProcessor.getHandle(message.getMessage());
+            if (handle == 0) {
+                if (msg.getExpireAt() * 1000 < System.currentTimeMillis()) {
+                    mAgreeTv.setVisibility(View.GONE);
+                    mRejectTv.setVisibility(View.GONE);
+                    mTipsTv.setVisibility(View.VISIBLE);
+                    mTipsTv.setText("消息已过期");
+                } else {
                     if (message.getSenderUserId().equals(MyUserInfoManager.INSTANCE.getUidStr())) {
                         mAgreeTv.setVisibility(View.GONE);
                         mRejectTv.setVisibility(View.GONE);
@@ -150,17 +151,17 @@ public class ClubInviteMessageItemProvider extends MessageProvider<ClubInviteMsg
                         mRejectTv.setVisibility(View.VISIBLE);
                         mTipsTv.setVisibility(View.GONE);
                     }
-                } else if (handle == 1) {
-                    mAgreeTv.setVisibility(View.GONE);
-                    mRejectTv.setVisibility(View.GONE);
-                    mTipsTv.setVisibility(View.VISIBLE);
-                    mTipsTv.setText("已同意加入家族");
-                } else if (handle == 2) {
-                    mAgreeTv.setVisibility(View.GONE);
-                    mRejectTv.setVisibility(View.GONE);
-                    mTipsTv.setVisibility(View.VISIBLE);
-                    mTipsTv.setText("已拒绝加入家族");
                 }
+            } else if (handle == 1) {
+                mAgreeTv.setVisibility(View.GONE);
+                mRejectTv.setVisibility(View.GONE);
+                mTipsTv.setVisibility(View.VISIBLE);
+                mTipsTv.setText("已同意加入家族");
+            } else if (handle == 2) {
+                mAgreeTv.setVisibility(View.GONE);
+                mRejectTv.setVisibility(View.GONE);
+                mTipsTv.setVisibility(View.VISIBLE);
+                mTipsTv.setText("已拒绝加入家族");
             }
         }
     }

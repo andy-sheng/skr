@@ -187,6 +187,8 @@ android {
     lintOptions {
         disable 'InvalidPackage'
         disable "ResourceType"
+        // release 不做lint检查
+        // checkReleaseBuilds false
         abortOnError false
     }
 

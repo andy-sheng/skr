@@ -351,7 +351,7 @@ if [[ $1 = "app" ]]; then
 		echo "编译app release  加 --profile 会输出耗时报表"
 		./gradlew clean
 		if [[ $all = true ]];then
-		    echo "编译release所有渠道 ./gradlew :app:assembleReleaseChannels $rd"
+		    echo "编译release所有渠道 ./gradlew :app:assembleReleaseChannels  $rd"
 		    ./gradlew :app:assembleReleaseChannels $rd
 		    ./apk_canary.sh
             #拷贝所有包到主目录

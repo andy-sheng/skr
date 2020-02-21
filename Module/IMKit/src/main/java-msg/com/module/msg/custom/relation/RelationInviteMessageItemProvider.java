@@ -37,16 +37,16 @@ public class RelationInviteMessageItemProvider extends MessageProvider<RelationI
     }
 
 
-    public View  newView(Context context, ViewGroup group) {
-        View view = LayoutInflater.from(context).inflate(layout.rc_item_relation_invite_message, (ViewGroup)null);
+    public View newView(Context context, ViewGroup group) {
+        View view = LayoutInflater.from(context).inflate(layout.rc_item_relation_invite_message, (ViewGroup) null);
         RelationInviteMessageItemProvider.ViewHolder holder = new RelationInviteMessageItemProvider.ViewHolder(view);
         view.setTag(holder);
         return view;
     }
 
     public void bindView(View v, int position, RelationInviteMsg msg, UIMessage message) {
-        RelationInviteMessageItemProvider.ViewHolder holder = (RelationInviteMessageItemProvider.ViewHolder)v.getTag();
-        holder.bindData(msg,message);
+        RelationInviteMessageItemProvider.ViewHolder holder = (RelationInviteMessageItemProvider.ViewHolder) v.getTag();
+        holder.bindData(msg, message);
     }
 
     @Override
@@ -105,20 +105,20 @@ public class RelationInviteMessageItemProvider extends MessageProvider<RelationI
         Message message;
 
         public ViewHolder(View rootView) {
-            mContentTv = (TextView)rootView.findViewById(R.id.content_tv);
-            mRejectTv = (ExTextView)rootView.findViewById(R.id.reject_tv);
-            mAgreeTv = (ExTextView)rootView.findViewById(R.id.agree_tv);
-            mTipsTv = (ExTextView)rootView.findViewById(R.id.tips_tv);
+            mContentTv = (TextView) rootView.findViewById(R.id.content_tv);
+            mRejectTv = (ExTextView) rootView.findViewById(R.id.reject_tv);
+            mAgreeTv = (ExTextView) rootView.findViewById(R.id.agree_tv);
+            mTipsTv = (ExTextView) rootView.findViewById(R.id.tips_tv);
             mAgreeTv.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    RelationMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),true,message.getTargetId());
+                    RelationMsgProcessor.handle(message.getUId(), contentMsg.getUniqID(), true, message.getTargetId());
                 }
             });
             mRejectTv.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    RelationMsgProcessor.handle(message.getUId(),contentMsg.getUniqID(),false,message.getTargetId());
+                    RelationMsgProcessor.handle(message.getUId(), contentMsg.getUniqID(), false, message.getTargetId());
                 }
             });
         }
@@ -127,35 +127,36 @@ public class RelationInviteMessageItemProvider extends MessageProvider<RelationI
             this.contentMsg = msg;
             this.message = message.getMessage();
             mContentTv.setText(msg.getContent());
-            if (msg.getExpireAt()*1000 < System.currentTimeMillis()) {
-                mAgreeTv.setVisibility(View.GONE);
-                mRejectTv.setVisibility(View.GONE);
-                mTipsTv.setVisibility(View.VISIBLE);
-                mTipsTv.setText("消息已过期");
-            } else {
-                int handle = RelationMsgProcessor.getHandle(message.getMessage());
-                if(handle==0){
-                    if(message.getSenderUserId().equals(MyUserInfoManager.INSTANCE.getUidStr())){
+
+            int handle = RelationMsgProcessor.getHandle(message.getMessage());
+            if (handle == 0) {
+                if (msg.getExpireAt() * 1000 < System.currentTimeMillis()) {
+                    mAgreeTv.setVisibility(View.GONE);
+                    mRejectTv.setVisibility(View.GONE);
+                    mTipsTv.setVisibility(View.VISIBLE);
+                    mTipsTv.setText("消息已过期");
+                } else {
+                    if (message.getSenderUserId().equals(MyUserInfoManager.INSTANCE.getUidStr())) {
                         mAgreeTv.setVisibility(View.GONE);
                         mRejectTv.setVisibility(View.GONE);
                         mTipsTv.setVisibility(View.VISIBLE);
                         mTipsTv.setText("等待对方同意");
-                    }else{
+                    } else {
                         mAgreeTv.setVisibility(View.VISIBLE);
                         mRejectTv.setVisibility(View.VISIBLE);
                         mTipsTv.setVisibility(View.GONE);
                     }
-                }else if(handle==1){
-                    mAgreeTv.setVisibility(View.GONE);
-                    mRejectTv.setVisibility(View.GONE);
-                    mTipsTv.setVisibility(View.VISIBLE);
-                    mTipsTv.setText("已同意关系建立");
-                }else if(handle==2){
-                    mAgreeTv.setVisibility(View.GONE);
-                    mRejectTv.setVisibility(View.GONE);
-                    mTipsTv.setVisibility(View.VISIBLE);
-                    mTipsTv.setText("已拒绝关系建立");
                 }
+            } else if (handle == 1) {
+                mAgreeTv.setVisibility(View.GONE);
+                mRejectTv.setVisibility(View.GONE);
+                mTipsTv.setVisibility(View.VISIBLE);
+                mTipsTv.setText("已同意关系建立");
+            } else if (handle == 2) {
+                mAgreeTv.setVisibility(View.GONE);
+                mRejectTv.setVisibility(View.GONE);
+                mTipsTv.setVisibility(View.VISIBLE);
+                mTipsTv.setText("已拒绝关系建立");
             }
         }
     }

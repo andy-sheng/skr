@@ -66,7 +66,7 @@ class GonggaoSettingFragment : BaseFragment() {
             )
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe(RequestControl("${mTag} setNotice", ControlType.CancelThis)) {
+            val result = subscribe(RequestControl("${mTag} setNoticeKt", ControlType.CancelThis)) {
                 roomServerApi.setNotice(body)
             }
 

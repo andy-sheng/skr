@@ -24,7 +24,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     var getSeatMode = 0 // 0 需要申请上麦，1不需要申请上麦
         private set
 
-    fun setGetSeatMode(getSeatMode:Int,notice:Boolean){
+    fun setGetSeatModeKt(getSeatMode:Int, notice:Boolean){
         this.getSeatMode = getSeatMode
         if(notice){
             EventBus.getDefault().post(PartyRoomSeatModeChangeEvent())
@@ -51,7 +51,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     var roomName = ""
         private set
 
-    fun setRoomName(roomName:String,notice:Boolean){
+    fun setRoomNameKt(roomName:String, notice:Boolean){
         this.roomName = roomName
         if(notice){
             EventBus.getDefault().post(PartyRoomNameChangeEvent())
@@ -62,7 +62,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     var topicName = ""
         private set
 
-    fun setTopicName(topicName:String,notice:Boolean){
+    fun setTopicNameKt(topicName:String, notice:Boolean){
         this.topicName = topicName
         if(notice){
             EventBus.getDefault().post(PartyTopicNameChangeEvent())
@@ -73,7 +73,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     var notice = ""
         private set
 
-    fun setNotice(notice:String,notify:Boolean){
+    fun setNoticeKt(notice:String, notify:Boolean){
         this.notice = notice
         if(notify){
             EventBus.getDefault().post(PartyNoticeChangeEvent())
@@ -98,7 +98,7 @@ class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
     var enterPermission = 2 // 2都可以进入  1 只有邀请能进
         private set
 
-    fun setEnterPermission(enterPermission:Int,notify:Boolean){
+    fun setEnterPermissionKt(enterPermission:Int, notify:Boolean){
         this.enterPermission = enterPermission
         if(notify){
             EventBus.getDefault().post(PartyEnterPermissionChangeEvent())

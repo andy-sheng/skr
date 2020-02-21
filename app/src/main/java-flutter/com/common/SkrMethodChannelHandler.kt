@@ -7,9 +7,7 @@ import com.common.rxretrofit.httpGet
 import com.common.rxretrofit.httpPost
 import com.common.rxretrofit.httpPut
 import com.common.statistics.StatisticsAdapter
-import com.common.utils.FragmentUtils
 import com.common.utils.U
-import com.component.report.fragment.QuickFeedbackFragment
 import com.module.ModuleServiceManager
 import com.module.playways.party.bgmusic.getLocalMusicInfo
 import com.module.playways.room.data.H
@@ -138,21 +136,10 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
                 result.success(null)
                 return true
             }
-//            call.method == "addFragment" -> {
-//                U.getFragmentUtils().addFragment(
-//                        FragmentUtils.newAddParamsBuilder(U.getActivityUtils().topActivity, QuickFeedbackFragment::class.java)
-//                                .setAddToBackStack(true)
-//                                .setHasAnimation(true)
-//                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_RELAY_ROOM)
-//                                .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
-//                                .addDataBeforeAdd(2, roomData?.peerUser?.userID ?: 0)
-//                                .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
-//                                .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
-//                                .build())
-//                return true
-//            }
+            else->{
+                return false
+            }
         }
-        return false
     }
 
 }
