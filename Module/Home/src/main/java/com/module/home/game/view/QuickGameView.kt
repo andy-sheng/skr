@@ -98,7 +98,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
             override fun onClickTaskListener() {
                 // 进入任务
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task"))
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task/new?title=1"))
                         .navigation()
                 StatisticsAdapter.recordCountEvent("game", "express_tasks", null)
             }

@@ -19,6 +19,10 @@ import com.module.home.R
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import org.greenrobot.eventbus.EventBus
+import com.trello.rxlifecycle2.RxLifecycle.bindUntilEvent
+import android.R
+
+
 
 class EnterHomeDialogPresenter(val baseActivity: BaseActivity) : RxLifeCyclePresenter() {
 
@@ -87,7 +91,7 @@ class EnterHomeDialogPresenter(val baseActivity: BaseActivity) : RxLifeCyclePres
                 dialogTask?.dismiss()
 
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task"))
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task/new?title=1"))
                         .navigation()
             }
 
