@@ -19,9 +19,6 @@ import com.module.home.R
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import org.greenrobot.eventbus.EventBus
-import com.trello.rxlifecycle2.RxLifecycle.bindUntilEvent
-import android.R
-
 
 
 class EnterHomeDialogPresenter(val baseActivity: BaseActivity) : RxLifeCyclePresenter() {
