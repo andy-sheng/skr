@@ -228,6 +228,6 @@ class EffectView : ConstraintLayout {
     companion object {
         val GRAB_BURST_BIG_SVGA = "http://res-static.inframe.mobi/app/grab_burst_big_animation.svga"
         val COMMON_COIN_BIG_SVGA = "http://res-static.inframe.mobi/mall/libao/coin_500.svga"
-        val COMMON_CARD_BIG_SVGA = "http://res-static.inframe.mobi/mall/libao/coin_500.svga"
+        val COMMON_CARD_BIG_SVGA = "http://res-static.inframe.mobi/mall/daoju/default.svga"
     }
 }

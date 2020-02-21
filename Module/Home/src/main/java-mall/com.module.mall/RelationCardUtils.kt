@@ -28,15 +28,12 @@ class RelationCardUtils {
                     val msg = result.data!!.getString("noticeMsg")
                     showInviteCardDialog(userInfoModel, msg, weakReference, packageModelID)
                 } else {
-                    //ErrAlreadyHasRelation           = 8428114; //对方已是你的闺蜜，不能再发送邀请哦～
-                    //ErrApplyAfter24Hour             = 8428115; //24小时之后才能再次发送关系申请哦～
-                    //ErrAlreadyHasOtherRelation      = 8428116; //对方已是你的闺蜜，对方接受邀请将自动解除你们原来的关系哦～
-                    if (8428114 == result.errno) {
-                        U.getToastUtil().showShort(result.errmsg)
-                    } else if (8428115 == result.errno) {
-                        U.getToastUtil().showShort(result.errmsg)
-                    } else if (8428116 == result.errno) {
+                    //ErrAlreadyHasOtherRelation      = 8428116; //对方已是你的闺蜜/cp/基友，对方接受邀请将自动解除你们原来的关系哦～
+                    if (8428116 == result.errno) {
+                        //只有这个错误需要弹窗，剩下的都toast
                         showInviteCardDialog(userInfoModel, result.errmsg, weakReference, packageModelID)
+                    } else {
+                        U.getToastUtil().showShort(result.errmsg)
                     }
                 }
             }
