@@ -60,7 +60,7 @@ object FlutterBoostController  {
         }
 
         val platform = FlutterBoost.ConfigBuilder(U.app(), router)
-                .isDebug(true)
+                .isDebug(MyLog.isDebugLogOpen())
                 // 任意activity启动都创建
 //                .whenEngineStart(FlutterBoost.ConfigBuilder.ANY_ACTIVITY_CREATED)
                 .whenEngineStart(FlutterBoost.ConfigBuilder.FLUTTER_ACTIVITY_CREATED)
