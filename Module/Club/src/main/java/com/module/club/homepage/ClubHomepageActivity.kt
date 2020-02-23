@@ -156,8 +156,13 @@ class ClubHomepageActivity : BaseActivity() {
                                         , result.data.getString("content")
                                 )
                                 callback?.onCallback(1, "已邀请")
+                            } else if (result.errno == 8440211) {
+                                U.getToastUtil().showShort("对方的版本过低，邀请失败")
+                                ModuleServiceManager.getInstance().msgService.sendTxtMsg(userInfoModel?.userId?.toString()
+                                        , result.errmsg)
                             } else {
                                 U.getToastUtil().showShort(result.errmsg)
+
                             }
                         }
                     }))

@@ -20,6 +20,7 @@ import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.message.TextMessage;
 
 @Route(path = RouterConstants.SERVICE_MSG, name = "消息服务")
 public class RongMsgServiceImpl implements IMsgService {
@@ -142,6 +143,29 @@ public class RongMsgServiceImpl implements IMsgService {
     @Override
     public void sendClubInviteMsg(String userID, String uniqID, long expireAt, String content) {
         ClubMsgProcessor.sendClubInviteMsg(userID,uniqID,expireAt,content);
+    }
+
+    @Override
+    public void sendTxtMsg(String userID, String content) {
+        TextMessage contentMsg =  TextMessage.obtain(content);
+        Message msg = Message.obtain(userID, Conversation.ConversationType.PRIVATE, contentMsg);
+
+        RongIM.getInstance().sendMessage(msg, "pushContent"+content, "pushData"+content, new IRongCallback.ISendMessageCallback() {
+            @Override
+            public void onAttached(Message message) {
+
+            }
+
+            @Override
+            public void onSuccess(Message message) {
+                // 发成功后 强制存下数据库 不然再进列表又是空的了
+                //RongIM.getInstance().setMessageExtra(message.getMessageId(),message.getExtra());
+            }
+
+            @Override
+            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+            }
+        });
     }
 
     @Override

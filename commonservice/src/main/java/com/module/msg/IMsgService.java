@@ -113,4 +113,6 @@ public interface IMsgService extends IProvider {
     void sendRelationInviteMsg(String userID, String uniqID,String content,long expireAt);
 
     void sendClubInviteMsg(String userID, String uniqID,long expireAt,String content);
+
+    void sendTxtMsg(String userID,String content);
 }
