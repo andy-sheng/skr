@@ -123,7 +123,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             if (activity is PartyHomeActivity) {
                 continue
             }
-            if(activity is PartyRoomSearchActivity){
+            if (activity is PartyRoomSearchActivity) {
                 continue
             }
             activity.finish()
@@ -631,11 +631,11 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
 
         override fun getShareTitle(): String {
-            return "主题房已开，就等你来玩"
+            return "这个房间有点意思，还不戳进来看看！"
         }
 
         override fun getShareDes(): String {
-            return "我在撕歌skr开了一个主题房，快来一起耍呀～"
+            return "我在这个房间唱歌玩游戏，邀你一起嗨"
         }
 
         override fun getInviteObservable(model: UserInfoModel?): Observable<ApiResult> {
