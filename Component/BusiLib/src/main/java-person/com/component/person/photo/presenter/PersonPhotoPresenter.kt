@@ -13,12 +13,14 @@ import com.common.rxretrofit.*
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.utils.U
+import com.component.person.event.PersonPhotoChangeEvent
 import com.component.person.photo.manager.PhotoDataManager
 import com.component.person.photo.model.PhotoModel
 import com.component.person.photo.view.IPhotoWallView
 import com.respicker.model.ImageItem
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import java.util.ArrayList
 import java.util.HashMap
 
@@ -171,6 +173,7 @@ class PersonPhotoPresenter(var mView: IPhotoWallView) : RxLifeCyclePresenter() {
                                         mView!!.updatePhoto(photo)
                                         // 删除数据中的
                                         PhotoDataManager.delete(photo)
+                                        EventBus.getDefault().post(PersonPhotoChangeEvent())
                                         return
                                     }
                                 }
@@ -220,6 +223,7 @@ class PersonPhotoPresenter(var mView: IPhotoWallView) : RxLifeCyclePresenter() {
                             mView!!.deletePhoto(photoModel, true)
                         }
                         mExceedLimit = false
+                        EventBus.getDefault().post(PersonPhotoChangeEvent())
                     } else {
                         U.getToastUtil().showShort(obj.errmsg)
                     }

@@ -819,6 +819,8 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mEditRemarkDialog?.dismiss(false)
         mDialogPlus?.dismiss()
         mBusinessCardDialogView?.dismiss(false)
+        photoView?.destory()
+        relationView?.destory()
     }
 
     override fun onRequestSucess(hasMore: Boolean) {

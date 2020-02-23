@@ -20,6 +20,7 @@ import com.common.rxretrofit.ApiResult
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.component.busilib.R
+import com.component.person.event.PersonPhotoChangeEvent
 import com.component.person.photo.adapter.PhotoAdapter
 import com.component.person.photo.model.PhotoModel
 import com.imagebrowse.ImageBrowseView
@@ -28,6 +29,9 @@ import com.imagebrowse.big.DefaultImageBrowserLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 // 个人主页照片
 class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : ConstraintLayout(context, attrs, defStyleAttr), CoroutineScope by MainScope() {
@@ -47,11 +51,17 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
 
     private val photoAdapter: PhotoAdapter
 
-    private var userID:Long = 0
+    private var userID: Long = 0
     private var mHasMore = false
+
+    private var isPhotoChangeEvent = false
 
     init {
         View.inflate(context, R.layout.person_center_photo_view, this)
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
 
         photoTitleTv = rootView.findViewById(R.id.photo_title_tv)
         recyclerView = this.findViewById(R.id.recycler_view)
@@ -110,7 +120,7 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
         // 也设一个时间间隔吧
         this.userID = userID
         val now = System.currentTimeMillis()
-        if (!flag) {
+        if (!flag && !isPhotoChangeEvent) {
             if (now - mLastUpdateTime < 60 * 1000) {
                 return
             }
@@ -123,6 +133,7 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             override fun process(result: ApiResult?) {
                 if (result != null && result.errno == 0) {
                     mLastUpdateTime = System.currentTimeMillis()
+                    isPhotoChangeEvent = false
                     val list = JSON.parseArray(result.data?.getString("pic"), PhotoModel::class.java)
                     val totalCount = result.data!!.getIntValue("totalCount")
                     if (off == 0) {
@@ -180,7 +191,16 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PersonPhotoChangeEvent) {
+        // 提示再回来更新的标志位
+        isPhotoChangeEvent = true
+    }
+
     fun destory() {
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
         cancel()
     }
 }
