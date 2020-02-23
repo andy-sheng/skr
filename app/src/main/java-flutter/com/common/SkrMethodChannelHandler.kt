@@ -2,6 +2,7 @@ package com.common
 
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoManager
 import com.common.flutter.plugin.MethodHandler
 import com.common.rxretrofit.httpGet
 import com.common.rxretrofit.httpPost
@@ -134,6 +135,13 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
                 var dayAfter = (System.currentTimeMillis()+24*60*60*1000)/1000
                 ModuleServiceManager.getInstance().msgService.sendRelationInviteMsg(userID,uniqID, content,expireAt?.toLong()?:dayAfter)
                 result.success(null)
+                return true
+            }
+            call.method == "getRemarkName" -> {
+                var userID = call.argument<Int>("userID")
+                var defaultNickName = call.argument<String>("defaultNickName")
+                var remarkName = UserInfoManager.getInstance().getRemarkName(userID!!,defaultNickName)
+                result.success(remarkName)
                 return true
             }
             else->{
