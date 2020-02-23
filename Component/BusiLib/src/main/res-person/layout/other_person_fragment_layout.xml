@@ -140,6 +140,13 @@
             app:srlAccentColor="@color/white" />
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    
+    <com.common.view.ex.ExImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_70_dp"
+        app:bl_shape="rectangle"
+        app:bl_gradient_startColor="@color/black_trans_50"
+        app:bl_gradient_endColor="@color/transparent"/>
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_back"
