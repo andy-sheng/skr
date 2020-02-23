@@ -317,6 +317,7 @@ class PersonFragment6 : BaseFragment() {
                         .append("${MyUserInfoManager.honorInfo?.leftDays}").setForegroundColor(Color.parseColor("#FF0000"))
                         .append("天到期").setForegroundColor(Color.parseColor("#CC8B572A"))
                         .create()
+                honorTimeTv.text = timeDesc
             } else {
                 openHonorIv.visibility = View.VISIBLE
                 honorTimeTv.visibility = View.GONE
