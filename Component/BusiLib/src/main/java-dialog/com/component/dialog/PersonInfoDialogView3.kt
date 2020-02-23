@@ -168,6 +168,11 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         })
         relationView.adapter = relationAdapter
 
+        if (mUserId == MyUserInfoManager.uid.toInt()) {
+            emptyRelationTv.text = "我还没有亲密关系"
+        } else {
+            emptyRelationTv.text = "Ta还没有亲密关系"
+        }
         emptyRelationTv.setDebounceViewClickListener {
             //            if (mUserId == MyUserInfoManager.uid.toInt()) {
 //                FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "MyRelationPage", null)
