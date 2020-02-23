@@ -97,6 +97,8 @@
                             android:gravity="center"
                             android:textColor="@color/white"
                             android:textSize="@dimen/textsize_14_dp"
+                            android:drawableLeft="@drawable/person_qinmi_icon"
+                            android:paddingLeft="@dimen/view_10_dp"
                             app:bl_corners_radius="@dimen/view_12_dp"
                             app:bl_shape="rectangle"
                             app:bl_solid_color="#FFACDA"
