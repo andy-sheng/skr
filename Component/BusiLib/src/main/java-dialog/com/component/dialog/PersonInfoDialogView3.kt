@@ -169,7 +169,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         relationView.adapter = relationAdapter
 
         emptyRelationTv.setDebounceViewClickListener {
-//            if (mUserId == MyUserInfoManager.uid.toInt()) {
+            //            if (mUserId == MyUserInfoManager.uid.toInt()) {
 //                FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "MyRelationPage", null)
 //            } else {
 //                FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "OtherRelationPage", mutableMapOf(
@@ -363,7 +363,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
                     userInfoModel.isFriend = isFriend
                     userInfoModel.isSPFollow = isSpFollow
                     if (isFollow) {
-                        UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel)
+                        UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel, true)
                     }
                     showUserInfo(userInfoModel)
                     showUserLevel(scoreDetailModel)

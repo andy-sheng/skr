@@ -44,7 +44,7 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
                     userInfoModel.isFollow = isFollow
                     userInfoModel.isSPFollow = isSpFollow
                     if (isFollow) {
-                        UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel)
+                        UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel, true)
                     }
 
                     val meiLiCntTotal = result.data?.getIntValue("meiLiCntTotal") ?: 0

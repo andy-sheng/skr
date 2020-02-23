@@ -247,7 +247,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                     userInfoModel.isFriend = isFriend
                     userInfoModel.isSPFollow = isSpFollow
                     if (isFollow) {
-                        UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel)
+                        UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel, true)
                     }
                     showUserInfo(userInfoModel)
                     showUserLevel(scoreDetailModel)

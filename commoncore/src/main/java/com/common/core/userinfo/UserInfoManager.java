@@ -13,6 +13,7 @@ import com.common.core.userinfo.model.OnlineModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.remark.RemarkDB;
 import com.common.core.userinfo.remark.RemarkLocalApi;
+import com.common.core.userinfo.utils.UserInfoDataUtils;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -196,8 +197,6 @@ public class UserInfoManager {
                 public void process(ApiResult obj) {
                     if (obj.getErrno() == 0) {
                         final UserInfoModel jsonUserInfo = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
-                        //写入数据库,
-                        insertUpdateDBAndCache(jsonUserInfo);
                         if (isNeedRelation) {
                             ApiMethods.subscribe(userInfoServerApi.getRelation(uuid), new ApiObserver<ApiResult>() {
                                 @Override
@@ -210,6 +209,8 @@ public class UserInfoManager {
                                         if (resultCallback != null) {
                                             resultCallback.onGetServer(jsonUserInfo);
                                         }
+                                        //写入数据库,含有关系
+                                        insertUpdateDBAndCache(jsonUserInfo, true);
                                     } else {
                                         if (resultCallback != null) {
                                             resultCallback.onGetServer(jsonUserInfo);
@@ -218,6 +219,8 @@ public class UserInfoManager {
                                 }
                             });
                         } else {
+                            //写入数据库,不含关系
+                            insertUpdateDBAndCache(jsonUserInfo, false);
                             if (resultCallback != null) {
                                 resultCallback.onGetServer(jsonUserInfo);
                             }
@@ -400,12 +403,22 @@ public class UserInfoManager {
         });
     }
 
-    public void insertUpdateDBAndCache(final UserInfoModel userInfoModel) {
+    public void insertUpdateDBAndCache(final UserInfoModel userInfoModel, boolean hasRelation) {
         Observable.create(new ObservableOnSubscribe<UserInfoModel>() {
             @Override
             public void subscribe(ObservableEmitter<UserInfoModel> emitter) throws Exception {
                 // 写入数据库
-                UserInfoLocalApi.insertOrUpdate(userInfoModel);
+                if (hasRelation) {
+                    UserInfoLocalApi.insertOrUpdate(userInfoModel);
+                } else {
+                    UserInfoModel userInfoModelDB = UserInfoLocalApi.getUserInfoByUUid(userInfoModel.getUserId());
+                    if (userInfoModelDB != null) {
+                        userInfoModel.setFollow(userInfoModelDB.isFollow());
+                        userInfoModel.setFriend(userInfoModelDB.isFriend());
+                        userInfoModel.setSPFollow(userInfoModelDB.isSPFollow());
+                    }
+                    UserInfoLocalApi.insertOrUpdate(userInfoModel);
+                }
                 BuddyCache.getInstance().putBuddy(new BuddyCache.BuddyCacheEntry(userInfoModel));
 
                 if (userInfoModel != null) {
@@ -701,10 +714,11 @@ public class UserInfoManager {
 
     /**
      * 获取我的好友
-     * @param pullOnlineStatus  是否拉取在线状态
-     * @param roomID  房间ID
-     * @param gameModel  房间类型
-     * @param needIntimacy  是否需要亲密度
+     *
+     * @param pullOnlineStatus     是否拉取在线状态
+     * @param roomID               房间ID
+     * @param gameModel            房间类型
+     * @param needIntimacy         是否需要亲密度
      * @param userInfoListCallback
      */
     public void getMyFriends(final int pullOnlineStatus, int roomID, int gameModel, boolean needIntimacy, final UserInfoListCallback userInfoListCallback) {
