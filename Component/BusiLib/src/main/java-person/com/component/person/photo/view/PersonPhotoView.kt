@@ -46,8 +46,10 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     private val photoTitleTv: TextView
     private val recyclerView: RecyclerView
     private val photoNumTv: ExTextView
-    private val photoTitleArrow: ImageView
     private val photoArrow: ImageView
+
+    private val emptyTitleTv: TextView
+    private val emptyTitleArrow: ImageView
 
     private val photoAdapter: PhotoAdapter
 
@@ -66,9 +68,10 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
         photoTitleTv = rootView.findViewById(R.id.photo_title_tv)
         recyclerView = this.findViewById(R.id.recycler_view)
         photoNumTv = this.findViewById(R.id.photo_num_tv)
-
-        photoTitleArrow = this.findViewById(R.id.photo_title_arrow)
         photoArrow = this.findViewById(R.id.photo_arrow)
+
+        emptyTitleTv = this.findViewById(R.id.empty_title_tv)
+        emptyTitleArrow = this.findViewById(R.id.empty_title_arrow)
 
         recyclerView.layoutManager = GridLayoutManager(context, 3)
         photoAdapter = PhotoAdapter(PhotoAdapter.TYPE_PERSON_CENTER_VIEW)
@@ -154,11 +157,19 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     private fun addPhotos(list: List<PhotoModel>?, totalCount: Int, clear: Boolean) {
         mHasMore = !list.isNullOrEmpty()
         if (totalCount == 0) {
+            photoTitleTv.visibility = View.GONE
             photoArrow.visibility = View.GONE
-            photoTitleArrow.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
+
+            emptyTitleTv.visibility = View.VISIBLE
+            emptyTitleArrow.visibility = View.VISIBLE
         } else {
+            photoTitleTv.visibility = View.VISIBLE
             photoArrow.visibility = View.VISIBLE
-            photoTitleArrow.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+
+            emptyTitleTv.visibility = View.GONE
+            emptyTitleArrow.visibility = View.GONE
         }
         if (clear) {
             photoAdapter.mDataList?.clear()
@@ -175,12 +186,6 @@ class PersonPhotoView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
                     photoAdapter.notifyDataSetChanged()
                 }
             }
-        }
-
-        if (photoAdapter.mDataList?.isNullOrEmpty() == true) {
-            recyclerView.visibility = View.GONE
-        } else {
-            recyclerView.visibility = View.VISIBLE
         }
 
         if (totalCount >= 3) {

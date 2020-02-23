@@ -96,7 +96,6 @@ class PersonFragment6 : BaseFragment() {
     lateinit var clubArea: ConstraintLayout
     lateinit var clubTitleTv: TextView
     lateinit var personClubView: PersonClubView
-    lateinit var photoArea: ConstraintLayout
     private var photoView: PersonPhotoView? = null
     lateinit var postArea: ConstraintLayout
     lateinit var postTitleTv: TextView
@@ -527,7 +526,6 @@ class PersonFragment6 : BaseFragment() {
         personClubView = rootView.findViewById(R.id.person_club_view)
 
         // 照片
-        photoArea = rootView.findViewById(R.id.photo_area)
         photoView = rootView.findViewById(R.id.photo_view)
 
         // 帖子
@@ -553,7 +551,7 @@ class PersonFragment6 : BaseFragment() {
             }
         }
 
-        photoArea.setDebounceViewClickListener {
+        photoView?.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_PHOTO)
                     .withInt("userID", MyUserInfoManager.uid.toInt())
                     .navigation()

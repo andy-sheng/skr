@@ -178,39 +178,19 @@
 
         </android.support.constraint.ConstraintLayout>
 
-
         <!--照片 自定义view-->
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/photo_area"
+        <com.component.person.photo.view.PersonPhotoView
+            android:id="@+id/photo_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/club_area">
-
-            <com.component.person.photo.view.PersonPhotoView
-                android:id="@+id/photo_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:layout_width="@dimen/view_0_dp"
-                android:layout_height="@dimen/view_1_dp"
-                android:layout_marginLeft="@dimen/view_12_dp"
-                android:layout_marginRight="@dimen/view_12_dp"
-                android:background="@color/black_trans_10"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-        </android.support.constraint.ConstraintLayout>
+            android:layout_below="@id/relation_view" />
 
         <!--帖子-->
         <android.support.constraint.ConstraintLayout
             android:id="@+id/post_area"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_70_dp"
-            android:layout_below="@id/photo_area">
+            android:layout_below="@id/photo_view">
 
             <TextView
                 android:id="@+id/post_title_tv"

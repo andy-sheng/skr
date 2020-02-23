@@ -34,9 +34,11 @@ class PersonRelationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
 
     private val relationTitleTv: TextView
-    private val titleArrowIv: ImageView
     private val recyclerView: RecyclerView
     private val arrowIv: ImageView
+
+    private val emptyTitleTv: TextView
+    private val emptyTitleArrow: ImageView
     private val adapter: PersonRelationAdapter
 
     private val userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
@@ -46,9 +48,12 @@ class PersonRelationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
         View.inflate(context, R.layout.person_relation_view_layout, this)
 
         relationTitleTv = this.findViewById(R.id.relation_title_tv)
-        titleArrowIv = this.findViewById(R.id.title_arrow_iv)
         recyclerView = this.findViewById(R.id.recycler_view)
         arrowIv = this.findViewById(R.id.arrow_iv)
+
+        emptyTitleTv = this.findViewById(R.id.empty_title_tv)
+        emptyTitleArrow = this.findViewById(R.id.empty_title_arrow)
+
 
         adapter = PersonRelationAdapter(object : PersonRelationAdapter.Listener {
             override fun onClickItem(position: Int, model: RelationModel?) {
@@ -90,15 +95,23 @@ class PersonRelationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("relationList"), RelationModel::class.java)
                 if (list.isNullOrEmpty()) {
+                    relationTitleTv.visibility = View.GONE
                     recyclerView.visibility = View.GONE
                     arrowIv.visibility = View.GONE
-                    titleArrowIv.visibility = View.VISIBLE
+
+                    emptyTitleArrow.visibility = View.VISIBLE
+                    emptyTitleTv.visibility = View.VISIBLE
+
                     adapter.mDataList.clear()
                     adapter.notifyDataSetChanged()
                 } else {
+                    relationTitleTv.visibility = View.VISIBLE
                     recyclerView.visibility = View.VISIBLE
                     arrowIv.visibility = View.VISIBLE
-                    titleArrowIv.visibility = View.GONE
+
+                    emptyTitleArrow.visibility = View.GONE
+                    emptyTitleTv.visibility = View.GONE
+
                     adapter.mDataList.clear()
                     adapter.mDataList.addAll(list)
                     adapter.notifyDataSetChanged()
@@ -108,7 +121,6 @@ class PersonRelationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
             }
         }
     }
-
 
     fun destory() {
         cancel()

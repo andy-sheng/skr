@@ -21,16 +21,6 @@
         app:layout_constraintVertical_bias="0"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <ImageView
-        android:id="@+id/photo_title_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/person_right_arrow_black"
-        app:layout_constraintBottom_toBottomOf="@id/photo_title_tv"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/photo_title_tv" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="@dimen/view_0_dp"
@@ -53,6 +43,29 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/recycler_view" />
 
+    <TextView
+        android:id="@+id/empty_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_70_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:text="照片"
+        android:gravity="center_vertical"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/empty_title_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/person_right_arrow_black"
+        app:layout_constraintBottom_toBottomOf="@id/empty_title_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/empty_title_tv" />
+
     <com.common.view.ex.ExTextView
         android:id="@+id/photo_num_tv"
         android:layout_width="wrap_content"
@@ -70,5 +83,15 @@
         app:bl_solid_color="@color/black_trans_50"
         app:layout_constraintBottom_toBottomOf="@id/recycler_view"
         app:layout_constraintRight_toRightOf="@id/recycler_view" />
+
+    <View
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
