@@ -541,7 +541,9 @@ class PersonFragment6 : BaseFragment() {
         feedTitleTv = rootView.findViewById(R.id.feed_title_tv)
 
         relationView?.setDebounceViewClickListener {
-            FlutterBoostController.openFlutterPage(activity!!,"MyRelationPage",null)
+            FlutterBoostController.openFlutterPage(activity!!,"MyRelationPage", mutableMapOf(
+                    "from" to 1
+            ))
         }
 
         clubArea.setDebounceViewClickListener {

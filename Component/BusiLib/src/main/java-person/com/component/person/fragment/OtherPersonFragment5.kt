@@ -416,7 +416,8 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         relationView?.setDebounceViewClickListener {
             // todo 补一个flutter的界面
             FlutterBoostController.openFlutterPage(activity!!,"OtherRelationPage", mutableMapOf(
-                    "targetId" to userId
+                    "targetId" to userId,
+                    "from" to 2
             ))
         }
 

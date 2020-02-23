@@ -157,13 +157,16 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         relationView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         relationAdapter = PersonRelationAdapter(object : PersonRelationAdapter.Listener {
             override fun onClickItem(position: Int, model: RelationModel?) {
-//                if (mUserId == MyUserInfoManager.uid.toInt()) {
-//                    FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "MyRelationPage", null)
-//                } else {
-//                    FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "OtherRelationPage", mutableMapOf(
-//                            "targetId" to mUserId
-//                    ))
-//                }
+                if (mUserId == MyUserInfoManager.uid.toInt()) {
+                    FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "MyRelationPage", mutableMapOf(
+                            "from" to 3
+                    ))
+                } else {
+                    FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "OtherRelationPage", mutableMapOf(
+                            "targetId" to mUserId,
+                            "from" to 3
+                    ))
+                }
             }
         })
         relationView.adapter = relationAdapter
@@ -174,13 +177,16 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
             emptyRelationTv.text = "Ta还没有亲密关系"
         }
         emptyRelationTv.setDebounceViewClickListener {
-            //            if (mUserId == MyUserInfoManager.uid.toInt()) {
-//                FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "MyRelationPage", null)
-//            } else {
-//                FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "OtherRelationPage", mutableMapOf(
-//                        "targetId" to mUserId
-//                ))
-//            }
+            if (mUserId == MyUserInfoManager.uid.toInt()) {
+                FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "MyRelationPage", mutableMapOf(
+                        "from" to 3
+                ))
+            } else {
+                FlutterBoostController.openFlutterPage(U.getActivityUtils().topActivity, "OtherRelationPage", mutableMapOf(
+                        "targetId" to mUserId,
+                        "from" to 3
+                ))
+            }
         }
 
         // 照片
