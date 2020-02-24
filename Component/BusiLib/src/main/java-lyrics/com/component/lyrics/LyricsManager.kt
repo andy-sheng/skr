@@ -166,8 +166,9 @@ object LyricsManager {
                             MyLog.d(TAG, "body=$jsonObject")
                             val content = jsonObject.getString("body")
                             U.getIOUtils().writeFile(content, file!!)
-                            if (!TextUtils.isEmpty(content)) {
-                                emitter.onNext(content)
+                            val lyric = U.getIOUtils().readFile(file)
+                            if (!TextUtils.isEmpty(lyric)) {
+                                emitter.onNext(lyric)
                             }
                         } else {
                             emitter.onError(IgnoreException("代理下载，歌词为空"))
