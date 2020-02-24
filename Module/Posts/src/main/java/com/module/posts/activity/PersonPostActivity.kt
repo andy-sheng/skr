@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
@@ -50,6 +51,11 @@ class PersonPostActivity : BaseActivity() {
             finish()
         }
 
+        if (userInfoModel?.userId == MyUserInfoManager.uid.toInt()) {
+            create.visibility = View.VISIBLE
+        } else {
+            create.visibility = View.GONE
+        }
         create.setDebounceViewClickListener {
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
