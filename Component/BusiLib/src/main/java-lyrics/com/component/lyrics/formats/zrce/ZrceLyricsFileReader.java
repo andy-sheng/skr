@@ -169,6 +169,11 @@ public class ZrceLyricsFileReader extends LyricsFileReader {
                 Matcher lyricsWordsMatcher = lyricsWordsPattern
                         .matcher(lineContent);
 
+                if (!lyricsWordsMatcher.find()) {
+                    //有的歌词只有头部，没有内容
+                    return null;
+                }
+
                 // 歌词分隔
                 String lineLyricsTemp[] = lineContent.split(regex);
                 String[] lyricsWords = getLyricsWords(lineLyricsTemp);

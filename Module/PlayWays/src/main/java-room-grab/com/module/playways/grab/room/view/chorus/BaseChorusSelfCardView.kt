@@ -5,39 +5,30 @@ import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
-
 import com.alibaba.fastjson.JSON
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.ExViewStub
+import com.component.lyrics.LyricsManager
 import com.module.playways.R
-import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent
 import com.module.playways.grab.room.model.ChorusRoundInfoModel
-import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.grab.room.model.NewChorusLyricModel
-import com.module.playways.grab.room.view.control.SelfSingCardView
+import com.module.playways.grab.room.view.chorus.ChorusSelfLyricAdapter.ChorusLineLyricModel.GRAB_TYPE
 import com.module.playways.room.data.H
 import com.module.playways.room.song.model.SongModel
-import com.component.lyrics.LyricsManager
-
+import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-
-import java.util.ArrayList
-
-import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
-
-import com.module.playways.grab.room.view.chorus.ChorusSelfLyricAdapter.ChorusLineLyricModel.GRAB_TYPE
+import java.util.*
 
 abstract class BaseChorusSelfCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     val TAG = "ChorusSelfSingCardView"
 
-    protected var mLyricRecycleView: RecyclerView?=null
-    internal var mChorusSelfLyricAdapter: ChorusSelfLyricAdapter?=null
+    protected var mLyricRecycleView: RecyclerView? = null
+    internal var mChorusSelfLyricAdapter: ChorusSelfLyricAdapter? = null
     internal var mSongModel: SongModel? = null
 
     internal var mDisposable: Disposable? = null
@@ -45,7 +36,7 @@ abstract class BaseChorusSelfCardView(viewStub: ViewStub) : ExViewStub(viewStub)
     internal var mLeft = DH()
     internal var mRight = DH()
 
-    var mOverListener:(()->Unit)?=null
+    var mOverListener: (() -> Unit)? = null
 
     protected abstract val isForVideo: Boolean
 
@@ -87,7 +78,7 @@ abstract class BaseChorusSelfCardView(viewStub: ViewStub) : ExViewStub(viewStub)
                 }
                 mSongModel = infoModel.music
             }
-        }else if(H.isMicRoom()){
+        } else if (H.isMicRoom()) {
             val infoModel = H.micRoomData!!.realRoundInfo
             if (infoModel != null) {
                 val chorusRoundInfoModelList = infoModel.chorusRoundInfoModels
@@ -118,20 +109,24 @@ abstract class BaseChorusSelfCardView(viewStub: ViewStub) : ExViewStub(viewStub)
                     val lyrics = ArrayList<ChorusSelfLyricAdapter.ChorusLineLyricModel>()
 
                     if (U.getStringUtils().isJSON(result)) {
-                        val newChorusLyricModel = JSON.parseObject(result, NewChorusLyricModel::class.java)
-                        for (itemsBean in newChorusLyricModel.items) {
-                            val owner = if (itemsBean.turn == 1) mLeft.mUserInfoModel else mRight.mUserInfoModel
+                        val newChorusLyricModel: NewChorusLyricModel? = JSON.parseObject(result, NewChorusLyricModel::class.java)
+                        if (newChorusLyricModel != null) {
+                            for (itemsBean in newChorusLyricModel.items) {
+                                val owner = if (itemsBean.turn == 1) mLeft.mUserInfoModel else mRight.mUserInfoModel
 
-                            if (lyrics.size > 0) {
-                                val bean = lyrics[lyrics.size - 1]
-                                if (bean.userInfoModel.userId == owner!!.userId) {
-                                    bean.lyrics += "\n" + itemsBean.words
+                                if (lyrics.size > 0) {
+                                    val bean = lyrics[lyrics.size - 1]
+                                    if (bean.userInfoModel.userId == owner!!.userId) {
+                                        bean.lyrics += "\n" + itemsBean.words
+                                    } else {
+                                        lyrics.add(ChorusSelfLyricAdapter.ChorusLineLyricModel(owner, itemsBean.words, GRAB_TYPE))
+                                    }
                                 } else {
                                     lyrics.add(ChorusSelfLyricAdapter.ChorusLineLyricModel(owner, itemsBean.words, GRAB_TYPE))
                                 }
-                            } else {
-                                lyrics.add(ChorusSelfLyricAdapter.ChorusLineLyricModel(owner, itemsBean.words, GRAB_TYPE))
                             }
+                        } else {
+                            MyLog.w(TAG, "playLyric failed, chorus mode, result is $result, lrc url is ${mSongModel!!.standLrc}")
                         }
                     } else {
                         if (!TextUtils.isEmpty(result)) {
