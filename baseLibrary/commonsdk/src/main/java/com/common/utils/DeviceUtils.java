@@ -280,22 +280,48 @@ public class DeviceUtils {
     /**
      * 得到唯一设备ID,不只是imei
      * 就用这个作标识
+     * 不遗余力地确保这个id是唯一的
      *
      * @return
      */
     public String getDeviceID() {
         if (TextUtils.isEmpty(deviceID)) {
-            String imei = getImei();
-            String androidId = getAndroidId();
-            String serial = null;
-            if (Build.VERSION.SDK_INT > 8) {
-                serial = Build.SERIAL;
+            synchronized (DeviceUtils.class) {
+                if (TextUtils.isEmpty(deviceID)) {
+//                    String imei = getImei();
+                    deviceID = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().mSharedPreferencesSp2, "DEVICE_ID", "");
+                    if (TextUtils.isEmpty(deviceID)) {
+                        String androidId = getAndroidId();
+                        if (androidId.equals("9774d56d682e549c")) {
+                            // 说明是厂商定制的系统改了这个玩意
+                            androidId = String.valueOf(System.currentTimeMillis());
+                        }
+                        String serial = null;
+                        if (Build.VERSION.SDK_INT > 8) {
+                            serial = Build.SERIAL;
+                        }
+                        MyLog.i("DeviceUtils", " androidId=" + androidId + " serial=" + serial);
+                        MyLog.i("DeviceUtils", " buildInfo=" + getBuildInfo());
+                        deviceID = sha1(androidId + serial + getBuildInfo());
+                        U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().mSharedPreferencesSp2, "DEVICE_ID", deviceID);
+                    }
+                }
             }
-            deviceID = sha1(imei + androidId + serial);
         }
+        //MyLog.d("DeviceUtils", "deviceID=" + deviceID);
         return deviceID;
     }
 
+    public static String getBuildInfo() {
+        //这里选用了几个不会随系统更新而改变的值
+        StringBuffer buildSB = new StringBuffer();
+        buildSB.append(Build.BRAND).append("/");
+        buildSB.append(Build.PRODUCT).append("/");
+        buildSB.append(Build.DEVICE).append("/");
+        //buildSB.append(Build.ID).append("/");
+        //buildSB.append(Build.VERSION.INCREMENTAL);
+        return buildSB.toString();
+    }
 
     private int mDeviceHasNavigationBar = -1;
 
@@ -510,6 +536,7 @@ public class DeviceUtils {
         }
         return mBlueToothHeadsetPlugOn == 1;
     }
+
     /**
      * 耳机插拔事件
      */
@@ -664,6 +691,7 @@ public class DeviceUtils {
 
     /**
      * 得到总内存
+     *
      * @return
      */
     public long getTotalMemory() {
@@ -749,7 +777,7 @@ public class DeviceUtils {
         }
     }
 
-    public  long getMemFree() {
+    public long getMemFree() {
         long availMemory = INVALID;
         BufferedReader bufferedReader = null;
         try {
@@ -942,7 +970,7 @@ public class DeviceUtils {
         return -1;
     }
 
-    protected  String convertStreamToString(InputStream is) throws Exception {
+    protected String convertStreamToString(InputStream is) throws Exception {
         BufferedReader reader = null;
         StringBuilder sb = new StringBuilder();
         try {
@@ -960,7 +988,7 @@ public class DeviceUtils {
         return sb.toString();
     }
 
-    protected  String getStringFromFile(String filePath) throws Exception {
+    protected String getStringFromFile(String filePath) throws Exception {
         File fl = new File(filePath);
         FileInputStream fin = null;
         String ret;
@@ -975,14 +1003,14 @@ public class DeviceUtils {
         return ret;
     }
 
-    public static String[] getTestDeviceInfo(Context context){
+    public static String[] getTestDeviceInfo(Context context) {
         String[] deviceInfo = new String[2];
         try {
-            if(context != null){
+            if (context != null) {
                 deviceInfo[0] = DeviceConfig.getDeviceIdForGeneral(context);
                 deviceInfo[1] = DeviceConfig.getMac(context);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
         }
         return deviceInfo;
     }
