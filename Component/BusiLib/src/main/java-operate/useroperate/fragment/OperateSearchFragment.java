@@ -188,7 +188,7 @@ public class OperateSearchFragment extends BaseFragment {
     private void initPublishSubject() {
         mPublishSubject = PublishSubject.create();
         if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
-            ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
+            ApiMethods.subscribe(mPublishSubject.debounce(300, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
                 @Override
                 public boolean test(String s) throws Exception {
                     return s.length() > 0;
@@ -199,7 +199,7 @@ public class OperateSearchFragment extends BaseFragment {
                     UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
                     return userInfoServerApi.searchFans(key);
                 }
-            }), new ApiObserver<ApiResult>() {
+            }).retry(100), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult obj) {
                     List<JSONObject> list = JSON.parseArray(obj.getData().getString("fans"), JSONObject.class);
@@ -210,7 +210,7 @@ public class OperateSearchFragment extends BaseFragment {
                 }
             }, this);
         } else {
-            ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
+            ApiMethods.subscribe(mPublishSubject.debounce(300, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
                 @Override
                 public boolean test(String s) throws Exception {
                     return s.length() > 0;
@@ -228,7 +228,7 @@ public class OperateSearchFragment extends BaseFragment {
                     }
                     return Observable.just(r);
                 }
-            }), new ApiObserver<List<UserInfoModel>>() {
+            }).retry(100), new ApiObserver<List<UserInfoModel>>() {
                 @Override
                 public void process(List<UserInfoModel> list) {
                     MyLog.d(TAG, "onNext" + " list=" + list);
@@ -254,5 +254,8 @@ public class OperateSearchFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
+        if (mPublishSubject != null) {
+            mPublishSubject.onComplete();
+        }
     }
 }

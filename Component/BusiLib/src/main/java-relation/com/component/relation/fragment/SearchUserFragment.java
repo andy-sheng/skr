@@ -201,7 +201,7 @@ public class SearchUserFragment extends BaseFragment {
 
             }
         };
-        mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
+        mPublishSubject.debounce(300, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
             @Override
             public boolean test(String s) throws Exception {
                 return s.length() > 0;
@@ -213,7 +213,7 @@ public class SearchUserFragment extends BaseFragment {
                 lastAutoSearchContent = string;
                 return userInfoServerApi.searchFriendsList(string, 0, DEFAULT_COUNT).subscribeOn(Schedulers.io());
             }
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
+        }).retry(100).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
         mCompositeDisposable = new CompositeDisposable();
         mCompositeDisposable.add(mDisposableObserver);
     }
@@ -305,6 +305,9 @@ public class SearchUserFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
+        if (mPublishSubject != null) {
+            mPublishSubject.onComplete();
+        }
         if (mCompositeDisposable != null) {
             mCompositeDisposable.clear();
         }

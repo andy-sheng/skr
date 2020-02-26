@@ -196,7 +196,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
         mPublishSubject = PublishSubject.create();
         if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
             // 粉丝
-            ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<SearchModel>() {
+            ApiMethods.subscribe(mPublishSubject.debounce(300, TimeUnit.MILLISECONDS).filter(new Predicate<SearchModel>() {
                 @Override
                 public boolean test(SearchModel s) {
                     return !TextUtils.isEmpty(s.getSearchContent());
@@ -208,7 +208,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
                     GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
                     return grabRoomServerApi.searchFans(model.getSearchContent(), mRoomID, mFrom);
                 }
-            }), new ApiObserver<ApiResult>() {
+            }).retry(100), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
@@ -220,7 +220,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
             }, this);
         } else {
             // 好友
-            ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<SearchModel>() {
+            ApiMethods.subscribe(mPublishSubject.debounce(300, TimeUnit.MILLISECONDS).filter(new Predicate<SearchModel>() {
                 @Override
                 public boolean test(SearchModel s) {
                     return !TextUtils.isEmpty(s.getSearchContent());
@@ -234,7 +234,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
                     UserInfoManager.getInstance().fillUserOnlineStatus(userInfoModels, true, false, mRoomID, mFrom);
                     return Observable.just(userInfoModels);
                 }
-            }), new ApiObserver<List<UserInfoModel>>() {
+            }).retry(100), new ApiObserver<List<UserInfoModel>>() {
                 @Override
                 public void process(List<UserInfoModel> list) {
                     showUserInfoList(list);
@@ -286,5 +286,13 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mPublishSubject != null) {
+            mPublishSubject.onComplete();
+        }
     }
 }
