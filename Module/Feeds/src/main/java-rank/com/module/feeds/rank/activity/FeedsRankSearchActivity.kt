@@ -153,14 +153,14 @@ class FeedsRankSearchActivity : BaseActivity() {
 
     private fun initPublishSubject() {
         mPublishSubject = PublishSubject.create()
-        ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS)
+        ApiMethods.subscribe(mPublishSubject.debounce(300, TimeUnit.MILLISECONDS)
                 .filter { s -> s.searchContent.isNotEmpty() }
                 .switchMap { key ->
                     val feedRankServerApi = ApiManager.getInstance().createService(FeedsRankServerApi::class.java)
                     isAutoSearch = key.isAutoSearch
                     lastSearchContent = key.searchContent
                     feedRankServerApi.searchChallenge(key.searchContent)
-                }, object : ApiObserver<ApiResult>() {
+                }.retry(100), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     val list = JSON.parseArray(obj.data.getString("challengeInfos"), FeedRankInfoModel::class.java)
@@ -194,5 +194,6 @@ class FeedsRankSearchActivity : BaseActivity() {
 
     override fun destroy() {
         super.destroy()
+        mPublishSubject.onComplete()
     }
 }

@@ -115,11 +115,11 @@ class ClubSearchActivity : BaseActivity() {
     private fun initPublishSubject() {
         publishSubject = PublishSubject.create<SearchModel>()
         ApiMethods.subscribe(
-                publishSubject?.debounce(200, TimeUnit.MILLISECONDS)?.filter(Predicate<SearchModel> { s -> !TextUtils.isEmpty(s.searchContent) })?.switchMap(Function<SearchModel, ObservableSource<ApiResult>> { model ->
+                publishSubject?.debounce(300, TimeUnit.MILLISECONDS)?.filter(Predicate<SearchModel> { s -> !TextUtils.isEmpty(s.searchContent) })?.switchMap(Function<SearchModel, ObservableSource<ApiResult>> { model ->
                     isAutoSearch = model.isAutoSearch
                     val grabRoomServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
                     grabRoomServerApi.searchClub(model.searchContent)
-                }), object : ApiObserver<ApiResult>() {
+                })?.retry(100), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val list = JSON.parseArray(result.data!!.getString("items"), ClubInfo::class.java)
@@ -132,6 +132,11 @@ class ClubSearchActivity : BaseActivity() {
             }
         }, this)
 
+    }
+
+    override fun destroy() {
+        super.destroy()
+        publishSubject?.onComplete()
     }
 
     override fun canSlide(): Boolean {

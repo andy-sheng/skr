@@ -116,7 +116,7 @@ class PartyRoomSearchActivity : BaseActivity() {
     private fun initPublishSubject() {
         publishSubject = PublishSubject.create<SearchModel>()
         ApiMethods.subscribe(
-                publishSubject?.debounce(200, TimeUnit.MILLISECONDS)?.filter(Predicate<SearchModel> { s -> !TextUtils.isEmpty(s.searchContent) })?.switchMap(Function<SearchModel, ObservableSource<ApiResult>> { model ->
+                publishSubject?.debounce(500, TimeUnit.MILLISECONDS)?.filter(Predicate<SearchModel> { s -> !TextUtils.isEmpty(s.searchContent) })?.switchMap(Function<SearchModel, ObservableSource<ApiResult>> { model ->
                     isAutoSearch = model.isAutoSearch
                     val partyRoomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
                     val map = mutableMapOf(
@@ -124,7 +124,7 @@ class PartyRoomSearchActivity : BaseActivity() {
                     )
                     val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                     partyRoomServerApi.searchPartyRoom(body)
-                }), object : ApiObserver<ApiResult>() {
+                })?.retry(100), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val list = JSON.parseArray(result.data!!.getString("roomInfo"), PartyRoomInfoModel::class.java)
@@ -145,5 +145,10 @@ class PartyRoomSearchActivity : BaseActivity() {
 
     override fun useEventBus(): Boolean {
         return false
+    }
+
+    override fun destroy() {
+        super.destroy()
+        publishSubject?.onComplete()
     }
 }

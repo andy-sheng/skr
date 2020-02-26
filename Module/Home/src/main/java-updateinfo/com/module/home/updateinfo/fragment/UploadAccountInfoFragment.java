@@ -246,7 +246,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
             }
         };
-        mPublishSubject.debounce(500, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
+        mPublishSubject.debounce(300, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
             @Override
             public boolean test(String s) throws Exception {
                 return s.length() > 0;
@@ -258,7 +258,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                 MyUserInfoServerApi myUserInfoServerApi = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
                 return myUserInfoServerApi.verifyName(string).subscribeOn(Schedulers.io());
             }
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
+        }).retry(100).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
     }
 
 
@@ -281,6 +281,9 @@ public class UploadAccountInfoFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
+        if (mPublishSubject != null) {
+            mPublishSubject.onComplete();
+        }
         if (mDisposableObserver != null) {
             mDisposableObserver.dispose();
         }

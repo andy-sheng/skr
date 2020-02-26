@@ -160,13 +160,13 @@ class FeedSongSearchActivity : BaseActivity() {
 
     private fun initPublishSubject() {
         mPublishSubject = PublishSubject.create()
-        ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS)
+        ApiMethods.subscribe(mPublishSubject.debounce(300, TimeUnit.MILLISECONDS)
                 .filter { s -> s.searchContent.isNotEmpty() }
                 .switchMap { key ->
                     isAutoSearch = key.isAutoSearch
                     lastSearchContent = key.searchContent
                     feedSongManageServerApi.searchFeedSong(key.searchContent)
-                }, object : ApiObserver<ApiResult>() {
+                }.retry(100), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     val list = JSON.parseArray(obj.data.getString("songs"), FeedSongInfoModel::class.java)
@@ -197,5 +197,10 @@ class FeedSongSearchActivity : BaseActivity() {
 
     override fun useEventBus(): Boolean {
         return false
+    }
+
+    override fun destroy() {
+        super.destroy()
+        mPublishSubject.onComplete()
     }
 }
