@@ -246,7 +246,7 @@ public class SkrKouLingUtils {
 //            try {
 //                String kouling = new String(bytes, "utf-8");
             String kouling = getKoulingByStr(str);
-            MyLog.d(TAG, "tryParseScheme kouling=" + kouling);
+            MyLog.i(TAG, "tryParseScheme kouling=" + kouling);
             if (!TextUtils.isEmpty(kouling)) {
                 KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
                 ApiMethods.subscribe(kouLingServerApi.getCodeByToken(kouling), new ApiObserver<ApiResult>() {

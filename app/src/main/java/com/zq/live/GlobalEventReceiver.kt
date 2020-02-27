@@ -1,5 +1,6 @@
 package com.zq.live
 
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
@@ -44,7 +45,7 @@ import org.greenrobot.eventbus.ThreadMode
  * 这个类放在最顶层，因为只有可能它 调用 其它
  * 其它不后悔调用它
  */
-object GlobalEventReceiver{
+object GlobalEventReceiver {
 
     internal var mUiHandler = Handler(Looper.getMainLooper())
 
@@ -64,16 +65,27 @@ object GlobalEventReceiver{
 
     @Subscribe
     fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
+        MyLog.i("CSM", "event=$event")
         if (event.foreground) {
-            // 检查剪贴板
-            val str = ClipboardUtils.getPaste()
-            //            str = "dD0xJnU9MTM0MzA4OCZyPTEwMA==";
-            if (!TextUtils.isEmpty(str)) {
-                SkrKouLingUtils.tryParseScheme(str)
+            // 检查剪贴板 android 10 只有获取焦点的应用才能获得剪贴板数据 妈蛋
+            if (Build.VERSION.SDK_INT >= 28) {
+                Handler(Looper.getMainLooper()).postDelayed({
+                    loadFromPaste()
+                }, 500)
+            } else {
+                loadFromPaste()
             }
-        }else{
+        } else {
             FeedsPlayStatistics.tryUpload(true)
             PostsStatistics.tryUpload(true)
+        }
+    }
+
+    private fun loadFromPaste() {
+        val str = ClipboardUtils.getPaste()
+        MyLog.i("CSM", "ClipboardUtils.getPaste=$str")
+        if (!TextUtils.isEmpty(str)) {
+            SkrKouLingUtils.tryParseScheme(str)
         }
     }
 
@@ -114,7 +126,7 @@ object GlobalEventReceiver{
                 StatisticsAdapter.recordCountEvent("ra", "active", map)
             }
         }
-        ApiMethods.subscribe(raServerApi.getABtestInfo(RA.getTestList(),U.getAppInfoUtils().versionCode.toString()), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(raServerApi.getABtestInfo(RA.getTestList(), U.getAppInfoUtils().versionCode.toString()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     val vars = obj.data!!.getString("vars")
