@@ -65,7 +65,7 @@ object GlobalEventReceiver {
 
     @Subscribe
     fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
-        MyLog.i("CSM", "event=$event")
+        MyLog.i(TAG, "event=$event")
         if (event.foreground) {
             // 检查剪贴板 android 10 只有获取焦点的应用才能获得剪贴板数据 妈蛋
             if (Build.VERSION.SDK_INT >= 28) {
@@ -83,7 +83,7 @@ object GlobalEventReceiver {
 
     private fun loadFromPaste() {
         val str = ClipboardUtils.getPaste()
-        MyLog.i("CSM", "ClipboardUtils.getPaste=$str")
+        MyLog.i(TAG, "ClipboardUtils.getPaste=$str")
         if (!TextUtils.isEmpty(str)) {
             SkrKouLingUtils.tryParseScheme(str)
         }
