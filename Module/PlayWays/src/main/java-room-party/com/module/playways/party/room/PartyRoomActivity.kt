@@ -639,6 +639,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
 
         override fun getInviteObservable(model: UserInfoModel?): Observable<ApiResult> {
+            StatisticsAdapter.recordCountEvent("party","invite",null)
             MyLog.d(TAG, "inviteMicFriend roomID=${H.partyRoomData?.gameId ?: 0} model=$model")
             val map = mutableMapOf("roomID" to H.partyRoomData?.gameId, "userID" to model?.getUserId())
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
