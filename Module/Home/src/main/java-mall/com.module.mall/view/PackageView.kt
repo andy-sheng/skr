@@ -189,9 +189,8 @@ class PackageView : ExConstraintLayout {
                     }
                     .setCancelTip("取消")
                     .setConfirmBtnClickListener {
-                        weakReference?.get()?.finish()
                         tipsDialogView = null
-                        inviteToRelation(userInfoModel.userId, toRelationCardModel!!)
+                        inviteToRelation(userInfoModel.userId, toRelationCardModel!!, weakReference)
                     }
                     .setConfirmTip("邀请")
                     .build()
@@ -201,7 +200,7 @@ class PackageView : ExConstraintLayout {
     }
 
     //亲故发生某种关系
-    private fun inviteToRelation(userID: Int, packageModel: PackageModel) {
+    private fun inviteToRelation(userID: Int, packageModel: PackageModel, weakReference: WeakReference<BaseActivity>?) {
         launch {
             val map = HashMap<String, Any>()
             map["packetItemID"] = packageModel.packetItemID
@@ -226,6 +225,8 @@ class PackageView : ExConstraintLayout {
                 var msgService = ModuleServiceManager.getInstance().msgService
                 msgService?.sendRelationInviteMsg(userID.toString(), obj.data.getString("uniqID")
                         , obj.data.getString("msgContent"), obj.data.getLongValue("expireAt"))
+
+                weakReference?.get()?.finish()
             } else {
                 U.getToastUtil().showShort(obj.errmsg)
             }
