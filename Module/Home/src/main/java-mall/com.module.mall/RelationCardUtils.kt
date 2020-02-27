@@ -71,7 +71,6 @@ class RelationCardUtils {
                     }
                     .setCancelTip("取消")
                     .setConfirmBtnClickListener {
-                        weakReference?.get()?.finish()
                         tipsDialogView = null
                         inviteToRelation(userInfoModel.userId, packageModelID, weakReference)
                     }
@@ -104,6 +103,7 @@ class RelationCardUtils {
                             , obj.data.getString("msgContent")
                             , obj.data.getLongValue("expireAt")
                     )
+                    weakReference?.get()?.finish()
                 } else {
                     U.getToastUtil().showShort(obj.errmsg)
                 }
