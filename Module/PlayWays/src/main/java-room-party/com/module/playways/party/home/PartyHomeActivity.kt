@@ -19,6 +19,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.playways.R
+import com.module.playways.party.home.partyroom.PartyRoomView
 import com.module.playways.party.room.PartyRoomServerApi
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
@@ -114,7 +115,7 @@ class PartyHomeActivity : BaseActivity() {
 
     override fun destroy() {
         super.destroy()
-        partyRoomView?.destory()
+        partyRoomView?.destroy()
     }
 
     override fun useEventBus(): Boolean {

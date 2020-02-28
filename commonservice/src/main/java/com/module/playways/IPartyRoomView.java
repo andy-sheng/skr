@@ -6,5 +6,5 @@ public interface IPartyRoomView {
 
     void stopTimer();
 
-    void destory();
+    void destroy();
 }

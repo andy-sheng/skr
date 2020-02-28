@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/view_64_dp"
-    android:layout_margin="@dimen/view_5_dp"
-    android:background="@drawable/party_quick_game_pk_icon">
-
-</android.support.constraint.ConstraintLayout>

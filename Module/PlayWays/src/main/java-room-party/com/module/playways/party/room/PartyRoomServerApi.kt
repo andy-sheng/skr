@@ -10,6 +10,20 @@ import retrofit2.http.*
 interface PartyRoomServerApi {
 
     /**
+     * 主题房推荐标签
+     *
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partyroom/tag-list")
+    fun getPartyRoomTag(@Body body: RequestBody): Call<ApiResult>
+
+
+    /**
+     * 首页Party房间列表
+     */
+    @GET("http://dev.game.inframe.mobi/v2/partyroom/roomlist")
+    fun getPartyRoomList(@Query("offset") offset: Int, @Query("limit") limit: Int, @Query("gameMode") gameMode: Int): Call<ApiResult>
+
+    /**
      * 搜索主题房
      *
      */
@@ -33,12 +47,6 @@ interface PartyRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partyroom/has-create-permission")
     fun hasCreatePermission(@Body body: RequestBody): Call<ApiResult>
-
-    /**
-     * 首页Party房间列表
-     */
-    @GET("http://dev.game.inframe.mobi/v1/partyroom/roomlist")
-    fun getPartyRoomList(@Query("offset") offset: Int, @Query("limit") limit: Int): Call<ApiResult>
 
     /**
      * 首页列出推荐家族

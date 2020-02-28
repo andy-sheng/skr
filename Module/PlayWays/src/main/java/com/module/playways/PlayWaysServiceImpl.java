@@ -47,7 +47,7 @@ import com.module.playways.mic.room.MicRoomActivity;
 import com.module.playways.mic.room.MicRoomServerApi;
 import com.module.playways.mic.room.event.MicChangeRoomEvent;
 import com.module.playways.party.home.PartyGameFragment;
-import com.module.playways.party.home.PartyRoomView;
+import com.module.playways.party.home.partyroom.PartyRoomView;
 import com.module.playways.party.match.model.JoinPartyRoomRspModel;
 import com.module.playways.party.room.PartyRoomActivity;
 import com.module.playways.party.room.PartyRoomServerApi;

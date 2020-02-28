@@ -1,4 +1,4 @@
-package com.module.playways.party.home
+package com.module.playways.party.home.partyroom
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -14,7 +14,6 @@ import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
 import com.common.utils.ImageUtils
-import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -22,8 +21,6 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.model.PartyRoomInfoModel
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
-import com.module.playways.friendroom.FriendRoomAdapter
-import com.module.playways.friendroom.RecommendRoomModel
 
 class PartyRoomViewHolder(item: View, var listener: PartyRoomAdapter.Listener?) : RecyclerView.ViewHolder(item) {
 
@@ -187,20 +184,5 @@ class PartyRoomViewHolder(item: View, var listener: PartyRoomAdapter.Listener?) 
                     .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
                     .build<BaseImage>())
         }
-    }
-
-}
-
-class PartyEmptyRoomViewHolder(item: View) : RecyclerView.ViewHolder(item)
-
-class PartyQuickKTVViewHolder(item: View, var listener: PartyRoomAdapter.Listener) : RecyclerView.ViewHolder(item) {
-    init {
-        item.setAnimateDebounceViewClickListener { listener.onClickQuickKTV() }
-    }
-}
-
-class PartyQuickGamePKViewHolder(item: View, var listener: PartyRoomAdapter.Listener) : RecyclerView.ViewHolder(item) {
-    init {
-        item.setAnimateDebounceViewClickListener { listener.onClickQuickGamePK() }
     }
 }
