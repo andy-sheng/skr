@@ -202,7 +202,6 @@ public class ZqEngineKit implements AgoraOutCallback {
     private int mAccRemainedLoopCount = 0;
     private int mAccRetriedCount = 0;
     int lastAudioMixingPublishVolume = -1;
-//    private HeadSetReceiver mHeadSetReceiver;
 
     // 视频相关参数
     protected int mScreenRenderWidth = 0;
@@ -790,7 +789,6 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         if (mConfig.isUseExternalAudio()) {
             toggleAEC();
-//            registerHeadsetPlugReceiver();
 
             // 初始参数配置
             if (mConfig.isEnableAudioLowLatency()) {
@@ -1000,7 +998,6 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioPlayerCapture.release();
                 MyLog.i(TAG, "destroyInner13");
                 mAudioCapture.release();
-//                unregisterHeadsetPlugReceiver();
             }
             MyLog.i(TAG, "destroyInner2");
             if (mConfig.isEnableVideo() && mConfig.isUseExternalVideo()) {
@@ -2438,25 +2435,6 @@ public class ZqEngineKit implements AgoraOutCallback {
         public String roomID;
         public String token;
     }
-
-//    private void registerHeadsetPlugReceiver() {
-//        if (mHeadSetReceiver == null && mContext != null) {
-//            mHeadSetReceiver = new HeadSetReceiver();
-//            IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
-//
-//            filter.addAction(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED);
-//            filter.addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED);
-//            filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-//            mContext.registerReceiver(mHeadSetReceiver, filter);
-//        }
-//    }
-//
-//    private void unregisterHeadsetPlugReceiver() {
-//        if (mHeadSetReceiver != null) {
-//            mContext.unregisterReceiver(mHeadSetReceiver);
-//            mHeadSetReceiver = null;
-//        }
-//    }
 
     // 视频相关接口
 
