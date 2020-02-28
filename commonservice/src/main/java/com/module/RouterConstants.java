@@ -155,7 +155,7 @@ public interface RouterConstants {
 
     String ACTIVITY_CREATE_CLUB = "/club/CreateClubActivity";
     String ACTIVITY_LIST_CLUB = "/club/ClubListActivity";
-    String ACTIVITY_SEARCH_CLUB = "/club/ClubListActivity";
+    String ACTIVITY_SEARCH_CLUB = "/club/ClubSearchActivity";
     String ACTIVITY_LIST_MEMBER = "/club/ClubMemberListActivity";
     String ACTIVITY_LIST_APPLY_CLUB = "/club/ClubApplyListActivity";
     String ACTIVITY_LIST_CLUB_RANK = "/club/ClubRankListActivity";

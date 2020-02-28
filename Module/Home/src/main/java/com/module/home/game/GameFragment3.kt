@@ -11,6 +11,7 @@ import android.widget.ImageView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.account.event.AccountEvent
+import com.common.core.scheme.event.JumpHomeFromSchemeEvent
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
@@ -20,6 +21,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.event.GameTabRefreshEvent
+import com.component.busilib.manager.WeakRedDotManager
 import com.component.dialog.InviteFriendDialog
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
@@ -265,6 +267,13 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mPresenter.initGameKConfig()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: JumpHomeFromSchemeEvent) {
+        if ("club" === event.extra) {
+            // 跳到家族tab
+            mGameVp.setCurrentItem(2,false)
+        }
+    }
 //    @Subscribe(threadMode = ThreadMode.MAIN)
 //    fun onEvent(event: JumpHomeDoubleChatPageEvent) {
 //        mGameVp.setCurrentItem(3, false)

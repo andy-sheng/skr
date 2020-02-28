@@ -178,6 +178,8 @@ object SkrSchemeProcessor : ISchemeProcessor {
     private fun processClubUrl(uri: Uri, context: Context) {
         if (uri.path == "/home") {
             ModuleServiceManager.getInstance().clubService?.tryGoClubHomePage(SchemeUtils.getInt(uri, "clubID", 0))
+        } else if (uri.path == "/listPage") {
+            EventBus.getDefault().post(JumpHomeFromSchemeEvent(0,"club"))
         }
     }
 
@@ -547,13 +549,13 @@ object SkrSchemeProcessor : ISchemeProcessor {
             }
             var url = SchemeUtils.getString(uri, SchemeConstants.PARAM_URL)
             val showShare = SchemeUtils.getInt(uri, SchemeConstants.PARAM_SHOW_SHARE, 0)
-            url = url.replace("@@","?")
-            url = url.replace("@","&")
+            url = url.replace("@@", "?")
+            url = url.replace("@", "&")
             url = ApiManager.getInstance().findRealUrlByChannel(url)
             MyLog.i(TAG, "url=$url")
 
             ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                    .withString("url",url)
+                    .withString("url", url)
                     .withBoolean("showShare", showShare == 1)
                     .greenChannel().navigation()
         } else {
