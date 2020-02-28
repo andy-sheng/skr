@@ -20,7 +20,7 @@ object PartyRoomMsgManager : BaseMsgManager<EPartyRoomMsgType, PartyRoomMsg>() {
         for (filter in mPushMsgFilterList) {
             canGo = filter.doFilter(msg)
             if (!canGo) {
-                MyLog.d("MicRoomMsgManager", "processRoomMsg " + msg + "被拦截")
+                MyLog.d("PartyRoomMsgManager", "processRoomMsg " + msg + "被拦截")
                 return
             }
         }
@@ -32,7 +32,7 @@ object PartyRoomMsgManager : BaseMsgManager<EPartyRoomMsgType, PartyRoomMsg>() {
             return
         }
         if (msg != null) {
-            MyLog.d(TAG, "processRoomMsg" + " messageType=" + messageType + " 信令 msg.ts=" + msg.timeMs)
+            MyLog.d("PartyRoomMsgManager", "processRoomMsg" + " messageType=" + messageType + " 信令 msg.ts=" + msg.timeMs)
         }
         when {
             msg.msgType == EPartyRoomMsgType.PRT_JOIN_NOTICE -> EventBus.getDefault().post(msg.pJoinNoticeMsg)

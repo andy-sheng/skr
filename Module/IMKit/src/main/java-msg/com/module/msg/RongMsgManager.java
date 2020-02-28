@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.text.Spannable;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -18,8 +19,14 @@ import com.common.core.userinfo.ResultCallback;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.floatwindow.FloatWindow;
+import com.common.floatwindow.MoveType;
+import com.common.floatwindow.Screen;
+import com.common.floatwindow.ViewStateListener;
+import com.common.floatwindow.ViewStateListenerAdapter;
 import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
+import com.common.notification.event.RongMsgNotifyEvent;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
@@ -70,6 +77,7 @@ import io.rong.imkit.RongContext;
 import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.manager.IUnReadMessageObserver;
+import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -93,6 +101,8 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
     public static final int MSG_RECONNECT = 11;
 
     public final String TAG = "RongMsgManager";
+
+    public final String TAG_RELATION_FLOAT_WINDOW = "TAG_RELATION_FLOAT_WINDOW";
 
     private static class RongMsgAdapterHolder {
         private static final RongMsgManager INSTANCE = new RongMsgManager();
@@ -316,16 +326,39 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     event.setAccLoadingOk(jsonObject.getBooleanValue("accLoadingOk"));
                     EventBus.getDefault().post(event);
                 }
-            }else if(message.getContent() instanceof ClubHandleMsg){
+                return true;
+            } else if (message.getContent() instanceof ClubHandleMsg) {
                 ClubHandleMsg msg = (ClubHandleMsg) message.getContent();
                 ClubMsgProcessor.onReceiveHandleMsg(msg);
-                return true;
-            }else if(message.getContent() instanceof RelationHandleMsg){
+            } else if (message.getContent() instanceof RelationHandleMsg) {
                 RelationHandleMsg msg = (RelationHandleMsg) message.getContent();
                 RelationMsgProcessor.onReceiveHandleMsg(msg);
-                return true;
             }
 
+            IContainerItemProvider.MessageProvider messageProvider = RongContext.getInstance().getMessageTemplate(message.getContent().getClass());
+            if (messageProvider != null) {
+                // 触发弹出消息通知栏
+                Spannable content = messageProvider.getContentSummary(U.app(), message.getContent());
+                BuddyCache.BuddyCacheEntry buddyCacheEntry = BuddyCache.getInstance().getBuddyNormal(Integer.valueOf(message.getSenderUserId()), true, new ResultCallback<UserInfoModel>() {
+                    @Override
+                    public boolean onGetLocalDB(UserInfoModel userInfoModel) {
+                        if (userInfoModel != null) {
+                            RongIM.getInstance().refreshUserInfoCache(toRongUserInfo(userInfoModel));
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onGetServer(UserInfoModel userInfoModel) {
+                        if (userInfoModel != null) {
+                            RongIM.getInstance().refreshUserInfoCache(toRongUserInfo(userInfoModel));
+                        }
+                        return false;
+                    }
+                });
+                RongMsgNotifyEvent event = new RongMsgNotifyEvent(content,buddyCacheEntry);
+                EventBus.getDefault().post(event);
+            }
             // TODO: 2019/5/19  收到消息是否处理完成，true 表示自己处理铃声和后台通知，false 走融云默认处理方式。
             if (U.getActivityUtils().isAppForeground()) {
                 return true;

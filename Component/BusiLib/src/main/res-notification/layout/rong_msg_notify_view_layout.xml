@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:NickNameView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:avatarView="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_70_dp"
+    android:layout_marginLeft="@dimen/view_16_dp"
+    android:layout_marginRight="@dimen/view_16_dp"
+    android:background="@drawable/common_gradient_bg">
+
+    <com.component.busilib.view.AvatarView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_58_dp"
+        android:layout_height="@dimen/view_58_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        avatarView:borderColor="@color/white"
+        avatarView:borderWidth="@dimen/view_2_dp" />
+
+    <com.component.busilib.view.NickNameView
+        android:id="@+id/name_view"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_25_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        NickNameView:textColor="#8B572A"
+        NickNameView:textSize="@dimen/textsize_16_dp"
+        NickNameView:textStyle="BOLD"
+        app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+        app:layout_constraintRight_toLeftOf="@id/agree_button"
+        app:layout_constraintTop_toTopOf="@id/avatar_iv"
+        app:layout_goneMarginTop="@dimen/view_8_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/hint_tv"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_below="@+id/name_tv"
+        android:layout_alignLeft="@+id/name_tv"
+        android:layout_marginTop="@dimen/view_3_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:maxLines="1"
+        android:text="邀请你加入合唱房"
+        android:textColor="#cc8B572A"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/name_view"
+        app:layout_constraintRight_toLeftOf="@+id/agree_button"
+        app:layout_constraintTop_toBottomOf="@id/name_view" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/agree_button"
+        android:layout_width="@dimen/view_80_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center"
+        android:text="回复"
+        android:textColor="#AD6C00"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_solid_color="#FFC15B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

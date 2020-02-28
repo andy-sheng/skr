@@ -1,6 +1,13 @@
-package com.module.home.persenter
+package com.component.notification.presenter
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Handler
 import android.os.Message
 import android.view.Gravity
@@ -36,6 +43,7 @@ import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.AnimateClickListener
+import com.component.busilib.R
 import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
 import com.component.busilib.manager.WeakRedDotManager
 import com.component.busilib.verify.SkrVerifyUtils
@@ -43,11 +51,10 @@ import com.component.dialog.ConfirmDialog
 import com.component.dialog.NotifyDialogView
 import com.component.dialog.RedPacketRelayDialogView
 import com.component.notification.*
+import com.component.notification.api.NotifyReqApi
 import com.dialog.view.TipsDialogView
+import com.module.ModuleServiceManager
 import com.module.RouterConstants
-import com.module.home.MainPageSlideApi
-import com.module.home.R
-import com.module.home.view.INotifyView
 import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
@@ -62,12 +69,17 @@ import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCyclePresenter() {
+class NotifyCorePresenter() : RxLifeCyclePresenter() {
+
+    private val NOTIFY_CHANNEL_ID = "invite_notify"
+
+    internal var mNManager: NotificationManager? = null
 
     internal var mBeFriendDialog: DialogPlus? = null
+
     internal var mSysWarnDialogPlus: DialogPlus? = null
 
-    internal var mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
+    internal var mNotifyReqApi = ApiManager.getInstance().createService(NotifyReqApi::class.java)
 
     internal var mSkrAudioPermission: SkrAudioPermission? = SkrAudioPermission()
 
@@ -79,14 +91,15 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when (msg.what) {
-                MSG_DISMISS_INVITE_FLOAT_WINDOW -> FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW)
-                MSG_DISMISS_RELATION_FLOAT_WINDOW -> FloatWindow.destroy(TAG_RELATION_FOALT_WINDOW)
-                MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW -> FloatWindow.destroy(TAG_DOUBLE_INVITE_FOALT_WINDOW, 2)
-                MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW -> FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW, 2)
-                MSG_DISMISS_STAND_FULL_STAR -> FloatWindow.destroy(TAG_STAND_FULL_STAR_FOALT_WINDOW, 2)
-                MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW -> FloatWindow.destroy(TAG_MIC_ROOM_INVITE_FOALT_WINDOW, 2)
-                MSG_DISMISS_GIFT_MALL_FOALT_WINDOW -> FloatWindow.destroy(TAG_GIFT_MALL_FOALT_WINDOW, 2)
-                MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW -> FloatWindow.destroy(TAG_RELAY_INVITE_FOALT_WINDOW, 2)
+                MSG_DISMISS_INVITE_FLOAT_WINDOW -> FloatWindow.destroy(TAG_INVITE_FLOAT_WINDOW)
+                MSG_DISMISS_RELATION_FLOAT_WINDOW -> FloatWindow.destroy(TAG_RELATION_FLOAT_WINDOW)
+                MSG_DISMISS_DOUBLE_INVITE_FLOAT_WINDOW -> FloatWindow.destroy(TAG_DOUBLE_INVITE_FLOAT_WINDOW, 2)
+                MSG_DISMISS_DOUBLE_ROOM_INVITE_FLOAT_WINDOW -> FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FLOAT_WINDOW, 2)
+                MSG_DISMISS_STAND_FULL_STAR -> FloatWindow.destroy(TAG_STAND_FULL_STAR_FLOAT_WINDOW, 2)
+                MSG_DISMISS_MIC_ROOM_INVITE_FLOAT_WINDOW -> FloatWindow.destroy(TAG_MIC_ROOM_INVITE_FLOAT_WINDOW, 2)
+                MSG_DISMISS_GIFT_MALL_FLOAT_WINDOW -> FloatWindow.destroy(TAG_GIFT_MALL_FLOAT_WINDOW, 2)
+                MSG_DISMISS_RELAY_INVITE_FLOAT_WINDOW -> FloatWindow.destroy(TAG_RELAY_INVITE_FLOAT_WINDOW, 2)
+                MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW -> FloatWindow.destroy(TAG_RONG_MSG_NOTIFY_FLOAT_WINDOW, 2)
             }
         }
     }
@@ -104,24 +117,17 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         }
 
         override fun onStart(floatWindowData: FloatWindowData, floatWindow: NotifyCorePresenter) {
-            if (floatWindowData.mType == FloatWindowData.Type.FOLLOW) {
-                showFollowFloatWindow(floatWindowData)
-            } else if (floatWindowData.mType == FloatWindowData.Type.GRABINVITE) {
-                showGrabInviteFloatWindow(floatWindowData)
-            } else if (floatWindowData.mType == FloatWindowData.Type.DOUBLE_GRAB_INVITE) {
-                showDoubleInviteFloatWindow(floatWindowData)
-            } else if (floatWindowData.mType == FloatWindowData.Type.DOUBLE_ROOM_INVITE) {
-                showDoubleInviteFromRoomFloatWindow(floatWindowData)
-            } else if (floatWindowData.mType == FloatWindowData.Type.STAND_FULL_STAR) {
-                showStandFullStarFloatWindow(floatWindowData)
-            } else if (floatWindowData.mType == FloatWindowData.Type.MIC_INVITE) {
-                showMicInviteFromRoomFloatWindow(floatWindowData)
-            } else if (floatWindowData.mType == FloatWindowData.Type.MALL_GIFT) {
-                showGiftMallFloatWindow(floatWindowData)
-            } else if (floatWindowData.mType == FloatWindowData.Type.PARTY_INVITE) {
-                showPartyInviteFromRoomFloatWindow(floatWindowData)
-            } else if (floatWindowData.mType == FloatWindowData.Type.RELAY_INVITE) {
-                showRelayInviteFromRoomFloatWindow(floatWindowData)
+            when {
+                floatWindowData.mType == FloatWindowData.Type.FOLLOW -> showFollowFloatWindow(floatWindowData)
+                floatWindowData.mType == FloatWindowData.Type.GRAB_INVITE -> showGrabInviteFloatWindow(floatWindowData)
+                floatWindowData.mType == FloatWindowData.Type.DOUBLE_GRAB_INVITE -> showDoubleInviteFloatWindow(floatWindowData)
+                floatWindowData.mType == FloatWindowData.Type.DOUBLE_ROOM_INVITE -> showDoubleInviteFromRoomFloatWindow(floatWindowData)
+                floatWindowData.mType == FloatWindowData.Type.STAND_FULL_STAR -> showStandFullStarFloatWindow(floatWindowData)
+                floatWindowData.mType == FloatWindowData.Type.MIC_INVITE -> showMicInviteFromRoomFloatWindow(floatWindowData)
+                floatWindowData.mType == FloatWindowData.Type.MALL_GIFT -> showGiftMallFloatWindow(floatWindowData)
+                floatWindowData.mType == FloatWindowData.Type.PARTY_INVITE -> showPartyInviteFromRoomFloatWindow(floatWindowData)
+                floatWindowData.mType == FloatWindowData.Type.RELAY_INVITE -> showRelayInviteFromRoomFloatWindow(floatWindowData)
+                floatWindowData.mType == FloatWindowData.Type.RONG_MSG_NOTIFY -> showRongMsgNotifyFloatWindow(floatWindowData)
             }
         }
 
@@ -133,6 +139,12 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     init {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
+        }
+        mNManager = U.app().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val mChannel = NotificationChannel(NOTIFY_CHANNEL_ID, "notify", NotificationManager.IMPORTANCE_LOW)
+            mNManager?.createNotificationChannel(mChannel)
         }
     }
 
@@ -527,7 +539,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 map["peerUserID"] = ownerId
                 map["roomID"] = roomID
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                ApiMethods.subscribe(mMainPageSlideApi.enterInvitedDoubleFromCreateRoom(body), object : ApiObserver<ApiResult>() {
+                ApiMethods.subscribe(mNotifyReqApi.enterInvitedDoubleFromCreateRoom(body), object : ApiObserver<ApiResult>() {
                     override fun process(result: ApiResult) {
                         if (result.errno == 0) {
                             val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
@@ -598,7 +610,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     fun onEvent(event: GrabInviteNotifyEvent) {
         // TODO: 2019/5/16 区分前台后台
         if (U.getActivityUtils().isAppForeground) {
-            val floatWindowData = FloatWindowData(FloatWindowData.Type.GRABINVITE)
+            val floatWindowData = FloatWindowData(FloatWindowData.Type.GRAB_INVITE)
             floatWindowData.userInfoModel = event.mUserInfoModel
             floatWindowData.roomID = event.roomID
             floatWindowData.tagID = event.tagID
@@ -606,9 +618,25 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
             mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
         } else {
             // 展示一个通知
-            mINotifyView.showNotify(event)
+            val it = Intent(U.app(), SchemeSdkActivity::class.java)
+            it.putExtra("uri", String.format("inframeskr://room/grabjoin?owner=%d&gameId=%d&ask=1", event.mUserInfoModel.userId, event.roomID))
+            val pit = PendingIntent.getActivity(U.app(), 0, it, PendingIntent.FLAG_UPDATE_CURRENT)
+            //设置图片,通知标题,发送时间,提示方式等属性
+            val mBuilder = Notification.Builder(U.app())
+            mBuilder.setContentTitle("@" + MyUserInfoManager.nickName)                        //标题
+                    .setContentText("你的好友" + event.mUserInfoModel.nicknameRemark + "邀请你玩游戏")      //内容
+                    .setWhen(System.currentTimeMillis())           //设置通知时间
+                    .setSmallIcon(R.drawable.app_icon)            //设置小图标
+                    .setDefaults(Notification.DEFAULT_LIGHTS or Notification.DEFAULT_VIBRATE)    //设置默认的三色灯与振动器
+                    //                .setPriority(Notification.PRIORITY_MAX)      //设置应用的优先级，可以用来修复在小米手机上可能显示在不重要通知中
+                    .setAutoCancel(true)                           //设置点击后取消Notification
+                    .setContentIntent(pit)                        //设置PendingIntent
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                mBuilder.setChannelId(NOTIFY_CHANNEL_ID)
+            }
+            val notify1 = mBuilder.build()
+            mNManager?.notify(1, notify1)
         }
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -704,13 +732,13 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         grabInviteNotifyView.setListener(object : GrabInviteNotifyView.Listener {
             override fun onIgnore() {
                 mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW)
-                FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW)
+                FloatWindow.destroy(TAG_INVITE_FLOAT_WINDOW)
             }
 
             override fun onAgree() {
                 tryGoGrabRoom(floatWindowData.mediaType, floatWindowData.roomID, floatWindowData.tagID, 1)
                 mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW)
-                FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW)
+                FloatWindow.destroy(TAG_INVITE_FLOAT_WINDOW)
             }
         })
         FloatWindow.with(U.app())
@@ -732,25 +760,25 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
-                .setTag(TAG_INVITE_FOALT_WINDOW)
+                .setTag(TAG_INVITE_FLOAT_WINDOW)
                 .build()
     }
 
     internal fun showDoubleInviteFloatWindow(floatWindowData: FloatWindowData) {
         val userInfoModel = floatWindowData.userInfoModel
-        mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW)
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW, 5000)
+        mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_INVITE_FLOAT_WINDOW)
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_DOUBLE_INVITE_FLOAT_WINDOW, 5000)
         val doubleInviteNotifyView = DoubleInviteNotifyView(U.app())
         doubleInviteNotifyView.bindData(userInfoModel, floatWindowData.extra)
         doubleInviteNotifyView.setListener {
-            mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW)
-            FloatWindow.destroy(TAG_DOUBLE_INVITE_FOALT_WINDOW)
+            mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_INVITE_FLOAT_WINDOW)
+            FloatWindow.destroy(TAG_DOUBLE_INVITE_FLOAT_WINDOW)
             mSkrAudioPermission!!.ensurePermission({
                 mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
                     val map = HashMap<String, Any>()
                     map["peerUserID"] = userInfoModel!!.userId
                     val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                    ApiMethods.subscribe(mMainPageSlideApi.enterInvitedDoubleRoom(body), object : ApiObserver<ApiResult>() {
+                    ApiMethods.subscribe(mNotifyReqApi.enterInvitedDoubleRoom(body), object : ApiObserver<ApiResult>() {
                         override fun process(result: ApiResult) {
                             if (result.errno == 0) {
                                 val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
@@ -785,7 +813,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                                 map["refuseType"] = 2
                             }
                             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                            ApiMethods.subscribe(mMainPageSlideApi.refuseInvitedDoubleRoom(body), object : ApiObserver<ApiResult>() {
+                            ApiMethods.subscribe(mNotifyReqApi.refuseInvitedDoubleRoom(body), object : ApiObserver<ApiResult>() {
                                 override fun process(result: ApiResult) {
                                     if (result.errno == 0) {
                                         MyLog.w(TAG, "process result=$result")
@@ -803,14 +831,14 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
 
                     override fun onPositionUpdate(x: Int, y: Int) {
                         super.onPositionUpdate(x, y)
-                        mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW)
-                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW, 5000)
+                        mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_INVITE_FLOAT_WINDOW)
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_DOUBLE_INVITE_FLOAT_WINDOW, 5000)
                     }
                 })
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
-                .setTag(TAG_DOUBLE_INVITE_FOALT_WINDOW)
+                .setTag(TAG_DOUBLE_INVITE_FLOAT_WINDOW)
                 .build()
     }
 
@@ -818,13 +846,13 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     internal fun showDoubleInviteFromRoomFloatWindow(floatWindowData: FloatWindowData) {
         val userInfoModel = floatWindowData.userInfoModel
 
-        mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW)
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW, 5000)
+        mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_ROOM_INVITE_FLOAT_WINDOW)
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_DOUBLE_ROOM_INVITE_FLOAT_WINDOW, 5000)
         val doubleInviteNotifyView = DoubleInviteNotifyView(U.app())
         doubleInviteNotifyView.bindData(userInfoModel, floatWindowData.extra)
         doubleInviteNotifyView.setListener {
-            mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW)
-            FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW)
+            mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_ROOM_INVITE_FLOAT_WINDOW)
+            FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FLOAT_WINDOW)
             tryGoDoubleRoom(floatWindowData.mediaType, userInfoModel!!.userId, floatWindowData.roomID, 1)
         }
 
@@ -840,21 +868,21 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
 
                     override fun onPositionUpdate(x: Int, y: Int) {
                         super.onPositionUpdate(x, y)
-                        mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW)
-                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW, 5000)
+                        mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_ROOM_INVITE_FLOAT_WINDOW)
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_DOUBLE_ROOM_INVITE_FLOAT_WINDOW, 5000)
                     }
                 })
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
-                .setTag(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW)
+                .setTag(TAG_DOUBLE_ROOM_INVITE_FLOAT_WINDOW)
                 .build()
     }
 
     internal fun showGiftMallFloatWindow(floatWindowData: FloatWindowData) {
         val userInfoModel = floatWindowData.userInfoModel
-        mUiHandler.removeMessages(MSG_DISMISS_GIFT_MALL_FOALT_WINDOW)
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_GIFT_MALL_FOALT_WINDOW, 5000)
+        mUiHandler.removeMessages(MSG_DISMISS_GIFT_MALL_FLOAT_WINDOW)
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_GIFT_MALL_FLOAT_WINDOW, 5000)
         val giftMallNotifyView = GiftMallNotifyView(U.app())
         giftMallNotifyView.bindData(floatWindowData.extra, userInfoModel);
 
@@ -870,27 +898,27 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
 
                     override fun onPositionUpdate(x: Int, y: Int) {
                         super.onPositionUpdate(x, y)
-                        mUiHandler.removeMessages(MSG_DISMISS_GIFT_MALL_FOALT_WINDOW)
-                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_GIFT_MALL_FOALT_WINDOW, 5000)
+                        mUiHandler.removeMessages(MSG_DISMISS_GIFT_MALL_FLOAT_WINDOW)
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_GIFT_MALL_FLOAT_WINDOW, 5000)
                     }
                 })
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
-                .setTag(TAG_GIFT_MALL_FOALT_WINDOW)
+                .setTag(TAG_GIFT_MALL_FLOAT_WINDOW)
                 .build()
     }
 
     internal fun showMicInviteFromRoomFloatWindow(floatWindowData: FloatWindowData) {
         val userInfoModel = floatWindowData.userInfoModel
 
-        mUiHandler.removeMessages(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW)
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW, 5000)
+        mUiHandler.removeMessages(MSG_DISMISS_MIC_ROOM_INVITE_FLOAT_WINDOW)
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_MIC_ROOM_INVITE_FLOAT_WINDOW, 5000)
         val notifyView = NormalInviteNotifyView(U.app())
         notifyView.bindData(userInfoModel, "邀请你加入小K房")
         notifyView.setListener {
-            mUiHandler.removeMessages(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW)
-            FloatWindow.destroy(TAG_MIC_ROOM_INVITE_FOALT_WINDOW)
+            mUiHandler.removeMessages(MSG_DISMISS_MIC_ROOM_INVITE_FLOAT_WINDOW)
+            FloatWindow.destroy(TAG_MIC_ROOM_INVITE_FLOAT_WINDOW)
             tryGoMicRoom(userInfoModel!!.userId, floatWindowData.roomID)
         }
 
@@ -906,27 +934,27 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
 
                     override fun onPositionUpdate(x: Int, y: Int) {
                         super.onPositionUpdate(x, y)
-                        mUiHandler.removeMessages(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW)
-                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW, 5000)
+                        mUiHandler.removeMessages(MSG_DISMISS_MIC_ROOM_INVITE_FLOAT_WINDOW)
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_MIC_ROOM_INVITE_FLOAT_WINDOW, 5000)
                     }
                 })
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
-                .setTag(TAG_MIC_ROOM_INVITE_FOALT_WINDOW)
+                .setTag(TAG_MIC_ROOM_INVITE_FLOAT_WINDOW)
                 .build()
     }
 
     internal fun showPartyInviteFromRoomFloatWindow(floatWindowData: FloatWindowData) {
         val userInfoModel = floatWindowData.userInfoModel
 
-        mUiHandler.removeMessages(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW)
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW, 5000)
+        mUiHandler.removeMessages(MSG_DISMISS_PARTY_ROOM_INVITE_FLOAT_WINDOW)
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_PARTY_ROOM_INVITE_FLOAT_WINDOW, 5000)
         val notifyView = NormalInviteNotifyView(U.app())
         notifyView.bindData(userInfoModel, "邀请你加入主题房")
         notifyView.setListener {
-            mUiHandler.removeMessages(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW)
-            FloatWindow.destroy(TAG_PARTY_ROOM_INVITE_FOALT_WINDOW)
+            mUiHandler.removeMessages(MSG_DISMISS_PARTY_ROOM_INVITE_FLOAT_WINDOW)
+            FloatWindow.destroy(TAG_PARTY_ROOM_INVITE_FLOAT_WINDOW)
             tryGoPartyRoom(userInfoModel!!.userId, floatWindowData.roomID)
         }
 
@@ -942,22 +970,22 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
 
                     override fun onPositionUpdate(x: Int, y: Int) {
                         super.onPositionUpdate(x, y)
-                        mUiHandler.removeMessages(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW)
-                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW, 5000)
+                        mUiHandler.removeMessages(MSG_DISMISS_PARTY_ROOM_INVITE_FLOAT_WINDOW)
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_PARTY_ROOM_INVITE_FLOAT_WINDOW, 5000)
                     }
                 })
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
-                .setTag(TAG_PARTY_ROOM_INVITE_FOALT_WINDOW)
+                .setTag(TAG_PARTY_ROOM_INVITE_FLOAT_WINDOW)
                 .build()
     }
 
     internal fun showRelayInviteFromRoomFloatWindow(floatWindowData: FloatWindowData) {
         val userInfoModel = floatWindowData.userInfoModel
 
-        mUiHandler.removeMessages(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW)
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW, 5000)
+        mUiHandler.removeMessages(MSG_DISMISS_RELAY_INVITE_FLOAT_WINDOW)
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELAY_INVITE_FLOAT_WINDOW, 5000)
         val notifyView = RelayInviteNotifyView(U.app())
         val jsonObject = JSONObject.parseObject(floatWindowData.extra, JSONObject::class.java)
         val inviteTimeMs = jsonObject.getLongValue("inviteTimeMs")
@@ -965,8 +993,8 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         val inviteType = jsonObject.getIntValue("inviteType")
         notifyView.bindData(userInfoModel, inviteMsg)
         notifyView.setListener {
-            mUiHandler.removeMessages(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW)
-            FloatWindow.destroy(TAG_RELAY_INVITE_FOALT_WINDOW)
+            mUiHandler.removeMessages(MSG_DISMISS_RELAY_INVITE_FLOAT_WINDOW)
+            FloatWindow.destroy(TAG_RELAY_INVITE_FLOAT_WINDOW)
             tryToRelayRoom(userInfoModel?.userId
                     ?: 0, floatWindowData.roomID, inviteType, inviteTimeMs)
         }
@@ -992,14 +1020,14 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
 
                     override fun onPositionUpdate(x: Int, y: Int) {
                         super.onPositionUpdate(x, y)
-                        mUiHandler.removeMessages(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW)
-                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW, 5000)
+                        mUiHandler.removeMessages(MSG_DISMISS_RELAY_INVITE_FLOAT_WINDOW)
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELAY_INVITE_FLOAT_WINDOW, 5000)
                     }
                 })
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
-                .setTag(TAG_RELAY_INVITE_FOALT_WINDOW)
+                .setTag(TAG_RELAY_INVITE_FLOAT_WINDOW)
                 .build()
     }
 
@@ -1028,7 +1056,70 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
-                .setTag(TAG_STAND_FULL_STAR_FOALT_WINDOW)
+                .setTag(TAG_STAND_FULL_STAR_FLOAT_WINDOW)
+                .build()
+    }
+
+
+    var rongMsgNotifyView: RongMsgNotifyView? = null
+
+    /**
+     * IM消息通知
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RongMsgNotifyEvent) {
+        if(event.buddyCacheEntry?.uuid?.toString() == chatingUserId){
+            // 详情页打开的已经是跟A的会话
+            return
+        }
+        if (rongMsgNotifyView?.mUserInfoModel?.userId == event?.buddyCacheEntry?.uuid) {
+            // 如果当前正在显示A的对话 刷新A即可
+            mUiHandler.removeMessages(MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW)
+            mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW, 5000)
+            rongMsgNotifyView?.bindData(event.buddyCacheEntry.toUserInfoModel(), event.content.toString())
+        } else {
+            val floatWindowData = FloatWindowData(FloatWindowData.Type.RONG_MSG_NOTIFY)
+            floatWindowData.userInfoModel = event.buddyCacheEntry.toUserInfoModel()
+            floatWindowData.extra = event.content.toString()
+            // 如果已经有A的对话在队列里，移除A的对话
+            mFloatWindowDataFloatWindowObjectPlayControlTemplate?.remove(floatWindowData)
+            mFloatWindowDataFloatWindowObjectPlayControlTemplate?.add(floatWindowData, true)
+        }
+    }
+
+    internal fun showRongMsgNotifyFloatWindow(floatWindowData: FloatWindowData) {
+        val userInfoModel = floatWindowData.userInfoModel
+        mUiHandler.removeMessages(MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW)
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW, 5000)
+
+        rongMsgNotifyView = RongMsgNotifyView(U.app())
+        rongMsgNotifyView?.bindData(userInfoModel, floatWindowData.extra)
+        rongMsgNotifyView?.listener = {
+            mUiHandler.removeMessages(MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW)
+            FloatWindow.destroy(TAG_RONG_MSG_NOTIFY_FLOAT_WINDOW)
+        }
+
+        FloatWindow.with(U.app())
+                .setView(rongMsgNotifyView!!)
+                .setMoveType(MoveType.canRemove)
+                .setWidth(Screen.width, 1f)                               //设置控件宽高
+                .setHeight(Screen.height, 0.2f)
+                .setViewStateListener(object : ViewStateListenerAdapter() {
+                    override fun onDismiss(dismissReason: Int) {
+                        rongMsgNotifyView = null
+                        mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.endCurrent(floatWindowData)
+                    }
+
+                    override fun onPositionUpdate(x: Int, y: Int) {
+                        super.onPositionUpdate(x, y)
+                        mUiHandler.removeMessages(MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW)
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW, 5000)
+                    }
+                })
+                .setDesktopShow(false)                        //桌面显示
+                .setCancelIfExist(false)
+                .setReqPermissionIfNeed(false)
+                .setTag(TAG_RONG_MSG_NOTIFY_FLOAT_WINDOW)
                 .build()
     }
 
@@ -1041,7 +1132,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         relationNotifyView.setListener {
             // 不消失
             //                mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
-            //                FloatWindow.destroy(TAG_RELATION_FOALT_WINDOW);
+            //                FloatWindow.destroy(TAG_RELATION_FLOAT_WINDOW);
         }
         FloatWindow.with(U.app())
                 .setView(relationNotifyView)
@@ -1062,7 +1153,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
-                .setTag(TAG_RELATION_FOALT_WINDOW)
+                .setTag(TAG_RELATION_FLOAT_WINDOW)
                 .build()
     }
 
@@ -1082,36 +1173,87 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                     '}'.toString()
         }
 
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as FloatWindowData
+
+            // 针对聊天通知是否是同一条做下特殊处理
+            if (mType == Type.RONG_MSG_NOTIFY && other.mType == Type.RONG_MSG_NOTIFY) {
+                if (userInfoModel?.userId == other.userInfoModel?.userId) {
+                    return true
+                }
+            }
+
+            if (mType != other.mType) return false
+            if (userInfoModel != other.userInfoModel) return false
+            if (roomID != other.roomID) return false
+            if (tagID != other.tagID) return false
+            if (mediaType != other.mediaType) return false
+            if (extra != other.extra) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            if (mType == Type.RONG_MSG_NOTIFY) {
+                return userInfoModel?.userId ?: 0
+            }
+
+            var result = mType.hashCode()
+            result = 31 * result + (userInfoModel?.hashCode() ?: 0)
+            result = 31 * result + roomID
+            result = 31 * result + tagID
+            result = 31 * result + mediaType
+            result = 31 * result + (extra?.hashCode() ?: 0)
+            return result
+        }
+
+
         /**
          * DOUBLE_GRAB_INVITE是一场到底里的邀请
          * DOUBLE_ROOM_INVITE是唱聊房里的邀请
          * STAND_FULL_STAR 歌单战5星好评
          */
         enum class Type {
-            FOLLOW, GRABINVITE, DOUBLE_GRAB_INVITE, DOUBLE_ROOM_INVITE, STAND_FULL_STAR, MIC_INVITE, MALL_GIFT, PARTY_INVITE, RELAY_INVITE
+            FOLLOW,
+            GRAB_INVITE,
+            DOUBLE_GRAB_INVITE,
+            DOUBLE_ROOM_INVITE,
+            STAND_FULL_STAR,
+            MIC_INVITE,
+            MALL_GIFT,
+            PARTY_INVITE,
+            RELAY_INVITE,
+            RONG_MSG_NOTIFY
         }
     }
 
     companion object {
 
-        internal val TAG_INVITE_FOALT_WINDOW = "TAG_INVITE_FOALT_WINDOW"
-        internal val TAG_RELATION_FOALT_WINDOW = "TAG_RELATION_FOALT_WINDOW"
-        internal val TAG_DOUBLE_INVITE_FOALT_WINDOW = "TAG_DOUBLE_INVITE_FOALT_WINDOW"
-        internal val TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW = "TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW"
-        internal val TAG_STAND_FULL_STAR_FOALT_WINDOW = "TAG_STAND_FULL_STAR_FOALT_WINDOW"
-        internal val TAG_MIC_ROOM_INVITE_FOALT_WINDOW = "TAG_MIC_ROOM_INVITE_FOALT_WINDOW"
-        internal val TAG_PARTY_ROOM_INVITE_FOALT_WINDOW = "TAG_PARTY_ROOM_INVITE_FOALT_WINDOW"
-        internal val TAG_GIFT_MALL_FOALT_WINDOW = "TAG_GIFT_MALL_FOALT_WINDOW"
-        internal val TAG_RELAY_INVITE_FOALT_WINDOW = "TAG_RELAY_INVITE_FOALT_WINDOW"
+        var chatingUserId: String? = null
 
-        internal val MSG_DISMISS_INVITE_FLOAT_WINDOW = 2
-        internal val MSG_DISMISS_RELATION_FLOAT_WINDOW = 3
-        internal val MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW = 4      // 普通邀请
-        internal val MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW = 5 // 邀请好友，在双人房中的邀请
-        internal val MSG_DISMISS_STAND_FULL_STAR = 6
-        internal val MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW = 7
-        internal val MSG_DISMISS_GIFT_MALL_FOALT_WINDOW = 8
-        internal val MSG_DISMISS_PARTY_ROOM_INVITE_FOALT_WINDOW = 9
-        internal val MSG_DISMISS_RELAY_INVITE_FOALT_WINDOW = 10      // 普通邀请
+        internal const val TAG_INVITE_FLOAT_WINDOW = "TAG_INVITE_FLOAT_WINDOW"
+        internal const val TAG_RELATION_FLOAT_WINDOW = "TAG_RELATION_FLOAT_WINDOW"
+        internal const val TAG_DOUBLE_INVITE_FLOAT_WINDOW = "TAG_DOUBLE_INVITE_FLOAT_WINDOW"
+        internal const val TAG_DOUBLE_ROOM_INVITE_FLOAT_WINDOW = "TAG_DOUBLE_ROOM_INVITE_FLOAT_WINDOW"
+        internal const val TAG_STAND_FULL_STAR_FLOAT_WINDOW = "TAG_STAND_FULL_STAR_FLOAT_WINDOW"
+        internal const val TAG_MIC_ROOM_INVITE_FLOAT_WINDOW = "TAG_MIC_ROOM_INVITE_FLOAT_WINDOW"
+        internal const val TAG_PARTY_ROOM_INVITE_FLOAT_WINDOW = "TAG_PARTY_ROOM_INVITE_FLOAT_WINDOW"
+        internal const val TAG_GIFT_MALL_FLOAT_WINDOW = "TAG_GIFT_MALL_FLOAT_WINDOW"
+        internal const val TAG_RELAY_INVITE_FLOAT_WINDOW = "TAG_RELAY_INVITE_FLOAT_WINDOW"
+        internal const val TAG_RONG_MSG_NOTIFY_FLOAT_WINDOW = "TAG_RONG_MSG_NOTIFY_FLOAT_WINDOW"
+
+        internal const val MSG_DISMISS_INVITE_FLOAT_WINDOW = 2
+        internal const val MSG_DISMISS_RELATION_FLOAT_WINDOW = 3
+        internal const val MSG_DISMISS_DOUBLE_INVITE_FLOAT_WINDOW = 4      // 普通邀请
+        internal const val MSG_DISMISS_DOUBLE_ROOM_INVITE_FLOAT_WINDOW = 5 // 邀请好友，在双人房中的邀请
+        internal const val MSG_DISMISS_STAND_FULL_STAR = 6
+        internal const val MSG_DISMISS_MIC_ROOM_INVITE_FLOAT_WINDOW = 7
+        internal const val MSG_DISMISS_GIFT_MALL_FLOAT_WINDOW = 8
+        internal const val MSG_DISMISS_PARTY_ROOM_INVITE_FLOAT_WINDOW = 9
+        internal const val MSG_DISMISS_RELAY_INVITE_FLOAT_WINDOW = 10      // 普通邀请
+        internal const val MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW = 11 // 融云消息
     }
 }

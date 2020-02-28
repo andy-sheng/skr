@@ -14,6 +14,8 @@ import com.common.core.userinfo.model.VerifyInfo;
 import com.common.log.MyLog;
 import com.module.ModuleServiceManager;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -256,6 +258,15 @@ public class BuddyCache {
                 return true;
             }
             return false;
+        }
+
+        @Nullable
+        public UserInfoModel toUserInfoModel() {
+            UserInfoModel userInfoModel = new UserInfoModel();
+            userInfoModel.setUserId(uuid);
+            userInfoModel.setNickname(name);
+            userInfoModel.setAvatar(avatar);
+            return userInfoModel;
         }
     }
 }

@@ -62,11 +62,10 @@ import com.module.home.game.GameFragment3;
 import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.EnterHomeDialogPresenter;
 import com.module.home.persenter.HomeCorePresenter;
-import com.module.home.persenter.NotifyCorePresenter;
+import com.component.notification.presenter.NotifyCorePresenter;
 import com.module.home.persenter.RedPkgPresenter;
 import com.module.home.persenter.VipReceiveCoinPresenter;
 import com.module.home.view.IHomeActivity;
-import com.module.home.view.INotifyView;
 import com.module.mall.RelationCardUtils;
 import com.module.msg.IMsgService;
 import com.module.playways.IPlaywaysModeService;
@@ -83,10 +82,9 @@ import useroperate.OperateFriendActivity;
 import useroperate.inter.AbsRelationOperate;
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
-public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener, INotifyView {
+public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener {
 
     public final String TAG = "HomeActivity";
-    public final static String NOTIFY_CHANNEL_ID = "invite_notify";
 
     ConstraintLayout mMainActContainer;
     ExLinearLayout mBottomContainer;
@@ -122,8 +120,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     int postRedDotValue;
     int spFollowRedDotValue;
     int giftRedDotValue;
-
-    NotificationManager mNManager;
 
     RelationCardUtils mRelationCardUtils;
 
@@ -185,12 +181,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mPersonInfoBtn = findViewById(R.id.person_info_btn);
         mPersonInfoRedDot = findViewById(R.id.person_info_red_dot);
         mMainVp = findViewById(R.id.main_vp);
-        mNManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel mChannel = new NotificationChannel(NOTIFY_CHANNEL_ID, "notify", NotificationManager.IMPORTANCE_LOW);
-            mNManager.createNotificationChannel(mChannel);
-        }
 
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         mMainVp.setViewPagerCanScroll(false);
@@ -319,7 +310,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         addPresent(mRedPkgPresenter);
 
-        mNotifyCorePresenter = new NotifyCorePresenter(this);
+        mNotifyCorePresenter = new NotifyCorePresenter();
 
         addPresent(mNotifyCorePresenter);
 
@@ -413,31 +404,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 //            EventBus.getDefault().post(new ShowDialogInHomeEvent(mWaitingDialogPlus, 11));
 //            U.getPreferenceUtils().setSettingBoolean(PREF_KEY_PARTY_DIALOG, true);
 //        }
-    }
-
-    @Override
-    public void showNotify(GrabInviteNotifyEvent event) {
-        Intent it = new Intent(this, SchemeSdkActivity.class);
-        it.putExtra("uri", String.format("inframeskr://room/grabjoin?owner=%d&gameId=%d&ask=1", event.mUserInfoModel.getUserId(), event.roomID));
-        PendingIntent pit = PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        //设置图片,通知标题,发送时间,提示方式等属性
-        Notification.Builder mBuilder = new Notification.Builder(this);
-        mBuilder.setContentTitle("@" + MyUserInfoManager.INSTANCE.getNickName())                        //标题
-                .setContentText("你的好友" + event.mUserInfoModel.getNicknameRemark() + "邀请你玩游戏")      //内容
-                .setWhen(System.currentTimeMillis())           //设置通知时间
-                .setSmallIcon(R.drawable.app_icon)            //设置小图标
-                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)    //设置默认的三色灯与振动器
-//                .setPriority(Notification.PRIORITY_MAX)      //设置应用的优先级，可以用来修复在小米手机上可能显示在不重要通知中
-                .setAutoCancel(true)                           //设置点击后取消Notification
-                .setContentIntent(pit);                        //设置PendingIntent
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mBuilder.setChannelId(NOTIFY_CHANNEL_ID);
-        }
-
-        Notification notify1 = mBuilder.build();
-        mNManager.notify(1, notify1);
     }
 
     private void selectTab(int tabSeq) {

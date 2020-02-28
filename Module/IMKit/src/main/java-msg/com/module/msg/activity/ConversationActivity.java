@@ -24,6 +24,7 @@ import com.common.utils.NetworkUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
+import com.component.notification.presenter.NotifyCorePresenter;
 import com.dialog.list.DialogListItem;
 import com.dialog.list.ListDialog;
 import com.module.RouterConstants;
@@ -135,6 +136,8 @@ public class ConversationActivity extends BaseActivity {
                 }
             });
         }
+
+        NotifyCorePresenter.Companion.setChatingUserId(mUserId);
 
         U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
         RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {
@@ -316,6 +319,7 @@ public class ConversationActivity extends BaseActivity {
         super.destroy();
         RongIM.getInstance().setSendMessageListener(null);
         U.getSoundUtils().release(getTAG());
+        NotifyCorePresenter.Companion.setChatingUserId(null);
     }
 
     public String getUserId() {

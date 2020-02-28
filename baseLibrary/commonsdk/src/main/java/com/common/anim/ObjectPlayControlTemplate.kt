@@ -122,6 +122,14 @@ abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
     }
 
     /**
+     * 移除队列中某个元素
+     */
+    fun remove(model: MODEL) {
+        MyLog.d(MODELAG, "onStartInside model:" + model!!)
+        mQueue.remove(model)
+    }
+
+    /**
      * 复位
      */
     fun reset() {
