@@ -41,8 +41,8 @@ public class KSYAudioSLRecord implements IKSYAudioRecord {
     }
 
     @Override
-    public int read(ByteBuffer buffer, int size) {
-        int ret = _read(mInstance, buffer, size);
+    public int read(ByteBuffer buffer, int size, long timeout) {
+        int ret = _read(mInstance, buffer, size, (int)timeout);
         if (ret > 0) {
             buffer.limit(ret);
             buffer.rewind();
@@ -65,7 +65,7 @@ public class KSYAudioSLRecord implements IKSYAudioRecord {
     private native int _start(long instance);
     private native int _stop(long instance);
     private native void _setEnableLatencyTest(long instance, boolean enable);
-    private native int _read(long instance, ByteBuffer buffer, int size);
+    private native int _read(long instance, ByteBuffer buffer, int size, int timeout);
     private native void _release(long instance);
 
     static {

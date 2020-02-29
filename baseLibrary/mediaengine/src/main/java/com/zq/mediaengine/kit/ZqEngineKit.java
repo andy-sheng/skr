@@ -189,6 +189,10 @@ public class ZqEngineKit implements AgoraOutCallback {
     private RawFrameWriter mCapRawFrameWriter;
     private RawFrameWriter mBgmRawFrameWriter;
 
+    // 音频采集重试相关
+    private boolean mIsAudioCaptureStarted = false;
+    private int mAudioCaptureRetriedCount = 0;
+
     // 伴奏状态相关
     private String mCdnType = "";
     private boolean mAccEnableCache = false;
@@ -201,7 +205,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private long mAccRecoverPosition = 0;
     private int mAccRemainedLoopCount = 0;
     private int mAccRetriedCount = 0;
-    int lastAudioMixingPublishVolume = -1;
+    private int lastAudioMixingPublishVolume = -1;
 
     // 视频相关参数
     protected int mScreenRenderWidth = 0;
@@ -814,6 +818,53 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
+    private void doStartAudioCapture() {
+        doStartAudioCapture(false);
+    }
+
+    private void doStartAudioCapture(boolean isRetry) {
+        mAudioCapture.start();
+
+        if (!isRetry) {
+            mIsAudioCaptureStarted = true;
+            mAudioCaptureRetriedCount = 0;
+        } else {
+            mAudioCaptureRetriedCount++;
+        }
+
+        doUploadAudioCaptureStartEvent();
+    }
+
+    private void doStopAudioCapture() {
+        doStopAudioCapture(false);
+    }
+
+    private void doStopAudioCapture(boolean isRetry) {
+        mAudioCapture.stop();
+
+        if (!isRetry) {
+            mIsAudioCaptureStarted = false;
+        }
+    }
+
+    private void doUploadAudioCaptureStartEvent() {
+        MyLog.i(TAG, "doUploadAudioCaptureStartEvent");
+        Skr.AudioCaptureEvent event = new Skr.AudioCaptureEvent();
+        event.type = 1;
+        event.errCode = 0;
+        event.retriedCount = mAudioCaptureRetriedCount;
+        SDataManager.getInstance().getDataHolder().addAudioCaptureEvent(event);
+    }
+
+    private void doUploadAudioCaptureFailedEvent(int errCode) {
+        MyLog.i(TAG, "doUploadAudioCaptureFailedEvent");
+        Skr.AudioCaptureEvent event = new Skr.AudioCaptureEvent();
+        event.type = 2;
+        event.errCode = errCode;
+        event.retriedCount = mAudioCaptureRetriedCount;
+        SDataManager.getInstance().getDataHolder().addAudioCaptureEvent(event);
+    }
+
     private AudioCapture.OnAudioCaptureListener mOnAudioCaptureListener = new AudioCapture.OnAudioCaptureListener() {
         @Override
         public void onStatusChanged(int status) {
@@ -833,6 +884,20 @@ public class ZqEngineKit implements AgoraOutCallback {
         @Override
         public void onError(int errorCode) {
             MyLog.e(TAG, "AudioCapture onError err: " + errorCode);
+            doUploadAudioCaptureFailedEvent(errorCode);
+            mCustomHandlerThread.postDelayed(() -> {
+                if (mIsAudioCaptureStarted) {
+                    if (mAudioCaptureRetriedCount < 3) {
+                        MyLog.i(TAG, "try to restart audio capture the " + mAudioCaptureRetriedCount + " time");
+                        doStopAudioCapture(true);
+                        doStartAudioCapture(true);
+                    } else {
+                        MyLog.e(TAG, "try to restart audio capture failed for 3times, notify app");
+                        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_ENGINE_ERROR);
+                        EventBus.getDefault().post(engineEvent);
+                    }
+                }
+            }, 100);
         }
     };
 
@@ -937,7 +1002,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (mConfig.isUseExternalAudio()) {
             mRemoteAudioPreview.stop();
             mLocalAudioPreview.stop();
-            mAudioCapture.stop();
+            doStopAudioCapture();
             mAudioPlayerCapture.stop();
         }
         mAgoraRTCAdapter.leaveChannel();
@@ -973,6 +1038,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         // destroy前必须先停止所有录制
         doStopAudioRecordingInner();
         mConfig.setAnchor(false);
+        mIsAudioCaptureStarted = false;
         MyLog.i(TAG, "destroyInner1");
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
@@ -1175,12 +1241,12 @@ public class ZqEngineKit implements AgoraOutCallback {
                 public void realRun() {
                     if (mConfig.isUseExternalAudio() && mConfig.isJoinChannelSuccess()) {
                         if (isAnchor) {
-                            mAudioCapture.start();
+                            doStartAudioCapture();
                             if (mConfig.isEnableInEarMonitoring() && shouldStartAudioPreview()) {
                                 mLocalAudioPreview.start();
                             }
                         } else {
-                            mAudioCapture.stop();
+                            doStopAudioCapture();
                             mLocalAudioPreview.stop();
                         }
                     }
@@ -1222,14 +1288,21 @@ public class ZqEngineKit implements AgoraOutCallback {
         adjustAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume(), false);
         enableInEarMonitoring(mConfig.isEnableInEarMonitoring());
 
-        // 成功后，自采集模式下开启采集
-        if (mConfig.isUseExternalAudio()) {
-            if (mConfig.isAnchor()) {
-                mAudioCapture.start();
-            }
-            if (mRemoteAudioPreview != null) {
-                mRemoteAudioPreview.start();
-            }
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    // 成功后，自采集模式下开启采集
+                    if (mConfig.isUseExternalAudio()) {
+                        if (mConfig.isAnchor()) {
+                            doStartAudioCapture();
+                        }
+                        if (mRemoteAudioPreview != null) {
+                            mRemoteAudioPreview.start();
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -1449,24 +1522,6 @@ public class ZqEngineKit implements AgoraOutCallback {
             }
             mAudioReverbFilter.setReverbLevel(type);
         }
-
-//        // 添加音效
-//        List<AudioFilterBase> filters = new ArrayList<>(2);
-//        if (styleEnum == Params.AudioEffect.ktv) {
-//            filters.add(new CbAudioEffectFilter(5));
-//        } else if (styleEnum == Params.AudioEffect.rock) {
-//            filters.add(new CbAudioEffectFilter(2));
-//        } else if (styleEnum == Params.AudioEffect.liuxing) {
-//            filters.add(new CbAudioEffectFilter(3));
-//        } else if (styleEnum == Params.AudioEffect.kongling) {
-//            filters.add(new CbAudioEffectFilter(1));
-//        }
-//
-////        filters.add(new TbAudioAgcFilter(mConfig));
-//
-//        if (mAudioFilterMgt != null) {
-//            mAudioFilterMgt.setFilter(filters);
-//        }
     }
 
     public void setAudioEffectStyle(final Params.AudioEffect styleEnum) {
@@ -2307,7 +2362,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         // 未加入房间时需要先开启音频采集
                         if (mConfig.isUseExternalAudio()) {
                             if (!mConfig.isJoinChannelSuccess() && mAudioCapture != null) {
-                                mAudioCapture.start();
+                                doStartAudioCapture();
                             }
                         }
 
@@ -2383,7 +2438,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioEncoder.stop();
                 // 未加入房间时需要停止音频采集
                 if (!mConfig.isJoinChannelSuccess() && mAudioCapture != null) {
-                    mAudioCapture.stop();
+                    doStopAudioCapture();
                 }
             } else {
                 mAgoraRTCAdapter.stopAudioRecording();

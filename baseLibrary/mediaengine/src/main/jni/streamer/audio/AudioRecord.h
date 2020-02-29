@@ -21,7 +21,7 @@ public:
 
     void setVolume(float volume) {mVolume = volume;}
 
-    int read(uint8_t* buf, int size);
+    int read(uint8_t* buf, int size, int timeout);
     int getState();
 
     void setEnableLatencyTest(bool enable) {mLatencyTest = enable;}

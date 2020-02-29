@@ -50,10 +50,10 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_capture_audio_KSYAudioSLRecord__1
 /*
  * Class:     com_zq_mediaengine_capture_audio_KSYAudioSLRecord
  * Method:    _read
- * Signature: (JLjava/nio/ByteBuffer;I)I
+ * Signature: (JLjava/nio/ByteBuffer;II)I
  */
 JNIEXPORT jint JNICALL Java_com_zq_mediaengine_capture_audio_KSYAudioSLRecord__1read
-        (JNIEnv *, jobject, jlong, jobject, jint);
+        (JNIEnv *, jobject, jlong, jobject, jint, jint);
 
 /*
  * Class:     com_zq_mediaengine_capture_audio_KSYAudioSLRecord

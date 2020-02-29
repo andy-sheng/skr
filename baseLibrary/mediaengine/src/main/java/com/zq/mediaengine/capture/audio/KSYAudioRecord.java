@@ -71,7 +71,8 @@ public class KSYAudioRecord implements IKSYAudioRecord {
     }
 
     @Override
-    public int read(ByteBuffer buffer, int size) {
+    public int read(ByteBuffer buffer, int size, long timeout) {
+        // timeout ignored
         int ret = mAudioRecord.read(buffer, size);
         if (ret <= 0) {
             return ret;

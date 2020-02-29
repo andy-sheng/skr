@@ -38,8 +38,8 @@ public class AudioCapture {
     public static final int STATE_INITIALIZED = 1;
     public static final int STATE_RECORDING = 2;
 
-    public static final int AUDIO_ERROR_UNKNOWN = -2005;
-    public static final int AUDIO_START_FAILED = -2003;
+    public static final int AUDIO_ERROR_UNKNOWN = -1;
+    public static final int AUDIO_START_FAILED = -2;
 
     private int mSampleRate = 44100;
     private int mChannels = 1;
@@ -323,8 +323,11 @@ public class AudioCapture {
                 return;
             }
             postState(STATE_RECORDING);
+
+            long timeout = readSize * 1000L / mSampleRate / mChannels / 2;
+            timeout *= 4;
             while (!mStop) {
-                int read = mAudioRecord.read(byteBuffer, readSize);
+                int read = mAudioRecord.read(byteBuffer, readSize, timeout);
                 if (mStop) {
                     break;
                 }
@@ -344,7 +347,7 @@ public class AudioCapture {
                         long time = System.nanoTime() / 1000 / 1000;
                         postFirstPacketReceived(time);
                     }
-                } else if (read < 0) {
+                } else {
                     Log.e(TAG, "read error: " + read);
                     postError(AUDIO_ERROR_UNKNOWN);
                     break;

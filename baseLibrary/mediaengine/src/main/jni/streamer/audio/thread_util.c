@@ -28,6 +28,35 @@ void* createThreadLock(void)
     return p;
 }
 
+void calAbsTime(struct timespec *ts, int timeInMs) {
+    struct timespec now;
+    clock_gettime(CLOCK_REALTIME, &now);
+    long nsec = now.tv_nsec + (timeInMs % 1000) * 1000000;
+    ts->tv_sec = now.tv_sec + nsec / 1000000000 + timeInMs / 1000;
+    ts->tv_nsec = nsec % 1000000000;
+}
+
+int timedWaitThreadLock(void *lock, int timeInMs)
+{
+    threadLock  *p;
+    int ret = 0;
+    p = (threadLock*)lock;
+    pthread_mutex_lock(&(p->m));
+    while (!p->s) {
+        struct timespec ts;
+        calAbsTime(&ts, timeInMs);
+        if (pthread_cond_timedwait(&(p->c), &(p->m), &ts) == ETIMEDOUT) {
+            ret = ETIMEDOUT;
+            break;
+        }
+    }
+    if (ret == 0) {
+        p->s = (unsigned char) 0;
+    }
+    pthread_mutex_unlock(&(p->m));
+    return ret;
+}
+
 void waitThreadLock(void *lock)
 {
     threadLock  *p;

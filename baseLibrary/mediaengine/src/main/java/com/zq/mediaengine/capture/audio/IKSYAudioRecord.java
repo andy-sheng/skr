@@ -16,7 +16,7 @@ public interface IKSYAudioRecord {
 
     void release();
 
-    int read(ByteBuffer buffer, int size);
+    int read(ByteBuffer buffer, int size, long timeout);
 
     long getNativeModule();
 

@@ -47,7 +47,7 @@ public class KSYAudioDummyRecord implements IKSYAudioRecord {
     }
 
     @Override
-    public int read(ByteBuffer buffer, int size) {
+    public int read(ByteBuffer buffer, int size, long timeout) {
         if (buffer == null || buffer.capacity() < size) {
             return 0;
         }

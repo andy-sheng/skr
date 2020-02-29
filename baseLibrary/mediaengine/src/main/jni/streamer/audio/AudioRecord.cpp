@@ -11,6 +11,21 @@
 #undef LOG_TAG
 #define LOG_TAG "AudioRecord"
 
+/*
+ * Aquire current timestamp in milliseconds
+ */
+static inline int64_t getNsTimestamp() {
+    struct timespec stamp;
+    clock_gettime(CLOCK_MONOTONIC, &stamp);
+    int64_t nsec = (int64_t) stamp.tv_sec*1000000000LL + stamp.tv_nsec;
+    return nsec;
+}
+
+static inline int16_t clipInt16(int a) {
+    if ((a+0x8000) & ~0xFFFF) return (int16_t) ((a >> 31) ^ 0x7FFF);
+    else                      return (int16_t) a;
+}
+
 AudioRecord::AudioRecord(int sampleRate, int channels, int bufferSamples):
     AudioBase(),
     mBuffer(NULL),
@@ -139,33 +154,26 @@ int AudioRecord::stop() {
     return 0;
 }
 
-int AudioRecord::read(uint8_t *buf, int size) {
+int AudioRecord::read(uint8_t *buf, int size, int timeout) {
+    int64_t startTime = getNsTimestamp();
+    int waitTime = timeout;
     int count = size / mFrameSize;
     int read = audio_utils_fifo_read(&mFifo, buf, (size_t) count);
     while (read < count) {
-        waitThreadLock(mReadCond);
+        int ret = timedWaitThreadLock(mReadCond, waitTime);
         if (mState != STATE_RECORDING) {
             LOGD("read aborted!");
             break;
         }
         read += audio_utils_fifo_read(&mFifo, (buf + read * mFrameSize), (size_t) (count - read));
+        int timeElapsed = (int)((getNsTimestamp() - startTime) / 1000000);
+        if (ret == ETIMEDOUT || timeElapsed >= timeout) {
+            LOGE("read timeout! timeElapsed: %d timeout: %d", timeElapsed, timeout);
+            break;
+        }
+        waitTime = timeout - timeElapsed;
     }
     return read * mFrameSize;
-}
-
-/*
- * Aquire current timestamp in milliseconds
- */
-static inline int64_t getNsTimestamp() {
-    struct timespec stamp;
-    clock_gettime(CLOCK_MONOTONIC, &stamp);
-    int64_t nsec = (int64_t) stamp.tv_sec*1000000000LL + stamp.tv_nsec;
-    return nsec;
-}
-
-static inline int16_t clipInt16(int a) {
-    if ((a+0x8000) & ~0xFFFF) return (int16_t) ((a >> 31) ^ 0x7FFF);
-    else                      return (int16_t) a;
 }
 
 void AudioRecord::bqRecorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context)
@@ -225,7 +233,7 @@ void AudioRecord::bqRecorderCallback(SLAndroidSimpleBufferQueueItf bq, void *con
     SLresult result = (*thiz->mSLRecord.recorderBufferQueue)->Enqueue(
             thiz->mSLRecord.recorderBufferQueue,
             thiz->mBuffer, (SLuint32) size);
-    if(result != SL_RESULT_SUCCESS) {
+    if (result != SL_RESULT_SUCCESS) {
         LOGE("[bqRecorderCallback] Enqueue failed:%d", (int) result);
     }
 

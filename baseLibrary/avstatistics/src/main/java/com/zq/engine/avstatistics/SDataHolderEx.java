@@ -207,6 +207,17 @@ public class SDataHolderEx {
         }
     }
 
+    int numAudioCaptureEvent = 0;
+
+    synchronized public void addAudioCaptureEvent(Skr.AudioCaptureEvent event) {
+        if (event == null) return;
+        if (numAudioCaptureEvent <= 10) {
+            event.ts = System.currentTimeMillis();
+            mItemList.add(event);
+            numAudioCaptureEvent++;
+        }
+    }
+
     public final static int AR_PHONE_SPEAKER = 1;
     public final static int AR_BLUETOOTH = 2;
     public final static int AR_HEADSET = 3;
@@ -282,6 +293,7 @@ public class SDataHolderEx {
         numSAudioSamplingInfoGroup = 0;
         numPlayerStartInfo = 0;
         numPlayerStopInfo = 0;
+        numAudioCaptureEvent = 0;
     }
 
 

@@ -7,6 +7,8 @@ extern "C" {
 
 void* createThreadLock(void);
 
+int timedWaitThreadLock(void *lock, int timeInMs);
+
 void waitThreadLock(void *lock);
 
 void notifyThreadLock(void *lock);

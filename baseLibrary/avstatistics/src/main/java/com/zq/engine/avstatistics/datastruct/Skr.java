@@ -212,4 +212,42 @@ public class Skr
         }
     }
 
+    public static class AudioCaptureEvent implements ILogItem {
+        public long ts = 0; //timestamp;
+
+        // 事件类型, 1: 开始 2: 失败
+        public long type = 0;
+        // 失败时的错误码
+        public long errCode = 0;
+        // 当前的重试次数
+        public long retriedCount = 0;
+
+        @Override
+        public String toString() {
+            return getKey() + ": " + toJSONObject().toString();
+        }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsObj = new JSONObject();
+            try {
+                jsObj.put("tsStr", SUtils.transTime(ts));
+                jsObj.put("tsValue", ts);
+
+                jsObj.put("type", type);
+                jsObj.put("errCode", errCode);
+                jsObj.put("retriedCount", retriedCount);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return jsObj;
+        }
+
+        @Override
+        public String getKey() {
+            return "AudioCaptureEvent";
+        }
+    }
+
 }

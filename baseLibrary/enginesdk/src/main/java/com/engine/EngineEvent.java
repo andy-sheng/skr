@@ -21,8 +21,9 @@ public class EngineEvent {
     public static final int TYPE_MUSIC_PLAY_ERROR = 16; // 伴奏播放出错
     public static final int TYPE_MUSIC_PLAY_STATE_CHANGE = 17; // 伴奏播放状态变化
 
-    public static final int TYPE_ENGINE_INITED = 100;// 引擎初始化完毕
-    public static final int TYPE_ENGINE_DESTROY = 99;// 引擎销毁完毕
+    public static final int TYPE_ENGINE_INITED = 100;   // 引擎初始化完毕
+    public static final int TYPE_ENGINE_DESTROY = 99;   // 引擎销毁完毕
+    public static final int TYPE_ENGINE_ERROR = 101;    // 引擎出现不可恢复错误
 
     public static final int TYPE_RECORD_FINISHED = 110; // 录制完成
     public static final int TYPE_RECORD_ERROR = 111;    // 录制出错
@@ -224,6 +225,8 @@ public class EngineEvent {
                 return "ENGINE_DESTROY";
             case TYPE_ENGINE_INITED:
                 return "ENGINE_INITED";
+            case TYPE_ENGINE_ERROR:
+                return "ENGINE_ERROR";
             case TYPE_RECORD_FINISHED:
                 return "RECORD_FINISHED";
             case TYPE_RECORD_ERROR:

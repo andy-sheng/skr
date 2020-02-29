@@ -35,10 +35,10 @@ void Java_com_zq_mediaengine_capture_audio_KSYAudioSLRecord__1setEnableLatencyTe
 }
 
 jint Java_com_zq_mediaengine_capture_audio_KSYAudioSLRecord__1read
-        (JNIEnv *env, jobject obj, jlong ptr, jobject jByteBuffer, jint size) {
+        (JNIEnv *env, jobject obj, jlong ptr, jobject jByteBuffer, jint size, jint timeout) {
     AutoBufferPointer abp(env, jByteBuffer, JNI_TRUE);
     uint8_t *buf = (uint8_t*)abp.pointer();
-    return getInstance(ptr)->read(buf, size);
+    return getInstance(ptr)->read(buf, size, timeout);
 }
 
 void Java_com_zq_mediaengine_capture_audio_KSYAudioSLRecord__1release
