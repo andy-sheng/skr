@@ -3,8 +3,6 @@ package com.module.home;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiResult;
 
-import java.util.Queue;
-
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -144,6 +142,12 @@ public interface MainPageSlideApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/partyroom/has-create-permission")
     Call<ApiResult> hasCreatePermission(@Body RequestBody body);
+
+    /**
+     *
+     */
+    @GET("http://dev.kconf.inframe.mobi/v1/kconf/query-app-windows")
+    Observable<ApiResult> queryAppWindows();
 
 
     /**
