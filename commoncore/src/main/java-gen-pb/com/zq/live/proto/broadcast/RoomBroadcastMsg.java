@@ -65,20 +65,20 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
       tag = 11,
       adapter = "com.zq.live.proto.broadcast.PresentGift#ADAPTER"
   )
-  private final PresentGift PresentGift;
+  private final PresentGift presentGift;
 
   public RoomBroadcastMsg(Long timeMs, ERoomBroadcastMsgType msgType, StandFullStar standFullStar,
-      PresentGift PresentGift) {
-    this(timeMs, msgType, standFullStar, PresentGift, ByteString.EMPTY);
+      PresentGift presentGift) {
+    this(timeMs, msgType, standFullStar, presentGift, ByteString.EMPTY);
   }
 
   public RoomBroadcastMsg(Long timeMs, ERoomBroadcastMsgType msgType, StandFullStar standFullStar,
-      PresentGift PresentGift, ByteString unknownFields) {
+      PresentGift presentGift, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
     this.standFullStar = standFullStar;
-    this.PresentGift = PresentGift;
+    this.presentGift = presentGift;
   }
 
   @Override
@@ -87,7 +87,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
     builder.timeMs = timeMs;
     builder.msgType = msgType;
     builder.standFullStar = standFullStar;
-    builder.PresentGift = PresentGift;
+    builder.presentGift = presentGift;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -101,7 +101,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
         && Internal.equals(timeMs, o.timeMs)
         && Internal.equals(msgType, o.msgType)
         && Internal.equals(standFullStar, o.standFullStar)
-        && Internal.equals(PresentGift, o.PresentGift);
+        && Internal.equals(presentGift, o.presentGift);
   }
 
   @Override
@@ -112,7 +112,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
       result = result * 37 + (timeMs != null ? timeMs.hashCode() : 0);
       result = result * 37 + (msgType != null ? msgType.hashCode() : 0);
       result = result * 37 + (standFullStar != null ? standFullStar.hashCode() : 0);
-      result = result * 37 + (PresentGift != null ? PresentGift.hashCode() : 0);
+      result = result * 37 + (presentGift != null ? presentGift.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -124,7 +124,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
     if (timeMs != null) builder.append(", timeMs=").append(timeMs);
     if (msgType != null) builder.append(", msgType=").append(msgType);
     if (standFullStar != null) builder.append(", standFullStar=").append(standFullStar);
-    if (PresentGift != null) builder.append(", PresentGift=").append(PresentGift);
+    if (presentGift != null) builder.append(", presentGift=").append(presentGift);
     return builder.replace(0, 2, "RoomBroadcastMsg{").append('}').toString();
   }
 
@@ -172,10 +172,10 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
    * 赠送礼物：全站通知
    */
   public PresentGift getPresentGift() {
-    if(PresentGift==null){
+    if(presentGift==null){
         return new PresentGift.Builder().build();
     }
-    return PresentGift;
+    return presentGift;
   }
 
   /**
@@ -203,7 +203,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
    * 赠送礼物：全站通知
    */
   public boolean hasPresentGift() {
-    return PresentGift!=null;
+    return presentGift!=null;
   }
 
   public static final class Builder extends Message.Builder<RoomBroadcastMsg, Builder> {
@@ -213,7 +213,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
 
     private StandFullStar standFullStar;
 
-    private PresentGift PresentGift;
+    private PresentGift presentGift;
 
     public Builder() {
     }
@@ -245,14 +245,14 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
     /**
      * 赠送礼物：全站通知
      */
-    public Builder setPresentGift(PresentGift PresentGift) {
-      this.PresentGift = PresentGift;
+    public Builder setPresentGift(PresentGift presentGift) {
+      this.presentGift = presentGift;
       return this;
     }
 
     @Override
     public RoomBroadcastMsg build() {
-      return new RoomBroadcastMsg(timeMs, msgType, standFullStar, PresentGift, super.buildUnknownFields());
+      return new RoomBroadcastMsg(timeMs, msgType, standFullStar, presentGift, super.buildUnknownFields());
     }
   }
 
@@ -266,7 +266,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
       return ProtoAdapter.SINT64.encodedSizeWithTag(1, value.timeMs)
           + ERoomBroadcastMsgType.ADAPTER.encodedSizeWithTag(2, value.msgType)
           + StandFullStar.ADAPTER.encodedSizeWithTag(10, value.standFullStar)
-          + PresentGift.ADAPTER.encodedSizeWithTag(11, value.PresentGift)
+          + PresentGift.ADAPTER.encodedSizeWithTag(11, value.presentGift)
           + value.unknownFields().size();
     }
 
@@ -275,7 +275,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
       ProtoAdapter.SINT64.encodeWithTag(writer, 1, value.timeMs);
       ERoomBroadcastMsgType.ADAPTER.encodeWithTag(writer, 2, value.msgType);
       StandFullStar.ADAPTER.encodeWithTag(writer, 10, value.standFullStar);
-      PresentGift.ADAPTER.encodeWithTag(writer, 11, value.PresentGift);
+      PresentGift.ADAPTER.encodeWithTag(writer, 11, value.presentGift);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -311,7 +311,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
     public RoomBroadcastMsg redact(RoomBroadcastMsg value) {
       Builder builder = value.newBuilder();
       if (builder.standFullStar != null) builder.standFullStar = StandFullStar.ADAPTER.redact(builder.standFullStar);
-      if (builder.PresentGift != null) builder.PresentGift = PresentGift.ADAPTER.redact(builder.PresentGift);
+      if (builder.presentGift != null) builder.presentGift = PresentGift.ADAPTER.redact(builder.presentGift);
       builder.clearUnknownFields();
       return builder.build();
     }

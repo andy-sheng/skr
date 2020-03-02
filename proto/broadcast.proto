@@ -15,7 +15,7 @@ message RoomBroadcastMsg
     sint64 timeMs                 = 1; //房间消息产生时间，单位毫秒
     ERoomBroadcastMsgType msgType = 2; //消息类型
     StandFullStar standFullStar   = 10; //歌单战：5星评级通知
-    PresentGift PresentGift       = 11; //赠送礼物：全站通知
+    PresentGift presentGift       = 11; //赠送礼物：全站通知
 }
 
 enum ERoomBroadcastMsgType {
