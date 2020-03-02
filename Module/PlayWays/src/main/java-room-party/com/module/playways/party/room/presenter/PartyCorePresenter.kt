@@ -286,7 +286,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
         }
     }
 
-    fun becomeClubHost() {
+    fun becomeClubHost(realVerifyCallBack: (() -> Unit)?) {
         val map = HashMap<String, Any?>()
         map["roomID"] = mRoomData.gameId
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
@@ -297,7 +297,11 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             if (result.errno == 0) {
 
             } else {
-                U.getToastUtil().showShort(result.errmsg)
+                if (result.errno == 8348054) {
+                    realVerifyCallBack?.invoke()
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                }
             }
         }
     }
@@ -1022,7 +1026,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PFixRoomNoticeMsg) {
         MyLog.d(TAG, "onEvent event = $event")
-        mRoomData.setNoticeKt(event.newRoomNotice,true)
+        mRoomData.setNoticeKt(event.newRoomNotice, true)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1032,7 +1036,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PChangeRoomTopicMsg) {
-        mRoomData.setTopicNameKt(event.newTopic,true)
+        mRoomData.setTopicNameKt(event.newTopic, true)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1042,12 +1046,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PChangeRoomEnterPermissionMsg) {
-        mRoomData.setEnterPermissionKt(event.permission.value,true)
+        mRoomData.setEnterPermissionKt(event.permission.value, true)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PChangeGetSeatMode) {
-        mRoomData.setGetSeatModeKt(event.getSeatMode.value,true)
+        mRoomData.setGetSeatModeKt(event.getSeatMode.value, true)
         if (mRoomData.getSeatMode == EGetSeatMode.EGSM_NO_APPLY.value) {
             pretendSystemMsg("主持人已将上麦方式设置为：直接上麦")
         } else if (mRoomData.getSeatMode == EGetSeatMode.EGSM_NEED_APPLY.value) {

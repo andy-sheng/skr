@@ -29,6 +29,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.utils.dp
+import com.common.view.AnimateClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
@@ -639,7 +640,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
 
         override fun getInviteObservable(model: UserInfoModel?): Observable<ApiResult> {
-            StatisticsAdapter.recordCountEvent("party","invite",null)
+            StatisticsAdapter.recordCountEvent("party", "invite", null)
             MyLog.d(TAG, "inviteMicFriend roomID=${H.partyRoomData?.gameId ?: 0} model=$model")
             val map = mutableMapOf("roomID" to H.partyRoomData?.gameId, "userID" to model?.getUserId())
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
@@ -767,10 +768,26 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 getPartyManageHostDialogView().apply {
                     function1.text = "上麦"
                     function1.setDebounceViewClickListener {
-                        mCorePresenter.becomeClubHost()
-                        dismiss(false)
+                        mCorePresenter.becomeClubHost {
+                            dismissDialog()
+                            mTipsDialogView = TipsDialogView.Builder(this@PartyRoomActivity)
+                                    .setMessageTip("为保障绿色、文明的主题房游戏环境，需要对主持人进行实名认证哦！")
+                                    .setConfirmTip("立即认证")
+                                    .setCancelTip("暂不")
+                                    .setConfirmBtnClickListener {
+                                        dismissDialog()
+                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                                .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=room"))
+                                                .greenChannel().navigation();
+                                    }
+                                    .setCancelBtnClickListener {
+                                        dismissDialog()
+                                    }
+                                    .build()
+                            mTipsDialogView?.showByDialog()
+                        }
+                        dismissDialog()
                     }
-
                     function2.visibility = View.GONE
                 }.showByDialog()
             }
@@ -780,12 +797,12 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                     function1.text = "上麦"
                     function1.setDebounceViewClickListener {
                         mCorePresenter.takeClubHost()
-                        dismiss(false)
+                        dismissDialog()
                     }
 
                     function2.visibility = View.VISIBLE
                     function2.setDebounceViewClickListener {
-                        dismiss(false) // 2个对话框
+                        dismissDialog() // 2个对话框
                         EventBus.getDefault().post(ShowPersonCardEvent(mRoomData.hostId))
                     }
                 }.showByDialog()
@@ -796,12 +813,12 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                     function1.text = "下麦"
                     function1.setDebounceViewClickListener {
                         mCorePresenter.giveClubHost()
-                        dismiss(false)
+                        dismissDialog()
                     }
 
                     function2.visibility = View.VISIBLE
                     function2.setDebounceViewClickListener {
-                        dismiss(false) // 2个对话框
+                        dismissDialog() // 2个对话框
                         EventBus.getDefault().post(ShowPersonCardEvent(mRoomData.hostId))
                     }
                 }.showByDialog()
