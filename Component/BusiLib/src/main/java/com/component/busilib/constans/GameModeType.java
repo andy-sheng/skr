@@ -25,4 +25,6 @@ public class GameModeType {
     public static final int GAME_MODE_RELAY = 10; //合唱模式
 
     public static final int GAME_MODE_PARTY = 11; // 剧场模式
+
+    public static final int GAME_MODE_BATTLE = 12; // 团战模式
 }

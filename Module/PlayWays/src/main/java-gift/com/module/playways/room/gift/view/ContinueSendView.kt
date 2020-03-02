@@ -35,7 +35,8 @@ class ContinueSendView : FrameLayout, IContinueSendView {
         GS_Race(1),
         GS_Mic(2), // 排麦房送礼
         GS_Relay(3), // 双人接唱房送礼
-        GS_Party(4); // 小剧场送礼
+        GS_Party(4), // 小剧场送礼
+        GS_Battle(5); // 团战送礼
 
         val value: Int
             get() = scene

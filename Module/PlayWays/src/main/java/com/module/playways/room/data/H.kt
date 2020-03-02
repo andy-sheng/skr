@@ -1,6 +1,7 @@
 package com.module.playways.room.data
 
 import com.component.busilib.constans.GameModeType
+import com.module.playways.battle.room.BattleRoomData
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.party.room.PartyRoomData
@@ -48,6 +49,10 @@ object H {
         return curType == GameModeType.GAME_MODE_RACE
     }
 
+    fun isBattleRoom(): Boolean {
+        return curType == GameModeType.GAME_MODE_BATTLE
+    }
+
     public fun getSongModel(): SongModel? {
         var cur: SongModel? = null
         if (H.isGrabRoom()) {
@@ -78,5 +83,5 @@ object H {
     var raceRoomData: RaceRoomData? = null
     var relayRoomData: RelayRoomData? = null
     var partyRoomData: PartyRoomData? = null
-
+    var battleRoomData: BattleRoomData? = null
 }

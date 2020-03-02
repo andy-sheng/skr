@@ -1,0 +1,140 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:speaking="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <ImageView
+        android:id="@+id/arrow_iv"
+        android:layout_width="@dimen/view_44_dp"
+        android:layout_height="@dimen/view_44_dp"
+        android:padding="@dimen/view_10_dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/race_expand_icon"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/content_ll" />
+
+
+    <com.common.view.ex.ExConstraintLayout
+        android:id="@+id/user_info_area"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_12_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_20"
+        app:bl_stroke_color="@color/white_trans_20"
+        app:bl_stroke_width="@dimen/view_1_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/arrow_iv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/arrow_iv">
+
+        <ImageView
+            android:id="@+id/avatar_iv_bg"
+            android:layout_width="@dimen/view_26_dp"
+            android:layout_height="@dimen/view_26_dp"
+            android:layout_marginLeft="@dimen/view_4_dp"
+            android:src="@drawable/no_host"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/avatar_iv"
+            android:layout_width="@dimen/view_26_dp"
+            android:layout_height="@dimen/view_26_dp"
+            android:layout_marginLeft="@dimen/view_4_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_4_dp"
+            android:ellipsize="end"
+            android:maxEms="7"
+            android:singleLine="true"
+            android:textColor="@color/white_trans_80"
+            android:textSize="@dimen/textsize_12_dp"
+            app:layout_constraintBottom_toTopOf="@id/compere_tv"
+            app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/compere_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/textsize_8_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/name_tv"
+            app:layout_constraintTop_toBottomOf="@id/name_tv" />
+
+        <android.support.constraint.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="right"
+            app:constraint_referenced_ids="name_tv, compere_tv" />
+
+        <ImageView
+            android:id="@+id/club_icon_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_8_dp"
+            android:background="@drawable/person_club_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="parent" />
+    </com.common.view.ex.ExConstraintLayout>
+
+    <com.component.busilib.view.SpeakingTipsAnimationView
+        android:id="@+id/speaker_animation_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/arrow_iv"
+        speaking:animationtype="speak" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/more_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:paddingRight="@dimen/view_6_dp"
+        android:src="@drawable/race_top_more"
+        app:layout_constraintBottom_toBottomOf="@+id/arrow_iv"
+        app:layout_constraintRight_toLeftOf="@+id/arrow_iv"
+        app:layout_constraintTop_toTopOf="@+id/arrow_iv" />
+
+    <TextView
+        android:id="@+id/online_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="@id/arrow_iv"
+        app:layout_constraintRight_toLeftOf="@id/more_arrow"
+        app:layout_constraintTop_toTopOf="@id/arrow_iv" />
+
+
+    <ImageView
+        android:id="@+id/audience_iv"
+        android:layout_width="@dimen/view_15_dp"
+        android:layout_height="@dimen/view_15_dp"
+        android:layout_marginLeft="@dimen/view_14_dp"
+        android:layout_marginRight="@dimen/view_6_dp"
+        android:background="@drawable/room_player_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/arrow_iv"
+        app:layout_constraintRight_toLeftOf="@id/online_num"
+        app:layout_constraintTop_toTopOf="@+id/arrow_iv" />
+
+
+</merge>

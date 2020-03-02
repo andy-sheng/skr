@@ -33,6 +33,7 @@
             <enum name="mic" value="7" />
             <enum name="relay" value="8" />
             <enum name="party" value="9" />
+            <enum name="battle" value="10" />
         </attr>
     </declare-styleable>
 

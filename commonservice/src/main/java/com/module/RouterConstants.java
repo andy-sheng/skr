@@ -162,6 +162,8 @@ public interface RouterConstants {
     String ACTIVITY_FEEDBACK = "/all/QuickFeedbackActivity";
 
 
+    String ACTIVITY_BATTLE_ROOM = "/battle/BattleRoomActivity";
+
     /**
      * Flutter 相关页面
      */
