@@ -3,6 +3,8 @@ package com.module.home;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiResult;
 
+import java.util.Queue;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -147,7 +149,7 @@ public interface MainPageSlideApi {
     /**
      * 首页Party房间列表
      */
-    @GET("http://dev.game.inframe.mobi/v1/partyroom/roomlist")
-    Observable<ApiResult> getPartyRoomList(@Query("offset") int offset, @Query("limit") int limit);
+    @GET("http://dev.game.inframe.mobi/v2/partyroom/roomlist")
+    Observable<ApiResult> getPartyRoomList(@Query("offset") int offset, @Query("limit") int limit, @Query("gameMode") int gameMode);
 
 }

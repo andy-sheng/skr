@@ -81,6 +81,15 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
             }
         })
         mGameAdapter = GameAdapter(fragment, object : ClickGameListener {
+
+            override fun onClickPartyRoom(pos: Int, model: PartyRoomInfoModel?) {
+                // pos是在横向列表中位置
+                model?.roomID?.let {
+                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                    iRankingModeService.tryGoPartyRoom(it, 1, model.roomtype ?: 0)
+                }
+            }
+
             override fun onPartyRoomListener() {
                 // 进入主题房
                 StatisticsAdapter.recordCountEvent("game_express", "party", null)
@@ -183,7 +192,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
     fun initData(flag: Boolean) {
         mQuickGamePresenter.initOperationArea(flag)
         mQuickGamePresenter.checkTaskRedDot()
-        mQuickGamePresenter.getPartyRoomList()
+        mQuickGamePresenter.getPartyRoomList(flag)
         if (!flag) {
             if (mQuickGamePresenter.isUserInfoChange) {
                 mQuickGamePresenter.isUserInfoChange = false
@@ -198,6 +207,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
     fun stopTimer() {
         // 原来用来停止更新的
+        mQuickGamePresenter.stopTimer()
     }
 
     fun showSexFilterView(needMatch: Boolean) {
@@ -275,7 +285,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
     }
 
     fun destory() {
-        mQuickGamePresenter?.destroy()
+        mQuickGamePresenter.destroy()
     }
 }
 

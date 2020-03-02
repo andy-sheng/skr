@@ -14,6 +14,7 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.component.busilib.model.PartyRoomInfoModel
+import com.component.busilib.model.PartyRoomTagMode
 import com.module.RouterConstants
 import com.module.playways.IPlaywaysModeService
 import com.module.playways.R

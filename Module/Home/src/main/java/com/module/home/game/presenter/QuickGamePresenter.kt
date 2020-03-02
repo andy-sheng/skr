@@ -29,13 +29,11 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
     private val mGrabSongApi: GrabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
 
     private var mLastUpdateOperaArea = 0L    //广告位上次更新成功时间
-    private var mLastUpdateRemainTime = 0L   // 上次拉取唱聊剩余次数时间
+    private var mLastUpdateReginDiff = 0L // 上传拉diff的时间
+
     private var mRecommendTimer: HandlerTaskTimer? = null
     private var mLastUpdateRecomendInfo = 0L    //上次拉去推荐房间剩余次数的时间
-    private var mLastUpdateGameType = 0L // 上次拉去首页游戏列表时间
-    private var mLastUpdateReginDiff = 0L // 上传拉diff的时间
-    private var mIsFirstQuick = true   // 是否第一次拉去首页
-    var mRecommendInterval: Int = 0    // 拉去推荐房的时间间隔
+    private var mRecommendInterval = 6  //6秒来一次
 
     var isUserInfoChange = false
 
@@ -127,10 +125,38 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
         }, this)
     }
 
-    fun getPartyRoomList() {
-        ApiMethods.subscribe(mMainPageSlideApi.getPartyRoomList(0, 20), object : ApiObserver<ApiResult>() {
+    fun getPartyRoomList(isFlag: Boolean) {
+        stopTimer()
+        val delayTime = if (!isFlag) {
+            val now = System.currentTimeMillis();
+            if (now - mLastUpdateRecomendInfo > mRecommendInterval * 1000) {
+                0
+            } else {
+                mRecommendInterval * 1000 - (now - mLastUpdateRecomendInfo)
+            }
+        } else {
+            0
+        }
+        mRecommendTimer = HandlerTaskTimer.newBuilder()
+                .take(-1)
+                .delay(delayTime)
+                .interval((mRecommendInterval * 1000).toLong())
+                .start(object : HandlerTaskTimer.ObserverW() {
+                    override fun onNext(t: Int) {
+                        loadPartyRoomList()
+                    }
+                })
+    }
+
+    fun stopTimer() {
+        mRecommendTimer?.dispose()
+    }
+
+    fun loadPartyRoomList() {
+        ApiMethods.subscribe(mMainPageSlideApi.getPartyRoomList(0, 20, 100), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
+                    mLastUpdateRecomendInfo = System.currentTimeMillis()
                     val list = JSON.parseArray(result.data.getString("roomInfo"), PartyRoomInfoModel::class.java)
                     mIGameView3.setPartyRoomList(list)
                 }
@@ -150,7 +176,7 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
     fun onEvent(event: AccountEvent.SetAccountEvent) {
         initOperationArea(true)
         getRegionDiff(true)
-        getPartyRoomList()
+        getPartyRoomList(true)
         checkTaskRedDot()
     }
 
@@ -168,6 +194,7 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
 
     override fun destroy() {
         super.destroy()
+        stopTimer()
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
