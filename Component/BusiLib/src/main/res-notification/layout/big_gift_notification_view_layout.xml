@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:NickNameView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:avatarView="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_70_dp"
+    android:layout_marginLeft="@dimen/view_16_dp"
+    android:layout_marginRight="@dimen/view_16_dp">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/bg"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="@dimen/view_18_dp"
+        android:background="@drawable/common_gradient_bg"
+        NickNameView:bl_corners_radius="@dimen/view_16_dp"
+        NickNameView:bl_gradient_angle="0"
+        NickNameView:layout_constraintTop_toTopOf="parent"
+        app:bl_gradient_endColor="#C86DD7"
+        app:bl_gradient_startColor="#3023AE"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/gift_iv"
+        android:layout_width="@dimen/view_44_dp"
+        android:layout_height="@dimen/view_44_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/bg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bg"
+        avatarView:borderColor="@color/white"
+        avatarView:borderWidth="@dimen/view_2_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/content_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/textsize_12_dp"
+        NickNameView:layout_constraintBottom_toBottomOf="@+id/bg"
+        NickNameView:layout_constraintLeft_toRightOf="@+id/gift_iv"
+        NickNameView:layout_constraintRight_toLeftOf="@+id/enter_tv"
+        NickNameView:layout_constraintTop_toTopOf="@+id/bg"
+        NickNameView:layout_goneMarginRight="@dimen/view_10_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/enter_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/view_6_dp"
+        android:background="@drawable/gotoroom_icon"
+        android:gravity="center"
+        android:textColor="#AD6C00"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/bg"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bg" />
+
+</android.support.constraint.ConstraintLayout>

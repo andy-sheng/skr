@@ -446,7 +446,7 @@ object SkrSchemeProcessor : ISchemeProcessor {
             val roomId = SchemeUtils.getInt(uri, "gameId", 0)
             val ask = SchemeUtils.getInt(uri, "ask", 0)
             val mediaType = SchemeUtils.getInt(uri, "mediaType", 0)
-            if (roomId > 0 && ownerId > 0) {
+            if (roomId > 0) {
                 if (ownerId.toLong() == MyUserInfoManager.uid) {
                     MyLog.d(TAG, "processRoomUrl 房主id是自己，可能从口令粘贴板过来的，忽略")
                     return

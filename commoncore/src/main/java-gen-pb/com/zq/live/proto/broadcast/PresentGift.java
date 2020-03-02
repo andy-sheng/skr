@@ -34,6 +34,12 @@ public final class PresentGift extends Message<PresentGift, PresentGift.Builder>
 
   public static final String DEFAULT_SOURCEURL = "";
 
+  public static final String DEFAULT_FROMUSERNICKNAME = "";
+
+  public static final String DEFAULT_TOUSERNICKNAME = "";
+
+  public static final String DEFAULT_ENTERSCHEME = "";
+
   /**
    * 房间id
    */
@@ -76,19 +82,41 @@ public final class PresentGift extends Message<PresentGift, PresentGift.Builder>
   )
   private final String sourceURL;
 
+  @WireField(
+      tag = 6,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String fromUserNickname;
+
+  @WireField(
+      tag = 7,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String toUserNickname;
+
+  @WireField(
+      tag = 8,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String enterScheme;
+
   public PresentGift(Integer roomID, EGameModeType mode, String content, Boolean couldEnter,
-      String sourceURL) {
-    this(roomID, mode, content, couldEnter, sourceURL, ByteString.EMPTY);
+      String sourceURL, String fromUserNickname, String toUserNickname, String enterScheme) {
+    this(roomID, mode, content, couldEnter, sourceURL, fromUserNickname, toUserNickname, enterScheme, ByteString.EMPTY);
   }
 
   public PresentGift(Integer roomID, EGameModeType mode, String content, Boolean couldEnter,
-      String sourceURL, ByteString unknownFields) {
+      String sourceURL, String fromUserNickname, String toUserNickname, String enterScheme,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roomID = roomID;
     this.mode = mode;
     this.content = content;
     this.couldEnter = couldEnter;
     this.sourceURL = sourceURL;
+    this.fromUserNickname = fromUserNickname;
+    this.toUserNickname = toUserNickname;
+    this.enterScheme = enterScheme;
   }
 
   @Override
@@ -99,6 +127,9 @@ public final class PresentGift extends Message<PresentGift, PresentGift.Builder>
     builder.content = content;
     builder.couldEnter = couldEnter;
     builder.sourceURL = sourceURL;
+    builder.fromUserNickname = fromUserNickname;
+    builder.toUserNickname = toUserNickname;
+    builder.enterScheme = enterScheme;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -113,7 +144,10 @@ public final class PresentGift extends Message<PresentGift, PresentGift.Builder>
         && Internal.equals(mode, o.mode)
         && Internal.equals(content, o.content)
         && Internal.equals(couldEnter, o.couldEnter)
-        && Internal.equals(sourceURL, o.sourceURL);
+        && Internal.equals(sourceURL, o.sourceURL)
+        && Internal.equals(fromUserNickname, o.fromUserNickname)
+        && Internal.equals(toUserNickname, o.toUserNickname)
+        && Internal.equals(enterScheme, o.enterScheme);
   }
 
   @Override
@@ -126,6 +160,9 @@ public final class PresentGift extends Message<PresentGift, PresentGift.Builder>
       result = result * 37 + (content != null ? content.hashCode() : 0);
       result = result * 37 + (couldEnter != null ? couldEnter.hashCode() : 0);
       result = result * 37 + (sourceURL != null ? sourceURL.hashCode() : 0);
+      result = result * 37 + (fromUserNickname != null ? fromUserNickname.hashCode() : 0);
+      result = result * 37 + (toUserNickname != null ? toUserNickname.hashCode() : 0);
+      result = result * 37 + (enterScheme != null ? enterScheme.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -139,6 +176,9 @@ public final class PresentGift extends Message<PresentGift, PresentGift.Builder>
     if (content != null) builder.append(", content=").append(content);
     if (couldEnter != null) builder.append(", couldEnter=").append(couldEnter);
     if (sourceURL != null) builder.append(", sourceURL=").append(sourceURL);
+    if (fromUserNickname != null) builder.append(", fromUserNickname=").append(fromUserNickname);
+    if (toUserNickname != null) builder.append(", toUserNickname=").append(toUserNickname);
+    if (enterScheme != null) builder.append(", enterScheme=").append(enterScheme);
     return builder.replace(0, 2, "PresentGift{").append('}').toString();
   }
 
@@ -199,6 +239,27 @@ public final class PresentGift extends Message<PresentGift, PresentGift.Builder>
     return sourceURL;
   }
 
+  public String getFromUserNickname() {
+    if(fromUserNickname==null){
+        return DEFAULT_FROMUSERNICKNAME;
+    }
+    return fromUserNickname;
+  }
+
+  public String getToUserNickname() {
+    if(toUserNickname==null){
+        return DEFAULT_TOUSERNICKNAME;
+    }
+    return toUserNickname;
+  }
+
+  public String getEnterScheme() {
+    if(enterScheme==null){
+        return DEFAULT_ENTERSCHEME;
+    }
+    return enterScheme;
+  }
+
   /**
    * 房间id
    */
@@ -231,6 +292,18 @@ public final class PresentGift extends Message<PresentGift, PresentGift.Builder>
     return sourceURL!=null;
   }
 
+  public boolean hasFromUserNickname() {
+    return fromUserNickname!=null;
+  }
+
+  public boolean hasToUserNickname() {
+    return toUserNickname!=null;
+  }
+
+  public boolean hasEnterScheme() {
+    return enterScheme!=null;
+  }
+
   public static final class Builder extends Message.Builder<PresentGift, Builder> {
     private Integer roomID;
 
@@ -241,6 +314,12 @@ public final class PresentGift extends Message<PresentGift, PresentGift.Builder>
     private Boolean couldEnter;
 
     private String sourceURL;
+
+    private String fromUserNickname;
+
+    private String toUserNickname;
+
+    private String enterScheme;
 
     public Builder() {
     }
@@ -282,9 +361,24 @@ public final class PresentGift extends Message<PresentGift, PresentGift.Builder>
       return this;
     }
 
+    public Builder setFromUserNickname(String fromUserNickname) {
+      this.fromUserNickname = fromUserNickname;
+      return this;
+    }
+
+    public Builder setToUserNickname(String toUserNickname) {
+      this.toUserNickname = toUserNickname;
+      return this;
+    }
+
+    public Builder setEnterScheme(String enterScheme) {
+      this.enterScheme = enterScheme;
+      return this;
+    }
+
     @Override
     public PresentGift build() {
-      return new PresentGift(roomID, mode, content, couldEnter, sourceURL, super.buildUnknownFields());
+      return new PresentGift(roomID, mode, content, couldEnter, sourceURL, fromUserNickname, toUserNickname, enterScheme, super.buildUnknownFields());
     }
   }
 
@@ -300,6 +394,9 @@ public final class PresentGift extends Message<PresentGift, PresentGift.Builder>
           + ProtoAdapter.STRING.encodedSizeWithTag(3, value.content)
           + ProtoAdapter.BOOL.encodedSizeWithTag(4, value.couldEnter)
           + ProtoAdapter.STRING.encodedSizeWithTag(5, value.sourceURL)
+          + ProtoAdapter.STRING.encodedSizeWithTag(6, value.fromUserNickname)
+          + ProtoAdapter.STRING.encodedSizeWithTag(7, value.toUserNickname)
+          + ProtoAdapter.STRING.encodedSizeWithTag(8, value.enterScheme)
           + value.unknownFields().size();
     }
 
@@ -310,6 +407,9 @@ public final class PresentGift extends Message<PresentGift, PresentGift.Builder>
       ProtoAdapter.STRING.encodeWithTag(writer, 3, value.content);
       ProtoAdapter.BOOL.encodeWithTag(writer, 4, value.couldEnter);
       ProtoAdapter.STRING.encodeWithTag(writer, 5, value.sourceURL);
+      ProtoAdapter.STRING.encodeWithTag(writer, 6, value.fromUserNickname);
+      ProtoAdapter.STRING.encodeWithTag(writer, 7, value.toUserNickname);
+      ProtoAdapter.STRING.encodeWithTag(writer, 8, value.enterScheme);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -331,6 +431,9 @@ public final class PresentGift extends Message<PresentGift, PresentGift.Builder>
           case 3: builder.setContent(ProtoAdapter.STRING.decode(reader)); break;
           case 4: builder.setCouldEnter(ProtoAdapter.BOOL.decode(reader)); break;
           case 5: builder.setSourceURL(ProtoAdapter.STRING.decode(reader)); break;
+          case 6: builder.setFromUserNickname(ProtoAdapter.STRING.decode(reader)); break;
+          case 7: builder.setToUserNickname(ProtoAdapter.STRING.decode(reader)); break;
+          case 8: builder.setEnterScheme(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
