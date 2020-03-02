@@ -324,3 +324,20 @@ enum EMsgRoomMediaType {
     EMR_AUDIO   = 1; // 音频房
     EMR_VIDEO   = 2; // 视频房
 }
+
+// 游戏模式
+enum EGameModeType {
+    UnknownMode       = 0;  //未知模式
+    ClassicRankMode   = 1;  //[废弃]:经典排位模式
+    FunnyMode         = 2;  //[废弃]:娱乐模式
+    StandMode         = 3;  //[正常]:一站到底模式
+    ClassicRankV2Mode = 4;  //[废弃]:排位v2模式
+    StandV2Mode       = 5;  //[废弃]:一场到底V2模式
+    RaceMode          = 6;  //[正常]:排位赛模式
+    StandPlaybookMode = 7;  //[废弃]:歌单战模式
+    MicMode           = 8;  //[废弃]:排麦房模式（小K房）
+    MagpieMode        = 9;  //[废弃]:双人畅聊模式
+    RelayMode         = 10; //[正常]:合唱模式 (接唱房)
+    PartyMode         = 11; //[正常]:派对模式 (派对房)
+    BattleMode        = 12; //[正常]:2v2团战模式
+}

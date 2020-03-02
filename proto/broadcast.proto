@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package com.zq.live.proto.broadcast;
+import "Common.proto";
 
 /**
 
@@ -14,14 +15,26 @@ message RoomBroadcastMsg
     sint64 timeMs                 = 1; //房间消息产生时间，单位毫秒
     ERoomBroadcastMsgType msgType = 2; //消息类型
     StandFullStar standFullStar   = 10; //歌单战：5星评级通知
+    PresentGift PresentGift       = 11; //赠送礼物：全站通知
 }
 
 enum ERoomBroadcastMsgType {
     RBRT_UNKNOWN         = 0; //未知消息
     RBRT_STAND_FULL_STAR = 1; //歌单战5星评级
+    RBRT_PRESENT_GIFT    = 2; //赠送礼物
 }
 
 message StandFullStar
 {
     string content = 1; //通知内容
 }
+
+message PresentGift
+{
+    uint32 roomID      = 1; //房间id
+    Common.EGameModeType mode = 2; //游戏模式
+    string content     = 3; //通知内容
+    bool couldEnter    = 4; //是否可以进入
+    string sourceURL   = 5;
+}
+

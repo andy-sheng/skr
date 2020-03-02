@@ -16,7 +16,12 @@ public enum ERoomBroadcastMsgType implements WireEnum {
   /**
    * 歌单战5星评级
    */
-  RBRT_STAND_FULL_STAR(1);
+  RBRT_STAND_FULL_STAR(1),
+
+  /**
+   * 赠送礼物
+   */
+  RBRT_PRESENT_GIFT(2);
 
   public static final ProtoAdapter<ERoomBroadcastMsgType> ADAPTER = new ProtoAdapter_ERoomBroadcastMsgType();
 
@@ -33,6 +38,7 @@ public enum ERoomBroadcastMsgType implements WireEnum {
     switch (value) {
       case 0: return RBRT_UNKNOWN;
       case 1: return RBRT_STAND_FULL_STAR;
+      case 2: return RBRT_PRESENT_GIFT;
       default: return null;
     }
   }
