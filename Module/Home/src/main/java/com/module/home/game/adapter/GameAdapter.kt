@@ -1,5 +1,7 @@
 package com.module.home.game.adapter
 
+import android.os.Handler
+import android.os.Looper
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -28,6 +30,7 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
         const val REFRESH_TYPE_RED = 2
         const val REFRESH_TYPE_REGION = 3
         const val REFRESH_TYPE_PARTY = 4
+        const val REFRESH_TYPE_RECOMMEN = 5
     }
 
 
@@ -36,8 +39,10 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
     var regionDiff: UserRankModel? = null  // 玩法区域 排名信息
     var partyList: List<PartyRoomInfoModel>? = null  // 玩法区域 派对用来不停变化的信息
 
+    private val uiHanlder = Handler(Looper.getMainLooper())
+
     fun updateBanner(slideShowModelList: List<SlideShowModel>?) {
-        if (this.slideShowModelList == null) {
+        if (this.slideShowModelList == null || slideShowModelList == null) {
             this.slideShowModelList = slideShowModelList
             notifyDataSetChanged()
         } else {
@@ -57,8 +62,16 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
     }
 
     fun updatePartyList(list: List<PartyRoomInfoModel>?) {
-        this.partyList = list
-        notifyItemChanged(getPositionByViewType(TYPE_GAMETYPE_HOLDER), REFRESH_TYPE_PARTY)
+        if (this.partyList == null || list == null) {
+            this.partyList = list
+            notifyDataSetChanged()
+        } else {
+            this.partyList = list
+            notifyItemChanged(getPositionByViewType(TYPE_PARTY_HOLDER), REFRESH_TYPE_RECOMMEN)
+        }
+        uiHanlder.post {
+            notifyItemChanged(getPositionByViewType(TYPE_GAMETYPE_HOLDER), REFRESH_TYPE_PARTY)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -116,6 +129,11 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
                         REFRESH_TYPE_PARTY -> {
                             if (holder is GameTypeViewHolder) {
                                 holder.bindPartyData(partyList)
+                            }
+                        }
+                        REFRESH_TYPE_RECOMMEN -> {
+                            if (holder is PartyAreaViewHolder) {
+                                holder.bindData(partyList)
                             }
                         }
                     }
