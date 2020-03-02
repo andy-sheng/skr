@@ -142,22 +142,20 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
     internal var mSkrAudioPermission = SkrAudioPermission()
 
-    internal var mHostOpTipImageView: ImageView? = null
-
     val SP_KEY_HOST_TIP_TIMES = "sp_key_host_tips_show_times"
-    val REMOVE_HOST_OP_TIP_MSG = 0x01     // 主持人操作提示
-    val CHECK_GO_MIC_TIP_MSG = 0x02  // 去上麦或者换房间的提示
+//    val REMOVE_HOST_OP_TIP_MSG = 0x01     // 主持人操作提示
+//    val CHECK_GO_MIC_TIP_MSG = 0x02  // 去上麦或者换房间的提示
 
     val mUiHandler = object : Handler() {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
             when (msg?.what) {
-                REMOVE_HOST_OP_TIP_MSG -> {
-                    removeHostOpTips()
-                }
-                CHECK_GO_MIC_TIP_MSG -> {
-                    showGoMicTips()
-                }
+//                REMOVE_HOST_OP_TIP_MSG -> {
+//                    removeHostOpTips()
+//                }
+//                CHECK_GO_MIC_TIP_MSG -> {
+//                    showGoMicTips()
+//                }
             }
         }
     }
@@ -197,12 +195,12 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         initGiftPanelView()
         initGiftDisplayView()
 
-        initGameMainView()
-        initMicSeatView()
+//        initGameMainView()
+//        initMicSeatView()
         initRightOpView()
         initVipEnterView()
         initChangeRoomTransitionView()
-        initPunishView()
+//        initPunishView()
         mCorePresenter.onOpeningAnimationOver()
 
         mUiHandler.postDelayed(Runnable {
@@ -234,8 +232,8 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         }
 
         U.getStatusBarUtil().setTransparentBar(this, false)
-        showHostOpTips()
-        checkGoMicTips()
+//        showHostOpTips()
+//        checkGoMicTips()
     }
 
 //    private fun checkGoMicTips() {
@@ -298,12 +296,12 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 //        }
 //    }
 
-    private fun removeHostOpTips() {
-        mUiHandler.removeMessages(REMOVE_HOST_OP_TIP_MSG)
-        if (mMainActContainer?.indexOfChild(mHostOpTipImageView) != -1) {
-            mMainActContainer?.removeView(mHostOpTipImageView)
-        }
-    }
+//    private fun removeHostOpTips() {
+//        mUiHandler.removeMessages(REMOVE_HOST_OP_TIP_MSG)
+//        if (mMainActContainer?.indexOfChild(mHostOpTipImageView) != -1) {
+//            mMainActContainer?.removeView(mHostOpTipImageView)
+//        }
+//    }
 
 //    private fun initPunishView() {
 //        mBattlePunishView = BattlePunishView(findViewById(R.id.battle_punish_view_layout_viewStub), mRoomData)
@@ -689,11 +687,11 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
                     return
                 }
 
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(this@BattleRoomActivity, BattleRoomSettingFragment::class.java)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build())
+//                U.getFragmentUtils().addFragment(
+//                        FragmentUtils.newAddParamsBuilder(this@BattleRoomActivity, BattleRoomSettingFragment::class.java)
+//                                .setAddToBackStack(true)
+//                                .setHasAnimation(true)
+//                                .build())
             }
 
             override fun closeBtnClick() {

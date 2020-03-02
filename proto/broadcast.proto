@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package com.zq.live.proto.broadcast;
-import "Common.proto";
+import "common.proto";
 
 /**
 

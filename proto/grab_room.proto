@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "Common.proto";
+import "common.proto";
 
 package com.zq.live.proto.GrabRoom;
 

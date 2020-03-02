@@ -1,0 +1,171 @@
+syntax = "proto3";
+import "common.proto";
+package com.zq.live.proto.BattleRoom;
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./Module/PlayWays/src/main/java-gen-pb/ battle_room.proto
+
+*/
+
+// 团战房信令消息
+message BattleRoomMsg
+{
+    sint64 timeMs              = 1; //房间消息产生时间，单位毫秒
+    EBattleRoomMsgType msgType = 2; //消息类型
+    uint32 roomID              = 3; //房间ID
+
+    BUserEnterMsg bUserEnterMsg = 10; //进入房间(系统消息下发）
+    BSingRoundMsg bSingRoundMsg = 11; //轮次进入演唱
+    BNextRoundMsg bNextRoundMsg = 12; //轮次切换
+    BSyncMsg bSyncMsg           = 13; //同步状态
+    BGameOverMsg bGameOverMsg   = 14; //结束房间
+}
+
+enum EBattleRoomMsgType {
+    BRT_UNKNOWN = 0; //未知消息
+
+    BRT_USER_ENTER = 10; //进入房间
+    BRT_SING_ROUND = 11; //轮次进入演唱
+    BRT_NEXT_ROUND = 12; //加载下个轮次
+    BRT_SYNC       = 13; //同步
+    BRT_GAME_OVER  = 14; //结束房间
+}
+
+message BSingRoundMsg
+{
+    BRoundInfo currentRound = 1; //当前结束轮次的信息
+}
+
+message BUserEnterMsg
+{
+    uint32 roomID                         = 1; //房间ID
+    sint64 createdTimeMs                  = 2; //房间创建的时间戳
+    repeated BTeamInfo teams              = 3; //队伍信息
+    BattleRoomConfig config               = 4; //配置信息
+    repeated Common.AgoraTokenInfo tokens        = 5; //声网token
+    BRoundInfo currentRound               = 6; //当前轮次信息
+    repeated Common.BackgroundShowInfo showInfos = 7; //背景效果
+}
+
+message BTeamInfo
+{
+    string teamTag              = 1; //队伍标识
+    repeated Common.UserInfo teamUsers = 2; //队伍玩家信息
+}
+
+message BNextRoundMsg
+{
+    sint64 roundOverTimeMs  = 1; //本轮次结束的毫秒时间戳
+    BRoundInfo currentRound = 2; //当前结束轮次的信息
+    BRoundInfo nextRound    = 3; //下个加载轮次的信息
+}
+
+message BRoundInfo
+{
+    uint32 userID                   = 1; //发起者
+    uint32 roundSeq                 = 2; //轮次序号
+    uint32 musicSeq                 = 3; //第几首比赛歌曲
+    uint32 waitBeginMs              = 4; //导唱开始相对时间（相对于createdTimeMs时间） p.s.导唱为等待阶段
+    uint32 waitEndMs                = 5; //导唱结束相对时间（相对于createdTimeMs时间） p.s.导唱为等待阶段
+    uint32 singBeginMs              = 6; //演唱开始相对时间（相对于createdTimeMs时间）
+    uint32 singEndMs                = 7; //演唱结束相对时间（相对于createdTimeMs时间）
+    EBRoundStatus status            = 8; //轮次状态
+    EBRoundOverReason overReason    = 9; //切换轮次原因
+    repeated BUserStatus userStatus = 10; //用户状态
+    Common.MusicInfo music                 = 11; //本轮次的歌曲信息
+    BRoundResult result             = 12; //轮次结果分数
+    BCardInfo card                  = 13; //使用道具卡信息
+}
+
+message BUserStatus
+{
+    uint32 userID       = 1; //用户id
+    string teamTag      = 2; //队伍标识
+    EBUserStatus status = 3; //在线状态
+}
+
+enum EBUserStatus {
+    EBUS_ONLINE  = 0; //在线（正常)
+    EBUS_OFFLINE = 1; //离线（逃跑）
+}
+
+message BCardInfo
+{
+    ECardType cardType     = 1;
+    BHelpCard helpCard     = 2;
+    BSwitchCard switchCard = 3;
+}
+
+message BHelpCard
+{
+    uint32 userID = 1; //被帮助的用户id
+}
+
+message BSwitchCard
+{
+    //暂无
+}
+
+enum ECardType {
+    CT_UNKNOWN     = 0; //未知卡
+    CT_HELP_CARD   = 1; //帮唱卡
+    CT_SWITCH_CARD = 2; //更换卡
+}
+
+message BRoundResult
+{
+    float score = 1;
+}
+
+message BGameResult
+{
+}
+
+enum EBRoundStatus {
+    BRS_UNKNOWN = 0; //轮次状态未知
+    BRS_INTRO   = 1; //轮次进入导唱阶段(wait阶段)
+    BRS_HELP    = 2; //轮次进入帮助阶段(wait阶段)
+    BRS_SING    = 3; //轮次进入演唱阶段(sing阶段)
+    BRS_END     = 4; //轮次已结束
+}
+
+enum EBRoundOverReason {
+    BROR_UNKNOWN          = 0; //未知
+    BROR_WAIT_TIME_OVER   = 1; //等待阶段时间结束(玩家没有开始演唱)
+    BROR_REQ_HELP_SING    = 2; //使用帮唱卡
+    BROR_REFUSE_HELP_SING = 3; //拒绝帮唱
+    BROR_IGNORE_HELP_SING = 4; //忽略帮唱
+    BROR_REQ_SWITCH_SING  = 5; //使用换歌卡
+    BROR_SING_TIME_OVER   = 6; //正常演唱时间结束
+    BROR_SING_GIVE_UP     = 7; //放弃演唱
+    BROR_CUR_USER_EXIT    = 8; //当前轮次用户退出
+}
+
+message BattleRoomConfig
+{
+    uint32 totalMusicCnt = 1; //总共多少首比赛曲目
+    uint32 helpCardCnt = 2; //可以使用的帮唱卡数量
+    uint32 switchCardCnt = 3; //可以使用的换歌卡数量
+}
+
+message BGameOverMsg
+{
+    sint64 gameOverTimeMs       = 1; //游戏结束的毫秒时间戳
+    EBGameOverReason overReason = 2; //游戏结束原因
+}
+
+
+enum EBGameOverReason {
+    BOR_UNKNOWN = 0; //未知
+    BOR_NORMAL_OVER = 1; //游戏正常结束
+    BOR_TEAM_EXIT = 2; //有一组队伍全部退出
+}
+
+message BSyncMsg
+{
+    sint64 syncStatusTimeMs = 1; //状态同步时的毫秒时间戳
+    sint64 passedTimeMs     = 2; //房间已经经历的毫秒数
+    BRoundInfo currentRound = 3; //当前轮次信息
+}

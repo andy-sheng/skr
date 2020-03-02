@@ -86,9 +86,9 @@ class BattleWidgetAnimationController(internal var mF: BattleRoomActivity) {
 
     private fun fillView(viewList: MutableList<View?>) {
         viewList.add(mF.mTopContentView)
-        viewList.add(mF.mPartyGameMainView?.realView)
-        viewList.add(mF.mPartyPunishView?.realView)
-        viewList.add(mF.mSeatView)
+//        viewList.add(mF.mPartyGameMainView?.realView)
+//        viewList.add(mF.mPartyPunishView?.realView)
+//        viewList.add(mF.mSeatView)
     }
 
     /**
