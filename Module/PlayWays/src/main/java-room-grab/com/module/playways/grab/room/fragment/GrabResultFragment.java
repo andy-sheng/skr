@@ -26,7 +26,7 @@ import com.component.busilib.constans.GrabRoomType;
 import com.component.level.utils.LevelConfigUtils;
 import com.component.level.view.LevelStarProgressBar;
 import com.module.RouterConstants;
-import com.module.playways.battle.songlist.view.BattleStarView;
+//import com.module.playways.battle.songlist.view.BattleStarView;
 import com.module.playways.grab.room.GrabResultData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
@@ -55,7 +55,7 @@ public class GrabResultFragment extends BaseFragment {
     GrabResultData mGrabResultData;
 
     ConstraintLayout mGrabStarArea;
-    BattleStarView mGrabStarView;
+//    BattleStarView mGrabStarView;
 
     ConstraintLayout mGrabNumArea;
     TextView mGrabNumTv;
@@ -95,7 +95,7 @@ public class GrabResultFragment extends BaseFragment {
         mDescTv = getRootView().findViewById(R.id.desc_tv);
 
         mGrabStarArea = getRootView().findViewById(R.id.grab_star_area);
-        mGrabStarView = getRootView().findViewById(R.id.grab_star_view);
+//        mGrabStarView = getRootView().findViewById(R.id.grab_star_view);
 
         mGrabNumArea = getRootView().findViewById(R.id.grab_num_area);
         mGrabNumTv = getRootView().findViewById(R.id.grab_num_tv);
@@ -189,7 +189,7 @@ public class GrabResultFragment extends BaseFragment {
         if (mGrabResultData != null) {
             if (mGrabResultData.starCnt != null && mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
                 mGrabStarArea.setVisibility(View.VISIBLE);
-                mGrabStarView.bindData(mGrabResultData.starCnt, 5);
+//                mGrabStarView.bindData(mGrabResultData.starCnt, 5);
             } else {
                 mGrabStarArea.setVisibility(View.GONE);
             }

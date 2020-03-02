@@ -24,7 +24,7 @@ import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.friends.SpecialModel;
 import com.module.RouterConstants;
 import com.module.playways.R;
-import com.module.playways.battle.songlist.BattleListActivity;
+//import com.module.playways.battle.songlist.BattleListActivity;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.GrabConfigModel;
@@ -165,9 +165,9 @@ public class GrabRoomActivity extends BaseActivity {
                 continue;
             }
             if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
-                if (activity instanceof BattleListActivity) {
-                    continue;
-                }
+//                if (activity instanceof BattleListActivity) {
+//                    continue;
+//                }
             }
             activity.finish();
         }

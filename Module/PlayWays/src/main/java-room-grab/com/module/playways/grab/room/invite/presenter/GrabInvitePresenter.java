@@ -14,17 +14,11 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.view.ex.ExTextView;
 import com.module.playways.doubleplay.DoubleRoomServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.inter.IGrabInviteView;
-import com.module.playways.party.room.PartyRoomServerApi;
 
-import java.util.HashMap;
 import java.util.List;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 public class GrabInvitePresenter {
     public final String TAG = "GrabRedPkgPresenter";

@@ -18,7 +18,7 @@ import com.component.person.utils.StringFromatUtils
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
-import com.module.playways.battle.songlist.view.BattleStarView
+//import com.module.playways.battle.songlist.view.BattleStarView
 
 class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialViewHolder>() {
 
@@ -49,7 +49,7 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialVi
         private val playNumTv: TextView = item.findViewById(R.id.play_num_tv)
         private val rankIv: ImageView = item.findViewById(R.id.rank_iv)
         private val rankDesc: TextView = item.findViewById(R.id.rank_desc)
-        private val starView: BattleStarView = item.findViewById(R.id.star_view)
+//        private val starView: BattleStarView = item.findViewById(R.id.star_view)
         private val lockIv: ImageView = item.findViewById(R.id.lock_iv)
 
         var mPos = -1
@@ -80,11 +80,11 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialVi
                 rankDesc.text = "暂无排名"
             }
             if (!model.showPermissionLock && model.status == GrabTagDetailModel.SST_UNLOCK) {
-                starView.visibility = View.VISIBLE
+//                starView.visibility = View.VISIBLE
                 lockIv.visibility = View.GONE
-                starView.bindData(model.starCnt, model.starCnt)
+//                starView.bindData(model.starCnt, model.starCnt)
             } else {
-                starView.visibility = View.GONE
+//                starView.visibility = View.GONE
                 lockIv.visibility = View.VISIBLE
             }
             playNumTv.text = "${StringFromatUtils.formatTenThousand(model.onlineUserCnt)}人在玩"

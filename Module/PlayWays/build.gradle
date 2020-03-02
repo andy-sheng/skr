@@ -99,12 +99,13 @@ android {
             java.srcDirs += 'src/main/java-songmanage'
             res.srcDirs += 'src/main/res-songmanage'
 
+            // 排位赛
             java.srcDirs += 'src/main/java-room-race'
             res.srcDirs += 'src/main/res-room-race'
 
             // 歌单战 要遗弃的
-            java.srcDirs += 'src/main/java-room-battle'
-            res.srcDirs += 'src/main/res-room-battle'
+            //java.srcDirs += 'src/main/java-room-battle-old'
+            //res.srcDirs += 'src/main/res-room-battle-old'
 
             // 排位结束的语音房
             //java.srcDirs += 'src/main/java-room-voice'
@@ -124,6 +125,10 @@ android {
             // 剧场房
             java.srcDirs += 'src/main/java-room-party'
             res.srcDirs += 'src/main/res-room-party'
+
+            // 2v2 团战
+            java.srcDirs += 'src/main/java-room-battle'
+            res.srcDirs += 'src/main/res-room-battle'
 
             // demo Test
 //            java.srcDirs += 'src/main/java-demo-test'

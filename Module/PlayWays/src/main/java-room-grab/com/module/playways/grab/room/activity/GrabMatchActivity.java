@@ -14,7 +14,7 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.R;
-import com.module.playways.battle.songlist.BattleListActivity;
+//import com.module.playways.battle.songlist.BattleListActivity;
 import com.module.playways.grab.prepare.NewGrabMatchFragment;
 import com.module.playways.room.prepare.model.PrepareData;
 
@@ -51,9 +51,9 @@ public class GrabMatchActivity extends BaseActivity {
                 continue;
             }
             if(prepareData.getGameType()==GameModeType.GAME_MODE_PLAYBOOK){
-                if(activity instanceof BattleListActivity){
-                    continue;
-                }
+//                if(activity instanceof BattleListActivity){
+//                    continue;
+//                }
             }
             activity.finish();
         }
