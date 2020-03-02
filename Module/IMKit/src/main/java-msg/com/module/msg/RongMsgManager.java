@@ -352,27 +352,29 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
             IContainerItemProvider.MessageProvider messageProvider = RongContext.getInstance().getMessageTemplate(message.getContent().getClass());
             if (messageProvider != null) {
-                // 触发弹出消息通知栏
-                Spannable content = messageProvider.getContentSummary(U.app(), message.getContent());
-                BuddyCache.BuddyCacheEntry buddyCacheEntry = BuddyCache.getInstance().getBuddyNormal(Integer.valueOf(message.getSenderUserId()), true, new ResultCallback<UserInfoModel>() {
-                    @Override
-                    public boolean onGetLocalDB(UserInfoModel userInfoModel) {
-                        if (userInfoModel != null) {
-                            RongIM.getInstance().refreshUserInfoCache(toRongUserInfo(userInfoModel));
+                // 触发弹出消息通知栏，小助手消息除外
+                if (Integer.valueOf(message.getSenderUserId()) != UserInfoModel.USER_ID_XIAOZHUSHOU) {
+                    Spannable content = messageProvider.getContentSummary(U.app(), message.getContent());
+                    BuddyCache.BuddyCacheEntry buddyCacheEntry = BuddyCache.getInstance().getBuddyNormal(Integer.valueOf(message.getSenderUserId()), true, new ResultCallback<UserInfoModel>() {
+                        @Override
+                        public boolean onGetLocalDB(UserInfoModel userInfoModel) {
+                            if (userInfoModel != null) {
+                                RongIM.getInstance().refreshUserInfoCache(toRongUserInfo(userInfoModel));
+                            }
+                            return false;
                         }
-                        return false;
-                    }
 
-                    @Override
-                    public boolean onGetServer(UserInfoModel userInfoModel) {
-                        if (userInfoModel != null) {
-                            RongIM.getInstance().refreshUserInfoCache(toRongUserInfo(userInfoModel));
+                        @Override
+                        public boolean onGetServer(UserInfoModel userInfoModel) {
+                            if (userInfoModel != null) {
+                                RongIM.getInstance().refreshUserInfoCache(toRongUserInfo(userInfoModel));
+                            }
+                            return false;
                         }
-                        return false;
-                    }
-                });
-                RongMsgNotifyEvent event = new RongMsgNotifyEvent(content,buddyCacheEntry);
-                EventBus.getDefault().post(event);
+                    });
+                    RongMsgNotifyEvent event = new RongMsgNotifyEvent(content, buddyCacheEntry);
+                    EventBus.getDefault().post(event);
+                }
             }
             // TODO: 2019/5/19  收到消息是否处理完成，true 表示自己处理铃声和后台通知，false 走融云默认处理方式。
             if (U.getActivityUtils().isAppForeground()) {

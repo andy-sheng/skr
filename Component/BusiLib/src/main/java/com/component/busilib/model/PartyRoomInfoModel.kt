@@ -4,6 +4,22 @@ import java.io.Serializable
 import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.userinfo.model.UserInfoModel
 
+class PartyRoomTagMode : Serializable {
+
+    companion object {
+        const val ERM_SING_PK = 1     //K歌模式
+        const val ERM_GAME_PK = 2     //游戏PK
+        const val ERM_MAKE_FRIEND = 3   //相亲模式
+        const val ERM_ALL = 100         //所有模式
+
+    }
+
+    @JSONField(name = "des")
+    var des: String = ""
+    @JSONField(name = "gameMode")
+    var gameMode: Int = 0
+}
+
 class RecommendPartyInfoModel : Serializable {
     @JSONField(name = "category")
     var category: Int = 0   // 分类
@@ -36,6 +52,8 @@ class PartyRoomInfoModel : Serializable {
     var widgetUrl: String = ""
     @JSONField(name = "roomTagURL")
     var roomTagURL: String = ""
+    @JSONField(name = "gameMode")
+    var gameMode: Int? = null
 
     // 用房间id和所属id来去重
     override fun hashCode(): Int {

@@ -90,6 +90,8 @@ public class NotificationPushManager {
                 StandFullStar pb = msg.getStandFullStar();
                 EventBus.getDefault().post(new EStandFullStarEvent(pb));
             }
+        } else if (msg.getMsgType() == ERoomBroadcastMsgType.RBRT_PRESENT_GIFT) {
+            EventBus.getDefault().post(msg.getPresentGift());
         }
     }
 

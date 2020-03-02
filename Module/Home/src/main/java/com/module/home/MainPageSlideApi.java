@@ -143,11 +143,17 @@ public interface MainPageSlideApi {
     @PUT("http://dev.game.inframe.mobi/v1/partyroom/has-create-permission")
     Call<ApiResult> hasCreatePermission(@Body RequestBody body);
 
+    /**
+     *
+     */
+    @GET("http://dev.kconf.inframe.mobi/v1/kconf/query-app-windows")
+    Observable<ApiResult> queryAppWindows();
+
 
     /**
      * 首页Party房间列表
      */
-    @GET("http://dev.game.inframe.mobi/v1/partyroom/roomlist")
-    Observable<ApiResult> getPartyRoomList(@Query("offset") int offset, @Query("limit") int limit);
+    @GET("http://dev.game.inframe.mobi/v2/partyroom/roomlist")
+    Observable<ApiResult> getPartyRoomList(@Query("offset") int offset, @Query("limit") int limit, @Query("gameMode") int gameMode);
 
 }

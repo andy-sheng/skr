@@ -53,13 +53,13 @@ import com.component.dialog.RedPacketRelayDialogView
 import com.component.notification.*
 import com.component.notification.api.NotifyReqApi
 import com.dialog.view.TipsDialogView
-import com.module.ModuleServiceManager
 import com.module.RouterConstants
 import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.Notification.*
+import com.zq.live.proto.broadcast.PresentGift
 import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -100,6 +100,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
                 MSG_DISMISS_GIFT_MALL_FLOAT_WINDOW -> FloatWindow.destroy(TAG_GIFT_MALL_FLOAT_WINDOW, 2)
                 MSG_DISMISS_RELAY_INVITE_FLOAT_WINDOW -> FloatWindow.destroy(TAG_RELAY_INVITE_FLOAT_WINDOW, 2)
                 MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW -> FloatWindow.destroy(TAG_RONG_MSG_NOTIFY_FLOAT_WINDOW, 2)
+                MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW -> FloatWindow.destroy(TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW, 2)
             }
         }
     }
@@ -128,6 +129,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
                 floatWindowData.mType == FloatWindowData.Type.PARTY_INVITE -> showPartyInviteFromRoomFloatWindow(floatWindowData)
                 floatWindowData.mType == FloatWindowData.Type.RELAY_INVITE -> showRelayInviteFromRoomFloatWindow(floatWindowData)
                 floatWindowData.mType == FloatWindowData.Type.RONG_MSG_NOTIFY -> showRongMsgNotifyFloatWindow(floatWindowData)
+                floatWindowData.mType == FloatWindowData.Type.BIG_GIFT_NOTIFY -> showBigGiftNotifyFloatWindow(floatWindowData)
             }
         }
 
@@ -293,7 +295,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
                         confirmDialog.setListener {
                             Observable.timer(500, TimeUnit.MILLISECONDS)
                                     .compose(this@NotifyCorePresenter.bindUntilEvent(PresenterEvent.DESTROY))
-                                    .subscribe { tryGoPartyRoom(event.ownerId, event.roomId) }
+                                    .subscribe { tryGoPartyRoom(event.roomId) }
                         }
                         confirmDialog.show()
                     }
@@ -302,7 +304,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
             })
         } else {
             // 不需要直接进
-            tryGoPartyRoom(event.ownerId, event.roomId)
+            tryGoPartyRoom(event.roomId)
         }
     }
 
@@ -403,6 +405,20 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         val floatWindowData = FloatWindowData(FloatWindowData.Type.DOUBLE_GRAB_INVITE)
         floatWindowData.userInfoModel = event.userInfoModel
         floatWindowData.extra = event.msg
+        mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PresentGift) {
+        val floatWindowData = FloatWindowData(FloatWindowData.Type.BIG_GIFT_NOTIFY)
+        val obj = JSONObject();
+        obj.put("content", event.content)
+        obj.put("couldEnter", event.couldEnter)
+        obj.put("sourceURL", event.sourceURL)
+        obj.put("enterScheme", event.enterScheme)
+        obj.put("mode", event.mode.value)
+        obj.put("roomID", event.roomID)
+        floatWindowData.extra = obj.toJSONString()
         mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
     }
 
@@ -565,7 +581,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         }, true)
     }
 
-    internal fun tryGoPartyRoom(ownerId: Int, roomID: Int) {
+    internal fun tryGoPartyRoom(roomID: Int) {
         mSkrAudioPermission!!.ensurePermission({
             val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
             iRankingModeService.tryGoPartyRoom(roomID, 2, 0)
@@ -955,7 +971,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         notifyView.setListener {
             mUiHandler.removeMessages(MSG_DISMISS_PARTY_ROOM_INVITE_FLOAT_WINDOW)
             FloatWindow.destroy(TAG_PARTY_ROOM_INVITE_FLOAT_WINDOW)
-            tryGoPartyRoom(userInfoModel!!.userId, floatWindowData.roomID)
+            tryGoPartyRoom(floatWindowData.roomID)
         }
 
         FloatWindow.with(U.app())
@@ -1068,7 +1084,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RongMsgNotifyEvent) {
-        if(event.buddyCacheEntry?.uuid?.toString() == chatingUserId){
+        if (event.buddyCacheEntry?.uuid?.toString() == chatingUserId) {
             // 详情页打开的已经是跟A的会话
             return
         }
@@ -1085,6 +1101,54 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
             mFloatWindowDataFloatWindowObjectPlayControlTemplate?.remove(floatWindowData)
             mFloatWindowDataFloatWindowObjectPlayControlTemplate?.add(floatWindowData, true)
         }
+    }
+
+    internal fun showBigGiftNotifyFloatWindow(floatWindowData: FloatWindowData) {
+        mUiHandler.removeMessages(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW)
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW, 5000)
+
+        val relationNotifyView = BigGiftNotifyView(U.app())
+        val obj = JSONObject.parseObject(floatWindowData.extra)
+        val content = obj.getString("content")
+        val sourceURL = obj.getString("sourceURL")
+        val enterScheme = obj.getString("enterScheme")
+        var couldEnter = obj.getBoolean("couldEnter")
+        val mode = obj.getIntValue("mode")
+        val roomID = obj.getIntValue("roomID")
+
+        if (couldEnter) {
+            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+            if (iRankingModeService.isInRoom(mode, roomID)) {
+                couldEnter = false
+            }
+        }
+
+        relationNotifyView.bindData(enterScheme, content, couldEnter, sourceURL) {
+            mUiHandler.removeMessages(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW);
+            FloatWindow.destroy(TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW);
+        }
+
+        FloatWindow.with(U.app())
+                .setView(relationNotifyView)
+                .setMoveType(MoveType.canRemove)
+                .setWidth(Screen.width, 1f)                               //设置控件宽高
+                .setHeight(Screen.height, 0.2f)
+                .setViewStateListener(object : ViewStateListenerAdapter() {
+                    override fun onDismiss(dismissReason: Int) {
+                        mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.endCurrent(floatWindowData)
+                    }
+
+                    override fun onPositionUpdate(x: Int, y: Int) {
+                        super.onPositionUpdate(x, y)
+                        mUiHandler.removeMessages(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW)
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW, 5000)
+                    }
+                })
+                .setDesktopShow(false)                        //桌面显示
+                .setCancelIfExist(false)
+                .setReqPermissionIfNeed(false)
+                .setTag(TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW)
+                .build()
     }
 
     internal fun showRongMsgNotifyFloatWindow(floatWindowData: FloatWindowData) {
@@ -1226,7 +1290,8 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
             MALL_GIFT,
             PARTY_INVITE,
             RELAY_INVITE,
-            RONG_MSG_NOTIFY
+            RONG_MSG_NOTIFY,
+            BIG_GIFT_NOTIFY,
         }
     }
 
@@ -1244,6 +1309,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         internal const val TAG_GIFT_MALL_FLOAT_WINDOW = "TAG_GIFT_MALL_FLOAT_WINDOW"
         internal const val TAG_RELAY_INVITE_FLOAT_WINDOW = "TAG_RELAY_INVITE_FLOAT_WINDOW"
         internal const val TAG_RONG_MSG_NOTIFY_FLOAT_WINDOW = "TAG_RONG_MSG_NOTIFY_FLOAT_WINDOW"
+        internal const val TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW = "TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW"
 
         internal const val MSG_DISMISS_INVITE_FLOAT_WINDOW = 2
         internal const val MSG_DISMISS_RELATION_FLOAT_WINDOW = 3
@@ -1255,5 +1321,6 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         internal const val MSG_DISMISS_PARTY_ROOM_INVITE_FLOAT_WINDOW = 9
         internal const val MSG_DISMISS_RELAY_INVITE_FLOAT_WINDOW = 10      // 普通邀请
         internal const val MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW = 11 // 融云消息
+        internal const val MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW = 12 // 大礼物通知
     }
 }

@@ -56,11 +56,13 @@ import com.module.playways.relay.match.model.JoinRelayRoomRspModel;
 import com.module.playways.relay.room.RelayRoomActivity;
 import com.module.playways.relay.room.RelayRoomData;
 import com.module.playways.relay.room.RelayRoomServerApi;
+import com.module.playways.room.data.H;
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
 import com.module.playways.room.song.model.SongModel;
+import com.zq.live.proto.Common.EGameModeType;
 import com.zq.live.proto.MicRoom.EJoinRoomSrc;
 import com.zq.live.proto.Notification.ERInviteType;
 
@@ -823,5 +825,19 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
     }
 
+    //只判断了两种房间
+    @Override
+    public boolean isInRoom(int type, int roomID) {
+        if (type == EGameModeType.PartyMode.getValue()) {
+            if (H.INSTANCE.getPartyRoomData() != null && H.INSTANCE.getPartyRoomData().getGameId() == roomID) {
+                return true;
+            }
+        } else if (type == EGameModeType.StandMode.getValue()) {
+            if (H.INSTANCE.getGrabRoomData() != null && H.INSTANCE.getGrabRoomData().getGameId() == roomID) {
+                return true;
+            }
+        }
 
+        return false;
+    }
 }
