@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- BattleStarView 的属性(头像都是圆的：丁一)-->
+    <declare-styleable name="battleStar">
+        <!--星星的宽度-->
+        <attr name="width" format="dimension"/>
+        <!--星星的高度-->
+        <attr name="height" format="dimension"/>
+        <!--星星正常图片-->
+        <attr name="normalDrawable" format="reference"/>
+        <!--星星点亮图片-->
+        <attr name="selectedDrawable" format="reference"/>
+    </declare-styleable>
+</resources>

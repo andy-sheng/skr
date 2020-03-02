@@ -29,8 +29,6 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
     var sysAvatar: String? = null // 系统头像
 
-    var clubInfo: ClubInfo? = null   // 家族信息
-
     /**
      * 当要拿服务器时间和本地时间比较时，请将服务器时间加上这个矫正值
      * 如

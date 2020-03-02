@@ -4,6 +4,7 @@ import com.common.log.MyLog
 import com.module.msg.CustomMsgType
 import com.module.msg.IPushMsgProcess
 import com.module.playways.room.msg.manager.*
+import com.zq.live.proto.BattleRoom.BattleRoomMsg
 import com.zq.live.proto.CombineRoom.CombineRoomMsg
 import com.zq.live.proto.GrabRoom.RoomMsg
 import com.zq.live.proto.MicRoom.MicRoomMsg
@@ -11,8 +12,8 @@ import com.zq.live.proto.PartyRoom.PartyRoomMsg
 import com.zq.live.proto.RaceRoom.RaceRoomMsg
 import com.zq.live.proto.RelayRoom.RelayRoomMsg
 
-object RoomMsgDispater : IPushMsgProcess {
-    const val TAG = "RoomMsgDispater"
+object RoomMsgDispatcher : IPushMsgProcess {
+    const val TAG = "RoomMsgDispatcher"
 
     override fun process(messageType: Int, data: ByteArray?) {
         when (messageType) {
@@ -68,6 +69,14 @@ object RoomMsgDispater : IPushMsgProcess {
                 }
                 PartyRoomMsgManager.processRoomMsg(msg)
             }
+            CustomMsgType.MSG_TYPE_BATTLE_ROOM -> {
+                val msg = BattleRoomMsg.parseFrom(data)
+                if (msg == null) {
+                    MyLog.e(TAG, "processRoomMsg" + " msg == null ")
+                    return
+                }
+                BattleRoomMsgManager.processRoomMsg(msg)
+            }
         }
     }
 
@@ -78,7 +87,8 @@ object RoomMsgDispater : IPushMsgProcess {
                 CustomMsgType.MSG_TYPE_RACE_ROOM,
                 CustomMsgType.MSG_TYPE_MIC_ROOM,
                 CustomMsgType.MSG_TYPE_RELAY_ROOM,
-                CustomMsgType.MSG_TYPE_PARTY_ROOM
+                CustomMsgType.MSG_TYPE_PARTY_ROOM,
+                CustomMsgType.MSG_TYPE_BATTLE_ROOM
         )
     }
 

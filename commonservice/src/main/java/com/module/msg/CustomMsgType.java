@@ -20,4 +20,6 @@ public interface CustomMsgType {
     int MSG_TYPE_RELAY_ROOM = 10;
 
     int MSG_TYPE_PARTY_ROOM = 11;
+
+    int MSG_TYPE_BATTLE_ROOM = 12;
 }

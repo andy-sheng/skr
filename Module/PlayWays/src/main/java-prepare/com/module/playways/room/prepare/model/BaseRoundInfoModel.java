@@ -12,6 +12,7 @@ public abstract class BaseRoundInfoModel implements Serializable {
     public static final int TYPE_MIC = 4;
     public static final int TYPE_RELAY = 5;
     public static final int TYPE_PARTY = 6;
+    public static final int TYPE_BATTLE = 7;
 
     protected int roundSeq;// 本局轮次
 

@@ -8,10 +8,8 @@ import android.view.*
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.base.FragmentDataListener
-import com.common.core.kouling.api.KouLingServerApi
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
@@ -19,9 +17,6 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiResult
-import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
@@ -36,7 +31,6 @@ import com.component.report.fragment.QuickFeedbackFragment
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.IHomeService
-import com.module.playways.BaseRoomData
 import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
 import com.module.playways.battle.match.model.JoinBattleRoomRspModel
@@ -48,8 +42,6 @@ import com.module.playways.battle.room.ui.BattleWidgetAnimationController
 import com.module.playways.battle.room.ui.IBattleRoomView
 import com.module.playways.battle.room.view.BattleVoiceControlPanelView
 import com.module.playways.grab.room.inter.IGrabVipView
-import com.module.playways.grab.room.invite.IInviteCallBack
-import com.module.playways.grab.room.invite.InviteFriendActivity
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.GrabChangeRoomTransitionView
 import com.module.playways.grab.room.view.VIPEnterView
@@ -71,9 +63,6 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.room.view.InputContainerView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import io.reactivex.Observable
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -550,7 +539,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     }
 
     private fun showPanelView() {
-        val battleGameInfoModel = mRoomData?.realRoundInfo?.sceneInfo
+//        val battleGameInfoModel = mRoomData?.realRoundInfo?.sceneInfo
 
 //        if (battleGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
 //            if (battleGameInfoModel?.ktv?.userID ?: 0 > 0) {
@@ -576,44 +565,44 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 //        EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), mRoomData.peerUser?.userInfo))
     }
 
-    val mInviteCallBack = object : IInviteCallBack {
-        override fun getFrom(): Int {
-            return GameModeType.GAME_MODE_BATTLE
-        }
-
-        override fun getInviteDialogText(kouling: String?): String {
-            return ""
-        }
-
-        override fun getShareTitle(): String {
-            return "这个房间有点意思，还不戳进来看看！"
-        }
-
-        override fun getShareDes(): String {
-            return "我在这个房间唱歌玩游戏，邀你一起嗨"
-        }
-
-        override fun getInviteObservable(model: UserInfoModel?): Observable<ApiResult> {
-            StatisticsAdapter.recordCountEvent("battle", "invite", null)
-            MyLog.d(TAG, "inviteMicFriend roomID=${H.battleRoomData?.gameId ?: 0} model=$model")
-            val map = mutableMapOf("roomID" to H.battleRoomData?.gameId, "userID" to model?.getUserId())
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            return ApiManager.getInstance().createService(BattleRoomServerApi::class.java).invite(body)
-        }
-
-        override fun getRoomID(): Int {
-            return H.battleRoomData?.gameId ?: 0
-        }
-
-        override fun getKouLingTokenObservable(): Observable<ApiResult> {
-            val code = String.format("inframeskr://room/joinbattle?owner=%s&gameId=%s&ask=1&mediaType=%s", MyUserInfoManager.uid, mRoomData.gameId, 0)
-            return ApiManager.getInstance().createService(KouLingServerApi::class.java).setTokenByCode(code)
-        }
-
-        override fun needShowFans(): Boolean {
-            return true
-        }
-    }
+//    val mInviteCallBack = object : IInviteCallBack {
+//        override fun getFrom(): Int {
+//            return GameModeType.GAME_MODE_BATTLE
+//        }
+//
+//        override fun getInviteDialogText(kouling: String?): String {
+//            return ""
+//        }
+//
+//        override fun getShareTitle(): String {
+//            return "这个房间有点意思，还不戳进来看看！"
+//        }
+//
+//        override fun getShareDes(): String {
+//            return "我在这个房间唱歌玩游戏，邀你一起嗨"
+//        }
+//
+//        override fun getInviteObservable(model: UserInfoModel?): Observable<ApiResult> {
+//            StatisticsAdapter.recordCountEvent("battle", "invite", null)
+//            MyLog.d(TAG, "inviteMicFriend roomID=${H.battleRoomData?.gameId ?: 0} model=$model")
+//            val map = mutableMapOf("roomID" to H.battleRoomData?.gameId, "userID" to model?.getUserId())
+//            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+//            return ApiManager.getInstance().createService(BattleRoomServerApi::class.java).invite(body)
+//        }
+//
+//        override fun getRoomID(): Int {
+//            return H.battleRoomData?.gameId ?: 0
+//        }
+//
+//        override fun getKouLingTokenObservable(): Observable<ApiResult> {
+//            val code = String.format("inframeskr://room/joinbattle?owner=%s&gameId=%s&ask=1&mediaType=%s", MyUserInfoManager.uid, mRoomData.gameId, 0)
+//            return ApiManager.getInstance().createService(KouLingServerApi::class.java).setTokenByCode(code)
+//        }
+//
+//        override fun needShowFans(): Boolean {
+//            return true
+//        }
+//    }
 
     private fun initTopView() {
         mTopOpView = findViewById(R.id.top_op_view)
@@ -624,17 +613,17 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 //                        .withInt("roomId", H.battleRoomData?.gameId ?: 0)
 //                        .navigation()
 
-                InviteFriendActivity.open(mInviteCallBack)
+//                InviteFriendActivity.open(mInviteCallBack)
             }
 
             override fun onClickChangeRoom() {
-                if (mRoomData?.myUserInfo?.isHost() == true || mRoomData?.myUserInfo?.isGuest() == true) {
-                    U.getToastUtil().showShort("在麦上不能切房间哦～")
-                    return
-                }
-                mBeginChangeRoomTs = System.currentTimeMillis()
-                mChangeRoomTransitionView?.setVisibility(View.VISIBLE)
-                mCorePresenter?.changeRoom()
+//                if (mRoomData?.myUserInfo?.isHost() == true || mRoomData?.myUserInfo?.isGuest() == true) {
+//                    U.getToastUtil().showShort("在麦上不能切房间哦～")
+//                    return
+//                }
+//                mBeginChangeRoomTs = System.currentTimeMillis()
+//                mChangeRoomTransitionView?.setVisibility(View.VISIBLE)
+//                mCorePresenter?.changeRoom()
             }
 
             override fun onClickRoomReport() {
@@ -681,11 +670,11 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
             }
 
             override fun onClickSetting() {
-                if (mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt()) == null
-                        || mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == false) {
-                    U.getToastUtil().showShort("只有主持人才能进行房间设置哦～")
-                    return
-                }
+//                if (mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt()) == null
+//                        || mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == false) {
+//                    U.getToastUtil().showShort("只有主持人才能进行房间设置哦～")
+//                    return
+//                }
 
 //                U.getFragmentUtils().addFragment(
 //                        FragmentUtils.newAddParamsBuilder(this@BattleRoomActivity, BattleRoomSettingFragment::class.java)
@@ -778,9 +767,9 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
             override fun showClubInfoCard() {
                 dismissDialog()
-                mClubCardDialogView = ClubCardDialogView(this@BattleRoomActivity, mRoomData.clubInfo?.clubID
-                        ?: 0)
-                mClubCardDialogView?.showByDialog()
+//                mClubCardDialogView = ClubCardDialogView(this@BattleRoomActivity, mRoomData.clubInfo?.clubID
+//                        ?: 0)
+//                mClubCardDialogView?.showByDialog()
             }
         }
     }
@@ -847,15 +836,15 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         dismissDialog()
         mInputContainerView.hideSoftInput()
         var showKick = false
-        if (isShowKick != null) {
-            showKick = isShowKick
-        } else if (mRoomData.myUserInfo?.isHost() == true) {
-            // 主持人 能踢所有人
-            showKick = mRoomData.getPlayerInfoById(userID)?.isHost() != true
-        } else if (mRoomData.myUserInfo?.isAdmin() == true) {
-            // 管理员能踢 嘉宾 观众
-            showKick = !(mRoomData.getPlayerInfoById(userID)?.isAdmin() == true || mRoomData.getPlayerInfoById(userID)?.isHost() == true)
-        }
+//        if (isShowKick != null) {
+//            showKick = isShowKick
+//        } else if (mRoomData.myUserInfo?.isHost() == true) {
+//            // 主持人 能踢所有人
+//            showKick = mRoomData.getPlayerInfoById(userID)?.isHost() != true
+//        } else if (mRoomData.myUserInfo?.isAdmin() == true) {
+//            // 管理员能踢 嘉宾 观众
+//            showKick = !(mRoomData.getPlayerInfoById(userID)?.isAdmin() == true || mRoomData.getPlayerInfoById(userID)?.isHost() == true)
+//        }
 
         mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_BATTLE_ROOM, userID, showKick, true, true)
                 .setRoomID(mRoomData.gameId)
@@ -875,7 +864,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         mConfirmDialog = ConfirmDialog(U.getActivityUtils().topActivity, model, ConfirmDialog.TYPE_OWNER_KICK_CONFIRM, 0)
         mConfirmDialog?.setListener { userInfoModel ->
             // 发起踢人请求
-            mCorePresenter.kickOut(userInfoModel.userId)
+//            mCorePresenter.kickOut(userInfoModel.userId)
         }
         mConfirmDialog?.show()
     }
@@ -1068,96 +1057,96 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         mClubCardDialogView?.dismiss(false)
     }
 
-    /**
-     * 某个轮次结束了
-     */
-    override fun showRoundOver(lastRoundInfo: BattleRoundInfoModel?, continueOp: (() -> Unit)?) {
-        continueOp?.invoke()
-    }
+//    /**
+//     * 某个轮次结束了
+//     */
+//    override fun showRoundOver(lastRoundInfo: BattleRoundInfoModel?, continueOp: (() -> Unit)?) {
+//        continueOp?.invoke()
+//    }
+//
+//    /**
+//     * 某个游戏开始了 信息在 realRoundInfo里取
+//     */
+//    override fun gameBegin(thisRound: BattleRoundInfoModel?) {
+//        mBattleGameMainView?.updateRound(thisRound)
+//    }
+//
+//    override fun showVoteView(event: PBeginVote) {
+//        if ((System.currentTimeMillis() - BaseRoomData.shiftTsForRelay) - event.beginTimeMs >= event.endTimeMs - event.beginTimeMs) {
+//            MyLog.w(TAG, "已经过了投票时间，PBeginVote event.voteTag is ${event.voteTag}")
+//        } else {
+//            val battleVoteDialogView = BattleVoteDialogView(this@BattleRoomActivity, event)
+//            battleVoteDialogView.showByDialog()
+//        }
+//    }
+//
+//    /**
+//     * 没有游戏了
+//     */
+//    override fun showWaiting() {
+//        mBattleGameMainView?.toEmptyState()
+//
+//    }
+//
+//    override fun joinNotice(model: BattlePlayerInfoModel?) {
+//        model?.let {
+//            if (it.userID != MyUserInfoManager.myUserInfo?.userId?.toInt()) {
+//                mVipEnterPresenter?.addNotice(it.userInfo)
+//            }
+//        }
+//    }
+//
+//    override fun gameOver() {
+//        finish()
+//        U.getToastUtil().showShort("房间已解散")
+//    }
+//
+//    override fun showWarningDialog(warningMsg: String) {
+//        dismissDialog()
+//        mTipsDialogView = TipsDialogView.Builder(this)
+//                .setMessageTip(warningMsg)
+//                .setOkBtnTip("我知道了")
+//                .setOkBtnClickListener {
+//                    mTipsDialogView?.dismiss()
+//                }
+//                .build()
+//        mTipsDialogView?.showByDialog()
+//    }
+//
+//    override fun beginQuickAnswer(beginTs: Long, endTs: Long) {
+//        mRightQuickAnswerView?.playCountDown(beginTs, endTs)
+//    }
 
-    /**
-     * 某个游戏开始了 信息在 realRoundInfo里取
-     */
-    override fun gameBegin(thisRound: BattleRoundInfoModel?) {
-        mBattleGameMainView?.updateRound(thisRound)
-    }
+//    internal var mBeginChangeRoomTs: Long = 0
 
-    override fun showVoteView(event: PBeginVote) {
-        if ((System.currentTimeMillis() - BaseRoomData.shiftTsForRelay) - event.beginTimeMs >= event.endTimeMs - event.beginTimeMs) {
-            MyLog.w(TAG, "已经过了投票时间，PBeginVote event.voteTag is ${event.voteTag}")
-        } else {
-            val battleVoteDialogView = BattleVoteDialogView(this@BattleRoomActivity, event)
-            battleVoteDialogView.showByDialog()
-        }
-    }
-
-    /**
-     * 没有游戏了
-     */
-    override fun showWaiting() {
-        mBattleGameMainView?.toEmptyState()
-
-    }
-
-    override fun joinNotice(model: BattlePlayerInfoModel?) {
-        model?.let {
-            if (it.userID != MyUserInfoManager.myUserInfo?.userId?.toInt()) {
-                mVipEnterPresenter?.addNotice(it.userInfo)
-            }
-        }
-    }
-
-    override fun gameOver() {
-        finish()
-        U.getToastUtil().showShort("房间已解散")
-    }
-
-    override fun showWarningDialog(warningMsg: String) {
-        dismissDialog()
-        mTipsDialogView = TipsDialogView.Builder(this)
-                .setMessageTip(warningMsg)
-                .setOkBtnTip("我知道了")
-                .setOkBtnClickListener {
-                    mTipsDialogView?.dismiss()
-                }
-                .build()
-        mTipsDialogView?.showByDialog()
-    }
-
-    override fun beginQuickAnswer(beginTs: Long, endTs: Long) {
-        mRightQuickAnswerView?.playCountDown(beginTs, endTs)
-    }
-
-    internal var mBeginChangeRoomTs: Long = 0
-
-    override fun onChangeRoomResult(success: Boolean, errMsg: String?) {
-        val t = System.currentTimeMillis() - mBeginChangeRoomTs
-        if (t > 1500) {
-            mChangeRoomTransitionView?.setVisibility(View.GONE)
-            if (!success) {
-                U.getToastUtil().showShort(errMsg)
-            }
-        } else {
-            mUiHandler.postDelayed({
-                if (!success) {
-                    U.getToastUtil().showShort(errMsg)
-                }
-                mChangeRoomTransitionView?.setVisibility(View.GONE)
-            }, 1500 - t)
-        }
-        if (success) {
-//            initBgView()
-//            hideAllCardView()
-            mVipEnterPresenter?.switchRoom()
-            mVIPEnterView?.switchRoom()
-            mTopContentView.switchRoom()
-            // 重新决定显示mic按钮
-            mBottomContainerView?.setRoomData(mRoomData!!)
-//            mGrabTopContentView.onChangeRoom()
-//            adjustSelectSongView()
-            // 换房间也要弹窗
-            checkGoMicTips()
-        }
-
-    }
+//    override fun onChangeRoomResult(success: Boolean, errMsg: String?) {
+//        val t = System.currentTimeMillis() - mBeginChangeRoomTs
+//        if (t > 1500) {
+//            mChangeRoomTransitionView?.setVisibility(View.GONE)
+//            if (!success) {
+//                U.getToastUtil().showShort(errMsg)
+//            }
+//        } else {
+//            mUiHandler.postDelayed({
+//                if (!success) {
+//                    U.getToastUtil().showShort(errMsg)
+//                }
+//                mChangeRoomTransitionView?.setVisibility(View.GONE)
+//            }, 1500 - t)
+//        }
+//        if (success) {
+////            initBgView()
+////            hideAllCardView()
+//            mVipEnterPresenter?.switchRoom()
+//            mVIPEnterView?.switchRoom()
+//            mTopContentView.switchRoom()
+//            // 重新决定显示mic按钮
+//            mBottomContainerView?.setRoomData(mRoomData!!)
+////            mGrabTopContentView.onChangeRoom()
+////            adjustSelectSongView()
+//            // 换房间也要弹窗
+//            checkGoMicTips()
+//        }
+//
+//    }
 }

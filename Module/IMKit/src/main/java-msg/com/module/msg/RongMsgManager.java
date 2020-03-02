@@ -45,6 +45,8 @@ import com.module.msg.custom.relation.RelationInviteMessageItemProvider;
 import com.module.msg.custom.relation.RelationInviteMsg;
 import com.module.msg.custom.relation.RelationMsgProcessor;
 import com.module.msg.listener.MyConversationClickListener;
+import com.module.msg.model.BattleRoomHighMsg;
+import com.module.msg.model.BattleRoomLowMsg;
 import com.module.msg.model.BroadcastRoomMsg;
 import com.module.msg.model.CustomChatCombineRoomLowLevelMsg;
 import com.module.msg.model.CustomChatCombineRoomMsg;
@@ -87,6 +89,7 @@ import io.rong.imlib.model.UserInfo;
 import io.rong.push.RongPushClient;
 import io.rong.push.pushconfig.PushConfig;
 
+import static com.module.msg.CustomMsgType.MSG_TYPE_BATTLE_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_BROADCAST;
 import static com.module.msg.CustomMsgType.MSG_TYPE_COMBINE_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_MIC_ROOM;
@@ -254,7 +257,19 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 dispatchPartyRoomMsg(customChatRoomMsg);
 
                 return true;
-            } else if (message.getContent() instanceof CustomNotificationMsg) {
+            } else if (message.getContent() instanceof BattleRoomHighMsg) {
+
+                BattleRoomHighMsg customChatRoomMsg = (BattleRoomHighMsg) message.getContent();
+                dispatchBattleRoomMsg(customChatRoomMsg);
+
+                return true;
+            } else if (message.getContent() instanceof BattleRoomLowMsg) {
+
+                BattleRoomLowMsg customChatRoomMsg = (BattleRoomLowMsg) message.getContent();
+                dispatchBattleRoomMsg(customChatRoomMsg);
+
+                return true;
+            }else if (message.getContent() instanceof CustomNotificationMsg) {
                 CustomNotificationMsg notificationMsg = (CustomNotificationMsg) message.getContent();
                 byte[] data = U.getBase64Utils().decode(notificationMsg.getContentJsonStr());
 
@@ -503,6 +518,28 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             if (processors != null) {
                 for (IPushMsgProcess process : processors) {
                     process.process(MSG_TYPE_PARTY_ROOM, data);
+                }
+            }
+        }
+    }
+
+    private void dispatchBattleRoomMsg(MessageContent messageContent) {
+        if (messageContent instanceof BattleRoomHighMsg) {
+            BattleRoomHighMsg msg = (BattleRoomHighMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(msg.getContentJsonStr());
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_BATTLE_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_BATTLE_ROOM, data);
+                }
+            }
+        } else if (messageContent instanceof BattleRoomLowMsg) {
+            BattleRoomLowMsg msg = (BattleRoomLowMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(msg.getContentJsonStr());
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_BATTLE_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_BATTLE_ROOM, data);
                 }
             }
         }

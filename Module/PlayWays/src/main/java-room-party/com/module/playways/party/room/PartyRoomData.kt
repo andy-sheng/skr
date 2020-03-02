@@ -2,6 +2,7 @@ package com.module.playways.party.room
 
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.model.ClubInfo
 import com.common.log.MyLog
 import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
@@ -18,6 +19,8 @@ import org.greenrobot.eventbus.EventBus
 
 
 class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
+
+    var clubInfo: ClubInfo? = null   // 家族信息
 
     var gameMode = 0 //  ERM_SING_PK = 1 : K歌 模式 - ERM_GMAE_PK = 2 : 游戏PK 模式 - ERM_MAKE_FRIEND = 3 : 相亲交友 模式string
 

@@ -25,10 +25,7 @@ import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
 import com.module.ModuleServiceManager;
 import com.module.msg.IMsgService;
-import com.module.playways.room.msg.dispatcher.RoomMsgDispater;
-import com.module.playways.room.msg.manager.GrabRoomMsgManager;
-import com.module.playways.room.msg.manager.DoubleRoomMsgManager;
-import com.module.playways.room.msg.manager.RaceRoomMsgManager;
+import com.module.playways.room.msg.dispatcher.RoomMsgDispatcher;
 
 import java.util.List;
 
@@ -65,7 +62,7 @@ public class PlayWaysConfiguration implements ConfigModule {
                 Log.d(TAG, "application onCreate");
                 IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
                 if (msgService != null) {
-                    msgService.addMsgProcessor(RoomMsgDispater.INSTANCE);
+                    msgService.addMsgProcessor(RoomMsgDispatcher.INSTANCE);
                 }
             }
 

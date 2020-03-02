@@ -402,4 +402,5 @@ interface PartyRoomServerApi {
      */
     @GET("http://dev.game.inframe.mobi/v1/partygame/list-punish")
     fun getPunishList(@Query("roomID") roomID: Int, @Query("punishType") punishType: Int): Call<ApiResult>
+
 }

@@ -1,13 +1,11 @@
 package com.module.playways.battle.room.top
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
-import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.ClubMemberInfo
@@ -17,17 +15,13 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
-import com.common.utils.SpanUtils
 import com.common.utils.U
-import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.component.busilib.view.SpeakingTipsAnimationView
-import com.component.person.event.ShowPersonCardEvent
 import com.engine.EngineEvent
 import com.module.playways.R
 import com.module.playways.battle.room.BattleRoomData
-import com.module.playways.room.data.H
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -75,40 +69,6 @@ class BattleTopContentView : ExConstraintLayout {
         }
 
         avatarIv.setDebounceViewClickListener {
-            if (H.battleRoomData?.hostId == null) {
-                return@setDebounceViewClickListener
-            }
-
-
-            if (roomData?.isClubHome() == true) {
-                val host = roomData?.getPlayerInfoById(roomData?.hostId ?: 0)?.userInfo?.clubInfo
-                getClubIdentify(roomData?.clubInfo?.clubID ?: 0) {
-                    if (it != null) {
-                        if (host == null) {
-                            if (it.canBeHost()) {
-                                listener?.showBattleBeHostConfirm()
-                                return@getClubIdentify
-                            }
-                        } else {
-                            if ((roomData?.hostId ?: 0) == MyUserInfoManager.uid.toInt()) {
-                                listener?.showBattleSelfOpHost()
-                                return@getClubIdentify
-                            } else if (it.canOpHost() && it.isHighLevelThen(host)) {
-                                listener?.showBattleOpHost()
-                                return@getClubIdentify
-                            }
-                        }
-                    }
-
-                    if (H.battleRoomData?.hostId!! > 0) {
-                        EventBus.getDefault().post(ShowPersonCardEvent(H.battleRoomData?.hostId!!))
-                    }
-                }
-            } else {
-                if (H.battleRoomData?.hostId!! > 0) {
-                    EventBus.getDefault().post(ShowPersonCardEvent(H.battleRoomData?.hostId!!))
-                }
-            }
 
         }
         arrowIv.setDebounceViewClickListener { listener?.clickArrow(!mIsOpen) }
@@ -162,40 +122,6 @@ class BattleTopContentView : ExConstraintLayout {
     }
 
     fun bindData() {
-        val hostUser = H.battleRoomData?.getPlayerInfoById(H.battleRoomData?.hostId ?: 0)
-        if (hostUser != null) {
-            avatarIv.visibility = View.VISIBLE
-            AvatarUtils.loadAvatarByUrl(avatarIv,
-                    AvatarUtils.newParamsBuilder(hostUser?.userInfo?.avatar)
-                            .setBorderColor(Color.WHITE)
-                            .setBorderWidth(1.dp().toFloat())
-                            .setCircle(true)
-                            .build())
-            nameTv.text = hostUser?.userInfo?.nicknameRemark
-        } else {
-            nameTv.text = "无房主"
-            avatarIv.visibility = View.INVISIBLE
-
-            if (H.battleRoomData?.isClubHome() == true) {
-                if (MyUserInfoManager.myUserInfo?.clubInfo?.club?.clubID == H.battleRoomData?.clubInfo?.clubID
-                        && MyUserInfoManager.myUserInfo?.clubInfo?.canBeHost() == true) {
-                    val spanUtils = SpanUtils()
-                            .append("上麦主持").setForegroundColor(Color.parseColor("#DEA243")).create()
-                    nameTv.text = spanUtils
-                } else {
-                    nameTv.text = "暂无主持人"
-                }
-            }
-        }
-
-        compereTv.text = "房间号:${H.battleRoomData?.gameId}"
-        onlineNum.text = "在线${H.battleRoomData?.onlineUserCnt}人"
-
-        if (H.battleRoomData?.isClubHome() == true) {
-            clubIconIv.visibility = View.VISIBLE
-        } else {
-            clubIconIv.visibility = View.GONE
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -211,9 +137,6 @@ class BattleTopContentView : ExConstraintLayout {
                     }
                     var volume = uv.volume
                     if (volume > 20) {
-                        if (uid == H.battleRoomData?.hostId) {
-                            speakerAnimationIv.show(1000)
-                        }
                     }
                 }
             }
