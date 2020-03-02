@@ -60,4 +60,6 @@ public interface IPlaywaysModeService extends IProvider {
     void tryGoRelayHome();
 
     Fragment getPartyGameFragment();
+
+    boolean isInRoom(int type, int roomID);
 }

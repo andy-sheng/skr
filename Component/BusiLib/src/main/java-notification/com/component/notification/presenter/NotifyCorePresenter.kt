@@ -416,6 +416,8 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         obj.put("couldEnter", event.couldEnter)
         obj.put("sourceURL", event.sourceURL)
         obj.put("enterScheme", event.enterScheme)
+        obj.put("mode", event.mode.value)
+        obj.put("roomID", event.roomID)
         floatWindowData.extra = obj.toJSONString()
         mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
     }
@@ -1110,7 +1112,16 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         val content = obj.getString("content")
         val sourceURL = obj.getString("sourceURL")
         val enterScheme = obj.getString("enterScheme")
-        val couldEnter = obj.getBoolean("couldEnter")
+        var couldEnter = obj.getBoolean("couldEnter")
+        val mode = obj.getIntValue("mode")
+        val roomID = obj.getIntValue("roomID")
+
+        if (couldEnter) {
+            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+            if (iRankingModeService.isInRoom(mode, roomID)) {
+                couldEnter = false
+            }
+        }
 
         relationNotifyView.bindData(enterScheme, content, couldEnter, sourceURL) {
             mUiHandler.removeMessages(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW);
