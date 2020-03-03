@@ -579,6 +579,17 @@ public class DeviceUtils {
         }
     }
 
+    public static class IncomingCallEvent {
+//            TelephonyManager.EXTRA_STATE_IDLE 空闲或挂断
+//            TelephonyManager.EXTRA_STATE_RINGING 响铃
+//            TelephonyManager.EXTRA_STATE_OFFHOOK 接通
+        public String state = TelephonyManager.EXTRA_STATE_IDLE;
+
+        public IncomingCallEvent(String state) {
+            this.state = state;
+        }
+    }
+
     /**
      * 以下为获取设备信息
      */

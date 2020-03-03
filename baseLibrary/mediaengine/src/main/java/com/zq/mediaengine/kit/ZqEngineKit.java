@@ -5,6 +5,7 @@ import android.graphics.RectF;
 import android.opengl.GLSurfaceView;
 import android.os.Looper;
 import android.os.Message;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.TextureView;
@@ -1333,6 +1334,22 @@ public class ZqEngineKit implements AgoraOutCallback {
                 }
             }
         });
+    }
+
+    /**
+     * 监听来电事件
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(DeviceUtils.IncomingCallEvent event) {
+        if(event.state == TelephonyManager.EXTRA_STATE_IDLE){
+
+        }else if(event.state == TelephonyManager.EXTRA_STATE_RINGING){
+
+        }else if(event.state == TelephonyManager.EXTRA_STATE_OFFHOOK){
+
+        }
     }
 
     /**

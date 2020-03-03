@@ -29,6 +29,7 @@ import com.common.callback.Callback;
 import com.common.core.account.UserAccountManager;
 import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.InviteRelationCardSchemeEvent;
@@ -124,6 +125,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     RelationCardUtils mRelationCardUtils;
 
     SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission();
+    SkrPhoneStatePermission mSkrPhoneStatePermission = new SkrPhoneStatePermission();
 
     //SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
 
@@ -533,6 +535,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe(this)) {
             if (mFromCreate && UserAccountManager.INSTANCE.hasAccount()) {
                 mSkrSdcardPermission.ensurePermission(this, null, true);
+            }
+        }
+        if (!mSkrPhoneStatePermission.onBackFromPermisionManagerMaybe(this)) {
+            if (mFromCreate && UserAccountManager.INSTANCE.hasAccount()) {
+                mSkrPhoneStatePermission.ensurePermission(this, null, false);
             }
         }
         mFromCreate = false;
