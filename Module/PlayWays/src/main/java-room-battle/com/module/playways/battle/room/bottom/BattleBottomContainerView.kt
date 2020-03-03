@@ -33,7 +33,7 @@ class BattleBottomContainerView : BottomContainerView {
 
         mInputBtn?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                // 嘉宾和主持人
+                // todo 补充一个开闭麦
             }
         })
 

@@ -20,6 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_10_dp"
             android:scaleType="centerInside"
+            android:visibility="gone"
             app:src_unPressed_drawable="@drawable/biaoqing" />
 
 <!--        <com.common.view.ex.ExImageView-->

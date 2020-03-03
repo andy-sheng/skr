@@ -68,6 +68,9 @@ import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_BATTLE_ROOM)
 class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
+    override fun receiveScoreEvent(score: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     companion object {
         val playerTag = "BattleRoomActivity"
@@ -350,38 +353,6 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     private fun initTopView() {
         mTopOpView = findViewById(R.id.top_op_view)
         mTopOpView.setListener(object : BattleTopOpView.Listener {
-            override fun onClickInviteRoom() {
-//                ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
-//                        .withInt("from", GameModeType.GAME_MODE_BATTLE)
-//                        .withInt("roomId", H.battleRoomData?.gameId ?: 0)
-//                        .navigation()
-
-//                InviteFriendActivity.open(mInviteCallBack)
-            }
-
-            override fun onClickChangeRoom() {
-//                if (mRoomData?.myUserInfo?.isHost() == true || mRoomData?.myUserInfo?.isGuest() == true) {
-//                    U.getToastUtil().showShort("在麦上不能切房间哦～")
-//                    return
-//                }
-//                mBeginChangeRoomTs = System.currentTimeMillis()
-//                mChangeRoomTransitionView?.setVisibility(View.VISIBLE)
-//                mCorePresenter?.changeRoom()
-            }
-
-            override fun onClickRoomReport() {
-//                U.getFragmentUtils().addFragment(
-//                        FragmentUtils.newAddParamsBuilder(this@BattleRoomActivity, QuickFeedbackFragment::class.java)
-//                                .setAddToBackStack(true)
-//                                .setHasAnimation(true)
-//                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_BATTLE_ROOM)
-//                                .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
-//                                .addDataBeforeAdd(3, mRoomData.gameId)
-//                                .addDataBeforeAdd(4, mRoomData.roomName)
-//                                .setEnterAnim(R.anim.slide_in_bottom)
-//                                .setExitAnim(R.anim.slide_out_bottom)
-//                                .build())
-            }
 
             override fun onClickGameRule() {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(this@BattleRoomActivity)
@@ -412,20 +383,6 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
                 mVoiceControlPanelView?.showByDialog()
             }
 
-            override fun onClickSetting() {
-//                if (mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt()) == null
-//                        || mRoomData.getPlayerInfoById(MyUserInfoManager.uid.toInt())?.isHost() == false) {
-//                    U.getToastUtil().showShort("只有主持人才能进行房间设置哦～")
-//                    return
-//                }
-
-//                U.getFragmentUtils().addFragment(
-//                        FragmentUtils.newAddParamsBuilder(this@BattleRoomActivity, BattleRoomSettingFragment::class.java)
-//                                .setAddToBackStack(true)
-//                                .setHasAnimation(true)
-//                                .build())
-            }
-
             override fun closeBtnClick() {
                 quitGame()
             }
@@ -435,10 +392,6 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         mTopContentView.roomData = mRoomData
         mTopContentView.bindData()
         mTopContentView.listener = object : BattleTopContentView.Listener {
-            override fun showRoomMember() {
-                // 查看房间所有人
-                dismissDialog()
-            }
 
             override fun clickArrow(open: Boolean) {
                 if (open) {
@@ -448,72 +401,6 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
                 }
             }
 
-            override fun showBattleBeHostConfirm() {
-//                getBattleManageHostDialogView().apply {
-//                    function1.text = "上麦"
-//                    function1.setDebounceViewClickListener {
-//                        mCorePresenter.becomeClubHost {
-//                            dismissDialog()
-//                            mTipsDialogView = TipsDialogView.Builder(this@BattleRoomActivity)
-//                                    .setMessageTip("为保障绿色、文明的主题房游戏环境，需要对主持人进行实名认证哦！")
-//                                    .setConfirmTip("立即认证")
-//                                    .setCancelTip("暂不")
-//                                    .setConfirmBtnClickListener {
-//                                        dismissDialog()
-//                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-//                                                .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=room"))
-//                                                .greenChannel().navigation();
-//                                    }
-//                                    .setCancelBtnClickListener {
-//                                        dismissDialog()
-//                                    }
-//                                    .build()
-//                            mTipsDialogView?.showByDialog()
-//                        }
-//                        dismissDialog()
-//                    }
-//                    function2.visibility = View.GONE
-//                }.showByDialog()
-            }
-
-            override fun showBattleOpHost() {
-//                getBattleManageHostDialogView().apply {
-//                    function1.text = "上麦"
-//                    function1.setDebounceViewClickListener {
-//                        mCorePresenter.takeClubHost()
-//                        dismissDialog()
-//                    }
-//
-//                    function2.visibility = View.VISIBLE
-//                    function2.setDebounceViewClickListener {
-//                        dismissDialog() // 2个对话框
-//                        EventBus.getDefault().post(ShowPersonCardEvent(mRoomData.hostId))
-//                    }
-//                }.showByDialog()
-            }
-
-            override fun showBattleSelfOpHost() {
-//                getBattleManageHostDialogView().apply {
-//                    function1.text = "下麦"
-//                    function1.setDebounceViewClickListener {
-//                        mCorePresenter.giveClubHost()
-//                        dismissDialog()
-//                    }
-//
-//                    function2.visibility = View.VISIBLE
-//                    function2.setDebounceViewClickListener {
-//                        dismissDialog() // 2个对话框
-//                        EventBus.getDefault().post(ShowPersonCardEvent(mRoomData.hostId))
-//                    }
-//                }.showByDialog()
-            }
-
-            override fun showClubInfoCard() {
-                dismissDialog()
-//                mClubCardDialogView = ClubCardDialogView(this@BattleRoomActivity, mRoomData.clubInfo?.clubID
-//                        ?: 0)
-//                mClubCardDialogView?.showByDialog()
-            }
         }
     }
 

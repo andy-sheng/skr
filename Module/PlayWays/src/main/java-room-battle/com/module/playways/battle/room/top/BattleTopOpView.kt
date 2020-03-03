@@ -20,12 +20,10 @@ import org.greenrobot.eventbus.ThreadMode
 
 class BattleTopOpView : ConstraintLayout {
 
-    var partyInviteIv:ExTextView
-    var changeRoomIv:ExTextView
-    var reportRoomIv:ExTextView
-    var feedBackIv:ImageView
-    var voiceSettingIv:ImageView
-    var exitIv:ImageView
+    private val feedBackIv: ImageView
+    private val ruleIv: ImageView
+    private val voiceSettingIv: ImageView
+    private val exitIv: ImageView
 
     private var mListener: Listener? = null
 
@@ -41,100 +39,52 @@ class BattleTopOpView : ConstraintLayout {
 
     init {
         View.inflate(context, R.layout.battle_top_op_view, this)
-        partyInviteIv = rootView.findViewById(R.id.party_invite_iv)
-        changeRoomIv = rootView.findViewById(R.id.change_room_iv)
-        reportRoomIv = rootView.findViewById(R.id.report_room_iv)
-        feedBackIv = rootView.findViewById(R.id.feed_back_iv)
-        voiceSettingIv = rootView.findViewById(R.id.voice_setting_iv)
-        exitIv = rootView.findViewById(R.id.exit_iv)
 
 
-        partyInviteIv.setDebounceViewClickListener {
-            StatisticsAdapter.recordCountEvent("party", "top_invite", null)
-            mListener?.onClickInviteRoom()
+        feedBackIv = this.findViewById(R.id.feed_back_iv)
+        ruleIv = this.findViewById(R.id.rule_iv)
+        voiceSettingIv = this.findViewById(R.id.voice_setting_iv)
+        exitIv = this.findViewById(R.id.exit_iv)
+
+
+        feedBackIv.setDebounceViewClickListener {
+            mListener?.onClickFeedBack()
         }
 
-        changeRoomIv.setDebounceViewClickListener {
-            StatisticsAdapter.recordCountEvent("party", "change_room", null)
-            mListener?.onClickChangeRoom()
-        }
-        reportRoomIv.setDebounceViewClickListener {
-            mListener?.onClickRoomReport()
+        ruleIv.setDebounceViewClickListener {
+            mListener?.onClickGameRule()
         }
 
-//        mIvSetting.setDebounceViewClickListener {
-//            mListener?.onClickSetting()
-//        }
+        voiceSettingIv.setDebounceViewClickListener {
+            mListener?.onClickVoiceAudition()
+        }
 
-        voiceSettingIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                mListener?.onClickVoiceAudition()
-            }
-        })
+        exitIv.setDebounceViewClickListener {
+            mListener?.closeBtnClick()
+        }
 
-//        mGameRuleIv.setOnClickListener(object : DebounceViewClickListener() {
-//            override fun clickValid(v: View) {
-//                mListener?.onClickGameRule()
-//            }
-//        })
-
-        feedBackIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                mListener?.onClickFeedBack()
-            }
-        })
-
-        exitIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                mListener?.closeBtnClick()
-            }
-        })
     }
 
-    fun bindData(){
-        if(H.partyRoomData?.myUserInfo?.isHost()==true ||
-                H.partyRoomData?.myUserInfo?.isGuest()==true){
-            changeRoomIv.visibility = View.GONE
-        }else{
-            changeRoomIv.visibility = View.VISIBLE
-        }
+    fun bindData() {
+
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        EventBus.getDefault().register(this)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        EventBus.getDefault().unregister(this)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event:PartyMyUserInfoChangeEvent){
-        if(H.partyRoomData?.myUserInfo?.isHost()==true ||
-                H.partyRoomData?.myUserInfo?.isGuest()==true){
-            changeRoomIv.visibility = View.GONE
-        }else{
-            changeRoomIv.visibility = View.VISIBLE
-        }
     }
 
     interface Listener {
-        fun closeBtnClick()
-
-        fun onClickGameRule()
 
         fun onClickFeedBack()
 
+        fun onClickGameRule()
+
         fun onClickVoiceAudition()
 
-        fun onClickSetting()
-
-        fun onClickRoomReport()
-
-        fun onClickChangeRoom()
-
-        fun onClickInviteRoom()
+        fun closeBtnClick()
     }
 }
