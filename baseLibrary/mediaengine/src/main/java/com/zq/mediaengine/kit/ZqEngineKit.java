@@ -206,6 +206,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private long mAccRecoverPosition = 0;
     private int mAccRemainedLoopCount = 0;
     private int mAccRetriedCount = 0;
+    private boolean mIsAccStopped = false;  // 声网伴奏状态监控
     private int lastAudioMixingPublishVolume = -1;
 
     // 视频相关参数
@@ -496,7 +497,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 }
             }
             mCustomHandlerThread.postDelayed(() -> {
-                if (!mConfig.isMixMusicPlaying()) {
+                if (TextUtils.isEmpty(mAccFullPath)) {
                     return;
                 }
                 mAccRetriedCount++;
@@ -505,6 +506,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                 doStartAudioMixing(mAccUrlInUse, mAccRecoverPosition, mAccRemainedLoopCount);
             }, 100);
             return;
+        } else if (state == Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_STOPPED) {
+            MyLog.i(TAG, "acc stopped by agora");
+            mIsAccStopped = true;
         }
 
         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STATE_CHANGE, null);
@@ -1343,12 +1347,14 @@ public class ZqEngineKit implements AgoraOutCallback {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(DeviceUtils.IncomingCallEvent event) {
-        if(event.state == TelephonyManager.EXTRA_STATE_IDLE){
-
-        }else if(event.state == TelephonyManager.EXTRA_STATE_RINGING){
-
-        }else if(event.state == TelephonyManager.EXTRA_STATE_OFFHOOK){
-
+        if (TelephonyManager.EXTRA_STATE_IDLE.equals(event.state)) {
+            mCustomHandlerThread.post(() -> {
+                MyLog.i(TAG, "Call end, check acc status");
+                if (!mConfig.isUseExternalAudio() && !TextUtils.isEmpty(mAccFullPath) && mIsAccStopped) {
+                    MyLog.i(TAG, "restart acc after call end");
+                    doStartAudioMixing(mAccUrlInUse, mAccRecoverPosition, mAccRemainedLoopCount);
+                }
+            });
         }
     }
 
@@ -1796,8 +1802,8 @@ public class ZqEngineKit implements AgoraOutCallback {
                     }
                     if (canGo) {
                         // 重复播放处理
-                        if (mConfig.isMixMusicPlaying()) {
-                            if (TextUtils.isEmpty(mAccFullPath) && accPath.equals(mAccFullPath)) {
+                        if (!TextUtils.isEmpty(mAccFullPath)) {
+                            if (accPath.equals(mAccFullPath)) {
                                 MyLog.w(TAG, "startAudioMixing repeatedly, ignore!");
                                 return;
                             } else {
@@ -1841,6 +1847,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void doStartAudioMixing(String url, long startOffset, int loopCount) {
+        mIsAccStopped = false;
         if (mIsAccPrepared) {
             mAccStartTime = System.currentTimeMillis();
             mIsAccPrepared = false;
@@ -1984,6 +1991,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAccFullPath = null;
             mAccUrlInUse = null;
             mIsAccPrepared = false;
+            mIsAccStopped = false;
             mAccStartTime = 0;
             mAccFirstStartTime = 0;
             mAccRetriedCount = 0;
