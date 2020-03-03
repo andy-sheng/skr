@@ -120,6 +120,9 @@ class EnterHomeDialogPresenter(val baseActivity: BaseActivity) : RxLifeCyclePres
                 }
                 .create()
 
+        mainIv.layoutParams.width = U.getDisplayUtils().dip2px(model.width.toFloat())
+        mainIv.layoutParams.height = U.getDisplayUtils().dip2px(model.height.toFloat())
+
         mainIv.setDebounceViewClickListener {
             dialogTask?.dismiss()
             ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
@@ -128,8 +131,8 @@ class EnterHomeDialogPresenter(val baseActivity: BaseActivity) : RxLifeCyclePres
         }
 
         FrescoWorker.loadImage(mainIv, ImageFactory.newPathImage(model.picURL)
-                .setWidth(U.getDisplayUtils().dip2px(332f))
-                .setHeight(U.getDisplayUtils().dip2px(334f))
+                .setWidth(U.getDisplayUtils().dip2px(model.width.toFloat()))
+                .setHeight(U.getDisplayUtils().dip2px(model.height.toFloat()))
                 .build<BaseImage>())
 
         closeIv.setDebounceViewClickListener {
