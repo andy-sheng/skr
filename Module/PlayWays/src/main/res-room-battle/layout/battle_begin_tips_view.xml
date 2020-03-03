@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <ImageView
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/battle_begin_bottom_mask"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/begin_bg"
+        app:layout_constraintLeft_toLeftOf="@id/begin_bg"
+        app:layout_constraintRight_toRightOf="@id/begin_bg"
+        app:layout_constraintTop_toBottomOf="@id/begin_bg" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/begin_bg"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_180_dp"
+        android:layout_marginLeft="@dimen/view_30_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_30_dp"
+        app:bl_corners_bottomLeftRadius="@dimen/view_8_dp"
+        app:bl_corners_bottomRightRadius="@dimen/view_8_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_gradient_endColor="#BE7B45"
+        app:bl_gradient_startColor="#FFD298"
+        app:bl_shape="rectangle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/battle_begin_top_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/battle_begin_vs_bottom_mask"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/vs_bg"
+        app:layout_constraintLeft_toLeftOf="@id/vs_bg"
+        app:layout_constraintRight_toRightOf="@id/vs_bg"
+        app:layout_constraintTop_toBottomOf="@id/vs_bg" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/vs_bg"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_74_dp"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_58_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        app:bl_corners_radius="@dimen/view_37_dp"
+        app:bl_gradient_angle="0"
+        app:bl_gradient_endColor="#584BEE"
+        app:bl_gradient_startColor="#F34A83"
+        app:bl_shape="rectangle"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintLeft_toLeftOf="@id/begin_bg"
+        app:layout_constraintRight_toRightOf="@id/begin_bg"
+        app:layout_constraintTop_toTopOf="@id/begin_bg" />
+
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/left_avatar_1"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_50_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        app:layout_constraintBottom_toBottomOf="@id/vs_bg"
+        app:layout_constraintLeft_toLeftOf="@id/vs_bg"
+        app:layout_constraintTop_toTopOf="@id/vs_bg" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/left_avatar_2"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_50_dp"
+        android:layout_marginLeft="@dimen/view_40_dp"
+        app:layout_constraintBottom_toBottomOf="@id/vs_bg"
+        app:layout_constraintLeft_toLeftOf="@id/left_avatar_1"
+        app:layout_constraintTop_toTopOf="@id/vs_bg" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/right_avatar_2"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_50_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        app:layout_constraintBottom_toBottomOf="@id/vs_bg"
+        app:layout_constraintRight_toRightOf="@id/vs_bg"
+        app:layout_constraintTop_toTopOf="@id/vs_bg" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/right_avatar_1"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_50_dp"
+        android:layout_marginRight="@dimen/view_40_dp"
+        app:layout_constraintBottom_toBottomOf="@id/vs_bg"
+        app:layout_constraintRight_toRightOf="@id/right_avatar_2"
+        app:layout_constraintTop_toTopOf="@id/vs_bg" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/battle_vs_icon"
+        app:layout_constraintBottom_toBottomOf="@id/vs_bg"
+        app:layout_constraintLeft_toLeftOf="@id/vs_bg"
+        app:layout_constraintRight_toRightOf="@id/vs_bg"
+        app:layout_constraintTop_toTopOf="@id/vs_bg" />
+</merge>

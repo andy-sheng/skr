@@ -39,6 +39,7 @@ import com.module.playways.battle.room.top.BattleTopContentView
 import com.module.playways.battle.room.top.BattleTopOpView
 import com.module.playways.battle.room.ui.BattleWidgetAnimationController
 import com.module.playways.battle.room.ui.IBattleRoomView
+import com.module.playways.battle.room.view.BattleBeginTipsView
 import com.module.playways.battle.room.view.BattleVoiceControlPanelView
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.presenter.VipEnterPresenter
@@ -109,6 +110,8 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     internal lateinit var mTopOpView: BattleTopOpView
     internal lateinit var mTopContentView: BattleTopContentView
 
+    internal lateinit var mBattleBeginView: BattleBeginTipsView
+
     internal lateinit var mGameEffectBgView: GameEffectBgView
 
     var mChangeRoomTransitionView: GrabChangeRoomTransitionView? = null
@@ -178,6 +181,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
         initBgEffectView()
         initTopView()
+        initTurnChangeView()
         initInputView()
         initBottomView()
         initCommentView()
@@ -213,6 +217,15 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         }
 
         U.getStatusBarUtil().setTransparentBar(this, false)
+
+
+    }
+
+    private fun initTurnChangeView() {
+        // 对战开始，轮次结束和 游戏结束
+        mBattleBeginView = this.findViewById(R.id.battle_begin_view)
+        // todo 测试看看，可以删除
+        mBattleBeginView.showAnimation(null)
     }
 
     private fun initChangeRoomTransitionView() {
