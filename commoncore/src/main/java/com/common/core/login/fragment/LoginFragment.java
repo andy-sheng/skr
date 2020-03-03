@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -18,7 +17,6 @@ import com.common.callback.Callback;
 import com.common.core.R;
 import com.common.core.account.UserAccountManager;
 import com.common.core.login.LoginActivity;
-import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.share.ShareManager;
@@ -29,8 +27,6 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.stv.SuperTextView;
-import com.common.view.ex.stv.adjust.MoveEffectAdjuster;
 import com.module.RouterConstants;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -73,7 +69,7 @@ public class LoginFragment extends BaseFragment implements Callback {
         }
     };
 
-    SkrBasePermission mSkrPermission = new SkrPhoneStatePermission();
+    SkrPhoneStatePermission mSkrPhoneStatePermission = new SkrPhoneStatePermission();
 
     SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission() {
         @Override
@@ -123,10 +119,15 @@ public class LoginFragment extends BaseFragment implements Callback {
                     @Override
                     public void run() {
                         StatisticsAdapter.recordCountEvent("signup", "sdcard_agree", map);
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
+                        mSkrPhoneStatePermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
+                                        .setAddToBackStack(true)
+                                        .setHasAnimation(true)
+                                        .build());
+                            }
+                        }, false);
                     }
                 }, true);
             }
@@ -146,30 +147,20 @@ public class LoginFragment extends BaseFragment implements Callback {
                     U.getToastUtil().showShort("你没有安装微信");
                     return;
                 }
-                if (U.getChannelUtils().getChannel().startsWith("MI_SHOP_mimusic")) {
-                    // 小米商店渠道，需要获取读取imei权限
-                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
-                        @Override
-                        public void run() {
-                            mSkrPermission.ensurePermission(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showLoginingBar(true);
-                                    UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
-                                }
-                            }, true);
-                        }
-                    }, true);
-                } else {
-                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
-                        @Override
-                        public void run() {
-                            StatisticsAdapter.recordCountEvent("signup", "sdcard_agree", map);
-                            showLoginingBar(true);
-                            UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
-                        }
-                    }, true);
-                }
+                // 小米商店渠道，需要获取读取imei权限
+                mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
+                    @Override
+                    public void run() {
+                        mSkrPhoneStatePermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                StatisticsAdapter.recordCountEvent("signup", "sdcard_agree", map);
+                                showLoginingBar(true);
+                                UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
+                            }
+                        }, true);
+                    }
+                }, true);
             }
         });
 
@@ -187,30 +178,20 @@ public class LoginFragment extends BaseFragment implements Callback {
                     U.getToastUtil().showShort("你没有安装QQ");
                     return;
                 }
-                if (U.getChannelUtils().getChannel().startsWith("MI_SHOP_mimusic")) {
-                    // 小米商店渠道，需要获取读取imei权限
-                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
-                        @Override
-                        public void run() {
-                            mSkrPermission.ensurePermission(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showLoginingBar(true);
-                                    UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
-                                }
-                            }, true);
-                        }
-                    }, true);
-                } else {
-                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
-                        @Override
-                        public void run() {
-                            StatisticsAdapter.recordCountEvent("signup", "sdcard_agree", map);
-                            showLoginingBar(true);
-                            UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
-                        }
-                    }, true);
-                }
+                // 小米商店渠道，需要获取读取imei权限
+                mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
+                    @Override
+                    public void run() {
+                        mSkrPhoneStatePermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                StatisticsAdapter.recordCountEvent("signup", "sdcard_agree", map);
+                                showLoginingBar(true);
+                                UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
+                            }
+                        }, true);
+                    }
+                }, true);
             }
         });
 
@@ -303,7 +284,7 @@ public class LoginFragment extends BaseFragment implements Callback {
     @Override
     public void onResume() {
         super.onResume();
-        mSkrPermission.onBackFromPermisionManagerMaybe(getActivity());
+        mSkrPhoneStatePermission.onBackFromPermisionManagerMaybe(getActivity());
         mSkrSdcardPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 

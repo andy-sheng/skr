@@ -230,6 +230,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"></activity>
 
+        <activity
+            android:name="com.module.playways.battle.room.BattleRoomActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
+
         <meta-data
             android:name="com.module.playways.PlayWaysConfiguration"
             android:value="ConfigModule" />

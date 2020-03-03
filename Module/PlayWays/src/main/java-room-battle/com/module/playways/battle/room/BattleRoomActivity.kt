@@ -110,9 +110,6 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
     var mChangeRoomTransitionView: GrabChangeRoomTransitionView? = null
 
-    lateinit var mAddSongIv: ImageView
-    lateinit var mChangeSongIv: ImageView
-
     private var mVIPEnterView: VIPEnterView? = null
     // 都是dialogplus
     private var mMainActContainer: ExConstraintLayout? = null
@@ -438,17 +435,6 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
 
     private fun initBottomView() {
-        mChangeSongIv = findViewById(R.id.change_song_tv)
-        mChangeSongIv.setAnimateDebounceViewClickListener {
-            mCorePresenter.giveUpSing { }
-        }
-
-        mAddSongIv = findViewById(R.id.select_song_tv)
-        mAddSongIv.setAnimateDebounceViewClickListener {
-            mSkrAudioPermission.ensurePermission({
-                //                SongManagerActivity.open(this, mRoomData)
-            }, true)
-        }
 
         run {
             val voiceStub = findViewById<ViewStub>(R.id.voice_record_tip_view_stub)

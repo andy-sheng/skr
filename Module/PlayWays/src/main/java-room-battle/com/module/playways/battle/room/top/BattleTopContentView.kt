@@ -26,7 +26,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-// 顶部头像栏
 class BattleTopContentView : ExConstraintLayout {
 
     constructor(context: Context) : super(context)

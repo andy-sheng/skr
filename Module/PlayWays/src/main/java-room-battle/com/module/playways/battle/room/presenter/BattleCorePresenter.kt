@@ -187,7 +187,6 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         // 开始触发触发轮次变化
         mRoomData.checkRoundInEachMode()
         ensureInRcRoom()
-        userStatisticForIntimacy()
     }
 
     /**
@@ -396,104 +395,6 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         }
     }
 
-
-    /**
-     * 为了方便服务器亲密度结算
-     */
-    private fun userStatisticForIntimacy() {
-//        launch {
-//            while (true) {
-//                delay(10 * 60 * 1000)
-//                val l1 = java.util.ArrayList<Int>()
-//                for (m in mRoomData.getPlayerAndWaiterInfoList()) {
-//                    if (m.userID != MyUserInfoManager.uid.toInt()) {
-//                        if (mRoomData.preUserIDsSnapShots.contains(m.userID)) {
-//                            l1.add(m.userID)
-//                        }
-//                    }
-//                }
-//                if (l1.isNotEmpty()) {
-//                    val map = java.util.HashMap<String, Any>()
-//                    map["gameID"] = mRoomData.gameId
-//                    map["mode"] = GameModeType.GAME_MODE_GRAB
-//                    val ts = System.currentTimeMillis()
-//                    map["timeMs"] = ts
-//                    map["sign"] = U.getMD5Utils().MD5_32("skrer|" + MyUserInfoManager.uid + "|" + ts)
-//                    map["userID"] = MyUserInfoManager.uid
-//                    map["preUserIDs"] = l1
-//                    val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-//                    val result = subscribe { mRoomServerApi.userStatistic(body) }
-//                    if (result.errno == 0) {
-//
-//                    }
-//                } else {
-//                    break
-//                }
-//            }
-//        }
-    }
-
-//    private var mSwitchRooming = false
-//
-//    // 换房间
-//    fun changeRoom() {
-//        if (mSwitchRooming) {
-//            U.getToastUtil().showShort("切换中")
-//            return
-//        }
-//        //        if(true){
-//        //            stopGuide();
-//        //            mRoomData.setRealRoundInfo(null);
-//        //            mIGrabView.hideAllCardView();
-//        //            joinRoomAndInit(false);
-//        //            ZqEngineKit.getInstance().unbindAllRemoteVideo();
-//        //            mRoomData.checkRoundInEachMode();
-//        //            mIGrabView.onChangeRoomResult(true, null);
-//        //            mIGrabView.dimissKickDialog();
-//        //            return;
-//        //        }
-//        mSwitchRooming = true
-//        val map = HashMap<String, Any>()
-//        map["roomID"] = mRoomData.gameId
-//        map["gameMode"] = mRoomData.gameMode
-//        map["vars"] = RA.getVars()
-//        map["testList"] = RA.getTestList()
-//
-//        launch {
-//            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-//            var result = subscribe(RequestControl("changeRoom", ControlType.CancelThis)) {
-//                mRoomServerApi.changeRoom(body)
-//            }
-//            if (result.errno == 0) {
-//                val rspModel = JSON.parseObject(result.data!!.toJSONString(), JoinBattleRoomRspModel::class.java)
-//                onChangeRoomSuccess(rspModel)
-//            } else {
-//                roomView.onChangeRoomResult(false, result.errmsg)
-//            }
-//            mSwitchRooming = false
-//        }
-//    }
-
-//    /**
-//     * 换房间 或者 接受邀请时 你已经在派对房了
-//     */
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: BattleChangeRoomEvent) {
-//        mRoomData.loadFromRsp(event.mJoinGrabRoomRspModel)
-//        joinRoomAndInit(true)
-//        onOpeningAnimationOver()
-//    }
-//
-//    private fun onChangeRoomSuccess(rspModel: JoinBattleRoomRspModel?) {
-//        MyLog.d(TAG, "onChangeRoomSuccess JoinBattleRoomRspModel=$rspModel")
-//        if (rspModel != null) {
-//            EventBus.getDefault().post(SwitchRoomEvent())
-//            mRoomData.loadFromRsp(rspModel)
-//            joinRoomAndInit(false)
-//            onOpeningAnimationOver()
-//            roomView.onChangeRoomResult(true, null)
-//        }
-//    }
 
 
     /**
