@@ -7,6 +7,24 @@ public class AppWindowModel implements Serializable {
     String picURL = "";
     String schema = "";
     int showType = 2;
+    int width;
+    int height;
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
     public int getMsgType() {
         return msgType;
