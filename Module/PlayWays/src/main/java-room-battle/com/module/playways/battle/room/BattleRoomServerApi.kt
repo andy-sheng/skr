@@ -33,4 +33,6 @@ interface BattleRoomServerApi {
     @GET("http://dev.game.inframe.mobi/v1/battlegame/sync-status")
     fun syncStatus(@Query("roomID") roomID: Long): Call<ApiResult>
 
+    @PUT("http://dev.game.inframe.mobi/v1/battlegame/pk-commit-segment-result")
+    fun sendPkPerSegmentResult(@Body body: RequestBody): Call<ApiResult>
 }

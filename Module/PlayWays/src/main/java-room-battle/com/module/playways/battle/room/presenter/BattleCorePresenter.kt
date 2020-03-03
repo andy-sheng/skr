@@ -16,10 +16,16 @@ import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
+import com.common.utils.U
+import com.common.videocache.MediaCacheManager
+import com.component.lyrics.LyricAndAccMatchManager
+import com.component.lyrics.utils.SongResUtils
 import com.engine.EngineEvent
 import com.engine.Params
+import com.engine.arccloud.RecognizeConfig
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
+import com.module.msg.CustomMsgType
 import com.module.playways.battle.room.BattleRoomData
 import com.module.playways.battle.room.BattleRoomServerApi
 import com.module.playways.battle.room.event.BattleRoundChangeEvent
@@ -31,6 +37,7 @@ import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.GiftPresentEvent
+import com.module.playways.room.msg.event.MachineScoreEvent
 import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.BattleRoomMsgManager
 import com.module.playways.room.room.comment.model.CommentModel
@@ -38,10 +45,14 @@ import com.module.playways.room.room.comment.model.CommentNoticeModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.comment.model.CommentTextModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
-import com.zq.live.proto.BattleRoom.BGameOverMsg
-import com.zq.live.proto.BattleRoom.BNextRoundMsg
-import com.zq.live.proto.BattleRoom.BSyncMsg
-import com.zq.live.proto.BattleRoom.BattleRoomMsg
+import com.module.playways.room.room.score.MachineScoreItem
+import com.zq.live.proto.BattleRoom.*
+import com.zq.live.proto.Common.ESex
+import com.zq.live.proto.Common.UserInfo
+import com.zq.live.proto.GrabRoom.EMsgPosType
+import com.zq.live.proto.GrabRoom.ERoomMsgType
+import com.zq.live.proto.GrabRoom.MachineScore
+import com.zq.live.proto.GrabRoom.RoomMsg
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -169,12 +180,12 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_IN_RC_ROOM, (30 * 1000).toLong())
     }
 
-    fun pretendNoticeMsg(title: String, content: String) {
+    private fun pretendNoticeMsg(title: String, content: String) {
         val noticeModel = CommentNoticeModel(title, content)
         EventBus.getDefault().post(PretendCommentMsgEvent(noticeModel))
     }
 
-    fun pretendSystemMsg(text: String) {
+    private fun pretendSystemMsg(text: String) {
         val commentSysModel = CommentSysModel(mRoomData.gameType, text)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
@@ -396,7 +407,6 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
     }
 
 
-
     /**
      * 轮次切换事件
      */
@@ -419,42 +429,118 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
 
     private fun processStatusChange(from: Int, lastRound: BattleRoundInfoModel?, thisRound: BattleRoundInfoModel?) {
         DebugLogView.println(TAG, "processStatusChange from=$from roundSeq=${thisRound?.roundSeq} statusNow=${thisRound?.status}")
-        // 轮次变化尝试更新头像
-//        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
-//        closeEngine()
-//        ZqEngineKit.getInstance().stopRecognize()
+        if (thisRound == null) {
+            // 游戏结束了
+            roomView.gameOver("thisRound == null")
+            return
+        }
+        // 屏蔽所有对手的声音
+        closeEngine()
+        for (u in mRoomData.opTeamInfo) {
+            ZqEngineKit.getInstance().muteRemoteAudioStream(u.userID, false)
+        }
 
-//        if (thisRound.status == EPRoundStatus.PRS_WAITING.value) {
-//            // 等待阶段
-//            roomView.showRoundOver(lastRound) {
-//                roomView.showWaiting()
-//            }
-//
-//        } else if (thisRound.status == EPRoundStatus.PRS_PLAY_GAME.value) {
-//
-//            roomView.showRoundOver(lastRound) {
-        // 演唱阶段
-//                val size = U.getActivityUtils().activityList.size
-//                var needTips = false
-//                for (i in size - 1 downTo 0) {
-//                    val activity = U.getActivityUtils().activityList[i]
-//                    if (activity is RelayRoomActivity) {
-//                        break
-//                    } else {
-//                        activity.finish()
-//                        needTips = true
-//                    }
-//                }
-//                if (needTips) {
-//                    U.getToastUtil().showLong("你的演唱开始了")
-//                }
-//                roomView.gameBegin(thisRound)
-//            }
-//        } else if (thisRound.status == EPRoundStatus.PRS_END.value) {
-//
-//        }
+        if (thisRound.status == EBRoundStatus.BRS_INTRO.value) {
+            var r = {
+                if (thisRound.userID == MyUserInfoManager.uid.toInt()) {
+                    tryDownloadAccIfSelfSing()
+                }
+                roomView.showIntro()
+            }
+            // 导唱阶段
+            if (lastRound == null) {
+                // 没有上一轮，直接显示导唱卡
+                if (thisRound.musicSeq == 1) {
+                    // 先显示对战开始的tips
+                    roomView.showBeginTips {
+                        r.invoke()
+                    }
+                } else {
+                    r.invoke()
+                }
+            } else {
+                // 先尝试显示上一轮结果
+                if (lastRound.overReason != EBRoundOverReason.BROR_UNKNOWN.value
+                        && lastRound.overReason != EBRoundOverReason.BROR_REQ_HELP_SING.value
+                        && lastRound.overReason != EBRoundOverReason.BROR_REQ_SWITCH_SING.value) {
+                    // 如果上一轮的结束原因是 使用帮唱卡 使用换歌卡 则不会显示结果页
+                    r.invoke()
+                } else {
+                    roomView.showRoundOver(lastRound) {
+                        r.invoke()
+                    }
+                }
+            }
+        } else if (thisRound.status == EBRoundStatus.BRS_HELP.value) {
+            if (thisRound.userID == MyUserInfoManager.uid.toInt()) {
+                tryDownloadAccIfSelfSing()
+            }
+            // 使用了帮唱卡
+            roomView.useHelpSing()
+        } else if (thisRound.status == EBRoundStatus.BRS_SING.value) {
+            // 进入演唱阶段
+            if (thisRound.userID == MyUserInfoManager.uid.toInt()) {
+                // 打开自己的麦
+                ZqEngineKit.getInstance().muteLocalAudioStream(false)
+                roomView.showSelfSing()
+                onChangeBroadcastSuccess()
+            } else {
+                roomView.showOtherSing()
+                // 其他人要接收演唱者的音频流了
+                ZqEngineKit.getInstance().muteRemoteAudioStream(thisRound.userID, false)
+            }
+        }
     }
 
+
+    private fun tryDownloadAccIfSelfSing() {
+        /**
+         * 有的网络伴奏在线播有问题，比如公司网络，这里尝试提前下载一下伴奏
+         */
+        mRoomData.realRoundInfo?.music?.let { songModel ->
+            MediaCacheManager.preCache(songModel.acc)
+            val midiFile = SongResUtils.getMIDIFileByUrl(songModel?.midi)
+            // 下载midi
+            if (midiFile != null && !midiFile.exists()) {
+                MyLog.d(TAG, "onChangeBroadcastSuccess 下载midi文件 url=${songModel.midi} => local=${midiFile.path}")
+                U.getHttpUtils().downloadFileAsync(songModel.midi, midiFile, true, null)
+            }
+        }
+    }
+
+    /**
+     * 成功切换为主播  开始演唱了
+     */
+    private fun onChangeBroadcastSuccess() {
+        var songModel = mRoomData?.realRoundInfo?.music
+        if (songModel == null) {
+            return
+        }
+        // 开始开始混伴奏，开始解除引擎mute
+//            val accFile = SongResUtils.getAccFileByUrl(songModel.acc)
+        // midi不需要在这下，只要下好，native就会解析，打分就能恢复
+        val midiFile = SongResUtils.getMIDIFileByUrl(songModel?.midi)
+        // 下载midi
+        if (midiFile != null && !midiFile.exists()) {
+            if (U.getHttpUtils().isDownloading(songModel.midi)) {
+
+            } else {
+                MyLog.d(TAG, "onChangeBroadcastSuccess 下载midi文件 url=${songModel.midi} => local=${midiFile.path}")
+                U.getHttpUtils().downloadFileAsync(songModel.midi, midiFile, true, null)
+            }
+        }
+
+        //  播放伴奏
+        val songBeginTs = songModel.beginMs
+        ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel.accWithCdnInfosJson, midiFile.absolutePath, songBeginTs.toLong(), 1)
+        // 启动acr打分识别
+        //有伴奏模式，开启acr自动模式
+        ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                .setSongName(songModel.itemName)
+                .setArtist(songModel.owner)
+                .setMode(RecognizeConfig.MODE_MANUAL)
+                .build())
+    }
 
     private fun closeEngine() {
         if (mRoomData.gameId > 0) {
@@ -568,53 +654,6 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         }
     }
 
-//    /**
-//     * 成功切换为主播
-//     */
-//    private fun onChangeBroadcastSuccess() {
-//        MyLog.d(TAG, "onChangeBroadcastSuccess 我的演唱环节")
-//        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
-//        mUiHandler.post(Runnable {
-//            var songModel: SongModel? = mRoomData.realRoundInfo?.music
-//            if (songModel == null) {
-//                return@Runnable
-//            }
-//            // 开始开始混伴奏，开始解除引擎mute
-//            val accFile = SongResUtils.getAccFileByUrl(songModel?.acc)
-//            // midi不需要在这下，只要下好，native就会解析，打分就能恢复
-//            val midiFile = SongResUtils.getMIDIFileByUrl(songModel?.midi)
-//            MyLog.d(TAG, "onChangeBroadcastSuccess 我的演唱环节 info=${songModel.toSimpleString()} acc=${songModel.acc} midi=${songModel.midi} ")
-//
-//            // 下载midi
-//            if (midiFile != null && !midiFile.exists()) {
-//                MyLog.d(TAG, "onChangeBroadcastSuccess 下载midi文件 url=${songModel.midi} => local=${midiFile.path}")
-//                U.getHttpUtils().downloadFileAsync(songModel.midi, midiFile, true, null)
-//            }
-//
-//            //  播放伴奏
-//            val songBeginTs = songModel.beginMs
-//            if (accFile != null && accFile.exists()) {
-//                // 伴奏文件存在
-//                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
-//            } else {
-//                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
-//            }
-//
-//        })
-//    }
-
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: MAddMusicMsg) {
-//        MyLog.d(TAG, "MAddMusicMsg event=$event")
-//        roomView.showSongCount(event.musicCnt)
-//    }
-//
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: MDelMusicMsg) {
-//        MyLog.d(TAG, "MAddMusicMsg event=$event")
-//        roomView.showSongCount(event.musicCnt)
-//    }
-
 
     private fun pretendEnterRoomMsg(playerInfoModel: BattlePlayerInfoModel) {
         val commentModel = CommentTextModel()
@@ -713,14 +752,6 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         }
     }
 
-//    @Subscribe
-//    fun onEvent(event: QChangeRoomNameEvent) {
-//        MyLog.d(TAG, "onEvent QChangeRoomNameEvent !!改变房间名 $event")
-//        if (mRoomData.gameId == event.info.roomID) {
-//            pretendRoomNameSystemMsg(event.newName, CommentSysModel.TYPE_MODIFY_ROOM_NAME)
-//        }
-//    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
         MyLog.w(TAG, if (event.foreground) "切换到前台" else "切换到后台")
@@ -730,13 +761,6 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
 //            muteAllRemoteAudioStreams(true, false)
 //        }
     }
-
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: RGameOverMsg) {
-//        ensureInRcRoom()
-//        roomView.gameOver()
-//    }
-
 
 //    /**
 //     * 录制小游戏事件，防止录进去背景音
@@ -754,159 +778,149 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
 //    }
 
 
-/*打分相关*/
+    /*打分相关*/
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MachineScoreEvent) {
+        //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
+        if (mRoomData?.realRoundInfo?.userID == event.userId) {
+            roomView.receiveScoreEvent(event.score)
+        }
+    }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: MachineScoreEvent) {
-//        //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
-//        if (mRoomData?.realRoundInfo?.singByUserId(event.userId) == true) {
-//            roomView.receiveScoreEvent(event.score)
-//        }
-//    }
-//
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: LyricAndAccMatchManager.ScoreResultEvent) {
-//        val line = event.line
-//        val acrScore = event.acrScore
-//        val melpScore = event.melpScore
-//        val from = event.from
-//        if (acrScore > melpScore) {
-//            processScore(acrScore, line)
-//        } else {
-//            processScore(melpScore, line)
-//        }
-//    }
-//
-//    private fun processScore(score: Int, line: Int) {
-//        if (score < 0) {
-//            return
-//        }
-//        MyLog.d(TAG, "onEvent 得分=$score")
-//        val machineScoreItem = MachineScoreItem()
-//        machineScoreItem.score = score
-//        // 这有时是个耗时操作
-//        //        long ts = ZqEngineKit.getInstance().getAudioMixingCurrentPosition();
-//        val ts: Long = -1
-//        machineScoreItem.ts = ts
-//        machineScoreItem.no = line
-//        // 打分信息传输给其他人
-//        sendScoreToOthers(machineScoreItem)
-//        roomView.receiveScoreEvent(score)
-//        //打分传给服务器
-//        val now = mRoomData.realRoundInfo
-//        if (now != null) {
-//            /**
-//             * pk 与 普通 都发送
-//             */
-//            if (now.isPKRound || now.isNormalRound) {
-//                sendScoreToServer(score, line)
-//            }
-//        }
-//    }
-//
-//    /**
-//     * 将自己的分数传给其他人
-//     *
-//     * @param machineScoreItem
-//     */
-//    private fun sendScoreToOthers(machineScoreItem: MachineScoreItem) {
-//        // 后续加个优化，如果房间里两人都是机器人就不加了
-//        val msgService = ModuleServiceManager.getInstance().msgService
-//        if (msgService != null) {
-//            val ts = System.currentTimeMillis()
-//            val senderInfo = UserInfo.Builder()
-//                    .setUserID(MyUserInfoManager.uid.toInt())
-//                    .setNickName(MyUserInfoManager.nickName)
-//                    .setAvatar(MyUserInfoManager.avatar)
-//                    .setSex(ESex.fromValue(MyUserInfoManager.sex))
-//                    .setDescription("")
-//                    .setIsSystem(false)
-//                    .build()
-//
-//            val now = mRoomData.realRoundInfo
-//            if (now != null && now.music != null) {
-//                val roomMsg = RoomMsg.Builder()
-//                        .setTimeMs(ts)
-//                        .setMsgType(ERoomMsgType.RM_ROUND_MACHINE_SCORE)
-//                        .setRoomID(mRoomData.gameId)
-//                        .setNo(ts)
-//                        .setPosType(EMsgPosType.EPT_UNKNOWN)
-//                        .setSender(senderInfo)
-//                        .setMachineScore(MachineScore.Builder()
-//                                .setUserID(MyUserInfoManager.uid.toInt())
-//                                .setNo(machineScoreItem.no)
-//                                .setScore(machineScoreItem.score)
-//                                .setItemID(now?.music?.itemID)
-////                                .setLineNum(mRoomData.songLineNum)
-//                                .build()
-//                        )
-//                        .build()
-//                val contnet = U.getBase64Utils().encode(roomMsg.toByteArray())
-//                msgService.sendChatRoomMessage(mRoomData.gameId.toString(), CustomMsgType.MSG_TYPE_ROOM, contnet, null)
-//            }
-//        }
-//    }
-//
-//
-//    /**
-//     * 单句打分上报,只在pk模式上报
-//     *
-//     * @param score
-//     * @param line
-//     */
-//    private fun sendScoreToServer(score: Int, line: Int) {
-//        val map = HashMap<String, Any>()
-//        val infoModel = mRoomData.realRoundInfo ?: return
-//        map["userID"] = MyUserInfoManager.uid
-//
-//        var itemID = 0
-//        if (infoModel.music != null) {
-//            itemID = infoModel?.music?.itemID ?: 0
-//            if (infoModel.status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
-//                val pkSong = infoModel?.music?.pkMusic
-//                if (pkSong != null) {
-//                    itemID = pkSong.itemID
-//                }
-//            }
-//        }
-//
-//        map["itemID"] = itemID
-//        map["score"] = score
-//        map["no"] = line
-//        map["gameID"] = mRoomData.gameId
-//        map["mainLevel"] = 0
-//        map["singSecond"] = 0
-//        val roundSeq = infoModel.roundSeq
-//        map["roundSeq"] = roundSeq
-//        val nowTs = System.currentTimeMillis()
-//        map["timeMs"] = nowTs
-//
-//
-//        val sb = StringBuilder()
-//        sb.append("skrer")
-//                .append("|").append(MyUserInfoManager.uid)
-//                .append("|").append(itemID)
-//                .append("|").append(score)
-//                .append("|").append(line)
-//                .append("|").append(mRoomData.gameId)
-//                .append("|").append(0)
-//                .append("|").append(0)
-//                .append("|").append(roundSeq)
-//                .append("|").append(nowTs)
-//        map["sign"] = U.getMD5Utils().MD5_32(sb.toString())
-//        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-//        launch {
-//            var result = subscribe {
-//                mRoomServerApi.sendPkPerSegmentResult(body)
-//            }
-//            if (result.errno == 0) {
-//                // TODO: 2018/12/13  当前postman返回的为空 待补充
-//                MyLog.w(TAG, "单句打分上报成功")
-//            } else {
-//                MyLog.w(TAG, "单句打分上报失败" + result.errno)
-//            }
-//        }
-//    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: LyricAndAccMatchManager.ScoreResultEvent) {
+        val line = event.line
+        val acrScore = event.acrScore
+        val melpScore = event.melpScore
+        val from = event.from
+        if (acrScore > melpScore) {
+            processScore(acrScore, line)
+        } else {
+            processScore(melpScore, line)
+        }
+    }
+
+    private fun processScore(score: Int, line: Int) {
+        if (score < 0) {
+            return
+        }
+        MyLog.d(TAG, "onEvent 得分=$score")
+        val machineScoreItem = MachineScoreItem()
+        machineScoreItem.score = score
+        // 这有时是个耗时操作
+        //        long ts = ZqEngineKit.getInstance().getAudioMixingCurrentPosition();
+        val ts: Long = -1
+        machineScoreItem.ts = ts
+        machineScoreItem.no = line
+        // 打分信息传输给其他人
+        sendScoreToOthers(machineScoreItem)
+        roomView.receiveScoreEvent(score)
+        //打分传给服务器
+        val now = mRoomData.realRoundInfo
+        if (now != null) {
+            sendScoreToServer(score, line)
+        }
+    }
+
+    /**
+     * 将自己的分数传给其他人
+     *
+     * @param machineScoreItem
+     */
+    private fun sendScoreToOthers(machineScoreItem: MachineScoreItem) {
+        // 后续加个优化，如果房间里两人都是机器人就不加了
+        val msgService = ModuleServiceManager.getInstance().msgService
+        if (msgService != null) {
+            val ts = System.currentTimeMillis()
+            val senderInfo = UserInfo.Builder()
+                    .setUserID(MyUserInfoManager.uid.toInt())
+                    .setNickName(MyUserInfoManager.nickName)
+                    .setAvatar(MyUserInfoManager.avatar)
+                    .setSex(ESex.fromValue(MyUserInfoManager.sex))
+                    .setDescription("")
+                    .setIsSystem(false)
+                    .build()
+
+            val now = mRoomData.realRoundInfo
+            if (now != null && now.music != null) {
+                val roomMsg = RoomMsg.Builder()
+                        .setTimeMs(ts)
+                        .setMsgType(ERoomMsgType.RM_ROUND_MACHINE_SCORE)
+                        .setRoomID(mRoomData.gameId)
+                        .setNo(ts)
+                        .setPosType(EMsgPosType.EPT_UNKNOWN)
+                        .setSender(senderInfo)
+                        .setMachineScore(MachineScore.Builder()
+                                .setUserID(MyUserInfoManager.uid.toInt())
+                                .setNo(machineScoreItem.no)
+                                .setScore(machineScoreItem.score)
+                                .setItemID(now?.music?.itemID)
+//                                .setLineNum(mRoomData.songLineNum)
+                                .build()
+                        )
+                        .build()
+                val contnet = U.getBase64Utils().encode(roomMsg.toByteArray())
+                msgService.sendChatRoomMessage(mRoomData.gameId.toString(), CustomMsgType.MSG_TYPE_ROOM, contnet, null)
+            }
+        }
+    }
+
+
+    /**
+     * 单句打分上报,只在pk模式上报
+     *
+     * @param score
+     * @param line
+     */
+    private fun sendScoreToServer(score: Int, line: Int) {
+        val map = java.util.HashMap<String, Any>()
+        val infoModel = mRoomData.realRoundInfo ?: return
+        map["userID"] = MyUserInfoManager.uid
+
+        var itemID = 0
+        if (infoModel.music != null) {
+            itemID = infoModel?.music?.itemID ?: 0
+        }
+
+        map["itemID"] = itemID
+        map["score"] = score
+        map["no"] = line
+        map["gameID"] = mRoomData.gameId
+        map["mainLevel"] = 0
+        map["singSecond"] = 0
+        val roundSeq = infoModel.roundSeq
+        map["roundSeq"] = roundSeq
+        val nowTs = System.currentTimeMillis()
+        map["timeMs"] = nowTs
+        map["teamTag"] = mRoomData.myTeamTag
+//        map["segmentCnt"] = (mRoomData.realRoundInfo?.music?.relaySegments?.size ?: 0) + 1
+//        map["sentenceCnt"] = mRoomData.sentenceCnt
+
+        val sb = StringBuilder()
+        sb.append("skrer")
+                .append("|").append(MyUserInfoManager.uid)
+                .append("|").append(itemID)
+                .append("|").append(score)
+                .append("|").append(line)
+                .append("|").append(mRoomData.gameId)
+                .append("|").append(0)
+                .append("|").append(0)
+                .append("|").append(roundSeq)
+                .append("|").append(nowTs)
+        map["sign"] = U.getMD5Utils().MD5_32(sb.toString())
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe {
+                mRoomServerApi.sendPkPerSegmentResult(body)
+            }
+            if (result.errno == 0) {
+                // TODO: 2018/12/13  当前postman返回的为空 待补充
+                MyLog.w(TAG, "单句打分上报成功")
+            } else {
+                MyLog.w(TAG, "单句打分上报失败" + result.errno)
+            }
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(giftPresentEvent: GiftPresentEvent) {
