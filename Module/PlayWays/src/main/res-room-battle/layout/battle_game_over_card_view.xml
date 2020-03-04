@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/bg_iv"
+        android:layout_width="@dimen/view_318_dp"
+        android:layout_height="@dimen/view_318_dp"
+        android:background="@drawable/battle_game_over_win"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/vs_iv"
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_18_dp"
+        android:background="@drawable/battle_vs_icon"
+        app:layout_constraintBottom_toBottomOf="@id/bg_iv"
+        app:layout_constraintLeft_toLeftOf="@id/bg_iv"
+        app:layout_constraintRight_toRightOf="@id/bg_iv"
+        app:layout_constraintTop_toTopOf="@id/bg_iv" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/left_avatar_1"
+        android:layout_width="@dimen/view_30_dp"
+        android:layout_height="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_22_dp"
+        app:layout_constraintBottom_toBottomOf="@id/vs_iv"
+        app:layout_constraintRight_toRightOf="@id/left_avatar_2"
+        app:layout_constraintTop_toTopOf="@id/vs_iv" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/left_avatar_2"
+        android:layout_width="@dimen/view_30_dp"
+        android:layout_height="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        app:layout_constraintBottom_toBottomOf="@id/vs_iv"
+        app:layout_constraintRight_toLeftOf="@id/vs_iv"
+        app:layout_constraintTop_toTopOf="@id/vs_iv" />
+
+    <TextView
+        android:id="@+id/left_score_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_4_dp"
+        android:text="13"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_20_dp"
+        app:layout_constraintBottom_toBottomOf="@id/vs_iv"
+        app:layout_constraintRight_toLeftOf="@id/left_avatar_1"
+        app:layout_constraintTop_toTopOf="@id/vs_iv" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/right_avatar_2"
+        android:layout_width="@dimen/view_30_dp"
+        android:layout_height="@dimen/view_30_dp"
+        android:layout_marginLeft="@dimen/view_22_dp"
+        app:layout_constraintBottom_toBottomOf="@id/vs_iv"
+        app:layout_constraintLeft_toLeftOf="@id/right_avatar_1"
+        app:layout_constraintTop_toTopOf="@id/vs_iv" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/right_avatar_1"
+        android:layout_width="@dimen/view_30_dp"
+        android:layout_height="@dimen/view_30_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        app:layout_constraintBottom_toBottomOf="@id/vs_iv"
+        app:layout_constraintLeft_toRightOf="@id/vs_iv"
+        app:layout_constraintTop_toTopOf="@id/vs_iv" />
+
+    <TextView
+        android:id="@+id/right_score_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_4_dp"
+        android:text="6"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_20_dp"
+        app:layout_constraintBottom_toBottomOf="@id/vs_iv"
+        app:layout_constraintLeft_toRightOf="@id/right_avatar_2"
+        app:layout_constraintTop_toTopOf="@id/vs_iv" />
+
+    <ImageView
+        android:id="@+id/loss_iv"
+        android:layout_width="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_27_dp"
+        android:layout_marginTop="@dimen/view_190_dp"
+        android:background="@drawable/battle_game_over_loss_text"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="@id/bg_iv"
+        app:layout_constraintRight_toRightOf="@id/bg_iv"
+        app:layout_constraintTop_toTopOf="@id/bg_iv" />
+
+    <ImageView
+        android:id="@+id/win_iv"
+        android:layout_width="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_27_dp"
+        android:layout_marginTop="@dimen/view_190_dp"
+        android:background="@drawable/battle_game_over_win_text"
+        app:layout_constraintLeft_toLeftOf="@id/bg_iv"
+        app:layout_constraintRight_toRightOf="@id/bg_iv"
+        app:layout_constraintTop_toTopOf="@id/bg_iv" />
+
+
+</android.support.constraint.ConstraintLayout>

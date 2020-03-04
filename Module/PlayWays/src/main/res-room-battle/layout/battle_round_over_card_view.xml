@@ -28,6 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_20_dp"
+        android:background="@drawable/battle_pity_text"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/avatar_iv" />
@@ -36,6 +38,7 @@
         android:id="@+id/win_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/battle_perfect_text"
         app:layout_constraintBottom_toTopOf="@id/win_tv"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

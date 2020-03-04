@@ -53,6 +53,8 @@ class BattleRoundOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             winTv.visibility = View.VISIBLE
             lossIv.visibility = View.GONE
             winTv.text = "+1 分"
+//            winIv.background = U.getDrawable(R.drawable.battle_pretty_text)
+//            winIv.background = U.getDrawable(R.drawable.battle_perfect_text)
         } else {
             bgIv.background = U.getDrawable(R.drawable.battle_round_loss_icon)
             winIv.visibility = View.GONE

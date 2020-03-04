@@ -40,6 +40,7 @@ import com.module.playways.battle.room.top.BattleTopOpView
 import com.module.playways.battle.room.ui.BattleWidgetAnimationController
 import com.module.playways.battle.room.ui.IBattleRoomView
 import com.module.playways.battle.room.view.BattleBeginTipsView
+import com.module.playways.battle.room.view.BattleGameOverCardView
 import com.module.playways.battle.room.view.BattleRoundOverCardView
 import com.module.playways.battle.room.view.BattleVoiceControlPanelView
 import com.module.playways.grab.room.inter.IGrabVipView
@@ -113,6 +114,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
     internal lateinit var mBattleBeginView: BattleBeginTipsView
     internal lateinit var mBattleRoundOverCardView: BattleRoundOverCardView
+    internal lateinit var mBattleGameOverCardView: BattleGameOverCardView
 
     internal lateinit var mGameEffectBgView: GameEffectBgView
 
@@ -229,10 +231,10 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         // todo 测试看看，可以删除
         mBattleBeginView.showAnimation(null)
 
-        val viewStub = this.findViewById<ViewStub>(R.id.battle_round_over_view_layour_viewStub)
-        mBattleRoundOverCardView = BattleRoundOverCardView(viewStub)
+        mBattleRoundOverCardView = BattleRoundOverCardView(this.findViewById<ViewStub>(R.id.battle_round_over_view_layour_viewStub))
 
-        
+        mBattleGameOverCardView = BattleGameOverCardView(this.findViewById<ViewStub>(R.id.battle_game_over_view_layour_viewStub))
+
     }
 
     private fun initChangeRoomTransitionView() {
