@@ -217,6 +217,18 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     }
 
     @Override
+    public void tryGoBattleMatch(int tagId) {
+        PrepareData prepareData = new PrepareData();
+        prepareData.setGameType(GameModeType.GAME_MODE_BATTLE);
+        prepareData.setTagId(tagId);
+
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                .withSerializable("prepare_data", prepareData)
+                .navigation();
+    }
+
+    @Override
     public void jumpToDoubleRoom(Object o) {
         DoubleRoomData doubleRoomData = new DoubleRoomData();
         if (o instanceof CRSyncInviteUserNotifyEvent) {

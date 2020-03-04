@@ -1,6 +1,8 @@
 package com.module.playways.room.prepare;
 
 
+import android.support.v7.widget.RecyclerView;
+
 import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
@@ -157,4 +159,23 @@ public interface MatchServerApi {
      */
     @PUT("http://dev.room.inframe.mobi/v1/room/stand-playbook-cancel-match")
     Call<ApiResult> canclePlayBookMatch(@Body RequestBody body);
-}
+
+
+    /**
+     * 请求匹配 2v2
+     * @param body
+     *             platform 平台类型(必选)
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/battlegame/query-match")
+    Call<ApiResult> startBattleMatch(@Body RequestBody body);
+
+    /**
+     * 取消匹配 2v2
+     * @param body  null
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/battlegame/cancel-match")
+    Call<ApiResult> cancelBattleMatch(@Body RequestBody body);
+
+ }

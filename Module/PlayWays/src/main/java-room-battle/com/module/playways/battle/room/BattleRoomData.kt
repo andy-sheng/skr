@@ -132,7 +132,12 @@ class BattleRoomData : BaseRoomData<BattleRoundInfoModel>() {
 
     fun loadFromRsp(rsp: JoinBattleRoomRspModel) {
         this.gameId = rsp.roomID
-        this.agoraToken = rsp.agoraToken
+        rsp.tokens?.forEach {
+            if (it.userID == MyUserInfoManager.uid.toInt()) {
+                this.agoraToken = it.token
+                return@forEach
+            }
+        }
         this.gameCreateTs = rsp.createdTimeMs
         myTeamInfo.clear()
         opTeamInfo.clear()
@@ -158,7 +163,9 @@ class BattleRoomData : BaseRoomData<BattleRoundInfoModel>() {
             }
         }
 
-        this.config = rsp.config
+        rsp.config?.let {
+            this.config = it
+        }
         this.realRoundInfo = null
         this.expectRoundInfo = rsp.currentRound
     }

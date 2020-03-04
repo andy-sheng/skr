@@ -198,7 +198,7 @@ class GrabMatchPresenter(@param:NonNull internal var mView: IGrabMatchingView, i
                     val grabCurGameStateModel = JSON.parseObject(result.data!!.toString(), JoinGrabRoomRspModel::class.java)
                     grabCurGameStateModel.gameCreateTimeMs = this@GrabMatchPresenter.mJoinActionEvent?.gameCreateMs
                             ?: 0L
-                    mView.matchGrabSucess(grabCurGameStateModel)
+                    mView.matchGrabSuccess(grabCurGameStateModel)
                 } else {
                     MyLog.d(TAG, "joinRongRoom 加入房间成功，但是状态不是 JoinRongYunRoomSuccess， 当前状态是 $mMatchState")
                     startLoopMatchTask()

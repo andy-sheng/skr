@@ -52,15 +52,15 @@
         app:layout_constraintLeft_toRightOf="@id/rank_iv"
         app:layout_constraintTop_toTopOf="@id/rank_iv" />
 
-<!--    <com.module.playways.battle.songlist.view.BattleStarView-->
-<!--        android:id="@+id/star_view"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="@dimen/view_20_dp"-->
-<!--        android:layout_marginRight="@dimen/view_20_dp"-->
-<!--        android:visibility="gone"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/rank_iv"-->
-<!--        app:layout_constraintRight_toRightOf="@id/special_bg"-->
-<!--        app:layout_constraintTop_toTopOf="@id/rank_iv" />-->
+    <com.module.playways.battle.songlist.view.BattleStarView
+        android:id="@+id/star_view"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/rank_iv"
+        app:layout_constraintRight_toRightOf="@id/special_bg"
+        app:layout_constraintTop_toTopOf="@id/rank_iv" />
 
     <ImageView
         android:id="@+id/lock_iv"

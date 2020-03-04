@@ -22,6 +22,8 @@ public interface IPlaywaysModeService extends IProvider {
 
     void tryGoNewGrabMatch(Activity activity);
 
+    void tryGoBattleMatch(int tagId);
+
     //    private Integer roomID;
 //    private Long createdTimeMs;
 //    private Long passedTimeMs;

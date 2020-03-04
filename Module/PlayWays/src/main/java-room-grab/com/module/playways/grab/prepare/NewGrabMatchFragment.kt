@@ -26,9 +26,11 @@ import com.component.busilib.manager.BgMusicManager
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.playways.R
+import com.module.playways.battle.match.model.JoinBattleRoomRspModel
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
 import com.module.playways.room.prepare.model.PrepareData
 import com.module.playways.room.prepare.presenter.BaseMatchPresenter
+import com.module.playways.room.prepare.presenter.BattleMatchPresenter
 import com.module.playways.room.prepare.presenter.GrabMatchPresenter
 import com.module.playways.room.prepare.view.IGrabMatchingView
 //import com.module.playways.room.prepare.GrabMatchSuccessFragment
@@ -44,7 +46,7 @@ import org.greenrobot.greendao.annotation.NotNull
 import java.util.*
 
 //这个是匹配界面，之前的FastMatchingSence
-class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView{
+class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView {
 
     val ANIMATION_DURATION: Long = 1800
     lateinit var mTvMatchedTime: ExTextView
@@ -94,9 +96,15 @@ class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView{
 //            }
 //        } else
 
-            if (mPrepareData?.gameType == GameModeType.GAME_MODE_GRAB || mPrepareData?.gameType == GameModeType.GAME_MODE_PLAYBOOK) {
+        if (mPrepareData?.gameType == GameModeType.GAME_MODE_GRAB || mPrepareData?.gameType == GameModeType.GAME_MODE_PLAYBOOK) {
             mPrepareData?.let {
                 mMatchPresenter = GrabMatchPresenter(this, it)
+                addPresent(mMatchPresenter)
+                mMatchPresenter.startLoopMatchTask()
+            }
+        } else if (mPrepareData?.gameType == GameModeType.GAME_MODE_BATTLE) {
+            mPrepareData?.let {
+                mMatchPresenter = BattleMatchPresenter(this, it)
                 addPresent(mMatchPresenter)
                 mMatchPresenter.startLoopMatchTask()
             }
@@ -197,7 +205,6 @@ class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView{
         }
     }
 
-
     override fun useEventBus(): Boolean {
         return true
     }
@@ -270,7 +277,8 @@ class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView{
                         //U.getSoundUtils().release(GrabMatchSuccessFragment.TAG)
                         mMatchPresenter.cancelMatch()
                         if (mPrepareData?.gameType == GameModeType.GAME_MODE_GRAB
-                                || mPrepareData?.gameType == GameModeType.GAME_MODE_PLAYBOOK) {
+                                || mPrepareData?.gameType == GameModeType.GAME_MODE_PLAYBOOK
+                                || mPrepareData?.gameType == GameModeType.GAME_MODE_BATTLE) {
                             BgMusicManager.getInstance().destory()
                         }
                         stopTimeTask()
@@ -319,8 +327,23 @@ class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView{
 //                .build())
 //    }
 
+    // 2v2Battle
+    override fun matchBattleSuccess(t: JoinBattleRoomRspModel?, from: String) {
+        MyLog.d(TAG, "matchBattleSuccess from=$t")
+        BgMusicManager.getInstance().destory()
+        stopTimeTask()
+
+        //先跳转
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_ROOM)
+                .withSerializable("JoinBattleRoomRspModel", t)
+                .navigation()
+
+        //结束当前Activity
+        activity?.finish()
+    }
+
     //一唱到底
-    override fun matchGrabSucess(grabCurGameStateModel: JoinGrabRoomRspModel) {
+    override fun matchGrabSuccess(grabCurGameStateModel: JoinGrabRoomRspModel) {
         MyLog.d(TAG, "matchSucess event=$grabCurGameStateModel")
         BgMusicManager.getInstance().destory()
         mPrepareData!!.joinGrabRoomRspModel = grabCurGameStateModel

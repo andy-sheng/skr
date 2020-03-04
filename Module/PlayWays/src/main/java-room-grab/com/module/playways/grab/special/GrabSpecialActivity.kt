@@ -90,37 +90,48 @@ class GrabSpecialActivity : BaseActivity() {
         recyclerView?.adapter = adapter
         adapter.onClickListener = { model, _ ->
             model?.let { specialModel ->
-                if (specialModel.tagType == SpecialModel.TYPE_VIDEO) {
-                    mSkrAudioPermission.ensurePermission({
-                        mCameraPermission.ensurePermission({
-                            mRealNameVerifyUtils.checkJoinVideoPermission {
-                                mRealNameVerifyUtils.checkAgeSettingState {
-                                    // 进入视频预览
-                                    val special = SpecialModel()
-                                    special.tagID = specialModel.tagID
-                                    special.tagName = specialModel.tagName
-                                    special.tagType = specialModel.tagType
-                                    ARouter.getInstance()
-                                            .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                            .withInt("mFrom", FROM_MATCH)
-                                            .withSerializable("mSpecialModel", special)
-                                            .navigation()
-                                }
-                            }
-                        }, true)
-                    }, true)
-                } else {
+                if (specialModel.tagDetailType == GrabTagDetailModel.TAG_TYPE_BATTLE) {
+                    // 2v2battle
                     mSkrAudioPermission.ensurePermission({
                         mRealNameVerifyUtils.checkJoinAudioPermission(specialModel.tagID) {
                             mRealNameVerifyUtils.checkAgeSettingState {
                                 val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                                if (iRankingModeService != null) {
-                                    iRankingModeService.tryGoGrabMatch(specialModel.tagID)
-                                }
+                                iRankingModeService.tryGoBattleMatch(specialModel.tagID)
                             }
                         }
                     }, true)
+                } else {
+                    if (specialModel.tagType == SpecialModel.TYPE_VIDEO) {
+                        mSkrAudioPermission.ensurePermission({
+                            mCameraPermission.ensurePermission({
+                                mRealNameVerifyUtils.checkJoinVideoPermission {
+                                    mRealNameVerifyUtils.checkAgeSettingState {
+                                        // 进入视频预览
+                                        val special = SpecialModel()
+                                        special.tagID = specialModel.tagID
+                                        special.tagName = specialModel.tagName
+                                        special.tagType = specialModel.tagType
+                                        ARouter.getInstance()
+                                                .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                                .withInt("mFrom", FROM_MATCH)
+                                                .withSerializable("mSpecialModel", special)
+                                                .navigation()
+                                    }
+                                }
+                            }, true)
+                        }, true)
+                    } else {
+                        mSkrAudioPermission.ensurePermission({
+                            mRealNameVerifyUtils.checkJoinAudioPermission(specialModel.tagID) {
+                                mRealNameVerifyUtils.checkAgeSettingState {
+                                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                                    iRankingModeService.tryGoGrabMatch(specialModel.tagID)
+                                }
+                            }
+                        }, true)
+                    }
                 }
+
             }
         }
 

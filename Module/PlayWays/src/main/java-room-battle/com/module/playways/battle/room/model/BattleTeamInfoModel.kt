@@ -11,16 +11,24 @@ class BattleTeamInfoModel : Serializable {
     @JSONField(name = "teamTag")
     var teamTag = ""
 
-    var teamUsers:ArrayList<UserInfoModel> = ArrayList()
+    var teamUsers: ArrayList<UserInfoModel> = ArrayList()
 
     companion object {
         fun parseFromPb(pb: BTeamInfo): BattleTeamInfoModel {
             var info = BattleTeamInfoModel()
             info.teamTag = pb.teamTag
-            for(u in  pb.teamUsersList){
+            for (u in pb.teamUsersList) {
                 info.teamUsers.add(UserInfoModel.parseFromPB(u))
             }
             return info
+        }
+
+        fun parseToList(pb: List<BTeamInfo>?): ArrayList<BattleTeamInfoModel> {
+            val list = ArrayList<BattleTeamInfoModel>()
+            pb?.forEach {
+                list.add(parseFromPb(it))
+            }
+            return list
         }
     }
 }

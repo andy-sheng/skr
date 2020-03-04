@@ -1,29 +1,41 @@
 package com.module.playways.battle.match.model
 
 import com.alibaba.fastjson.annotation.JSONField
-import com.common.core.userinfo.model.ClubInfo
+import com.component.busilib.model.GameBackgroundEffectModel
 import com.module.playways.battle.room.model.BattleRoomConfig
 import com.module.playways.battle.room.model.BattleRoundInfoModel
 import com.module.playways.battle.room.model.BattleTeamInfoModel
-import com.module.playways.party.room.model.PartyConfigModel
-import com.module.playways.party.room.model.PartyPlayerInfoModel
-import com.module.playways.party.room.model.PartyRoundInfoModel
-import com.module.playways.party.room.model.PartySeatInfoModel
+import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
+import com.zq.live.proto.BattleRoom.BUserEnterMsg
 import java.io.Serializable
 
 class JoinBattleRoomRspModel : Serializable {
-
-    var roomID = 0
-
+    @JSONField(name = "config")
+    var config: BattleRoomConfig? = null
+    @JSONField(name = "createdTimeMs")
     var createdTimeMs = 0L
-
-    var teams = ArrayList<BattleTeamInfoModel>()
-
-    var config = BattleRoomConfig()
-
-    var agoraToken: String? = null
-
+    @JSONField(name = "currentRound")
     var currentRound: BattleRoundInfoModel? = null
+    @JSONField(name = "roomID")
+    var roomID = 0
+    @JSONField(name = "showInfos")
+    var showInfos = ArrayList<GameBackgroundEffectModel>()
+    @JSONField(name = "teams")
+    var teams = ArrayList<BattleTeamInfoModel>()
+    @JSONField(name = "tokens")
+    var tokens: List<LocalAgoraTokenInfo>? = null    // 声网
 
-    //repeated Common.BackgroundShowInfo showInfos = 7; //背景效果
+    companion object {
+        fun parseFromPB(msg: BUserEnterMsg): JoinBattleRoomRspModel {
+            val result = JoinBattleRoomRspModel()
+            result.config = BattleRoomConfig.parseFromPB(msg.config)
+            result.createdTimeMs = msg.createdTimeMs
+            result.currentRound = BattleRoundInfoModel.parseFromRoundInfo(msg.currentRound)
+            result.roomID = msg.roomID
+            result.showInfos.addAll(GameBackgroundEffectModel.parseToList(msg.showInfosList))
+            result.teams = BattleTeamInfoModel.parseToList(msg.teamsList)
+            result.tokens = LocalAgoraTokenInfo.toLocalAgoraTokenInfo(msg.tokensList)
+            return result
+        }
+    }
 }
