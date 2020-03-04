@@ -124,7 +124,7 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             if (reInit) {
                 val params = Params.getFromPref()
                 //            params.setStyleEnum(Params.AudioEffect.none);
-                params.scene = Params.Scene.doubleChat
+                params.scene = Params.Scene.partyRoom
                 params.isEnableAudio = true
                 ZqEngineKit.getInstance().init("partyroom", params)
             }

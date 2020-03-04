@@ -615,9 +615,10 @@ public class AgoraRTCAdapter {
             switch (mConfig.getScene()) {
                 case rank:
                 case grab:
+                case partyRoom:
                 case audiotest:
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":false }");
-                    profile = Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO;
+                    profile = Constants.AUDIO_PROFILE_MUSIC_STANDARD_STEREO;
                     break;
                 case doubleChat:
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");

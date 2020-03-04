@@ -1049,7 +1049,7 @@ public class Params implements Serializable {
     }
 
     public enum Scene {
-        rank, grab, voice, audiotest, doubleChat
+        rank, grab, voice, audiotest, doubleChat, partyRoom
     }
 
     public enum AudioEffect {
