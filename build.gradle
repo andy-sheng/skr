@@ -41,6 +41,8 @@ buildscript {
 
         maven { url 'https://dl.bintray.com/umsdk/release' }
 
+        maven { url "https://plugins.gradle.org/m2/" }
+
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
@@ -84,6 +86,7 @@ buildscript {
 //        if (aliFeedback.toBoolean()) {
 //            classpath 'com.aliyun.ams:emas-services:1.0.1'
 //        }
+        classpath "gradle.plugin.com.dorongold.plugins:task-tree:1.5"
     }
 }
 
@@ -129,3 +132,5 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+apply plugin: "com.dorongold.task-tree"

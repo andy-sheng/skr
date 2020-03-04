@@ -293,3 +293,10 @@ if (walleEnable.toBoolean()) {
         channelFile = new File("${project.getProjectDir()}/channel")
     }
 }
+
+afterEvaluate {
+    if (flutterEnable.toBoolean()) {
+        assembleDebug.dependsOn clean
+        assembleRelease.dependsOn clean
+    }
+}
