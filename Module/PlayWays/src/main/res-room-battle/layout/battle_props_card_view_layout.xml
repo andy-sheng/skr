@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/sing_card_iv"
+        android:layout_width="@dimen/view_68_dp"
+        android:layout_height="@dimen/view_50_dp"
+        android:background="@drawable/battle_sing_card"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/sing_count_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:text="X2"
+        android:textColor="#4C68E3"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sing_card_iv"
+        app:layout_constraintLeft_toLeftOf="@+id/sing_card_iv"
+        app:layout_constraintRight_toRightOf="@+id/sing_card_iv" />
+
+    <ImageView
+        android:id="@+id/switch_song_iv"
+        android:layout_width="@dimen/view_68_dp"
+        android:layout_height="@dimen/view_50_dp"
+        android:background="@drawable/battle_switch_song_card"
+        app:layout_constraintLeft_toRightOf="@id/sing_card_iv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/switch_count_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:text="X2"
+        android:textColor="#924CE3"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/switch_song_iv"
+        app:layout_constraintLeft_toLeftOf="@+id/switch_song_iv"
+        app:layout_constraintRight_toRightOf="@+id/switch_song_iv" />
+
+    <ImageView
+        android:id="@+id/attention_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_15_dp"
+        app:layout_constraintLeft_toRightOf="@+id/switch_song_iv"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

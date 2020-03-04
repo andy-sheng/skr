@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_273_dp"
+    app:bl_corners_radius="@dimen/view_16_dp"
+    app:bl_gradient_endColor="#BE7B45"
+    app:bl_gradient_startColor="#FFD298">
+
+    <com.module.playways.grab.room.view.SingCountDownView2
+        android:id="@+id/sing_count_down_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/card_iv"
+        android:layout_width="@dimen/view_156_dp"
+        android:layout_height="@dimen/view_156_dp"
+        android:layout_marginTop="@dimen/view_18_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/singer_avatar_iv"
+        android:layout_width="@dimen/view_110_dp"
+        android:layout_height="@dimen/view_110_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/card_iv"
+        app:layout_constraintLeft_toLeftOf="@+id/card_iv"
+        app:layout_constraintRight_toRightOf="@+id/card_iv"
+        app:layout_constraintTop_toTopOf="@+id/card_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/item_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_15_dp"
+        android:text="《后来》"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/singer_info_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_50_dp"
+        android:gravity="center"
+        android:text="对手 xxx 在唱歌"
+        app:bl_corners_bottomLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_bottomRightRadius="@dimen/view_16_dp"
+        app:bl_solid_color="@color/black_trans_10"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</android.support.constraint.ConstraintLayout>

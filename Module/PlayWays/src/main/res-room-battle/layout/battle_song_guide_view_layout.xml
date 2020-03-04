@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_268_dp">
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_248_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_gradient_endColor="#BE7B45"
+        app:bl_gradient_startColor="#FFD298"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/title_bg"
+        android:layout_width="@dimen/view_274_dp"
+        android:layout_height="@dimen/view_67_dp"
+        android:background="@drawable/battle_song_guide_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="@dimen/view_35_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_15_dp"
+        android:gravity="center"
+        android:text="13"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_20_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/left_first_avatar"
+        app:layout_constraintLeft_toLeftOf="@+id/title_bg"
+        app:layout_constraintTop_toTopOf="@+id/left_first_avatar" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="@dimen/view_35_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_15_dp"
+        android:gravity="center"
+        android:text="8"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_20_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/left_first_avatar"
+        app:layout_constraintRight_toRightOf="@+id/title_bg"
+        app:layout_constraintTop_toTopOf="@+id/left_first_avatar" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/left_first_avatar"
+        android:layout_width="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginLeft="@dimen/view_60_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/title_bg"
+        app:layout_constraintTop_toTopOf="@+id/title_bg" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/left_second_avatar"
+        android:layout_width="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginLeft="@dimen/view_82_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/title_bg"
+        app:layout_constraintTop_toTopOf="@+id/title_bg" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/right_first_avatar"
+        android:layout_width="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:layout_marginRight="@dimen/view_62_dp"
+        app:layout_constraintRight_toRightOf="@+id/title_bg"
+        app:layout_constraintTop_toTopOf="@+id/title_bg" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/right_second_avatar"
+        android:layout_width="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:layout_marginRight="@dimen/view_84_dp"
+        app:layout_constraintRight_toRightOf="@+id/title_bg"
+        app:layout_constraintTop_toTopOf="@+id/title_bg" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/song_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_84_dp"
+        android:text="《后来》"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/song_lyric_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:maxWidth="@dimen/view_234_dp"
+        android:text="后来，我总算学会了如何去爱"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/song_name_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/singer_info_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_50_dp"
+        android:gravity="center"
+        android:text="轮到队友 xxx 演唱 4s"
+        android:textSize="@dimen/textsize_14_dp"
+        app:bl_corners_bottomLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_bottomRightRadius="@dimen/view_16_dp"
+        app:bl_solid_color="@color/black_trans_10"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,54 @@
+<com.common.view.ex.ExFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_273_dp"
+    app:bl_corners_radius="@dimen/view_16_dp"
+    app:bl_gradient_endColor="#BE7B45"
+    app:bl_gradient_startColor="#FFD298"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.module.playways.grab.room.view.SingCountDownView2
+        android:id="@+id/sing_count_down_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:visibility="gone" />
+
+    <com.component.lyrics.widget.ManyLyricsView
+        android:id="@+id/many_lyrics_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_260_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="-38dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:visibility="visible"
+        app:ly_down_line_num="1"
+        app:ly_enable_scroll="false"
+        app:ly_enable_verbatim="true"
+        app:ly_high_light_paint_color_from="#DB4D84"
+        app:ly_high_light_paint_color_to="#DB4D84"
+        app:ly_high_light_paint_text_size="18.0"
+        app:ly_high_light_sub_paint_color="@color/white_trans_80"
+        app:ly_outline_paint_color="@color/white_trans_80"
+        app:ly_paint_color_from="@color/white_trans_80"
+        app:ly_paint_color_to="@color/white_trans_80"
+        app:ly_paint_text_size="16.0"
+        app:ly_show_author="true"
+        app:ly_top_line_num="0" />
+
+    <com.component.lyrics.widget.VoiceScaleView
+        android:id="@+id/voice_scale_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_gravity="bottom"
+        android:visibility="visible"
+        app:leftBgPaintColor="@color/black_trans_10"
+        app:leftPaintColor="@color/white"
+        app:redInnerpaintColor="#FFC15B"
+        app:redLinePaintColor="@color/black_trans_20"
+        app:redOutpaintColor="#FFC15B"
+        app:rightBgPaintColor="@color/black_trans_10"
+        app:rightPaintColor="#FFC15B" />
+</com.common.view.ex.ExFrameLayout>

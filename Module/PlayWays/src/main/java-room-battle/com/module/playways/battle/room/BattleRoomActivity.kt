@@ -39,10 +39,14 @@ import com.module.playways.battle.room.top.BattleTopContentView
 import com.module.playways.battle.room.top.BattleTopOpView
 import com.module.playways.battle.room.ui.BattleWidgetAnimationController
 import com.module.playways.battle.room.ui.IBattleRoomView
+
 import com.module.playways.battle.room.view.BattleBeginTipsView
 import com.module.playways.battle.room.view.BattleGameOverCardView
 import com.module.playways.battle.room.view.BattleRoundOverCardView
 import com.module.playways.battle.room.view.BattleVoiceControlPanelView
+
+import com.module.playways.battle.room.view.*
+
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.GrabChangeRoomTransitionView
@@ -115,6 +119,13 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     internal lateinit var mBattleBeginView: BattleBeginTipsView
     internal lateinit var mBattleRoundOverCardView: BattleRoundOverCardView
     internal lateinit var mBattleGameOverCardView: BattleGameOverCardView
+
+    internal lateinit var mBattleGiveUpView: BattleGiveUpView
+    internal lateinit var mBattleGrabView: BattleGrabView
+    internal lateinit var mBattleOtherSingCardView: BattleOtherSingCardView
+    internal lateinit var mBattlePropsCardView: BattlePropsCardView
+    internal lateinit var mBattleSelfSingLyricView: BattleSelfSingLyricView
+    internal lateinit var mBattleSongGuideView: BattleSongGuideView
 
     internal lateinit var mGameEffectBgView: GameEffectBgView
 
@@ -195,6 +206,10 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         initRightOpView()
         initVipEnterView()
         initChangeRoomTransitionView()
+
+        initCardView()
+        initOpView()
+
         mCorePresenter.onOpeningAnimationOver()
 
         mUiHandler.postDelayed(Runnable {
@@ -235,6 +250,18 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
         mBattleGameOverCardView = BattleGameOverCardView(this.findViewById<ViewStub>(R.id.battle_game_over_view_layour_viewStub))
 
+    }
+
+    private fun initCardView() {
+        mBattleSongGuideView = BattleSongGuideView(findViewById(R.id.battle_song_guide_view_layout_viewStub), mRoomData)
+        mBattleSelfSingLyricView = BattleSelfSingLyricView(findViewById(R.id.battle_self_sing_lyric_layout_viewStub), mRoomData)
+        mBattleOtherSingCardView = BattleOtherSingCardView(findViewById(R.id.battle_other_sing_view_layout_viewStub), mRoomData)
+    }
+
+    private fun initOpView() {
+        mBattleGrabView = BattleGrabView(findViewById(R.id.battle_grab_view_layout_viewStub), mRoomData)
+        mBattlePropsCardView = BattlePropsCardView(findViewById(R.id.battle_props_card_view_layout_viewStub), mRoomData)
+        mBattleGiveUpView = BattleGiveUpView(findViewById(R.id.battle_give_up_view_layout_viewStub), mRoomData)
     }
 
     private fun initChangeRoomTransitionView() {

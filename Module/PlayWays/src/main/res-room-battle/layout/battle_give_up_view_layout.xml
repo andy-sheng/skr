@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/view_120_dp"
+    android:layout_height="@dimen/view_60_dp">
+
+    <ImageView
+        android:id="@+id/give_up_iv"
+        android:layout_width="@dimen/view_108_dp"
+        android:layout_height="@dimen/view_60_dp"
+        android:layout_gravity="center"
+        android:background="@drawable/battle_giveup" />
+</FrameLayout>
