@@ -15,7 +15,7 @@ import retrofit2.http.Query
 interface GrabRoomServerApi {
 
     // 抢唱页面
-    @GET("v3/playbook/stand-tag-list")
+    @GET("v4/playbook/stand-tag-list")
     fun getStandTagList(@Query("userID") userID: Long, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 
     /**
