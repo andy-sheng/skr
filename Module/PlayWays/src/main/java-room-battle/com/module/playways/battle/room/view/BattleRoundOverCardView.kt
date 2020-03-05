@@ -14,7 +14,12 @@ import com.common.utils.dp
 import com.common.view.ExViewStub
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
+import com.module.playways.battle.room.model.BattleRoundInfoModel
+import com.module.playways.battle.room.model.BattleRoundResultModel
 import com.module.playways.listener.AnimationListener
+import com.module.playways.room.data.H
+import com.zq.live.proto.BattleRoom.EChallengeResult
+import com.zq.live.proto.BattleRoom.EChallengeTip
 
 // 轮次结束
 class BattleRoundOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
@@ -42,26 +47,34 @@ class BattleRoundOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         return R.layout.battle_round_over_card_view
     }
 
-    fun bindData(listener: AnimationListener?) {
+    fun bindData(lastRound: BattleRoundInfoModel, listener: AnimationListener?) {
         this.listener = listener
         tryInflate()
-        // todo 待补全,填充view的信息,先给个测试信息
-        val isWin = true;
-        if (isWin) {
+
+        val result = lastRound.result
+        if (result?.challengeResult == EChallengeResult.ECR_SUCCESS.value) {
             bgIv.background = U.getDrawable(R.drawable.battle_round_win_icon)
             winIv.visibility = View.VISIBLE
             winTv.visibility = View.VISIBLE
             lossIv.visibility = View.GONE
-            winTv.text = "+1 分"
-//            winIv.background = U.getDrawable(R.drawable.battle_pretty_text)
-//            winIv.background = U.getDrawable(R.drawable.battle_perfect_text)
+            winTv.text = result.gameScore.toString()
+            when {
+                result.challengeTip == EChallengeTip.ECT_FEI_CHANG_BANG.value -> winIv.background = U.getDrawable(R.drawable.battle_pretty_text)
+                result.challengeTip == EChallengeTip.ECT_HEN_YI_HAN.value -> winIv.background = U.getDrawable(R.drawable.battle_perfect_text)
+                else -> winIv.visibility = View.GONE
+            }
         } else {
             bgIv.background = U.getDrawable(R.drawable.battle_round_loss_icon)
             winIv.visibility = View.GONE
             winTv.visibility = View.GONE
-            lossIv.visibility = View.VISIBLE
+            if (result?.challengeTip == EChallengeTip.ECT_HEN_YI_HAN.value) {
+                lossIv.visibility = View.VISIBLE
+            } else {
+                lossIv.visibility = View.GONE
+            }
         }
-        AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
+
+        AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(H.battleRoomData?.getPlayerInfoById(lastRound.userID)?.userInfo?.avatar)
                 .setCircle(true)
                 .setBorderColor(Color.WHITE)
                 .setBorderWidth(1.dp().toFloat())

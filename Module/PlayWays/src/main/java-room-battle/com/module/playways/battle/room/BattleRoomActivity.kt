@@ -702,7 +702,11 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     }
 
     override fun showRoundOver(lastRound: BattleRoundInfoModel, callback: () -> Unit) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mBattleRoundOverCardView.bindData(lastRound, object : AnimationListener {
+            override fun onFinish() {
+                callback.invoke()
+            }
+        })
     }
 
     override fun useHelpSing() {
@@ -725,9 +729,9 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
     override fun gameOver(from: String) {
         MyLog.d(TAG, "gameOver from = $from")
-        mBattleGameOverCardView.bindData(object :AnimationListener{
+        mBattleGameOverCardView.bindData(object : AnimationListener {
             override fun onFinish() {
-                FlutterBoostController.openFlutterPage(this@BattleRoomActivity,"BattleResultPage", hashMapOf(
+                FlutterBoostController.openFlutterPage(this@BattleRoomActivity, "BattleResultPage", hashMapOf(
                         "roomID" to mRoomData.gameId
                 ))
                 finish()
