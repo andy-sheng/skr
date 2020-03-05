@@ -8,7 +8,7 @@ import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.battle.room.BattleRoomData
 
-class BattlePropsCardView(viewStub: ViewStub, protected var mRoomData: BattleRoomData?) : BaseSceneView(viewStub) {
+class BattlePropsCardView(viewStub: ViewStub, protected var mRoomData: BattleRoomData) : BaseSceneView(viewStub) {
     lateinit var singCardIv: ImageView
     lateinit var singCountTv: ExTextView
     lateinit var switchSongIv: ImageView
@@ -40,13 +40,12 @@ class BattlePropsCardView(viewStub: ViewStub, protected var mRoomData: BattleRoo
 
     fun show() {
         enterAnimation()
-        var battleRoundInfoModel = mRoomData?.realRoundInfo
-        if (battleRoundInfoModel == null) {
-            battleRoundInfoModel = mRoomData?.expectRoundInfo
-        }
+
+        singCountTv.text = "X${mRoomData.config.helpCardCnt}"
+        switchCountTv.text = "X${mRoomData.config.switchCardCnt}"
     }
 
     fun hide() {
-
+        setVisibility(View.GONE)
     }
 }
