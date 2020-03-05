@@ -80,6 +80,7 @@ import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
+import io.rong.imkit.widget.provider.UnknownMessageItemProvider;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -351,7 +352,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             }
 
             IContainerItemProvider.MessageProvider messageProvider = RongContext.getInstance().getMessageTemplate(message.getContent().getClass());
-            if (messageProvider != null) {
+            if (messageProvider != null && !(messageProvider instanceof UnknownMessageItemProvider)) {
                 // 触发弹出消息通知栏，小助手消息除外
                 if (Integer.valueOf(message.getSenderUserId()) != UserInfoModel.USER_ID_XIAOZHUSHOU) {
                     Spannable content = messageProvider.getContentSummary(U.app(), message.getContent());

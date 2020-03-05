@@ -300,3 +300,43 @@ afterEvaluate {
         assembleRelease.dependsOn clean
     }
 }
+
+// 会报错 但编译能过
+//gradle.addBuildListener(new BuildListener() {
+//    @Override
+//    void buildStarted(Gradle gradle) {
+//        println('构建开始 gradle='+gradle)
+//    }
+//
+//    @Override
+//    void settingsEvaluated(Settings settings) {
+//        println('settings 解析完成='+settings)
+//    }
+//
+//    @Override
+//    void projectsLoaded(Gradle gradle) {
+//        println('加载完成 gradle='+gradle)
+//    }
+//
+//    @Override
+//    void projectsEvaluated(Gradle gradle) {
+//        println('项目解析完成 gradle='+gradle)
+//    }
+//
+//    @Override
+//    void buildFinished(BuildResult result) {
+//        println('构建完成 result='+result)
+//    }
+//})
+//
+//gradle.addProjectEvaluationListener(new ProjectEvaluationListener() {
+//    @Override
+//    void beforeEvaluate(Project project) {
+//        println("${project.name} 项目配置之前调用")
+//    }
+//
+//    @Override
+//    void afterEvaluate(Project project, ProjectState state) {
+//        println("${project.name} 项目配置之后调用")
+//    }
+//})
