@@ -15,6 +15,7 @@ import com.common.view.ExViewStub
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.listener.AnimationListener
+import com.module.playways.room.data.H
 
 // 比赛结束
 class BattleGameOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
@@ -55,9 +56,8 @@ class BattleGameOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     fun bindData(listener: AnimationListener?) {
         this.listener = listener
         tryInflate()
-        // todo 待补全,填充view的信息,先给个测试信息
-        val isWin = true;
-        if (isWin) {
+
+        if (H.battleRoomData?.myTeamScore ?: 0 >= (H.battleRoomData?.opTeamScore ?: 0)) {
             bgIv.background = U.getDrawable(R.drawable.battle_game_over_win)
             winIv.visibility = View.VISIBLE
             lossIv.visibility = View.GONE
@@ -66,28 +66,33 @@ class BattleGameOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             winIv.visibility = View.GONE
             lossIv.visibility = View.VISIBLE
         }
+
         AvatarUtils.loadAvatarByUrl(leftAvatar1, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                 .setCircle(true)
                 .setBorderColor(Color.WHITE)
                 .setBorderWidth(1.dp().toFloat())
                 .build())
-        AvatarUtils.loadAvatarByUrl(leftAvatar2, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
+        AvatarUtils.loadAvatarByUrl(leftAvatar2, AvatarUtils.newParamsBuilder(H.battleRoomData?.getFirstTeammate()?.userInfo?.avatar)
                 .setCircle(true)
                 .setBorderColor(Color.WHITE)
                 .setBorderWidth(1.dp().toFloat())
                 .build())
-        AvatarUtils.loadAvatarByUrl(rightAvatar1, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
-                .setCircle(true)
-                .setBorderColor(Color.WHITE)
-                .setBorderWidth(1.dp().toFloat())
-                .build())
-        AvatarUtils.loadAvatarByUrl(rightAvatar2, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
-                .setCircle(true)
-                .setBorderColor(Color.WHITE)
-                .setBorderWidth(1.dp().toFloat())
-                .build())
-        leftScoreTv.text = "13"
-        rightScoreTv.text = "6"
+        if ((H.battleRoomData?.opTeamInfo?.size ?: 0) > 0) {
+            AvatarUtils.loadAvatarByUrl(rightAvatar1, AvatarUtils.newParamsBuilder(H.battleRoomData?.opTeamInfo?.get(0)?.userInfo?.avatar)
+                    .setCircle(true)
+                    .setBorderColor(Color.WHITE)
+                    .setBorderWidth(1.dp().toFloat())
+                    .build())
+        }
+        if ((H.battleRoomData?.opTeamInfo?.size ?: 0) > 1) {
+            AvatarUtils.loadAvatarByUrl(rightAvatar2, AvatarUtils.newParamsBuilder(H.battleRoomData?.opTeamInfo?.get(1)?.userInfo?.avatar)
+                    .setCircle(true)
+                    .setBorderColor(Color.WHITE)
+                    .setBorderWidth(1.dp().toFloat())
+                    .build())
+        }
+        leftScoreTv.text = H.battleRoomData?.myTeamScore?.toString()
+        rightScoreTv.text = H.battleRoomData?.opTeamScore?.toString()
 
         animationEnter()
         mParentView?.postDelayed({
