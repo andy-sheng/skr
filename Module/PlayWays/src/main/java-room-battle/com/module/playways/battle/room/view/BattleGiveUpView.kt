@@ -8,7 +8,7 @@ import com.common.view.ExViewStub
 import com.module.playways.R
 import com.module.playways.battle.room.BattleRoomData
 
-class BattleGiveUpView(viewStub: ViewStub, protected var mRoomData: BattleRoomData?) : ExViewStub(viewStub) {
+class BattleGiveUpView(viewStub: ViewStub, protected var mRoomData: BattleRoomData?) : BaseSceneView(viewStub) {
     lateinit var giveUpIv: ImageView
     var clickGiveUpFuc: (() -> Unit)? = null
 
@@ -24,12 +24,16 @@ class BattleGiveUpView(viewStub: ViewStub, protected var mRoomData: BattleRoomDa
         return R.layout.battle_give_up_view_layout
     }
 
-    fun showSingView() {
+    fun show() {
         tryInflate()
-        setVisibility(View.VISIBLE)
+        enterAnimation()
+        var battleRoundInfoModel = mRoomData?.realRoundInfo
+        if (battleRoundInfoModel == null) {
+            battleRoundInfoModel = mRoomData?.expectRoundInfo
+        }
     }
 
-    fun hideGrabView() {
+    fun hide() {
         setVisibility(View.GONE)
     }
 }

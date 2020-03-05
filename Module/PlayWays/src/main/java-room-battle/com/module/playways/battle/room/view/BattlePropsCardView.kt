@@ -26,4 +26,16 @@ class BattlePropsCardView(viewStub: ViewStub, protected var mRoomData: BattleRoo
     override fun layoutDesc(): Int {
         return R.layout.battle_props_card_view_layout
     }
+
+    fun show() {
+        tryInflate()
+        var battleRoundInfoModel = mRoomData?.realRoundInfo
+        if (battleRoundInfoModel == null) {
+            battleRoundInfoModel = mRoomData?.expectRoundInfo
+        }
+    }
+
+    fun hide() {
+
+    }
 }

@@ -24,16 +24,26 @@ class BattleGrabView(viewStub: ViewStub, protected var mRoomData: BattleRoomData
         }
     }
 
+    fun MutableList<Int>.swap(index1: Int, index2: Int) {
+        val tmp = this[index1] // “this”对应该列表
+        this[index1] = this[index2]
+        this[index2] = tmp
+    }
+
     override fun layoutDesc(): Int {
         return R.layout.battle_grab_view_layout
     }
 
-    fun showSingView() {
+    fun show() {
         tryInflate()
         setVisibility(View.VISIBLE)
+        var battleRoundInfoModel = mRoomData?.realRoundInfo
+        if (battleRoundInfoModel == null) {
+            battleRoundInfoModel = mRoomData?.expectRoundInfo
+        }
     }
 
-    fun hideGrabView() {
+    fun hide() {
         setVisibility(View.GONE)
     }
 }
