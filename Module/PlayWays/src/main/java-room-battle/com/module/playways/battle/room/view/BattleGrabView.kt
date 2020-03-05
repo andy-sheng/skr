@@ -21,12 +21,8 @@ class BattleGrabView(viewStub: ViewStub, protected var mRoomData: BattleRoomData
         singIv.setDebounceViewClickListener {
             clickGrabFuc?.invoke()
         }
-    }
 
-    fun MutableList<Int>.swap(index1: Int, index2: Int) {
-        val tmp = this[index1] // “this”对应该列表
-        this[index1] = this[index2]
-        this[index2] = tmp
+        rrlProgress.startCountDown(15000)
     }
 
     override fun layoutDesc(): Int {
@@ -35,10 +31,6 @@ class BattleGrabView(viewStub: ViewStub, protected var mRoomData: BattleRoomData
 
     fun show() {
         enterAnimation()
-        var battleRoundInfoModel = mRoomData?.realRoundInfo
-        if (battleRoundInfoModel == null) {
-            battleRoundInfoModel = mRoomData?.expectRoundInfo
-        }
     }
 
     fun hide() {

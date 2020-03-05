@@ -4,7 +4,6 @@ import android.view.View
 import android.view.ViewStub
 import android.widget.ImageView
 import com.common.core.view.setDebounceViewClickListener
-import com.common.view.ExViewStub
 import com.module.playways.R
 import com.module.playways.battle.room.BattleRoomData
 
@@ -25,12 +24,7 @@ class BattleGiveUpView(viewStub: ViewStub, protected var mRoomData: BattleRoomDa
     }
 
     fun show() {
-        tryInflate()
         enterAnimation()
-        var battleRoundInfoModel = mRoomData?.realRoundInfo
-        if (battleRoundInfoModel == null) {
-            battleRoundInfoModel = mRoomData?.expectRoundInfo
-        }
     }
 
     fun hide() {
