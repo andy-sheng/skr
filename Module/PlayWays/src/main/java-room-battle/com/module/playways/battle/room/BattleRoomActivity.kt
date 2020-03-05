@@ -239,8 +239,6 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     private fun initTurnChangeView() {
         // 对战开始，轮次结束和 游戏结束
         mBattleBeginView = this.findViewById(R.id.battle_begin_view)
-        // todo 测试看看，可以删除
-        mBattleBeginView.showAnimation(null)
 
         mBattleRoundOverCardView = BattleRoundOverCardView(this.findViewById<ViewStub>(R.id.battle_round_over_view_layour_viewStub))
 

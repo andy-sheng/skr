@@ -16,6 +16,7 @@ import com.common.utils.dp
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.listener.AnimationListener
+import com.module.playways.room.data.H
 
 // 对战开始 出现，从底部中心点放大加抖动  隐藏，直接收缩回到底部中心点
 class BattleBeginTipsView : ConstraintLayout {
@@ -57,27 +58,30 @@ class BattleBeginTipsView : ConstraintLayout {
     }
 
     private fun bindData() {
-        // todo 测试而已
         AvatarUtils.loadAvatarByUrl(leftAvatar1, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                 .setCircle(true)
                 .setBorderColor(Color.WHITE)
                 .setBorderWidth(1.dp().toFloat())
                 .build())
-        AvatarUtils.loadAvatarByUrl(leftAvatar2, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
+        AvatarUtils.loadAvatarByUrl(leftAvatar2, AvatarUtils.newParamsBuilder(H.battleRoomData?.getFirstTeammate()?.userInfo?.avatar)
                 .setCircle(true)
                 .setBorderColor(Color.WHITE)
                 .setBorderWidth(1.dp().toFloat())
                 .build())
-        AvatarUtils.loadAvatarByUrl(rightAvatar1, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
-                .setCircle(true)
-                .setBorderColor(Color.WHITE)
-                .setBorderWidth(1.dp().toFloat())
-                .build())
-        AvatarUtils.loadAvatarByUrl(rightAvatar2, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
-                .setCircle(true)
-                .setBorderColor(Color.WHITE)
-                .setBorderWidth(1.dp().toFloat())
-                .build())
+        if ((H.battleRoomData?.opTeamInfo?.size ?: 0) > 0) {
+            AvatarUtils.loadAvatarByUrl(rightAvatar1, AvatarUtils.newParamsBuilder(H.battleRoomData?.opTeamInfo?.get(0)?.userInfo?.avatar)
+                    .setCircle(true)
+                    .setBorderColor(Color.WHITE)
+                    .setBorderWidth(1.dp().toFloat())
+                    .build())
+        }
+        if ((H.battleRoomData?.opTeamInfo?.size ?: 0) > 1) {
+            AvatarUtils.loadAvatarByUrl(rightAvatar2, AvatarUtils.newParamsBuilder(H.battleRoomData?.opTeamInfo?.get(1)?.userInfo?.avatar)
+                    .setCircle(true)
+                    .setBorderColor(Color.WHITE)
+                    .setBorderWidth(1.dp().toFloat())
+                    .build())
+        }
     }
 
     // 入场动画
