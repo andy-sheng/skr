@@ -14,6 +14,7 @@ import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.flutter.boost.FlutterBoostController
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
@@ -726,7 +727,14 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
     override fun gameOver(from: String) {
         MyLog.d(TAG, "gameOver from = $from")
-//        finish()
+        mBattleGameOverCardView.bindData(object :AnimationListener{
+            override fun onFinish() {
+                FlutterBoostController.openFlutterPage(this@BattleRoomActivity,"BattleResultPage", hashMapOf(
+                        "roomID" to mRoomData.gameId
+                ))
+                finish()
+            }
+        })
         U.getToastUtil().showShort("游戏结束")
     }
 }
