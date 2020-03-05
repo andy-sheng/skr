@@ -178,4 +178,14 @@ public interface MatchServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/battlegame/cancel-match")
     Call<ApiResult> cancelBattleMatch(@Body RequestBody body);
 
- }
+
+    /**
+     * 模拟一个假人
+     *             platform 平台类型(必选)
+     * @return
+     */
+    @GET("http://dev.game.inframe.mobi/v1/battlegame/mock-user-match")
+    Call<ApiResult> mockBattleMatch();
+
+
+}

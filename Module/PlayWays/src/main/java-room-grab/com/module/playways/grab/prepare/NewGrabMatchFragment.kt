@@ -182,6 +182,7 @@ class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView {
                                 BgMusicManager.getInstance().destory()
                             }
                             if (activity != null) {
+                                BgMusicManager.getInstance().destory()
                                 activity!!.finish()
                             }
 

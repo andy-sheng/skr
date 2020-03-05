@@ -5,6 +5,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.common.rxretrofit.*
 import com.common.utils.HandlerTaskTimer
+import com.common.utils.U
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.recommend.RA
 import com.module.ModuleServiceManager
@@ -81,6 +82,13 @@ class BattleMatchPresenter(@param:NonNull internal var mView: IGrabMatchingView,
                         mMatchState = GrabMatchPresenter.MatchState.JoinGameSuccess
                         val model = JSON.parseObject(result.data.getString("roomEnterMsg"), JoinBattleRoomRspModel::class.java)
                         mView.matchBattleSuccess(model, "短链接匹配")
+                    }
+                }else{
+                    if(MyLog.isDebugLogOpen()){
+                        U.getToastUtil().showShort("模拟三个假人加入匹配")
+                        for (i in 1..4){
+                            val result = subscribe { mMatchServerApi.mockBattleMatch() }
+                        }
                     }
                 }
             } else {

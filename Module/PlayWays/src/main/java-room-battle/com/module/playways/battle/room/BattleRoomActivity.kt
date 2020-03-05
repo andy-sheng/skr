@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Message
 import android.text.TextUtils
 import android.view.*
+import android.view.animation.Animation
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
@@ -46,6 +47,7 @@ import com.module.playways.grab.room.view.GrabChangeRoomTransitionView
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
+import com.module.playways.listener.AnimationListener
 import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
@@ -683,7 +685,12 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
 
     override fun showBeginTips(callback: () -> Unit) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mBattleBeginView.visibility = View.VISIBLE
+        mBattleBeginView.showAnimation(object : AnimationListener {
+            override fun onFinish() {
+                callback.invoke()
+            }
+        })
     }
 
     override fun showIntro() {

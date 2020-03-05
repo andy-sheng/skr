@@ -597,6 +597,9 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.registerMessageType(PartyRoomHighMsg.class);
             RongIM.registerMessageType(PartyRoomLowMsg.class);
 
+            RongIM.registerMessageType(BattleRoomHighMsg.class);
+            RongIM.registerMessageType(BattleRoomLowMsg.class);
+
             RongIM.getInstance().registerConversationTemplate(new MyPrivateConversationProvider());
 
             // 注册家族邀请消息
