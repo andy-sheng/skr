@@ -10,6 +10,7 @@ import com.module.playways.R
 import com.module.playways.battle.room.BattleRoomData
 import com.module.playways.battle.room.BattleRoomServerApi
 import com.module.playways.room.room.view.BottomContainerView
+import com.zq.mediaengine.kit.ZqEngineKit
 
 
 class BattleBottomContainerView : BottomContainerView {
@@ -33,7 +34,15 @@ class BattleBottomContainerView : BottomContainerView {
 
         mInputBtn?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                // todo 补充一个开闭麦
+                if (roomData?.isMute == true) {
+                    roomData?.isMute = false
+                    mInputBtn?.setBackgroundResource(R.drawable.relay_new_unmute)
+                    ZqEngineKit.getInstance().adjustRecordingSignalVolume(ZqEngineKit.getInstance().params.recordingSignalVolume, false)
+                } else {
+                    roomData?.isMute = true
+                    mInputBtn?.setBackgroundResource(R.drawable.relay_new_mute)
+                    ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
+                }
             }
         })
 

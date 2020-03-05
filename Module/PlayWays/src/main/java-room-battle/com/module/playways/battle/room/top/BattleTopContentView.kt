@@ -93,7 +93,6 @@ class BattleTopContentView : ExConstraintLayout {
     }
 
     fun bindData() {
-        // todo 等重写 左边固定是我自己
         AvatarUtils.loadAvatarByUrl(leftAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                 .setCircle(true)
                 .setBorderWidth(1.dp().toFloat())
