@@ -50,7 +50,9 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
                     val meiLiCntTotal = result.data?.getIntValue("meiLiCntTotal") ?: 0
                     val qinMiCntTotal = result.data?.getIntValue("qinMiCntTotal") ?: 0
 
-                    view.showHomePageInfo(userInfoModel, relationNumModes, meiLiCntTotal, qinMiCntTotal, voiceInfoModel)
+                    val postsCnt = result.data.getIntValue("postsCnt")
+
+                    view.showHomePageInfo(userInfoModel, relationNumModes, meiLiCntTotal, qinMiCntTotal, postsCnt, voiceInfoModel)
                 } else {
                     view.getHomePageFail()
                 }

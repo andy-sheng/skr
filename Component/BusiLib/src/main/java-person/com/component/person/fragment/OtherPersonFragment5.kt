@@ -113,6 +113,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
     private var fansNum: Int = 0
     private var meliTotal: Int = 0
     private var qinMiCntTotal: Int = 0
+    private var postCnt: Int = 0
     private var voiceInfoModel: VoiceInfoModel? = null
 
     lateinit var mPresenter: OtherPersonPresenter
@@ -415,7 +416,7 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
         relationView?.setDebounceViewClickListener {
             // todo 补一个flutter的界面
-            FlutterBoostController.openFlutterPage(activity!!,"OtherRelationPage", mutableMapOf(
+            FlutterBoostController.openFlutterPage(activity!!, "OtherRelationPage", mutableMapOf(
                     "targetId" to userId,
                     "from" to 2
             ))
@@ -526,13 +527,14 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     override fun showHomePageInfo(userInfoModel: UserInfoModel,
                                   relationNumModels: List<RelationNumModel>?,
-                                  meiLiCntTotal: Int, qinMiCntTotal: Int,
+                                  meiLiCntTotal: Int, qinMiCntTotal: Int, postCnt: Int,
                                   voiceInfoModel: VoiceInfoModel?) {
         uploadHomePageFlag = false
         this.infoModel = userInfoModel
         this.meliTotal = meiLiCntTotal
         this.qinMiCntTotal = qinMiCntTotal
         this.voiceInfoModel = voiceInfoModel
+        this.postCnt = postCnt
         relationNumModels?.let {
             for (mode in it) {
                 when {
@@ -699,6 +701,8 @@ class OtherPersonFragment5 : BaseFragment(), IOtherPersonView, RequestCallBack {
         } else {
             clubArea.visibility = View.GONE
         }
+
+        postTitleTv.text = "帖子(${postCnt})"
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

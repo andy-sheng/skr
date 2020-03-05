@@ -197,6 +197,8 @@ class PersonFragment6 : BaseFragment() {
                     MyUserInfoManager.setMyUserInfo(myUserInfo, true, "getHomePage")
 
                     meiLiCntTotal = result.data.getIntValue("meiLiCntTotal")
+                    postNum = result.data.getIntValue("postsCnt")
+                    workNum = result.data.getIntValue("worksCnt")
 
                     relationNumModes?.let {
                         for (mode in it) {
@@ -332,6 +334,8 @@ class PersonFragment6 : BaseFragment() {
             }
 
             refreshClubInfo()
+            postTitleTv.text = "帖子(${postNum})"
+            worksTitleTv.text = "本地作品(${workNum})"
         }
     }
 
@@ -541,7 +545,7 @@ class PersonFragment6 : BaseFragment() {
         feedTitleTv = rootView.findViewById(R.id.feed_title_tv)
 
         relationView?.setDebounceViewClickListener {
-            FlutterBoostController.openFlutterPage(activity!!,"MyRelationPage", mutableMapOf(
+            FlutterBoostController.openFlutterPage(activity!!, "MyRelationPage", mutableMapOf(
                     "from" to 1
             ))
         }
@@ -574,7 +578,7 @@ class PersonFragment6 : BaseFragment() {
         feedsArea.setDebounceViewClickListener {
             // todo神曲做么
             ARouter.getInstance().build(RouterConstants.ACTIVITY_PERSON_FEED)
-                    .withSerializable("userInfoModel",  MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo))
+                    .withSerializable("userInfoModel", MyUserInfo.toUserInfoModel(MyUserInfoManager.myUserInfo))
                     .navigation()
         }
     }
