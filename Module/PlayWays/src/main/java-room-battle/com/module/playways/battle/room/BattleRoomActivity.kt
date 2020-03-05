@@ -255,6 +255,22 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         mBattleGrabView = BattleGrabView(findViewById(R.id.battle_grab_view_layout_viewStub), mRoomData)
         mBattlePropsCardView = BattlePropsCardView(findViewById(R.id.battle_props_card_view_layout_viewStub), mRoomData)
         mBattleGiveUpView = BattleGiveUpView(findViewById(R.id.battle_give_up_view_layout_viewStub), mRoomData)
+
+        mBattleGiveUpView.clickGiveUpFuc = {
+
+        }
+
+        mBattleGrabView.clickSingFuc = {
+
+        }
+
+        mBattlePropsCardView.useSingCardFuc = {
+
+        }
+
+        mBattlePropsCardView.useSwitchSongCardFuc = {
+
+        }
     }
 
     private fun initChangeRoomTransitionView() {
@@ -671,6 +687,10 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     override fun showIntro() {
         hideAllSceneView(null)
         mBattleSongGuideView.show()
+        if (mRoomData.realRoundInfo?.userID == MyUserInfoManager.uid.toInt()) {
+            mBattleGrabView.show()
+            mBattlePropsCardView.show()
+        }
     }
 
     override fun showRoundOver(lastRound: BattleRoundInfoModel, callback: () -> Unit) {
@@ -682,11 +702,17 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     }
 
     override fun showSelfSing() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        hideAllSceneView(null)
+        mBattleSelfSingLyricView.show(0) {
+
+        }
+
+        mBattleGiveUpView.show()
     }
 
     override fun showOtherSing() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        hideAllSceneView(null)
+        mBattleOtherSingCardView.show()
     }
 
     override fun gameOver(from: String) {

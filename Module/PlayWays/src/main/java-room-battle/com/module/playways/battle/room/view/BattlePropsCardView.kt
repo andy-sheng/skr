@@ -15,6 +15,9 @@ class BattlePropsCardView(viewStub: ViewStub, protected var mRoomData: BattleRoo
     lateinit var switchCountTv: ExTextView
     lateinit var attentionIv: ImageView
 
+    var useSwitchSongCardFuc: (() -> Unit)? = null
+    var useSingCardFuc: (() -> Unit)? = null
+
     override fun init(parentView: View) {
         singCardIv = parentView.findViewById(R.id.sing_card_iv)
         singCountTv = parentView.findViewById(R.id.sing_count_tv)
