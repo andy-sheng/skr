@@ -4,23 +4,22 @@ import android.view.View
 import android.view.ViewStub
 import android.widget.ImageView
 import com.common.core.view.setDebounceViewClickListener
-import com.common.view.ExViewStub
 import com.module.playways.R
 import com.module.playways.battle.room.BattleRoomData
 import com.module.playways.grab.room.view.RoundRectangleView
 
-class BattleGrabView(viewStub: ViewStub, protected var mRoomData: BattleRoomData?) : ExViewStub(viewStub) {
+class BattleGrabView(viewStub: ViewStub, protected var mRoomData: BattleRoomData?) : BaseSceneView(viewStub) {
     lateinit var singIv: ImageView
     lateinit var rrlProgress: RoundRectangleView
 
-    var clickSingFuc: (() -> Unit)? = null
+    var clickGrabFuc: (() -> Unit)? = null
 
     override fun init(parentView: View) {
         singIv = parentView.findViewById(R.id.sing_iv)
         rrlProgress = parentView.findViewById(R.id.rrl_progress)
 
         singIv.setDebounceViewClickListener {
-            clickSingFuc?.invoke()
+            clickGrabFuc?.invoke()
         }
     }
 
@@ -35,8 +34,7 @@ class BattleGrabView(viewStub: ViewStub, protected var mRoomData: BattleRoomData
     }
 
     fun show() {
-        tryInflate()
-        setVisibility(View.VISIBLE)
+        enterAnimation()
         var battleRoundInfoModel = mRoomData?.realRoundInfo
         if (battleRoundInfoModel == null) {
             battleRoundInfoModel = mRoomData?.expectRoundInfo

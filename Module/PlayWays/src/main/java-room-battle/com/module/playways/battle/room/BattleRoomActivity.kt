@@ -257,19 +257,21 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         mBattleGiveUpView = BattleGiveUpView(findViewById(R.id.battle_give_up_view_layout_viewStub), mRoomData)
 
         mBattleGiveUpView.clickGiveUpFuc = {
+            mCorePresenter.giveUpSing {
 
+            }
         }
 
-        mBattleGrabView.clickSingFuc = {
-
+        mBattleGrabView.clickGrabFuc = {
+            mCorePresenter.grabSing()
         }
 
         mBattlePropsCardView.useSingCardFuc = {
-
+            mCorePresenter.reqHelpSing()
         }
 
         mBattlePropsCardView.useSwitchSongCardFuc = {
-
+            mCorePresenter.reqSwitchSing()
         }
     }
 
@@ -704,7 +706,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     override fun showSelfSing() {
         hideAllSceneView(null)
         mBattleSelfSingLyricView.show(0) {
-
+            mCorePresenter.overSing()
         }
 
         mBattleGiveUpView.show()
