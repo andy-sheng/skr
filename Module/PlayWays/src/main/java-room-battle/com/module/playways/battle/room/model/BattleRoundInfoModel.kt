@@ -2,6 +2,7 @@ package com.module.playways.battle.room.model
 
 import com.common.log.MyLog
 import com.module.playways.battle.room.event.BattleRoundStatusChangeEvent
+import com.module.playways.room.data.H
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.BattleRoom.BRoundInfo
@@ -92,8 +93,6 @@ class BattleRoundInfoModel : BaseRoundInfoModel() {
         return
     }
 
-    //
-//
     override fun toString(): String {
         return "BattleRoundInfoModel{" +
                 "roundSeq=" + roundSeq +

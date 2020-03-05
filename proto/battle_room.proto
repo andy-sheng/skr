@@ -116,11 +116,55 @@ enum ECardType {
 
 message BRoundResult
 {
-    float score = 1;
+        float singScore                  = 1; //演唱得分（mid分数）
+        uint32 gameScore                 = 2; //本轮加分
+        EChallengeResult challengeResult = 3; //挑战结果
+        EChallengeTip challengeTip       = 4; //挑战提示
+        repeated BTeamScore teamScore    = 5; //队伍目前累计得分
 }
 
-message BGameResult
+message BTeamScore
 {
+    string teamTag   = 1;
+    uint32 teamScore = 2;
+}
+
+enum EChallengeTip {
+    ECT_HEN_YI_HAN     = 0; //很遗憾
+    ECT_FEI_CHANG_BANG = 1; //非常棒
+    FCT_CHAO_WAN_MEI   = 2; //超完美
+}
+
+enum EChallengeResult {
+    ECR_FAILED  = 0; //挑战失败
+    ECR_SUCCESS = 1; //挑战成功
+}
+
+enum ETeamResult {
+    ETR_UNKNOWN = 0;
+    ERT_LOSE    = 1; //负
+    ERT_DRAW    = 2; //平
+    ERT_WIN     = 3; //胜
+}
+
+message BTeamResult
+{
+    string teamTag                = 1; //队伍标识
+    ETeamResult teamResult        = 2; //胜负
+    uint32 helpTotalTimes         = 3; //帮唱总共次数
+    uint32 helpPassTimes          = 4; //帮唱成功通过次数
+    uint32 singSuccessTimes       = 5; //演唱成功次数(过关)
+    uint32 singGetScore           = 6; //演唱总得分
+    uint32 peerScore              = 7; //默契值
+    repeated UserScore userScores = 8; //队员得分
+    bool isAllEscape              = 9; //是否都逃跑
+}
+
+message UserScore
+{
+    uint32 userID       = 1; //用户id
+    uint32 singGetSocre = 2; //演唱个人得分
+    bool isEscape       = 3; //是否逃跑
 }
 
 enum EBRoundStatus {
@@ -154,6 +198,7 @@ message BGameOverMsg
 {
     sint64 gameOverTimeMs       = 1; //游戏结束的毫秒时间戳
     EBGameOverReason overReason = 2; //游戏结束原因
+    repeated BTeamResult teamResult = 3; //两队得分
 }
 
 
@@ -161,6 +206,7 @@ enum EBGameOverReason {
     BOR_UNKNOWN = 0; //未知
     BOR_NORMAL_OVER = 1; //游戏正常结束
     BOR_TEAM_EXIT = 2; //有一组队伍全部退出
+    BOR_ABNORMAL_OVER = 3; //游戏发生异常结束
 }
 
 message BSyncMsg

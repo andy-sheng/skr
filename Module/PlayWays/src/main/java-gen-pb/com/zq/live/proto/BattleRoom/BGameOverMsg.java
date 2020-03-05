@@ -15,6 +15,7 @@ import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 public final class BGameOverMsg extends Message<BGameOverMsg, BGameOverMsg.Builder> {
@@ -44,14 +45,27 @@ public final class BGameOverMsg extends Message<BGameOverMsg, BGameOverMsg.Build
   )
   private final EBGameOverReason overReason;
 
-  public BGameOverMsg(Long gameOverTimeMs, EBGameOverReason overReason) {
-    this(gameOverTimeMs, overReason, ByteString.EMPTY);
+  /**
+   * 两队得分
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.BattleRoom.BTeamResult#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<BTeamResult> teamResult;
+
+  public BGameOverMsg(Long gameOverTimeMs, EBGameOverReason overReason,
+      List<BTeamResult> teamResult) {
+    this(gameOverTimeMs, overReason, teamResult, ByteString.EMPTY);
   }
 
-  public BGameOverMsg(Long gameOverTimeMs, EBGameOverReason overReason, ByteString unknownFields) {
+  public BGameOverMsg(Long gameOverTimeMs, EBGameOverReason overReason,
+      List<BTeamResult> teamResult, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.gameOverTimeMs = gameOverTimeMs;
     this.overReason = overReason;
+    this.teamResult = Internal.immutableCopyOf("teamResult", teamResult);
   }
 
   @Override
@@ -59,6 +73,7 @@ public final class BGameOverMsg extends Message<BGameOverMsg, BGameOverMsg.Build
     Builder builder = new Builder();
     builder.gameOverTimeMs = gameOverTimeMs;
     builder.overReason = overReason;
+    builder.teamResult = Internal.copyOf("teamResult", teamResult);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -70,7 +85,8 @@ public final class BGameOverMsg extends Message<BGameOverMsg, BGameOverMsg.Build
     BGameOverMsg o = (BGameOverMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(gameOverTimeMs, o.gameOverTimeMs)
-        && Internal.equals(overReason, o.overReason);
+        && Internal.equals(overReason, o.overReason)
+        && teamResult.equals(o.teamResult);
   }
 
   @Override
@@ -80,6 +96,7 @@ public final class BGameOverMsg extends Message<BGameOverMsg, BGameOverMsg.Build
       result = unknownFields().hashCode();
       result = result * 37 + (gameOverTimeMs != null ? gameOverTimeMs.hashCode() : 0);
       result = result * 37 + (overReason != null ? overReason.hashCode() : 0);
+      result = result * 37 + teamResult.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -90,6 +107,7 @@ public final class BGameOverMsg extends Message<BGameOverMsg, BGameOverMsg.Build
     StringBuilder builder = new StringBuilder();
     if (gameOverTimeMs != null) builder.append(", gameOverTimeMs=").append(gameOverTimeMs);
     if (overReason != null) builder.append(", overReason=").append(overReason);
+    if (!teamResult.isEmpty()) builder.append(", teamResult=").append(teamResult);
     return builder.replace(0, 2, "BGameOverMsg{").append('}').toString();
   }
 
@@ -124,6 +142,16 @@ public final class BGameOverMsg extends Message<BGameOverMsg, BGameOverMsg.Build
   }
 
   /**
+   * 两队得分
+   */
+  public List<BTeamResult> getTeamResultList() {
+    if(teamResult==null){
+        return new java.util.ArrayList<BTeamResult>();
+    }
+    return teamResult;
+  }
+
+  /**
    * 游戏结束的毫秒时间戳
    */
   public boolean hasGameOverTimeMs() {
@@ -137,12 +165,22 @@ public final class BGameOverMsg extends Message<BGameOverMsg, BGameOverMsg.Build
     return overReason!=null;
   }
 
+  /**
+   * 两队得分
+   */
+  public boolean hasTeamResultList() {
+    return teamResult!=null;
+  }
+
   public static final class Builder extends Message.Builder<BGameOverMsg, Builder> {
     private Long gameOverTimeMs;
 
     private EBGameOverReason overReason;
 
+    private List<BTeamResult> teamResult;
+
     public Builder() {
+      teamResult = Internal.newMutableList();
     }
 
     /**
@@ -161,9 +199,18 @@ public final class BGameOverMsg extends Message<BGameOverMsg, BGameOverMsg.Build
       return this;
     }
 
+    /**
+     * 两队得分
+     */
+    public Builder addAllTeamResult(List<BTeamResult> teamResult) {
+      Internal.checkElementsNotNull(teamResult);
+      this.teamResult = teamResult;
+      return this;
+    }
+
     @Override
     public BGameOverMsg build() {
-      return new BGameOverMsg(gameOverTimeMs, overReason, super.buildUnknownFields());
+      return new BGameOverMsg(gameOverTimeMs, overReason, teamResult, super.buildUnknownFields());
     }
   }
 
@@ -176,6 +223,7 @@ public final class BGameOverMsg extends Message<BGameOverMsg, BGameOverMsg.Build
     public int encodedSize(BGameOverMsg value) {
       return ProtoAdapter.SINT64.encodedSizeWithTag(1, value.gameOverTimeMs)
           + EBGameOverReason.ADAPTER.encodedSizeWithTag(2, value.overReason)
+          + BTeamResult.ADAPTER.asRepeated().encodedSizeWithTag(3, value.teamResult)
           + value.unknownFields().size();
     }
 
@@ -183,6 +231,7 @@ public final class BGameOverMsg extends Message<BGameOverMsg, BGameOverMsg.Build
     public void encode(ProtoWriter writer, BGameOverMsg value) throws IOException {
       ProtoAdapter.SINT64.encodeWithTag(writer, 1, value.gameOverTimeMs);
       EBGameOverReason.ADAPTER.encodeWithTag(writer, 2, value.overReason);
+      BTeamResult.ADAPTER.asRepeated().encodeWithTag(writer, 3, value.teamResult);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -201,6 +250,7 @@ public final class BGameOverMsg extends Message<BGameOverMsg, BGameOverMsg.Build
             }
             break;
           }
+          case 3: builder.teamResult.add(BTeamResult.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -215,6 +265,7 @@ public final class BGameOverMsg extends Message<BGameOverMsg, BGameOverMsg.Build
     @Override
     public BGameOverMsg redact(BGameOverMsg value) {
       Builder builder = value.newBuilder();
+      Internal.redactElements(builder.teamResult, BTeamResult.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

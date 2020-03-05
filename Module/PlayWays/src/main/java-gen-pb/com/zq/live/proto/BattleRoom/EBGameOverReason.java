@@ -21,7 +21,12 @@ public enum EBGameOverReason implements WireEnum {
   /**
    * 有一组队伍全部退出
    */
-  BOR_TEAM_EXIT(2);
+  BOR_TEAM_EXIT(2),
+
+  /**
+   * 游戏发生异常结束
+   */
+  BOR_ABNORMAL_OVER(3);
 
   public static final ProtoAdapter<EBGameOverReason> ADAPTER = new ProtoAdapter_EBGameOverReason();
 
@@ -39,6 +44,7 @@ public enum EBGameOverReason implements WireEnum {
       case 0: return BOR_UNKNOWN;
       case 1: return BOR_NORMAL_OVER;
       case 2: return BOR_TEAM_EXIT;
+      case 3: return BOR_ABNORMAL_OVER;
       default: return null;
     }
   }

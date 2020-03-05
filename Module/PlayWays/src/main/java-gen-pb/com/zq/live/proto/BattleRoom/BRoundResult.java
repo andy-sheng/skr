@@ -11,10 +11,12 @@ import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
 import java.lang.Float;
+import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 public final class BRoundResult extends Message<BRoundResult, BRoundResult.Builder> {
@@ -22,27 +24,83 @@ public final class BRoundResult extends Message<BRoundResult, BRoundResult.Build
 
   private static final long serialVersionUID = 0L;
 
-  public static final Float DEFAULT_SCORE = 0.0f;
+  public static final Float DEFAULT_SINGSCORE = 0.0f;
 
+  public static final Integer DEFAULT_GAMESCORE = 0;
+
+  public static final EChallengeResult DEFAULT_CHALLENGERESULT = EChallengeResult.ECR_FAILED;
+
+  public static final EChallengeTip DEFAULT_CHALLENGETIP = EChallengeTip.ECT_HEN_YI_HAN;
+
+  /**
+   * 演唱得分（mid分数）
+   */
   @WireField(
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
   )
-  private final Float score;
+  private final Float singScore;
 
-  public BRoundResult(Float score) {
-    this(score, ByteString.EMPTY);
+  /**
+   * 本轮加分
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer gameScore;
+
+  /**
+   * 挑战结果
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.BattleRoom.EChallengeResult#ADAPTER"
+  )
+  private final EChallengeResult challengeResult;
+
+  /**
+   * 挑战提示
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.zq.live.proto.BattleRoom.EChallengeTip#ADAPTER"
+  )
+  private final EChallengeTip challengeTip;
+
+  /**
+   * 队伍目前累计得分
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.zq.live.proto.BattleRoom.BTeamScore#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<BTeamScore> teamScore;
+
+  public BRoundResult(Float singScore, Integer gameScore, EChallengeResult challengeResult,
+      EChallengeTip challengeTip, List<BTeamScore> teamScore) {
+    this(singScore, gameScore, challengeResult, challengeTip, teamScore, ByteString.EMPTY);
   }
 
-  public BRoundResult(Float score, ByteString unknownFields) {
+  public BRoundResult(Float singScore, Integer gameScore, EChallengeResult challengeResult,
+      EChallengeTip challengeTip, List<BTeamScore> teamScore, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
-    this.score = score;
+    this.singScore = singScore;
+    this.gameScore = gameScore;
+    this.challengeResult = challengeResult;
+    this.challengeTip = challengeTip;
+    this.teamScore = Internal.immutableCopyOf("teamScore", teamScore);
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
-    builder.score = score;
+    builder.singScore = singScore;
+    builder.gameScore = gameScore;
+    builder.challengeResult = challengeResult;
+    builder.challengeTip = challengeTip;
+    builder.teamScore = Internal.copyOf("teamScore", teamScore);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -53,7 +111,11 @@ public final class BRoundResult extends Message<BRoundResult, BRoundResult.Build
     if (!(other instanceof BRoundResult)) return false;
     BRoundResult o = (BRoundResult) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(score, o.score);
+        && Internal.equals(singScore, o.singScore)
+        && Internal.equals(gameScore, o.gameScore)
+        && Internal.equals(challengeResult, o.challengeResult)
+        && Internal.equals(challengeTip, o.challengeTip)
+        && teamScore.equals(o.teamScore);
   }
 
   @Override
@@ -61,7 +123,11 @@ public final class BRoundResult extends Message<BRoundResult, BRoundResult.Build
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
-      result = result * 37 + (score != null ? score.hashCode() : 0);
+      result = result * 37 + (singScore != null ? singScore.hashCode() : 0);
+      result = result * 37 + (gameScore != null ? gameScore.hashCode() : 0);
+      result = result * 37 + (challengeResult != null ? challengeResult.hashCode() : 0);
+      result = result * 37 + (challengeTip != null ? challengeTip.hashCode() : 0);
+      result = result * 37 + teamScore.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -70,7 +136,11 @@ public final class BRoundResult extends Message<BRoundResult, BRoundResult.Build
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (score != null) builder.append(", score=").append(score);
+    if (singScore != null) builder.append(", singScore=").append(singScore);
+    if (gameScore != null) builder.append(", gameScore=").append(gameScore);
+    if (challengeResult != null) builder.append(", challengeResult=").append(challengeResult);
+    if (challengeTip != null) builder.append(", challengeTip=").append(challengeTip);
+    if (!teamScore.isEmpty()) builder.append(", teamScore=").append(teamScore);
     return builder.replace(0, 2, "BRoundResult{").append('}').toString();
   }
 
@@ -84,31 +154,150 @@ public final class BRoundResult extends Message<BRoundResult, BRoundResult.Build
     return c;
   }
 
-  public Float getScore() {
-    if(score==null){
-        return DEFAULT_SCORE;
+  /**
+   * 演唱得分（mid分数）
+   */
+  public Float getSingScore() {
+    if(singScore==null){
+        return DEFAULT_SINGSCORE;
     }
-    return score;
+    return singScore;
   }
 
-  public boolean hasScore() {
-    return score!=null;
+  /**
+   * 本轮加分
+   */
+  public Integer getGameScore() {
+    if(gameScore==null){
+        return DEFAULT_GAMESCORE;
+    }
+    return gameScore;
+  }
+
+  /**
+   * 挑战结果
+   */
+  public EChallengeResult getChallengeResult() {
+    if(challengeResult==null){
+        return new EChallengeResult.Builder().build();
+    }
+    return challengeResult;
+  }
+
+  /**
+   * 挑战提示
+   */
+  public EChallengeTip getChallengeTip() {
+    if(challengeTip==null){
+        return new EChallengeTip.Builder().build();
+    }
+    return challengeTip;
+  }
+
+  /**
+   * 队伍目前累计得分
+   */
+  public List<BTeamScore> getTeamScoreList() {
+    if(teamScore==null){
+        return new java.util.ArrayList<BTeamScore>();
+    }
+    return teamScore;
+  }
+
+  /**
+   * 演唱得分（mid分数）
+   */
+  public boolean hasSingScore() {
+    return singScore!=null;
+  }
+
+  /**
+   * 本轮加分
+   */
+  public boolean hasGameScore() {
+    return gameScore!=null;
+  }
+
+  /**
+   * 挑战结果
+   */
+  public boolean hasChallengeResult() {
+    return challengeResult!=null;
+  }
+
+  /**
+   * 挑战提示
+   */
+  public boolean hasChallengeTip() {
+    return challengeTip!=null;
+  }
+
+  /**
+   * 队伍目前累计得分
+   */
+  public boolean hasTeamScoreList() {
+    return teamScore!=null;
   }
 
   public static final class Builder extends Message.Builder<BRoundResult, Builder> {
-    private Float score;
+    private Float singScore;
+
+    private Integer gameScore;
+
+    private EChallengeResult challengeResult;
+
+    private EChallengeTip challengeTip;
+
+    private List<BTeamScore> teamScore;
 
     public Builder() {
+      teamScore = Internal.newMutableList();
     }
 
-    public Builder setScore(Float score) {
-      this.score = score;
+    /**
+     * 演唱得分（mid分数）
+     */
+    public Builder setSingScore(Float singScore) {
+      this.singScore = singScore;
+      return this;
+    }
+
+    /**
+     * 本轮加分
+     */
+    public Builder setGameScore(Integer gameScore) {
+      this.gameScore = gameScore;
+      return this;
+    }
+
+    /**
+     * 挑战结果
+     */
+    public Builder setChallengeResult(EChallengeResult challengeResult) {
+      this.challengeResult = challengeResult;
+      return this;
+    }
+
+    /**
+     * 挑战提示
+     */
+    public Builder setChallengeTip(EChallengeTip challengeTip) {
+      this.challengeTip = challengeTip;
+      return this;
+    }
+
+    /**
+     * 队伍目前累计得分
+     */
+    public Builder addAllTeamScore(List<BTeamScore> teamScore) {
+      Internal.checkElementsNotNull(teamScore);
+      this.teamScore = teamScore;
       return this;
     }
 
     @Override
     public BRoundResult build() {
-      return new BRoundResult(score, super.buildUnknownFields());
+      return new BRoundResult(singScore, gameScore, challengeResult, challengeTip, teamScore, super.buildUnknownFields());
     }
   }
 
@@ -119,13 +308,21 @@ public final class BRoundResult extends Message<BRoundResult, BRoundResult.Build
 
     @Override
     public int encodedSize(BRoundResult value) {
-      return ProtoAdapter.FLOAT.encodedSizeWithTag(1, value.score)
+      return ProtoAdapter.FLOAT.encodedSizeWithTag(1, value.singScore)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.gameScore)
+          + EChallengeResult.ADAPTER.encodedSizeWithTag(3, value.challengeResult)
+          + EChallengeTip.ADAPTER.encodedSizeWithTag(4, value.challengeTip)
+          + BTeamScore.ADAPTER.asRepeated().encodedSizeWithTag(5, value.teamScore)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, BRoundResult value) throws IOException {
-      ProtoAdapter.FLOAT.encodeWithTag(writer, 1, value.score);
+      ProtoAdapter.FLOAT.encodeWithTag(writer, 1, value.singScore);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.gameScore);
+      EChallengeResult.ADAPTER.encodeWithTag(writer, 3, value.challengeResult);
+      EChallengeTip.ADAPTER.encodeWithTag(writer, 4, value.challengeTip);
+      BTeamScore.ADAPTER.asRepeated().encodeWithTag(writer, 5, value.teamScore);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -135,7 +332,25 @@ public final class BRoundResult extends Message<BRoundResult, BRoundResult.Build
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setScore(ProtoAdapter.FLOAT.decode(reader)); break;
+          case 1: builder.setSingScore(ProtoAdapter.FLOAT.decode(reader)); break;
+          case 2: builder.setGameScore(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: {
+            try {
+              builder.setChallengeResult(EChallengeResult.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 4: {
+            try {
+              builder.setChallengeTip(EChallengeTip.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 5: builder.teamScore.add(BTeamScore.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -150,6 +365,7 @@ public final class BRoundResult extends Message<BRoundResult, BRoundResult.Build
     @Override
     public BRoundResult redact(BRoundResult value) {
       Builder builder = value.newBuilder();
+      Internal.redactElements(builder.teamScore, BTeamScore.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

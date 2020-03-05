@@ -33,6 +33,7 @@ import com.module.playways.battle.room.event.BattleRoundStatusChangeEvent
 import com.module.playways.battle.room.model.BattlePlayerInfoModel
 import com.module.playways.battle.room.model.BattleRoundInfoModel
 import com.module.playways.battle.room.ui.IBattleRoomView
+import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
@@ -71,7 +72,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         internal val MSG_ENSURE_IN_RC_ROOM = 9// 确保在融云的聊天室，保证融云的长链接
     }
 
-    internal var mAbsenTimes = 0
+    internal var mAbsentTimes = 0
 
     internal var mRoomServerApi = ApiManager.getInstance().createService(BattleRoomServerApi::class.java)
 
@@ -113,7 +114,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
      */
     private fun joinRoomAndInit(first: Boolean) {
         MyLog.w(TAG, "joinRoomAndInit" + " first=" + first + ", gameId is " + mRoomData.gameId)
-        mAbsenTimes = 0
+        mAbsentTimes = 0
 
         if (mRoomData.gameId > 0) {
             var reInit = false
@@ -770,6 +771,9 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BGameOverMsg) {
         MyLog.d(TAG, "onEvent event = $event")
+//        event.teamResultList?.forEach {
+//            it.
+//        }
         mRoomData.expectRoundInfo = null
         mRoomData.checkRoundInEachMode()
     }
@@ -786,6 +790,17 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         ensureInRcRoom()
 //        roomView.showSongCount(event.musicCnt)
         var currentRound = BattleRoundInfoModel.parseFromRoundInfo(event.currentRound)
+        if(mRoomData.realRoundSeq == currentRound.roundSeq){
+            currentRound.result?.teamScore?.forEach {
+                if(mRoomData?.myTeamTag == it.teamTag){
+                    // 得到我的队伍的总分
+                    mRoomData?.myTeamScore = it.teamScore
+                }else{
+                    // 得到对方队伍的总分
+                    mRoomData?.opTeamScore = it.teamScore
+                }
+            }
+        }
         var nextRound = BattleRoundInfoModel.parseFromRoundInfo(event.nextRound)
         if (nextRound.roundSeq > (mRoomData.expectRoundInfo?.roundSeq ?: 0)) {
             // 游戏轮次结束

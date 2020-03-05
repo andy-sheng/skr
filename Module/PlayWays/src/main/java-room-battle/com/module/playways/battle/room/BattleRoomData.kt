@@ -91,6 +91,16 @@ class BattleRoomData : BaseRoomData<BattleRoundInfoModel>() {
      */
     var config = BattleRoomConfig()
 
+    /**
+     * 我的队伍的总分
+     */
+    var myTeamScore = 0
+
+    /**
+     * 对方队伍的总分
+     */
+    var opTeamScore = 0
+
     override val gameType: Int
         get() = GameModeType.GAME_MODE_BATTLE
 
