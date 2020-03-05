@@ -59,26 +59,45 @@ class PartyGameFragment : BaseFragment() {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_PARTY_ROOM)
                             .navigation()
                 } else {
-                    if (result.errno == 8436006) {
-                        mTipsDialogView?.dismiss(false)
-                        mTipsDialogView = TipsDialogView.Builder(activity)
-                                .setMessageTip("开通VIP特权，立即获得主题房创建权限")
-                                .setConfirmTip("立即开通")
-                                .setCancelTip("取消")
-                                .setConfirmBtnClickListener {
-                                    partyRoomView?.stopTimer()
-                                    mTipsDialogView?.dismiss(false)
-                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                            .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/newVip?title=1"))
-                                            .greenChannel().navigation()
-                                }
-                                .setCancelBtnClickListener {
-                                    mTipsDialogView?.dismiss()
-                                }
-                                .build()
-                        mTipsDialogView?.showByDialog()
-                    } else {
-                        U.getToastUtil().showShort(result.errmsg)
+                    when {
+                        result.errno == 8436013 -> {
+                            mTipsDialogView?.dismiss(false)
+                            mTipsDialogView = TipsDialogView.Builder(activity)
+                                    .setMessageTip("为保障绿色、文明的主题房游戏环境，需要对主持人进行实名认证哦！")
+                                    .setConfirmTip("立即认证")
+                                    .setCancelTip("暂不")
+                                    .setConfirmBtnClickListener {
+                                        mTipsDialogView?.dismiss(false)
+                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                                .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=room"))
+                                                .greenChannel().navigation();
+                                    }
+                                    .setCancelBtnClickListener {
+                                        mTipsDialogView?.dismiss()
+                                    }
+                                    .build()
+                            mTipsDialogView?.showByDialog()
+                        }
+                        result.errno == 8436006 -> {
+                            mTipsDialogView?.dismiss(false)
+                            mTipsDialogView = TipsDialogView.Builder(activity)
+                                    .setMessageTip("开通VIP特权，立即获得主题房创建权限")
+                                    .setConfirmTip("立即开通")
+                                    .setCancelTip("取消")
+                                    .setConfirmBtnClickListener {
+                                        partyRoomView?.stopTimer()
+                                        mTipsDialogView?.dismiss(false)
+                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                                .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/newVip?title=1"))
+                                                .greenChannel().navigation()
+                                    }
+                                    .setCancelBtnClickListener {
+                                        mTipsDialogView?.dismiss()
+                                    }
+                                    .build()
+                            mTipsDialogView?.showByDialog()
+                        }
+                        else -> U.getToastUtil().showShort(result.errmsg)
                     }
                 }
             }
