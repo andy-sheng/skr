@@ -8,7 +8,6 @@ import android.widget.FrameLayout
 import com.common.log.MyLog
 import com.common.utils.SpanUtils
 import com.common.utils.U
-import com.common.view.ExViewStub
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.LyricsReader
 import com.component.lyrics.widget.ManyLyricsView
@@ -21,7 +20,7 @@ import com.module.playways.room.song.model.SongModel
 import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.disposables.Disposable
 
-class BattleSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: BattleRoomData?) : ExViewStub(viewStub) {
+class BattleSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: BattleRoomData?) : BaseSceneView(viewStub) {
     val TAG = "RaceSelfSingLyricView"
 
     internal lateinit var mManyLyricsView: ManyLyricsView
@@ -50,17 +49,29 @@ class BattleSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: Battl
         mVoiceScaleView?.visibility = View.GONE
     }
 
-    fun startFly(offset: Int, isSelf: Boolean, call: (() -> Unit)?) {
-        tryInflate()
-        val infoModel = mRoomData?.realRoundInfo
-        //todo
-        val totalMs = 0
-        mSingCountDownView2.startPlay(offset, totalMs - offset, true)
-        mSingCountDownView2.setListener {
-            call?.invoke()
+    fun show(offset: Int, call: (() -> Unit)?) {
+        var battleRoundInfoModel = mRoomData?.realRoundInfo
+        if (battleRoundInfoModel == null) {
+            battleRoundInfoModel = mRoomData?.expectRoundInfo
         }
 
-        playWithAcc(offset, isSelf, infoModel, totalMs)
+        battleRoundInfoModel?.let {
+            tryInflate()
+            enterAnimation()
+            val infoModel = mRoomData?.realRoundInfo
+            //todo
+            val totalMs = 0
+            mSingCountDownView2.startPlay(offset, totalMs - offset, true)
+            mSingCountDownView2.setListener {
+                call?.invoke()
+            }
+
+            playWithAcc(offset, true, infoModel, totalMs)
+        }
+    }
+
+    fun hide() {
+        leaveAnimation()
     }
 
     private fun playWithAcc(offset: Int, isSelf: Boolean, infoModel: BattleRoundInfoModel?, totalTs: Int) {

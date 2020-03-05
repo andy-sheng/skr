@@ -316,6 +316,94 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
     }
 
     /**
+     * 正常演唱结束
+     */
+    fun overSing() {
+        MyLog.w(TAG, "overSing")
+        val map = HashMap<String, Any?>()
+        map["roomID"] = mRoomData.gameId
+        map["roundSeq"] = mRoomData.realRoundInfo?.roundSeq ?: 0
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe(RequestControl("overSing", ControlType.CancelThis)) {
+                mRoomServerApi.overSing(body)
+            }
+            if (result.errno == 0) {
+                //closeEngine()
+                MyLog.w(TAG, "overSing 上报成功 traceid is " + result.traceId)
+            } else {
+                MyLog.w(TAG, "overSing 上报失败 traceid is " + result.traceId)
+            }
+        }
+    }
+
+    /**
+     * 使用帮唱卡
+     */
+    fun reqHelpSing() {
+        MyLog.w(TAG, "reqHelpSing")
+        val map = HashMap<String, Any?>()
+        map["roomID"] = mRoomData.gameId
+        map["roundSeq"] = mRoomData.realRoundInfo?.roundSeq ?: 0
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe(RequestControl("reqHelpSing", ControlType.CancelThis)) {
+                mRoomServerApi.reqHelpSing(body)
+            }
+            if (result.errno == 0) {
+                //closeEngine()
+                MyLog.w(TAG, "reqHelpSing 成功 traceid is " + result.traceId)
+            } else {
+                MyLog.w(TAG, "reqHelpSing 失败 traceid is " + result.traceId)
+            }
+        }
+    }
+
+    /**
+     * 使用换歌卡
+     */
+    fun reqSwitchSing() {
+        MyLog.w(TAG, "reqSwitchSing")
+        val map = HashMap<String, Any?>()
+        map["roomID"] = mRoomData.gameId
+        map["roundSeq"] = mRoomData.realRoundInfo?.roundSeq ?: 0
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe(RequestControl("reqSwitchSing", ControlType.CancelThis)) {
+                mRoomServerApi.reqSwitchSing(body)
+            }
+            if (result.errno == 0) {
+                //closeEngine()
+                MyLog.w(TAG, "reqSwitchSing 成功 traceid is " + result.traceId)
+            } else {
+                MyLog.w(TAG, "reqSwitchSing 失败 traceid is " + result.traceId)
+            }
+        }
+    }
+
+    /**
+     * 抢唱
+     */
+    fun grabSing() {
+        MyLog.w(TAG, "grabSing")
+        val map = HashMap<String, Any?>()
+        map["roomID"] = mRoomData.gameId
+        map["roundSeq"] = mRoomData.realRoundInfo?.roundSeq ?: 0
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe(RequestControl("grabSing", ControlType.CancelThis)) {
+                mRoomServerApi.grabSing(body)
+            }
+            if (result.errno == 0) {
+                //closeEngine()
+                MyLog.w(TAG, "grabSing 成功 traceid is " + result.traceId)
+            } else {
+                MyLog.w(TAG, "grabSing 失败 traceid is " + result.traceId)
+            }
+        }
+    }
+
+    /**
      * 退出房间
      */
     fun exitRoom(from: String) {

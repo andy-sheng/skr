@@ -1,11 +1,12 @@
 package com.module.playways.battle.room
 
-import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiResult
-import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.PUT
+import retrofit2.http.Query
 
 interface BattleRoomServerApi {
 
@@ -20,6 +21,30 @@ interface BattleRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/battlegame/give-up-sing")
     fun giveUpSing(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 演唱结束
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/battlegame/over-sing")
+    fun overSing(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 使用帮唱卡
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/battlegame/req-help-sing")
+    fun reqHelpSing(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 使用换歌卡
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/battlegame/req-switch-sing")
+    fun reqSwitchSing(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 开始演唱
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/battlegame/begin-sing")
+    fun grabSing(@Body body: RequestBody): Call<ApiResult>
 
     /**
      * 退出房间

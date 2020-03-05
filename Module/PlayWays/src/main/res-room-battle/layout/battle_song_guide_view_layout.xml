@@ -22,6 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
+        android:id="@+id/left_win_num_tv"
         android:layout_width="@dimen/view_35_dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_15_dp"
@@ -34,6 +35,7 @@
         app:layout_constraintTop_toTopOf="@+id/left_first_avatar" />
 
     <com.common.view.ex.ExTextView
+        android:id="@+id/right_win_num_tv"
         android:layout_width="@dimen/view_35_dp"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/view_15_dp"

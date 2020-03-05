@@ -39,14 +39,7 @@ import com.module.playways.battle.room.top.BattleTopContentView
 import com.module.playways.battle.room.top.BattleTopOpView
 import com.module.playways.battle.room.ui.BattleWidgetAnimationController
 import com.module.playways.battle.room.ui.IBattleRoomView
-
-import com.module.playways.battle.room.view.BattleBeginTipsView
-import com.module.playways.battle.room.view.BattleGameOverCardView
-import com.module.playways.battle.room.view.BattleRoundOverCardView
-import com.module.playways.battle.room.view.BattleVoiceControlPanelView
-
 import com.module.playways.battle.room.view.*
-
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.GrabChangeRoomTransitionView
@@ -122,8 +115,8 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
     internal lateinit var mBattleGiveUpView: BattleGiveUpView
     internal lateinit var mBattleGrabView: BattleGrabView
-    internal lateinit var mBattleOtherSingCardView: BattleOtherSingCardView
     internal lateinit var mBattlePropsCardView: BattlePropsCardView
+    internal lateinit var mBattleOtherSingCardView: BattleOtherSingCardView
     internal lateinit var mBattleSelfSingLyricView: BattleSelfSingLyricView
     internal lateinit var mBattleSongGuideView: BattleSongGuideView
 
@@ -262,6 +255,24 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         mBattleGrabView = BattleGrabView(findViewById(R.id.battle_grab_view_layout_viewStub), mRoomData)
         mBattlePropsCardView = BattlePropsCardView(findViewById(R.id.battle_props_card_view_layout_viewStub), mRoomData)
         mBattleGiveUpView = BattleGiveUpView(findViewById(R.id.battle_give_up_view_layout_viewStub), mRoomData)
+
+        mBattleGiveUpView.clickGiveUpFuc = {
+            mCorePresenter.giveUpSing {
+
+            }
+        }
+
+        mBattleGrabView.clickGrabFuc = {
+            mCorePresenter.grabSing()
+        }
+
+        mBattlePropsCardView.useSingCardFuc = {
+            mCorePresenter.reqHelpSing()
+        }
+
+        mBattlePropsCardView.useSwitchSongCardFuc = {
+            mCorePresenter.reqSwitchSing()
+        }
     }
 
     private fun initChangeRoomTransitionView() {
@@ -304,26 +315,32 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     }
 
 
-//    private fun hideAllSceneView(exclude: Any?) {
-//        if (mSelfSingCardView != exclude) {
-//            mSelfSingCardView.setVisibility(View.GONE)
-//        }
-//        if (mOthersSingCardView != exclude) {
-//            mOthersSingCardView.setVisibility(View.GONE)
-//        }
-//        if (mTurnInfoCardView != exclude) {
-//            mTurnInfoCardView.visibility = View.GONE
-//        }
-//        if (mGiveUpView != exclude) {
-//            mGiveUpView.hideWithAnimation(false)
-//        }
-//        if (mRoundOverCardView != exclude) {
-//            mRoundOverCardView.setVisibility(View.GONE)
-//        }
-//        if (mSingBeginTipsCardView != exclude) {
-//            mSingBeginTipsCardView.setVisibility(View.GONE)
-//        }
-//    }
+    private fun hideAllSceneView(exclude: Any?) {
+        if (mBattleSongGuideView != exclude) {
+            mBattleSongGuideView.hide()
+        }
+
+        if (mBattleSelfSingLyricView != exclude) {
+            mBattleSelfSingLyricView.hide()
+        }
+
+        if (mBattleOtherSingCardView != exclude) {
+            mBattleOtherSingCardView.hide()
+        }
+
+        if (mBattleGiveUpView != exclude) {
+            mBattleGiveUpView.hide()
+        }
+
+        if (mBattleGrabView != exclude) {
+            mBattleGrabView.hide()
+        }
+
+        if (mBattlePropsCardView != exclude) {
+            mBattlePropsCardView.hide()
+        }
+
+    }
 
     private fun initRightOpView() {
     }
@@ -670,7 +687,12 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     }
 
     override fun showIntro() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        hideAllSceneView(null)
+        mBattleSongGuideView.show()
+        if (mRoomData.realRoundInfo?.userID == MyUserInfoManager.uid.toInt()) {
+            mBattleGrabView.show()
+            mBattlePropsCardView.show()
+        }
     }
 
     override fun showRoundOver(lastRound: BattleRoundInfoModel, callback: () -> Unit) {
@@ -682,11 +704,17 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     }
 
     override fun showSelfSing() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        hideAllSceneView(null)
+        mBattleSelfSingLyricView.show(0) {
+            mCorePresenter.overSing()
+        }
+
+        mBattleGiveUpView.show()
     }
 
     override fun showOtherSing() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        hideAllSceneView(null)
+        mBattleOtherSingCardView.show()
     }
 
     override fun gameOver(from: String) {
