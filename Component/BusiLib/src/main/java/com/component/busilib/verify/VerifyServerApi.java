@@ -26,4 +26,7 @@ public interface VerifyServerApi {
 
     @PUT("http://dev.game.inframe.mobi/v1/microom/has-voice")
     Observable<ApiResult> checkHasMicAudioPermission(@Body RequestBody body);
+
+    @GET("http://dev.game.inframe.mobi/v1/battlegame/enter-verify")
+    Observable<ApiResult> checkHasBattleGamePermission();
 }

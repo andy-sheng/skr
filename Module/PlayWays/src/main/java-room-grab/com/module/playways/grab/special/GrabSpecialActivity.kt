@@ -93,11 +93,9 @@ class GrabSpecialActivity : BaseActivity() {
                 if (specialModel.tagDetailType == GrabTagDetailModel.TAG_TYPE_BATTLE) {
                     // 2v2battle
                     mSkrAudioPermission.ensurePermission({
-                        mRealNameVerifyUtils.checkJoinAudioPermission(specialModel.tagID) {
-                            mRealNameVerifyUtils.checkAgeSettingState {
-                                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                                iRankingModeService.tryGoBattleMatch(specialModel.tagID)
-                            }
+                        mRealNameVerifyUtils.checkHasBattleGamePermission {
+                            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                            iRankingModeService.tryGoBattleMatch(specialModel.tagID)
                         }
                     }, true)
                 } else {

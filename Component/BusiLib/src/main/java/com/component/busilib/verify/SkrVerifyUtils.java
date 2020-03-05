@@ -115,6 +115,26 @@ public class SkrVerifyUtils {
         }, new RequestControl("checkCreatePublicRoomPermission", ControlType.CancelThis));
     }
 
+    public void checkHasBattleGamePermission(final Runnable successCallback) {
+        if (MyLog.isDebugLogOpen()) {
+            if (successCallback != null) {
+                successCallback.run();
+            }
+            return;
+        }
+        final VerifyServerApi grabRoomServerApi = ApiManager.getInstance().createService(VerifyServerApi.class);
+        ApiMethods.subscribe(grabRoomServerApi.checkHasBattleGamePermission(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    successCallback.run();
+                } else {
+                    U.getToastUtil().showShort(obj.getErrmsg());
+                }
+            }
+        }, new RequestControl("checkHasBattleGamePermission", ControlType.CancelThis));
+    }
+
     /**
      * 是否有录制的语音，用于进入小k房前做
      *
