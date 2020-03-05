@@ -118,6 +118,16 @@ public class ImgTexFilter extends ImgTexFilterBase {
     }
 
     /**
+     * A chance to change output format for filter.
+     *
+     * @param inFormat  input format
+     * @return  output format
+     */
+    protected ImgTexFormat getOutFormat(final ImgTexFormat inFormat) {
+        return inFormat;
+    }
+
+    /**
      * Called after the program loaded, developers can set customized parameters
      * in openGL program here.
      */
@@ -172,9 +182,14 @@ public class ImgTexFilter extends ImgTexFilterBase {
             }
             mTextureTarget = textureTarget;
 
-            mOutFormat = new ImgTexFormat(ImgTexFormat.COLOR_RGBA,
-                    format.width, format.height);
             onFormatChanged(format);
+            ImgTexFormat outFormat = getOutFormat(format);
+            if (outFormat == format) {
+                mOutFormat = new ImgTexFormat(ImgTexFormat.COLOR_RGBA,
+                        outFormat.width, outFormat.height);
+            } else {
+                mOutFormat = outFormat;
+            }
         }
     }
 
