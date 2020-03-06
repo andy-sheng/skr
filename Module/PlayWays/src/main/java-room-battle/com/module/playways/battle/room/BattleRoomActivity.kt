@@ -427,16 +427,16 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
             }
 
             override fun onClickFeedBack() {
-//                U.getFragmentUtils().addFragment(
-//                        FragmentUtils.newAddParamsBuilder(this@BattleRoomActivity, QuickFeedbackFragment::class.java)
-//                                .setAddToBackStack(true)
-//                                .setHasAnimation(true)
-//                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_BATTLE_ROOM)
-//                                .addDataBeforeAdd(1, QuickFeedbackFragment.FEED_BACK)
-//                                .addDataBeforeAdd(3, mRoomData.gameId)
-//                                .setEnterAnim(R.anim.slide_in_bottom)
-//                                .setExitAnim(R.anim.slide_out_bottom)
-//                                .build())
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(this@BattleRoomActivity, QuickFeedbackFragment::class.java)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_BATTLE_ROOM)
+                                .addDataBeforeAdd(1, QuickFeedbackFragment.FEED_BACK)
+                                .addDataBeforeAdd(3, mRoomData.gameId)
+                                .setEnterAnim(R.anim.slide_in_bottom)
+                                .setExitAnim(R.anim.slide_out_bottom)
+                                .build())
             }
 
             override fun onClickVoiceAudition() {
