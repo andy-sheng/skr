@@ -695,6 +695,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     override fun showIntro() {
         hideAllSceneView(null)
         mBattleSongGuideView.show()
+        mTopContentView.bindData()
         if (mRoomData.realRoundInfo?.userID == MyUserInfoManager.uid.toInt()) {
             mBattleGrabView.show()
             mBattlePropsCardView.show()

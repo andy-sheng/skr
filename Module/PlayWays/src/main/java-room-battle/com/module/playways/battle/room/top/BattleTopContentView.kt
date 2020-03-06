@@ -28,6 +28,7 @@ import com.engine.EngineEvent
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.battle.room.BattleRoomData
+import com.module.playways.room.data.H
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -103,9 +104,9 @@ class BattleTopContentView : ExConstraintLayout {
                 .setBorderWidth(1.dp().toFloat())
                 .setBorderColor(Color.WHITE)
                 .build())
+        songNumTv.text = "${H.battleRoomData?.realRoundInfo?.musicSeq
+                ?: 0}/${H.battleRoomData?.config?.totalMusicCnt ?: 0}首"
     }
-
-    //todo 需要接一个轮次改变或者进度改变更新歌曲进度
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: EngineEvent) {
