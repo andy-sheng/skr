@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 @Route(path = RouterConstants.ACTIVITY_GRAB_SPECIAL)
 class GrabSpecialActivity : BaseActivity() {
 
-    private var titlebar: CommonTitleBar? = null
+    private var backIv: ImageView? = null
     private var createRoom: ImageView? = null
     private var refreshLayout: SmartRefreshLayout? = null
     private var recyclerView: RecyclerView? = null
@@ -57,12 +57,12 @@ class GrabSpecialActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         U.getStatusBarUtil().setTransparentBar(this, false)
-        titlebar = findViewById(R.id.titlebar)
+        backIv = findViewById(R.id.back_iv)
         createRoom = findViewById(R.id.create_room)
         refreshLayout = findViewById(R.id.refreshLayout)
         recyclerView = findViewById(R.id.recycler_view)
 
-        titlebar?.leftTextView?.setDebounceViewClickListener { finish() }
+        backIv?.setDebounceViewClickListener { finish() }
         createRoom?.setAnimateDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_CREATE_ROOM)
                     .navigation()
@@ -134,9 +134,11 @@ class GrabSpecialActivity : BaseActivity() {
         }
 
         adapter.onClickRankListener = { model, _ ->
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_RANK)
-                    .withInt("tagID", model?.tagID ?: 0)
-                    .navigation()
+            if (model?.tagDetailType == GrabTagDetailModel.TAG_TYPE_GRAB) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_RANK)
+                        .withInt("tagID", model.tagID)
+                        .navigation()
+            }
         }
 
     }
