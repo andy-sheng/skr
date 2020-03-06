@@ -29,6 +29,7 @@ class BattleRoundInfoModel : BaseRoundInfoModel() {
     var result: BattleRoundResultModel? = null
     // userStatus 轮次状态
 
+    var card:BattleCardInfoModel?=null
 
     override fun getType(): Int {
         return TYPE_BATTLE
@@ -84,13 +85,26 @@ class BattleRoundInfoModel : BaseRoundInfoModel() {
         if (this.result == null) {
             this.result = roundInfo.result
         }
+
+
+        if (this.card == null) {
+            this.card = roundInfo.card
+        }
         // 观众席与玩家席更新，以最新的为准
 
         if (roundInfo.getOverReason() > 0) {
             this.setOverReason(roundInfo.getOverReason())
         }
         updateStatus(notify, roundInfo.status)
+
         return
+    }
+
+    /**
+     * 返回帮唱卡的用户id ，被帮唱的人的id
+     */
+    fun getHelpUserId():Int{
+        return card?.helpCard?.userID ?: 0
     }
 
     override fun toString(): String {
@@ -129,6 +143,8 @@ class BattleRoundInfoModel : BaseRoundInfoModel() {
             roundInfoModel.music = songModel
 
             roundInfoModel.result = BattleRoundResultModel.parseFromPb(roundInfo.result)
+
+            roundInfoModel.card = BattleCardInfoModel.parseFromPb(roundInfo.card)
             return roundInfoModel
         }
     }
