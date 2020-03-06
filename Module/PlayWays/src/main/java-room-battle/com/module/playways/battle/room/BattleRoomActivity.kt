@@ -657,7 +657,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     private fun quitGame() {
         dismissDialog()
         mTipsDialogView = TipsDialogView.Builder(this)
-                .setMessageTip("确定要退出主题房吗")
+                .setMessageTip("确定要退出对战吗")
                 .setConfirmTip("确定")
                 .setCancelTip("取消")
                 .setConfirmBtnClickListener {
@@ -695,6 +695,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     override fun showIntro() {
         hideAllSceneView(null)
         mBattleSongGuideView.show()
+        mTopContentView.bindData()
         if (mRoomData.realRoundInfo?.userID == MyUserInfoManager.uid.toInt()) {
             mBattleGrabView.show()
             mBattlePropsCardView.show()
