@@ -20,7 +20,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.module.home.R;
 import com.module.home.adapter.HalfRechargeAdapter;
-import com.module.home.presenter.BallencePresenter;
+import com.module.home.presenter.BallancePresenter;
 import com.respicker.view.GridSpacingItemDecoration;
 
 public class HalfRechargeFragment extends BallanceFragment {
@@ -107,7 +107,7 @@ public class HalfRechargeFragment extends BallanceFragment {
         mLlContent.setOnClickListener(v -> {
         });
 
-        mBallencePresenter = new BallencePresenter(getActivity(), this);
+        mBallencePresenter = new BallancePresenter(getActivity(), this);
         addPresent(mBallencePresenter);
         mBallencePresenter.getGoodsList();
     }

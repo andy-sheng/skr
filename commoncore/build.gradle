@@ -32,9 +32,21 @@ android {
             java.srcDirs += 'src/main/java-notification'
 
 //            aidl.srcDirs += 'src/main/java-webview'
+
+            if(MiLianYun.toBoolean()) {
+                java.srcDirs += 'src/main/java-miLianYun'
+            }
         }
     }
 //    useLibrary 'org.apache.http.legacy'
+}
+
+if(MiLianYun.toBoolean()) {
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
 }
 
 dependencies {
@@ -74,6 +86,16 @@ dependencies {
     api files('libs/umeng-share-wechat-simplify-6.9.3.jar')
     api files('libs/umeng-shareboard-widget-6.9.3.jar')
     api files('libs/umeng-sharetool-6.9.3.jar')
+
+    if(MiLianYun.toBoolean()){
+        implementation 'com.xiaomi.account:oauth-android:latest.release' // 总是依赖最新版本
+        implementation 'com.android.volley:volley:1.1.0'
+
+        implementation (name:'alipaySdk-15.6.5-20190718211159-noUtdid', ext:'aar')
+        implementation (name:'mio_sdk_app_2.0.0', ext:'aar')
+        implementation files('libs/protobuf-java-2.6.1.jar')
+        implementation files('libs/org.apache.http.legacy.jar')
+    }
 }
 
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录

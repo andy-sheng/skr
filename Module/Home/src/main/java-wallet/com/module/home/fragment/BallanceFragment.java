@@ -16,6 +16,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.pay.EPayPlatform;
 import com.common.core.pay.PayBaseReq;
+import com.common.miLianYun.MiLianYunManager;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -28,7 +29,7 @@ import com.module.home.adapter.RechargeAdapter;
 import com.component.busilib.event.RechargeSuccessEvent;
 import com.module.home.inter.IBallanceView;
 import com.module.home.model.RechargeItemModel;
-import com.module.home.presenter.BallencePresenter;
+import com.module.home.presenter.BallancePresenter;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.respicker.view.GridSpacingItemDecoration;
@@ -42,7 +43,7 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
     ViewGroup mMainActContainer;
     CommonTitleBar mTitlebar;
 
-    BallencePresenter mBallencePresenter;
+    BallancePresenter mBallencePresenter;
 
     EPayPlatform mEPayPlatform;
     RechargeAdapter mRechargeAdapter;
@@ -121,7 +122,9 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
                     } else {
                         U.getToastUtil().showShort("未安装微信");
                     }
-                } else {
+                } else if(mEPayPlatform == EPayPlatform.MI_PAY){
+                        mBallencePresenter.rechargeMiPay(mRechargeAdapter.getSelectedItem().getGoodsID());
+                }else {
                     mBallencePresenter.rechargeAliPay(mRechargeAdapter.getSelectedItem().getGoodsID());
                 }
             }
@@ -147,19 +150,20 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
             }
         });
 
-//        mBtbZhifubao.setOnClickListener(new DebounceViewClickListener() {
-//            @Override
-//            public void clickValid(View v) {
-//                mEPayPlatform = EPayPlatform.ALI_PAY;
-//                mIvWeixinFlag.setVisibility(View.GONE);
-//                mZhifubaoFlag.setVisibility(View.VISIBLE);
-//            }
-//        });
+        mBtbZhifubao.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                mEPayPlatform = EPayPlatform.MI_PAY;
+                mIvWeixinFlag.setVisibility(View.GONE);
+                mZhifubaoFlag.setVisibility(View.VISIBLE);
+            }
+        });
 
-        mBallencePresenter = new BallencePresenter(getActivity(), this);
+        mBallencePresenter = new BallancePresenter(getActivity(), this);
         addPresent(mBallencePresenter);
         mBallencePresenter.getGoodsList();
         mBallencePresenter.getZSBalance();
+        MiLianYunManager.INSTANCE.initSdk();
     }
 
     @Override

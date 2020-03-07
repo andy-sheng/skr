@@ -1,5 +1,5 @@
 package com.common.core.pay;
 
 public enum  EPayPlatform {
-    WX_PAY, ALI_PAY
+    WX_PAY, ALI_PAY,MI_PAY
 }

@@ -15,6 +15,7 @@ import com.common.core.pay.ali.AliPayReq;
 import com.common.core.pay.event.PayResultEvent;
 import com.common.core.pay.wx.WxPayReq;
 import com.common.log.MyLog;
+import com.common.miLianYun.MiLianYunManager;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -29,11 +30,14 @@ import com.module.home.model.RechargeItemModel;
 import java.util.HashMap;
 import java.util.List;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function2;
+import kotlin.jvm.functions.Function3;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 //同时只能有一个订单
-public class BallencePresenter extends RxLifeCyclePresenter {
+public class BallancePresenter extends RxLifeCyclePresenter {
     public final String TAG = "BallencePresenter";
 
     public static final int IDLE = 0;
@@ -64,14 +68,14 @@ public class BallencePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    public BallencePresenter(Activity activity, IBallanceView iBallanceView) {
+    public BallancePresenter(Activity activity, IBallanceView iBallanceView) {
         mIBallanceView = iBallanceView;
         mBaseActivity = (BaseActivity) activity;
         mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi.class);
         mPayApi = new PayApi(mBaseActivity, new IPayCallBack() {
             @Override
-            public void onFaild(PayResultEvent event) {
-                MyLog.w(TAG, "pay onFaild, errorCode is " + event.getErrorCode());
+            public void onFailed(PayResultEvent event) {
+                MyLog.w(TAG, "pay onFailed, errorCode is " + event.getErrorCode());
                 if (event.getErrorCode() == PayApi.PAY_FAILD) {
                     mIBallanceView.rechargeFailed("支付失败");
                 } else {
@@ -224,6 +228,67 @@ public class BallencePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
+
+    public void rechargeMiPay(String goodsID) {
+        if(!MiLianYunManager.INSTANCE.isLogin()){
+            MiLianYunManager.INSTANCE.login(new Function3<Integer, String, String, Unit>() {
+                @Override
+                public Unit invoke(Integer code, String uid, String sessionId) {
+                    if(code==0){
+                        rechargeMiPay(goodsID);
+                    }
+                    return null;
+                }
+            });
+        }
+        HashMap<String, Object> map = new HashMap<>();
+        String ts = System.currentTimeMillis() + "";
+        map.put("goodsID", goodsID);
+        map.put("timeMs", ts);
+
+        HashMap<String, Object> signMap = new HashMap<>(map);
+        signMap.put("userID", MyUserInfoManager.INSTANCE.getUid());
+        signMap.put("skrer", "skrer");
+        signMap.put("appSecret", "dbf555fe9347eef8c74c5ff6b9f047dd");
+        String sign = U.getMD5Utils().signReq(signMap);
+
+        map.put("signV2", sign);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        ApiMethods.subscribe(mWalletServerApi.wxOrder(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                MyLog.w(TAG, "rechargeWxPay process" + " obj=" + obj);
+                if (obj.getErrno() == 0) {
+                    orderID = obj.getData().getString("orderID");
+                    String prepayID = obj.getData().getString("prepayID");
+                    MiLianYunManager.INSTANCE.pay(orderID, new Function2<Integer, String, Unit>() {
+                        @Override
+                        public Unit invoke(Integer code, String msg) {
+                            U.getToastUtil().showShort("code=" + code + " msg=" + msg);
+                            return null;
+                        }
+                    });
+                } else {
+                    U.getToastUtil().showShort(obj.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, "rechargeAliPay onError" + " e=" + e);
+                U.getToastUtil().showShort("获取订单失败，请重试");
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                MyLog.e(TAG, "rechargeAliPay net onError");
+                U.getToastUtil().showShort("网络超时，请重试");
+            }
+        }, this);
+    }
+
     public void checkOrder() {
         MyLog.d(TAG, "checkOrder");
         if (mPayBaseReq == null) {
@@ -291,4 +356,6 @@ public class BallencePresenter extends RxLifeCyclePresenter {
         mPayApi.release();
         mUiHandler.removeCallbacksAndMessages(null);
     }
+
+
 }

@@ -65,7 +65,7 @@ public class PayApi implements IPayApi {
         if (event.getErrorCode() == 0) {
             mIPayCallBack.onSuccess();
         } else {
-            mIPayCallBack.onFaild(event);
+            mIPayCallBack.onFailed(event);
         }
     }
 

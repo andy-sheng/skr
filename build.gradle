@@ -81,6 +81,9 @@ buildscript {
                 changing = true
             }
         }
+        if(MiLianYun.toBoolean()){
+            classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.6'
+        }
         // SuperTextView需要
         //classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
 //        if (aliFeedback.toBoolean()) {
@@ -104,9 +107,9 @@ allprojects {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
 
         // 为了同步component框架,后期改框架可去掉
-        maven {
-            url 'https://raw.githubusercontent.com/ModerateFish/mvn-repo/master/'
-        }
+//        maven {
+//            url 'https://raw.githubusercontent.com/ModerateFish/mvn-repo/master/'
+//        }
 
         maven { url 'https://dl.bintray.com/umsdk/release' }
 
@@ -125,6 +128,12 @@ allprojects {
 
         if (JPushEnable.toBoolean() || RomPushUseRC.toBoolean()) {
             maven { url 'http://developer.huawei.com/repo/' }
+        }
+        if(MiLianYun.toBoolean()){
+            maven { url 'https://raw.githubusercontent.com/xiaomi-passport/maven-repository/master/releases' }
+            flatDir {
+                dirs project(':commoncore').file('libs')
+            }
         }
     }
 }
