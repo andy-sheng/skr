@@ -5,7 +5,6 @@ import android.os.Handler
 import android.os.Message
 import android.text.TextUtils
 import android.view.*
-import android.view.animation.Animation
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
@@ -391,26 +390,15 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     }
 
     private fun showPanelView() {
-//        val battleGameInfoModel = mRoomData?.realRoundInfo?.sceneInfo
-
-//        if (battleGameInfoModel?.rule?.ruleType == EPGameType.PGT_KTV.ordinal) {
-//            if (battleGameInfoModel?.ktv?.userID ?: 0 > 0) {
-//                if (battleGameInfoModel?.ktv?.userID == MyUserInfoManager.uid.toInt()) {
-//                    //自己唱
-//                    mGiftPanelView?.show(null)
-//                } else {
-//                    //别人在唱
-//                    mGiftPanelView?.show(mRoomData.getPlayerInfoById(battleGameInfoModel?.ktv?.userID
-//                            ?: 0)?.userInfo)
-//                }
-//            } else {
-//                //还没开始
-//                mGiftPanelView?.show(null)
-//            }
-//        } else {
-        //别的模式
-        mGiftPanelView?.show(null)
-//        }
+        val roundInfoModel = mRoomData?.realRoundInfo ?: mRoomData?.expectRoundInfo
+        roundInfoModel?.let {
+            val model = mRoomData.getPlayerInfoById(it.userID)
+            if (it.userID != MyUserInfoManager.uid.toInt() && model != null) {
+                mGiftPanelView?.show(model.userInfo)
+            } else {
+                mGiftPanelView?.show(null)
+            }
+        }
     }
 
     private fun buyFlowerFromOuter() {

@@ -22,16 +22,16 @@ import io.reactivex.functions.Consumer
 
 class BattleSongGuideView(viewStub: ViewStub, protected var mRoomData: BattleRoomData) : BaseSceneView(viewStub) {
     val mTag = "BattleSongGuideView"
-    lateinit var titleBg: ImageView
-    lateinit var leftFirstAvatar: BaseImageView
-    lateinit var leftSecondAvatar: BaseImageView
-    lateinit var rightFirstAvatar: BaseImageView
-    lateinit var rightSecondAvatar: BaseImageView
-    lateinit var songNameTv: ExTextView
-    lateinit var songLyricTv: ExTextView
-    lateinit var singerInfoTv: ExTextView
-    lateinit var leftWinNumTv: ExTextView
-    lateinit var rightWinNumTv: ExTextView
+    var titleBg: ImageView? = null
+    var leftFirstAvatar: BaseImageView? = null
+    var leftSecondAvatar: BaseImageView? = null
+    var rightFirstAvatar: BaseImageView? = null
+    var rightSecondAvatar: BaseImageView? = null
+    var songNameTv: ExTextView? = null
+    var songLyricTv: ExTextView? = null
+    var singerInfoTv: ExTextView? = null
+    var leftWinNumTv: ExTextView? = null
+    var rightWinNumTv: ExTextView? = null
 
     override fun init(parentView: View) {
         titleBg = parentView.findViewById(R.id.title_bg)
@@ -57,29 +57,30 @@ class BattleSongGuideView(viewStub: ViewStub, protected var mRoomData: BattleRoo
         }
 
         battleRoundInfoModel?.let {
-            loadAvatar(leftFirstAvatar, mRoomData.myTeamInfo[0].userInfo.avatar)
-            loadAvatar(leftSecondAvatar, mRoomData.myTeamInfo[1].userInfo.avatar)
-            loadAvatar(rightFirstAvatar, mRoomData.opTeamInfo[0].userInfo.avatar)
-            loadAvatar(rightSecondAvatar, mRoomData.opTeamInfo[1].userInfo.avatar)
+            enterAnimation()
+            loadAvatar(leftFirstAvatar!!, mRoomData.myTeamInfo[0].userInfo.avatar)
+            loadAvatar(leftSecondAvatar!!, mRoomData.myTeamInfo[1].userInfo.avatar)
+            loadAvatar(rightFirstAvatar!!, mRoomData.opTeamInfo[0].userInfo.avatar)
+            loadAvatar(rightSecondAvatar!!, mRoomData.opTeamInfo[1].userInfo.avatar)
 
-            songNameTv.text = "《${it.music?.itemName}》"
+            songNameTv?.text = "《${it.music?.itemName}》"
 
             LyricsManager
                     .loadGrabPlainLyric(it.music?.standLrc)
                     .subscribe(Consumer<String> { o ->
-                        songLyricTv.text = ""
+                        songLyricTv?.text = ""
                         if (U.getStringUtils().isJSON(o)) {
                             val newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel::class.java)
                             var i = 0
                             while (i < newChorusLyricModel.items.size && i < 2) {
-                                songLyricTv.append(newChorusLyricModel.items[i].words)
+                                songLyricTv?.append(newChorusLyricModel.items[i].words)
                                 if (i == 0) {
-                                    songLyricTv.append("\n")
+                                    songLyricTv?.append("\n")
                                 }
                                 i++
                             }
                         } else {
-                            songLyricTv.text = o
+                            songLyricTv?.text = o
                         }
                     }, Consumer<Throwable> { throwable -> MyLog.e(mTag, throwable) })
 
@@ -111,10 +112,8 @@ class BattleSongGuideView(viewStub: ViewStub, protected var mRoomData: BattleRoo
                     }
                 }
 
-                singerInfoTv.text = messageTips
+                singerInfoTv?.text = messageTips
             }
-
-            enterAnimation()
         }
     }
 

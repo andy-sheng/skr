@@ -56,7 +56,6 @@ class BattleSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: Battl
         }
 
         battleRoundInfoModel?.let {
-            tryInflate()
             enterAnimation()
             val infoModel = mRoomData?.realRoundInfo
             //todo

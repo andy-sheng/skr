@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_273_dp"
@@ -54,4 +54,4 @@
         app:bl_corners_bottomRightRadius="@dimen/view_16_dp"
         app:bl_solid_color="@color/black_trans_10"
         app:layout_constraintBottom_toBottomOf="parent" />
-</android.support.constraint.ConstraintLayout>
+</com.common.view.ex.ExConstraintLayout>

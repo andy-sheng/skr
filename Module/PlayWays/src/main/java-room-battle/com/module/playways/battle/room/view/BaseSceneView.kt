@@ -40,6 +40,7 @@ abstract class BaseSceneView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     fun enterAnimation() {
+        tryInflate()
         mUiHandler.removeCallbacksAndMessages(null)
         mUiHandler.sendEmptyMessage(MSG_ANIMATION_SHOW)
     }
