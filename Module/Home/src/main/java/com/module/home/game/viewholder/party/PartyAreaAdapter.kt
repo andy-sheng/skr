@@ -56,11 +56,8 @@ class PartyAreaAdapter : RecyclerView.Adapter<PartyAreaAdapter.PartyAreaItemHold
             FrescoWorker.loadImage(coverSdv, ImageFactory.newPathImage(model.avatarUrl)
                     .setCornerRadius(8.dp().toFloat())
                     .build())
-            descTv.text = model.roomName
-
-            if (model.gameMode == PartyRoomTagMode.ERM_GAME_PK) {
-
-            }
+            descTv.text = model.topicName
+            
             tagTv.visibility = View.VISIBLE
             when (model.gameMode) {
                 PartyRoomTagMode.ERM_GAME_PK -> tagTv.text = "游戏"

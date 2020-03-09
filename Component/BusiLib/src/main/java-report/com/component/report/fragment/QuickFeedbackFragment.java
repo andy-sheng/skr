@@ -306,6 +306,9 @@ public class QuickFeedbackFragment extends BaseFragment {
             map.put("source", 12);
         } else if (mFrom == FROM_PARTY_ROOM) {
             map.put("source", 13);
+        } else if (mFrom == FROM_BATTLE_ROOM) {
+            //todo 等服务器给个值
+            map.put("source", 14);
         }
         map.put("type", typeList);
         map.put("content", content);

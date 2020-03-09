@@ -1,5 +1,6 @@
 package com.module.playways.grab.special
 
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
+import com.common.utils.U
 import com.component.person.utils.StringFromatUtils
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
@@ -41,6 +43,7 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.TagSpecialVie
 
         private val specialBg: SimpleDraweeView = item.findViewById(R.id.special_bg)
         private val specialTitleSdv: SimpleDraweeView = item.findViewById(R.id.special_title_sdv)
+        private val specialTagSdv: SimpleDraweeView = item.findViewById(R.id.special_tag_sdv)
         private val playNumTv: TextView = item.findViewById(R.id.play_num_tv)
         private val rankIv: ImageView = item.findViewById(R.id.rank_iv)
         private val rankDesc: TextView = item.findViewById(R.id.rank_desc)
@@ -66,6 +69,9 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.TagSpecialVie
             FrescoWorker.loadImage(specialTitleSdv, ImageFactory.newPathImage(model.cardTitle?.url)
                     .setScaleType(ScalingUtils.ScaleType.FIT_START)
                     .build<BaseImage>())
+            FrescoWorker.loadImage(specialTagSdv, ImageFactory.newPathImage(model.icon?.url)
+                    .setScaleType(ScalingUtils.ScaleType.FIT_XY)
+                    .build<BaseImage>())
 
             if (!TextUtils.isEmpty(model.rankInfoDesc)) {
                 rankDesc.visibility = View.VISIBLE
@@ -80,9 +86,11 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.TagSpecialVie
             } else {
                 lockIv.visibility = View.VISIBLE
             }
+            playNumTv.text = "${StringFromatUtils.formatTenThousand(model.onlineUserCnt)}人在玩"
 
             if (model.tagDetailType == GrabTagDetailModel.TAG_TYPE_GRAB) {
-                rankIv.visibility = View.GONE
+                rankIv.visibility = View.VISIBLE
+                rankIv.background = U.getDrawable(R.drawable.grab_special_rank_icon)
                 if (!model.showPermissionLock && model.status == GrabTagDetailModel.SST_UNLOCK) {
                     starView.visibility = View.VISIBLE
                     starView.bindData(model.starCnt, model.starCnt)
@@ -90,11 +98,16 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.TagSpecialVie
                     starView.visibility = View.GONE
                 }
             } else {
-                // todo 改成需要的段位标识，还有要加一张图片
-                rankIv.visibility = View.VISIBLE
                 starView.visibility = View.GONE
+                if (model.militaryModel?.getSmallDrawable(model.militaryModel?.titleIndex
+                                ?: 0) != null) {
+                    rankIv.visibility = View.VISIBLE
+                    rankIv.background = model.militaryModel?.getSmallDrawable(model.militaryModel?.titleIndex
+                            ?: 0)
+                } else {
+                    rankIv.visibility = View.GONE
+                }
             }
-            playNumTv.text = "${StringFromatUtils.formatTenThousand(model.onlineUserCnt)}人在玩"
         }
     }
 }
