@@ -7,6 +7,7 @@ import com.common.core.userinfo.model.UserInfoModel
 class PartyRoomTagMode : Serializable {
 
     companion object {
+        const val ERM_DEFAULT_MIC = 0 //连麦模式
         const val ERM_SING_PK = 1     //K歌模式
         const val ERM_GAME_PK = 2     //游戏PK
         const val ERM_MAKE_FRIEND = 3   //相亲模式
