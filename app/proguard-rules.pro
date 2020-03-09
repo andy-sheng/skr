@@ -539,3 +539,23 @@ public void *(***);
 -keep class io.flutter.view.**  { *; }
 -keep class io.flutter.**  { *; }
 -keep class io.flutter.plugins.**  { *; }
+
+
+-keep class com.ut.device.** {*;}
+-keep class com.ta.utdid2.** {*;}
+
+-keep class com.tencent.** {*;}
+
+-keep class com.bumptech.glide.** {*;}
+
+-keep class com.mi.** {*;}
+-keep class com.mi.*** {*;}
+
+-keep class com.wali.** {*;}
+-keep class cn.com.wali.** {*;}
+-keep class miui.net.**{*;}
+-keep class org.xiaomi.** {*;}
+
+
+
+

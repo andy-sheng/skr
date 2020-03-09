@@ -143,6 +143,17 @@ public interface WalletServerApi {
     @PUT("/v1/xpay/ali-order")
     Observable<ApiResult> aliOrder(@Body RequestBody body);
 
+
+
+    /**
+     * 小米充值订单创建
+     *
+     * @return
+     */
+    @POST("/v1/xpay/xm-order")
+    Observable<ApiResult> xmOrder(@Body RequestBody body);
+
+
     /**
      * 获取商品列表
      *

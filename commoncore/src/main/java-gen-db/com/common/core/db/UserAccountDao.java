@@ -35,7 +35,8 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
         public final static Property ServiceToken = new Property(8, String.class, "serviceToken", false, "SERVICE_TOKEN");
         public final static Property SecretToken = new Property(9, String.class, "secretToken", false, "SECRET_TOKEN");
         public final static Property RongToken = new Property(10, String.class, "rongToken", false, "RONG_TOKEN");
-        public final static Property Ext = new Property(11, String.class, "ext", false, "EXT");
+        public final static Property FromLoginMode = new Property(11, int.class, "fromLoginMode", false, "FROM_LOGIN_MODE");
+        public final static Property Ext = new Property(12, String.class, "ext", false, "EXT");
     }
 
 
@@ -62,7 +63,8 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
                 "\"SERVICE_TOKEN\" TEXT," + // 8: serviceToken
                 "\"SECRET_TOKEN\" TEXT," + // 9: secretToken
                 "\"RONG_TOKEN\" TEXT," + // 10: rongToken
-                "\"EXT\" TEXT);"); // 11: ext
+                "\"FROM_LOGIN_MODE\" INTEGER NOT NULL ," + // 11: fromLoginMode
+                "\"EXT\" TEXT);"); // 12: ext
         // Add Indexes
         db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_ACCOUNT_UID_DESC ON \"USER_ACCOUNT\"" +
                 " (\"UID\" DESC);");
@@ -124,10 +126,11 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
         if (rongToken != null) {
             stmt.bindString(11, rongToken);
         }
+        stmt.bindLong(12, entity.getFromLoginMode());
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(12, ext);
+            stmt.bindString(13, ext);
         }
     }
 
@@ -181,10 +184,11 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
         if (rongToken != null) {
             stmt.bindString(11, rongToken);
         }
+        stmt.bindLong(12, entity.getFromLoginMode());
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(12, ext);
+            stmt.bindString(13, ext);
         }
     }
 
@@ -207,7 +211,8 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // serviceToken
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // secretToken
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // rongToken
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // ext
+            cursor.getInt(offset + 11), // fromLoginMode
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // ext
         );
         return entity;
     }
@@ -225,7 +230,8 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
         entity.setServiceToken(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setSecretToken(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
         entity.setRongToken(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setExt(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setFromLoginMode(cursor.getInt(offset + 11));
+        entity.setExt(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
      }
     
     @Override

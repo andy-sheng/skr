@@ -21,6 +21,7 @@ import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.share.ShareManager;
 import com.common.log.MyLog;
+import com.common.miLianYun.MiLianYunManager;
 import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
@@ -35,10 +36,14 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import java.util.HashMap;
 import java.util.Map;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function3;
+
 public class LoginFragment extends BaseFragment implements Callback {
 
     public static final int QQ_MODE = 2;
     public static final int WX_MODE = 3;
+    public static final int MI_MODE = 7;
 
     public static final int MSG_HIDE_PORGRESS_BAR = 1;
     public static final int MIN_HEIGHT = U.getDisplayUtils().dip2px(140);
@@ -49,6 +54,7 @@ public class LoginFragment extends BaseFragment implements Callback {
     TextView mUserAgreeTv;
     TextView mSecretTv;
 
+    ExImageView mMiLoginTv;
     ExImageView mWeixinLoginTv;
     ExImageView mPhoneLoginTv;
     ExImageView mQqLoginTv;
@@ -64,7 +70,7 @@ public class LoginFragment extends BaseFragment implements Callback {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == MSG_HIDE_PORGRESS_BAR) {
-                showLoginingBar(false);
+                showLoadingBar(false);
             }
         }
     };
@@ -97,6 +103,7 @@ public class LoginFragment extends BaseFragment implements Callback {
         mPicture = getRootView().findViewById(R.id.picture);
 
         mDengluArea = getRootView().findViewById(R.id.denglu_area);
+        mMiLoginTv = getRootView().findViewById(R.id.mi_login_tv);
         mWeixinLoginTv = getRootView().findViewById(R.id.weixin_login_tv);
         mPhoneLoginTv = getRootView().findViewById(R.id.phone_login_tv);
         mQqLoginTv = getRootView().findViewById(R.id.qq_login_tv);
@@ -133,6 +140,36 @@ public class LoginFragment extends BaseFragment implements Callback {
             }
         });
 
+        if(mMiLoginTv!=null && mMiLoginTv.getVisibility() == View.VISIBLE){
+//            MiLianYunManager.INSTANCE.initSdk();
+            mMiLoginTv.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    final HashMap map = new HashMap();
+                    map.put("type", "Mi");
+                    StatisticsAdapter.recordCountEvent("signup", "click", map);
+
+                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
+                        @Override
+                        public void run() {
+                            mSkrPhoneStatePermission.ensurePermission(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showLoadingBar(true);
+                                    MiLianYunManager.INSTANCE.loginByMi( new Function3<Integer, String, String, Unit>() {
+                                        @Override
+                                        public Unit invoke(Integer code, String uid, String session) {
+                                            loginWithThirdPard(MI_MODE,session,uid);
+                                            return null;
+                                        }
+                                    });
+                                }
+                            }, true);
+                        }
+                    }, true);
+                }
+            });
+        }
         mWeixinLoginTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -147,7 +184,6 @@ public class LoginFragment extends BaseFragment implements Callback {
                     U.getToastUtil().showShort("你没有安装微信");
                     return;
                 }
-                // 小米商店渠道，需要获取读取imei权限
                 mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                     @Override
                     public void run() {
@@ -155,7 +191,7 @@ public class LoginFragment extends BaseFragment implements Callback {
                             @Override
                             public void run() {
                                 StatisticsAdapter.recordCountEvent("signup", "sdcard_agree", map);
-                                showLoginingBar(true);
+                                showLoadingBar(true);
                                 UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
                             }
                         }, true);
@@ -186,7 +222,7 @@ public class LoginFragment extends BaseFragment implements Callback {
                             @Override
                             public void run() {
                                 StatisticsAdapter.recordCountEvent("signup", "sdcard_agree", map);
-                                showLoginingBar(true);
+                                showLoadingBar(true);
                                 UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
                             }
                         }, true);
@@ -231,7 +267,7 @@ public class LoginFragment extends BaseFragment implements Callback {
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
             MyLog.d(getTAG(), "onComplete" + " platform=" + platform + " action=" + action + " data=" + data);
-            showLoginingBar(false);
+            showLoadingBar(false);
             final HashMap map = new HashMap();
             map.put("type", platform.toString());
             StatisticsAdapter.recordCountEvent("signup", "shouquan_success", map);
@@ -251,7 +287,7 @@ public class LoginFragment extends BaseFragment implements Callback {
         @Override
         public void onError(SHARE_MEDIA platform, int action, Throwable t) {
             MyLog.d(getTAG(), "onError" + " platform=" + platform + " action=" + action + " t=" + t);
-            showLoginingBar(false);
+            showLoadingBar(false);
             final HashMap map = new HashMap();
             map.put("type", platform.toString());
             StatisticsAdapter.recordCountEvent("signup", "shouquan_failed", map);
@@ -264,11 +300,11 @@ public class LoginFragment extends BaseFragment implements Callback {
 
         @Override
         public void onCancel(SHARE_MEDIA platform, int action) {
-            showLoginingBar(false);
+            showLoadingBar(false);
         }
     };
 
-    private void showLoginingBar(boolean show) {
+    private void showLoadingBar(boolean show) {
         mUiHandler.removeMessages(MSG_HIDE_PORGRESS_BAR);
         if (show) {
             mUiHandler.sendEmptyMessageDelayed(MSG_HIDE_PORGRESS_BAR, 4000);

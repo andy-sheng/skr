@@ -230,43 +230,37 @@ public class BallancePresenter extends RxLifeCyclePresenter {
 
 
     public void rechargeMiPay(String goodsID) {
-        if(!MiLianYunManager.INSTANCE.isLogin()){
-            MiLianYunManager.INSTANCE.login(new Function3<Integer, String, String, Unit>() {
-                @Override
-                public Unit invoke(Integer code, String uid, String sessionId) {
-                    if(code==0){
-                        rechargeMiPay(goodsID);
-                    }
-                    return null;
-                }
-            });
-        }
         HashMap<String, Object> map = new HashMap<>();
-        String ts = System.currentTimeMillis() + "";
+//        String ts = System.currentTimeMillis() + "";
         map.put("goodsID", goodsID);
-        map.put("timeMs", ts);
-
-        HashMap<String, Object> signMap = new HashMap<>(map);
-        signMap.put("userID", MyUserInfoManager.INSTANCE.getUid());
-        signMap.put("skrer", "skrer");
-        signMap.put("appSecret", "dbf555fe9347eef8c74c5ff6b9f047dd");
-        String sign = U.getMD5Utils().signReq(signMap);
-
-        map.put("signV2", sign);
+//        map.put("timeMs", ts);
+//
+//        HashMap<String, Object> signMap = new HashMap<>(map);
+//        signMap.put("userID", MyUserInfoManager.INSTANCE.getUid());
+//        signMap.put("skrer", "skrer");
+//        signMap.put("appSecret", "dbf555fe9347eef8c74c5ff6b9f047dd");
+//        String sign = U.getMD5Utils().signReq(signMap);
+//
+//        map.put("signV2", sign);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
-        ApiMethods.subscribe(mWalletServerApi.wxOrder(body), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mWalletServerApi.xmOrder(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
-                MyLog.w(TAG, "rechargeWxPay process" + " obj=" + obj);
+                MyLog.w(TAG, "rechargeXmPay process" + " obj=" + obj);
                 if (obj.getErrno() == 0) {
-                    orderID = obj.getData().getString("orderID");
-                    String prepayID = obj.getData().getString("prepayID");
-                    MiLianYunManager.INSTANCE.pay(orderID, new Function2<Integer, String, Unit>() {
+                    orderID = obj.getData().getString("cpOrderID");
+                    int feeValue = obj.getData().getIntValue("feeValue");
+                    MiLianYunManager.INSTANCE.pay(orderID, feeValue, new Function2<Integer, String, Unit>() {
                         @Override
                         public Unit invoke(Integer code, String msg) {
-                            U.getToastUtil().showShort("code=" + code + " msg=" + msg);
+                            if (code == 0) {
+                                mIBallanceView.rechargeSuccess();
+                            } else {
+                                mIBallanceView.rechargeFailed("支付失败 code=" + code + " msg=" + msg);
+                            }
+                            clearOrderState();
                             return null;
                         }
                     });
@@ -277,13 +271,13 @@ public class BallancePresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onError(Throwable e) {
-                MyLog.e(TAG, "rechargeAliPay onError" + " e=" + e);
+                MyLog.e(TAG, "rechargeXmPay onError" + " e=" + e);
                 U.getToastUtil().showShort("获取订单失败，请重试");
             }
 
             @Override
             public void onNetworkError(ErrorType errorType) {
-                MyLog.e(TAG, "rechargeAliPay net onError");
+                MyLog.e(TAG, "rechargeXmPay net onError");
                 U.getToastUtil().showShort("网络超时，请重试");
             }
         }, this);

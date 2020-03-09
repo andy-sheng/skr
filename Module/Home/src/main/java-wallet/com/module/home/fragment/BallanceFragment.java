@@ -122,9 +122,9 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
                     } else {
                         U.getToastUtil().showShort("未安装微信");
                     }
-                } else if(mEPayPlatform == EPayPlatform.MI_PAY){
-                        mBallencePresenter.rechargeMiPay(mRechargeAdapter.getSelectedItem().getGoodsID());
-                }else {
+                } else if (mEPayPlatform == EPayPlatform.MI_PAY) {
+                    mBallencePresenter.rechargeMiPay(mRechargeAdapter.getSelectedItem().getGoodsID());
+                } else {
                     mBallencePresenter.rechargeAliPay(mRechargeAdapter.getSelectedItem().getGoodsID());
                 }
             }
@@ -163,7 +163,7 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
         addPresent(mBallencePresenter);
         mBallencePresenter.getGoodsList();
         mBallencePresenter.getZSBalance();
-        MiLianYunManager.INSTANCE.initSdk();
+        MiLianYunManager.INSTANCE.loginAuto();
     }
 
     @Override

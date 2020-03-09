@@ -125,6 +125,11 @@ object UserAccountManager {
             mAccount!!.rongToken
         } else ""
 
+    val fromLoginMode:Int
+        get() = if (mAccount != null) {
+            mAccount!!.fromLoginMode
+        } else 0
+
     // 是否是老账号
     private// 一天内的算新用户
     val isNewAccount: Boolean
@@ -226,7 +231,7 @@ object UserAccountManager {
                 .subscribe(object : ApiObserver<ApiResult>() {
                     override fun process(obj: ApiResult) {
                         if (obj.errno == 0) {
-                            val userAccount = parseRsp(obj.data!!, phoneNum)
+                            val userAccount = parseRsp(obj.data!!, phoneNum,1)
                             TDStatistics.onProfileSignIn(userAccount.uid, TDAccount.AccountType.REGISTERED, MyUserInfoManager.nickName, MyUserInfoManager.isFirstLogin)
                             UmengStatistics.onProfileSignIn("phone", userAccount.uid)
                         } else {
@@ -267,13 +272,16 @@ object UserAccountManager {
                 .subscribe(object : ApiObserver<ApiResult>() {
                     override fun process(obj: ApiResult) {
                         if (obj.errno == 0) {
-                            val userAccount = parseRsp(obj.data!!, "")
+                            val userAccount = parseRsp(obj.data!!, "",mode)
                             if (mode == 3) {
                                 TDStatistics.onProfileSignIn(userAccount.uid, TDAccount.AccountType.WEIXIN, MyUserInfoManager.nickName, MyUserInfoManager.isFirstLogin)
                                 UmengStatistics.onProfileSignIn("wx", userAccount.uid)
                             } else if (mode == 2) {
                                 TDStatistics.onProfileSignIn(userAccount.uid, TDAccount.AccountType.QQ, MyUserInfoManager.nickName, MyUserInfoManager.isFirstLogin)
                                 UmengStatistics.onProfileSignIn("icon_qq", userAccount.uid)
+                            }else if(mode ==7){
+                                TDStatistics.onProfileSignIn(userAccount.uid, TDAccount.AccountType.TYPE7, MyUserInfoManager.nickName, MyUserInfoManager.isFirstLogin)
+                                UmengStatistics.onProfileSignIn("icon_mi", userAccount.uid)
                             }
                         } else {
                             //U.getToastUtil().showShort(obj.getErrmsg());
@@ -295,7 +303,7 @@ object UserAccountManager {
                 })
     }
 
-    internal fun parseRsp(jsonObject: JSONObject, phoneNum: String): UserAccount {
+    internal fun parseRsp(jsonObject: JSONObject, phoneNum: String,fromMode:Int): UserAccount {
         val secretToken = jsonObject.getJSONObject("token").getString("T")
         val serviceToken = jsonObject.getJSONObject("token").getString("S")
         val rongToken = jsonObject.getJSONObject("token").getString("RC")
@@ -324,6 +332,7 @@ object UserAccountManager {
         userAccount.uid = userInfoModel.userId.toString()
         userAccount.needEditUserInfo = isFirstLogin
         userAccount.channelId = HostChannelManager.getInstance().channelId
+        userAccount.fromLoginMode = fromMode
         onLoginResult(userAccount)
         return userAccount
     }
