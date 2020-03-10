@@ -70,6 +70,7 @@
                 android:clipChildren="false">
 
                 <FrameLayout
+                    android:id="@+id/weixin_recharge_area"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/view_16_dp"
@@ -92,12 +93,36 @@
                         android:visibility="gone" />
                 </FrameLayout>
 
+                <FrameLayout
+                    android:id="@+id/xiaomi_recharge_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/view_16_dp"
+                    android:layout_weight="1">
+
+                    <com.common.view.ex.ExTextView
+                        android:id="@+id/btb_xiaomi"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/view_60_dp"
+                        android:background="@drawable/zhifu_xiaomi" />
+
+                    <com.common.view.ex.ExImageView
+                        android:id="@+id/iv_xiaomi_flag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|right"
+                        android:layout_marginRight="@dimen/view_d_8_dp"
+                        android:layout_marginBottom="@dimen/view_d_5_dp"
+                        android:background="@drawable/xuanzhong_duihao"
+                        android:visibility="gone" />
+                </FrameLayout>
+
                 <View
                     android:layout_width="@dimen/view_15_dp"
                     android:layout_height="@dimen/view_2_dp" />
 
                 <FrameLayout
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/view_16_dp"

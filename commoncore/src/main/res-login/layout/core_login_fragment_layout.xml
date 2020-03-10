@@ -94,8 +94,9 @@
             android:id="@+id/mi_login_tv"
             android:layout_width="0dp"
             android:layout_height="@dimen/view_74_dp"
+            android:visibility="gone"
             android:layout_weight="1"
-            android:src="@drawable/icon_phone" />
+            android:src="@drawable/mi_login_icon" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/phone_login_tv"

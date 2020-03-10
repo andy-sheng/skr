@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -60,6 +61,11 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
     LinearLayout mProtocolContainer;
     CheckBox mCheckbox;
     TextView mTvProtocal;
+
+    FrameLayout mWeixinRechargeArea;
+    FrameLayout mXiaomiRechargeArea;
+    ExTextView mBtbXiaomi;
+    ExImageView mIvXiaomiFlag;
 
     DialogPlus mWaitingDialogPlus;
 
@@ -139,8 +145,6 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
             }
         });
 
-        mEPayPlatform = EPayPlatform.WX_PAY;
-        mIvWeixinFlag.setVisibility(View.VISIBLE);
         mBtbWeixin.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -159,11 +163,30 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
             }
         });
 
+        mWeixinRechargeArea = (FrameLayout)getRootView().findViewById(R.id.weixin_recharge_area);
+
+        mXiaomiRechargeArea = (FrameLayout)getRootView().findViewById(R.id.xiaomi_recharge_area);
+        mBtbXiaomi = (ExTextView)getRootView().findViewById(R.id.btb_xiaomi);
+        mIvXiaomiFlag = (ExImageView)getRootView().findViewById(R.id.iv_xiaomi_flag);
+
         mBallencePresenter = new BallancePresenter(getActivity(), this);
         addPresent(mBallencePresenter);
         mBallencePresenter.getGoodsList();
         mBallencePresenter.getZSBalance();
-        MiLianYunManager.INSTANCE.loginAuto();
+        if(MiLianYunManager.INSTANCE.lianYunOpen()){
+            MiLianYunManager.INSTANCE.loginAuto();
+            mWeixinRechargeArea.setVisibility(View.GONE);
+            mXiaomiRechargeArea.setVisibility(View.VISIBLE);
+            mEPayPlatform = EPayPlatform.MI_PAY;
+            mIvWeixinFlag.setVisibility(View.GONE);
+            mIvXiaomiFlag.setVisibility(View.VISIBLE);
+        }else{
+            mWeixinRechargeArea.setVisibility(View.VISIBLE);
+            mXiaomiRechargeArea.setVisibility(View.GONE);
+            mEPayPlatform = EPayPlatform.WX_PAY;
+            mIvWeixinFlag.setVisibility(View.VISIBLE);
+            mIvXiaomiFlag.setVisibility(View.GONE);
+        }
     }
 
     @Override

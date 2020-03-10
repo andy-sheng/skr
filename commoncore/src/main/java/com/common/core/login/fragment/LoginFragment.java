@@ -139,7 +139,9 @@ public class LoginFragment extends BaseFragment implements Callback {
                 }, true);
             }
         });
-
+        if (mMiLoginTv != null && MiLianYunManager.INSTANCE.lianYunOpen()) {
+            mMiLoginTv.setVisibility(View.VISIBLE);
+        }
         if(mMiLoginTv!=null && mMiLoginTv.getVisibility() == View.VISIBLE){
 //            MiLianYunManager.INSTANCE.initSdk();
             mMiLoginTv.setOnClickListener(new DebounceViewClickListener() {

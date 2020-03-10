@@ -33,6 +33,8 @@
 
     <!--联运sdk需要-->
     <uses-permission android:name="com.xiaomi.sdk.permission.APP" />
+    <!--应用商店更新需要-->
+    <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
 
     <application>
         <!-- 在组件集成宿主时, 由于宿主已经声明了 CommonSDK 的公有 ConfigModule, 所以在这里只需要声明业务组件自己的 ConfigModule -->
@@ -194,6 +196,19 @@
         <provider
             android:name="com.common.webview.aidl.WebIpcProvider"
             android:authorities="com.zq.live.web.binder.service" />
+
+
+        <provider
+            android:name="com.common.miUpdate.MiUpdateProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+
     </application>
 
 </manifest>

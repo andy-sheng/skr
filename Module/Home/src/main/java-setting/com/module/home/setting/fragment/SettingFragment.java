@@ -20,6 +20,7 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.upgrade.UpgradeCheckApi;
+import com.common.miLianYun.MiLianYunManager;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -94,7 +95,7 @@ public class SettingFragment extends BaseFragment {
     TipsDialogView mDialogPlus;
 
     static final String[] CACHE_CAN_DELETE = {
-            "fresco", "gif", "upload", "acc","acc2", "acr", "logs", "grabLyric", "lyrics", "midi", "score", "ori", "save"
+            "fresco", "gif", "upload", "acc", "acc2", "acr", "logs", "grabLyric", "lyrics", "midi", "score", "ori", "save"
     };
 
     @Override
@@ -250,8 +251,14 @@ public class SettingFragment extends BaseFragment {
         mVersionArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (hasNewVersion) {
-                    UpgradeManager.getInstance().checkUpdate2();
+                if (MiLianYunManager.INSTANCE.lianYunOpen()) {
+                    if (MiLianYunManager.INSTANCE.getHasNewVersion()) {
+                        gotoMarketDetail(getActivity());
+                    }
+                } else {
+                    if (hasNewVersion) {
+                        UpgradeManager.getInstance().checkUpdate2();
+                    }
                 }
                 UpgradeManager.getInstance().setNotNeedShowRedDotTips();
             }
@@ -313,6 +320,16 @@ public class SettingFragment extends BaseFragment {
     }
 
     private void initVersion() {
+        if (MiLianYunManager.INSTANCE.lianYunOpen()) {
+            if (MiLianYunManager.INSTANCE.getHasNewVersion()) {
+                mNewVersionIv.setVisibility(View.VISIBLE);
+                mVersionArrow.setVisibility(View.VISIBLE);
+            } else {
+                mNewVersionIv.setVisibility(View.GONE);
+                mVersionArrow.setVisibility(View.INVISIBLE);
+            }
+            return;
+        }
         UpgradeCheckApi checkApi = ApiManager.getInstance().createService(UpgradeCheckApi.class);
         ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 2, 1, U.getAppInfoUtils().getVersionCode(), (int) MyUserInfoManager.INSTANCE.getUid()),
                 new ApiObserver<ApiResult>() {
@@ -397,8 +414,6 @@ public class SettingFragment extends BaseFragment {
         mDialogPlus.showByDialog();
 
     }
-
-
 
 
     void computeCache() {

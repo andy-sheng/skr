@@ -23,6 +23,7 @@ import com.common.core.global.event.ShowDialogInHomeEvent;
 import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.miLianYun.MiLianYunManager;
 import com.common.provideer.MyFileProvider;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -33,6 +34,10 @@ import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.xiaomi.market.sdk.UpdateResponse;
+import com.xiaomi.market.sdk.UpdateStatus;
+import com.xiaomi.market.sdk.XiaomiUpdateAgent;
+import com.xiaomi.market.sdk.XiaomiUpdateListener;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -73,6 +78,17 @@ public class UpgradeManager {
 
     public UpgradeManager() {
         mDownloadManager = (DownloadManager) U.app().getSystemService(Context.DOWNLOAD_SERVICE);
+        if(MiLianYunManager.INSTANCE.lianYunOpen()){
+            XiaomiUpdateAgent.setUpdateAutoPopup(false);
+            XiaomiUpdateAgent.setUpdateListener(new XiaomiUpdateListener() {
+                @Override
+                public void onUpdateReturned(int updateStatus, UpdateResponse updateResponse) {
+                    if(updateStatus == UpdateStatus.STATUS_UPDATE){
+                        MiLianYunManager.INSTANCE.setHasNewVersion(true);
+                    }
+                }
+            });
+        }
     }
 
     public Handler mUiHandler = new Handler() {
@@ -121,6 +137,10 @@ public class UpgradeManager {
 //            onGetUpgradeInfoModel(upgradeInfoModel);
 //            return;
 //        }
+        if(MiLianYunManager.INSTANCE.lianYunOpen()){
+            XiaomiUpdateAgent.update(U.app());
+            return;
+        }
         /**
          * 一旦拿到更新数据了，这个生命周期内就不访问了
          */
@@ -143,6 +163,10 @@ public class UpgradeManager {
     }
 
     public void checkUpdate2() {
+        if(MiLianYunManager.INSTANCE.lianYunOpen()){
+            XiaomiUpdateAgent.update(U.app());
+            return;
+        }
         mUpgradeData.setNeedShowDialog(true);
         loadDataFromServer();
     }

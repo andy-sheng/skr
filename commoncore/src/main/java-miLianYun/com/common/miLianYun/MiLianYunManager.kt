@@ -14,9 +14,19 @@ import com.xiaomi.gamecenter.sdk.entry.MiBuyInfo
 
 object MiLianYunManager {
 
+    var hasNewVersion = false
+
     val TAG = "MiLianYunManager"
 
     var init = false
+
+    /**
+     * 小米联运是否开启
+     */
+    fun lianYunOpen():Boolean{
+//        return U.getChannelUtils().channel == "MI_SHOP"
+        return true
+    }
 
     private fun initSdk(succesCallback: () -> Unit?) {
         if (init) {

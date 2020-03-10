@@ -90,7 +90,7 @@ dependencies {
     if(MiLianYun.toBoolean()){
         implementation 'com.xiaomi.account:oauth-android:latest.release' // 总是依赖最新版本
         implementation 'com.android.volley:volley:1.1.0'
-
+        implementation 'mi-appstore:xiaomi-update-sdk:4.0.3'
         implementation (name:'alipaySdk-15.6.5-20190718211159-noUtdid', ext:'aar')
         implementation (name:'mio_sdk_app_2.0.0', ext:'aar')
         implementation files('libs/protobuf-java-2.6.1.jar')
