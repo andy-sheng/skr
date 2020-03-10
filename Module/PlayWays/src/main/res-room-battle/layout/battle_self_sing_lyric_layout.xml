@@ -41,7 +41,7 @@
     <com.component.lyrics.widget.VoiceScaleView
         android:id="@+id/voice_scale_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_50_dp"
         android:layout_gravity="bottom"
         android:visibility="visible"
         app:leftBgPaintColor="@color/black_trans_10"
