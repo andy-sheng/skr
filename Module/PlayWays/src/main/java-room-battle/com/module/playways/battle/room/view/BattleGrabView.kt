@@ -40,7 +40,10 @@ class BattleGrabView(viewStub: ViewStub, protected var mRoomData: BattleRoomData
 
     fun show() {
         enterAnimation()
-        rrlProgress?.startCountDown(15000)
+
+        rrlProgress?.post {
+            rrlProgress?.startCountDown(15000)
+        }
     }
 
     fun hide() {
