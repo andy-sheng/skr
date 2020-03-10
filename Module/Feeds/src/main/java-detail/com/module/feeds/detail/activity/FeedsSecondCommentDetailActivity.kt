@@ -32,7 +32,7 @@ class FeedsSecondCommentDetailActivity : BaseActivity() {
                 .build())
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return true
     }
 

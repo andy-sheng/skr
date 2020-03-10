@@ -160,7 +160,7 @@ abstract class BaseActivity : AppCompatActivity(), IActivity, ActivityLifecyclea
         if (layoutResID == 0) {
             layoutResID = R.layout.empty_activity_layout
         }
-        if(layoutResID>0){
+        if (layoutResID > 0) {
             setContentView(layoutResID)
             initData(savedInstanceState)
         }
@@ -395,13 +395,20 @@ abstract class BaseActivity : AppCompatActivity(), IActivity, ActivityLifecyclea
     }
 
     /**
+     * 当堆栈中有这个activity 允许不允许跳到个人主页
+     */
+    open fun canGoPersonPage(): Boolean {
+        return true
+    }
+
+    /**
      * 当键盘出现时，自己管理布局
      * 如果为true，则会接受到 android5497 传出的 keyborad事件，自行调整布局
      * 如果为false，则会自动上滑调整布局
      *
      * @return
      */
-    open fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    open fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return false
     }
 

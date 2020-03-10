@@ -720,7 +720,7 @@ class PostsPublishActivity : BaseActivity() {
         songDelIv.visibility = View.VISIBLE
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return false
     }
 

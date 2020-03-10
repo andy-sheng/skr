@@ -59,7 +59,7 @@ public class UploadAccountInfoActivity extends BaseActivity {
     }
 
     @Override
-    public boolean resizeLayoutSelfWhenKeybordShow() {
+    public boolean resizeLayoutSelfWhenKeyboardShow() {
         // 自己处理有键盘时的整体布局
         return true;
     }

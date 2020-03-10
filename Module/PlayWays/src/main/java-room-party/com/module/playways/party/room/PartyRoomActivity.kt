@@ -385,7 +385,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         return false
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return true
     }
 
@@ -1210,6 +1210,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             // 换房间也要弹窗
             checkGoMicTips()
         }
+    }
 
+    override fun canGoPersonPage(): Boolean {
+        return false
     }
 }

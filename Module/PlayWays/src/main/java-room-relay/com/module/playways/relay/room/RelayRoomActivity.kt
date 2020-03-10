@@ -336,7 +336,7 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
         return false
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return true
     }
 
@@ -853,6 +853,10 @@ class RelayRoomActivity : BaseActivity(), IRelayRoomView, IGrabVipView {
 
     override fun useEventBus(): Boolean {
         return true
+    }
+
+    override fun canGoPersonPage(): Boolean {
+        return false
     }
 
     override fun onBackPressedForActivity(): Boolean {

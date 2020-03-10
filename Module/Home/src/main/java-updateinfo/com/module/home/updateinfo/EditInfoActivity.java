@@ -317,7 +317,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    public boolean resizeLayoutSelfWhenKeybordShow() {
+    public boolean resizeLayoutSelfWhenKeyboardShow() {
         return true;
     }
 }

@@ -68,7 +68,7 @@ public class GrabResultActivity extends BaseActivity {
     }
 
     @Override
-    public boolean resizeLayoutSelfWhenKeybordShow() {
+    public boolean resizeLayoutSelfWhenKeyboardShow() {
         return true;
     }
 }

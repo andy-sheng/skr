@@ -310,7 +310,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         return false
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return true
     }
 

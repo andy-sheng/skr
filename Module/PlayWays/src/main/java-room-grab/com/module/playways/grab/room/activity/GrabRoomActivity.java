@@ -206,7 +206,12 @@ public class GrabRoomActivity extends BaseActivity {
     }
 
     @Override
-    public boolean resizeLayoutSelfWhenKeybordShow() {
+    public boolean canGoPersonPage() {
+        return false;
+    }
+
+    @Override
+    public boolean resizeLayoutSelfWhenKeyboardShow() {
         return true;
     }
 }

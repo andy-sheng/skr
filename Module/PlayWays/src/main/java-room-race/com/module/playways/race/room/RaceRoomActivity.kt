@@ -82,7 +82,11 @@ class RaceRoomActivity : BaseActivity() {
         return false
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun canGoPersonPage(): Boolean {
+        return false
+    }
+
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return true
     }
 }

@@ -1,11 +1,13 @@
 package com.module.msg.listener;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.base.BaseActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.rxretrofit.ApiManager;
@@ -29,6 +31,15 @@ public class MyConversationClickListener implements RongIM.ConversationClickList
     @Override
     public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
         int userId = Integer.valueOf(userInfo.getUserId());
+
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if (activity instanceof BaseActivity) {
+                if (!((BaseActivity) activity).canGoPersonPage()) {
+                    return false;
+                }
+            }
+        }
+
         if (userId != MyUserInfoManager.INSTANCE.getUid() && userId != UserInfoModel.USER_ID_XIAOZHUSHOU) {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getTopActivity());
             Bundle bundle = new Bundle();

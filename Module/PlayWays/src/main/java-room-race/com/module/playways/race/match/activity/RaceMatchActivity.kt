@@ -323,7 +323,7 @@ class RaceMatchActivity : BaseActivity(), IRaceMatchingView {
         return false
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return true
     }
 

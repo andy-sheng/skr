@@ -91,7 +91,7 @@ class PostsVoteEditActivity : BaseActivity() {
         }
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return true
     }
 

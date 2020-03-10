@@ -283,7 +283,7 @@ class VoiceRecordActivity : BaseActivity() {
         SinglePlayer.removeCallback(playerTag)
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return true
     }
 

@@ -147,7 +147,7 @@ class LastFollowActivity : BaseActivity() {
         return true
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return true
     }
 

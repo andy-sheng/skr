@@ -84,7 +84,7 @@ class FeedsDetailActivity : BaseActivity() {
         MANAGER = null
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return true
     }
 

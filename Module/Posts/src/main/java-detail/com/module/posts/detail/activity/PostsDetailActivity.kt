@@ -861,7 +861,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         feedsInputContainerView.hideSoftInput()
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return true
     }
 

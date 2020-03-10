@@ -646,7 +646,7 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
         postsMoreDialogView?.dismiss()
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return true
     }
 

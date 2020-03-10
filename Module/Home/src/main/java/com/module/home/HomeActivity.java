@@ -636,7 +636,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     }
 
     @Override
-    public boolean resizeLayoutSelfWhenKeybordShow() {
+    public boolean resizeLayoutSelfWhenKeyboardShow() {
         return true;
     }
 

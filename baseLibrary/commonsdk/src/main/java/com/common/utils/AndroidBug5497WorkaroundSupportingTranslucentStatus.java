@@ -3,7 +3,6 @@ package com.common.utils;
 import android.app.Activity;
 import android.graphics.Rect;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
@@ -130,7 +129,7 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
             /**
              * 是否自己控制布局，当有键盘事件时
              */
-            boolean resizeSelf = mBaseActivityRef.get().resizeLayoutSelfWhenKeybordShow();
+            boolean resizeSelf = mBaseActivityRef.get().resizeLayoutSelfWhenKeyboardShow();
             MyLog.d(TAG, "possiblyResizeChildOfContent usableHeightSansKeyboard=" + usableHeightSansKeyboard
                     + " usableHeightNow=" + usableHeightNow
                     + " heightDifference=" + heightDifference

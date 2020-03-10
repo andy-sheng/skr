@@ -116,7 +116,7 @@ class EngineSettingActivity : BaseActivity() {
         return false
     }
 
-    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+    override fun resizeLayoutSelfWhenKeyboardShow(): Boolean {
         return true
     }
 }
