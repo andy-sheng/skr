@@ -142,7 +142,7 @@ public class LoginFragment extends BaseFragment implements Callback {
         if (mMiLoginTv != null && MiLianYunManager.INSTANCE.lianYunOpen()) {
             mMiLoginTv.setVisibility(View.VISIBLE);
         }
-        if(mMiLoginTv!=null && mMiLoginTv.getVisibility() == View.VISIBLE){
+        if (mMiLoginTv != null && mMiLoginTv.getVisibility() == View.VISIBLE) {
 //            MiLianYunManager.INSTANCE.initSdk();
             mMiLoginTv.setOnClickListener(new DebounceViewClickListener() {
                 @Override
@@ -158,10 +158,14 @@ public class LoginFragment extends BaseFragment implements Callback {
                                 @Override
                                 public void run() {
                                     showLoadingBar(true);
-                                    MiLianYunManager.INSTANCE.loginByMi( new Function3<Integer, String, String, Unit>() {
+                                    MiLianYunManager.INSTANCE.loginByMi(new Function3<Integer, String, String, Unit>() {
                                         @Override
                                         public Unit invoke(Integer code, String uid, String session) {
-                                            loginWithThirdPard(MI_MODE,session,uid);
+                                            if (code == 0) {
+                                                loginWithThirdPart(MI_MODE, session, uid);
+                                            } else {
+                                                U.getToastUtil().showShort("登录错误=" + code);
+                                            }
                                             return null;
                                         }
                                     });
@@ -277,12 +281,12 @@ public class LoginFragment extends BaseFragment implements Callback {
                 U.getToastUtil().showLong("微信授权成功");
                 String accessToken = data.get("access_token");
                 String openid = data.get("openid");
-                loginWithThirdPard(WX_MODE, accessToken, openid);
+                loginWithThirdPart(WX_MODE, accessToken, openid);
             } else if (platform == SHARE_MEDIA.QQ) {
                 U.getToastUtil().showLong("QQ授权成功");
                 String accessToken = data.get("accessToken");
                 String openid = data.get("openid");
-                loginWithThirdPard(QQ_MODE, accessToken, openid);
+                loginWithThirdPart(QQ_MODE, accessToken, openid);
             }
         }
 
@@ -315,7 +319,7 @@ public class LoginFragment extends BaseFragment implements Callback {
         mProgressBar.setVisibility(mIsWaitOss ? View.VISIBLE : View.GONE);
     }
 
-    private void loginWithThirdPard(int mode, String accessToken, String openId) {
+    private void loginWithThirdPart(int mode, String accessToken, String openId) {
         UserAccountManager.INSTANCE.loginByThirdPart(mode, accessToken, openId, this);
     }
 

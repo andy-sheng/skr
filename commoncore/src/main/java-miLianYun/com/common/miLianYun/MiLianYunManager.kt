@@ -23,7 +23,7 @@ object MiLianYunManager {
     /**
      * 小米联运是否开启
      */
-    fun lianYunOpen():Boolean{
+    fun lianYunOpen(): Boolean {
 //        return U.getChannelUtils().channel == "MI_SHOP"
         return true
     }
@@ -127,11 +127,7 @@ object MiLianYunManager {
         var miBuyInfo = MiBuyInfo()
         miBuyInfo.cpOrderId = orderId //订单号唯一（不为空）
         miBuyInfo.cpUserInfo = UserAccountManager.uuid //此参数在用户支付成功后会透传给CP的服务器
-        if (BuildConfig.DEBUG && U.getDeviceUtils().isMiui) {
-            miBuyInfo.feeValue = 1 //必须是大于0的整数，100代表1元人民币（不为空）
-        } else {
-            miBuyInfo.feeValue = fee //必须是大于0的整数，100代表1元人民币（不为空）
-        }
+        miBuyInfo.feeValue = fee //必须是大于0的整数，100代表1元人民币（不为空）
 
         MiCommplatform.getInstance().miUniPay(U.getActivityUtils().topActivity, miBuyInfo
         ) { code, msg ->

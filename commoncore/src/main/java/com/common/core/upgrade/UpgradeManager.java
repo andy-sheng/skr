@@ -138,7 +138,9 @@ public class UpgradeManager {
 //            return;
 //        }
         if(MiLianYunManager.INSTANCE.lianYunOpen()){
-            XiaomiUpdateAgent.update(U.app());
+            if(!MiLianYunManager.INSTANCE.getHasNewVersion()){
+                XiaomiUpdateAgent.update(U.app());
+            }
             return;
         }
         /**
@@ -164,7 +166,9 @@ public class UpgradeManager {
 
     public void checkUpdate2() {
         if(MiLianYunManager.INSTANCE.lianYunOpen()){
-            XiaomiUpdateAgent.update(U.app());
+            if(!MiLianYunManager.INSTANCE.getHasNewVersion()){
+                XiaomiUpdateAgent.update(U.app());
+            }
             return;
         }
         mUpgradeData.setNeedShowDialog(true);
