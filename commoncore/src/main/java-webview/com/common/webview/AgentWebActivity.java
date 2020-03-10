@@ -398,6 +398,7 @@ class AgentWebActivity extends CameraAdapWebActivity {
                 + " pid/" + U.getDeviceUtils().getDeviceID()
                 + " NetType/" + getNet()
                 + " appVersion/" + U.getAppInfoUtils().getVersionCode()
+                + " channel/" + U.getChannelUtils().getChannel()
                 + " Pixel/" + U.getDisplayUtils().getPhoneWidth());
 
         MyLog.d("","buildAgentWeb 3");
