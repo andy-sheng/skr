@@ -1,5 +1,6 @@
 package com.module.playways.battle.room.view
 
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewStub
 import android.widget.ImageView
@@ -22,7 +23,15 @@ class BattleGrabView(viewStub: ViewStub, protected var mRoomData: BattleRoomData
             clickGrabFuc?.invoke()
         }
 
-        rrlProgress?.startCountDown(15000)
+        singIv?.setOnTouchListener { v, event ->
+            //MyLog.d(TAG, "onTouch" + " v=" + v + " event=" + event);
+            if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
+                rrlProgress?.visibility = View.GONE
+            } else {
+                rrlProgress?.visibility = View.VISIBLE
+            }
+            false
+        }
     }
 
     override fun layoutDesc(): Int {

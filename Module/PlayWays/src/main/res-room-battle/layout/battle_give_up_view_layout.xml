@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/view_120_dp"
     android:layout_height="@dimen/view_60_dp">
 
-    <ImageView
+    <com.common.view.ex.ExImageView
         android:id="@+id/give_up_iv"
         android:layout_width="@dimen/view_108_dp"
         android:layout_height="@dimen/view_60_dp"
         android:layout_gravity="center"
-        android:background="@drawable/battle_giveup" />
+        app:bl_pressed_drawable="@drawable/battle_pressed_giveup"
+        app:bl_unPressed_drawable="@drawable/battle_giveup" />
 </FrameLayout>

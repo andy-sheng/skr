@@ -75,12 +75,12 @@ class BattleSongGuideView(viewStub: ViewStub, protected var mRoomData: BattleRoo
                             while (i < newChorusLyricModel.items.size && i < 2) {
                                 songLyricTv?.append(newChorusLyricModel.items[i].words)
                                 if (i == 0) {
-                                    songLyricTv?.append("\n")
+                                    songLyricTv?.append("，")
                                 }
                                 i++
                             }
                         } else {
-                            songLyricTv?.text = o
+                            songLyricTv?.text = o.replace("\n", "，")
                         }
                     }, Consumer<Throwable> { throwable -> MyLog.e(mTag, throwable) })
 

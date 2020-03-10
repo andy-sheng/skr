@@ -108,14 +108,9 @@ class BattleRoundInfoModel : BaseRoundInfoModel() {
     }
 
     override fun toString(): String {
-        return "BattleRoundInfoModel{" +
-                "roundSeq=" + roundSeq +
-                ", status=" + status +
-//                ", songModel=" + (if (music == null) "" else music!!.toSimpleString()) +
-//                ", singBeginMs=" + singBeginMs +
-                ", overReason=" + overReason +
-                '}'.toString()
+        return "BattleRoundInfoModel(hasSendRoundOverInfo=$hasSendRoundOverInfo, userID=$userID, musicSeq=$musicSeq, waitBeginMs=$waitBeginMs, waitEndMs=$waitEndMs, singBeginMs=$singBeginMs, singEndMs=$singEndMs, status=$status, music=$music, result=$result, card=$card)"
     }
+
 
     //
     companion object {
