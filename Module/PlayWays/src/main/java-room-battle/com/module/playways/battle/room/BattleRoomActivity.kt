@@ -693,6 +693,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     }
 
     override fun showRoundOver(lastRound: BattleRoundInfoModel, callback: () -> Unit) {
+        hideAllSceneView(null)
         mBattleRoundOverCardView.bindData(lastRound, object : AnimationListener {
             override fun onFinish() {
                 callback.invoke()
@@ -758,6 +759,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
     override fun gameOver(from: String) {
         MyLog.d(TAG, "gameOver from = $from")
+        hideAllSceneView(null)
         mBattleGameOverCardView.bindData(object : AnimationListener {
             override fun onFinish() {
                 FlutterBoostController.openFlutterPage(this@BattleRoomActivity, "BattleResultPage", hashMapOf(
