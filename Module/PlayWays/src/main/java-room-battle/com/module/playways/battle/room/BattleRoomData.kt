@@ -1,7 +1,5 @@
 package com.module.playways.battle.room
 
-import android.support.v4.util.ArrayMap
-import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.component.busilib.constans.GameModeType
@@ -11,7 +9,6 @@ import com.module.playways.battle.room.event.BattleRoundChangeEvent
 import com.module.playways.battle.room.model.BattlePlayerInfoModel
 import com.module.playways.battle.room.model.BattleRoomConfig
 import com.module.playways.battle.room.model.BattleRoundInfoModel
-import com.module.playways.room.data.H
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.BattleRoom.EBRoundStatus
 import org.greenrobot.eventbus.EventBus
@@ -20,11 +17,16 @@ import org.greenrobot.eventbus.EventBus
 class BattleRoomData : BaseRoomData<BattleRoundInfoModel>() {
 
     override fun getPlayerAndWaiterInfoList(): List<PlayerInfoModel> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val list = ArrayList<PlayerInfoModel>()
+        list.addAll(myTeamInfo)
+        list.addAll(opTeamInfo)
+        return list
     }
 
     override fun getInSeatPlayerInfoList(): List<PlayerInfoModel> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val list = ArrayList<PlayerInfoModel>()
+        list.addAll(myTeamInfo)
+        return list
     }
 
     override fun getCanGiveGiftList(): List<PlayerInfoModel> {
