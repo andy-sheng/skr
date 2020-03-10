@@ -105,7 +105,7 @@ class BattleSongGuideView(viewStub: ViewStub, protected var mRoomData: BattleRoo
                     }, Consumer<Throwable> { throwable -> MyLog.e(mTag, throwable) })
 
             countDownJop = launch {
-                var countDownTime = (it.waitEndMs - it.singBeginMs)/1000
+                var countDownTime = (it.waitEndMs - it.waitBeginMs)/1000
                 for (i in 0..countDownTime) {
                     var t = countDownTime - i
                     var messageTips: SpannableStringBuilder? = null
