@@ -70,9 +70,6 @@ import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_BATTLE_ROOM)
 class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
-    override fun receiveScoreEvent(score: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     companion object {
         val playerTag = "BattleRoomActivity"
@@ -702,12 +699,15 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun receiveScoreEvent(score: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun showSelfSing() {
         hideAllSceneView(null)
         mBattleSelfSingLyricView.show(0) {
             mCorePresenter.overSing()
         }
-
         mBattleGiveUpView.show()
     }
 
@@ -721,7 +721,9 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         mBattleGameOverCardView.bindData(object : AnimationListener {
             override fun onFinish() {
                 FlutterBoostController.openFlutterPage(this@BattleRoomActivity, "BattleResultPage", hashMapOf(
-                        "roomID" to mRoomData.gameId
+                        "roomID" to mRoomData.gameId,
+                        "targetNickname" to mRoomData.getFirstTeammate()?.userInfo?.nicknameRemark!!,
+                        "targetAvatar" to mRoomData.getFirstTeammate()?.userInfo?.avatar!!
                 ))
                 finish()
             }
