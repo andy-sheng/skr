@@ -12,10 +12,10 @@ const val START_PLAY_SONG_ACTION = "SKR_START_PLAY_SONG_ACTION"
 const val STOP_PLAY_SONG_ACTION = "SKR_STOP_PLAY_SONG_ACTION"
 const val TRY_WAKEUP_HOME_ACTION = "TRY_WAKEUP_HOME_ACTION"
 
-class NotifitionPlayerActionReceiver : BroadcastReceiver() {
+class NotificationPlayerActionReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        MyLog.d("NotifitionPlayerActionReceiver", "onReceive context = $context, intent = $intent")
+        MyLog.d("NotificationPlayerActionReceiver", "onReceive context = $context, intent = $intent")
         when (intent?.action) {
             PRE_SONG_ACTION -> {
 

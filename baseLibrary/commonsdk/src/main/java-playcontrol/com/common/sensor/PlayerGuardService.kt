@@ -57,14 +57,14 @@ class PlayerGuardService : Service() {
         val songName = jo?.getString("songName")
         val playing = jo?.getBooleanValue("playing")
 
-        val intent1 = Intent(this, NotifitionPlayerActionReceiver::class.java)
+        val intent1 = Intent(this, NotificationPlayerActionReceiver::class.java)
         intent1.action = PRE_SONG_ACTION
         val button1PI = PendingIntent.getBroadcast(this, 0, intent1, 0)
-        val intent2 = Intent(this, NotifitionPlayerActionReceiver::class.java)
+        val intent2 = Intent(this, NotificationPlayerActionReceiver::class.java)
         intent2.action = PRE_SONG_ACTION
         val button2PI = PendingIntent.getBroadcast(this, 0, intent2, 0)
 
-        val intent3 = Intent(this, NotifitionPlayerActionReceiver::class.java)
+        val intent3 = Intent(this, NotificationPlayerActionReceiver::class.java)
         if (playing == true) {
             intent3.action = STOP_PLAY_SONG_ACTION
         } else {
@@ -128,7 +128,7 @@ class PlayerGuardService : Service() {
     private fun createNotification2(): Notification {
         val id = "com.zq.live"
         createChannel(id)
-        val contentIntent = Intent(this, NotifitionPlayerActionReceiver::class.java)
+        val contentIntent = Intent(this, NotificationPlayerActionReceiver::class.java)
         contentIntent.action = TRY_WAKEUP_HOME_ACTION
 //        val contentIntent = Intent()
 //        contentIntent.data = Uri.parse("inframeskr://home/trywakeup")

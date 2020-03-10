@@ -180,7 +180,7 @@
             android:name="com.common.sensor.PlayerGuardService"
             android:process=":sensor"></service>
 
-        <receiver android:name="com.common.sensor.NotifitionPlayerActionReceiver" />
+        <receiver android:name="com.common.sensor.NotificationPlayerActionReceiver" />
         <receiver android:name="com.common.headset.MediaButtonReceiver"
             >
             <intent-filter android:priority="2147483647">
