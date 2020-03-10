@@ -36,6 +36,10 @@ object BattleRoomMsgManager : BaseMsgManager<EBattleRoomMsgType, BattleRoomMsg>(
         }
         when {
             msg.msgType == EBattleRoomMsgType.BRT_USER_ENTER -> EventBus.getDefault().post(msg.bUserEnterMsg)
+            msg.msgType == EBattleRoomMsgType.BRT_GAME_OVER -> EventBus.getDefault().post(msg.bGameOverMsg)
+            msg.msgType == EBattleRoomMsgType.BRT_NEXT_ROUND -> EventBus.getDefault().post(msg.bNextRoundMsg)
+            msg.msgType == EBattleRoomMsgType.BRT_SING_ROUND -> EventBus.getDefault().post(msg.bSingRoundMsg)
+            msg.msgType == EBattleRoomMsgType.BRT_SYNC -> EventBus.getDefault().post(msg.bSyncMsg)
         }
     }
 }

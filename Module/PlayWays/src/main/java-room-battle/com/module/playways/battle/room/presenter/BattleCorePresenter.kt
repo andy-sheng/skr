@@ -339,6 +339,28 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
     }
 
     /**
+     * 正常等待结束
+     */
+    fun overWait() {
+        MyLog.w(TAG, "overWait")
+        val map = HashMap<String, Any?>()
+        map["roomID"] = mRoomData.gameId
+        map["roundSeq"] = mRoomData.realRoundInfo?.roundSeq ?: 0
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe(RequestControl("overWait", ControlType.CancelThis)) {
+                mRoomServerApi.overWait(body)
+            }
+            if (result.errno == 0) {
+                //closeEngine()
+                MyLog.w(TAG, "overWait 上报成功 traceid is " + result.traceId)
+            } else {
+                MyLog.w(TAG, "overWait 上报失败 traceid is " + result.traceId)
+            }
+        }
+    }
+
+    /**
      * 使用帮唱卡
      */
     fun reqHelpSing() {
@@ -810,12 +832,12 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         ensureInRcRoom()
 //        roomView.showSongCount(event.musicCnt)
         var currentRound = BattleRoundInfoModel.parseFromRoundInfo(event.currentRound)
-        if(mRoomData.realRoundSeq == currentRound.roundSeq){
+        if (mRoomData.realRoundSeq == currentRound.roundSeq) {
             currentRound.result?.teamScore?.forEach {
-                if(mRoomData?.myTeamTag == it.teamTag){
+                if (mRoomData?.myTeamTag == it.teamTag) {
                     // 得到我的队伍的总分
                     mRoomData?.myTeamScore = it.teamScore
-                }else{
+                } else {
                     // 得到对方队伍的总分
                     mRoomData?.opTeamScore = it.teamScore
                 }

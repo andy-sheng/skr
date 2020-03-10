@@ -61,12 +61,12 @@ class BattleRoomData : BaseRoomData<BattleRoundInfoModel>() {
 
     fun getPlayerInfoById(userId: Int): BattlePlayerInfoModel? {
         for (p in myTeamInfo) {
-            if (p.userID != MyUserInfoManager.uid.toInt()) {
+            if (p.userID == userId) {
                 return p
             }
         }
         for (p in opTeamInfo) {
-            if (p.userID != MyUserInfoManager.uid.toInt()) {
+            if (p.userID == userId) {
                 return p
             }
         }

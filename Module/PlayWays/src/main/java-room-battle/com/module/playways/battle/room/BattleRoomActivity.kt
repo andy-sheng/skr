@@ -685,7 +685,9 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         mBattleSongGuideView.show()
         mTopContentView.bindData()
         if (mRoomData.realRoundInfo?.userID == MyUserInfoManager.uid.toInt()) {
-            mBattleGrabView.show()
+            mBattleGrabView.show{
+                mCorePresenter.overWait()
+            }
             mBattlePropsCardView.show()
         }
     }

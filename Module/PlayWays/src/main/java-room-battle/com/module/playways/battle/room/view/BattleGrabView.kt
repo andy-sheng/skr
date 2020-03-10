@@ -1,5 +1,6 @@
 package com.module.playways.battle.room.view
 
+import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewStub
@@ -8,6 +9,7 @@ import com.common.core.view.setDebounceViewClickListener
 import com.module.playways.R
 import com.module.playways.battle.room.BattleRoomData
 import com.module.playways.grab.room.view.RoundRectangleView
+import com.module.playways.room.data.H
 
 class BattleGrabView(viewStub: ViewStub, protected var mRoomData: BattleRoomData?) : BaseSceneView(viewStub) {
     var singIv: ImageView? = null
@@ -15,6 +17,7 @@ class BattleGrabView(viewStub: ViewStub, protected var mRoomData: BattleRoomData
 
     var clickGrabFuc: (() -> Unit)? = null
 
+    var handler = Handler()
     override fun init(parentView: View) {
         singIv = parentView.findViewById(R.id.sing_iv)
         rrlProgress = parentView.findViewById(R.id.rrl_progress)
@@ -38,16 +41,23 @@ class BattleGrabView(viewStub: ViewStub, protected var mRoomData: BattleRoomData
         return R.layout.battle_grab_view_layout
     }
 
-    fun show() {
-        enterAnimation()
 
+    fun show(callback: () -> Unit?) {
+        enterAnimation()
+        var time = (H.battleRoomData?.realRoundInfo?.waitEndMs
+                ?: 0) - (H.battleRoomData?.realRoundInfo?.waitBeginMs ?: 0)
         rrlProgress?.post {
-            rrlProgress?.startCountDown(15000)
+            rrlProgress?.startCountDown(time.toLong())
         }
+        handler?.postDelayed({
+            callback.invoke()
+        }, time.toLong())
     }
+
 
     fun hide() {
         setVisibility(View.GONE)
+        handler?.removeCallbacksAndMessages(null)
         rrlProgress?.stopCountDown()
     }
 }

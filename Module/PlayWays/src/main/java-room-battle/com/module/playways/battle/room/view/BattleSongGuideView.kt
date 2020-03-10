@@ -15,10 +15,15 @@ import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExTextView
 import com.component.lyrics.LyricsManager
+import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
 import com.module.playways.battle.room.BattleRoomData
 import com.module.playways.grab.room.model.NewChorusLyricModel
 import io.reactivex.functions.Consumer
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 
 class BattleSongGuideView(viewStub: ViewStub, protected var mRoomData: BattleRoomData) : BaseSceneView(viewStub) {
     val mTag = "BattleSongGuideView"
@@ -39,6 +44,20 @@ class BattleSongGuideView(viewStub: ViewStub, protected var mRoomData: BattleRoo
         leftSecondAvatar = parentView.findViewById(R.id.left_second_avatar)
         rightFirstAvatar = parentView.findViewById(R.id.right_first_avatar)
         rightSecondAvatar = parentView.findViewById(R.id.right_second_avatar)
+
+        leftFirstAvatar?.setOnClickListener {
+            EventBus.getDefault().post(ShowPersonCardEvent(mRoomData.myTeamInfo[0].userID))
+        }
+        leftSecondAvatar?.setOnClickListener {
+            EventBus.getDefault().post(ShowPersonCardEvent(mRoomData.myTeamInfo[1].userID))
+        }
+        rightFirstAvatar?.setOnClickListener {
+            EventBus.getDefault().post(ShowPersonCardEvent(mRoomData.opTeamInfo[0].userID))
+        }
+        rightSecondAvatar?.setOnClickListener {
+            EventBus.getDefault().post(ShowPersonCardEvent(mRoomData.opTeamInfo[1].userID))
+        }
+
         songNameTv = parentView.findViewById(R.id.song_name_tv)
         songLyricTv = parentView.findViewById(R.id.song_lyric_tv)
         singerInfoTv = parentView.findViewById(R.id.singer_info_tv)
@@ -50,12 +69,13 @@ class BattleSongGuideView(viewStub: ViewStub, protected var mRoomData: BattleRoo
         return R.layout.battle_song_guide_view_layout
     }
 
-    fun show() {
-        var battleRoundInfoModel = mRoomData?.realRoundInfo
-        if (battleRoundInfoModel == null) {
-            battleRoundInfoModel = mRoomData?.expectRoundInfo
-        }
+    var countDownJop: Job? = null
 
+    fun show() {
+        setVisibility(View.VISIBLE)
+        var battleRoundInfoModel = mRoomData?.realRoundInfo
+        leftWinNumTv?.text = "${mRoomData.myTeamScore}"
+        rightWinNumTv?.text = "${mRoomData.opTeamScore}"
         battleRoundInfoModel?.let {
             enterAnimation()
             loadAvatar(leftFirstAvatar!!, mRoomData.myTeamInfo[0].userInfo.avatar)
@@ -84,35 +104,39 @@ class BattleSongGuideView(viewStub: ViewStub, protected var mRoomData: BattleRoo
                         }
                     }, Consumer<Throwable> { throwable -> MyLog.e(mTag, throwable) })
 
-            kotlin.run {
-                var messageTips: SpannableStringBuilder? = null
-                if (it.userID == MyUserInfoManager.uid.toInt()) {
-                    messageTips = SpanUtils().append("轮到 ").setForegroundColor(U.getColor(R.color.white_trans_50))
-                            .append("你 ").setForegroundColor(U.getColor(R.color.white))
-                            .append("演唱 ").setForegroundColor(U.getColor(R.color.white_trans_50))
-                            .append("4s ").setForegroundColor(U.getColor(R.color.white))
-                            .create()
-                } else {
-                    if (mRoomData.getFirstTeammate()?.userID == it.userID) {
-                        //队友
-                        messageTips = SpanUtils().append("轮到队友 ").setForegroundColor(U.getColor(R.color.white_trans_50))
-                                .append(mRoomData.getPlayerInfoById(it.userID)?.userInfo?.nicknameRemark
-                                        ?: "").setForegroundColor(U.getColor(R.color.white))
+            countDownJop = launch {
+                var countDownTime = (it.waitEndMs - it.singBeginMs)/1000
+                for (i in 0..countDownTime) {
+                    var t = countDownTime - i
+                    var messageTips: SpannableStringBuilder? = null
+                    if (it.userID == MyUserInfoManager.uid.toInt()) {
+                        messageTips = SpanUtils().append("轮到 ").setForegroundColor(U.getColor(R.color.white_trans_50))
+                                .append("你 ").setForegroundColor(U.getColor(R.color.white))
                                 .append("演唱 ").setForegroundColor(U.getColor(R.color.white_trans_50))
-                                .append("4s ").setForegroundColor(U.getColor(R.color.white))
+                                .append("${t}s ").setForegroundColor(U.getColor(R.color.white))
                                 .create()
                     } else {
-                        //对手
-                        messageTips = SpanUtils().append("轮到对手 ").setForegroundColor(U.getColor(R.color.white_trans_50))
-                                .append(mRoomData.getPlayerInfoById(it.userID)?.userInfo?.nicknameRemark
-                                        ?: "").setForegroundColor(U.getColor(R.color.white))
-                                .append("演唱 ").setForegroundColor(U.getColor(R.color.white_trans_50))
-                                .append("4s ").setForegroundColor(U.getColor(R.color.white))
-                                .create()
+                        if (mRoomData.getFirstTeammate()?.userID == it.userID) {
+                            //队友
+                            messageTips = SpanUtils().append("轮到队友 ").setForegroundColor(U.getColor(R.color.white_trans_50))
+                                    .append(mRoomData.getPlayerInfoById(it.userID)?.userInfo?.nicknameRemark
+                                            ?: "").setForegroundColor(U.getColor(R.color.white))
+                                    .append("演唱 ").setForegroundColor(U.getColor(R.color.white_trans_50))
+                                    .append("${t}s ").setForegroundColor(U.getColor(R.color.white))
+                                    .create()
+                        } else {
+                            //对手
+                            messageTips = SpanUtils().append("轮到对手 ").setForegroundColor(U.getColor(R.color.white_trans_50))
+                                    .append(mRoomData.getPlayerInfoById(it.userID)?.userInfo?.nicknameRemark
+                                            ?: "").setForegroundColor(U.getColor(R.color.white))
+                                    .append("演唱 ").setForegroundColor(U.getColor(R.color.white_trans_50))
+                                    .append("${t}s ").setForegroundColor(U.getColor(R.color.white))
+                                    .create()
+                        }
                     }
+                    singerInfoTv?.text = messageTips
+                    delay(1000)
                 }
-
-                singerInfoTv?.text = messageTips
             }
         }
     }
@@ -126,6 +150,7 @@ class BattleSongGuideView(viewStub: ViewStub, protected var mRoomData: BattleRoo
     }
 
     fun hide() {
+        countDownJop?.cancel()
         mParentView?.clearAnimation()
         setVisibility(View.GONE)
     }

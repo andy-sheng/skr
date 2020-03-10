@@ -29,6 +29,12 @@ interface BattleRoomServerApi {
     fun overSing(@Body body: RequestBody): Call<ApiResult>
 
     /**
+     * 等待结束
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/battlegame/over-wait")
+    fun overWait(@Body body: RequestBody): Call<ApiResult>
+
+    /**
      * 使用帮唱卡
      */
     @PUT("http://dev.game.inframe.mobi/v1/battlegame/req-help-sing")
