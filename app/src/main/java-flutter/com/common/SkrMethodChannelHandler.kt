@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
 import com.common.flutter.plugin.MethodHandler
+import com.common.log.MyLog
 import com.common.rxretrofit.httpGet
 import com.common.rxretrofit.httpPost
 import com.common.rxretrofit.httpPut
@@ -123,7 +124,7 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
                 var category = call.argument<String>("category")
                 var key = call.argument<String>("key")
                 var params = call.argument<java.util.HashMap<String, String>>("params")
-                StatisticsAdapter.recordCountEvent(category,key,params)
+                StatisticsAdapter.recordCountEvent(category, key, params)
                 result.success(null)
                 return true
             }
@@ -132,19 +133,30 @@ class SkrMethodChannelHandler : MethodHandler("SkrMethodChannelHandler") {
                 var uniqID = call.argument<String>("uniqID")
                 var content = call.argument<String>("content")
                 var expireAt = call.argument<Int>("expireAt")
-                var dayAfter = (System.currentTimeMillis()+24*60*60*1000)/1000
-                ModuleServiceManager.getInstance().msgService.sendRelationInviteMsg(userID,uniqID, content,expireAt?.toLong()?:dayAfter)
+                var dayAfter = (System.currentTimeMillis() + 24 * 60 * 60 * 1000) / 1000
+                ModuleServiceManager.getInstance().msgService.sendRelationInviteMsg(userID, uniqID, content, expireAt?.toLong()
+                        ?: dayAfter)
                 result.success(null)
                 return true
             }
             call.method == "getRemarkName" -> {
                 var userID = call.argument<Int>("userID")
                 var defaultNickName = call.argument<String>("defaultNickName")
-                var remarkName = UserInfoManager.getInstance().getRemarkName(userID!!,defaultNickName)
+                var remarkName = UserInfoManager.getInstance().getRemarkName(userID!!, defaultNickName)
                 result.success(remarkName)
                 return true
             }
-            else->{
+            call.method == "getCanPlayBgMusic" -> {
+                val gameKTVSceneModel = H.partyRoomData?.realRoundInfo?.sceneInfo?.ktv
+                MyLog.d("SkrMethodChannelHandler", "handle call = $call, gameKTVSceneModel = $gameKTVSceneModel")
+                if (gameKTVSceneModel != null && gameKTVSceneModel.userID === MyUserInfoManager.uid.toInt()) {
+                    result.success(false)
+                } else {
+                    result.success(true)
+                }
+                return true
+            }
+            else -> {
                 return false
             }
         }

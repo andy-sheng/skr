@@ -410,16 +410,18 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PresentGift) {
-        val floatWindowData = FloatWindowData(FloatWindowData.Type.BIG_GIFT_NOTIFY)
-        val obj = JSONObject();
-        obj.put("content", event.content)
-        obj.put("couldEnter", event.couldEnter)
-        obj.put("sourceURL", event.sourceURL)
-        obj.put("enterScheme", event.enterScheme)
-        obj.put("mode", event.mode.value)
-        obj.put("roomID", event.roomID)
-        floatWindowData.extra = obj.toJSONString()
-        mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
+        if (U.getActivityUtils().isAppForeground) {
+            val floatWindowData = FloatWindowData(FloatWindowData.Type.BIG_GIFT_NOTIFY)
+            val obj = JSONObject();
+            obj.put("content", event.content)
+            obj.put("couldEnter", event.couldEnter)
+            obj.put("sourceURL", event.sourceURL)
+            obj.put("enterScheme", event.enterScheme)
+            obj.put("mode", event.mode.value)
+            obj.put("roomID", event.roomID)
+            floatWindowData.extra = obj.toJSONString()
+            mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
