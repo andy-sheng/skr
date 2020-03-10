@@ -4,6 +4,9 @@ import android.content.Context
 import android.text.Html
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.OvershootInterpolator
+import android.view.animation.TranslateAnimation
 import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.image.fresco.BaseImageView
@@ -52,6 +55,14 @@ class BigGiftNotifyView : RelativeLayout {
 
     fun bindData(schema: String, content: String, showEnter: Boolean, sourceURL: String, call: () -> Unit) {
         if (showEnter) {
+            val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                    Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f)
+            animation.duration = 600
+            animation.repeatMode = Animation.REVERSE
+            animation.interpolator = OvershootInterpolator()
+            animation.fillAfter = true
+            startAnimation(animation)
+
             mEnterTv.visibility = View.VISIBLE
             mEnterTv.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View) {
