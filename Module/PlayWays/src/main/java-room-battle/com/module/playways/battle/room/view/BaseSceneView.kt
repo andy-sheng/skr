@@ -19,7 +19,7 @@ abstract class BaseSceneView(viewStub: ViewStub) : ExViewStub(viewStub) {
             if (msg.what == MSG_ANIMATION_SHOW) {
                 val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                         Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f)
-                animation.duration = 200
+                animation.duration = 500
                 animation.repeatMode = Animation.REVERSE
                 animation.interpolator = OvershootInterpolator()
                 animation.fillAfter = true
@@ -28,7 +28,7 @@ abstract class BaseSceneView(viewStub: ViewStub) : ExViewStub(viewStub) {
             } else if (msg.what == MSG_ANIMATION_HIDE) {
                 val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, -1.0f,
                         Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f)
-                animation.duration = 200
+                animation.duration = 500
                 animation.repeatMode = Animation.REVERSE
                 animation.interpolator = OvershootInterpolator()
                 animation.fillAfter = true
@@ -40,6 +40,7 @@ abstract class BaseSceneView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     fun enterAnimation() {
+        tryInflate()
         mUiHandler.removeCallbacksAndMessages(null)
         mUiHandler.sendEmptyMessage(MSG_ANIMATION_SHOW)
     }

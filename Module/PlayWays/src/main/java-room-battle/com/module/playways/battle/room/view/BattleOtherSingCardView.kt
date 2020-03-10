@@ -16,11 +16,11 @@ import com.module.playways.battle.room.BattleRoomData
 import com.module.playways.grab.room.view.SingCountDownView2
 
 class BattleOtherSingCardView(viewStub: ViewStub, protected var mRoomData: BattleRoomData) : BaseSceneView(viewStub) {
-    lateinit var singCountDownView: SingCountDownView2
-    lateinit var cardIv: ExImageView
-    lateinit var singerAvatarIv: BaseImageView
-    lateinit var songNameTv: ExTextView
-    lateinit var singerInfoTv: ExTextView
+    var singCountDownView: SingCountDownView2? = null
+    var cardIv: ExImageView? = null
+    var singerAvatarIv: BaseImageView? = null
+    var songNameTv: ExTextView? = null
+    var singerInfoTv: ExTextView? = null
 
     override fun init(parentView: View) {
         singCountDownView = parentView.findViewById(R.id.sing_count_down_view)
@@ -38,7 +38,7 @@ class BattleOtherSingCardView(viewStub: ViewStub, protected var mRoomData: Battl
 
         battleRoundInfoModel?.let {
             enterAnimation()
-            songNameTv.text = "《${it.music?.itemName}》"
+            songNameTv?.text = "《${it.music?.itemName}》"
 
             var messageTips: SpannableStringBuilder? = null
             if (mRoomData.getFirstTeammate()?.userID == it.userID) {
@@ -57,10 +57,10 @@ class BattleOtherSingCardView(viewStub: ViewStub, protected var mRoomData: Battl
                         .create()
             }
 
-            singerInfoTv.text = messageTips
+            singerInfoTv?.text = messageTips
 
             val totalMs = it.music?.totalMs ?: 0
-            singCountDownView.startPlay(0, totalMs, true)
+            singCountDownView?.startPlay(0, totalMs, true)
 
             AvatarUtils.loadAvatarByUrl(singerAvatarIv, AvatarUtils.newParamsBuilder(mRoomData.getPlayerInfoById(it.userID)?.userInfo?.avatar)
                     .setCircle(true)

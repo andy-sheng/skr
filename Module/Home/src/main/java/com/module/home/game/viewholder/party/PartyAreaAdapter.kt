@@ -57,9 +57,10 @@ class PartyAreaAdapter : RecyclerView.Adapter<PartyAreaAdapter.PartyAreaItemHold
                     .setCornerRadius(8.dp().toFloat())
                     .build())
             descTv.text = model.topicName
-            
+
             tagTv.visibility = View.VISIBLE
             when (model.gameMode) {
+                PartyRoomTagMode.ERM_DEFAULT_MIC -> tagTv.text = "连麦"
                 PartyRoomTagMode.ERM_GAME_PK -> tagTv.text = "游戏"
                 PartyRoomTagMode.ERM_MAKE_FRIEND -> tagTv.text = "相亲"
                 PartyRoomTagMode.ERM_SING_PK -> tagTv.text = "K歌"

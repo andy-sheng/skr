@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_60_dp">
 
-    <ImageView
+    <com.common.view.ex.ExImageView
         android:id="@+id/sing_iv"
         android:layout_width="@dimen/view_108_dp"
         android:layout_height="@dimen/view_60_dp"
         android:layout_gravity="center|right"
-        android:layout_marginRight="1dp"
-        android:background="@drawable/battle_want_sing" />
+        app:bl_pressed_drawable="@drawable/battle_press_want_sing"
+        app:bl_unPressed_drawable="@drawable/battle_want_sing" />
 
     <com.module.playways.grab.room.view.RoundRectangleView
         android:id="@+id/rrl_progress"
-        android:layout_width="@dimen/view_110_dp"
+        android:layout_width="@dimen/view_105_dp"
         android:layout_height="@dimen/view_45_dp"
         android:layout_centerInParent="true"
         android:layout_gravity="center|right"
+        android:layout_marginRight="@dimen/view_dimen_5"
         android:visibility="visible" />
 </FrameLayout>

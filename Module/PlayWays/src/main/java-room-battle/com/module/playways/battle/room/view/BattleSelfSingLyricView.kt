@@ -56,17 +56,14 @@ class BattleSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: Battl
         }
 
         battleRoundInfoModel?.let {
-            tryInflate()
             enterAnimation()
-            val infoModel = mRoomData?.realRoundInfo
-            //todo
-            val totalMs = 0
+            val totalMs = it.music?.totalMs ?: 0
             mSingCountDownView2.startPlay(offset, totalMs - offset, true)
             mSingCountDownView2.setListener {
                 call?.invoke()
             }
 
-            playWithAcc(offset, true, infoModel, totalMs)
+            playWithAcc(offset, true, it, totalMs)
         }
     }
 
@@ -81,8 +78,7 @@ class BattleSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: Battl
         }
 
         initLyric()
-        //todo
-        mSongModel = null
+        mSongModel = infoModel.music
         var curSong = mSongModel
         if (curSong == null) {
             MyLog.w(TAG, "playWithAcc curSong = null totalTs=$totalTs")

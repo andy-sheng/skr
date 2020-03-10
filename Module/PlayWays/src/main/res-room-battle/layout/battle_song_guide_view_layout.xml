@@ -96,6 +96,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
+        android:maxLines="2"
+        android:lineSpacingExtra="3dp"
         android:id="@+id/song_lyric_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -9,11 +9,11 @@ import com.module.playways.R
 import com.module.playways.battle.room.BattleRoomData
 
 class BattlePropsCardView(viewStub: ViewStub, protected var mRoomData: BattleRoomData) : BaseSceneView(viewStub) {
-    lateinit var singCardIv: ImageView
-    lateinit var singCountTv: ExTextView
-    lateinit var switchSongIv: ImageView
-    lateinit var switchCountTv: ExTextView
-    lateinit var attentionIv: ImageView
+    var singCardIv: ImageView? = null
+    var singCountTv: ExTextView? = null
+    var switchSongIv: ImageView? = null
+    var switchCountTv: ExTextView? = null
+    var attentionIv: ImageView? = null
 
     var useSwitchSongCardFuc: (() -> Unit)? = null
     var useSingCardFuc: (() -> Unit)? = null
@@ -25,11 +25,11 @@ class BattlePropsCardView(viewStub: ViewStub, protected var mRoomData: BattleRoo
         switchCountTv = parentView.findViewById(R.id.switch_count_tv)
         attentionIv = parentView.findViewById(R.id.attention_iv)
 
-        singCardIv.setDebounceViewClickListener {
+        singCardIv?.setDebounceViewClickListener {
             useSingCardFuc?.invoke()
         }
 
-        switchSongIv.setDebounceViewClickListener {
+        switchSongIv?.setDebounceViewClickListener {
             useSwitchSongCardFuc?.invoke()
         }
     }
@@ -41,8 +41,8 @@ class BattlePropsCardView(viewStub: ViewStub, protected var mRoomData: BattleRoo
     fun show() {
         enterAnimation()
 
-        singCountTv.text = "X${mRoomData.config.helpCardCnt}"
-        switchCountTv.text = "X${mRoomData.config.switchCardCnt}"
+        singCountTv?.text = "X${mRoomData.config.helpCardCnt}"
+        switchCountTv?.text = "X${mRoomData.config.switchCardCnt}"
     }
 
     fun hide() {

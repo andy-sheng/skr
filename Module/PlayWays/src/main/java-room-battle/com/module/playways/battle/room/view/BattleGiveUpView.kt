@@ -8,13 +8,13 @@ import com.module.playways.R
 import com.module.playways.battle.room.BattleRoomData
 
 class BattleGiveUpView(viewStub: ViewStub, protected var mRoomData: BattleRoomData?) : BaseSceneView(viewStub) {
-    lateinit var giveUpIv: ImageView
+    var giveUpIv: ImageView? = null
     var clickGiveUpFuc: (() -> Unit)? = null
 
     override fun init(parentView: View) {
         giveUpIv = parentView.findViewById(R.id.give_up_iv)
 
-        giveUpIv.setDebounceViewClickListener {
+        giveUpIv?.setDebounceViewClickListener {
             clickGiveUpFuc?.invoke()
         }
     }
