@@ -102,17 +102,10 @@ class BattleSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: Battl
 
         mLyricAndAccMatchManager!!.setArgs(configParams)
 
-        if (isSelf) {
-            (mManyLyricsView.layoutParams as FrameLayout.LayoutParams).topMargin = U.getDisplayUtils().dip2px(-38f)
-            mVoiceScaleView.visibility = View.VISIBLE
-            mManyLyricsView.setUpLineNum(0)
-            mManyLyricsView.setDownLineNum(1)
-        } else {
-            (mManyLyricsView.layoutParams as FrameLayout.LayoutParams).topMargin = U.getDisplayUtils().dip2px(10f)
-            mVoiceScaleView.visibility = View.GONE
-            mManyLyricsView.setUpLineNum(1)
-            mManyLyricsView.setDownLineNum(1)
-        }
+        (mManyLyricsView.layoutParams as FrameLayout.LayoutParams).topMargin = U.getDisplayUtils().dip2px(-38f)
+        mVoiceScaleView.visibility = View.VISIBLE
+        mManyLyricsView.setUpLineNum(1)
+        mManyLyricsView.setDownLineNum(1)
 
         val finalCurSong = curSong
         mLyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener() {

@@ -24,7 +24,6 @@
         android:layout_marginTop="-38dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:visibility="visible"
-        app:ly_down_line_num="1"
         app:ly_enable_scroll="false"
         app:ly_enable_verbatim="true"
         app:ly_high_light_paint_color_from="#DB4D84"
@@ -35,8 +34,7 @@
         app:ly_paint_color_from="@color/white_trans_80"
         app:ly_paint_color_to="@color/white_trans_80"
         app:ly_paint_text_size="16.0"
-        app:ly_show_author="true"
-        app:ly_top_line_num="0" />
+        app:ly_show_author="true" />
 
     <com.component.lyrics.widget.VoiceScaleView
         android:id="@+id/voice_scale_view"
