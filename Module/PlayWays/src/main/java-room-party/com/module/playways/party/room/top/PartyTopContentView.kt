@@ -13,23 +13,27 @@ import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.log.MyLog
+import com.common.rxretrofit.*
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
+import com.common.view.ex.ExTextView
 import com.component.busilib.view.SpeakingTipsAnimationView
 import com.component.person.event.ShowPersonCardEvent
 import com.engine.EngineEvent
+import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomData
+import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.PartyHostChangeEvent
 import com.module.playways.party.room.event.PartyOnlineUserCntChangeEvent
+import com.module.playways.party.room.model.PartyPunishInfoModel
+import com.module.playways.party.room.model.PartyRankModel
 import com.module.playways.room.data.H
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -47,12 +51,18 @@ class PartyTopContentView : ExConstraintLayout {
     private val avatarIv: BaseImageView
     private val nameTv: TextView
     private val compereTv: TextView
-    private val moreArrow: ExImageView
-    private val onlineNum: TextView
-    private val audienceIv: ImageView
+    private val onlineNum: ExTextView
     private val clubIconIv: ImageView
 
     private val speakerAnimationIv: SpeakingTipsAnimationView
+
+    private val userRankArea: ExConstraintLayout
+    private val avatarRank3: SimpleDraweeView
+    private val avatarRank2: SimpleDraweeView
+    private val avatarRank1: SimpleDraweeView
+    private val rankTv3: ExTextView
+    private val rankTv2: ExTextView
+    private val rankTv1: ExTextView
 
     var listener: Listener? = null
     var mIsOpen = true
@@ -66,11 +76,17 @@ class PartyTopContentView : ExConstraintLayout {
         avatarIv = this.findViewById(R.id.avatar_iv)
         nameTv = this.findViewById(R.id.name_tv)
         compereTv = this.findViewById(R.id.compere_tv)
-        moreArrow = this.findViewById(R.id.more_arrow)
         onlineNum = this.findViewById(R.id.online_num)
-        audienceIv = this.findViewById(R.id.audience_iv)
         clubIconIv = this.findViewById(R.id.club_icon_iv)
         speakerAnimationIv = this.findViewById(R.id.speaker_animation_iv)
+
+        userRankArea = this.findViewById(R.id.user_rank_area)
+        avatarRank3 = this.findViewById(R.id.avatar_rank_3)
+        avatarRank2 = this.findViewById(R.id.avatar_rank_2)
+        avatarRank1 = this.findViewById(R.id.avatar_rank_1)
+        rankTv3 = this.findViewById(R.id.rank_tv_3)
+        rankTv2 = this.findViewById(R.id.rank_tv_2)
+        rankTv1 = this.findViewById(R.id.rank_tv_1)
 
         (this.findViewById(R.id.avatar_iv_bg) as View).setOnClickListener {
             avatarIv.callOnClick()
@@ -114,10 +130,58 @@ class PartyTopContentView : ExConstraintLayout {
 
         }
         arrowIv.setDebounceViewClickListener { listener?.clickArrow(!mIsOpen) }
-        moreArrow.setDebounceViewClickListener { listener?.showRoomMember() }
         onlineNum.setDebounceViewClickListener { listener?.showRoomMember() }
-        audienceIv.setDebounceViewClickListener { listener?.showRoomMember() }
         clubIconIv.setDebounceViewClickListener { listener?.showClubInfoCard() }
+        userRankArea.setDebounceViewClickListener { listener?.showPartyRankList() }
+
+        getPartyRankList()
+    }
+
+    private fun getPartyRankList() {
+        val partyRoomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
+        launch {
+            val result = subscribe(RequestControl("getPartyRankList", ControlType.CancelThis)) {
+                partyRoomServerApi.getPartyRankList(0, 10, MyUserInfoManager.uid.toInt(), H.partyRoomData?.gameId
+                        ?: 0, 1)
+            }
+
+            if (result.errno == 0) {
+                val list = JSON.parseArray(result.data.getString("rankInfos"), PartyRankModel::class.java)
+                bindRankData(list)
+            } else {
+
+            }
+        }
+    }
+
+    private fun bindRankData(list: List<PartyRankModel>?) {
+        AvatarUtils.loadAvatarByUrl(avatarRank1, AvatarUtils.newParamsBuilder(getPartyRankModel(1, list)?.model?.avatar)
+                .setCircle(true)
+                .setBorderColor(Color.WHITE)
+                .setBorderWidth(1.dp().toFloat())
+                .build())
+        AvatarUtils.loadAvatarByUrl(avatarRank2, AvatarUtils.newParamsBuilder(getPartyRankModel(2, list)?.model?.avatar)
+                .setCircle(true)
+                .setBorderColor(Color.WHITE)
+                .setBorderWidth(1.dp().toFloat())
+                .build())
+        AvatarUtils.loadAvatarByUrl(avatarRank3, AvatarUtils.newParamsBuilder(getPartyRankModel(3, list)?.model?.avatar)
+                .setCircle(true)
+                .setBorderColor(Color.WHITE)
+                .setBorderWidth(1.dp().toFloat())
+                .build())
+    }
+
+    private fun getPartyRankModel(seq: Int, list: List<PartyRankModel>?): PartyRankModel? {
+        if (list.isNullOrEmpty()) {
+            return null
+        }
+        list.forEach {
+            if (it.rankSeq == seq) {
+                return it
+            }
+        }
+        return null
     }
 
     private fun getClubIdentify(clubID: Int, call: ((ClubMemberInfo?) -> Unit)) {
@@ -161,6 +225,7 @@ class PartyTopContentView : ExConstraintLayout {
 
     fun switchRoom() {
         bindData()
+        getPartyRankList()
     }
 
     fun bindData() {
@@ -254,5 +319,6 @@ class PartyTopContentView : ExConstraintLayout {
         fun showPartyOpHost()
         fun showPartySelfOpHost()
         fun showClubInfoCard()
+        fun showPartyRankList()
     }
 }

@@ -21,6 +21,7 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
+import com.common.flutter.boost.FlutterBoostController
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
@@ -41,6 +42,8 @@ import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
 import com.component.toast.CommonToastView
 import com.dialog.view.TipsDialogView
+import com.idlefish.flutterboost.FlutterBoostPlugin
+import com.idlefish.flutterboost.FlutterViewContainerManager
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.BaseRoomData
@@ -749,6 +752,12 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         mTopContentView.roomData = mRoomData
         mTopContentView.bindData()
         mTopContentView.listener = object : PartyTopContentView.Listener {
+            override fun showPartyRankList() {
+                FlutterBoostController.openFlutterPage(this@PartyRoomActivity, "RoomRankPage", mutableMapOf(
+                        "roomID" to mRoomData.gameId
+                ))
+            }
+
             override fun showRoomMember() {
                 // 查看房间所有人
                 dismissDialog()

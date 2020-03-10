@@ -403,4 +403,11 @@ interface PartyRoomServerApi {
     @GET("http://dev.game.inframe.mobi/v1/partygame/list-punish")
     fun getPunishList(@Query("roomID") roomID: Int, @Query("punishType") punishType: Int): Call<ApiResult>
 
+    /**
+     * 获取派对榜单 EPlT_GX = 1 : 贡献榜单  EPlT_CA = 2 : 宠爱榜单
+     */
+    @GET("http://dev.game.inframe.mobi/v1/game/party-rank-list")
+    fun getPartyRankList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int,
+                         @Query("roomID") roomID: Int, @Query("tagType") tagType: Int): Call<ApiResult>
+
 }
