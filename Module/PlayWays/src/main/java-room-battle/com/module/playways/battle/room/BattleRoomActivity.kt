@@ -64,6 +64,9 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.room.view.InputContainerView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -695,12 +698,47 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         })
     }
 
+    private var helpSingDialogCountDownJob: Job? = null
+
     override fun useHelpSing() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        /**
+         * 队友请求你帮唱，这轮演唱者是你
+         */
+        var totalTime = 5
+        if (mRoomData.realRoundInfo?.userID == MyUserInfoManager.uid.toInt()) {
+            dismissDialog()
+            var roundSeq = mRoomData.realRoundSeq
+            mTipsDialogView = TipsDialogView.Builder(this)
+                    .setMessageTip("队友请求帮唱${totalTime}s")
+                    .setConfirmTip("开始演唱")
+                    .setCancelTip("不会唱")
+                    .setConfirmBtnClickListener {
+                        mTipsDialogView?.dismiss(false)
+                        helpSingDialogCountDownJob?.cancel()
+                        mCorePresenter.rspHelpSing(roundSeq, 1)
+                    }
+                    .setCancelBtnClickListener {
+                        mTipsDialogView?.dismiss()
+                        helpSingDialogCountDownJob?.cancel()
+                        mCorePresenter.rspHelpSing(roundSeq, 2)
+                    }
+                    .build()
+            mTipsDialogView?.showByDialog()
+            helpSingDialogCountDownJob = launch {
+                for (i in 1..totalTime) {
+                    mTipsDialogView?.mMessageTv?.text = "队友请求帮唱${totalTime - i + 1}s"
+                    delay(1000)
+                }
+                mTipsDialogView?.dismiss()
+            }
+        } else {
+            mBattleGrabView.hide()
+            mBattlePropsCardView.hide()
+        }
     }
 
     override fun receiveScoreEvent(score: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun showSelfSing() {

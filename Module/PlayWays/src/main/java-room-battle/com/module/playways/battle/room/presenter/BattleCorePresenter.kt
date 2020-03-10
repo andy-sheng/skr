@@ -404,6 +404,26 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         }
     }
 
+    fun rspHelpSing(roundSeq: Int, op: Int) {
+        MyLog.w(TAG, "rspHelpSing")
+        val map = HashMap<String, Any?>()
+        map["roomID"] = mRoomData.gameId
+        map["roundSeq"] = roundSeq
+        map["helpSingType"] = op
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe(RequestControl("rspHelpSing", ControlType.CancelThis)) {
+                mRoomServerApi.rspHelpSing(body)
+            }
+            if (result.errno == 0) {
+                //closeEngine()
+                MyLog.w(TAG, "rspHelpSing 成功 traceid is " + result.traceId)
+            } else {
+                MyLog.w(TAG, "rspHelpSing 失败 traceid is " + result.traceId)
+            }
+        }
+    }
+
     /**
      * 退出房间
      */

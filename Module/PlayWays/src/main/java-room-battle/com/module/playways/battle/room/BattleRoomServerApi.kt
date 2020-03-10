@@ -35,6 +35,12 @@ interface BattleRoomServerApi {
     fun reqHelpSing(@Body body: RequestBody): Call<ApiResult>
 
     /**
+     * 是否响应帮唱
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/battlegame/rsp-help-sing")
+    fun rspHelpSing(@Body body: RequestBody): Call<ApiResult>
+
+    /**
      * 使用换歌卡
      */
     @PUT("http://dev.game.inframe.mobi/v1/battlegame/req-switch-sing")
