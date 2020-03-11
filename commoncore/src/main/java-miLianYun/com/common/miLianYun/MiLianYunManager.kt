@@ -24,8 +24,8 @@ object MiLianYunManager {
      * 小米联运是否开启
      */
     fun lianYunOpen(): Boolean {
-//        return U.getChannelUtils().channel == "MI_SHOP"
-        return true
+        return U.getChannelUtils().channel == "MI_SHOP"
+//        return true
     }
 
     private fun initSdk(succesCallback: () -> Unit?) {
