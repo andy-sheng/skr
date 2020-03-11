@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 
+import com.zq.mediaengine.filter.imgtex.ImgTexScaleFilter;
 import com.zq.mediaengine.framework.ImgTexFormat;
 import com.zq.mediaengine.framework.ImgTexFrame;
 import com.zq.mediaengine.framework.SrcPin;
@@ -27,6 +28,7 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
 
     private GLRender mGLRender;
     private MediaPlayer mMediaPlayer;
+    private boolean mEnableLoop;
 
     private int mTextureId;
     private SurfaceTexture mSurfaceTexture;
@@ -35,6 +37,7 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
     private ImgTexFormat mImgTexFormat;
     private SrcPin<ImgTexFrame> mImgTexSrcPin;
     private ImgTexAlphaFrameFilter mImgTexAlphaFrameFilter;
+    private ImgTexScaleFilter mImgTexScaleFilter;
 
     private volatile boolean mStopped = true;
 
@@ -43,14 +46,19 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
         mMediaPlayer = new MediaPlayer();
         mImgTexSrcPin = new SrcPin<>();
         mImgTexAlphaFrameFilter = new ImgTexAlphaFrameFilter(mGLRender);
+        mImgTexScaleFilter = new ImgTexScaleFilter(mGLRender);
 
         mGLRender.addListener(mOnGLReadyListener);
         mGLRender.addListener(mOnGLSizeChangedListener);
         mGLRender.addListener(mOnGLReleasedListener);
         mMediaPlayer.setOnPreparedListener(mOnPreparedListener);
+        mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
+        mMediaPlayer.setOnSeekCompleteListener(mOnSeekCompleteListener);
 
         mImgTexSrcPin.connect(mImgTexAlphaFrameFilter.getSinkPin());
-        mImgTexAlphaFrameFilter.setIsRender(true);
+        mImgTexAlphaFrameFilter.getSrcPin().connect(mImgTexScaleFilter.getSinkPin());
+        mImgTexScaleFilter.setScalingMode(ImgTexScaleFilter.SCALING_MODE_BEST_FIT);
+        mImgTexScaleFilter.setIsRender(true);
     }
 
     public MediaPlayer getMediaPlayer() {
@@ -59,6 +67,10 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
 
     public void setDisplay(TextureView textureView) {
         mGLRender.init(textureView);
+    }
+
+    public void setEnableLoop(boolean enableLoop) {
+        mEnableLoop = enableLoop;
     }
 
     public void start(AssetFileDescriptor afd) {
@@ -122,6 +134,18 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
         mMediaPlayer.start();
     };
 
+    private MediaPlayer.OnCompletionListener mOnCompletionListener = mp -> {
+        Log.d(TAG, "onMediaPlayerCompletion");
+        if (mEnableLoop) {
+            mMediaPlayer.seekTo(0);
+        }
+    };
+
+    private MediaPlayer.OnSeekCompleteListener mOnSeekCompleteListener = mp -> {
+        Log.d(TAG, "onMediaPlayerSeekCompletion");
+        mMediaPlayer.start();
+    };
+
     private GLRender.OnReadyListener mOnGLReadyListener = () -> {
         Log.d(TAG, "onGLContext ready");
         try {
@@ -149,6 +173,7 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
 
     private GLRender.OnSizeChangedListener mOnGLSizeChangedListener = (width, height) -> {
         Log.d(TAG, "onGLSizeChanged: " + width + "x" + height);
+        mImgTexScaleFilter.setTargetSize(width, height);
     };
 
     private GLRender.OnReleasedListener mOnGLReleasedListener = () -> {
