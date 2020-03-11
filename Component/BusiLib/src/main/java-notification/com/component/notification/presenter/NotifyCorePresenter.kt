@@ -1094,10 +1094,10 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
             // 如果当前正在显示A的对话 刷新A即可
             mUiHandler.removeMessages(MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW)
             mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW, 5000)
-            rongMsgNotifyView?.bindData(event.buddyCacheEntry.toUserInfoModel(), event.content.toString())
+            rongMsgNotifyView?.bindData(event.buddyCacheEntry?.toUserInfoModel(), event.content.toString())
         } else {
             val floatWindowData = FloatWindowData(FloatWindowData.Type.RONG_MSG_NOTIFY)
-            floatWindowData.userInfoModel = event.buddyCacheEntry.toUserInfoModel()
+            floatWindowData.userInfoModel = event.buddyCacheEntry?.toUserInfoModel()
             floatWindowData.extra = event.content.toString()
             // 如果已经有A的对话在队列里，移除A的对话
             mFloatWindowDataFloatWindowObjectPlayControlTemplate?.remove(floatWindowData)
