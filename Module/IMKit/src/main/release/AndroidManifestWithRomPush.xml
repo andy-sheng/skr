@@ -42,7 +42,7 @@
             android:value="ConfigModule" />
 
 
-        <receiver android:name="com.module.msg.custom.MyRcPushMessageReceiver">
+        <receiver android:name="com.module.msg.custom.MyRcPushMessageReceiver2">
             <intent-filter>
                 <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
                 <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
