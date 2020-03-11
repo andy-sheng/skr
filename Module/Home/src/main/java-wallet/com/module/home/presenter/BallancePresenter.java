@@ -252,7 +252,8 @@ public class BallancePresenter extends RxLifeCyclePresenter {
                 if (obj.getErrno() == 0) {
                     orderID = obj.getData().getString("cpOrderID");
                     int feeValue = obj.getData().getIntValue("feeValue");
-                    MiLianYunManager.INSTANCE.pay(orderID, feeValue, new Function2<Integer, String, Unit>() {
+                    String cpUserInfo = obj.getData().getString("cpUserInfo");
+                    MiLianYunManager.INSTANCE.pay(orderID, feeValue,cpUserInfo, new Function2<Integer, String, Unit>() {
                         @Override
                         public Unit invoke(Integer code, String msg) {
                             if (code == 0) {

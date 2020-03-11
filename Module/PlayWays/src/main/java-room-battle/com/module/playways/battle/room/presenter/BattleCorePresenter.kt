@@ -559,7 +559,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
     }
 
     private fun processStatusChange(from: Int, lastRound: BattleRoundInfoModel?, thisRound: BattleRoundInfoModel?) {
-        DebugLogView.println(TAG, "processStatusChange from=$from roundSeq=${thisRound?.roundSeq} statusNow=${thisRound?.status}")
+        DebugLogView.println(TAG, "processStatusChange from=$from roundSeq=${thisRound?.roundSeq} statusNow=${thisRound?.status} lastOverReason=${lastRound?.overReason}")
         if (thisRound == null) {
             // 游戏结束了
             roomView.gameOver("thisRound == null")

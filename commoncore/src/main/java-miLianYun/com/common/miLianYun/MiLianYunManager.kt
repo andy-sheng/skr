@@ -122,11 +122,11 @@ object MiLianYunManager {
                 })
     }
 
-    fun pay(orderId: String, fee: Int, callback: (code: Int, msg: String?) -> Unit) {
+    fun pay(orderId: String, fee: Int,cpUserInfo:String, callback: (code: Int, msg: String?) -> Unit) {
         MyLog.d(TAG, "pay orderId = $orderId, fee = $fee, callback = $callback")
         var miBuyInfo = MiBuyInfo()
         miBuyInfo.cpOrderId = orderId //订单号唯一（不为空）
-        miBuyInfo.cpUserInfo = UserAccountManager.uuid //此参数在用户支付成功后会透传给CP的服务器
+        miBuyInfo.cpUserInfo = cpUserInfo //此参数在用户支付成功后会透传给CP的服务器
         miBuyInfo.feeValue = fee //必须是大于0的整数，100代表1元人民币（不为空）
 
         MiCommplatform.getInstance().miUniPay(U.getActivityUtils().topActivity, miBuyInfo

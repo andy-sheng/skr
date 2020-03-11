@@ -38,6 +38,7 @@ class BattleSongGuideView(viewStub: ViewStub, protected var mRoomData: BattleRoo
     var leftWinNumTv: ExTextView? = null
     var rightWinNumTv: ExTextView? = null
 
+
     override fun init(parentView: View) {
         titleBg = parentView.findViewById(R.id.title_bg)
         leftFirstAvatar = parentView.findViewById(R.id.left_first_avatar)
