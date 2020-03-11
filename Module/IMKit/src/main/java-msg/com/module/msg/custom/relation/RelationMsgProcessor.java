@@ -104,7 +104,7 @@ public class RelationMsgProcessor {
         contentMsg.setExpireAt(expireAt);
         Message msg = Message.obtain(userID, Conversation.ConversationType.PRIVATE, contentMsg);
 
-        RongIM.getInstance().sendMessage(msg, "pushContent" + content, "pushData" + content, new IRongCallback.ISendMessageCallback() {
+        RongIM.getInstance().sendMessage(msg,   content,  content, new IRongCallback.ISendMessageCallback() {
             @Override
             public void onAttached(Message message) {
 
@@ -129,7 +129,7 @@ public class RelationMsgProcessor {
         contentMsg.setHandle(handle);
         Message msg = Message.obtain(userID, Conversation.ConversationType.PRIVATE, contentMsg);
 
-        RongIM.getInstance().sendMessage(msg, "pushContent" + content, "pushData" + content, new IRongCallback.ISendMessageCallback() {
+        RongIM.getInstance().sendMessage(msg,  content,   content, new IRongCallback.ISendMessageCallback() {
             @Override
             public void onAttached(Message message) {
 

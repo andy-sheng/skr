@@ -1086,7 +1086,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RongMsgNotifyEvent) {
-        if (event.buddyCacheEntry?.uuid?.toString() == chatingUserId) {
+        if (chatingUserId?.isNotEmpty()==true) {
             // 详情页打开的已经是跟A的会话
             return
         }

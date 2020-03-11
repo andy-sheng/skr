@@ -150,7 +150,7 @@ public class RongMsgServiceImpl implements IMsgService {
         TextMessage contentMsg =  TextMessage.obtain(content);
         Message msg = Message.obtain(userID, Conversation.ConversationType.PRIVATE, contentMsg);
 
-        RongIM.getInstance().sendMessage(msg, "pushContent"+content, "pushData"+content, new IRongCallback.ISendMessageCallback() {
+        RongIM.getInstance().sendMessage(msg, content, "pushData"+content, new IRongCallback.ISendMessageCallback() {
             @Override
             public void onAttached(Message message) {
 
