@@ -126,7 +126,7 @@ public class RelationMsgProcessor {
 
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                MyLog.e(TAG, "onError" + " message=" + message + " errorCode=" + errorCode);
+                MyLog.e(TAG, "sendRelationInviteMsg onError" + " message=" + message + " errorCode=" + errorCode);
                 new android.os.Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -159,7 +159,7 @@ public class RelationMsgProcessor {
 
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                MyLog.e(TAG, "onError" + " message=" + message + " errorCode=" + errorCode);
+                MyLog.e(TAG, "sendRelationHandleMsg onError" + " message=" + message + " errorCode=" + errorCode);
             }
         });
     }
