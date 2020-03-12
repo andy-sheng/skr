@@ -374,6 +374,8 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                 mRoomServerApi.reqHelpSing(body)
             }
             if (result.errno == 0) {
+                var cnt = result.data.getIntValue("resHelpCardCnt")
+                mRoomData.config.helpCardCnt = cnt
                 //closeEngine()
                 MyLog.w(TAG, "reqHelpSing 成功 traceid is " + result.traceId)
             } else {
@@ -396,6 +398,8 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                 mRoomServerApi.reqSwitchSing(body)
             }
             if (result.errno == 0) {
+                var cnt = result.data.getIntValue("resSwitchCardCnt")
+                mRoomData.config.switchCardCnt = cnt
                 //closeEngine()
                 MyLog.w(TAG, "reqSwitchSing 成功 traceid is " + result.traceId)
             } else {
@@ -591,9 +595,9 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                 }
             } else {
                 // 先尝试显示上一轮结果
-                if (lastRound.overReason != EBRoundOverReason.BROR_UNKNOWN.value
-                        && lastRound.overReason != EBRoundOverReason.BROR_REQ_HELP_SING.value
-                        && lastRound.overReason != EBRoundOverReason.BROR_REQ_SWITCH_SING.value) {
+                if (lastRound.overReason == EBRoundOverReason.BROR_UNKNOWN.value
+                        || lastRound.overReason == EBRoundOverReason.BROR_REQ_HELP_SING.value
+                        || lastRound.overReason == EBRoundOverReason.BROR_REQ_SWITCH_SING.value) {
                     // 如果上一轮的结束原因是 使用帮唱卡 使用换歌卡 则不会显示结果页
                     r.invoke()
                 } else {
@@ -842,7 +846,9 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                     mRoomData?.opTeamScore = it.teamScore
                 }
             }
+            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(currentRound,false)
         }
+
         var nextRound = BattleRoundInfoModel.parseFromRoundInfo(event.nextRound)
         if (nextRound.roundSeq > (mRoomData.expectRoundInfo?.roundSeq ?: 0)) {
             // 游戏轮次结束

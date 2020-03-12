@@ -54,7 +54,6 @@ class BattleGrabView(viewStub: ViewStub, protected var mRoomData: BattleRoomData
         }, time.toLong())
     }
 
-
     fun hide() {
         setVisibility(View.GONE)
         handler?.removeCallbacksAndMessages(null)

@@ -4,9 +4,15 @@ import android.view.View
 import android.view.ViewStub
 import android.widget.ImageView
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
+import com.common.utils.ActivityUtils
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.battle.room.BattleRoomData
+import com.module.playways.battle.room.event.BattleSwitchCardChangeEvent
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class BattlePropsCardView(viewStub: ViewStub, protected var mRoomData: BattleRoomData) : BaseSceneView(viewStub) {
     var singCardIv: ImageView? = null
@@ -32,6 +38,9 @@ class BattlePropsCardView(viewStub: ViewStub, protected var mRoomData: BattleRoo
         switchSongIv?.setDebounceViewClickListener {
             useSwitchSongCardFuc?.invoke()
         }
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this)
+        }
     }
 
     override fun layoutDesc(): Int {
@@ -43,6 +52,19 @@ class BattlePropsCardView(viewStub: ViewStub, protected var mRoomData: BattleRoo
 
         singCountTv?.text = "X${mRoomData.config.helpCardCnt}"
         switchCountTv?.text = "X${mRoomData.config.switchCardCnt}"
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: BattleSwitchCardChangeEvent) {
+        switchCountTv?.text = "X${mRoomData.config.switchCardCnt}"
+        singCountTv?.text = "X${mRoomData.config.helpCardCnt}"
+    }
+
+
+    override fun onViewDetachedFromWindow(v: View) {
+        super.onViewDetachedFromWindow(v)
+        EventBus.getDefault().unregister(this)
     }
 
     fun hide() {
