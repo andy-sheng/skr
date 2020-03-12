@@ -380,7 +380,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
             override fun showGiftPanel() {
                 mContinueSendView.visibility = View.GONE
-                showPanelView()
+                showGiftPanelView()
             }
 
             override fun onClickFlower() {
@@ -389,16 +389,8 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         })
     }
 
-    private fun showPanelView() {
-        val roundInfoModel = mRoomData?.realRoundInfo ?: mRoomData?.expectRoundInfo
-        roundInfoModel?.let {
-            val model = mRoomData.getPlayerInfoById(it.userID)
-            if (it.userID != MyUserInfoManager.uid.toInt() && model != null) {
-                mGiftPanelView?.show(model.userInfo)
-            } else {
-                mGiftPanelView?.show(null)
-            }
-        }
+    private fun showGiftPanelView() {
+        mGiftPanelView?.show(mRoomData.getFirstTeammate()?.userInfo)
     }
 
     private fun buyFlowerFromOuter() {
@@ -612,7 +604,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
                                 //充值成功
                                 if (requestCode == 100 && resultCode == 0) {
                                     mGiftPanelView.updateZS()
-                                    showPanelView()
+                                    showGiftPanelView()
                                 }
                             }
                         })
@@ -685,7 +677,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         mBattleSongGuideView.show()
         mTopContentView.bindData()
         if (mRoomData.realRoundInfo?.userID == MyUserInfoManager.uid.toInt()) {
-            mBattleGrabView.show{
+            mBattleGrabView.show {
                 mCorePresenter.overWait()
             }
             mBattlePropsCardView.show()
