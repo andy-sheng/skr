@@ -1,5 +1,7 @@
 package com.module.msg.custom.relation;
 
+import android.os.Looper;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.log.MyLog;
@@ -11,6 +13,7 @@ import com.common.utils.U;
 import com.module.msg.api.IMsgServerApi;
 
 import java.util.HashMap;
+import java.util.logging.Handler;
 
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
@@ -22,6 +25,8 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class RelationMsgProcessor {
+
+    public final static String TAG = "RelationMsgProcessor";
 
     // 0 未处理 1同意 2拒绝
     public static int getHandle(Message msg) {
@@ -97,14 +102,17 @@ public class RelationMsgProcessor {
         });
     }
 
-    public static void sendRelationInviteMsg(String userID, String uniqID, String content, long expireAt) {
+    public static void sendRelationInviteMsg(String userID, String uniqID, String content, long expireAt, int deep) {
+        if (deep > 10) {
+            return;
+        }
         RelationInviteMsg contentMsg = RelationInviteMsg.obtain();
         contentMsg.setContent(content);
         contentMsg.setUniqID(uniqID);
         contentMsg.setExpireAt(expireAt);
         Message msg = Message.obtain(userID, Conversation.ConversationType.PRIVATE, contentMsg);
 
-        RongIM.getInstance().sendMessage(msg,   content,  content, new IRongCallback.ISendMessageCallback() {
+        RongIM.getInstance().sendMessage(msg, content, content, new IRongCallback.ISendMessageCallback() {
             @Override
             public void onAttached(Message message) {
 
@@ -118,6 +126,13 @@ public class RelationMsgProcessor {
 
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                MyLog.e(TAG, "onError" + " message=" + message + " errorCode=" + errorCode);
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        sendRelationInviteMsg(userID, uniqID, content, expireAt, deep + 1);
+                    }
+                }, 1000 * deep);
             }
         });
     }
@@ -129,7 +144,7 @@ public class RelationMsgProcessor {
         contentMsg.setHandle(handle);
         Message msg = Message.obtain(userID, Conversation.ConversationType.PRIVATE, contentMsg);
 
-        RongIM.getInstance().sendMessage(msg,  content,   content, new IRongCallback.ISendMessageCallback() {
+        RongIM.getInstance().sendMessage(msg, content, content, new IRongCallback.ISendMessageCallback() {
             @Override
             public void onAttached(Message message) {
 
@@ -144,6 +159,7 @@ public class RelationMsgProcessor {
 
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                MyLog.e(TAG, "onError" + " message=" + message + " errorCode=" + errorCode);
             }
         });
     }

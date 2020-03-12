@@ -137,7 +137,7 @@ public class RongMsgServiceImpl implements IMsgService {
 
     @Override
     public void sendRelationInviteMsg(String userID, String uniqID,String content,long expireAt) {
-        RelationMsgProcessor.sendRelationInviteMsg(userID,uniqID,content,expireAt);
+        RelationMsgProcessor.sendRelationInviteMsg(userID,uniqID,content,expireAt,0);
     }
 
     @Override
