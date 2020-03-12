@@ -3,6 +3,7 @@ package com.module.playways.battle.room.view
 import android.content.Context
 import android.graphics.Color
 import android.os.Handler
+import android.os.Looper
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
@@ -38,6 +39,8 @@ class BattleBeginTipsView : ConstraintLayout {
     private var leaveScaleAnimation: ScaleAnimation? = null // 飞出的离场动画
 
     var listener: AnimationListener? = null
+
+    var uiHandler = Handler(Looper.getMainLooper())
 
     init {
         View.inflate(context, R.layout.battle_begin_tips_view, this);
@@ -121,7 +124,9 @@ class BattleBeginTipsView : ConstraintLayout {
                 override fun onAnimationEnd(animation: Animation) {
                     clearAnimation()
                     visibility = View.GONE
-                    listener?.onFinish()
+                    uiHandler.postDelayed({
+                        listener?.onFinish()
+                    }, 200)
                 }
 
                 override fun onAnimationRepeat(animation: Animation) {
@@ -139,7 +144,7 @@ class BattleBeginTipsView : ConstraintLayout {
         super.onDetachedFromWindow()
         enterScaleAnimation?.setAnimationListener(null)
         enterScaleAnimation?.cancel()
-
+        uiHandler.removeCallbacksAndMessages(null)
         leaveScaleAnimation?.setAnimationListener(null)
         leaveScaleAnimation?.cancel()
     }

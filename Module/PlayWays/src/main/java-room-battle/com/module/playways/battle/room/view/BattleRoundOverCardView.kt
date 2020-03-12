@@ -1,6 +1,8 @@
 package com.module.playways.battle.room.view
 
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewStub
 import android.view.animation.Animation
@@ -34,6 +36,8 @@ class BattleRoundOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     private var leaveScaleAnimation: ScaleAnimation? = null // 飞出的离场动画
 
     var listener: AnimationListener? = null
+
+    var uiHandler = Handler(Looper.getMainLooper())
 
     override fun init(parentView: View) {
         bgIv = parentView.findViewById(R.id.bg_iv)
@@ -122,7 +126,11 @@ class BattleRoundOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 override fun onAnimationEnd(animation: Animation) {
                     mParentView?.clearAnimation()
                     setVisibility(View.GONE)
-                    listener?.onFinish()
+
+                    uiHandler.postDelayed({
+                        listener?.onFinish()
+                    }, 200)
+
                 }
 
                 override fun onAnimationRepeat(animation: Animation) {
@@ -134,6 +142,11 @@ class BattleRoundOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             mParentView?.clearAnimation()
             setVisibility(View.GONE)
         }
+    }
+
+    override fun onViewDetachedFromWindow(v: View) {
+        super.onViewDetachedFromWindow(v)
+        uiHandler.removeCallbacksAndMessages(null)
     }
 
     override fun setVisibility(visibility: Int) {
