@@ -61,7 +61,7 @@ interface BattleRoomServerApi {
     /**
      * 退出房间
      */
-    @PUT("http://dev.game.inframe.mobi/v1/battlegame/user—exit")
+    @PUT("http://dev.game.inframe.mobi/v1/battlegame/user-exit")
     fun userExit(@Body body: RequestBody): Call<ApiResult>
 
     /**
