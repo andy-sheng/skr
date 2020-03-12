@@ -38,10 +38,12 @@ public interface UserAccountServerApi {
                                 @Query("code") String verifyCode,
                                 @Query("platform") int platform,
                                 @Query("channel") String channel,
-                                @Query("deviceID") String deviceID);
+                                @Query("deviceID") String deviceID,
+                                @Query("deviceModel") String deviceModel
+    );
 
     /**
-     * 微信登录
+     * 第三方登录
      *
      * @param loginType
      * @param accessToken
@@ -55,7 +57,8 @@ public interface UserAccountServerApi {
                                   @Query("openID") String openID,
                                   @Query("platform") int platform,
                                   @Query("channel") String channel,
-                                  @Query("deviceID") String deviceID);
+                                  @Query("deviceID") String deviceID,
+                                  @Query("deviceModel") String deviceModel);
 
     /**
      * 获取IMToken

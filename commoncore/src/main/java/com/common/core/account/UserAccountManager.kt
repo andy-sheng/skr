@@ -226,7 +226,8 @@ object UserAccountManager {
         val userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi::class.java)
         // 1 为手机登录
         val deviceId = U.getDeviceUtils().deviceID
-        userAccountServerApi.login(1, phoneNum, verifyCode, 20, U.getChannelUtils().channel, deviceId)
+        val deviceModel = U.getDeviceUtils().productBrand+"_"+U.getDeviceUtils().productModel
+        userAccountServerApi.login(1, phoneNum, verifyCode, 20, U.getChannelUtils().channel, deviceId,deviceModel)
                 .subscribeOn(Schedulers.io())
                 .subscribe(object : ApiObserver<ApiResult>() {
                     override fun process(obj: ApiResult) {
@@ -267,7 +268,8 @@ object UserAccountManager {
         StatisticsAdapter.recordCountEvent("signup", "api_begin", null)
         val userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi::class.java)
         val deviceId = U.getDeviceUtils().deviceID
-        userAccountServerApi.loginWX(mode, accessToken, openId, 20, U.getChannelUtils().channel, deviceId)
+        val deviceModel = U.getDeviceUtils().productBrand+"_"+U.getDeviceUtils().productModel
+        userAccountServerApi.loginWX(mode, accessToken, openId, 20, U.getChannelUtils().channel, deviceId,deviceModel)
                 .subscribeOn(Schedulers.io())
                 .subscribe(object : ApiObserver<ApiResult>() {
                     override fun process(obj: ApiResult) {
