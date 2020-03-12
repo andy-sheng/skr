@@ -763,7 +763,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         mBattleGameOverCardView.bindData(object : AnimationListener {
             override fun onFinish() {
                 FlutterBoostController.openFlutterPage(this@BattleRoomActivity, "BattleResultPage", hashMapOf(
-                        "roomID" to mRoomData.gameId,
+                        "roomId" to mRoomData.gameId,
                         "targetNickname" to mRoomData.getFirstTeammate()?.userInfo?.nicknameRemark!!,
                         "targetAvatar" to mRoomData.getFirstTeammate()?.userInfo?.avatar!!
                 ))

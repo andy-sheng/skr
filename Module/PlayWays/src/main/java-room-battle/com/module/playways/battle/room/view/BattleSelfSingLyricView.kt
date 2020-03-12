@@ -84,7 +84,7 @@ class BattleSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: Battl
             MyLog.w(TAG, "playWithAcc curSong = null totalTs=$totalTs")
             return
         }
-        mManyLyricsView.setEnableVerbatim(isSelf)
+        mManyLyricsView.isEnableVerbatim = isSelf
         val configParams = LyricAndAccMatchManager.ConfigParams()
         configParams.manyLyricsView = mManyLyricsView
         configParams.voiceScaleView = mVoiceScaleView
@@ -97,7 +97,7 @@ class BattleSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: Battl
         configParams.accBeginTs = curSong.beginMs
         configParams.accEndTs = curSong.beginMs + totalTs
         configParams.authorName = curSong.uploaderName
-        configParams.needScore = false
+        configParams.needScore = true
         configParams.needWaitACC = isSelf
 
         mLyricAndAccMatchManager!!.setArgs(configParams)
