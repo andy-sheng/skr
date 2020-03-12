@@ -73,7 +73,7 @@ class BattleSongGuideView(viewStub: ViewStub, protected var mRoomData: BattleRoo
     var countDownJop: Job? = null
 
     fun show() {
-        setVisibility(View.VISIBLE)
+        tryInflate()
         var battleRoundInfoModel = mRoomData?.realRoundInfo
         leftWinNumTv?.text = "${mRoomData.myTeamScore}"
         rightWinNumTv?.text = "${mRoomData.opTeamScore}"
