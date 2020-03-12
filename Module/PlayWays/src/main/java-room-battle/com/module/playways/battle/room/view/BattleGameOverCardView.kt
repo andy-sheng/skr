@@ -61,6 +61,11 @@ class BattleGameOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             bgIv.background = U.getDrawable(R.drawable.battle_game_over_win)
             winIv.visibility = View.VISIBLE
             lossIv.visibility = View.GONE
+            if (H.battleRoomData?.myTeamScore ?: 0 == (H.battleRoomData?.opTeamScore ?: 0)) {
+                winIv.background = U.getDrawable(R.drawable.battle_game_over_draw_text)
+            } else {
+                winIv.background = U.getDrawable(R.drawable.battle_game_over_win_text)
+            }
         } else {
             bgIv.background = U.getDrawable(R.drawable.battle_game_over_loss)
             winIv.visibility = View.GONE

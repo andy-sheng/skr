@@ -86,8 +86,8 @@
 
     <ImageView
         android:id="@+id/loss_iv"
-        android:layout_width="@dimen/view_100_dp"
-        android:layout_height="@dimen/view_27_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_190_dp"
         android:background="@drawable/battle_game_over_loss_text"
         android:visibility="gone"
@@ -97,8 +97,8 @@
 
     <ImageView
         android:id="@+id/win_iv"
-        android:layout_width="@dimen/view_100_dp"
-        android:layout_height="@dimen/view_27_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_190_dp"
         android:background="@drawable/battle_game_over_win_text"
         app:layout_constraintLeft_toLeftOf="@id/bg_iv"
