@@ -14,7 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/view_10_dp"
         android:textStyle="bold"
-        android:text="歌单挑战规则"
+        android:text="游戏规则"
         android:textSize="@dimen/textsize_20_dp"
         android:textColor="@color/white"/>
 
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="每日最多解锁1个歌单，解锁后可重复挑战"
+                android:text="系统下发12首歌曲伴奏，轮流指定每队进行演唱"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="超过解锁次数后，支持金币解锁额外1个歌单"
+                android:text="点击【开始演唱】参与答唱，演唱60分过关"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="歌单挑战按获得爆灯数排名，爆灯越多，获得星级评价越高"
+                android:text="可以使用【帮唱卡】请求队友帮唱"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
@@ -114,10 +114,55 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="歌单挑战同样支持段位加成"
+                android:text="可以使用【换歌卡】重新换一首歌挑战"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginTop="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_21_dp"
+                android:layout_height="@dimen/view_21_dp"
+                android:background="@drawable/grab_guize_5" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="双方放弃演唱或分数未达标，则挑战失败"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginTop="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_21_dp"
+                android:layout_height="@dimen/view_21_dp"
+                android:background="@drawable/grab_guize_6" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="演唱成功加分，失败减分，按最终比分定两队胜负和经验增减；逃跑判定失败，全队逃跑对方队伍自动获胜"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
 
     </com.common.view.ex.ExLinearLayout>
 
