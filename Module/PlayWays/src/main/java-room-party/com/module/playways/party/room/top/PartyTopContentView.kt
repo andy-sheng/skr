@@ -33,6 +33,8 @@ import com.module.playways.party.room.event.PartyOnlineUserCntChangeEvent
 import com.module.playways.party.room.model.PartyPunishInfoModel
 import com.module.playways.party.room.model.PartyRankModel
 import com.module.playways.room.data.H
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -64,10 +66,14 @@ class PartyTopContentView : ExConstraintLayout {
     private val rankTv2: ExTextView
     private val rankTv1: ExTextView
 
+    private val emptyTv: TextView
+
     var listener: Listener? = null
     var mIsOpen = true
 
     var roomData: PartyRoomData? = null
+
+    var updateJob: Job? = null
 
     init {
         View.inflate(context, R.layout.party_top_content_view_layout, this)
@@ -87,6 +93,8 @@ class PartyTopContentView : ExConstraintLayout {
         rankTv3 = this.findViewById(R.id.rank_tv_3)
         rankTv2 = this.findViewById(R.id.rank_tv_2)
         rankTv1 = this.findViewById(R.id.rank_tv_1)
+
+        emptyTv = this.findViewById(R.id.empty_tv)
 
         (this.findViewById(R.id.avatar_iv_bg) as View).setOnClickListener {
             avatarIv.callOnClick()
@@ -138,38 +146,77 @@ class PartyTopContentView : ExConstraintLayout {
     }
 
     private fun getPartyRankList() {
+        updateJob?.cancel()
         val partyRoomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
-        launch {
-            val result = subscribe(RequestControl("getPartyRankList", ControlType.CancelThis)) {
-                partyRoomServerApi.getPartyRankList(0, 10, MyUserInfoManager.uid.toInt(), H.partyRoomData?.gameId
-                        ?: 0, 1)
-            }
+        updateJob = launch {
+            repeat(Int.MAX_VALUE) {
+                val result = subscribe(RequestControl("getPartyRankList", ControlType.CancelThis)) {
+                    partyRoomServerApi.getPartyRankList(0, 10, MyUserInfoManager.uid.toInt(), H.partyRoomData?.gameId
+                            ?: 0, 1)
+                }
 
-            if (result.errno == 0) {
-                val list = JSON.parseArray(result.data.getString("rankInfos"), PartyRankModel::class.java)
-                bindRankData(list)
-            } else {
+                if (result.errno == 0) {
+                    val list = JSON.parseArray(result.data.getString("rankInfos"), PartyRankModel::class.java)
+                    bindRankData(list)
+                } else {
 
+                }
+
+                delay(30 * 1000)
             }
         }
     }
 
     private fun bindRankData(list: List<PartyRankModel>?) {
-        AvatarUtils.loadAvatarByUrl(avatarRank1, AvatarUtils.newParamsBuilder(getPartyRankModel(1, list)?.model?.avatar)
-                .setCircle(true)
-                .setBorderColor(Color.WHITE)
-                .setBorderWidth(1.dp().toFloat())
-                .build())
-        AvatarUtils.loadAvatarByUrl(avatarRank2, AvatarUtils.newParamsBuilder(getPartyRankModel(2, list)?.model?.avatar)
-                .setCircle(true)
-                .setBorderColor(Color.WHITE)
-                .setBorderWidth(1.dp().toFloat())
-                .build())
-        AvatarUtils.loadAvatarByUrl(avatarRank3, AvatarUtils.newParamsBuilder(getPartyRankModel(3, list)?.model?.avatar)
-                .setCircle(true)
-                .setBorderColor(Color.WHITE)
-                .setBorderWidth(1.dp().toFloat())
-                .build())
+        if (!list.isNullOrEmpty()) {
+            emptyTv.visibility = View.GONE
+            if (getPartyRankModel(1, list) != null) {
+                avatarRank1.visibility = View.VISIBLE
+                rankTv1.visibility = View.VISIBLE
+                AvatarUtils.loadAvatarByUrl(avatarRank1, AvatarUtils.newParamsBuilder(getPartyRankModel(1, list)?.model?.avatar)
+                        .setCircle(true)
+                        .setBorderColor(Color.WHITE)
+                        .setBorderWidth(1.dp().toFloat())
+                        .build())
+            } else {
+                avatarRank1.visibility = View.GONE
+                rankTv1.visibility = View.GONE
+            }
+
+            if (getPartyRankModel(2, list) != null) {
+                avatarRank2.visibility = View.VISIBLE
+                rankTv2.visibility = View.VISIBLE
+                AvatarUtils.loadAvatarByUrl(avatarRank2, AvatarUtils.newParamsBuilder(getPartyRankModel(2, list)?.model?.avatar)
+                        .setCircle(true)
+                        .setBorderColor(Color.WHITE)
+                        .setBorderWidth(1.dp().toFloat())
+                        .build())
+            } else {
+                avatarRank2.visibility = View.GONE
+                rankTv2.visibility = View.GONE
+            }
+
+            if (getPartyRankModel(3, list) != null) {
+                avatarRank3.visibility = View.VISIBLE
+                rankTv3.visibility = View.VISIBLE
+                AvatarUtils.loadAvatarByUrl(avatarRank3, AvatarUtils.newParamsBuilder(getPartyRankModel(3, list)?.model?.avatar)
+                        .setCircle(true)
+                        .setBorderColor(Color.WHITE)
+                        .setBorderWidth(1.dp().toFloat())
+                        .build())
+            } else {
+                avatarRank3.visibility = View.GONE
+                rankTv3.visibility = View.GONE
+            }
+        } else {
+            emptyTv.visibility = View.VISIBLE
+            avatarRank1.visibility = View.GONE
+            avatarRank2.visibility = View.GONE
+            avatarRank3.visibility = View.GONE
+            rankTv1.visibility = View.GONE
+            rankTv2.visibility = View.GONE
+            rankTv3.visibility = View.GONE
+        }
     }
 
     private fun getPartyRankModel(seq: Int, list: List<PartyRankModel>?): PartyRankModel? {
@@ -310,6 +357,7 @@ class PartyTopContentView : ExConstraintLayout {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
+        updateJob?.cancel()
     }
 
     interface Listener {
