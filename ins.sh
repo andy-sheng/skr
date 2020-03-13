@@ -352,7 +352,7 @@ if [[ $1 = "app" ]]; then
 		./gradlew clean
 		if [[ $all = true ]];then
 		    echo "编译release所有渠道 ./gradlew :app:assembleReleaseChannels  $rd"
-		    ./gradlew :app:assembleReleaseChannels $rd
+		    ./gradlew :app:assembleReleaseChannels $rd --info
 		    ./apk_canary.sh
             #拷贝所有包到主目录
             rm -rf ./publish
@@ -368,7 +368,7 @@ if [[ $1 = "app" ]]; then
 			fi
 		else
 		    echo "只编译release default渠道 ./gradlew :app:assembleReleaseChannels --stacktrace $rd"
-		    ./gradlew :app:assembleReleaseChannels --stacktrace $rd
+		    ./gradlew :app:assembleReleaseChannels --stacktrace $rd --info
 		    if [ $apkcanary = true ]; then
 		        ./apk_canary.sh
 		    fi

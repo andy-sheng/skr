@@ -1,143 +1,67 @@
-完全插件化架构
-commonsdk为基础库，与具体项目无关
-commoncore为账号等与项目有关，但几乎每个项目都有的功能
-commonservice充当插件与插件之间交互的媒介
+#入职须知
+1. 找段兵营分配个企业邮箱帐号
+2. 下载 Tunnelblick VPN ,找段兵营要个vpn的帐号，代码仓库在阿里云上，代码的下载与提交都需要vpn
 
-modulexxx为某个功能模块
+# 代码下载
 
-app 为宿主 application module
-plugindemo 为的插件demo
+项目目录结构如下
+livesdk
+	app
+	skr_flutter
+	pbgit
 
-每个module下都有各自的readme.md对应解释
+1. 撕歌主项目代码 地址 http://git.inframe.club/chengsimin/livesdk 。访问不了找相关人员配置Member加权限
+2. 撕歌项目flutter部分代码 地址 http://git.inframe.club/skrer/skr_flutter 。 访问不了找相关人员配置Member加权限
+3. 撕歌项目pbgit部分代码 地址 http://git.inframe.club/skrer/pb . PbGit 定义 下行信令消息 的Protocol buffer 协议。
 
-请运行 ins.sh 安装相应模块
-如 ./ins.sh app
-./ins.sh modulechannel
+# 编译环境配置
+1. 代码下载完成后
+2. 下载NDK，版本为 android-ndk-r15c 。因为音视频引擎原因，只支持这个版本
+3. 配置 flutter 编译环境
+	1. 下载 flutter sdk。
+	2. 使用 flutter version ，切换flutter 分支为 1.9.1+hotfix.6 ，因为我们使用的一个重要的路由组件 flutter boost 只支持这个版本。
+	3. 切换到 skr_flutter 目录下，运行 flutter pub get 确保生成 .android 目录
 
---------------------------
-
-马上就要写业务代码了，这里我说下我的业务AndroidLibrary划分思路，你们补充啊
-整体划分为Module Group 和 Component Group。
-大的业务模块是紧跟业务feature的，放在Module Group中，
-如经典模式，接唱模式，领唱模式 肯定是三个module，如 module:RankingMode,module:RelayMode,module:LeadingMode。
-小的模块组件或者有工具属性的功能界面，在很多Module内都要用的。可以放在Component Group。
-如选歌页面 component:SelectMusic，送礼相关面板与逻辑 component:Gift 等等，可能很多module都会用到。
-
-Module
-    RankingMode
-    RelayMode
-    LeadingMode
-Component
-    Gift
-    SelectMusic
-
-所有的Module Group中的模块是无编译依赖的,使用ARouter的依赖注入框架配合 commonservice 中的接口进行通信交互。
-但每个Module是可以依赖 Component Group 中的N个模块。
-
-因为Component的划分是紧耦合业务的，假如 选歌页面 只有经典模式有，那它就没必要成为一个Component。
-所以前期开发只按module来，module里严格划分 java code source 和 res code source，后期有需要时可以方便地拆成Component。
-
-尽量用Fragment写界面，有需要再包成Activity。
-
----------------------------
-
-附属一些sdk库的账号以及密码
-蒲公英sdk 763585627@qq.com s2343288
-百度地图sdk 15718887533 s2343288
-小米开发平台 程思敏的账号
+在AS中运行编译或者使用 ./ins.sh 脚本运行编译。
 
 
-自定义 gradle 插件。实现耗时方法统计
-蒲公英 一键发布内测包 崩溃统计 用户反馈
-带索引的联系人列表
-减包
-shape src 属性化
-无侵入打点
+# 项目结构介绍
+livesdk --- 撕歌项目
+	app --- 空壳app，也有一些flutter methodchannel 代码。以及一些全局事件的处理代码
+	baselibray --- 业务无关的基础库
+		AndResGuard --- APK包大小压缩库
+		android-gif-drawable --- 著名的开源gif库
+		arcCloud --- 对演唱进行打分的库，花钱买的
+		avstatistics --- 引擎统计
+		commonsdk --- 基础库，图片压缩，播放器，音视频缓存工具，各种工具类，图片相册浏览等等等很多基础库，想到的功能几乎都有，不用在业务模块中再写基础库
+		enginesdk --- 引擎库
+		mediaengine --- 引擎库
+		effectsdk --- 抖音魔法表情库
+		my-utils-gradle --- gradle插件库，目前没用
+		replugin-xxxx --- 360 replugin 插件库，目前没用，不参与编译
+	commoncore --- 业务相关，但几乎所有App都有的业务。比如帐号，scheme，权限管理的封装，app的升级的等
+	Component --- 业务基础组件库，比如app风格的统一弹窗，统一的歌词渲染控件，通知管理等等
+	Module --- 业务模块
+		Club --- 家族模块
+		Feeds --- 帖子浏览
+		Home --- 主页，设置，个人主页等
+		IMKit --- 消息模块，对融云的封装，长链接信令的入口也在这
+		PlayWays --- 所有游戏的主要玩法都在这，抢唱，排位，双人合唱，主题房等
+		Posts --- 帖子的制作与发布
+	commonservice --- 定义了Module 对外暴露的接口		
+	skr_flutter --- 一些逻辑简单的页面为了节约人力，统一用flutter写，android ios 公用
 
--------------------------------
-阿里云
-zhenqukeji qwert12345
+# 项目架构解析
+	1. Module 之间无编译依赖，完全解耦，支持插拔
+	2. Module间的通信借助ARouter依赖注入，接口在 commonservice 中暴露
+	3. Module的初始化在 XXXConfiguration 中进行，Application在commonsdk层，BaseApplication，在onCreate时会通过反射找出各个Module的Configuration，并执行初始化。
 
-keytool -list -v  -keystore ~/dev/livesdk/livesdk/app/zq.keystore
+# 相关地址
+1. jira地址，测试在上面开bug。负责人，陈墨   https://www.bugclose.com/console.html
+2. 石墨文档地址。产品的需求文档在上面。负责人，丁一   https://shimo.im/dashboard
+3. 蓝湖地址。设计的设计图在上面。负责人，陈晋涛   https://lanhuapp.com/web/#/item
+4. wiki地址 http://wiki.inframe.club/confluence/pages/viewpage.action?pageId=3670683
 
-别名: zq_android_key
-创建日期: 2019-1-9
-条目类型: PrivateKeyEntry
-证书链长度: 1
-证书[1]:
-所有者: CN=chengsimin, OU=zhenqu, O=zhenqu, L=beijing, ST=beijing, C=86
-发布者: CN=chengsimin, OU=zhenqu, O=zhenqu, L=beijing, ST=beijing, C=86
-序列号: 45cfcac4
-有效期开始日期: Wed Jan 09 11:35:25 CST 2019, 截止日期: Sun Jan 03 11:35:25 CST 2044
-证书指纹:
-	 MD5: 9F:9F:7C:A2:CF:43:35:BE:73:1E:AC:1A:23:D3:BD:89
-	 SHA1: 5D:F4:53:66:7A:D4:64:0A:6C:67:63:41:C1:F1:15:3C:A1:46:5B:8E
-	 SHA256: 2B:13:4E:1A:7E:F4:EB:98:3A:36:8E:81:0E:FC:5B:D1:46:B5:D4:96:21:87:E6:A4:A4:A7:62:78:14:F7:0C:9F
-	 签名算法名称: SHA256withRSA
-	 版本: 3
-
-扩展:
-
-#1: ObjectId: 2.5.29.14 Criticality=false
-SubjectKeyIdentifier [
-KeyIdentifier [
-0000: AD 0B B4 CC 08 2B B8 34   82 45 F8 B6 0E A6 EF 21  .....+.4.E.....!
-0010: CE C4 16 25                                        ...%
-]
-]
-
-
-
-小米
-账号：15910791239
-密码：wujing123
- 
-oppo
-用户：00326104568
-账号：15801140410
-密码：zhenqu123
-邮箱：wujing@skrer.Net
- 
- 
-Vivo
-账号：zhenqukeji
-密码：zhenqu.123
-联系手机：15801140410
- 
-360
-账号：15801140410
-密码：zhenqu123
- 
-华为
-账号：15801140410
-密码：zhenqu123
- 
-应用宝
-账号：3284986349
-密码：zhenqukeji181105
- 
-百度
-账号：15801140410
-密码：zhenqu123
- 
-魅族
-账号：15801140410
-密码：zhenqu123
-
-bugly
-程思敏 的 QQ 扫码登录的
+以上任何地址如果没有权限，在大群里找相关责任人添加权限。
 
 
-内存检测工具使用经验
-导出 内存快照 hprof 
-要查看 bitmap 请使用 8.0 一下手机，8.0以上 bitmap的内存放到了native中，看不了。
-~/Documents/sm_mac_doc/self_dev_utils/dump_memory/dump.sh com.zq.live
-
-In MAT for related Bitmap object right click mBuffer field and select "Copy" -> "Save Value To File",
-name the file with an .rgba extension.
-
-width 与 height 在 MAT 中的 Inspector 可以查看
-
-安装 imagemagick
-brew install imagemagick
-convert -size 680x1209 -depth 8 phone_decor.rgba phone_decor.png
