@@ -20,6 +20,8 @@ import com.module.playways.room.data.H
 // 比赛结束
 class BattleGameOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
+    val mTag = "BattleGameOverCardView${hashCode()}"
+
     lateinit var bgIv: ImageView
     lateinit var vsIv: ImageView
     lateinit var leftAvatar1: SimpleDraweeView
@@ -37,6 +39,8 @@ class BattleGameOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     var listener: AnimationListener? = null
 
     override fun init(parentView: View) {
+        U.getSoundUtils().preLoad(mTag, R.raw.battle_win, R.raw.battle_draw, R.raw.battle_loss)
+
         bgIv = parentView.findViewById(R.id.bg_iv)
         vsIv = parentView.findViewById(R.id.vs_iv)
         leftAvatar1 = parentView.findViewById(R.id.left_avatar_1)
@@ -62,11 +66,14 @@ class BattleGameOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             winIv.visibility = View.VISIBLE
             lossIv.visibility = View.GONE
             if (H.battleRoomData?.myTeamScore ?: 0 == (H.battleRoomData?.opTeamScore ?: 0)) {
+                U.getSoundUtils().play(mTag, R.raw.battle_draw)
                 winIv.background = U.getDrawable(R.drawable.battle_game_over_draw_text)
             } else {
+                U.getSoundUtils().play(mTag, R.raw.battle_win)
                 winIv.background = U.getDrawable(R.drawable.battle_game_over_win_text)
             }
         } else {
+            U.getSoundUtils().play(mTag, R.raw.battle_loss)
             bgIv.background = U.getDrawable(R.drawable.battle_game_over_loss)
             winIv.visibility = View.GONE
             lossIv.visibility = View.VISIBLE
@@ -164,5 +171,10 @@ class BattleGameOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             leaveScaleAnimation?.setAnimationListener(null)
             leaveScaleAnimation?.cancel()
         }
+    }
+
+    override fun onViewDetachedFromWindow(v: View) {
+        super.onViewDetachedFromWindow(v)
+        U.getSoundUtils().release(mTag)
     }
 }

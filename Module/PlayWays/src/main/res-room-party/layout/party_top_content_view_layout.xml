@@ -215,6 +215,22 @@
             app:layout_constraintBottom_toBottomOf="@id/avatar_rank_1"
             app:layout_constraintRight_toRightOf="@id/avatar_rank_1" />
 
+        <TextView
+            android:id="@+id/empty_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_20_dp"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:text="暂无贡献"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/textsize_12_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingLeft="@dimen/view_10_dp"
+            app:layout_constraintRight_toLeftOf="@id/party_rank_iv"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </com.common.view.ex.ExConstraintLayout>
 
 </merge>
