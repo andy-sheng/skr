@@ -16,73 +16,7 @@ import org.greenrobot.eventbus.EventBus
 
 class BattleRoomData : BaseRoomData<BattleRoundInfoModel>() {
 
-    override fun getPlayerAndWaiterInfoList(): List<PlayerInfoModel> {
-        val list = ArrayList<PlayerInfoModel>()
-        list.addAll(myTeamInfo)
-        list.addAll(opTeamInfo)
-        return list
-    }
-
-    override fun getInSeatPlayerInfoList(): List<PlayerInfoModel> {
-        val list = ArrayList<PlayerInfoModel>()
-        list.addAll(myTeamInfo)
-        return list
-    }
-
-    override fun getCanGiveGiftList(): List<PlayerInfoModel> {
-        // 只能送给队友
-        return getTeammates()
-    }
-
-    /**
-     * 得到我的所有队友
-     */
-    fun getTeammates(): List<PlayerInfoModel> {
-        var sl = ArrayList<BattlePlayerInfoModel>()
-        for (p in myTeamInfo) {
-            if (p.userID != MyUserInfoManager.uid.toInt()) {
-                sl.add(p)
-            }
-        }
-        return sl
-    }
-
-    /**
-     * 得到我的第一个队友
-     */
-    fun getFirstTeammate(): BattlePlayerInfoModel? {
-        for (p in myTeamInfo) {
-            if (p.userID != MyUserInfoManager.uid.toInt()) {
-                return p
-            }
-        }
-        return null
-    }
-
-    fun getPlayerInfoById(userId: Int): BattlePlayerInfoModel? {
-        for (p in myTeamInfo) {
-            if (p.userID == userId) {
-                return p
-            }
-        }
-        for (p in opTeamInfo) {
-            if (p.userID == userId) {
-                return p
-            }
-        }
-        return null
-    }
-
-    // 判断这个人是否是对方选手
-    fun isOpTeam(userId: Int): Boolean {
-        opTeamInfo.forEach {
-            if (it.userID == userId) {
-                return true
-            }
-        }
-        return false
-    }
-
+    var sentenceCnt = 10 //当前演唱歌曲的句子总数，用于打分用
     /**
      * 我的队伍信息
      */
@@ -150,6 +84,73 @@ class BattleRoomData : BaseRoomData<BattleRoundInfoModel>() {
             realRoundInfo = expectRoundInfo
             EventBus.getDefault().post(BattleRoundChangeEvent(lastRoundInfoModel, realRoundInfo))
         }
+    }
+
+    override fun getPlayerAndWaiterInfoList(): List<PlayerInfoModel> {
+        val list = ArrayList<PlayerInfoModel>()
+        list.addAll(myTeamInfo)
+        list.addAll(opTeamInfo)
+        return list
+    }
+
+    override fun getInSeatPlayerInfoList(): List<PlayerInfoModel> {
+        val list = ArrayList<PlayerInfoModel>()
+        list.addAll(myTeamInfo)
+        return list
+    }
+
+    override fun getCanGiveGiftList(): List<PlayerInfoModel> {
+        // 只能送给队友
+        return getTeammates()
+    }
+
+    /**
+     * 得到我的所有队友
+     */
+    fun getTeammates(): List<PlayerInfoModel> {
+        var sl = ArrayList<BattlePlayerInfoModel>()
+        for (p in myTeamInfo) {
+            if (p.userID != MyUserInfoManager.uid.toInt()) {
+                sl.add(p)
+            }
+        }
+        return sl
+    }
+
+    /**
+     * 得到我的第一个队友
+     */
+    fun getFirstTeammate(): BattlePlayerInfoModel? {
+        for (p in myTeamInfo) {
+            if (p.userID != MyUserInfoManager.uid.toInt()) {
+                return p
+            }
+        }
+        return null
+    }
+
+    fun getPlayerInfoById(userId: Int): BattlePlayerInfoModel? {
+        for (p in myTeamInfo) {
+            if (p.userID == userId) {
+                return p
+            }
+        }
+        for (p in opTeamInfo) {
+            if (p.userID == userId) {
+                return p
+            }
+        }
+        return null
+    }
+
+    // 判断这个人是否是对方选手
+    fun isOpTeam(userId: Int): Boolean {
+        opTeamInfo.forEach {
+            if (it.userID == userId) {
+                return true
+            }
+        }
+        return false
     }
 
     fun loadFromRsp(rsp: JoinBattleRoomRspModel) {
