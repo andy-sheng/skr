@@ -93,37 +93,6 @@
         android:layout="@layout/battle_self_sing_lyric_layout"
         app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
-    <ViewStub
-        android:id="@+id/battle_props_card_view_layout_viewStub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_12_dp"
-        android:layout_marginTop="@dimen/view_350_dp"
-        android:layout="@layout/battle_props_card_view_layout"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_bar" />
-
-    <ViewStub
-        android:id="@+id/battle_grab_view_layout_viewStub"
-        android:layout_width="@dimen/view_120_dp"
-        android:layout_height="@dimen/view_60_dp"
-        android:layout_marginTop="@dimen/view_340_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:layout="@layout/battle_grab_view_layout"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_bar" />
-
-    <ViewStub
-        android:id="@+id/battle_give_up_view_layout_viewStub"
-        android:layout_width="@dimen/view_120_dp"
-        android:layout_height="@dimen/view_60_dp"
-        android:layout_marginTop="@dimen/view_340_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:layout="@layout/battle_give_up_view_layout"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_bar" />
-
-
     <!--顶部游戏场景-->
     <!--    <ViewStub-->
     <!--        android:id="@+id/battle_game_main_view_layout_viewStub"-->
@@ -234,6 +203,36 @@
         app:layout_constraintTop_toBottomOf="@id/seat_view"
         app:layout_goneMarginBottom="@dimen/view_50_dp"
         gameType:type="battle" />
+
+    <ViewStub
+        android:id="@+id/battle_props_card_view_layout_viewStub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_350_dp"
+        android:layout="@layout/battle_props_card_view_layout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_bar" />
+
+    <ViewStub
+        android:id="@+id/battle_grab_view_layout_viewStub"
+        android:layout_width="@dimen/view_120_dp"
+        android:layout_height="@dimen/view_60_dp"
+        android:layout_marginTop="@dimen/view_340_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout="@layout/battle_grab_view_layout"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_bar" />
+
+    <ViewStub
+        android:id="@+id/battle_give_up_view_layout_viewStub"
+        android:layout_width="@dimen/view_120_dp"
+        android:layout_height="@dimen/view_60_dp"
+        android:layout_marginTop="@dimen/view_340_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout="@layout/battle_give_up_view_layout"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
     <!--底部按钮区-->
     <com.module.playways.battle.room.bottom.BattleBottomContainerView
