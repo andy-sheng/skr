@@ -738,6 +738,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
     override fun showSelfSing() {
         hideAllSceneView(null)
+        mBottomContainerView.unMuteBtn()
         mBattleSelfSingLyricView.show(0) {
             mCorePresenter.overSing()
         }

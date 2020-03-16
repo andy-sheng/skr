@@ -615,16 +615,16 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
             if (thisRound.getHelpUserId() == MyUserInfoManager.uid.toInt()) {
                 pretendSystemMsg("你使用了一张换歌卡")
             } else {
+                var helperNickName = mRoomData.getPlayerInfoById(thisRound.getHelpUserId())?.userInfo?.nicknameRemark
                 if (thisRound.getHelpUserId() == mRoomData.getFirstTeammate()?.userInfo?.userId) {
-                    pretendSystemMsg("队友${mRoomData.getPlayerInfoById(thisRound.getHelpUserId())?.userInfo?.nicknameRemark}使用了一张换歌卡")
-                    pretendSystemMsg("队友${mRoomData.getPlayerInfoById(thisRound.getHelpUserId())?.userInfo?.nicknameRemark}向你请求帮唱")
+                    pretendSystemMsg("队友${helperNickName}使用了一张换歌卡")
+                    pretendSystemMsg("队友${helperNickName}向你请求帮唱")
                 } else {
-                    pretendSystemMsg("对手${mRoomData.getPlayerInfoById(thisRound.getHelpUserId())?.userInfo?.nicknameRemark}使用了一张换歌卡")
+                    pretendSystemMsg("对手${helperNickName}使用了一张换歌卡")
                 }
             }
             // 使用了帮唱卡
             roomView.useHelpSing()
-
         } else if (thisRound.status == EBRoundStatus.BRS_SING.value) {
             // 进入演唱阶段
             if (thisRound.userID == MyUserInfoManager.uid.toInt()) {

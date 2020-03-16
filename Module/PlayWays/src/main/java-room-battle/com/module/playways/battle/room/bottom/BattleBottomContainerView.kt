@@ -11,6 +11,7 @@ import com.module.playways.battle.room.BattleRoomData
 import com.module.playways.battle.room.BattleRoomServerApi
 import com.module.playways.room.room.view.BottomContainerView
 import com.zq.mediaengine.kit.ZqEngineKit
+import org.greenrobot.eventbus.EventBus
 
 
 class BattleBottomContainerView : BottomContainerView {
@@ -45,7 +46,12 @@ class BattleBottomContainerView : BottomContainerView {
                 }
             }
         })
+    }
 
+    fun unMuteBtn(){
+        roomData?.isMute = false
+        mInputBtn?.setBackgroundResource(R.drawable.relay_new_unmute)
+        ZqEngineKit.getInstance().adjustRecordingSignalVolume(ZqEngineKit.getInstance().params.recordingSignalVolume, false)
     }
 
     override fun setRoomData(roomData: BaseRoomData<*>) {
