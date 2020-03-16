@@ -114,7 +114,9 @@ class BattleSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: Battl
                 if (offset > 0) {
                     configParams.manyLyricsView?.seekTo(curSong.beginMs + offset)
                 }
+                mRoomData?.sentenceCnt = lyricsReader?.lrcLineInfos?.size ?:10
             }
+
         })
 
         ZqEngineKit.getInstance().setRecognizeListener { result, list, targetSongInfo, lineNo -> mLyricAndAccMatchManager!!.onAcrResult(result, list, targetSongInfo, lineNo) }

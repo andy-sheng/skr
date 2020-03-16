@@ -1108,7 +1108,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         map["timeMs"] = nowTs
         map["teamTag"] = mRoomData.myTeamTag
 //        map["segmentCnt"] = (mRoomData.realRoundInfo?.music?.relaySegments?.size ?: 0) + 1
-//        map["sentenceCnt"] = mRoomData.sentenceCnt
+        map["sentenceCnt"] = mRoomData.sentenceCnt
 
         val sb = StringBuilder()
         sb.append("skrer")
