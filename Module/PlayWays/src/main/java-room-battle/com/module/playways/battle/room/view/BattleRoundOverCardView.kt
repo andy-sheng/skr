@@ -105,10 +105,13 @@ class BattleRoundOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             }
 
             override fun onAnimationStart(animation: Animation?) {
-                setVisibility(View.VISIBLE)
+
             }
         })
+
         mParentView?.startAnimation(enterScaleAnimation)
+        setVisibility(View.VISIBLE)
+
     }
 
     // 离场动画
@@ -126,10 +129,8 @@ class BattleRoundOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 override fun onAnimationEnd(animation: Animation) {
                     mParentView?.clearAnimation()
                     setVisibility(View.GONE)
-
-                    uiHandler.postDelayed({
-                        listener?.onFinish()
-                    }, 200)
+                    uiHandler.removeCallbacks(leaveAction)
+                    uiHandler.postDelayed(leaveAction, 200)
 
                 }
 
@@ -138,6 +139,8 @@ class BattleRoundOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 }
             })
             mParentView?.startAnimation(leaveScaleAnimation)
+            val nLeaveScaleAnimation = leaveScaleAnimation?:return
+            uiHandler.postDelayed(leaveAction, nLeaveScaleAnimation.duration + 200)
         } else {
             mParentView?.clearAnimation()
             setVisibility(View.GONE)
@@ -158,5 +161,10 @@ class BattleRoundOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
             leaveScaleAnimation?.setAnimationListener(null)
             leaveScaleAnimation?.cancel()
         }
+    }
+
+    private  val leaveAction = Runnable {
+        leaveScaleAnimation?.cancel()
+        listener?.onFinish()
     }
 }
