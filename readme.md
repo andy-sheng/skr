@@ -12,7 +12,7 @@ livesdk
 
 1. 撕歌主项目代码 地址 http://git.inframe.club/chengsimin/livesdk 。访问不了找相关人员配置Member加权限
 2. 撕歌项目flutter部分代码 地址 http://git.inframe.club/skrer/skr_flutter 。 访问不了找相关人员配置Member加权限
-3. 撕歌项目pbgit部分代码 地址 http://git.inframe.club/skrer/pb . PbGit 定义 下行信令消息 的Protocol buffer 协议。
+3. 撕歌项目pbgit部分代码 地址 http://git.inframe.club/skrer/pb . PbGit 定义 下行信令消息 的Protocol buffer 协议。 房间内的状态机信令信息都在这。
 
 # 编译环境配置
 1. 代码下载完成后
