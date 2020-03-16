@@ -477,6 +477,11 @@ object SkrSchemeProcessor : ISchemeProcessor {
                 event.mediaType = mediaType
                 EventBus.getDefault().post(event)
             }
+        } else if ("/battle_match" == path) {
+            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+            // 团战的tagid
+            iRankingModeService.tryGoBattleMatch(2000000)
+
         }
     }
 

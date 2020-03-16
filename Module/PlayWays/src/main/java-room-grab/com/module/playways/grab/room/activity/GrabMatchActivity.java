@@ -50,10 +50,8 @@ public class GrabMatchActivity extends BaseActivity {
             if (activity == this) {
                 continue;
             }
-            if(prepareData.getGameType()==GameModeType.GAME_MODE_PLAYBOOK){
-//                if(activity instanceof BattleListActivity){
-//                    continue;
-//                }
+            if(prepareData.getGameType()==GameModeType.GAME_MODE_BATTLE){
+                continue;
             }
             activity.finish();
         }
