@@ -142,7 +142,6 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
             if (roundInfoModel == null) {
                 roundInfoModel = mRoomData.expectRoundInfo
             }
-            pretendNoticeMsg("房间公告", "欢迎加入主题房")
         }
 
         pretendSystemMsg("撕歌倡导绿色健康游戏，并24小时对语音房进行巡查。如发现违规行为，官方将封号处理。")
