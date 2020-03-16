@@ -381,6 +381,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                 //closeEngine()
                 MyLog.w(TAG, "reqHelpSing 成功 traceid is " + result.traceId)
             } else {
+                U.getToastUtil().showShort(result.errmsg)
                 MyLog.w(TAG, "reqHelpSing 失败 traceid is " + result.traceId)
             }
         }
@@ -405,6 +406,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                 //closeEngine()
                 MyLog.w(TAG, "reqSwitchSing 成功 traceid is " + result.traceId)
             } else {
+                U.getToastUtil().showShort(result.errmsg)
                 MyLog.w(TAG, "reqSwitchSing 失败 traceid is " + result.traceId)
             }
         }
