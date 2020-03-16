@@ -173,15 +173,15 @@ public class ScoreTipsView extends RelativeLayout {
         mAnimatorSet.start();
     }
 
-    public static void play(RelativeLayout parent, Item item) {
-        play(parent, item, 1);
+    public static void play(RelativeLayout parent, Item item, int marginTop) {
+        play(parent, item, 1, marginTop);
     }
 
-    public static void play(RelativeLayout parent, Item item, int postion) {
+    public static void play(RelativeLayout parent, Item item, int postion, int marginTop) {
         if (item == null) {
             return;
         }
-        if (item.level == Level.Bad && item.num > 1) {
+        if ((item.level == Level.Bad || item.level == Level.Grab_jiayou) && item.num > 1) {
             // 丢人不能连续
             return;
         }
@@ -194,7 +194,7 @@ public class ScoreTipsView extends RelativeLayout {
             lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             lp.rightMargin = U.getDisplayUtils().dip2px(20);
         }
-        lp.topMargin = U.getDisplayUtils().dip2px(135);
+        lp.topMargin = U.getDisplayUtils().dip2px(marginTop);
         parent.addView(scoreTipsView, lp);
         scoreTipsView.startPlay();
     }

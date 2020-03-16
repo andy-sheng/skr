@@ -997,7 +997,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
     fun onEvent(event: MachineScoreEvent) {
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
         if (mRoomData?.realRoundInfo?.userID == event.userId) {
-            roomView.receiveScoreEvent(event.score)
+            roomView.receiveScoreEvent(event.score, event.lineNum)
         }
     }
 
@@ -1028,7 +1028,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         machineScoreItem.no = line
         // 打分信息传输给其他人
         sendScoreToOthers(machineScoreItem)
-        roomView.receiveScoreEvent(score)
+        roomView.receiveScoreEvent(score, line)
         //打分传给服务器
         val now = mRoomData.realRoundInfo
         if (now != null) {

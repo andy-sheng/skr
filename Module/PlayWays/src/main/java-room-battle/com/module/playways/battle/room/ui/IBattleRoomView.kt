@@ -27,5 +27,5 @@ interface IBattleRoomView {
     // 显示对战开始提示阶段
     fun showBeginTips(callback: () -> Unit)
 
-    fun receiveScoreEvent(score: Int)
+    fun receiveScoreEvent(score: Int, songLineNum: Int)
 }

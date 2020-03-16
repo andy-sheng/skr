@@ -14,6 +14,9 @@ import com.module.playways.room.room.score.bar.ScoreTipsView
 import com.module.playways.R
 import com.module.playways.room.data.H
 
+/**
+ * 分数提示图大小固定，在此View中居中显示
+ */
 class GrabScoreTipsView : RelativeLayout {
 
     val mTag = "GrabScoreTipsView"
@@ -36,7 +39,7 @@ class GrabScoreTipsView : RelativeLayout {
         super.onDetachedFromWindow()
     }
 
-    fun updateScore(score1: Int, songLineNum: Int) {
+    fun updateScore(score1: Int, songLineNum: Int, marginTop:Int = 135) {
         MyLog.d(mTag, "updateScore score1=$score1 songLineNum=$songLineNum")
 
         val item = ScoreTipsView.Item()
@@ -85,7 +88,7 @@ class GrabScoreTipsView : RelativeLayout {
 //            } else {
 //
 //            }
-            ScoreTipsView.play(this, item, 1)
+            ScoreTipsView.play(this, item, 1, marginTop)
         }
     }
 

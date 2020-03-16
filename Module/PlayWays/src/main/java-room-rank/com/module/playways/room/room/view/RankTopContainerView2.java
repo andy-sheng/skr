@@ -497,7 +497,7 @@ public class RankTopContainerView2 extends RelativeLayout {
                 item.setNum(mLastItem.getNum() + 1);
             }
             mLastItem = item;
-            ScoreTipsView.play(this, item);
+            ScoreTipsView.play(this, item, 135);
         }
     }
 
