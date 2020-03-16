@@ -96,7 +96,7 @@
     <com.module.playways.room.room.comment.CommentView
         android:id="@+id/comment_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_170_dp"
         android:layout_marginRight="@dimen/view_100_dp"
         android:layout_marginBottom="@dimen/view_10_dp"
         android:paddingLeft="@dimen/view_10_dp"
@@ -105,7 +105,6 @@
         app:edge_width="30dp"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@+id/bottom_container_view"
-        app:layout_constraintTop_toBottomOf="@id/seat_view"
         app:layout_goneMarginBottom="@dimen/view_50_dp"
         gameType:type="battle" />
 
@@ -146,22 +145,6 @@
         android:layout_height="@dimen/view_50_dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <!--底部功能区-->
-    <!--    <ViewStub-->
-    <!--        android:id="@+id/battle_bottom_setting_viewStub"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="@dimen/view_170_dp"-->
-    <!--        android:layout="@layout/battle_setting_view_layout"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent" />-->
-
-    <!--底部表情区-->
-    <!--    <ViewStub-->
-    <!--        android:id="@+id/battle_bottom_emoji_viewStub"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="@dimen/view_100_dp"-->
-    <!--        android:layout="@layout/battle_emoji_view_layout"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent" />-->
-
     <!--礼物连送按钮-->
     <com.module.playways.room.gift.view.ContinueSendView
         android:id="@+id/continue_send_view"
@@ -183,13 +166,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
-
-    <!--    <com.module.playways.room.room.comment.fly.FlyCommentView-->
-    <!--        android:id="@+id/fly_comment_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="@dimen/view_120_dp"-->
-    <!--        android:layout_marginTop="@dimen/view_150_dp"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <!--中礼物展示-->
     <com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
