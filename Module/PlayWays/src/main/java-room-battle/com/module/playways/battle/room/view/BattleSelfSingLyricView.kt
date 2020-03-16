@@ -59,6 +59,7 @@ class BattleSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: Battl
             enterAnimation()
             val totalMs = it.music?.totalMs ?: 0
             mSingCountDownView2.startPlay(offset, totalMs - offset, true)
+            mSingCountDownView2.visibility = View.VISIBLE
             mSingCountDownView2.setListener {
                 call?.invoke()
             }
