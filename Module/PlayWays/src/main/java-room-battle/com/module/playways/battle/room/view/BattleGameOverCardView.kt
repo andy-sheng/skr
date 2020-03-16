@@ -61,7 +61,14 @@ class BattleGameOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         this.listener = listener
         tryInflate()
 
-        if (H.battleRoomData?.myTeamScore ?: 0 >= (H.battleRoomData?.opTeamScore ?: 0)) {
+        if (H.battleRoomData?.realRoundInfo?.isOpAllOff(H.battleRoomData?.myTeamTag) == true) {
+            // 对手都逃跑了
+            bgIv.background = U.getDrawable(R.drawable.battle_game_over_win)
+            winIv.visibility = View.VISIBLE
+            lossIv.visibility = View.GONE
+            U.getSoundUtils().play(mTag, R.raw.battle_draw)
+            winIv.background = U.getDrawable(R.drawable.battle_game_over_draw_text)
+        } else if (H.battleRoomData?.myTeamScore ?: 0 >= (H.battleRoomData?.opTeamScore ?: 0)) {
             bgIv.background = U.getDrawable(R.drawable.battle_game_over_win)
             winIv.visibility = View.VISIBLE
             lossIv.visibility = View.GONE
