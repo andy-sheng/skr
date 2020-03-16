@@ -631,7 +631,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                         if(lastRound.userID == MyUserInfoManager.uid.toInt()){
                             pretendSystemMsg("你使用了一张换歌卡")
                         }else{
-                            var helperNickName = mRoomData.getPlayerInfoById(lastRound.userID)
+                            var helperNickName = mRoomData.getPlayerInfoById(lastRound.userID)?.userInfo?.nicknameRemark
                             pretendSystemMsg("${helperNickName}使用了一张换歌卡")
                         }
                     }

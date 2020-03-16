@@ -70,7 +70,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/view_13_dp"
             android:layout_marginRight="@dimen/view_16_dp"
-            android:text="钻石余额"
+            android:text="充值记录"
             android:textColor="@color/white"
             android:textSize="14sp" />
 
