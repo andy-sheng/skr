@@ -616,6 +616,14 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                         || lastRound.overReason == EBRoundOverReason.BROR_REQ_HELP_SING.value
                         || lastRound.overReason == EBRoundOverReason.BROR_REQ_SWITCH_SING.value) {
                     // 如果上一轮的结束原因是 使用帮唱卡 使用换歌卡 则不会显示结果页
+                    if(lastRound.overReason == EBRoundOverReason.BROR_REQ_SWITCH_SING.value){
+                        if(lastRound.userID == MyUserInfoManager.uid.toInt()){
+                            pretendSystemMsg("你使用了一张换歌卡")
+                        }else{
+                            var helperNickName = mRoomData.getPlayerInfoById(lastRound.userID)
+                            pretendSystemMsg("${helperNickName}使用了一张换歌卡")
+                        }
+                    }
                     r.invoke()
                 } else {
                     roomView.showRoundOver(lastRound) {
@@ -628,14 +636,14 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                 tryDownloadAccIfSelfSing()
             }
             if (thisRound.getHelpUserId() == MyUserInfoManager.uid.toInt()) {
-                pretendSystemMsg("你使用了一张换歌卡")
+                pretendSystemMsg("你使用了一张帮唱卡")
             } else {
                 var helperNickName = mRoomData.getPlayerInfoById(thisRound.getHelpUserId())?.userInfo?.nicknameRemark
                 if (thisRound.getHelpUserId() == mRoomData.getFirstTeammate()?.userInfo?.userId) {
-                    pretendSystemMsg("队友${helperNickName}使用了一张换歌卡")
+                    pretendSystemMsg("队友${helperNickName}使用了一张帮唱卡")
                     pretendSystemMsg("队友${helperNickName}向你请求帮唱")
                 } else {
-                    pretendSystemMsg("对手${helperNickName}使用了一张换歌卡")
+                    pretendSystemMsg("对手${helperNickName}使用了一张帮唱卡")
                 }
             }
             // 使用了帮唱卡
