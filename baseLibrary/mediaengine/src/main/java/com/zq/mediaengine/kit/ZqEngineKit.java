@@ -252,7 +252,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         UserStatus userStatus = mUserStatusMap.remove(uid);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_LEAVE, userStatus));
         MyLog.i(TAG, "onUserOffline mUserStatusMap=" + mUserStatusMap);
-        tryStopRecordForFeedback("onUserOffline",false);
+        tryStopRecordForFeedback("onUserOffline", false);
     }
 
     @Override
@@ -338,7 +338,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 tryPlayPendingMixingMusic("onClientRoleChanged");
             } else {
                 userStatus.setAnchor(false);
-                tryStopRecordForFeedback("onClientRoleChanged",false);
+                tryStopRecordForFeedback("onClientRoleChanged", false);
             }
         }
         // 只有切换时才会触发
@@ -968,9 +968,9 @@ public class ZqEngineKit implements AgoraOutCallback {
             }
             // 调节伴奏混音音量
             //TODO  如果是合唱房，会暂时把音量变成0 ，要区分这种情况
-            if(lastAudioMixingPublishVolume>=0){
+            if (lastAudioMixingPublishVolume >= 0) {
                 setAudioMixingPublishVolume(lastAudioMixingPublishVolume);
-            }else{
+            } else {
                 setAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume());
             }
         }
@@ -1400,12 +1400,12 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 接收/停止接收所有音频流。
      * 适用于 A 在唱歌，B C 能互相聊天，但不能打扰到 A 的场景
      */
-    public void muteRemoteAudioStream(final int uid,final boolean muted) {
+    public void muteRemoteAudioStream(final int uid, final boolean muted) {
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    mAgoraRTCAdapter.muteRemoteAudioStream(uid,muted);
+                    mAgoraRTCAdapter.muteRemoteAudioStream(uid, muted);
                 }
             });
         }
@@ -1433,7 +1433,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private void enableInEarMonitoringInternal(boolean enable, boolean setConfig) {
         if (setConfig) {
-            mConfig.setEarMonitoringSwitch(enable?1:2);
+            mConfig.setEarMonitoringSwitch(enable ? 1 : 2);
         }
         if (mConfig.isUseExternalAudio()) {
             if (!mConfig.getConfigFromServerNotChange().hasServerConfig) {
@@ -1584,7 +1584,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             } else {
                 mAudioCapture.setVolume(mConfig.getRecordingSignalVolume() / 100.f);
                 mAudioPlayerCapture.setVolume(mConfig.getPlaybackSignalVolume() / 100.f);
-                
+
                 if (!U.getDeviceUtils().getWiredHeadsetPlugOn() && !U.getDeviceUtils().getBlueToothHeadsetOn()) {
                     mLocalAudioPreview.stop();
                 }
@@ -2228,7 +2228,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (!OPEN_AUDIO_RECORD_FOR_CALLBACK) {
             return;
         }
-        if(!mConfig.isJoinChannelSuccess()){
+        if (!mConfig.isJoinChannelSuccess()) {
             return;
         }
         boolean hasAnchor = false;
@@ -2320,13 +2320,13 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
-    public void tryStopRecordForFeedback(String from,boolean force) {
+    public void tryStopRecordForFeedback(String from, boolean force) {
         if (!OPEN_AUDIO_RECORD_FOR_CALLBACK) {
             return;
         }
-        if(force){
+        if (force) {
 
-        }else{
+        } else {
             boolean hasAnchor = false;
             for (UserStatus us : mUserStatusMap.values()) {
                 MyLog.i(TAG, " us=" + us);

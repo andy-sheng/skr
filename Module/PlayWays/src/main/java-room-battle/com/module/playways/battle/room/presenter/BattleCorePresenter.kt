@@ -204,7 +204,6 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
     }
 
 
-
     /**
      * 由ui层告知
      * 开场动画结束
@@ -279,6 +278,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         ModuleServiceManager.getInstance().msgService.leaveChatRoom(mRoomData.gameId.toString())
         JiGuangPush.exitSkrRoomId(mRoomData.gameId.toString())
         MyLog.d(TAG, "destroy over")
+        stopGuideMusic()
     }
 
     /**
@@ -489,12 +489,12 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         }
     }
 
-    private fun playGuideMusic(){
+    private fun playGuideMusic() {
         val musicUrl = mRoomData.realRoundInfo?.music?.acc
-        SinglePlayer.startPlay(TAG,musicUrl?:"")
+        SinglePlayer.startPlay(TAG, musicUrl ?: "")
     }
 
-    private fun stopGuideMusic(){
+    private fun stopGuideMusic() {
         SinglePlayer.stop(TAG)
     }
 
@@ -627,10 +627,10 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                         || lastRound.overReason == EBRoundOverReason.BROR_REQ_HELP_SING.value
                         || lastRound.overReason == EBRoundOverReason.BROR_REQ_SWITCH_SING.value) {
                     // 如果上一轮的结束原因是 使用帮唱卡 使用换歌卡 则不会显示结果页
-                    if(lastRound.overReason == EBRoundOverReason.BROR_REQ_SWITCH_SING.value){
-                        if(lastRound.userID == MyUserInfoManager.uid.toInt()){
+                    if (lastRound.overReason == EBRoundOverReason.BROR_REQ_SWITCH_SING.value) {
+                        if (lastRound.userID == MyUserInfoManager.uid.toInt()) {
                             pretendSystemMsg("你使用了一张换歌卡")
-                        }else{
+                        } else {
                             var helperNickName = mRoomData.getPlayerInfoById(lastRound.userID)?.userInfo?.nicknameRemark
                             pretendSystemMsg("${helperNickName}使用了一张换歌卡")
                         }
@@ -870,8 +870,8 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
 //            it.
 //        }
         val curRoundInfo = BattleRoundInfoModel.parseFromRoundInfo(event.currentRound)
-        if(curRoundInfo.roundSeq == mRoomData.realRoundSeq){
-            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo,true)
+        if (curRoundInfo.roundSeq == mRoomData.realRoundSeq) {
+            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo, true)
         }
     }
 
