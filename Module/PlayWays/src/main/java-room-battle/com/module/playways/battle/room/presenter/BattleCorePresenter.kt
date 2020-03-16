@@ -148,7 +148,8 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         pretendSystemMsg("撕歌倡导绿色健康游戏，并24小时对语音房进行巡查。如发现违规行为，官方将封号处理。")
         pretendSystemMsg("温馨提示，连麦时佩戴耳机效果将提高游戏体验。")
 
-        pretendSystemMsg("我是你的最佳拍档${mRoomData?.getFirstTeammate()?.userInfo?.nicknameRemark}，接下来的对战中请多关照~")
+
+        pretendTeammateMsg("我是你的最佳拍档${mRoomData?.getFirstTeammate()?.userInfo?.nicknameRemark}，接下来的对战中请多关照~")
 
         startHeartbeat()
         startSyncGameStatus()
@@ -193,6 +194,17 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         val commentSysModel = CommentSysModel(mRoomData.gameType, text)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
+
+    private fun pretendTeammateMsg(text: String) {
+        val commentTextModel = CommentTextModel()
+        commentTextModel.userInfo = mRoomData.getFirstTeammate()?.userInfo
+        commentTextModel.stringBuilder = SpanUtils()
+                .append(text).setForegroundColor(CommentModel.GRAB_SYSTEM_COLOR)
+                .create()
+        EventBus.getDefault().post(PretendCommentMsgEvent(commentTextModel))
+    }
+
+
 
     /**
      * 由ui层告知
@@ -479,7 +491,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
     }
 
     private fun playGuideMusic(){
-        val musicUrl = mRoomData.realRoundInfo?.music?.standIntro
+        val musicUrl = mRoomData.realRoundInfo?.music?.acc
         SinglePlayer.startPlay(TAG,musicUrl?:"")
     }
 
@@ -850,6 +862,20 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
 //        var u = BattlePlayerInfoModel.parseFromPb(event.user)
 //        mRoomData.updateUser(u, null)
 //    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: BSingRoundMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
+//        event.teamResultList?.forEach {
+//            it.
+//        }
+        val curRoundInfo = BattleRoundInfoModel.parseFromRoundInfo(event.currentRound)
+        if(curRoundInfo.roundSeq == mRoomData.realRoundSeq){
+            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo,true)
+        }
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BGameOverMsg) {
