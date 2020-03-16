@@ -634,7 +634,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
             }
             // 使用了帮唱卡
             roomView.useHelpSing()
-            pretendSystemMsg("队友${thisRound}向你请求帮唱")
+//            pretendSystemMsg("队友${thisRound}向你请求帮唱")
         } else if (thisRound.status == EBRoundStatus.BRS_SING.value) {
             // 进入演唱阶段
             if (thisRound.userID == MyUserInfoManager.uid.toInt()) {
