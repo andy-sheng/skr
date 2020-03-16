@@ -14,7 +14,7 @@ abstract class ExViewStub(protected var mViewStub: ViewStub?) : View.OnAttachSta
 
     val realView: View?
         get() = if (mParentView == null) {
-            mViewStub
+                mViewStub
         } else mParentView
 
     fun tryInflate():Boolean {

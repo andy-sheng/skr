@@ -73,6 +73,16 @@ class BattleRoomData : BaseRoomData<BattleRoundInfoModel>() {
         return null
     }
 
+    // 判断这个人是否是对方选手
+    fun isOpTeam(userId: Int): Boolean {
+        opTeamInfo.forEach {
+            if (it.userID == userId) {
+                return true
+            }
+        }
+        return false
+    }
+
     /**
      * 我的队伍信息
      */

@@ -18,10 +18,12 @@ import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
 import com.common.player.PlayerCallbackAdapter
 import com.common.utils.U
+import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.grab.room.event.SwitchRoomEvent
 import com.module.playways.party.room.PartyRoomData
+import com.module.playways.room.data.H
 import com.module.playways.room.msg.event.AudioMsgEvent
 import com.module.playways.room.msg.event.CommentMsgEvent
 import com.module.playways.room.msg.event.DynamicEmojiMsgEvent
@@ -328,6 +330,11 @@ class CommentView : EdgeTransparentView {
     }
 
     internal fun processCommentModel(commentModel: CommentModel) {
+        if (roomData?.gameType == GameModeType.GAME_MODE_BATTLE && H.battleRoomData?.isOpTeam(commentModel?.userInfo?.userId
+                        ?: 0) == true) {
+            //2v2的battle 并且是对方发的信息
+            return
+        }
         mCommentAdapter?.addToHead(commentModel)
         if (!mOnBottom || mDraging) {
             mHasDataUpdate = true
