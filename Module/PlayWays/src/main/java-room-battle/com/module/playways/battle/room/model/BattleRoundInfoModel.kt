@@ -7,6 +7,7 @@ import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.BattleRoom.BRoundInfo
 import com.zq.live.proto.BattleRoom.EBRoundStatus
+import com.zq.live.proto.BattleRoom.EBUserStatus
 import org.greenrobot.eventbus.EventBus
 
 
@@ -28,8 +29,9 @@ class BattleRoundInfoModel : BaseRoundInfoModel() {
 
     var result: BattleRoundResultModel? = null
     // userStatus 轮次状态
+    var userStatus: List<BattleUserStatus>? = null
 
-    var card:BattleCardInfoModel?=null
+    var card: BattleCardInfoModel? = null
 
     override fun getType(): Int {
         return TYPE_BATTLE
@@ -65,7 +67,7 @@ class BattleRoundInfoModel : BaseRoundInfoModel() {
         }
 
         val roundInfo = round as BattleRoundInfoModel
-        if(this.userID==0){
+        if (this.userID == 0) {
             this.userID = roundInfo.userID
         }
 
@@ -101,9 +103,23 @@ class BattleRoundInfoModel : BaseRoundInfoModel() {
     }
 
     /**
+     * 是否全部离线
+     * params myTeamTag我的队伍标识
+     */
+    fun isOpAllOff(myTeamTag: String?): Boolean {
+        userStatus?.forEach {
+            if (!it.teamTag?.equals(myTeamTag) && it.status == EBUserStatus.EBUS_ONLINE.value) {
+                // 不是和我一队的,并且在线
+                return false
+            }
+        }
+        return true
+    }
+
+    /**
      * 返回帮唱卡的用户id ，被帮唱的人的id
      */
-    fun getHelpUserId():Int{
+    fun getHelpUserId(): Int {
         return card?.helpCard?.userID ?: 0
     }
 
@@ -132,6 +148,13 @@ class BattleRoundInfoModel : BaseRoundInfoModel() {
             roundInfoModel.status = roundInfo.status.value
 
             roundInfoModel.overReason = roundInfo.overReason.value
+
+
+            var list = ArrayList<BattleUserStatus>()
+            roundInfo.userStatusList?.forEach {
+                list.add(BattleUserStatus.parseFromPb(it))
+            }
+            roundInfoModel.userStatus = list
 
             var songModel = SongModel()
             songModel.parse(roundInfo.music)
