@@ -77,8 +77,6 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
     internal var mRoomServerApi = ApiManager.getInstance().createService(BattleRoomServerApi::class.java)
 
     internal var mDestroyed = false
-    internal var teammateInfo:BTeamInfo? = null
-    internal var opponentTeamInfo:BTeamInfo? = null
 
 
     internal var mUiHandler: Handler = object : Handler() {
@@ -148,6 +146,8 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
 
         pretendSystemMsg("撕歌倡导绿色健康游戏，并24小时对语音房进行巡查。如发现违规行为，官方将封号处理。")
         pretendSystemMsg("温馨提示，连麦时佩戴耳机效果将提高游戏体验。")
+
+        pretendSystemMsg("我是你的最佳拍档${mRoomData?.getFirstTeammate()?.userInfo?.nicknameRemark}，接下来的对战中请多关照~")
 
         startHeartbeat()
         startSyncGameStatus()
@@ -564,26 +564,6 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         processStatusChange(2, null, event.roundInfo)
     }
 
-    /**
-     * 队友进入
-     *
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    fun onEvent(event: BUserEnterMsg){
-        MyLog.d(TAG, "BUserEnterMsg =$event")
-        val uid = MyUserInfoManager.uid.toInt()
-
-        //缓存双方队伍信息
-        teammateInfo = event.teamsList.firstOrNull{it.teamUsersList.firstOrNull { it.userID == uid } != null}
-        opponentTeamInfo = event.teamsList.firstOrNull{ it.teamUsersList.none { it.userID == uid } }
-
-        val teammate = teammateInfo?.teamUsersList?.firstOrNull { it.userID != uid }?:return
-        val teammateUNickName = teammate.nickName
-
-        pretendSystemMsg("我是你的最佳拍档${teammateUNickName}，接下来的对战中请多关照~")
-    }
-
     private fun processStatusChange(from: Int, lastRound: BattleRoundInfoModel?, thisRound: BattleRoundInfoModel?) {
         DebugLogView.println(TAG, "processStatusChange from=$from roundSeq=${thisRound?.roundSeq} statusNow=${thisRound?.status} lastOverReason=${lastRound?.overReason}")
         if (thisRound == null) {
@@ -632,9 +612,19 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
             if (thisRound.userID == MyUserInfoManager.uid.toInt()) {
                 tryDownloadAccIfSelfSing()
             }
+            if (thisRound.getHelpUserId() == MyUserInfoManager.uid.toInt()) {
+                pretendSystemMsg("你使用了一张换歌卡")
+            } else {
+                if (thisRound.getHelpUserId() == mRoomData.getFirstTeammate()?.userInfo?.userId) {
+                    pretendSystemMsg("队友${mRoomData.getPlayerInfoById(thisRound.getHelpUserId())?.userInfo?.nicknameRemark}使用了一张换歌卡")
+                    pretendSystemMsg("队友${mRoomData.getPlayerInfoById(thisRound.getHelpUserId())?.userInfo?.nicknameRemark}向你请求帮唱")
+                } else {
+                    pretendSystemMsg("对手${mRoomData.getPlayerInfoById(thisRound.getHelpUserId())?.userInfo?.nicknameRemark}使用了一张换歌卡")
+                }
+            }
             // 使用了帮唱卡
             roomView.useHelpSing()
-//            pretendSystemMsg("队友${thisRound}向你请求帮唱")
+
         } else if (thisRound.status == EBRoundStatus.BRS_SING.value) {
             // 进入演唱阶段
             if (thisRound.userID == MyUserInfoManager.uid.toInt()) {
@@ -869,7 +859,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                     mRoomData?.opTeamScore = it.teamScore
                 }
             }
-            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(currentRound,false)
+            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(currentRound, false)
         }
 
         var nextRound = BattleRoundInfoModel.parseFromRoundInfo(event.nextRound)
@@ -879,22 +869,6 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
             MyLog.w(TAG, "nextRound.roundSeq=${nextRound.roundSeq} 轮次确实比当前的高，可以切换")
             mRoomData.expectRoundInfo = nextRound
             mRoomData.checkRoundInEachMode()
-            if(nextRound.overReason == EBRoundOverReason.BROR_REQ_SWITCH_SING.value){
-                nextRound.card?.helpCard?.userID
-                val teammateUNickName = teammateInfo?.teamUsersList?.firstOrNull { it.userID == nextRound.userID }
-                val opponentUNickName = opponentTeamInfo?.teamUsersList?.firstOrNull { it.userID == nextRound.userID }
-
-                //使用了换歌卡导致切换轮次
-                if(nextRound.getHelpUserId() == MyUserInfoManager.uid.toInt()){
-                    //本人使用
-                }else if(nextRound.userID == teammateInfo?.teamUsersList?.firstOrNull { it.userID == MyUserInfoManager.uid.toInt() }?.userID){
-                    pretendSystemMsg("队友${teammateUNickName}使用了一张换歌卡")
-                }else{
-                    //对手使用了帮唱卡导致轮次切换
-                    pretendSystemMsg("对手${opponentUNickName}使用了一张换歌卡")
-                }
-
-            }
         } else {
             MyLog.w(TAG, "轮次比当前轮次还小,直接忽略 当前轮次:" + mRoomData.expectRoundInfo?.roundSeq
                     + " push轮次:" + event.currentRound.roundSeq)

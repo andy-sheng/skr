@@ -37,7 +37,6 @@ object BattleRoomMsgManager : BaseMsgManager<EBattleRoomMsgType, BattleRoomMsg>(
         when {
             msg.msgType == EBattleRoomMsgType.BRT_USER_ENTER -> {
                 EventBus.getDefault().post(msg.bUserEnterMsg)
-                EventBus.getDefault().postSticky(msg.bUserEnterMsg)
             }
             msg.msgType == EBattleRoomMsgType.BRT_GAME_OVER -> EventBus.getDefault().post(msg.bGameOverMsg)
             msg.msgType == EBattleRoomMsgType.BRT_NEXT_ROUND -> EventBus.getDefault().post(msg.bNextRoundMsg)
