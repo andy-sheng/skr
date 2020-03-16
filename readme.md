@@ -66,6 +66,8 @@ livesdk --- 撕歌项目
     1. battlegame.json 团战
     2. partygame.json 主题房游戏
     3. partyroom.json 主题房房间相关 其他模块类似 如 racegame raceroom 是排位赛 relaygame relayroom 是双人合唱
+
+6. 客户端所有scheme地址 http://wiki.inframe.club/confluence/pages/viewpage.action?pageId=3670683
     
 以上任何地址如果没有权限，在大群里找相关责任人添加权限。
 
