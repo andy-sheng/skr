@@ -9,6 +9,7 @@ import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
+import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -429,6 +430,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                 //closeEngine()
                 MyLog.w(TAG, "grabSing 成功 traceid is " + result.traceId)
             } else {
+                U.getToastUtil().showShort(result.errmsg)
                 MyLog.w(TAG, "grabSing 失败 traceid is " + result.traceId)
             }
         }
@@ -449,6 +451,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                 //closeEngine()
                 MyLog.w(TAG, "rspHelpSing 成功 traceid is " + result.traceId)
             } else {
+                U.getToastUtil().showShort(result.errmsg)
                 MyLog.w(TAG, "rspHelpSing 失败 traceid is " + result.traceId)
             }
         }
@@ -473,6 +476,15 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                 }
             }
         }
+    }
+
+    private fun playGuideMusic(){
+        val musicUrl = mRoomData.realRoundInfo?.music?.standIntro
+        SinglePlayer.startPlay(TAG,musicUrl?:"")
+    }
+
+    private fun stopGuideMusic(){
+        SinglePlayer.stop(TAG)
     }
 
     var heartbeatJob: Job? = null
@@ -585,6 +597,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
                     tryDownloadAccIfSelfSing()
                 }
                 roomView.showIntro()
+                playGuideMusic()
             }
             // 导唱阶段
             if (lastRound == null) {
@@ -628,6 +641,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
             // 使用了帮唱卡
             roomView.useHelpSing()
         } else if (thisRound.status == EBRoundStatus.BRS_SING.value) {
+            stopGuideMusic()
             // 进入演唱阶段
             if (thisRound.userID == MyUserInfoManager.uid.toInt()) {
                 // 打开自己的麦
