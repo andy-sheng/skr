@@ -74,4 +74,7 @@ livesdk --- 撕歌项目
 
 以上任何地址如果没有权限，在大群里找相关责任人添加权限。
 
-
+# 代码查看技巧
+使用
+adb shell dumpsys activity activities | sed -En -e '/Running activities/,/Run #0/p'
+查看当前手机页面属于哪个Activity，然后再找这个activity看代码
