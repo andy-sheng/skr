@@ -70,7 +70,8 @@ livesdk --- 撕歌项目
 6. 客户端所有scheme地址 http://wiki.inframe.club/confluence/pages/viewpage.action?pageId=3670683
 
 7. 企业邮箱地址 https://qiye.aliyun.com/alimail/
-    
+8. bugly 崩溃管理平台。https://bugly.qq.com/v2/product/apps/75917797f3?pid=1 
+
 以上任何地址如果没有权限，在大群里找相关责任人添加权限。
 
 
