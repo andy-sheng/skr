@@ -57,7 +57,7 @@ class BattleBeginTipsView : ConstraintLayout {
         animationEnter()
         leftAvatar1.postDelayed({
             animationLeave()
-        }, 1200)
+        }, 2700)
     }
 
     private fun bindData() {

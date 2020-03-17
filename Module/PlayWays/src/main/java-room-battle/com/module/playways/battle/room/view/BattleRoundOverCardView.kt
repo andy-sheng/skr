@@ -87,7 +87,7 @@ class BattleRoundOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         animationEnter()
         mParentView?.postDelayed({
             animationLeave()
-        }, 1200)
+        }, 2700)
     }
 
     // 入场动画
