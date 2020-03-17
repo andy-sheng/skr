@@ -123,7 +123,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     internal lateinit var mBattleSelfSingLyricView: BattleSelfSingLyricView
     internal lateinit var mBattleSongGuideView: BattleSongGuideView
 
-    internal lateinit var mScoreTipsView:GrabScoreTipsView
+    internal lateinit var mScoreTipsView: GrabScoreTipsView
 
     internal lateinit var mGameEffectBgView: GameEffectBgView
 
@@ -197,7 +197,6 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         initTurnChangeView()
         initInputView()
         initBottomView()
-        initCommentView()
         initGiftPanelView()
         initGiftDisplayView()
 
@@ -206,6 +205,8 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         initChangeRoomTransitionView()
 
         initCardView()
+        initCommentView()
+
         initOpView()
 
         initScoreView()
@@ -471,10 +472,17 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
     private fun initCommentView() {
         mCommentView = findViewById(R.id.comment_view)
+
+
         mCommentView.setListener(CommentViewItemListener { userId ->
             showPersonInfoView(userId, null)
         })
         mCommentView.roomData = mRoomData
+
+        //设置评论区域高度为歌词卡片区域以外区域 减去剩余组件高度
+        val lp = mCommentView.layoutParams
+        lp.height = (U.getDisplayUtils().screenHeight * 230f / 667 ).toInt()
+
     }
 
     private fun initGiftPanelView() {
@@ -680,6 +688,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     override fun showIntro() {
         hideAllSceneView(null)
         mBattleSongGuideView.show()
+        setSingCardViewHeight(mBattleSongGuideView)
         mTopContentView.bindData()
         if (mRoomData.realRoundInfo?.userID == MyUserInfoManager.uid.toInt()) {
             mBattleGrabView.show {
@@ -687,6 +696,11 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
             }
             mBattlePropsCardView.show()
         }
+    }
+
+    private fun setSingCardViewHeight(view:BaseSceneView?){
+        val lp = view?.realView?.layoutParams?:return
+        lp.height = (U.getDisplayUtils().screenHeight * 273f / 667).toInt()
     }
 
     override fun showRoundOver(lastRound: BattleRoundInfoModel, callback: () -> Unit) {
@@ -747,12 +761,15 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         mBattleSelfSingLyricView.show(0) {
             mCorePresenter.overSing()
         }
+        setSingCardViewHeight(mBattleSelfSingLyricView)
         mBattleGiveUpView.show()
     }
 
     override fun showOtherSing() {
         hideAllSceneView(null)
         mBattleOtherSingCardView.show()
+        setSingCardViewHeight(mBattleOtherSingCardView)
+
     }
 
     override fun gameOver(from: String) {

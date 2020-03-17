@@ -2,15 +2,17 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_268_dp">
+    android:layout_height="@dimen/view_248_dp">
 
-    <com.common.view.ex.ExImageView
+    <com.common.view.ex.ExView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_248_dp"
+        android:layout_height="match_parent"
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_gradient_endColor="#BE7B45"
         app:bl_gradient_startColor="#FFD298"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/view_20_dp"
+        />
 
     <ImageView
         android:id="@+id/title_bg"
@@ -87,7 +89,7 @@
         android:id="@+id/song_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_84_dp"
+        android:layout_marginTop="@dimen/view_64_dp"
         android:text="《后来》"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"

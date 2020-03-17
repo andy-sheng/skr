@@ -1386,9 +1386,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      */
     public void muteAllRemoteAudioStreams(final boolean muted) {
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("muteAllRemoteAudioStreams") {
                 @Override
-                public void run() {
+                public void realRun() {
                     mConfig.setAllRemoteAudioStreamsMute(muted);
                     mAgoraRTCAdapter.muteAllRemoteAudioStreams(muted);
                 }
@@ -1401,10 +1401,11 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 适用于 A 在唱歌，B C 能互相聊天，但不能打扰到 A 的场景
      */
     public void muteRemoteAudioStream(final int uid, final boolean muted) {
+
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("muteRemoteAudioStream" + " uid=" + uid + " muted=" + muted) {
                 @Override
-                public void run() {
+                public void realRun() {
                     mAgoraRTCAdapter.muteRemoteAudioStream(uid, muted);
                 }
             });
