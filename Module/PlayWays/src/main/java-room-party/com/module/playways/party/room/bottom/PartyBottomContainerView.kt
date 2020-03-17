@@ -181,13 +181,20 @@ class PartyBottomContainerView : BottomContainerView {
         if (roomData?.isAllMute == true && roomData?.myUserInfo?.isHost()==false) {
             // 全员禁麦
             mInputBtn?.setBackgroundResource(R.drawable.relay_mute)
-            ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
+            // 为了节约引擎成本费用，非主持人直接mute静音
+            ZqEngineKit.getInstance().muteLocalAudioStream(true)
+//            ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
         } else {
             if (roomData?.isMute == true) {
                 mInputBtn?.setBackgroundResource(R.drawable.relay_mute)
-                ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
+                if(roomData?.myUserInfo?.isHost()==true){
+                    ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
+                }else{
+                    ZqEngineKit.getInstance().muteLocalAudioStream(true)
+                }
             } else {
                 mInputBtn?.setBackgroundResource(R.drawable.relay_unmute)
+                ZqEngineKit.getInstance().muteLocalAudioStream(false)
                 ZqEngineKit.getInstance().adjustRecordingSignalVolume(ZqEngineKit.getInstance().params.recordingSignalVolume, false)
             }
         }
