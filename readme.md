@@ -1,6 +1,6 @@
 #入职须知
 1. 找段兵营分配个企业邮箱帐号
-2. 下载 Tunnelblick VPN ,找段兵营要个vpn的帐号，代码仓库在阿里云上，代码的下载与提交都需要vpn
+2. 下载 Tunnelblick VPN ,找段兵营要个vpn的帐号，代码仓库在阿里云上，代码的下载与提交都需要vpn。vpn配置会在邮箱里
 
 # 代码下载
 
@@ -68,6 +68,8 @@ livesdk --- 撕歌项目
     3. partyroom.json 主题房房间相关 其他模块类似 如 racegame raceroom 是排位赛 relaygame relayroom 是双人合唱
 
 6. 客户端所有scheme地址 http://wiki.inframe.club/confluence/pages/viewpage.action?pageId=3670683
+
+7. 企业邮箱地址 https://qiye.aliyun.com/alimail/
     
 以上任何地址如果没有权限，在大群里找相关责任人添加权限。
 

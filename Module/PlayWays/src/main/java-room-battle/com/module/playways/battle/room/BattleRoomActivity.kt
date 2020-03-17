@@ -42,9 +42,7 @@ import com.module.playways.battle.room.ui.BattleWidgetAnimationController
 import com.module.playways.battle.room.ui.IBattleRoomView
 import com.module.playways.battle.room.view.*
 import com.module.playways.grab.room.inter.IGrabVipView
-import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.grab.room.presenter.VipEnterPresenter
-import com.module.playways.grab.room.ui.GrabRoomFragment
 import com.module.playways.grab.room.view.GrabChangeRoomTransitionView
 import com.module.playways.grab.room.view.GrabScoreTipsView
 import com.module.playways.grab.room.view.VIPEnterView
@@ -81,7 +79,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         val playerTag = "BattleRoomActivity"
     }
 
-    private fun ensureActivtyTop() {
+    private fun ensureActivityTop() {
         // 销毁其他的除排麦房页面所有界面
         for (i in U.getActivityUtils().activityList.size - 1 downTo 0) {
             val activity = U.getActivityUtils().activityList[i]
@@ -125,7 +123,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     internal lateinit var mBattleSelfSingLyricView: BattleSelfSingLyricView
     internal lateinit var mBattleSongGuideView: BattleSongGuideView
 
-    internal lateinit var mBattleScoreTipsView:GrabScoreTipsView
+    internal lateinit var mScoreTipsView:GrabScoreTipsView
 
     internal lateinit var mGameEffectBgView: GameEffectBgView
 
@@ -157,20 +155,6 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
             when (msg?.what) {
-
-                //                case MSG_ENSURE_READYGO_OVER:
-                //                    onReadyGoOver();
-                //                    break;
-                GrabRoomFragment.MSG_ENSURE_BATTLE_BEGIN_OVER -> onBattleBeginPlayOver()
-                GrabRoomFragment.MSG_ENSURE_SONGCARD_OVER -> onSongInfoCardPlayOver("MSG_ENSURE_SONGCARD_OVER", msg.obj as GrabRoomFragment.PendingPlaySongCardData)
-                GrabRoomFragment.MSG_ENSURE_SING_BEGIN_TIPS_OVER -> onSingBeginTipsPlayOver()
-                GrabRoomFragment.MSG_ENSURE_ROUND_OVER_PLAY_OVER -> onRoundOverPlayOver(msg.arg1 == 1, msg.obj as GrabRoundInfoModel?)
-                //                case MSG_ENSURE_GAME_OVER:
-                //                    onGrabGameOver("MSG_ENSURE_GAME_OVER");
-                //                    break;
-                //                case MSG_SEND_SELF_SING_END:
-                //                    mCorePresenter.sendRoundOverInfo();
-                //                    break;
 //                REMOVE_HOST_OP_TIP_MSG -> {
 //                    removeHostOpTips()
 //                }
@@ -186,7 +170,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        ensureActivtyTop()
+        ensureActivityTop()
         var rspModel = intent.getSerializableExtra("JoinBattleRoomRspModel") as JoinBattleRoomRspModel?
         rspModel?.let {
             mRoomData.loadFromRsp(it)
@@ -250,30 +234,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
                 mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
             }
         }
-
         U.getStatusBarUtil().setTransparentBar(this, false)
-
-
-    }
-
-    private fun onRoundOverPlayOver(playNextSongInfoCard: Boolean, now: GrabRoundInfoModel?) {
-        mUiHandler.removeMessages(GrabRoomFragment.MSG_ENSURE_ROUND_OVER_PLAY_OVER)
-    }
-
-    internal fun onSongInfoCardPlayOver(from: String, pendingPlaySongCardData: GrabRoomFragment.PendingPlaySongCardData) {
-        MyLog.d(TAG, "onSongInfoCardPlayOver pendingPlaySongCardData=$pendingPlaySongCardData from=$from")
-        mUiHandler.removeMessages(GrabRoomFragment.MSG_ENSURE_SONGCARD_OVER)
-    }
-
-    private fun onSingBeginTipsPlayOver() {
-        MyLog.d(TAG, "onSingBeginTipsPlayOver")
-        mUiHandler.removeMessages(GrabRoomFragment.MSG_ENSURE_SING_BEGIN_TIPS_OVER)
-        mBattleScoreTipsView.reset()
-    }
-
-    private fun onBattleBeginPlayOver() {
-        mUiHandler.removeMessages(GrabRoomFragment.MSG_ENSURE_BATTLE_BEGIN_OVER)
-        mCorePresenter.onOpeningAnimationOver()
     }
 
     private fun initTurnChangeView() {
@@ -387,7 +348,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     }
 
     private fun initScoreView() {
-        mBattleScoreTipsView = findViewById(R.id.battle_score_tips_view)
+        mScoreTipsView = findViewById(R.id.battle_score_tips_view)
     }
 
     private fun initVipEnterView() {
@@ -777,7 +738,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
     }
 
     override fun receiveScoreEvent(score: Int, songLineNum: Int) {
-        mBattleScoreTipsView.updateScore(score, songLineNum, 5)
+        mScoreTipsView.updateScore(score, songLineNum, 5)
     }
 
     override fun showSelfSing() {

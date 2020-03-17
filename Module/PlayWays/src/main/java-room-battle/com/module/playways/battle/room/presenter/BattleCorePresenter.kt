@@ -599,7 +599,7 @@ class BattleCorePresenter(var mRoomData: BattleRoomData, var roomView: IBattleRo
         // 屏蔽所有对手的声音
         closeEngine()
         for (u in mRoomData.opTeamInfo) {
-            ZqEngineKit.getInstance().muteRemoteAudioStream(u.userID, false)
+            ZqEngineKit.getInstance().muteRemoteAudioStream(u.userID, true)
         }
 
         if (thisRound.status == EBRoundStatus.BRS_INTRO.value) {
