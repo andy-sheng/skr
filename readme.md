@@ -68,9 +68,12 @@ livesdk --- 撕歌项目
     3. partyroom.json 主题房房间相关 其他模块类似 如 racegame raceroom 是排位赛 relaygame relayroom 是双人合唱
 
 6. 客户端所有scheme地址 http://wiki.inframe.club/confluence/pages/viewpage.action?pageId=3670683
-
 7. 企业邮箱地址 https://qiye.aliyun.com/alimail/
 8. bugly 崩溃管理平台。https://bugly.qq.com/v2/product/apps/75917797f3?pid=1 
+9. http://op.inframe.mobi/report/feedback 用户反馈后台线上环境，查看线上用户反馈的地方
+   http://test.op.inframe.mobi/feedback/list  用户反馈后台test环境， dev sandbox环境类似
+   用户名 Admin 密码 123456
+
 
 以上任何地址如果没有权限，在大群里找相关责任人添加权限。
 
@@ -78,3 +81,20 @@ livesdk --- 撕歌项目
 使用
 adb shell dumpsys activity activities | sed -En -e '/Running activities/,/Run #0/p'
 查看当前手机页面属于哪个Activity，然后再找这个activity看代码
+
+# 打包上传流程
+### 环境介绍
+dev 开发环境 初期开发一般在这个环境，服务器的接口也会先部署在这个环境
+test 测试环境 一般是测试在这个环境做功能验证回归
+sandbox 沙盒环境 一般是服务器用
+default 线上缺省环境 这个渠道不会覆盖任何现有的线上渠道，一般用作自升级的包。比如当前用户渠道是MI_SHOP，来自小米应用商店，
+升级包配置的是 DEFAULT 渠道的包，升级安装后，渠道号还为 MI_SHOP。
+
+### 打包发版流程
+1. 打测试包 一般给测试 test 环境的包，命令为 ./upload.sh TEST build 。会上传包到蒲公英后台 https://www.pgyer.com/my ，输出二维码。
+2. 测试bug全部解决修复后，会使用 ./ins.sh app release all 打全渠道包，并将 DEFAULT 上传阿里云 oss 后台，生成url链接。
+https://signin.aliyun.com/skrer.onaliyun.com/login.htm
+将生成的链接丢给 段兵营 配置升级。线上用户就会收到升级提示
+3. 观察一段时间新版本 bugly 线上的崩溃率 ，修复崩溃
+4. 版本稳定后，./ins.sh app release all 打全渠道包 。并将所有渠道包通过U盘拷贝给运营同学，运营同学会将包上传到各应用商店
+
