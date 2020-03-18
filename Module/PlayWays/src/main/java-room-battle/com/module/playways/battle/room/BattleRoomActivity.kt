@@ -481,7 +481,7 @@ class BattleRoomActivity : BaseActivity(), IBattleRoomView, IGrabVipView {
 
         //设置评论区域高度为歌词卡片区域以外区域 减去剩余组件高度
         val lp = mCommentView.layoutParams
-        lp.height = (U.getDisplayUtils().screenHeight * 230f / 667 ).toInt()
+        lp.height = (U.getDisplayUtils().screenWidth * 200f / 667 ).toInt()
 
     }
 
