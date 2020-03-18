@@ -101,7 +101,7 @@ class PartyRoomItemView(val type: Int, val model: PartyRoomTagMode, context: Con
         })
 
         val mLoadSir = LoadSir.Builder()
-                .addCallback(EmptyCallback(R.drawable.loading_empty, "暂无房间", "#993B4E79"))
+                .addCallback(EmptyCallback(R.drawable.loading_empty2, "暂无房间", "#99FFFFFF"))
                 .build()
         mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
             initData(true)
