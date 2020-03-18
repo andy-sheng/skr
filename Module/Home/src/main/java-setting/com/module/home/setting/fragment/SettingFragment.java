@@ -221,7 +221,7 @@ public class SettingFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString(RouterConstants.KEY_WEB_URL, "https://api.inframe.mobi/user-agreement.html")
+                        .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://api.inframe.mobi/user-agreement.html"))
                         .navigation();
             }
         });
@@ -230,7 +230,7 @@ public class SettingFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString(RouterConstants.KEY_WEB_URL, "https://fe.inframe.mobi/pages/banner/2p8p3g83hk5i71v32.html")
+                        .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://fe.inframe.mobi/pages/banner/2p8p3g83hk5i71v32.html"))
                         .navigation();
             }
         });
