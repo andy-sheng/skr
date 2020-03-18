@@ -99,7 +99,9 @@ class PartyRoomItemView(val type: Int, val model: PartyRoomTagMode, context: Con
                 }
             }
         })
-
+        refreshLayout.setOnRefreshListener {
+            loadRoomListData(0,true)
+        }
         val mLoadSir = LoadSir.Builder()
                 .addCallback(EmptyCallback(R.drawable.loading_empty2, "暂无房间", "#99FFFFFF"))
                 .build()
