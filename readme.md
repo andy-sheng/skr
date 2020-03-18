@@ -99,6 +99,13 @@ default 线上缺省环境 这个渠道不会覆盖任何现有的线上渠道�
 1. 打测试包 一般给测试 test 环境的包，命令为 ./upload.sh TEST build 。会上传包到蒲公英后台 https://www.pgyer.com/my ，输出二维码。
 2. 测试bug全部解决修复后，会使用 ./ins.sh app release all 打全渠道包，并将 DEFAULT 上传阿里云 oss 后台，生成url链接。
 https://signin.aliyun.com/skrer.onaliyun.com/login.htm
+上传 apk到阿里云的步骤
+1.登陆 阿里云,
+2.左边选择 对象存储oss,
+3.选择 Buckets列表 ，
+4.选择res-inframe，5
+5.选择文件管理，
+6.选择 pkags/android 上传
 将生成的链接丢给 段兵营 配置升级。线上用户就会收到升级提示
 3. 观察一段时间新版本 bugly 线上的崩溃率 ，修复崩溃
 4. 版本稳定后，./ins.sh app release all 打全渠道包 。并将所有渠道包通过U盘拷贝给运营同学，运营同学会将包上传到各应用商店

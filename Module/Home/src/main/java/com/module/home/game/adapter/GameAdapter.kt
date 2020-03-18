@@ -5,14 +5,14 @@ import android.os.Looper
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-
 import com.common.base.BaseFragment
 import com.component.busilib.banner.BannerViewHolder
+import com.component.busilib.banner.SlideShowModel
 import com.component.busilib.model.PartyRoomInfoModel
 import com.component.person.model.UserRankModel
 import com.module.home.R
-import com.module.home.game.viewholder.*
-import com.component.busilib.banner.SlideShowModel
+import com.module.home.game.viewholder.FuncationAreaViewHolder
+import com.module.home.game.viewholder.GameTypeViewHolder
 import com.module.home.game.viewholder.party.PartyAreaViewHolder
 
 class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickGameListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -185,18 +185,18 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
             // 只是无广告
             when (viewType) {
                 TYPE_BANNER_HOLDER -> -1
-                TYPE_FUNCTION_HOLDER -> 0
-                TYPE_PARTY_HOLDER -> 1
+                TYPE_FUNCTION_HOLDER -> 1
+                TYPE_PARTY_HOLDER -> 0
                 TYPE_GAMETYPE_HOLDER -> 2
                 else -> -1
             }
         } else {
             // 只是无party
             when (viewType) {
-                TYPE_BANNER_HOLDER -> 0
-                TYPE_FUNCTION_HOLDER -> 1
+                TYPE_BANNER_HOLDER -> -1
+                TYPE_FUNCTION_HOLDER -> 0
                 TYPE_PARTY_HOLDER -> -1
-                TYPE_GAMETYPE_HOLDER -> 2
+                TYPE_GAMETYPE_HOLDER -> 1
                 else -> -1
             }
         }
