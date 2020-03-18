@@ -13,8 +13,12 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
+import com.component.busilib.callback.EmptyCallback
 import com.component.busilib.model.PartyRoomInfoModel
 import com.component.busilib.model.PartyRoomTagMode
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
@@ -28,6 +32,8 @@ class PartyRoomItemView(val type: Int, val model: PartyRoomTagMode, context: Con
 
     private val refreshLayout: SmartRefreshLayout
     private val recyclerView: RecyclerView
+
+    private val mLoadService:LoadService<*>
 
     private val roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
     private val adapter: PartyRoomAdapter
@@ -77,7 +83,7 @@ class PartyRoomItemView(val type: Int, val model: PartyRoomTagMode, context: Con
                 }
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
-                    initData(true)
+
                 }
 
             })
@@ -92,6 +98,13 @@ class PartyRoomItemView(val type: Int, val model: PartyRoomTagMode, context: Con
                     stopTimer()
                 }
             }
+        })
+
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.loading_empty, "暂无房间", "#993B4E79"))
+                .build()
+        mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
+            initData(true)
         })
 
     }
@@ -143,6 +156,13 @@ class PartyRoomItemView(val type: Int, val model: PartyRoomTagMode, context: Con
                 val newSize = adapter.mDataList.size
                 adapter.notifyItemRangeInserted(size, newSize - size)
             }
+        }
+
+        //列表空显示
+        if(adapter.mDataList.isNullOrEmpty()){
+            mLoadService.showCallback(EmptyCallback::class.java)
+        }else{
+            mLoadService.showSuccess()
         }
     }
 
