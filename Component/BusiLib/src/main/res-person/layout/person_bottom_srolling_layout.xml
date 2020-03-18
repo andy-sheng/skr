@@ -161,7 +161,8 @@
             android:id="@+id/feeds_area"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_70_dp"
-            android:layout_below="@id/works_area">
+            android:layout_below="@id/works_area"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/feed_title_tv"
