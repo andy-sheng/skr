@@ -85,6 +85,7 @@ public class SettingFragment extends BaseFragment {
     RelativeLayout mUserFeedback;
     RelativeLayout mComment;
     RelativeLayout mServiceAgreen;
+    RelativeLayout mConcatSkr;
     RelativeLayout mRlExchange;
     ExTextView mExitLogin;
 
@@ -129,6 +130,7 @@ public class SettingFragment extends BaseFragment {
         mUserFeedback = getRootView().findViewById(R.id.user_feedback);
         mComment = getRootView().findViewById(R.id.comment);
         mServiceAgreen = getRootView().findViewById(R.id.service_agreen);
+        mConcatSkr = getRootView().findViewById(R.id.concat_skr);
 
         mExitLogin = getRootView().findViewById(R.id.exit_login);
 
@@ -220,6 +222,15 @@ public class SettingFragment extends BaseFragment {
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString(RouterConstants.KEY_WEB_URL, "https://api.inframe.mobi/user-agreement.html")
+                        .navigation();
+            }
+        });
+
+        mConcatSkr.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString(RouterConstants.KEY_WEB_URL, "https://fe.inframe.mobi/pages/banner/2p8p3g83hk5i71v32.html")
                         .navigation();
             }
         });
