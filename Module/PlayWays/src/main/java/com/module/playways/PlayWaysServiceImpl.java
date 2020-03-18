@@ -844,6 +844,9 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
             if (H.INSTANCE.getPartyRoomData() != null && H.INSTANCE.getPartyRoomData().getGameId() == roomID) {
                 return true;
             }
+            if (H.INSTANCE.getPartyRoomData() != null && H.INSTANCE.getPartyRoomData().getMyUserInfoInParty().isHost()) {
+                return true;
+            }
         } else if (type == EGameModeType.StandMode.getValue()) {
             if (H.INSTANCE.getGrabRoomData() != null && H.INSTANCE.getGrabRoomData().getGameId() == roomID) {
                 return true;
