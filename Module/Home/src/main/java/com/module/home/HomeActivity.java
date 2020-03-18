@@ -71,6 +71,8 @@ import com.module.mall.RelationCardUtils;
 import com.module.msg.IMsgService;
 import com.module.playways.IPlaywaysModeService;
 import com.orhanobut.dialogplus.DialogPlus;
+import com.zq.live.proto.Common.EGameModeType;
+import com.zq.live.proto.broadcast.PresentGift;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -251,9 +253,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    MyLog.w(TAG, "  mGameArea.setOnLongClickListener");
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_ROOM)
-                            .navigation();
+//                    MyLog.w(TAG, "  mGameArea.setOnLongClickListener");
+//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_ROOM)
+//                            .navigation();
+                    PresentGift presentGift = new PresentGift(0, EGameModeType.PartyMode,"sdadasad",true,"http://res-static.inframe.mobi/gift/img/falali.png","111","222","333");
+                    EventBus.getDefault().post(presentGift);
                     return true;
                 }
             });
