@@ -682,10 +682,12 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             if (mRoomData.mySeatInfo?.micStatus == EMicStatus.MS_OPEN.value) {
                 // 我得开着麦
                 mRoomData.isMute = false
+                ZqEngineKit.getInstance().muteLocalAudioStream(false)
                 ZqEngineKit.getInstance().adjustRecordingSignalVolume(ZqEngineKit.getInstance().params.recordingSignalVolume, false)
             } else {
                 mRoomData.isMute = true
-                ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
+                ZqEngineKit.getInstance().muteLocalAudioStream(true)
+//                ZqEngineKit.getInstance().adjustRecordingSignalVolume(0, false)
             }
         } else {
             if (mRoomData.myUserInfo?.isHost() == true) {
