@@ -325,7 +325,7 @@ public class AudioCapture {
             postState(STATE_RECORDING);
 
             long timeout = readSize * 1000L / mSampleRate / mChannels / 2;
-            timeout *= 4;
+            timeout = Math.max(timeout * 2, 500);
             while (!mStop) {
                 int read = mAudioRecord.read(byteBuffer, readSize, timeout);
                 if (mStop) {
