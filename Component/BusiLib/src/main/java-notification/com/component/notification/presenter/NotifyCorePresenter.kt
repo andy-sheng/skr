@@ -1,5 +1,9 @@
 package com.component.notification.presenter
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.animation.ValueAnimator
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -100,7 +104,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
                 MSG_DISMISS_GIFT_MALL_FLOAT_WINDOW -> FloatWindow.destroy(TAG_GIFT_MALL_FLOAT_WINDOW, 2)
                 MSG_DISMISS_RELAY_INVITE_FLOAT_WINDOW -> FloatWindow.destroy(TAG_RELAY_INVITE_FLOAT_WINDOW, 2)
                 MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW -> FloatWindow.destroy(TAG_RONG_MSG_NOTIFY_FLOAT_WINDOW, 2)
-                MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW -> FloatWindow.destroy(TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW, 2)
+                MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW -> FloatWindow.destroy(msg.obj as String, 2)
             }
         }
     }
@@ -1106,9 +1110,6 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
     }
 
     internal fun showBigGiftNotifyFloatWindow(floatWindowData: FloatWindowData) {
-        mUiHandler.removeMessages(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW)
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW, 5000)
-
         val relationNotifyView = BigGiftNotifyView(U.app())
         val obj = JSONObject.parseObject(floatWindowData.extra)
         val content = obj.getString("content")
@@ -1125,16 +1126,25 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
             }
         }
 
+        val windowTag = TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW + System.currentTimeMillis()
         relationNotifyView.bindData(enterScheme, content, couldEnter, sourceURL) {
-            mUiHandler.removeMessages(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW);
-            FloatWindow.destroy(TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW);
+            mUiHandler.removeMessages(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW)
+            FloatWindow.destroy(windowTag)
         }
+
+        mUiHandler.removeMessages(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW)
+        val msg = mUiHandler.obtainMessage(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW)
+        msg.obj = windowTag
+        mUiHandler.sendMessageDelayed(msg, 10000)
 
         FloatWindow.with(U.app())
                 .setView(relationNotifyView)
                 .setMoveType(MoveType.canRemove)
+                .setX(Screen.width,1f)
+                .setY(Screen.height,0.05f)
                 .setWidth(Screen.width, 1f)                               //设置控件宽高
-                .setHeight(Screen.height, 0.2f)
+                .setHeight(Screen.height, 0.1f)
+                .setMoveType(MoveType.inactive)
                 .setViewStateListener(object : ViewStateListenerAdapter() {
                     override fun onDismiss(dismissReason: Int) {
                         mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.endCurrent(floatWindowData)
@@ -1149,8 +1159,36 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
-                .setTag(TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW)
+                .setTag(windowTag)
                 .build()
+
+        var ob = ValueAnimator.ofFloat(1f,0f,-1f)
+        ob.addUpdateListener {
+            l->
+            val v = l.animatedValue as Float
+            FloatWindow.get(windowTag)?.updateX(Screen.width,v)
+//            if(v==0f){
+//                mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.endCurrent(floatWindowData)
+//            }
+        }
+        ob.duration = 10*1000
+        ob.addListener(object:Animator.AnimatorListener{
+            override fun onAnimationRepeat(animation: Animator?) {
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                mUiHandler.removeMessages(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW)
+                FloatWindow.destroy(windowTag)
+                mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.endCurrent(floatWindowData)
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+            }
+
+            override fun onAnimationStart(animation: Animator?) {
+            }
+        })
+        ob.start()
     }
 
     internal fun showRongMsgNotifyFloatWindow(floatWindowData: FloatWindowData) {

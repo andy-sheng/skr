@@ -246,6 +246,8 @@ do
         scan=true
     elif [[ $p = online ]]; then
         online=true
+    elif [[ $p = info ]]; then
+        info=true
     fi
 done
 
@@ -337,6 +339,10 @@ if [ $scan = true ]; then
     echo "输出报告"
     rd=$rd' --profile --scan'
 fi
+if [ $info = true ]; then
+    echo "输出报告"
+    rd=$rd' --info'
+fi
 if [[ $1 = "app" ]]; then
 	if [[ $isBuildModule = false ]]; then
 		#如果是app 并且 之前的 isBuildModule 为false，则直接编译
@@ -352,7 +358,7 @@ if [[ $1 = "app" ]]; then
 		./gradlew clean
 		if [[ $all = true ]];then
 		    echo "编译release所有渠道 ./gradlew :app:assembleReleaseChannels  $rd"
-		    ./gradlew :app:assembleReleaseChannels $rd --info
+		    ./gradlew :app:assembleReleaseChannels $rd
 		    ./apk_canary.sh
             #拷贝所有包到主目录
             rm -rf ./publish
@@ -368,7 +374,7 @@ if [[ $1 = "app" ]]; then
 			fi
 		else
 		    echo "只编译release default渠道 ./gradlew :app:assembleReleaseChannels --stacktrace $rd"
-		    ./gradlew :app:assembleReleaseChannels --stacktrace $rd --info
+		    ./gradlew :app:assembleReleaseChannels --stacktrace $rd
 		    if [ $apkcanary = true ]; then
 		        ./apk_canary.sh
 		    fi

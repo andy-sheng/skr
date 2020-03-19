@@ -58,6 +58,9 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
     }
 
     fun initOperationArea(isFlag: Boolean) {
+        // 暂时取消banner
+
+        /*
         val now = System.currentTimeMillis()
         if (!isFlag) {
             // 距离上次拉去已经超过30秒了
@@ -95,7 +98,8 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
             override fun onNetworkError(errorType: ApiObserver.ErrorType) {
                 U.getToastUtil().showShort("网络超时")
             }
-        }, this, RequestControl("getSlideList", ControlType.CancelThis))
+        }, this, RequestControl("getSlideList", ControlType.CancelThis))*/
+        mIGameView3.setBannerImage(null)
     }
 
     fun getRegionDiff(isFlag: Boolean) {
