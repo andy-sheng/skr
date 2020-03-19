@@ -28,7 +28,7 @@
 
     <TextView
         android:id="@+id/desc_tv"
-        android:layout_width="@dimen/view_80_dp"
+        android:layout_width="@dimen/view_72_dp"
         android:layout_height="@dimen/view_20_dp"
         android:ellipsize="end"
         android:gravity="center"
