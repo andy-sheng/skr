@@ -925,6 +925,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
             //                    }
             //                }
             //            }
+        } else if (event.getType() == EngineEvent.TYPE_ENGINE_ERROR) {
+            U.getToastUtil().showLong("录音异常，请尝试到设置页面关闭实验性耳返")
         } else {
             // 可以考虑监听下房主的说话提示 做下容错
         }
