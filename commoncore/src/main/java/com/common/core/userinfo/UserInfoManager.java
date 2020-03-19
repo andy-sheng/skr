@@ -403,6 +403,60 @@ public class UserInfoManager {
         });
     }
 
+    public void add2Undisturbed(final int userID, final ResponseCallBack responseCallBack){
+        if (userID <= 0 || userID <= 0) {
+            MyLog.w(TAG, "addToBlacklist" + " userID=" + userID);
+            return;
+        }
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userID", userID);
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        ApiMethods.subscribe(userInfoServerApi.addToBlackList(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    boolean isFriend = result.getData().getBooleanValue("isFriend");
+                    boolean isFollow = result.getData().getBooleanValue("isFollow");
+                    boolean isSPFollow = result.getData().getBooleanValue("isSPFollow");
+                    EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.BLACK_LIST_TYPE, userID, isFriend, isFollow, isSPFollow));
+                    // TODO: 2019-07-03 可能服务器加成功，加融云失败，有问题找服务器
+                    msgService.addToBlacklist(String.valueOf(userID), new ICallback() {
+                        @Override
+                        public void onSucess(Object obj) {
+                            if (responseCallBack != null) {
+                                responseCallBack.onServerSucess(obj);
+                            }
+                        }
+
+                        @Override
+                        public void onFailed(Object obj, int errcode, String message) {
+                            MyLog.w(TAG, "onFailed" + " obj=" + obj + " errcode=" + errcode + " message=" + message);
+                            if (responseCallBack != null) {
+                                responseCallBack.onServerFailed();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void removeUndisturbed(final int userID, final ResponseCallBack responseCallBack){
+
+    }
+
+    public void getUndisturbed(final int userID, final ResponseCallBack responseCallBack){
+
+    }
+
+    public void getAllUndisturbed(final int userID, final ResponseCallBack responseCallBack){
+        //分页数据，分多次请求获取全部列表数据
+        while (true){
+
+        }
+    }
+
     public void insertUpdateDBAndCache(final UserInfoModel userInfoModel, boolean hasRelation) {
         Observable.create(new ObservableOnSubscribe<UserInfoModel>() {
             @Override
