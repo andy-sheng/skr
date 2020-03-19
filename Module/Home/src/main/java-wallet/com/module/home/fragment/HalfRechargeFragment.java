@@ -92,6 +92,8 @@ public class HalfRechargeFragment extends BallanceFragment {
                     } else {
                         U.getToastUtil().showShort("未安装微信");
                     }
+                } else if (mEPayPlatform == EPayPlatform.MI_PAY) {
+                    mBallencePresenter.rechargeMiPay(mRechargeAdapter.getSelectedItem().getGoodsID());
                 } else {
                     mBallencePresenter.rechargeAliPay(mRechargeAdapter.getSelectedItem().getGoodsID());
                 }
@@ -113,19 +115,19 @@ public class HalfRechargeFragment extends BallanceFragment {
         mBallencePresenter.getGoodsList();
 
 
-        mWeixinRechargeArea = (FrameLayout)getRootView().findViewById(R.id.weixin_recharge_area);
-        mXiaomiRechargeArea = (FrameLayout)getRootView().findViewById(R.id.xiaomi_recharge_area);
-        mBtbXiaomi = (ExTextView)getRootView().findViewById(R.id.btb_xiaomi);
-        mIvXiaomiFlag = (ExImageView)getRootView().findViewById(R.id.iv_xiaomi_flag);
+        mWeixinRechargeArea = (FrameLayout) getRootView().findViewById(R.id.weixin_recharge_area);
+        mXiaomiRechargeArea = (FrameLayout) getRootView().findViewById(R.id.xiaomi_recharge_area);
+        mBtbXiaomi = (ExTextView) getRootView().findViewById(R.id.btb_xiaomi);
+        mIvXiaomiFlag = (ExImageView) getRootView().findViewById(R.id.iv_xiaomi_flag);
 
-        if(MiLianYunManager.INSTANCE.lianYunOpen()){
+        if (MiLianYunManager.INSTANCE.lianYunOpen()) {
             MiLianYunManager.INSTANCE.loginAuto();
             mWeixinRechargeArea.setVisibility(View.GONE);
             mXiaomiRechargeArea.setVisibility(View.VISIBLE);
             mEPayPlatform = EPayPlatform.MI_PAY;
             mIvWeixinFlag.setVisibility(View.GONE);
             mIvXiaomiFlag.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mWeixinRechargeArea.setVisibility(View.VISIBLE);
             mXiaomiRechargeArea.setVisibility(View.GONE);
             mEPayPlatform = EPayPlatform.WX_PAY;
