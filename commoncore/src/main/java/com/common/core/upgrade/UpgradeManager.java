@@ -83,6 +83,8 @@ public class UpgradeManager {
             XiaomiUpdateAgent.setUpdateListener(new XiaomiUpdateListener() {
                 @Override
                 public void onUpdateReturned(int updateStatus, UpdateResponse updateResponse) {
+                    // DEBUG 会有沙盒测试 传了个很高版本的包
+                    MyLog.w(TAG,"updateStatus="+updateStatus+" updateResponse="+updateResponse.versionCode);
                     if(updateStatus == UpdateStatus.STATUS_UPDATE){
                         MiLianYunManager.INSTANCE.setHasNewVersion(true);
                     }
