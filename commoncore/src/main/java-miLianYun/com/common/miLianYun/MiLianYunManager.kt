@@ -24,7 +24,7 @@ object MiLianYunManager {
      * 小米联运是否开启
      */
     fun lianYunOpen(): Boolean {
-        return U.getChannelUtils().channel == "MI_SHOP" ||U.getChannelUtils().channel == "SANDBOX"
+        return U.getChannelUtils().channel == "MI_SHOP" || U.getChannelUtils().channel == "SANDBOX"
 //        return true
     }
 
@@ -88,10 +88,11 @@ object MiLianYunManager {
             }
             return
         }
-
+        val miHasLogin = U.getPreferenceUtils().getSettingBoolean(U.getPreferenceUtils().longlySp(), "mi_has_login", false)
         MiCommplatform.getInstance().miLogin(U.getActivityUtils().topActivity, object : OnLoginProcessListener {
             override fun finishLoginProcess(code: Int, account: MiAccountInfo?) {
                 MyLog.d(TAG, "fini·shLoginProcess code = $code, account = $account")
+                U.getPreferenceUtils().setSettingBoolean(U.getPreferenceUtils().longlySp(), "mi_has_login", true)
                 if (code == MiCode.MI_SUCCESS) {
                     callback.invoke(0, account?.uid, account?.sessionId)
                 } else {
@@ -109,7 +110,11 @@ object MiLianYunManager {
 //                }
             }
         },
-                MiLoginType.AUTO_FIRST,
+                if (miHasLogin) {
+                    MiLoginType.AUTO_FIRST
+                } else {
+                    MiLoginType.MANUAL_ONLY
+                },
                 if (useMiAccount) {
                     MiAccountType.MI_SDK
                 } else {
@@ -122,7 +127,7 @@ object MiLianYunManager {
                 })
     }
 
-    fun pay(orderId: String, fee: Int,cpUserInfo:String, callback: (code: Int, msg: String?) -> Unit) {
+    fun pay(orderId: String, fee: Int, cpUserInfo: String, callback: (code: Int, msg: String?) -> Unit) {
         MyLog.d(TAG, "pay orderId = $orderId, fee = $fee, callback = $callback")
         var miBuyInfo = MiBuyInfo()
         miBuyInfo.cpOrderId = orderId //订单号唯一（不为空）

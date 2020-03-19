@@ -44,6 +44,31 @@
             android:clipChildren="false">
 
             <FrameLayout
+                android:id="@+id/xiaomi_recharge_area"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_45_dp"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:layout_weight="1">
+
+                <com.common.view.ex.ExImageView
+                    android:id="@+id/iv_xiaomi_flag"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom|right"
+                    android:background="@drawable/chongzhijiemian_dianjiuxuanzhongtai"
+                    android:visibility="visible" />
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/btb_xiaomi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/zhifu_xiaomi2" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/weixin_recharge_area"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_45_dp"
                 android:layout_marginLeft="@dimen/view_16_dp"
