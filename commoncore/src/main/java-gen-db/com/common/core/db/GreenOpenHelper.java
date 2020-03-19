@@ -36,6 +36,7 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
                 UserAccountDao.createTable(db, ifNotExists);
                 UserInfoDBDao.createTable(db, ifNotExists);
                 RemarkDBDao.createTable(db, ifNotExists);
+                NoRemindInfoDBDao.createTable(db, ifNotExists);
             }
 
             @Override
@@ -44,6 +45,7 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
                 UserAccountDao.dropTable(db, ifExists);
                 UserInfoDBDao.dropTable(db, ifExists);
                 RemarkDBDao.dropTable(db, ifExists);
+                NoRemindInfoDBDao.dropTable(db, ifExists);
             }
         }, UserAccountDao.class,UserInfoDBDao.class,RemarkDBDao.class);
     }

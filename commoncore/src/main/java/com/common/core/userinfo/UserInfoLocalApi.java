@@ -28,6 +28,7 @@ public class UserInfoLocalApi {
         return GreenDaoManager.getDaoSession().getUserInfoDBDao();
     }
 
+
     /**
      * 插入或者更新 db数据
      * <p>
@@ -298,4 +299,5 @@ public class UserInfoLocalApi {
                 UserInfoDBDao.Properties.UserId.columnName, userId);
         getDao().getDatabase().execSQL(sql);
     }
+
 }

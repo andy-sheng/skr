@@ -36,6 +36,7 @@ import com.common.core.scheme.event.InviteRelationCardSchemeEvent;
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.flutter.boost.FlutterBoostController;
 import com.common.log.MyLog;
@@ -371,6 +372,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 return false;
             }
         });
+
+        UserInfoManager.getInstance().refreshNoRemindCacheIfNeeded();
     }
 
     private void showNewFunctionDialog() {

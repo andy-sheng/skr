@@ -13,13 +13,11 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
-import com.common.core.account.UserAccountManager;
-import com.common.core.account.event.AccountEvent;
 import com.common.core.login.fragment.LoginFragment;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiResult;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -27,11 +25,6 @@ import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.IHomeService;
 import com.umeng.socialize.UMShareAPI;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import static com.module.RouterConstants.ACTIVITY_UPLOAD;
 
 @Route(path = RouterConstants.ACTIVITY_LOGIN)
 public class LoginActivity extends BaseActivity {
@@ -187,6 +180,9 @@ public class LoginActivity extends BaseActivity {
             Intent intent = getIntent();
             String originPath = intent.getStringExtra(KEY_ORIGIN_PATH);
             MyLog.d(getTAG(), "登录成功，跳回原页面 originPath:" + originPath);
+
+            UserInfoManager.getInstance().refreshNoRemindCache((int) MyUserInfoManager.INSTANCE.getUid());
+
             if (!TextUtils.isEmpty(originPath)) {
                 // 登录成功后，跳回原页面
                 ARouter.getInstance().build(originPath)

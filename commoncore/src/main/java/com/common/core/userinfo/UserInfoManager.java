@@ -5,15 +5,18 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.common.callback.Callback;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.event.RemarkChangeEvent;
+import com.common.core.userinfo.model.NoRemindInfoModel;
 import com.common.core.userinfo.model.OnlineModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.remark.RemarkDB;
 import com.common.core.userinfo.remark.RemarkLocalApi;
-import com.common.core.userinfo.utils.UserInfoDataUtils;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -36,11 +39,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -53,6 +58,7 @@ public class UserInfoManager {
     public final String TAG = "UserInfoManager";
     static final String PREF_KEY_FOLLOW_MARKER_WATER = "follow_marker_water";
     static final String PREF_KEY_HAS_PULL_REMARK = "remark_marker_water";
+    static final String PREF_KEY_NO_REMIND_REFRESHED = "no_remind_refreshed";
 
     /**
      * 黑名单逻辑
@@ -403,59 +409,105 @@ public class UserInfoManager {
         });
     }
 
-    public void add2Undisturbed(final int userID, final ResponseCallBack responseCallBack){
-        if (userID <= 0 || userID <= 0) {
+    /**
+     * 设置消息免打扰
+     * @param userID
+     * @param responseCallBack
+     */
+    public void setNoRemind(final int userID, boolean enable, final ResponseCallBack responseCallBack){
+        if (userID <= 0) {
             MyLog.w(TAG, "addToBlacklist" + " userID=" + userID);
             return;
         }
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("userID", userID);
+        map.put("toUserID", userID);
+        map.put("enable", enable);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-        ApiMethods.subscribe(userInfoServerApi.addToBlackList(body), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(userInfoServerApi.setNoRemind(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    boolean isFriend = result.getData().getBooleanValue("isFriend");
-                    boolean isFollow = result.getData().getBooleanValue("isFollow");
-                    boolean isSPFollow = result.getData().getBooleanValue("isSPFollow");
-                    EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.BLACK_LIST_TYPE, userID, isFriend, isFollow, isSPFollow));
-                    // TODO: 2019-07-03 可能服务器加成功，加融云失败，有问题找服务器
-                    msgService.addToBlacklist(String.valueOf(userID), new ICallback() {
-                        @Override
-                        public void onSucess(Object obj) {
-                            if (responseCallBack != null) {
-                                responseCallBack.onServerSucess(obj);
-                            }
-                        }
-
-                        @Override
-                        public void onFailed(Object obj, int errcode, String message) {
-                            MyLog.w(TAG, "onFailed" + " obj=" + obj + " errcode=" + errcode + " message=" + message);
-                            if (responseCallBack != null) {
-                                responseCallBack.onServerFailed();
-                            }
-                        }
-                    });
+                    if(enable) {
+                        NoRemindInfoLocalApi.deleteDisturbed(new NoRemindInfoModel(userID));
+                    }else{
+                        NoRemindInfoLocalApi.insertOrReplace(new NoRemindInfoModel(userID));
+                    }
                 }
+
             }
         });
     }
 
-    public void removeUndisturbed(final int userID, final ResponseCallBack responseCallBack){
+    public void isNoRemind(final int userID, final Callback<Boolean> callback){
+        Disposable disposable = Observable.create(new ObservableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+                emitter.onNext(NoRemindInfoLocalApi.isNoReminded(userID));
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(b -> {
+            callback.onCallback(0, b);
+        });
 
     }
 
-    public void getUndisturbed(final int userID, final ResponseCallBack responseCallBack){
-
+    public void clearAllNoRemind(){
+        NoRemindInfoLocalApi.clearNoRemind();
     }
 
-    public void getAllUndisturbed(final int userID, final ResponseCallBack responseCallBack){
+    public void refreshNoRemindCache(final int userID){
+        if (userID <= 0) {
+            MyLog.w(TAG, "addToBlacklist" + " userID=" + userID);
+            return;
+        }
+
+        //使用服务器免打扰名单，更新本地缓存
+        clearAllNoRemind();
+        AtomicBoolean hasMore = new AtomicBoolean(true);
+        int cnt = 20;
+
         //分页数据，分多次请求获取全部列表数据
-        while (true){
 
+        Disposable disposable = Observable.just("").subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+                for(int i = 0; hasMore.get(); i  = i + cnt){
+                    try {
+                        ApiResult apiResult = userInfoServerApi.getNoRemindList(userID, i, cnt).execute().body();
+
+                        if (apiResult != null && apiResult.getErrno() == 0) {
+                            hasMore.set(apiResult.getData().getBoolean("hasMore"));
+                            JSONArray jsonArray = apiResult.getData().getJSONArray("userIDs");
+                            List<Integer> userIDs = new ArrayList<>(jsonArray.toJavaList(Integer.class));
+                            NoRemindInfoLocalApi.insertOrReplace(userIDs);
+                        }else{
+                            hasMore.set(false);
+                        }
+                    }catch (Exception e){
+                        hasMore.set(false);
+                        U.getPreferenceUtils().setSettingBoolean(PREF_KEY_NO_REMIND_REFRESHED, false);
+                        break;
+                    }
+                }
+                U.getPreferenceUtils().setSettingBoolean(PREF_KEY_NO_REMIND_REFRESHED, true);
+            }
+        });
+
+    }
+
+    /**
+     * 是否刷新过本地免打扰缓存
+     * @return
+     */
+    public void refreshNoRemindCacheIfNeeded(){
+        boolean needed = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_NO_REMIND_REFRESHED, false);
+        if(MyUserInfoManager.INSTANCE.getUid() > 0 && needed){
+
+            refreshNoRemindCache((int) MyUserInfoManager.INSTANCE.getUid());
         }
     }
+
+
 
     public void insertUpdateDBAndCache(final UserInfoModel userInfoModel, boolean hasRelation) {
         Observable.create(new ObservableOnSubscribe<UserInfoModel>() {
