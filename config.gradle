@@ -6,8 +6,8 @@ ext {
             minSdkVersion    : 19,
             targetSdkVersion : 28,
             // 版本号%10==0的版本为外发版本
-            versionCode      : 3010020,
-            versionName      : "3.10.20"
+            versionCode      : 3010030,
+            versionName      : "3.10.30"
     ]
     version = [
             androidSupportSdkVersion: "28.0.0",
