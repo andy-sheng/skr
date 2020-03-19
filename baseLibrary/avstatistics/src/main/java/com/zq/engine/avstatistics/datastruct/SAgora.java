@@ -294,7 +294,7 @@ public class SAgora //all struct related to Agora is defined here!
                 jsObj.put("rxVKBR", rxVideoKBitRate);
                 jsObj.put("users", users);
                 jsObj.put("lastmileDelay", lastmileDelay);
-                jsObj.put("txPacketLossRate", rxPacketLossRate);
+                jsObj.put("txPacketLossRate", txPacketLossRate);
                 jsObj.put("rxPacketLossRate", rxPacketLossRate);
                 jsObj.put("cpuTotalUsage", cpuTotalUsage);
                 jsObj.put("cpuAppUsage", cpuAppUsage);
