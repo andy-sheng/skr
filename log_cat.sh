@@ -1,6 +1,6 @@
 #! /bin/bash
 echo ANDROID_SDK=$ANDROID_SDK
-#/Users/chengsimin/dev_utils/android-sdk-macosx-24.4/tools/proguard/bin
+
 
 if [[ $1 == "" ]]; then
     adb shell am broadcast -a com.zq.live.FLUSH_LOG
@@ -20,7 +20,8 @@ if [[ $1 == "" ]]; then
 else
 	if test -f $1 
 	then
-		$ANDROID_SDK/tools/proguard/bin/retrace.sh  -verbose ./publish/mapping.txt $1
+	    # 使用R8解混淆
+	    java -jar ./r8_retrace/lib/retrace.jar ./publish/mapping.txt $1
 		sublime $1
 	else
 		for file in $1/*
