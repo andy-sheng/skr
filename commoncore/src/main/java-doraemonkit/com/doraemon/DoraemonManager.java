@@ -124,6 +124,11 @@ public class DoraemonManager {
 //                                .withString("url", "http://debugtbs.qq.com").navigation();
                     }
                 }));
+                extras.add(new SysInfoItem("是否是模拟器", U.getDeviceUtils().isSimulator()+"", new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                    }
+                }));
                 return extras;
             }
 

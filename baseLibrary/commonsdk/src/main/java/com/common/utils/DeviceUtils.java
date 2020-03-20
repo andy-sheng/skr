@@ -31,6 +31,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.common.log.MyLog;
+import com.lahm.library.EasyProtectorLib;
+import com.lahm.library.EmulatorCheckCallback;
+import com.lahm.library.EmulatorCheckUtil;
 import com.umeng.commonsdk.statistics.common.DeviceConfig;
 
 import org.greenrobot.eventbus.EventBus;
@@ -92,6 +95,40 @@ public class DeviceUtils {
 
     DeviceUtils() {
         mNotchPhoneUtils = new NotchPhoneUtils();
+    }
+
+    private int isEmulator = -1;
+
+    /**
+     * 当前设备是否是模拟器
+     *
+     * @return
+     */
+    public boolean isSimulator() {
+        if (isEmulator == -1) {
+            boolean b = false;
+            if (U.getPreferenceUtils().hasKey("isEmulator")) {
+                b = U.getPreferenceUtils().getSettingBoolean(U.getPreferenceUtils().longlySp(), "isEmulator", false);
+            } else {
+                b = EasyProtectorLib.checkIsRunningInEmulator(U.app(), new EmulatorCheckCallback() {
+                    @Override
+                    public void findEmulator(String emulatorInfo) {
+                        MyLog.i(TAG, "emulatorInfo=" + emulatorInfo);
+                    }
+                });
+                if (b) {
+                    U.getPreferenceUtils().setSettingBoolean(U.getPreferenceUtils().longlySp(), "isEmulator", true);
+                } else {
+                    U.getPreferenceUtils().setSettingBoolean(U.getPreferenceUtils().longlySp(), "isEmulator", false);
+                }
+            }
+            if (b) {
+                isEmulator = 1;
+            } else {
+                isEmulator = 0;
+            }
+        }
+        return isEmulator == 1;
     }
 
     /**
@@ -580,7 +617,7 @@ public class DeviceUtils {
     }
 
     public static class IncomingCallEvent {
-//            TelephonyManager.EXTRA_STATE_IDLE 空闲或挂断
+        //            TelephonyManager.EXTRA_STATE_IDLE 空闲或挂断
 //            TelephonyManager.EXTRA_STATE_RINGING 响铃
 //            TelephonyManager.EXTRA_STATE_OFFHOOK 接通
         public String state = TelephonyManager.EXTRA_STATE_IDLE;

@@ -139,6 +139,8 @@ android {
                 java.srcDirs += 'src/main/java-matrix-noop'
             }
 
+            // easy-protector 用于检测模拟器
+            java.srcDirs += 'src/main/java-easy-protector'
         }
 
 //        release {
