@@ -1,14 +1,9 @@
 package com.module.home;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,18 +23,16 @@ import com.common.base.BaseActivity;
 import com.common.callback.Callback;
 import com.common.core.account.UserAccountManager;
 import com.common.core.login.LoginActivity;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.core.permission.SkrSdcardPermission;
-import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.InviteRelationCardSchemeEvent;
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
+import com.common.core.userinfo.noremind.NoRemindManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.flutter.boost.FlutterBoostController;
 import com.common.log.MyLog;
-import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
@@ -79,7 +72,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
 
 import useroperate.OperateFriendActivity;
 import useroperate.inter.AbsRelationOperate;
@@ -371,6 +363,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 return false;
             }
         });
+
+        NoRemindManager.INSTANCE.refreshNoRemindCacheIfNeeded();
     }
 
     private void showNewFunctionDialog() {

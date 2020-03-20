@@ -15,15 +15,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.noremind.NoRemindManager;
 import com.common.core.userinfo.ResultCallback;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.floatwindow.FloatWindow;
-import com.common.floatwindow.MoveType;
-import com.common.floatwindow.Screen;
-import com.common.floatwindow.ViewStateListener;
-import com.common.floatwindow.ViewStateListenerAdapter;
 import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
 import com.common.notification.event.RongMsgNotifyEvent;
@@ -353,7 +349,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
             IContainerItemProvider.MessageProvider messageProvider = RongContext.getInstance().getMessageTemplate(message.getContent().getClass());
             if (messageProvider != null && !(messageProvider instanceof UnknownMessageItemProvider)) {
-                // 触发弹出消息通知栏，小助手消息除外
+                // 触发弹出消息通知栏，私聊消息也走这里，小助手消息除外
                 if (Integer.valueOf(message.getSenderUserId()) != UserInfoModel.USER_ID_XIAOZHUSHOU) {
                     Spannable content = messageProvider.getContentSummary(U.app(), message.getContent());
 
@@ -365,10 +361,14 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
                         @Override
                         public boolean onGetServer(UserInfoModel infoModel) {
-                            if (infoModel != null && infoModel.isFriend()) {
-                                RongMsgNotifyEvent event = new RongMsgNotifyEvent(content, infoModel);
-                                EventBus.getDefault().post(event);
-                            }
+                            //非好友不会弹出消息通知栏 查看是否在免打扰名单中
+                            NoRemindManager.INSTANCE.isFriendNoRemind(infoModel.getUserId(), (r, obj) -> {
+                                if (!obj && infoModel != null && infoModel.isFriend()) {
+                                    RongMsgNotifyEvent event = new RongMsgNotifyEvent(content, infoModel);
+                                    EventBus.getDefault().post(event);
+                                }
+                            });
+
                             return false;
                         }
                     });

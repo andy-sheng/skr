@@ -3,19 +3,17 @@ package com.module.msg.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrNotificationPermission;
+import com.common.core.userinfo.noremind.NoRemindManager;
 import com.common.core.userinfo.ResponseCallBack;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -30,8 +28,6 @@ import com.dialog.list.ListDialog;
 import com.module.RouterConstants;
 import com.module.home.IHomeService;
 import com.module.msg.api.IMsgServerApi;
-import com.module.msg.custom.club.ClubInviteMsg;
-import com.module.msg.model.SpecailOpMsg;
 import com.zq.live.proto.Common.EVIPType;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -42,9 +38,6 @@ import java.util.List;
 
 import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
-import io.rong.imlib.IRongCallback;
-import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -202,12 +195,37 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void showConfirmOptions() {
-        UserInfoManager.getInstance().getBlacklistStatus(Integer.valueOf(mUserId), new ResponseCallBack() {
+
+        int nUserId = Integer.valueOf(mUserId);
+
+        UserInfoManager.getInstance().getBlacklistStatus(nUserId, new ResponseCallBack() {
             @Override
             public void onServerSucess(Object obj) {
                 if (obj != null) {
-                    boolean result = (boolean) obj;
-                    showConfirmOptions(result);
+                    boolean isBlack = (boolean) obj;
+                    final List<String> channels = new ArrayList<>();
+
+                    if (isBlack) {
+                        channels.add(getString(R.string.remove_from_black_list));
+                    } else {
+                        channels.add(getString(R.string.add_to_black_list));
+                    }
+
+                    NoRemindManager.INSTANCE.isFriendNoRemind(nUserId, (r, obj1) -> {
+                        if(obj1){
+                            channels.add("关闭消息免打扰");
+                        }else{
+                            channels.add("开启消息免打扰");
+                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showConfirmOptions(channels);
+                            }
+                        });
+
+                    });
+
                 }
             }
 
@@ -218,45 +236,76 @@ public class ConversationActivity extends BaseActivity {
         });
     }
 
-    private void showConfirmOptions(boolean isBlack) {
+    private void showConfirmOptions(List<String> channels) {
         U.getKeyBoardUtils().hideSoftInputKeyBoard(this);
 
-        final List<String> channels = new ArrayList<>();
-        if (isBlack) {
-            channels.add(getString(R.string.remove_from_black_list));
-        } else {
-            channels.add(getString(R.string.add_to_black_list));
-        }
         listDialog = new ListDialog(this);
         List<DialogListItem> listItems = new ArrayList<>();
+        int nUserId = Integer.valueOf(mUserId);
+
         for (final String channel : channels) {
             listItems.add(new DialogListItem(channel, "#FF3529", new Runnable() {
                 @Override
                 public void run() {
-                    if (channel.equals(getString(R.string.add_to_black_list))) {
-                        UserInfoManager.getInstance().addToBlacklist(Integer.valueOf(mUserId), new ResponseCallBack() {
-                            @Override
-                            public void onServerSucess(Object o) {
-                                U.getToastUtil().showShort("加入黑名单成功");
-                            }
 
-                            @Override
-                            public void onServerFailed() {
+                    switch (channel){
+                        case "加入黑名单":
 
-                            }
-                        });
-                    } else if (channel.equals(getString(R.string.remove_from_black_list))) {
-                        UserInfoManager.getInstance().removeBlackList(Integer.valueOf(mUserId), new ResponseCallBack() {
-                            @Override
-                            public void onServerSucess(Object o) {
-                                U.getToastUtil().showShort("移除黑名单成功");
-                            }
+                            UserInfoManager.getInstance().addToBlacklist(nUserId, new ResponseCallBack() {
+                                @Override
+                                public void onServerSucess(Object o) {
+                                    U.getToastUtil().showShort("加入黑名单成功");
+                                }
 
-                            @Override
-                            public void onServerFailed() {
+                                @Override
+                                public void onServerFailed() {
 
-                            }
-                        });
+                                }
+                            });
+                            break;
+
+                        case "移除黑名单":
+
+                            UserInfoManager.getInstance().removeBlackList(nUserId, new ResponseCallBack() {
+                                @Override
+                                public void onServerSucess(Object o) {
+                                    U.getToastUtil().showShort("移除黑名单成功");
+                                }
+
+                                @Override
+                                public void onServerFailed() {
+
+                                }
+                            });
+                            break;
+
+                        case "开启消息免打扰":
+                            NoRemindManager.INSTANCE.setFriendNoRemind(nUserId, true, new ResponseCallBack() {
+                                @Override
+                                public void onServerSucess(Object o) {
+                                    U.getToastUtil().showShort("已开启消息免打扰");
+                                }
+
+                                @Override
+                                public void onServerFailed() {
+                                    U.getToastUtil().showShort("开启消息免打扰失败");
+                                }
+                            });
+                            break;
+                        case "关闭消息免打扰":
+                            NoRemindManager.INSTANCE.setFriendNoRemind(nUserId, false, new ResponseCallBack() {
+                                @Override
+                                public void onServerSucess(Object o) {
+                                    U.getToastUtil().showShort("已关闭消息免打扰");
+                                }
+
+                                @Override
+                                public void onServerFailed() {
+                                    U.getToastUtil().showShort("关闭消息免打扰失败");
+                                }
+                            });
+                            break;
+
                     }
                     listDialog.dissmiss();
                 }
