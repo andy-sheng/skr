@@ -1,4 +1,4 @@
-package com.common.core;
+package com.common.core.userinfo.constans;
 
 public interface UserInfoConstans {
     int GENDER_MAN = 1;

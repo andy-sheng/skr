@@ -8,13 +8,13 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
-import com.common.core.userinfo.NoRemindInfoDB;
 import com.common.core.userinfo.remark.RemarkDB;
+import com.common.core.userinfo.noremind.NoRemindInfoDB;
 import com.common.core.userinfo.UserInfoDB;
 import com.common.core.account.UserAccount;
 
-import com.common.core.db.NoRemindInfoDBDao;
 import com.common.core.db.RemarkDBDao;
+import com.common.core.db.NoRemindInfoDBDao;
 import com.common.core.db.UserInfoDBDao;
 import com.common.core.db.UserAccountDao;
 
@@ -27,13 +27,13 @@ import com.common.core.db.UserAccountDao;
  */
 public class DaoSession extends AbstractDaoSession {
 
-    private final DaoConfig noRemindInfoDBDaoConfig;
     private final DaoConfig remarkDBDaoConfig;
+    private final DaoConfig noRemindInfoDBDaoConfig;
     private final DaoConfig userInfoDBDaoConfig;
     private final DaoConfig userAccountDaoConfig;
 
-    private final NoRemindInfoDBDao noRemindInfoDBDao;
     private final RemarkDBDao remarkDBDao;
+    private final NoRemindInfoDBDao noRemindInfoDBDao;
     private final UserInfoDBDao userInfoDBDao;
     private final UserAccountDao userAccountDao;
 
@@ -41,11 +41,11 @@ public class DaoSession extends AbstractDaoSession {
             daoConfigMap) {
         super(db);
 
-        noRemindInfoDBDaoConfig = daoConfigMap.get(NoRemindInfoDBDao.class).clone();
-        noRemindInfoDBDaoConfig.initIdentityScope(type);
-
         remarkDBDaoConfig = daoConfigMap.get(RemarkDBDao.class).clone();
         remarkDBDaoConfig.initIdentityScope(type);
+
+        noRemindInfoDBDaoConfig = daoConfigMap.get(NoRemindInfoDBDao.class).clone();
+        noRemindInfoDBDaoConfig.initIdentityScope(type);
 
         userInfoDBDaoConfig = daoConfigMap.get(UserInfoDBDao.class).clone();
         userInfoDBDaoConfig.initIdentityScope(type);
@@ -53,30 +53,30 @@ public class DaoSession extends AbstractDaoSession {
         userAccountDaoConfig = daoConfigMap.get(UserAccountDao.class).clone();
         userAccountDaoConfig.initIdentityScope(type);
 
-        noRemindInfoDBDao = new NoRemindInfoDBDao(noRemindInfoDBDaoConfig, this);
         remarkDBDao = new RemarkDBDao(remarkDBDaoConfig, this);
+        noRemindInfoDBDao = new NoRemindInfoDBDao(noRemindInfoDBDaoConfig, this);
         userInfoDBDao = new UserInfoDBDao(userInfoDBDaoConfig, this);
         userAccountDao = new UserAccountDao(userAccountDaoConfig, this);
 
-        registerDao(NoRemindInfoDB.class, noRemindInfoDBDao);
         registerDao(RemarkDB.class, remarkDBDao);
+        registerDao(NoRemindInfoDB.class, noRemindInfoDBDao);
         registerDao(UserInfoDB.class, userInfoDBDao);
         registerDao(UserAccount.class, userAccountDao);
     }
     
     public void clear() {
-        noRemindInfoDBDaoConfig.clearIdentityScope();
         remarkDBDaoConfig.clearIdentityScope();
+        noRemindInfoDBDaoConfig.clearIdentityScope();
         userInfoDBDaoConfig.clearIdentityScope();
         userAccountDaoConfig.clearIdentityScope();
     }
 
-    public NoRemindInfoDBDao getNoRemindInfoDBDao() {
-        return noRemindInfoDBDao;
-    }
-
     public RemarkDBDao getRemarkDBDao() {
         return remarkDBDao;
+    }
+
+    public NoRemindInfoDBDao getNoRemindInfoDBDao() {
+        return noRemindInfoDBDao;
     }
 
     public UserInfoDBDao getUserInfoDBDao() {

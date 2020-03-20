@@ -1,4 +1,4 @@
-package com.common.core.userinfo;
+package com.common.core.userinfo.noremind;
 
 import com.common.core.db.GreenDaoManager;
 import com.common.core.db.NoRemindInfoDBDao;
@@ -24,15 +24,17 @@ public class NoRemindInfoLocalApi {
             MyLog.w(TAG, "insertOrUpdate relation == null");
             return 0;
         }
-        NoRemindInfoDB disturbedInfoDB = NoRemindInfoModel.toDisturbedInfoDB(model);
+        NoRemindInfoDB disturbedInfoDB = NoRemindInfoModel.toNoRemindInfoDB(model);
         getDisturbedDao().insertOrReplace(disturbedInfoDB);
         return 1;
     }
 
-    public static int insertOrReplace(List<Integer> models){
+    public static int insertOrReplace(List<NoRemindInfoModel> models){
+        MyLog.d(TAG, "deleteDisturbed" + models);
+
         List<NoRemindInfoDB> disturbedInfoDBS = new ArrayList<>();
-        for (int userID: models){
-            NoRemindInfoDB disturbedInfoDB = NoRemindInfoModel.toDisturbedInfoDB(userID);
+        for (NoRemindInfoModel model: models){
+            NoRemindInfoDB disturbedInfoDB = NoRemindInfoModel.toNoRemindInfoDB(model);
             disturbedInfoDBS.add(disturbedInfoDB);
         }
 
@@ -41,14 +43,17 @@ public class NoRemindInfoLocalApi {
     }
 
     public static void deleteDisturbed(NoRemindInfoModel model){
+        MyLog.d(TAG, "deleteDisturbed" + model);
         getDisturbedDao().deleteByKey(model.getUserId());
     }
 
-    public static boolean isNoReminded(int userID){
-        return getDisturbedDao().queryBuilder().where(NoRemindInfoDBDao.Properties.UserId.eq(userID)).list().size() > 0;
+    public static boolean isNoReminded(int userID, int msgType){
+        return getDisturbedDao().queryBuilder().where(NoRemindInfoDBDao.Properties.UserId.eq(userID)).where(NoRemindInfoDBDao.Properties.MsgType.eq(msgType)).list().size() > 0;
     }
 
     public static void clearNoRemind(){
+        MyLog.d(TAG, "clearNoRemind");
+
         getDisturbedDao().deleteAll();
     }
 }

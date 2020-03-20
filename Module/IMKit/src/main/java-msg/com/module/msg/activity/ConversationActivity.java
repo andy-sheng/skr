@@ -8,9 +8,9 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
-import com.common.callback.Callback;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrNotificationPermission;
+import com.common.core.userinfo.noremind.NoRemindManager;
 import com.common.core.userinfo.ResponseCallBack;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.UserInfoManager;
@@ -211,14 +211,18 @@ public class ConversationActivity extends BaseActivity {
                         channels.add(getString(R.string.add_to_black_list));
                     }
 
-                    UserInfoManager.getInstance().isNoRemind(nUserId, (r, obj1) -> {
+                    NoRemindManager.INSTANCE.isFriendNoRemind(nUserId, (r, obj1) -> {
                         if(obj1){
                             channels.add("关闭消息免打扰");
                         }else{
                             channels.add("开启消息免打扰");
                         }
-
-                        showConfirmOptions(channels);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showConfirmOptions(channels);
+                            }
+                        });
 
                     });
 
@@ -276,7 +280,7 @@ public class ConversationActivity extends BaseActivity {
                             break;
 
                         case "开启消息免打扰":
-                            UserInfoManager.getInstance().setNoRemind(nUserId, true, new ResponseCallBack() {
+                            NoRemindManager.INSTANCE.setFriendNoRemind(nUserId, true, new ResponseCallBack() {
                                 @Override
                                 public void onServerSucess(Object o) {
                                     U.getToastUtil().showShort("已开启消息免打扰");
@@ -289,7 +293,7 @@ public class ConversationActivity extends BaseActivity {
                             });
                             break;
                         case "关闭消息免打扰":
-                            UserInfoManager.getInstance().setNoRemind(nUserId, false, new ResponseCallBack() {
+                            NoRemindManager.INSTANCE.setFriendNoRemind(nUserId, false, new ResponseCallBack() {
                                 @Override
                                 public void onServerSucess(Object o) {
                                     U.getToastUtil().showShort("已关闭消息免打扰");

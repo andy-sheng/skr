@@ -58,7 +58,6 @@ public class UserInfoManager {
     public final String TAG = "UserInfoManager";
     static final String PREF_KEY_FOLLOW_MARKER_WATER = "follow_marker_water";
     static final String PREF_KEY_HAS_PULL_REMARK = "remark_marker_water";
-    static final String PREF_KEY_NO_REMIND_REFRESHED = "no_remind_refreshed";
 
     /**
      * 黑名单逻辑
@@ -408,106 +407,6 @@ public class UserInfoManager {
             }
         });
     }
-
-    /**
-     * 设置消息免打扰
-     * @param userID
-     * @param responseCallBack
-     */
-    public void setNoRemind(final int userID, boolean enable, final ResponseCallBack responseCallBack){
-        if (userID <= 0) {
-            MyLog.w(TAG, "addToBlacklist" + " userID=" + userID);
-            return;
-        }
-
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("toUserID", userID);
-        map.put("enable", enable);
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-        ApiMethods.subscribe(userInfoServerApi.setNoRemind(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    if(enable) {
-                        NoRemindInfoLocalApi.deleteDisturbed(new NoRemindInfoModel(userID));
-                    }else{
-                        NoRemindInfoLocalApi.insertOrReplace(new NoRemindInfoModel(userID));
-                    }
-                }
-
-            }
-        });
-    }
-
-    public void isNoRemind(final int userID, final Callback<Boolean> callback){
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<Boolean>() {
-            @Override
-            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
-                emitter.onNext(NoRemindInfoLocalApi.isNoReminded(userID));
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(b -> {
-            callback.onCallback(0, b);
-        });
-
-    }
-
-    public void clearAllNoRemind(){
-        NoRemindInfoLocalApi.clearNoRemind();
-    }
-
-    public void refreshNoRemindCache(final int userID){
-        if (userID <= 0) {
-            MyLog.w(TAG, "addToBlacklist" + " userID=" + userID);
-            return;
-        }
-
-        //使用服务器免打扰名单，更新本地缓存
-        clearAllNoRemind();
-        AtomicBoolean hasMore = new AtomicBoolean(true);
-        int cnt = 20;
-
-        //分页数据，分多次请求获取全部列表数据
-
-        Disposable disposable = Observable.just("").subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
-            @Override
-            public void accept(String s) throws Exception {
-                for(int i = 0; hasMore.get(); i  = i + cnt){
-                    try {
-                        ApiResult apiResult = userInfoServerApi.getNoRemindList(userID, i, cnt).execute().body();
-
-                        if (apiResult != null && apiResult.getErrno() == 0) {
-                            hasMore.set(apiResult.getData().getBoolean("hasMore"));
-                            JSONArray jsonArray = apiResult.getData().getJSONArray("userIDs");
-                            List<Integer> userIDs = new ArrayList<>(jsonArray.toJavaList(Integer.class));
-                            NoRemindInfoLocalApi.insertOrReplace(userIDs);
-                        }else{
-                            hasMore.set(false);
-                        }
-                    }catch (Exception e){
-                        hasMore.set(false);
-                        U.getPreferenceUtils().setSettingBoolean(PREF_KEY_NO_REMIND_REFRESHED, false);
-                        break;
-                    }
-                }
-                U.getPreferenceUtils().setSettingBoolean(PREF_KEY_NO_REMIND_REFRESHED, true);
-            }
-        });
-
-    }
-
-    /**
-     * 是否刷新过本地免打扰缓存
-     * @return
-     */
-    public void refreshNoRemindCacheIfNeeded(){
-        boolean needed = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_NO_REMIND_REFRESHED, false);
-        if(MyUserInfoManager.INSTANCE.getUid() > 0 && needed){
-
-            refreshNoRemindCache((int) MyUserInfoManager.INSTANCE.getUid());
-        }
-    }
-
-
 
     public void insertUpdateDBAndCache(final UserInfoModel userInfoModel, boolean hasRelation) {
         Observable.create(new ObservableOnSubscribe<UserInfoModel>() {

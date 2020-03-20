@@ -15,7 +15,7 @@ import com.common.base.BaseActivity;
 import com.common.core.R;
 import com.common.core.login.fragment.LoginFragment;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.noremind.NoRemindManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
@@ -181,7 +181,7 @@ public class LoginActivity extends BaseActivity {
             String originPath = intent.getStringExtra(KEY_ORIGIN_PATH);
             MyLog.d(getTAG(), "登录成功，跳回原页面 originPath:" + originPath);
 
-            UserInfoManager.getInstance().refreshNoRemindCache((int) MyUserInfoManager.INSTANCE.getUid());
+            NoRemindManager.INSTANCE.refreshNoRemindCache((int) MyUserInfoManager.INSTANCE.getUid());
 
             if (!TextUtils.isEmpty(originPath)) {
                 // 登录成功后，跳回原页面

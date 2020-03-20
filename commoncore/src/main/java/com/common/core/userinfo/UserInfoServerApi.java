@@ -467,8 +467,9 @@ public interface UserInfoServerApi {
 
 
     //设置消息免打扰
-    @GET("/v1/mate/no-remind-msg-setting")
+    @GET("/v1/mate/no-remind-msg-user-list")
     Call<ApiResult> getNoRemindList(@Query("userID") int uid,
+                                          @Query("remindMsgType") int remindMsgType,
                                           @Query("offset") int offset,
                                           @Query("cnt") int cnt);
 }
