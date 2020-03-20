@@ -240,7 +240,7 @@ public class ConversationActivity extends BaseActivity {
                         showConfirmOptions(channels);
 
                     }, throwable -> {
-                        MyLog.e("获取本地消息免打扰状态失败");
+                        MyLog.e(throwable);
                         showConfirmOptions(channels);
                     });
 
