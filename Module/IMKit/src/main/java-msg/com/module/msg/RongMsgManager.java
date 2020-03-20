@@ -68,6 +68,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import io.rong.common.rlog.RLog;
 import io.rong.imkit.DefaultExtensionModule;
 import io.rong.imkit.IExtensionModule;
@@ -85,6 +92,7 @@ import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
 import io.rong.push.RongPushClient;
 import io.rong.push.pushconfig.PushConfig;
+import kotlinx.coroutines.GlobalScope;
 
 import static com.module.msg.CustomMsgType.MSG_TYPE_BATTLE_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_BROADCAST;
@@ -362,12 +370,29 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                         @Override
                         public boolean onGetServer(UserInfoModel infoModel) {
                             //非好友不会弹出消息通知栏 查看是否在免打扰名单中
-                            NoRemindManager.INSTANCE.isFriendNoRemind(infoModel.getUserId(), (r, obj) -> {
-                                if (!obj && infoModel != null && infoModel.isFriend()) {
+                            if(infoModel != null && infoModel.isFriend()) {
+                                Disposable disposable = Observable.create(new ObservableOnSubscribe<Boolean>() {
+                                    @Override
+                                    public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+
+                                        emitter.onNext(NoRemindManager.INSTANCE.isFriendNoRemind(infoModel.getUserId()));
+
+                                    }
+                                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(isNoRemind -> {
+
+                                    if (!isNoRemind) {
+                                        RongMsgNotifyEvent event = new RongMsgNotifyEvent(content, infoModel);
+                                        EventBus.getDefault().post(event);
+                                    }
+
+                                }, throwable -> {
+
                                     RongMsgNotifyEvent event = new RongMsgNotifyEvent(content, infoModel);
                                     EventBus.getDefault().post(event);
-                                }
-                            });
+
+                                });
+
+                            }
 
                             return false;
                         }

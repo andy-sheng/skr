@@ -461,12 +461,16 @@ public interface UserInfoServerApi {
     @PUT("http://dev.api.inframe.mobi/v1/mall/check-relation")
     Observable<ApiResult> checkCardRelation(@Body RequestBody body);
 
-    //设置消息免打扰
+    /**
+     * 设置消息免打扰
+     */
     @PUT("/v1/mate/no-remind-msg-setting")
-    Observable<ApiResult> setNoRemind(@Body RequestBody body);
+    Call<ApiResult> setNoRemind(@Body RequestBody body);
 
 
-    //设置消息免打扰
+    /**
+     * 设置消息免打扰
+     */
     @GET("/v1/mate/no-remind-msg-user-list")
     Call<ApiResult> getNoRemindList(@Query("userID") int uid,
                                           @Query("remindMsgType") int remindMsgType,

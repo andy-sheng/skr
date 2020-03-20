@@ -10,23 +10,26 @@ import com.common.log.MyLog
 import com.common.rxretrofit.*
 import com.common.utils.U
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.HashMap
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.coroutines.CoroutineContext
 
 /**
  * 消息免打扰管理
  */
 object NoRemindManager : CoroutineScope by GlobalScope{
 
-    internal val TAG = "NoRemindManager"
-    internal val PREF_KEY_NO_REMIND_REFRESHED = "no_remind_refreshed"
-    internal val userInfoServerApi: UserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
-    internal val ERMT_USER_MSG = 1
-    internal val ERMT_GROUP_MSG = 2
+    private val TAG = "NoRemindManager"
+    private val PREF_KEY_NO_REMIND_REFRESHED = "no_remind_refreshed"
+    private val ERMT_USER_MSG = 1
+    private val ERMT_GROUP_MSG = 2
+
+    private val userInfoServerApi: UserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
 
 
     fun setClubNoRemind(userID: Int, enable: Boolean, responseCallBack: ResponseCallBack<*>){
@@ -58,38 +61,45 @@ object NoRemindManager : CoroutineScope by GlobalScope{
         map["remindMsgType"] = remindMsgType
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-        ApiMethods.subscribe(userInfoServerApi.setNoRemind(body), object : ApiObserver<ApiResult>() {
-            override fun process(result: ApiResult) {
-                if (result.errno == 0) {
-                    launch {
-                        if (enable) {
-                            NoRemindInfoLocalApi.insertOrReplace(NoRemindInfoModel(userID.toLong(), remindMsgType))
-                        } else {
-                            NoRemindInfoLocalApi.deleteDisturbed(NoRemindInfoModel(userID.toLong(), remindMsgType))
-                        }
+        launch {
+            val apiResult = subscribe(RequestControl("setNoRemind", ControlType.CancelThis)) {
+                userInfoServerApi.setNoRemind(body)
+            }
+
+            if (apiResult.errno == 0) {
+
+                launch(Dispatchers.IO) {
+                    if (enable) {
+                        NoRemindInfoLocalApi.insertOrReplace(NoRemindInfoModel(userID.toLong(), remindMsgType))
+                    } else {
+                        NoRemindInfoLocalApi.deleteDisturbed(NoRemindInfoModel(userID.toLong(), remindMsgType))
                     }
-                    responseCallBack.onServerSucess(null)
-                }else{
-                    responseCallBack.onServerFailed()
                 }
 
+                launch(Dispatchers.Main) {
+                    responseCallBack.onServerSucess(null)
+                }
+
+            } else {
+
+                launch(Dispatchers.Main) {
+                    responseCallBack.onServerFailed()
+                }
             }
-        })
-    }
 
-    fun isFriendNoRemind(userID: Int, callback: Callback<Boolean>) {
-        isNoRemind(userID, ERMT_USER_MSG, callback)
-    }
-
-    fun isClubNoRemind(userID: Int, callback: Callback<Boolean>) {
-        isNoRemind(userID, ERMT_GROUP_MSG, callback)
-    }
-
-    private fun isNoRemind(userID: Int, msgType:Int, callback: Callback<Boolean>) {
-        launch {
-            callback.onCallback(0, NoRemindInfoLocalApi.isNoReminded(userID, msgType))
         }
+    }
 
+    fun isFriendNoRemind(userID: Int):Boolean {
+        return isNoRemind(userID, ERMT_USER_MSG)
+    }
+
+    fun isClubNoRemind(userID: Int):Boolean {
+        return isNoRemind(userID, ERMT_GROUP_MSG)
+    }
+
+    private fun isNoRemind(userID: Int, msgType:Int):Boolean {
+        return NoRemindInfoLocalApi.isNoReminded(userID, msgType)
     }
 
     /**
@@ -106,30 +116,30 @@ object NoRemindManager : CoroutineScope by GlobalScope{
         U.getPreferenceUtils().removePreference(PREF_KEY_NO_REMIND_REFRESHED)
 
         //分页数据，分多次请求获取全部列表数据
-
-        launch {
+        launch (Dispatchers.IO){
 
             val cnt = 20
             var remindMsgType = ERMT_USER_MSG
-            val hasMore = AtomicBoolean(true)
+            var hasMore = true
             var offset = 0
 
-            while (hasMore.get()) {
+            while (hasMore) {
                 val apiResult = subscribe(RequestControl("getNoRemindList", ControlType.CancelThis)){
                     userInfoServerApi.getNoRemindList(userID, remindMsgType, offset, cnt)
                 }
 
                 if (apiResult.errno == 0 && apiResult.data != null) {
 
-                    hasMore.set(apiResult.data.getBoolean("hasMore")!!)
+                    hasMore = apiResult.data.getBoolean("hasMore")
 
                     apiResult.data.getJSONArray("toIDs")?.let { jsonArray ->
                         val models = jsonArray.toJavaList(Int::class.java).map { NoRemindInfoModel(it.toLong(), remindMsgType) }
+
                         NoRemindInfoLocalApi.insertOrReplace(models)
                     }
 
                 } else {
-                    hasMore.set(false)
+                    hasMore = false
                     //出现异常，可能导致免打扰数据获取不完整，需要下次重新下载
                     U.getPreferenceUtils().removePreference(PREF_KEY_NO_REMIND_REFRESHED)
                 }
@@ -137,9 +147,9 @@ object NoRemindManager : CoroutineScope by GlobalScope{
                 offset += cnt
 
                 //好友免打扰数据获取完毕，开始获取家族免打扰数据
-                if(!hasMore.get() && remindMsgType == ERMT_USER_MSG){
+                if(!hasMore && remindMsgType == ERMT_USER_MSG){
                     remindMsgType = ERMT_GROUP_MSG
-                    hasMore.set(true)
+                    hasMore = true
                     offset = 0
                 }
             }

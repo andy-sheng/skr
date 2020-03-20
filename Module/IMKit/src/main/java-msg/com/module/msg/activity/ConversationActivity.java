@@ -36,6 +36,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.Message;
@@ -57,6 +62,8 @@ public class ConversationActivity extends BaseActivity {
 
     String mDescWhenExceed;
     int mCanSendTimes = -1;
+
+    Disposable noRemindDisposable;
 
     public ConversationActivity() {
 
@@ -211,20 +218,26 @@ public class ConversationActivity extends BaseActivity {
                         channels.add(getString(R.string.add_to_black_list));
                     }
 
-                    NoRemindManager.INSTANCE.isFriendNoRemind(nUserId, (r, obj1) -> {
-                        if(obj1){
+                    noRemindDisposable = Observable.create(new ObservableOnSubscribe<Boolean>() {
+                        @Override
+                        public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+
+                            emitter.onNext(NoRemindManager.INSTANCE.isFriendNoRemind(nUserId));
+
+                        }
+                    }).subscribe(aBoolean -> {
+
+                        if(aBoolean){
                             channels.add("关闭消息免打扰");
                         }else{
                             channels.add("开启消息免打扰");
                         }
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showConfirmOptions(channels);
-                            }
-                        });
 
-                    });
+                        showConfirmOptions(channels);
+
+                    }, throwable -> showConfirmOptions(channels));
+
+
 
                 }
             }
@@ -369,6 +382,9 @@ public class ConversationActivity extends BaseActivity {
         RongIM.getInstance().setSendMessageListener(null);
         U.getSoundUtils().release(getTAG());
         NotifyCorePresenter.Companion.setChatingUserId(null);
+        if(noRemindDisposable != null){
+            noRemindDisposable.dispose();
+        }
     }
 
     public String getUserId() {
