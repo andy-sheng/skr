@@ -127,7 +127,7 @@ installApkForAllDevices(){
 
 #遍历文件夹
 function walk()  
-{  
+{
   for file in `ls $1`  
   do  
     local path=$1"/"$file  
@@ -143,9 +143,17 @@ function walk()
 	  if [[ $ext = "apk" ]]; then
 	  		movePackage $path
 	  fi
-    fi  
-  done  
-} 
+    fi
+    if [[ $path =~ "DEFAULT" ]]
+    then
+      map_flag=$path
+    else
+      echo "不包含"
+    fi
+  done
+  # 拷贝mapping
+  moveMapping $map_flag
+}
 
 #移动apk
 movePackage(){
@@ -158,9 +166,18 @@ movePackage(){
 	echo name:$name ext:$ext date1:$date1
 	echo mv $path ${name}_${date1}.${ext}
 	#mv $path ./publish/${name}_${date1}.${ext}
-	mv $path ./publish/${name}.${ext}
+	cp $path ./publish/${name}.${ext}
 }
 
+#移动mapping.txt
+moveMapping(){
+	echo "moveMapping $1"
+	path=$1
+	date1=`date +%m_%d_%H_%M`
+	pre=${path%.*}
+	name=${pre##*/}
+	cp app/build/outputs/mapping/release/mapping.txt ./publish_mapping/mapping_${name}_${date1}.txt
+}
 
 function findChannel()  
 {  
@@ -205,6 +222,12 @@ fi
                 fi
         done
 }
+
+#rm -rf ./publish
+#mkdir ./publish
+#walk app/build/outputs/channels
+#
+#exit
 
 echo "运行示例 ./ins.sh app release all  或 ./ins.sh modulechannel 编译组件module "
 echo "运行示例 ./ins.sh app release matrix 开启matrix性能监控"
@@ -364,7 +387,7 @@ if [[ $1 = "app" ]]; then
             rm -rf ./publish
             mkdir ./publish
 			walk app/build/outputs/channels
-			cp app/build/outputs/mapping/release/mapping.txt ./publish/
+			#cp app/build/outputs/mapping/release/mapping.txt ./publish/
 			if [ $matrix = true ]; then
                 cp app/build/outputs/mapping/debug/methodMapping.txt ./publish/matrix_method.txt
             fi

@@ -1,6 +1,7 @@
 #! /bin/bash
-echo ANDROID_SDK=$ANDROID_SDK
-
+echo "./logcat.sh 捞取手机日志"
+echo "./logcat.sh dir 解析文件夹内所有日志"
+echo "./logcat.sh a.txt  反混淆 a.txt"
 
 if [[ $1 == "" ]]; then
     adb shell am broadcast -a com.zq.live.FLUSH_LOG
@@ -20,9 +21,23 @@ if [[ $1 == "" ]]; then
 else
 	if test -f $1 
 	then
-	    # 使用R8解混淆
-	    java -jar ./r8_retrace/lib/retrace.jar ./publish/mapping.txt $1
-		sublime $1
+        #遍历文件夹 所有maping文件
+        for file in `ls ./publish_mapping`
+        do
+        mapping_path="./publish_mapping/"$file
+        if [ -d $mapping_path ]
+        then
+           echo "DIR $mapping_path"
+        else
+            if [[ $mapping_path =~ "mapping" ]]
+            then
+                # 使用R8解混淆
+                java -jar ./r8_retrace/lib/retrace.jar $mapping_path $1
+            else
+              echo "不包含"
+            fi
+        fi
+        done
 	else
 		for file in $1/*
 		do
@@ -34,9 +49,7 @@ else
 		    fi
 		done
 		echo sublime $1
-		sublime $1
 	fi
 fi
 
-echo 解析xlog歌词 ./logcat.sh ~/Downloads/logs  或者 ./logcat.sh 拉取sdcard中的歌词
-echo 请使用 UTF-8 的编码，打开日志文件查看
+echo "结束"
