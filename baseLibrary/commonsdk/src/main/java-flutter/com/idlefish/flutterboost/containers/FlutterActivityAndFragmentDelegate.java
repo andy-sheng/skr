@@ -22,6 +22,7 @@ import java.util.Map;
 
 import com.idlefish.flutterboost.BoostPluginRegistry;
 import com.idlefish.flutterboost.FlutterBoost;
+import com.idlefish.flutterboost.Platform;
 import com.idlefish.flutterboost.Utils;
 import com.idlefish.flutterboost.XFlutterView;
 import com.idlefish.flutterboost.interfaces.IFlutterViewContainer;
@@ -81,7 +82,8 @@ public class FlutterActivityAndFragmentDelegate implements IFlutterViewContainer
 
     void onAttach(@NonNull Context context) {
         ensureAlive();
-        if (FlutterBoost.instance().platform().whenEngineStart() == FlutterBoost.ConfigBuilder.FLUTTER_ACTIVITY_CREATED) {
+        Platform platform = FlutterBoost.instance().platform();
+        if (platform!=null && platform.whenEngineStart() == FlutterBoost.ConfigBuilder.FLUTTER_ACTIVITY_CREATED) {
             FlutterBoost.instance().doInitialFlutter();
             FlutterBoost.instance().boostPluginRegistry();
         }

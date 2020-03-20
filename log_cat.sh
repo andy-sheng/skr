@@ -1,4 +1,7 @@
 #! /bin/bash
+echo ANDROID_SDK=$ANDROID_SDK
+#/Users/chengsimin/dev_utils/android-sdk-macosx-24.4/tools/proguard/bin
+
 if [[ $1 == "" ]]; then
     adb shell am broadcast -a com.zq.live.FLUSH_LOG
     sleep 2
@@ -15,17 +18,23 @@ if [[ $1 == "" ]]; then
 	echo sublime ./logs/
 	sublime ./logs/
 else
-	for file in $1/*
-	do
-	    if test -f $file
-	    then
-	    	if [[ $file == *".xlog" ]]; then
-	    		python decode_mars_nocrypt_log_file.py $file
-	    	fi
-	    fi
-	done
-	echo sublime $1
-	sublime $1
+	if test -f $1 
+	then
+		$ANDROID_SDK/tools/proguard/bin/retrace.sh  -verbose ./publish/mapping.txt $1
+		sublime $1
+	else
+		for file in $1/*
+		do
+		    if test -f $file
+		    then
+		    	if [[ $file == *".xlog" ]]; then
+		    		python decode_mars_nocrypt_log_file.py $file
+		    	fi
+		    fi
+		done
+		echo sublime $1
+		sublime $1
+	fi
 fi
 
 echo 解析xlog歌词 ./logcat.sh ~/Downloads/logs  或者 ./logcat.sh 拉取sdcard中的歌词
