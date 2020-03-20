@@ -76,15 +76,11 @@ object NoRemindManager : CoroutineScope by GlobalScope{
                     }
                 }
 
-                launch(Dispatchers.Main) {
-                    responseCallBack.onServerSucess(null)
-                }
+                responseCallBack.onServerSucess(null)
 
             } else {
 
-                launch(Dispatchers.Main) {
-                    responseCallBack.onServerFailed()
-                }
+                responseCallBack.onServerFailed()
             }
 
         }
