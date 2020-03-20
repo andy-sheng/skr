@@ -115,3 +115,6 @@ https://signin.aliyun.com/skrer.onaliyun.com/login.htm
 2. 也可以通过悬浮球 日志功能捞取用户日志 如果用户有微信 会触发微信分享
     ./logcat.sh ~/Downloads/xxxxxx  解密log 下载和捞取的日志都是加密的 
 3. 也可以直接app内私信联系用户定位解决，我们用户多为年轻人，比较愿意配合
+
+4. 因为使用了 R8 混淆，bugly上的行号无法对应崩溃栈，
+    将堆栈拷贝到 a.txt 然后 ./logcat.sh a.txt 默认会使用R8脚本反解析出崩溃栈
