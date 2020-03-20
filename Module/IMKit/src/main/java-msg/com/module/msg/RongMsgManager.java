@@ -68,13 +68,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import io.rong.common.rlog.RLog;
 import io.rong.imkit.DefaultExtensionModule;
 import io.rong.imkit.IExtensionModule;
@@ -371,26 +364,13 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                         public boolean onGetServer(UserInfoModel infoModel) {
                             //非好友不会弹出消息通知栏 查看是否在免打扰名单中
                             if(infoModel != null && infoModel.isFriend()) {
-                                Disposable disposable = Observable.create(new ObservableOnSubscribe<Boolean>() {
-                                    @Override
-                                    public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
 
-                                        emitter.onNext(NoRemindManager.INSTANCE.isFriendNoRemind(infoModel.getUserId()));
+                                boolean isNoRemind = NoRemindManager.INSTANCE.isFriendNoRemind(infoModel.getUserId());
 
-                                    }
-                                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(isNoRemind -> {
-
-                                    if (!isNoRemind) {
-                                        RongMsgNotifyEvent event = new RongMsgNotifyEvent(content, infoModel);
-                                        EventBus.getDefault().post(event);
-                                    }
-
-                                }, throwable -> {
-
+                                if (!isNoRemind) {
                                     RongMsgNotifyEvent event = new RongMsgNotifyEvent(content, infoModel);
                                     EventBus.getDefault().post(event);
-
-                                });
+                                }
 
                             }
 

@@ -14,6 +14,7 @@ import com.common.core.userinfo.noremind.NoRemindManager;
 import com.common.core.userinfo.ResponseCallBack;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -39,8 +40,9 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.Message;
@@ -223,9 +225,11 @@ public class ConversationActivity extends BaseActivity {
                         public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
 
                             emitter.onNext(NoRemindManager.INSTANCE.isFriendNoRemind(nUserId));
+                            emitter.onComplete();
 
                         }
-                    }).subscribe(aBoolean -> {
+                    }).subscribeOn(Schedulers.io())
+                      .observeOn(AndroidSchedulers.mainThread()).subscribe(aBoolean -> {
 
                         if(aBoolean){
                             channels.add("关闭消息免打扰");
@@ -235,7 +239,10 @@ public class ConversationActivity extends BaseActivity {
 
                         showConfirmOptions(channels);
 
-                    }, throwable -> showConfirmOptions(channels));
+                    }, throwable -> {
+                        MyLog.e("获取本地消息免打扰状态失败");
+                        showConfirmOptions(channels);
+                    });
 
 
 
