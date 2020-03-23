@@ -39,7 +39,8 @@ public interface UserAccountServerApi {
                                 @Query("platform") int platform,
                                 @Query("channel") String channel,
                                 @Query("deviceID") String deviceID,
-                                @Query("deviceModel") String deviceModel
+                                @Query("deviceModel") String deviceModel,
+                                @Query("simulator") boolean simulator
     );
 
     /**
@@ -58,7 +59,9 @@ public interface UserAccountServerApi {
                                   @Query("platform") int platform,
                                   @Query("channel") String channel,
                                   @Query("deviceID") String deviceID,
-                                  @Query("deviceModel") String deviceModel);
+                                  @Query("deviceModel") String deviceModel,
+                                  @Query("simulator") boolean simulator
+    );
 
     /**
      * 获取IMToken

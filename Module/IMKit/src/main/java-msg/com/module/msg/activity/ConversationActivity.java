@@ -219,33 +219,30 @@ public class ConversationActivity extends BaseActivity {
                     } else {
                         channels.add(getString(R.string.add_to_black_list));
                     }
+                    if (NoRemindManager.INSTANCE.open()) {
+                        noRemindDisposable = Observable.create(new ObservableOnSubscribe<Boolean>() {
+                            @Override
+                            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+                                emitter.onNext(NoRemindManager.INSTANCE.isFriendNoRemind(nUserId));
+                                emitter.onComplete();
+                            }
+                        }).subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(aBoolean -> {
+                                    if (aBoolean) {
+                                        channels.add("关闭消息免打扰");
+                                    } else {
+                                        channels.add("开启消息免打扰");
+                                    }
+                                    showConfirmOptions(channels);
 
-                    noRemindDisposable = Observable.create(new ObservableOnSubscribe<Boolean>() {
-                        @Override
-                        public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
-
-                            emitter.onNext(NoRemindManager.INSTANCE.isFriendNoRemind(nUserId));
-                            emitter.onComplete();
-
-                        }
-                    }).subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread()).subscribe(aBoolean -> {
-
-                        if(aBoolean){
-                            channels.add("关闭消息免打扰");
-                        }else{
-                            channels.add("开启消息免打扰");
-                        }
-
+                                }, throwable -> {
+                                    MyLog.e(throwable);
+                                    showConfirmOptions(channels);
+                                });
+                    } else {
                         showConfirmOptions(channels);
-
-                    }, throwable -> {
-                        MyLog.e(throwable);
-                        showConfirmOptions(channels);
-                    });
-
-
-
+                    }
                 }
             }
 
@@ -268,7 +265,7 @@ public class ConversationActivity extends BaseActivity {
                 @Override
                 public void run() {
 
-                    switch (channel){
+                    switch (channel) {
                         case "加入黑名单":
 
                             UserInfoManager.getInstance().addToBlacklist(nUserId, new ResponseCallBack() {
@@ -389,7 +386,7 @@ public class ConversationActivity extends BaseActivity {
         RongIM.getInstance().setSendMessageListener(null);
         U.getSoundUtils().release(getTAG());
         NotifyCorePresenter.Companion.setChatingUserId(null);
-        if(noRemindDisposable != null){
+        if (noRemindDisposable != null) {
             noRemindDisposable.dispose();
         }
     }
