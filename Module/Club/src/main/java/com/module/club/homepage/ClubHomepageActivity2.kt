@@ -1,0 +1,429 @@
+package com.module.club.homepage
+
+import android.content.Intent
+import android.graphics.Color
+import android.os.Bundle
+import android.support.constraint.ConstraintLayout
+import android.support.design.widget.AppBarLayout
+import android.support.design.widget.CollapsingToolbarLayout
+import android.support.v4.view.PagerAdapter
+import android.support.v4.view.ViewPager
+import android.support.v7.widget.Toolbar
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import com.alibaba.android.arouter.launcher.ARouter
+import com.common.base.BaseActivity
+import com.common.core.avatar.AvatarUtils
+import com.common.core.userinfo.model.ClubMemberInfo
+import com.common.core.view.setDebounceViewClickListener
+import com.common.rxretrofit.ApiManager
+import com.common.utils.U
+import com.common.utils.dp
+import com.common.view.ex.ExImageView
+import com.common.view.ex.ExLinearLayout
+import com.common.view.ex.ExTextView
+import com.common.view.titlebar.CommonTitleBar
+import com.common.view.viewpager.NestViewPager
+import com.common.view.viewpager.SlidingTabLayout
+import com.component.person.utils.StringFromatUtils
+import com.facebook.drawee.view.SimpleDraweeView
+import com.module.RouterConstants
+import com.module.club.ClubServerApi
+import com.module.club.R
+import com.module.club.homepage.view.ClubDynamicView
+import com.module.club.homepage.view.ClubIntroView
+import com.module.club.homepage.view.ClubPhotoView
+import com.module.club.homepage.view.ClubWorksView
+import com.module.club.manage.setting.ClubManageActivity
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import com.scwang.smartrefresh.layout.api.RefreshHeader
+import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.scwang.smartrefresh.layout.header.ClassicsHeader
+import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
+import com.zq.live.proto.Common.EClubMemberRoleType
+
+class ClubHomepageActivity2 : BaseActivity() {
+
+    lateinit var title: CommonTitleBar
+    lateinit var imageBg: ImageView
+    lateinit var bottomBg: ImageView
+    lateinit var smartRefresh: SmartRefreshLayout
+    lateinit var classicsHeader: ClassicsHeader
+
+    lateinit var container: ExLinearLayout
+    lateinit var clubTab: SlidingTabLayout
+    lateinit var clubVp: NestViewPager
+
+    lateinit var appbar: AppBarLayout
+    lateinit var contentLayout: CollapsingToolbarLayout
+    lateinit var userInfoArea: ConstraintLayout
+    lateinit var clubLogoSdv: SimpleDraweeView
+    lateinit var clubHotTv: TextView
+    lateinit var clubNameTv: TextView
+    lateinit var clubIdTv: TextView
+    lateinit var clubLevelTv: ExTextView
+    lateinit var clubContriTv: ExTextView
+
+    lateinit var applyTv: TextView
+
+    lateinit var toolbar: Toolbar
+    lateinit var toolbarLayout: ConstraintLayout
+    lateinit var srlTitleTv: ExTextView
+
+    lateinit var ivBack: ExImageView
+    lateinit var moreBtn: ExImageView
+
+    private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
+    private var clubMemberInfo: ClubMemberInfo? = null
+    private var clubID: Int = 0
+    private var isMyClub = false
+
+    private var appbarListener: AppBarLayout.OnOffsetChangedListener? = null
+    private var srollDivider = U.getDisplayUtils().dip2px(122f)  // 滑到分界线的时候
+    private var lastVerticalOffset = Integer.MAX_VALUE
+
+    private var clubTabAdapter: PagerAdapter? = null
+    private var clubIntroView: ClubIntroView? = null
+    private var clubDynamicView: ClubDynamicView? = null
+    private var clubPhotoWallView: ClubPhotoView? = null
+    private var clubWorksView: ClubWorksView? = null
+
+    override fun useEventBus(): Boolean {
+        return false
+    }
+
+    override fun canSlide(): Boolean {
+        return false
+    }
+
+    override fun initView(savedInstanceState: Bundle?): Int {
+        return R.layout.club_home_page_activity2_layout
+    }
+
+    override fun initData(savedInstanceState: Bundle?) {
+        U.getStatusBarUtil().setTransparentBar(this, false)
+        clubMemberInfo = intent.getSerializableExtra("clubMemberInfo") as ClubMemberInfo?
+        clubID = clubMemberInfo?.club?.clubID ?: 0
+        isMyClub = clubMemberInfo?.isMyClub() ?: false
+        if (clubMemberInfo == null) {
+            finish()
+        }
+
+        initBaseContainArea()
+        initClubInfoArea()
+        initSettingArea()
+
+        initContentView()
+        initAppBarScroll()
+
+        if (isMyClub) {
+            applyTv.visibility = View.GONE
+        } else {
+            applyTv.visibility = View.VISIBLE
+            applyTv.text = "申请加入"
+        }
+        refreshClubInfo()
+        //todo 如果不是自己的家族，需要去拿申请状态
+    }
+
+    private fun refreshClubInfo() {
+        val clubInfo = clubMemberInfo?.club
+        AvatarUtils.loadAvatarByUrl(clubLogoSdv, AvatarUtils.newParamsBuilder(clubInfo?.logo)
+                .setCircle(false)
+                .setCornerRadius(8.dp().toFloat())
+                .build())
+        clubNameTv.text = clubInfo?.name
+        clubHotTv.text = StringFromatUtils.formatTenThousand(clubInfo?.hot ?: 0)
+        clubIdTv.text = "ID: ${clubInfo?.clubID}"
+        clubLevelTv.text = "金牌等级"
+    }
+
+    private fun initAppBarScroll() {
+        if (appbarListener == null) {
+            appbarListener = AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+                imageBg.translationY = verticalOffset.toFloat()
+                if (verticalOffset < 0) {
+                    bottomBg.setTranslationY(verticalOffset.toFloat())
+                }
+                if (lastVerticalOffset != verticalOffset) {
+                    lastVerticalOffset = verticalOffset
+
+                    val scrollLimit = appBarLayout.totalScrollRange  // 总的滑动长度
+                    if (verticalOffset == 0) {
+                        // 展开状态
+                        if (toolbar.visibility != View.GONE) {
+                            toolbar.visibility = View.GONE
+                            toolbarLayout.visibility = View.GONE
+                        }
+                    } else if (Math.abs(verticalOffset) >= srollDivider) {
+                        // 完全收缩状态
+                        if (toolbar.visibility != View.VISIBLE) {
+                            toolbar.visibility = View.VISIBLE
+                            toolbarLayout.visibility = View.VISIBLE
+                        }
+
+                        if (Math.abs(verticalOffset) >= scrollLimit) {
+                            srlTitleTv.alpha = 1f
+                        } else {
+                            srlTitleTv.alpha = (Math.abs(verticalOffset) - srollDivider).toFloat() / (scrollLimit - srollDivider).toFloat()
+                        }
+                    } else {
+                        if (toolbar.visibility != View.GONE) {
+                            toolbar.visibility = View.GONE
+                            toolbarLayout.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        }
+        appbar.removeOnOffsetChangedListener(appbarListener)
+        lastVerticalOffset = Integer.MAX_VALUE
+        appbar.addOnOffsetChangedListener(appbarListener)
+    }
+
+    private fun initBaseContainArea() {
+        smartRefresh = findViewById(R.id.smart_refresh)
+        classicsHeader = findViewById(R.id.classics_header)
+        title = findViewById(R.id.title)
+
+        imageBg = findViewById(R.id.image_bg)
+        bottomBg = findViewById(R.id.bottom_bg)
+
+        smartRefresh.setEnableRefresh(true)
+        smartRefresh.setEnableLoadMore(true)
+        smartRefresh.setEnableLoadMoreWhenContentNotFull(false)
+        smartRefresh.setEnableOverScrollDrag(true)
+        smartRefresh.setHeaderMaxDragRate(1.5f)
+        smartRefresh.setOnMultiPurposeListener(object : SimpleMultiPurposeListener() {
+
+            internal var lastScale = 0f
+
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+                super.onRefresh(refreshLayout)
+                // todo 要不要更新家族信息
+                viewSelected(clubVp.currentItem, true)
+            }
+
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                super.onLoadMore(refreshLayout)
+                loadMoreData(clubVp.currentItem)
+            }
+
+            override fun onHeaderMoving(header: RefreshHeader?, isDragging: Boolean, percent: Float, offset: Int, headerHeight: Int, maxDragHeight: Int) {
+                super.onHeaderMoving(header, isDragging, percent, offset, headerHeight, maxDragHeight)
+                val scale = offset.toFloat() / U.getDisplayUtils().dip2px(300f).toFloat() + 1
+                if (Math.abs(scale - lastScale) >= 0.01) {
+                    lastScale = scale
+                    imageBg.setScaleX(scale)
+                    imageBg.setScaleY(scale)
+                }
+                if (offset > 0) {
+                    bottomBg.setTranslationY(offset.toFloat())
+                }
+            }
+        })
+    }
+
+    private fun initClubInfoArea() {
+        appbar = findViewById(R.id.appbar)
+        contentLayout = findViewById(R.id.content_layout)
+        userInfoArea = findViewById(R.id.user_info_area)
+        clubLogoSdv = findViewById(R.id.club_logo_sdv)
+        clubHotTv = findViewById(R.id.club_hot_tv)
+        clubNameTv = findViewById(R.id.club_name_tv)
+        clubIdTv = findViewById(R.id.club_id_tv)
+        clubLevelTv = findViewById(R.id.club_level_tv)
+        clubContriTv = findViewById(R.id.club_contri_tv)
+
+        applyTv = findViewById(R.id.apply_tv)
+
+        toolbar = findViewById(R.id.toolbar)
+        toolbarLayout = findViewById(R.id.toolbar_layout)
+        srlTitleTv = findViewById(R.id.srl_title_tv)
+
+
+        clubContriTv.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_CLUB_RANK)
+                    .withInt("clubID", clubMemberInfo?.club?.clubID ?: 0)
+                    .navigation()
+        }
+    }
+
+    private fun initSettingArea() {
+        ivBack = findViewById(R.id.iv_back)
+        moreBtn = findViewById(R.id.more_btn)
+
+        ivBack.setDebounceViewClickListener { finish() }
+
+        moreBtn.setDebounceViewClickListener {
+            // 跳到设置页面
+            val intent = Intent(this, ClubManageActivity::class.java)
+            intent.putExtra("clubMemberInfo", clubMemberInfo)
+            startActivity(intent)
+        }
+    }
+
+    private fun initContentView() {
+        container = findViewById(R.id.container)
+        clubTab = findViewById(R.id.club_tab)
+        clubVp = findViewById(R.id.club_vp)
+
+        clubTab.setCustomTabView(R.layout.club_tab_view, R.id.tab_tv)
+        clubTab.setSelectedIndicatorColors(Color.parseColor("#FF9B9B"))
+        clubTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
+        clubTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE)
+        clubTab.setIndicatorWidth(U.getDisplayUtils().dip2px(67f))
+        clubTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(15f))
+        clubTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(24f).toFloat())
+        clubTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(12f).toFloat())
+        clubTabAdapter = object : PagerAdapter() {
+            override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+                container.removeView(`object` as View)
+            }
+
+            override fun instantiateItem(container: ViewGroup, position: Int): Any {
+                when (position) {
+                    0 -> {
+                        // 家族简介
+                        if (clubIntroView == null) {
+                            clubIntroView = ClubIntroView(this@ClubHomepageActivity2)
+                        }
+                        clubIntroView?.clubMemberInfo = clubMemberInfo
+                        clubIntroView?.loadData(false) {}
+                        if (container.indexOfChild(clubIntroView) == -1) {
+                            container.addView(clubIntroView)
+                        }
+                        return clubIntroView!!
+                    }
+                    1 -> {
+                        // 家族动态
+                        if (clubDynamicView == null) {
+                            clubDynamicView = ClubDynamicView(this@ClubHomepageActivity2)
+                        }
+                        clubDynamicView?.clubMemberInfo = clubMemberInfo
+                        if (container.indexOfChild(clubDynamicView) == -1) {
+                            container.addView(clubDynamicView)
+                        }
+                        return clubDynamicView!!
+                    }
+                    2 -> {
+                        // 家族相册
+                        if (clubPhotoWallView == null) {
+                            clubPhotoWallView = ClubPhotoView(this@ClubHomepageActivity2)
+                        }
+                        clubPhotoWallView?.clubMemberInfo = clubMemberInfo
+                        if (container.indexOfChild(clubPhotoWallView) == -1) {
+                            container.addView(clubPhotoWallView)
+                        }
+                        return clubPhotoWallView!!
+                    }
+                    3 -> {
+                        // 家族作品
+                        if (clubWorksView == null) {
+                            clubWorksView = ClubWorksView(this@ClubHomepageActivity2)
+                        }
+                        clubWorksView?.clubMemberInfo = clubMemberInfo
+                        if (container.indexOfChild(clubWorksView) == -1) {
+                            container.addView(clubWorksView)
+                        }
+                        return clubWorksView!!
+                    }
+                    else -> return super.instantiateItem(container, position)
+                }
+            }
+
+            override fun getCount(): Int {
+                return 4
+            }
+
+            override fun getItemPosition(`object`: Any): Int {
+                return PagerAdapter.POSITION_NONE
+            }
+
+            override fun getPageTitle(position: Int): CharSequence? {
+                if (position == 0) {
+                    return "简介"
+                } else if (position == 1) {
+                    return "动态"
+                } else if (position == 2) {
+                    return "相册"
+                } else if (position == 3) {
+                    return "帖子"
+                }
+                return ""
+            }
+
+            override fun isViewFromObject(view: View, `object`: Any): Boolean {
+                return view === `object`
+            }
+        }
+        clubVp.adapter = clubTabAdapter
+        clubTab.setViewPager(clubVp)
+        clubTabAdapter?.notifyDataSetChanged()
+
+        clubVp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                viewSelected(position, false)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+        })
+    }
+
+    private fun viewSelected(position: Int, flag: Boolean) {
+        clubDynamicView?.stopPlay()
+        clubWorksView?.stopPlay()
+        when (position) {
+            0 -> clubIntroView?.loadData(flag) {
+                finishRefreshAndLoadMore()
+            }
+            1 -> clubDynamicView?.loadData(flag) {
+                finishRefreshAndLoadMore()
+            }
+            2 -> clubPhotoWallView?.loadData(flag) {
+                finishRefreshAndLoadMore()
+            }
+            3 -> clubWorksView?.loadData(flag) {
+                finishRefreshAndLoadMore()
+            }
+        }
+    }
+
+    private fun loadMoreData(position: Int) {
+        when (position) {
+            0 -> clubIntroView?.loadMoreData {
+                finishRefreshAndLoadMore()
+            }
+            1 -> clubDynamicView?.loadMoreData {
+                finishRefreshAndLoadMore()
+            }
+            2 -> clubPhotoWallView?.loadMoreData {
+                finishRefreshAndLoadMore()
+            }
+            3 -> clubWorksView?.loadMoreData {
+                finishRefreshAndLoadMore()
+            }
+        }
+    }
+
+    private fun finishRefreshAndLoadMore() {
+        smartRefresh.finishRefresh()
+        smartRefresh.finishLoadMore()
+    }
+
+    override fun destroy() {
+        super.destroy()
+        clubIntroView?.destroy()
+        clubDynamicView?.destroy()
+        clubPhotoWallView?.destroy()
+        clubWorksView?.destroy()
+    }
+}

@@ -15,6 +15,7 @@ import com.common.utils.U
 import com.module.RouterConstants
 import com.module.club.home.ClubHomeView
 import com.module.club.homepage.ClubHomepageActivity
+import com.module.club.homepage.ClubHomepageActivity2
 
 @Route(path = RouterConstants.SERVICE_CLUB, name = "测试服务")
 class ClubServiceImpl : IClubModuleService {
@@ -30,7 +31,7 @@ class ClubServiceImpl : IClubModuleService {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val clubMemberInfo = JSON.parseObject(result.data.getString("info"), ClubMemberInfo::class.java)
-                    val intent = Intent(U.getActivityUtils().topActivity, ClubHomepageActivity::class.java)
+                    val intent = Intent(U.getActivityUtils().topActivity, ClubHomepageActivity2::class.java)
                     intent.putExtra("clubMemberInfo", clubMemberInfo)
                     U.getActivityUtils().topActivity.startActivity(intent)
                 } else {
