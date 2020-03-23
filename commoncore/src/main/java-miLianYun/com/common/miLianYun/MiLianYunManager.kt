@@ -24,6 +24,16 @@ object MiLianYunManager {
      * 小米联运是否开启
      */
     fun lianYunOpen(): Boolean {
+        // vivo oppo 华为 强制不走联运
+        if(U.getDeviceUtils().isOppo){
+            return false
+        }
+        if(U.getDeviceUtils().isVivo){
+            return false
+        }
+        if(U.getDeviceUtils().isEmui){
+            return false
+        }
         return U.getChannelUtils().channel == "MI_SHOP" || U.getChannelUtils().channel == "SANDBOX"
 //        return true
     }
