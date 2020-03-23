@@ -220,6 +220,7 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
             Uri uri = Uri.parse("io.rong://" + U.getAppInfoUtils().getPackageName()).buildUpon()
                     .appendPath("conversation_list_activity")
                     .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
+                    .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")   //设置群聊会话是否聚合显示
                     .build();
             mConversationListFragment.setUri(uri);
         }

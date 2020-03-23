@@ -972,25 +972,58 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         });
     }
 
+    /**
+     * 停止与当前要打开的会话不匹配的会话
+     * @param conversationID 会话ID，e.g. 单聊UserID 群聊ClubID
+     * @return  false 已存在相同会话无需打开  true 已清理会话或会话不存在
+     */
+    private boolean stopExpireConversation(String conversationID){
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if (activity instanceof ConversationActivity) {
+                // 已经有会话页面了
+                ConversationActivity conversationActivity = (ConversationActivity) activity;
+                if (conversationActivity.isExpireConversation(conversationID)) {
+                    // 正好期望会话的人，已经有一个与这个人的会话Activity存在了
+                    return false;
+                } else {
+                    // 有一个会话，但是不是与当前人的，强制finish调
+                    conversationActivity.finish();
+                }
+                break;
+            }
+        }
+        return true;
+    }
+
+    public boolean startClubChat(Context context, String clubID, String title){
+        if(context != null && !TextUtils.isEmpty(clubID)){
+            if(RongContext.getInstance() == null){
+                throw new ExceptionInInitializerError("RongCloud SDK not init");
+            }else{
+                //已存在相同会话
+                if(!stopExpireConversation(clubID)) return true;
+
+                Uri uri = Uri.parse("rong://" + context.getApplicationInfo().packageName).buildUpon()
+                        .appendPath("conversation").appendPath(Conversation.ConversationType.GROUP.getName().toLowerCase(Locale.US))
+                        .appendQueryParameter("targetId", clubID)
+                        .appendQueryParameter("title", title)
+                        .build();
+                Intent intent = new Intent("android.intent.action.VIEW", uri);
+                context.startActivity(intent);
+            }
+        }
+        return false;
+    }
+
     public boolean startPrivateChat(Context context, String targetUserId, String title, boolean isFriend) {
         if (context != null && !TextUtils.isEmpty(targetUserId)) {
             if (RongContext.getInstance() == null) {
                 throw new ExceptionInInitializerError("RongCloud SDK not init");
             } else {
-                for (Activity activity : U.getActivityUtils().getActivityList()) {
-                    if (activity instanceof ConversationActivity) {
-                        // 已经有会话页面了
-                        ConversationActivity conversationActivity = (ConversationActivity) activity;
-                        if (targetUserId.equals(conversationActivity.getUserId())) {
-                            // 正好期望会话的人，已经有一个与这个人的会话Activity存在了
-                            return true;
-                        } else {
-                            // 有一个会话，但是不是与当前人的，强制finish调
-                            conversationActivity.finish();
-                        }
-                        break;
-                    }
-                }
+
+                //已存在相同会话
+                if(!stopExpireConversation(targetUserId)) return true;
+
                 Uri uri = Uri.parse("rong://" + context.getApplicationInfo().packageName).buildUpon()
                         .appendPath("conversation").appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase(Locale.US))
                         .appendQueryParameter("targetId", targetUserId)
