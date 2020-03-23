@@ -324,3 +324,9 @@ enum EGameModeType {
     PartyMode         = 11; //[正常]:派对模式 (派对房)
     BattleMode        = 12; //[正常]:2v2团战模式
 }
+
+message RelayRoomConfig
+{
+    sint32 durationTimeMs   = 1; //房间持续时间
+    sint32 unLockWaitTimeMs = 2; //可以解锁需要等待时间
+}
