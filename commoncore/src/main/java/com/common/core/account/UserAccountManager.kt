@@ -227,7 +227,7 @@ object UserAccountManager {
         // 1 为手机登录
         val deviceId = U.getDeviceUtils().deviceID
         val deviceModel = U.getDeviceUtils().productBrand+"_"+U.getDeviceUtils().productModel
-        userAccountServerApi.login(1, phoneNum, verifyCode, 20, U.getChannelUtils().channel, deviceId,deviceModel)
+        userAccountServerApi.login(1, phoneNum, verifyCode, 20, U.getChannelUtils().channel, deviceId,deviceModel,U.getDeviceUtils().isSimulator)
                 .subscribeOn(Schedulers.io())
                 .subscribe(object : ApiObserver<ApiResult>() {
                     override fun process(obj: ApiResult) {
@@ -269,7 +269,7 @@ object UserAccountManager {
         val userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi::class.java)
         val deviceId = U.getDeviceUtils().deviceID
         val deviceModel = U.getDeviceUtils().productBrand+"_"+U.getDeviceUtils().productModel
-        userAccountServerApi.loginWX(mode, accessToken, openId, 20, U.getChannelUtils().channel, deviceId,deviceModel)
+        userAccountServerApi.loginWX(mode, accessToken, openId, 20, U.getChannelUtils().channel, deviceId,deviceModel,U.getDeviceUtils().isSimulator)
                 .subscribeOn(Schedulers.io())
                 .subscribe(object : ApiObserver<ApiResult>() {
                     override fun process(obj: ApiResult) {

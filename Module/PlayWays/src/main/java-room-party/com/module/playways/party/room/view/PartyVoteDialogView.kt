@@ -256,6 +256,7 @@ class PartyVoteDialogView(context: Context, val event: PBeginVote) : ExConstrain
         map["roomID"] = H.partyRoomData?.gameId
         map["beVotedUserID"] = userID
         map["voteTag"] = event.voteTag
+        map["simulator"] = U.getDeviceUtils().isSimulator
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         launch {
