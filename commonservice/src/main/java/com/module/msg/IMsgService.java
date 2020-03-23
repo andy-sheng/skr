@@ -82,6 +82,15 @@ public interface IMsgService extends IProvider {
     boolean startPrivateChat(Context context, String targetId, String title,boolean isFriend);
 
     /**
+     * 打开家族群聊页面
+     * @param context
+     * @param clubID
+     * @param title
+     * @return
+     */
+    boolean startClubChat(Context context, String clubID, String title);
+
+    /**
      * 在融云服务器上更新当前用户信息
      */
     void updateCurrentUserInfo();

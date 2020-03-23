@@ -25,7 +25,9 @@ public class MyExtensionModule extends DefaultExtensionModule {
 //            pluginModuleList.add(audio);
 //            pluginModuleList.add(video);
 //            pluginModuleList.add(file);
-        } 
+        } else if(conversationType.equals(Conversation.ConversationType.GROUP)){
+            pluginModuleList.add(image);
+        }
 
         return pluginModuleList;
     }

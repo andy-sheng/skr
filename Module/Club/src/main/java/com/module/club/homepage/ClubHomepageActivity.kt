@@ -16,6 +16,7 @@ import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -89,6 +90,7 @@ class ClubHomepageActivity : BaseActivity() {
 
     private var applyArea: ConstraintLayout? = null
     private var applyEnterTv: ExTextView? = null
+    private var openGroupTv: ExTextView? = null
 
     private var lastVerticalOffset = Int.MAX_VALUE
     private var scrollDivider = U.getDisplayUtils().dip2px(150f)  // 滑到分界线的时候
@@ -189,6 +191,7 @@ class ClubHomepageActivity : BaseActivity() {
 
         applyArea = this.findViewById(R.id.apply_area)
         applyEnterTv = this.findViewById(R.id.apply_enter_tv)
+        openGroupTv = this.findViewById(R.id.open_club_conversation_tv)
 
         isMyClub = (clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value
                 || clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_CoFounder.value
@@ -224,6 +227,7 @@ class ClubHomepageActivity : BaseActivity() {
         initRoomArea()
         initToolBarScroll()
         initApplyEnter()
+        initOpenClubConversation()
 
         refreshClubUI()
 
@@ -378,6 +382,14 @@ class ClubHomepageActivity : BaseActivity() {
                 }
             }
         })
+    }
+
+    private fun initOpenClubConversation(){
+        openGroupTv?.setDebounceViewClickListener {
+            clubMemberInfo?.club?.name?.let {
+                ModuleServiceManager.getInstance().msgService.startClubChat(this, clubID.toString(), it)
+            }?:MyLog.e(TAG, "未获取到家族信息")
+        }
     }
 
     private fun initApplyEnter() {

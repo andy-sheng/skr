@@ -111,6 +111,11 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
+    public boolean startClubChat(Context context, String clubID, String title) {
+        return RongMsgManager.getInstance().startClubChat(context, clubID, title);
+    }
+
+    @Override
     public void updateCurrentUserInfo() {
         RongMsgManager.getInstance().updateCurrentUserInfo();
     }

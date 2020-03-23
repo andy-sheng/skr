@@ -45,7 +45,13 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.mention.RongMentionManager;
+import io.rong.imkit.userInfoCache.RongUserInfoManager;
+import io.rong.imlib.NativeObject;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.imlib.model.UserInfo;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -56,6 +62,7 @@ public class ConversationActivity extends BaseActivity {
 
     CommonTitleBar mTitleBar;
 
+    String mConversationType;
     String mUserId;
 
     boolean mIsFriend;
@@ -84,6 +91,7 @@ public class ConversationActivity extends BaseActivity {
             String title = getIntent().getData().getQueryParameter("title");
             mUserId = getIntent().getData().getQueryParameter("targetId");
             mTitleBar.getCenterTextView().setText(title);
+            mConversationType = getIntent().getData().getQueryParameter("conversation");
         }
         mIsFriend = getIntent().getBooleanExtra("isFriend", false);
 
@@ -177,8 +185,23 @@ public class ConversationActivity extends BaseActivity {
             }
         });
         checkMsgTimes();
+
+        initMembers();
     }
 
+    private void initMembers() {
+        RongIM.getInstance().setGroupMembersProvider((groupId, callback) -> {
+            callback.onGetGroupMembersResult(getClubMemberList()); // 调用 callback 的 onGetGroupMembersResult 回传群组信息
+        });
+    }
+
+    private List<UserInfo> getClubMemberList() {
+        // TODO 先使用假数据，服务端Ok后，从服务端获取
+        List<UserInfo> userInfoList = new ArrayList<>();
+        userInfoList.add(new UserInfo("1418276", "MOK1", null));
+        userInfoList.add(new UserInfo("1594549", "MOK2", null));
+        return userInfoList;
+    }
 
     private void checkMsgTimes() {
         if (MyUserInfoManager.INSTANCE.getVipType() == EVIPType.EVT_GOLDEN_V.getValue()) {
@@ -214,10 +237,13 @@ public class ConversationActivity extends BaseActivity {
                     boolean isBlack = (boolean) obj;
                     final List<String> channels = new ArrayList<>();
 
-                    if (isBlack) {
-                        channels.add(getString(R.string.remove_from_black_list));
-                    } else {
-                        channels.add(getString(R.string.add_to_black_list));
+                    // 群聊没有黑名单选项
+                    if(mConversationType != Conversation.ConversationType.GROUP.getName()) {
+                        if (isBlack) {
+                            channels.add(getString(R.string.remove_from_black_list));
+                        } else {
+                            channels.add(getString(R.string.add_to_black_list));
+                        }
                     }
 
                     noRemindDisposable = Observable.create(new ObservableOnSubscribe<Boolean>() {
@@ -261,72 +287,14 @@ public class ConversationActivity extends BaseActivity {
 
         listDialog = new ListDialog(this);
         List<DialogListItem> listItems = new ArrayList<>();
-        int nUserId = Integer.valueOf(mUserId);
 
         for (final String channel : channels) {
             listItems.add(new DialogListItem(channel, "#FF3529", new Runnable() {
                 @Override
                 public void run() {
 
-                    switch (channel){
-                        case "加入黑名单":
+                    handleMenuItemClick(channel);
 
-                            UserInfoManager.getInstance().addToBlacklist(nUserId, new ResponseCallBack() {
-                                @Override
-                                public void onServerSucess(Object o) {
-                                    U.getToastUtil().showShort("加入黑名单成功");
-                                }
-
-                                @Override
-                                public void onServerFailed() {
-
-                                }
-                            });
-                            break;
-
-                        case "移除黑名单":
-
-                            UserInfoManager.getInstance().removeBlackList(nUserId, new ResponseCallBack() {
-                                @Override
-                                public void onServerSucess(Object o) {
-                                    U.getToastUtil().showShort("移除黑名单成功");
-                                }
-
-                                @Override
-                                public void onServerFailed() {
-
-                                }
-                            });
-                            break;
-
-                        case "开启消息免打扰":
-                            NoRemindManager.INSTANCE.setFriendNoRemind(nUserId, true, new ResponseCallBack() {
-                                @Override
-                                public void onServerSucess(Object o) {
-                                    U.getToastUtil().showShort("已开启消息免打扰");
-                                }
-
-                                @Override
-                                public void onServerFailed() {
-                                    U.getToastUtil().showShort("开启消息免打扰失败");
-                                }
-                            });
-                            break;
-                        case "关闭消息免打扰":
-                            NoRemindManager.INSTANCE.setFriendNoRemind(nUserId, false, new ResponseCallBack() {
-                                @Override
-                                public void onServerSucess(Object o) {
-                                    U.getToastUtil().showShort("已关闭消息免打扰");
-                                }
-
-                                @Override
-                                public void onServerFailed() {
-                                    U.getToastUtil().showShort("关闭消息免打扰失败");
-                                }
-                            });
-                            break;
-
-                    }
                     listDialog.dissmiss();
                 }
             }));
@@ -338,6 +306,107 @@ public class ConversationActivity extends BaseActivity {
             }
         }));
         listDialog.showList(listItems);
+    }
+
+    private void handleMenuItemClick(String channel){
+
+        int nUserId = Integer.valueOf(mUserId);
+
+        switch (channel){
+            case "加入黑名单":
+
+                UserInfoManager.getInstance().addToBlacklist(nUserId, new ResponseCallBack() {
+                    @Override
+                    public void onServerSucess(Object o) {
+                        U.getToastUtil().showShort("加入黑名单成功");
+                    }
+
+                    @Override
+                    public void onServerFailed() {
+
+                    }
+                });
+                break;
+
+            case "移除黑名单":
+
+                UserInfoManager.getInstance().removeBlackList(nUserId, new ResponseCallBack() {
+                    @Override
+                    public void onServerSucess(Object o) {
+                        U.getToastUtil().showShort("移除黑名单成功");
+                    }
+
+                    @Override
+                    public void onServerFailed() {
+
+                    }
+                });
+                break;
+
+            case "开启消息免打扰":
+                setNoRemind(nUserId, true);
+                break;
+            case "关闭消息免打扰":
+                setNoRemind(nUserId, false);
+                break;
+
+        }
+    }
+
+    private void setNoRemind(int id, boolean enable){
+        if(mConversationType.equals(Conversation.ConversationType.GROUP.getName())){
+            if(enable){
+                NoRemindManager.INSTANCE.setClubNoRemind(id, true, new ResponseCallBack() {
+                    @Override
+                    public void onServerSucess(Object o) {
+                        U.getToastUtil().showShort("已开启消息免打扰");
+                    }
+
+                    @Override
+                    public void onServerFailed() {
+                        U.getToastUtil().showShort("开启消息免打扰失败");
+                    }
+                });
+            }else{
+                NoRemindManager.INSTANCE.setClubNoRemind(id, false, new ResponseCallBack() {
+                    @Override
+                    public void onServerSucess(Object o) {
+                        U.getToastUtil().showShort("已关闭消息免打扰");
+                    }
+
+                    @Override
+                    public void onServerFailed() {
+                        U.getToastUtil().showShort("关闭消息免打扰失败");
+                    }
+                });
+            }
+        }else{
+            if(enable){
+                NoRemindManager.INSTANCE.setFriendNoRemind(id, true, new ResponseCallBack() {
+                    @Override
+                    public void onServerSucess(Object o) {
+                        U.getToastUtil().showShort("已开启消息免打扰");
+                    }
+
+                    @Override
+                    public void onServerFailed() {
+                        U.getToastUtil().showShort("开启消息免打扰失败");
+                    }
+                });
+            }else{
+                NoRemindManager.INSTANCE.setFriendNoRemind(id, false, new ResponseCallBack() {
+                    @Override
+                    public void onServerSucess(Object o) {
+                        U.getToastUtil().showShort("已关闭消息免打扰");
+                    }
+
+                    @Override
+                    public void onServerFailed() {
+                        U.getToastUtil().showShort("关闭消息免打扰失败");
+                    }
+                });
+            }
+        }
     }
 
     @Override
@@ -394,7 +463,7 @@ public class ConversationActivity extends BaseActivity {
         }
     }
 
-    public String getUserId() {
-        return mUserId;
+    public boolean isExpireConversation(String id) {
+        return !mUserId.equals(id);
     }
 }
