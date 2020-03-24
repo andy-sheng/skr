@@ -124,4 +124,6 @@ public interface IMsgService extends IProvider {
     void sendClubInviteMsg(String userID, String uniqID,long expireAt,String content);
 
     void sendTxtMsg(String userID,String content);
+
+    boolean isPrivateMsg(String conversationType);
 }
