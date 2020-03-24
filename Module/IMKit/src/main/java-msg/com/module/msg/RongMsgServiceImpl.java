@@ -174,6 +174,11 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
+    public boolean isPrivateMsg(String conversationType) {
+        return Conversation.ConversationType.PRIVATE.getName().equals(conversationType);
+    }
+
+    @Override
     public void init(Context context) {
 
     }

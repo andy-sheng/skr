@@ -5,5 +5,5 @@ import com.common.core.userinfo.cache.BuddyCache
 import com.common.core.userinfo.model.UserInfoModel
 import com.zq.live.proto.Notification.RelayRoomEnterMsg
 
-class RongMsgNotifyEvent(var content: Spannable?,var  userInfoModel: UserInfoModel) {
+class RongMsgNotifyEvent(var content: Spannable?, var userInfoModel: UserInfoModel, var conversationType: String) {
 }

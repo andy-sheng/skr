@@ -1,8 +1,6 @@
 package com.component.notification.presenter
 
 import android.animation.Animator
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.app.Notification
 import android.app.NotificationChannel
@@ -57,6 +55,7 @@ import com.component.dialog.RedPacketRelayDialogView
 import com.component.notification.*
 import com.component.notification.api.NotifyReqApi
 import com.dialog.view.TipsDialogView
+import com.module.ModuleServiceManager
 import com.module.RouterConstants
 import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
@@ -1095,15 +1094,24 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
             // 详情页打开的已经是跟A的会话
             return
         }
-        if (rongMsgNotifyView?.mUserInfoModel?.userId == event.userInfoModel.userId) {
+
+        val msgService = ModuleServiceManager.getInstance().msgService
+        val isPrivateMsg = msgService.isPrivateMsg(event.conversationType)
+
+        //当前展示的通知为私信通知，且与新接收的用户信息相同
+        val showingSamePrivateMsg = isPrivateMsg && rongMsgNotifyView?.mUserInfoModel?.userId == event.userInfoModel.userId
+
+        if (showingSamePrivateMsg || (!isPrivateMsg && rongMsgNotifyView != null && msgService.isPrivateMsg(rongMsgNotifyView!!.conversationType))) {
             // 如果当前正在显示A的对话 刷新A即可
             mUiHandler.removeMessages(MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW)
             mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW, 5000)
-            rongMsgNotifyView?.bindData(event.userInfoModel, event.content.toString())
+            rongMsgNotifyView?.bindData(event.userInfoModel, event.content.toString(), event.conversationType)
         } else {
             val floatWindowData = FloatWindowData(FloatWindowData.Type.RONG_MSG_NOTIFY)
             floatWindowData.userInfoModel = event.userInfoModel
             floatWindowData.extra = event.content.toString()
+            floatWindowData.actionType = event.conversationType
+
             // 如果已经有A的对话在队列里，移除A的对话
             mFloatWindowDataFloatWindowObjectPlayControlTemplate?.remove(floatWindowData)
             mFloatWindowDataFloatWindowObjectPlayControlTemplate?.add(floatWindowData, true)
@@ -1198,7 +1206,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW, 5000)
 
         rongMsgNotifyView = RongMsgNotifyView(U.app())
-        rongMsgNotifyView?.bindData(userInfoModel, floatWindowData.extra)
+        rongMsgNotifyView?.bindData(userInfoModel, floatWindowData.extra, floatWindowData.actionType)
         rongMsgNotifyView?.listener = {
             mUiHandler.removeMessages(MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW)
             FloatWindow.destroy(TAG_RONG_MSG_NOTIFY_FLOAT_WINDOW)
@@ -1269,6 +1277,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         var tagID: Int = 0
         var mediaType: Int = 0
         var extra: String? = null
+        var actionType:String? = null
 
         override fun toString(): String {
             return "FloatWindowData{" +

@@ -381,7 +381,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider, RongIM.GroupInfo
                                 }
 
                                 if (!isNoRemind) {
-                                    RongMsgNotifyEvent event = new RongMsgNotifyEvent(content, infoModel);
+                                    RongMsgNotifyEvent event = new RongMsgNotifyEvent(content, infoModel, message.getConversationType().getName());
                                     EventBus.getDefault().post(event);
                                 }
 

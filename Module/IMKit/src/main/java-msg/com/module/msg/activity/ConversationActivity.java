@@ -97,8 +97,9 @@ public class ConversationActivity extends BaseActivity {
             mUserId = getIntent().getData().getQueryParameter("targetId");
             mTitleBar.getCenterTextView().setText(title);
             mConversationType = getIntent().getData().getLastPathSegment();
-            if(mConversationType != null && !mConversationType.equals(Conversation.ConversationType.GROUP.getName())){
+            if(mConversationType != null && mConversationType.equals(Conversation.ConversationType.GROUP.getName())){
                 mClubId = mUserId;
+                mUserId = null;
             }
         }
         mIsFriend = getIntent().getBooleanExtra("isFriend", false);
@@ -144,7 +145,7 @@ public class ConversationActivity extends BaseActivity {
             }
         });
 
-        if (mUserId.equals(UserInfoModel.USER_ID_XIAOZHUSHOU + "")) {
+        if (mUserId != null && mUserId.equals(UserInfoModel.USER_ID_XIAOZHUSHOU + "")) {
             mTitleBar.getRightImageButton().setVisibility(View.GONE);
         } else {
             mTitleBar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
@@ -461,6 +462,6 @@ public class ConversationActivity extends BaseActivity {
     }
 
     public boolean isExpireConversation(String id) {
-        return !mUserId.equals(id);
+        return mUserId == null || !mUserId.equals(id);
     }
 }

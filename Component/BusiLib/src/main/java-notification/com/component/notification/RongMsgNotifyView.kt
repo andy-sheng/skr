@@ -1,11 +1,13 @@
 package com.component.notification
 
 import android.content.Context
+import android.graphics.Color
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
@@ -22,6 +24,7 @@ class RongMsgNotifyView : ConstraintLayout {
     internal var mAgreeButton: ExTextView? = null
 
     var mUserInfoModel: UserInfoModel? = null
+    var conversationType:String? = null
 
     var listener: (() -> Unit)? = null
 
@@ -59,21 +62,44 @@ class RongMsgNotifyView : ConstraintLayout {
 
     private fun go() {
         listener?.invoke()
-        val needPop = ModuleServiceManager.getInstance().msgService.startPrivateChat(U.getActivityUtils().topActivity,
-                mUserInfoModel?.userId.toString(),
-                mUserInfoModel?.nicknameRemark,
-                mUserInfoModel?.isFriend == true
-        )
+
+        //判断是家族群聊或私信
+        if(ModuleServiceManager.getInstance().msgService.isPrivateMsg(conversationType)) {
+            val needPop = ModuleServiceManager.getInstance().msgService.startPrivateChat(U.getActivityUtils().topActivity,
+                    mUserInfoModel?.userId.toString(),
+                    mUserInfoModel?.nicknameRemark,
+                    mUserInfoModel?.isFriend == true
+            )
+        }else{
+            val needPop = ModuleServiceManager.getInstance().msgService.startClubChat(U.getActivityUtils().topActivity,
+                    mUserInfoModel?.clubInfo?.club?.clubID?.toString(),
+                    mUserInfoModel?.clubInfo?.club?.name
+            )
+        }
 //            if (needPop) {
 //                activity?.finish()
 //            }
     }
 
-    fun bindData(userInfoModel: UserInfoModel?, text: String?) {
+    fun bindData(userInfoModel: UserInfoModel?, text: String?, conversationType: String?) {
         this.mUserInfoModel = userInfoModel
-        mHintTv?.text = text
-        mAvatarIv?.bindData(userInfoModel)
-        mNameView?.setAllStateText(userInfoModel)
+        val isPrivateMsg = ModuleServiceManager.getInstance().msgService.isPrivateMsg(conversationType);
+
+        if(isPrivateMsg){
+            mHintTv?.text = text
+            mAvatarIv?.bindData(userInfoModel)
+            mNameView?.setAllStateText(userInfoModel)
+        }else{
+            mHintTv?.text = SpanUtils()
+                    .append(("${userInfoModel?.nickname?:""}: ")).setForegroundColor(Color.parseColor("#F5A623"))
+                    .append(text?:"").setForegroundColor(Color.parseColor("#505050"))
+                    .create()
+
+            mAvatarIv?.bindData(userInfoModel, userInfoModel?.clubInfo?.club?.logo)
+            mNameView?.setAllStateText(userInfoModel?.clubInfo?.club?.name, null, null)
+        }
+
+        this.conversationType = conversationType
     }
 
 }
