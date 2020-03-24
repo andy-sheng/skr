@@ -13,6 +13,16 @@ class ClubMemberInfo : Serializable {
     @JSONField(name = "roleDesc")
     var roleDesc: String = ""
 
+    fun isMyClub(): Boolean {
+        if (roleType == EClubMemberRoleType.ECMRT_Founder.value
+                || roleType == EClubMemberRoleType.ECMRT_CoFounder.value
+                || roleType == EClubMemberRoleType.ECMRT_Hostman.value
+                || roleType == EClubMemberRoleType.ECMRT_Common.value) {
+            return true
+        }
+        return false
+    }
+
     companion object {
         fun parseFromPB(userClubInfo: com.zq.live.proto.Common.UClubInfo?): ClubMemberInfo? {
             return if (userClubInfo == null) {

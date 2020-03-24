@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
-import com.common.callback.Callback
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.ClubMemberInfo
@@ -12,7 +11,7 @@ import com.common.rxretrofit.*
 import com.common.utils.U
 import com.module.RouterConstants
 import com.module.club.home.ClubHomeView
-import com.module.club.homepage.ClubHomepageActivity
+import com.module.club.homepage.ClubHomepageActivity2
 import com.module.club.member.ClubMemberInfoModel
 import com.module.common.ICallback
 import kotlinx.coroutines.CoroutineScope
@@ -76,7 +75,7 @@ class ClubServiceImpl : IClubModuleService, CoroutineScope by MainScope(){
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val clubMemberInfo = JSON.parseObject(result.data.getString("info"), ClubMemberInfo::class.java)
-                    val intent = Intent(U.getActivityUtils().topActivity, ClubHomepageActivity::class.java)
+                    val intent = Intent(U.getActivityUtils().topActivity, ClubHomepageActivity2::class.java)
                     intent.putExtra("clubMemberInfo", clubMemberInfo)
                     U.getActivityUtils().topActivity.startActivity(intent)
                 } else {
