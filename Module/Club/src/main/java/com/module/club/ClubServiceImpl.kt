@@ -4,24 +4,70 @@ import android.content.Context
 import android.content.Intent
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
+import com.common.callback.Callback
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.ClubMemberInfo
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.module.RouterConstants
 import com.module.club.home.ClubHomeView
 import com.module.club.homepage.ClubHomepageActivity
+import com.module.club.member.ClubMemberInfoModel
+import com.module.common.ICallback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 @Route(path = RouterConstants.SERVICE_CLUB, name = "测试服务")
-class ClubServiceImpl : IClubModuleService {
+class ClubServiceImpl : IClubModuleService, CoroutineScope by MainScope(){
+
 
     val TAG = "ClubServiceImpl"
 
+    private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
+
     override fun init(context: Context?) {
+    }
+
+    override fun getClubMembers(clubID: Int, callback: ICallback) {
+        var hasMore = true
+        val userInfoList = mutableListOf<MutableMap<String, String>>()
+
+
+        launch {
+
+            var offset = 0
+            val cnt = 50
+
+            //一次性获取所有家族成员
+            while (hasMore) {
+                val result = subscribe(RequestControl("getClubMemberList", ControlType.CancelThis)) {
+                    clubServerApi.getClubMemberList(clubID, offset, cnt)
+                }
+
+                if (result.errno == 0) {
+
+                    offset = result.data.getIntValue("offset")
+                    hasMore = result.data.getBooleanValue("hasMore")
+                    val list = JSON.parseArray(result.data.getString("items"), ClubMemberInfoModel::class.java)
+
+
+                    userInfoList.addAll(list.map {
+                        val userInfoModel = it.userInfoModel?: return@map mutableMapOf<String, String>()
+                        mutableMapOf(Pair("userId", userInfoModel.userId.toString()),
+                                Pair("nickname", userInfoModel.nickname),
+                                Pair("avatar", userInfoModel.avatar))
+                    })
+                }else{
+                    callback.onFailed(userInfoList, result.errno, result.errmsg)
+                    break
+                }
+
+            }
+
+            callback.onSucess(userInfoList)
+        }
     }
 
     override fun tryGoClubHomePage(clubID: Int) {

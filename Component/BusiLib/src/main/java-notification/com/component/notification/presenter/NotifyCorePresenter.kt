@@ -1090,7 +1090,8 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RongMsgNotifyEvent) {
-        if (chatingUserId?.isNotEmpty() == true) {
+        //会话页面打开时，不展示通知提示
+        if (chatingUserId?.isNotEmpty() == true || chatingClubId?.isNotEmpty() == true) {
             // 详情页打开的已经是跟A的会话
             return
         }
@@ -1338,6 +1339,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
     companion object {
 
         var chatingUserId: String? = null
+        var chatingClubId: String? = null
 
         internal const val TAG_INVITE_FLOAT_WINDOW = "TAG_INVITE_FLOAT_WINDOW"
         internal const val TAG_RELATION_FLOAT_WINDOW = "TAG_RELATION_FLOAT_WINDOW"

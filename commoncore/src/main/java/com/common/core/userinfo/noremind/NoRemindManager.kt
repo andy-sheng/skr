@@ -35,7 +35,7 @@ object NoRemindManager : CoroutineScope by GlobalScope {
      * 消息免打扰是否开启 暂时关闭 临时发个版本
      */
     fun open(): Boolean {
-        return false
+        return true
     }
 
     fun setClubNoRemind(userID: Int, enable: Boolean, responseCallBack: ResponseCallBack<*>) {

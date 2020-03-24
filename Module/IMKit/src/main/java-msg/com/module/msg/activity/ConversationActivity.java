@@ -1,5 +1,6 @@
 package com.module.msg.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -20,6 +21,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.NetworkUtils;
+import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
@@ -27,7 +29,10 @@ import com.component.notification.presenter.NotifyCorePresenter;
 import com.dialog.list.DialogListItem;
 import com.dialog.list.ListDialog;
 import com.module.RouterConstants;
+import com.module.club.IClubModuleService;
+import com.module.common.ICallback;
 import com.module.home.IHomeService;
+import com.module.msg.RongMsgManager;
 import com.module.msg.api.IMsgServerApi;
 import com.zq.live.proto.Common.EVIPType;
 
@@ -36,6 +41,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -45,10 +51,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
-import io.rong.imkit.mention.RongMentionManager;
-import io.rong.imkit.userInfoCache.RongUserInfoManager;
-import io.rong.imlib.NativeObject;
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
@@ -64,6 +66,7 @@ public class ConversationActivity extends BaseActivity {
 
     String mConversationType;
     String mUserId;
+    String mClubId;
 
     boolean mIsFriend;
 
@@ -87,11 +90,16 @@ public class ConversationActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         mTitleBar = findViewById(R.id.titlebar);
 
+        mConversationType = Conversation.ConversationType.PRIVATE.getName();
+
         if (getIntent() != null && getIntent().getData() != null) {
             String title = getIntent().getData().getQueryParameter("title");
             mUserId = getIntent().getData().getQueryParameter("targetId");
             mTitleBar.getCenterTextView().setText(title);
-            mConversationType = getIntent().getData().getQueryParameter("conversation");
+            mConversationType = getIntent().getData().getLastPathSegment();
+            if(mConversationType != null && !mConversationType.equals(Conversation.ConversationType.GROUP.getName())){
+                mClubId = mUserId;
+            }
         }
         mIsFriend = getIntent().getBooleanExtra("isFriend", false);
 
@@ -147,60 +155,47 @@ public class ConversationActivity extends BaseActivity {
             });
         }
 
+        NotifyCorePresenter.Companion.setChatingClubId(mClubId);
         NotifyCorePresenter.Companion.setChatingUserId(mUserId);
 
-        U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
-        RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {
-            @Override
-            public Message onSend(Message message) {
-                if (mCanSendTimes == -1) {
-                    return message;
-                } else {
-                    if (mCanSendTimes <= 0) {
-                        // 超出发送次数了，提示用户
-                        if (!TextUtils.isEmpty(mDescWhenExceed)) {
-                            U.getToastUtil().showShort(mDescWhenExceed);
-                        } else {
-                            U.getToastUtil().showShort("陌生人间不能发送太多消息哦");
-                        }
-                        return null;
-                    } else {
-                        mCanSendTimes--;
-                        // 告诉服务器自增
-
-                        IMsgServerApi iMsgServerApi = ApiManager.getInstance().createService(IMsgServerApi.class);
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put("toUserID", Integer.parseInt(mUserId));
-                        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-                        ApiMethods.subscribe(iMsgServerApi.incSendMsgTimes(body), null);
+        if(mConversationType.equals(Conversation.ConversationType.PRIVATE.getName())) {
+            U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
+            RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {
+                @Override
+                public Message onSend(Message message) {
+                    if (mCanSendTimes == -1) {
                         return message;
+                    } else {
+                        if (mCanSendTimes <= 0) {
+                            // 超出发送次数了，提示用户
+                            if (!TextUtils.isEmpty(mDescWhenExceed)) {
+                                U.getToastUtil().showShort(mDescWhenExceed);
+                            } else {
+                                U.getToastUtil().showShort("陌生人间不能发送太多消息哦");
+                            }
+                            return null;
+                        } else {
+                            mCanSendTimes--;
+                            // 告诉服务器自增
+
+                            IMsgServerApi iMsgServerApi = ApiManager.getInstance().createService(IMsgServerApi.class);
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("toUserID", Integer.parseInt(mUserId));
+                            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                            ApiMethods.subscribe(iMsgServerApi.incSendMsgTimes(body), null);
+                            return message;
+                        }
                     }
+
                 }
 
-            }
-
-            @Override
-            public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
-                return false;
-            }
-        });
-        checkMsgTimes();
-
-        initMembers();
-    }
-
-    private void initMembers() {
-        RongIM.getInstance().setGroupMembersProvider((groupId, callback) -> {
-            callback.onGetGroupMembersResult(getClubMemberList()); // 调用 callback 的 onGetGroupMembersResult 回传群组信息
-        });
-    }
-
-    private List<UserInfo> getClubMemberList() {
-        // TODO 先使用假数据，服务端Ok后，从服务端获取
-        List<UserInfo> userInfoList = new ArrayList<>();
-        userInfoList.add(new UserInfo("1418276", "MOK1", null));
-        userInfoList.add(new UserInfo("1594549", "MOK2", null));
-        return userInfoList;
+                @Override
+                public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
+                    return false;
+                }
+            });
+            checkMsgTimes();
+        }
     }
 
     private void checkMsgTimes() {
@@ -238,7 +233,7 @@ public class ConversationActivity extends BaseActivity {
                     final List<String> channels = new ArrayList<>();
 
                     // 群聊没有黑名单选项
-                    if(mConversationType != Conversation.ConversationType.GROUP.getName()) {
+                    if(!mConversationType.equals(Conversation.ConversationType.GROUP.getName())) {
                         if (isBlack) {
                             channels.add(getString(R.string.remove_from_black_list));
                         } else {
@@ -249,7 +244,11 @@ public class ConversationActivity extends BaseActivity {
                         noRemindDisposable = Observable.create(new ObservableOnSubscribe<Boolean>() {
                             @Override
                             public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
-                                emitter.onNext(NoRemindManager.INSTANCE.isFriendNoRemind(nUserId));
+                                if(!mConversationType.equals(Conversation.ConversationType.GROUP.getName())){
+                                    emitter.onNext(NoRemindManager.INSTANCE.isFriendNoRemind(nUserId));
+                                }else{
+                                    emitter.onNext(NoRemindManager.INSTANCE.isClubNoRemind(nUserId));
+                                }
                                 emitter.onComplete();
                             }
                         }).subscribeOn(Schedulers.io())
@@ -455,6 +454,7 @@ public class ConversationActivity extends BaseActivity {
         RongIM.getInstance().setSendMessageListener(null);
         U.getSoundUtils().release(getTAG());
         NotifyCorePresenter.Companion.setChatingUserId(null);
+        NotifyCorePresenter.Companion.setChatingClubId(null);
         if (noRemindDisposable != null) {
             noRemindDisposable.dispose();
         }

@@ -10,11 +10,13 @@ import android.text.Spannable;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.ClubInfo;
 import com.common.core.userinfo.noremind.NoRemindManager;
 import com.common.core.userinfo.ResultCallback;
 import com.common.core.userinfo.UserInfoManager;
@@ -27,6 +29,8 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.component.notification.PartyPeerAccStatusEvent;
+import com.module.RouterConstants;
+import com.module.club.IClubModuleService;
 import com.module.common.ICallback;
 import com.module.msg.activity.ConversationActivity;
 import com.module.msg.custom.MyPrivateConversationProvider;
@@ -63,10 +67,12 @@ import com.module.msg.test1.MyTestMessageItemProvider;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import io.rong.common.rlog.RLog;
 import io.rong.imkit.DefaultExtensionModule;
@@ -80,12 +86,12 @@ import io.rong.imkit.widget.provider.UnknownMessageItemProvider;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Group;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
 import io.rong.push.RongPushClient;
 import io.rong.push.pushconfig.PushConfig;
-import kotlinx.coroutines.GlobalScope;
 
 import static com.module.msg.CustomMsgType.MSG_TYPE_BATTLE_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_BROADCAST;
@@ -97,13 +103,15 @@ import static com.module.msg.CustomMsgType.MSG_TYPE_RACE_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_RELAY_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_ROOM;
 
-public class RongMsgManager implements RongIM.UserInfoProvider {
+public class RongMsgManager implements RongIM.UserInfoProvider, RongIM.GroupInfoProvider {
 
     public static final int MSG_RECONNECT = 11;
 
     public final String TAG = "RongMsgManager";
 
     public final String TAG_RELATION_FLOAT_WINDOW = "TAG_RELATION_FLOAT_WINDOW";
+
+    IClubModuleService clubServices = (IClubModuleService) ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation();
 
     private static class RongMsgAdapterHolder {
         private static final RongMsgManager INSTANCE = new RongMsgManager();
@@ -364,8 +372,13 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                         public boolean onGetServer(UserInfoModel infoModel) {
                             //非好友不会弹出消息通知栏 查看是否在免打扰名单中
                             if(infoModel != null && infoModel.isFriend()) {
-
-                                boolean isNoRemind = NoRemindManager.INSTANCE.isFriendNoRemind(infoModel.getUserId());
+                                boolean isNoRemind;
+                                if(message.getConversationType().equals(Conversation.ConversationType.PRIVATE)){
+                                    isNoRemind = NoRemindManager.INSTANCE.isFriendNoRemind(infoModel.getUserId());
+                                }else{
+                                    ClubInfo clubInfo = infoModel.getClubInfo().getClub();
+                                    isNoRemind = clubInfo != null && NoRemindManager.INSTANCE.isClubNoRemind(clubInfo.getClubID());
+                                }
 
                                 if (!isNoRemind) {
                                     RongMsgNotifyEvent event = new RongMsgNotifyEvent(content, infoModel);
@@ -582,6 +595,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
             RongIM.init(application, rongKey);
             RongIM.setUserInfoProvider(this, true);
+            RongIM.setGroupInfoProvider(this, true);
             mIsInit = true;
             RongIM.registerMessageType(CustomChatRoomMsg.class);
             RongIM.registerMessageType(CustomChatRoomLowLevelMsg.class);
@@ -692,6 +706,22 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             });
             setInputProvider();
         }
+
+        //目前只有家族群聊
+        RongIM.getInstance().setGroupMembersProvider((groupId, callback) -> {
+            clubServices.getClubMembers(Integer.valueOf(groupId), new ICallback() {
+                @Override
+                public void onSucess(Object obj) {
+                    callback.onGetGroupMembersResult(toRongUsers((List<Object>) obj));
+                }
+
+                @Override
+                public void onFailed(Object obj, int errcode, String message) {
+                    callback.onGetGroupMembersResult(toRongUsers((List<Object>) obj));
+
+                }
+            });
+        });
     }
 
     private void setInputProvider() {
@@ -709,6 +739,24 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 RongExtensionManager.getInstance().registerExtensionModule(new MyExtensionModule());
             }
         }
+    }
+
+    @Override
+    public Group getGroupInfo(String groupID) {
+        MyLog.d(TAG, "getGroupInfo" + " groupID = " + groupID);
+
+        MyUserInfo userInfo = MyUserInfoManager.INSTANCE.getMyUserInfo();
+
+        // 非家族成员不返回俱乐部信息
+        if(userInfo != null && userInfo.getClubInfo().getClub() != null && String.valueOf(userInfo.getClubInfo().getClub().getClubID()).equals(groupID)){
+            Group group = toRongGroup(userInfo.getClubInfo().getClub());
+            RongIM.getInstance().refreshGroupInfoCache(group);
+            return group;
+        }else {
+            MyLog.e(TAG, (userInfo != null && userInfo.getClubInfo().getClub() != null ? "本地用户信息为空，无法获取家族信息": "当前用户不属于该家族") + ", userInfo=" + userInfo);
+            return null;
+        }
+
     }
 
     @Override
@@ -754,6 +802,10 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         jsonObject.put("honorInfo", userInfoModel.getHonorInfo());
         userInfo.setExtra(jsonObject.toJSONString());
         return userInfo;
+    }
+
+    private Group toRongGroup(ClubInfo clubInfo){
+        return new Group(String.valueOf(clubInfo.getClubID()), clubInfo.getName(), Uri.parse(clubInfo.getLogo()));
     }
 
     public synchronized void addMsgProcessor(IPushMsgProcess processor) {
@@ -1046,6 +1098,22 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.getInstance().setCurrentUserInfo(userInfo);
             RongIM.getInstance().refreshUserInfoCache(userInfo);
         }
+    }
+
+    private List<UserInfo> toRongUsers(List<Object> objects){
+        List<io.rong.imlib.model.UserInfo> userInfoList = new ArrayList<>();
+        for (Object o: objects){
+            if(o instanceof Map){
+                Map<String, String> info= (Map<String, String>) o;
+
+                UserInfo rongUserInfo = new UserInfo(info.get("userId"),
+                        info.get("nickname"), Uri.parse(info.get("avatar")));
+
+                userInfoList.add(rongUserInfo);
+            }
+
+        }
+        return userInfoList;
     }
 
     public void addToBlacklist(String userId, ICallback callback) {
