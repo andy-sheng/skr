@@ -12,6 +12,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.event.RemarkChangeEvent;
+import com.common.core.userinfo.model.ClubInfo;
 import com.common.core.userinfo.model.NoRemindInfoModel;
 import com.common.core.userinfo.model.OnlineModel;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -181,6 +182,31 @@ public class UserInfoManager {
         public abstract void onSuccess(FROM from, int offset, List<UserInfoModel> list);
 
 
+    }
+
+    public void getClubInfoByUuid(final int uuid, final  boolean isNeedRelation, final ResultCallback<ClubInfo> resultCallback){
+        getUserInfoByUuid(uuid, isNeedRelation, new ResultCallback() {
+            @Override
+            public boolean onGetLocalDB(Object o) {
+                if(o instanceof UserInfoModel){
+                    resultCallback.onGetLocalDB(((UserInfoModel)o).getClubInfo().getClub());
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }
+
+            @Override
+            public boolean onGetServer(Object o) {
+                if(o instanceof UserInfoModel){
+                    resultCallback.onGetLocalDB(((UserInfoModel)o).getClubInfo().getClub());
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        });
     }
 
     /**
