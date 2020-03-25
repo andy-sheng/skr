@@ -54,9 +54,10 @@ class ClubRightOpView(viewStub: ViewStub): ExViewStub(viewStub), ICallback {
         }
 
         mPostTv?.setDebounceViewClickListener { view->
-            updateUnreadMsgCount()
+
         }
 
+        updateUnreadMsgCount()
 
 
     }
