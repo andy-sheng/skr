@@ -1,5 +1,6 @@
 package com.module.club.homepage
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -28,19 +29,26 @@ import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.component.person.utils.StringFromatUtils
+import com.component.person.view.RequestCallBack
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
 import com.module.club.homepage.view.*
+import com.module.club.homepage.view.ClubDynamicView
+import com.module.club.homepage.view.ClubIntroView
+import com.module.club.homepage.view.ClubPhotoWallView
+import com.module.club.homepage.view.ClubWorksView
 import com.module.club.manage.setting.ClubManageActivity
+import com.respicker.ResPicker
+import com.respicker.activity.ResPickerActivity
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 
-class ClubHomepageActivity2 : BaseActivity() {
+class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
 
     lateinit var title: CommonTitleBar
     lateinit var imageBg: ImageView
@@ -83,9 +91,15 @@ class ClubHomepageActivity2 : BaseActivity() {
     private var clubTabAdapter: PagerAdapter? = null
     private var clubIntroView: ClubIntroView? = null
     private var clubDynamicView: ClubDynamicView? = null
-    private var clubPhotoWallView: ClubPhotoView? = null
+    private var clubPhotoWallView: ClubPhotoWallView? = null
     private var clubWorksView: ClubWorksView? = null
     private var clubRightOpView: ClubRightOpView? = null
+
+    lateinit var alyTv: ExTextView
+    lateinit var groupChatTv: ExTextView
+    lateinit var actionTv: ExTextView
+    lateinit var picTv: ExTextView
+    lateinit var worksTv: ExTextView
 
     override fun useEventBus(): Boolean {
         return false
@@ -115,6 +129,8 @@ class ClubHomepageActivity2 : BaseActivity() {
         initContentView()
         initAppBarScroll()
 
+        initBottomCrlView()
+
         if (isMyClub) {
             applyTv.visibility = View.GONE
             clubRightOpView?.show()
@@ -125,6 +141,40 @@ class ClubHomepageActivity2 : BaseActivity() {
         }
         refreshClubInfo()
         //todo 如果不是自己的家族，需要去拿申请状态
+    }
+
+    private fun initBottomCrlView() {
+        alyTv = findViewById(R.id.aly_tv)
+        groupChatTv = findViewById(R.id.group_chat_tv)
+        actionTv = findViewById(R.id.action_tv)
+        picTv = findViewById(R.id.pic_tv)
+        worksTv = findViewById(R.id.works_tv)
+
+        alyTv.setDebounceViewClickListener {
+
+        }
+
+        groupChatTv.setDebounceViewClickListener {
+
+        }
+
+        actionTv.setDebounceViewClickListener {
+            ARouter.getInstance()
+                    .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
+                    .withInt("from", 2)
+                    .withInt("clubID", clubID)
+                    .navigation()
+        }
+
+        picTv.setDebounceViewClickListener {
+            clubPhotoWallView?.goAddPhotoFragment()
+        }
+
+        worksTv.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
+                    .withInt("from", 10)
+                    .navigation()
+        }
     }
 
     private fun refreshClubInfo() {
@@ -311,9 +361,8 @@ class ClubHomepageActivity2 : BaseActivity() {
                     2 -> {
                         // 家族相册
                         if (clubPhotoWallView == null) {
-                            clubPhotoWallView = ClubPhotoView(this@ClubHomepageActivity2)
+                            clubPhotoWallView = ClubPhotoWallView(this@ClubHomepageActivity2, this@ClubHomepageActivity2, clubMemberInfo)
                         }
-                        clubPhotoWallView?.clubMemberInfo = clubMemberInfo
                         if (container.indexOfChild(clubPhotoWallView) == -1) {
                             container.addView(clubPhotoWallView)
                         }
@@ -376,6 +425,23 @@ class ClubHomepageActivity2 : BaseActivity() {
 
             }
         })
+    }
+
+    override fun onRequestSucess(hasMore: Boolean) {
+//        mSmartRefresh.finishRefresh()
+//        mSmartRefresh.setEnableLoadMore(hasMore)
+//        mSmartRefresh.finishLoadMore()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && requestCode == ResPickerActivity.REQ_CODE_RES_PICK) {
+            val imageItems = ResPicker.getInstance().selectedImageList
+            if (clubPhotoWallView != null) {
+                clubPhotoWallView?.uploadPhotoList(imageItems)
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun viewSelected(position: Int, flag: Boolean) {

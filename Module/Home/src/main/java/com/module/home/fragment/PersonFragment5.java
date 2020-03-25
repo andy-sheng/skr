@@ -974,7 +974,7 @@ public class PersonFragment5 extends BaseFragment implements IPersonView, Reques
         SinglePlayer.INSTANCE.release(playTag);
         SinglePlayer.INSTANCE.removeCallback(playTag);
         if (mPhotoWallView != null) {
-            mPhotoWallView.destory();
+            mPhotoWallView.destroy();
         }
         if (mProducationWallView != null) {
             mProducationWallView.destory();

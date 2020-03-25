@@ -89,7 +89,7 @@ class UploadTask(private val mUploadParams: UploadParams) {
                 return this
             }
         }
-        uploadAppServerApi.getSTSToken(ossParams.mOssSavaDir)
+        uploadAppServerApi.getSTSToken(ossParams.mOssSavaDir, mUploadParams.id)
                 .subscribeOn(Schedulers.io())
                 .subscribe(Consumer { data ->
                     val has = data.containsKey("statusCode")

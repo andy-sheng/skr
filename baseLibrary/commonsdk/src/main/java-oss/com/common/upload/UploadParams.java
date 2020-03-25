@@ -11,7 +11,17 @@ public class UploadParams {
 
     private FileType fileType = FileType.picture;
 
+    private int id;
+
     UploadParams() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFilePath() {
@@ -66,8 +76,7 @@ public class UploadParams {
         audit("audit"), profilepic("profile-pic"), picture("picture"),
         audioAi("audio"), midiAi("midi"), log("androidLog"),
         customGame("user_upload_music"), msgAudio("msg-audio"), feed("feed"),
-        posts("posts")
-        ;
+        posts("posts");
 
         private String ossSavaDir;
 
@@ -93,6 +102,11 @@ public class UploadParams {
 
         public Builder setNeedCompress(boolean needCompress) {
             mParams.setNeedCompress(needCompress);
+            return this;
+        }
+
+        public Builder setId(int id) {
+            mParams.setId(id);
             return this;
         }
 
@@ -127,6 +141,5 @@ public class UploadParams {
             UploadTask uploadTask = new UploadTask(mParams);
             return uploadTask.startUpload(uploadCallback);
         }
-
     }
 }

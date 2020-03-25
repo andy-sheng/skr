@@ -60,6 +60,7 @@ const val FROM_CHALLENGE = 1
 const val FROM_QUICK_SING = 2
 const val FROM_CHANGE_SING = 3
 const val FROM_POSTS = 9
+const val FROM_CLUB_PAGE = 10
 
 var sFeedsMakeModelHolder: FeedsMakeModel? = null
 
