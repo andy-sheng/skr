@@ -140,6 +140,7 @@ class ClubPhotoCorePresenter(val mView: IPhotoWallView, val mBaseActivity: BaseA
         val uploadTask = UploadParams.newBuilder(photo.localPath)
                 .setNeedCompress(true)
                 .setNeedMonitor(true)
+                .setId(mClubMemberInfo?.club?.clubID ?: 0)
                 .setFileType(UploadParams.FileType.profilepic)
                 .startUploadAsync(object : UploadCallback {
                     override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
