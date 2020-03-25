@@ -120,7 +120,9 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
 
     public void release() {
         mStopped = true;
+        mMediaPlayer.setSurface(null);
         mMediaPlayer.release();
+        mMediaPlayer = null;
         mGLRender.release();
     }
 
