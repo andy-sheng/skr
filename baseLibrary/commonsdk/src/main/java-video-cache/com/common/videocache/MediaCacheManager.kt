@@ -47,6 +47,9 @@ object MediaCacheManager {
 
     private val preCachingSet = HashSet<String>()
 
+    /**
+     * maxSaveSize -1 表示完全下载
+     */
     fun preCache(url: String, maxSaveSize: Int=-1) {
         MyLog.d(TAG, "preCache url=$url size=$maxSaveSize cacheingNum=${preCachingSet.size}")
 
@@ -66,7 +69,11 @@ object MediaCacheManager {
                 synchronized(preCachingSet) {
                     isNotCanceled = preCachingSet .contains(url)
                 }
+                // 还在集合内 没被取消继续
                 if (isNotCanceled && !proxyUrl.startsWith("file")) {
+                    /**
+                     * outputFile 设置为null 只要读取就会有缓存
+                     */
                     U.getHttpUtils().downloadFileSync(proxyUrl, null, true, null, maxSaveSize)
                 }
             }

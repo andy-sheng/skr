@@ -34,7 +34,7 @@ public abstract class ApiObserver<T> implements Observer<T> {
             ApiResult result = (ApiResult) obj;
             if (result.errno != 0) {
                 if (MyLog.isDebugLogOpen()) {
-                    U.getToastUtil().showShort("errno:" + result.errno + " errmsg:" + result.errmsg,-100,-1);
+                    U.getToastUtil().showShort("ApiObserver errno:" + result.errno + " errmsg:" + result.errmsg,-100,-1);
                 }
             }
             // TODO: 2018/12/24 身份解析失败，需要调到登陆页面

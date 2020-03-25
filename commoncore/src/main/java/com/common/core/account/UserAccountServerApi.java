@@ -24,6 +24,18 @@ public interface UserAccountServerApi {
                                             @Query("sign") String sign);
 
     /**
+     * 发送短信验证码2
+     *
+     * @return
+     */
+    @Headers(ApiManager.NO_NEED_LOGIN_TAG)
+    @GET("http://dev.api.inframe.mobi/v1/passport/get-code-for-login")
+    Observable<ApiResult> sendSmsVerifyCode2(@Query("phone") String phone,
+                                             @Query("challenge") String challenge,
+                                             @Query("validate") String validate,
+                                             @Query("seccode") String seccode);
+
+    /**
      * 登陆
      *
      * @param loginType

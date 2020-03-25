@@ -14,6 +14,7 @@ import com.common.core.R;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.UserAccountServerApi;
 import com.common.core.account.event.LoginApiErrorEvent;
+import com.common.core.gt3.Gt3Manager;
 import com.common.core.login.LoginActivity;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
@@ -32,6 +33,9 @@ import com.common.view.ex.NoLeakEditText;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function3;
 
 /**
  * 手机方式登陆界面
@@ -54,6 +58,8 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
     HandlerTaskTimer mTaskTimer; // 倒计时验证码
 
     SkrBasePermission mSkrPermission = new SkrPhoneStatePermission();
+
+    Gt3Manager mGt3Manager;
 
     @Override
     public int initView() {
@@ -83,7 +89,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
             public void clickValid(View v) {
                 mPhoneNumber = mPhoneInputTv.getText().toString().trim();
                 if (checkPhoneNumber(mPhoneNumber)) {
-                    sendSmsVerifyCode(mPhoneNumber);
+                    sendSmsVerifyCode2(mPhoneNumber,"","","",0);
                 }
             }
         });
@@ -138,6 +144,8 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
                 U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
             }
         }, 200);
+        mGt3Manager = new Gt3Manager(getActivity());
+        mGt3Manager.init();
     }
 
     @Override
@@ -207,7 +215,58 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
         }
     }
 
+    private void sendSmsVerifyCode2(final String phoneNumber,String challenge, String validate, String seccode,int deep) {
+//        if(true){
+//            mGt3Manager.startVerify(phoneNumber);
+//            return;
+//        }
+        MyLog.d(getTAG(), "sendSmsVerifyCode" + " phoneNumber=" + phoneNumber);
+        if(deep>3){
+            return;
+        }
+        if (!U.getNetworkUtils().hasNetwork()) {
+            setHintText("网络异常，请检查网络后重试!", true);
+            return;
+        }
 
+        if (TextUtils.isEmpty(phoneNumber)) {
+            return;
+        }
+
+        UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
+
+        if (userAccountServerApi != null) {
+            ApiMethods.subscribe(userAccountServerApi.sendSmsVerifyCode2(phoneNumber, challenge, validate,seccode), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        // 发送验证码成功
+                        setHintText("验证码发送成功", false);
+                        U.getPreferenceUtils().setSettingString(PREF_KEY_PHONE_NUM, phoneNumber);
+                        mGetCodeTv.setSelected(true);
+                        mGetCodeTv.setClickable(false);
+                        mCodeInputTv.setFocusable(true);
+                        mCodeInputTv.setFocusableInTouchMode(true);
+                        mCodeInputTv.requestFocus();
+                        mLoginIv.setClickable(true);
+                        mLoginIv.setAlpha(1f);
+                        startTimeTask();
+                    } else if(result.getErrno()==8302401){
+                        // 需要走极验验证
+                        mGt3Manager.startVerify(phoneNumber, new Function3<String, String, String, Unit>() {
+                            @Override
+                            public Unit invoke(String challenge, String validate, String seccode) {
+                                sendSmsVerifyCode2(phoneNumber,challenge,validate,seccode,deep+1);
+                                return null;
+                            }
+                        });
+                    }else {
+                        setHintText(result.getErrmsg(), true);
+                    }
+                }
+            }, this);
+        }
+    }
     /**
      * 更新准备时间倒计时
      */
@@ -275,6 +334,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
     public void destroy() {
         super.destroy();
         stopTimeTask();
+        mGt3Manager.destroy();
     }
 
     @Override
