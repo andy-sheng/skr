@@ -1,5 +1,6 @@
 package com.component.person.photo.model
 
+import com.component.person.photo.manager.ClubPhotoModelDB
 import com.component.person.photo.manager.PhotoModelDB
 
 import java.io.Serializable
@@ -22,6 +23,20 @@ class PhotoModel : Serializable {
         }
 
         fun fromDB(photoModelDB: PhotoModelDB): PhotoModel {
+            val pm = PhotoModel()
+            pm.localPath = photoModelDB.localPath
+            pm.status = photoModelDB.status
+            return pm
+        }
+
+        fun toClubPhotoDB(pm: PhotoModel): ClubPhotoModelDB {
+            val photoModelDB = ClubPhotoModelDB()
+            photoModelDB.localPath = pm.localPath
+            photoModelDB.status = pm.status
+            return photoModelDB
+        }
+
+        fun fromDB(photoModelDB: ClubPhotoModelDB): PhotoModel {
             val pm = PhotoModel()
             pm.localPath = photoModelDB.localPath
             pm.status = photoModelDB.status
@@ -54,8 +69,8 @@ class PhotoModel : Serializable {
             }
 
         } else {
-            if(picID>0 && (that?.picID?:0)>0){
-                return picID==that?.picID
+            if (picID > 0 && (that?.picID ?: 0) > 0) {
+                return picID == that?.picID
             }
             // 只要有一个上传成功，就比本地的
             if (localPath != null && localPath == that!!.localPath) {

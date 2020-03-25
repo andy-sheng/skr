@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -59,7 +60,6 @@ import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.lang.StringBuilder
 
 @Route(path = RouterConstants.ACTIVITY_POSTS_PUBLISH)
 class PostsPublishActivity : BaseActivity() {
@@ -95,10 +95,22 @@ class PostsPublishActivity : BaseActivity() {
     lateinit var menuVoteIv: ImageView
     lateinit var menuRedPkgIv: ImageView
     lateinit var progressView: SkrProgressView
+    lateinit var publishTypeCheckbox: CheckBox
+    lateinit var publishTypeTv: ExTextView
 
     lateinit var postsPublishImgAdapter: PostsPublishImgAdapter
 
     lateinit var model: PostsPublishModel
+
+    var from: Int? = PublishFrom.POST.value
+    var clubID: Int? = null
+
+    enum class PublishFrom constructor(private val from: Int?) {
+        POST(1), CLUB(2);
+
+        val value: Int
+            get() = from!!
+    }
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.posts_publish_activity_layout
@@ -107,6 +119,10 @@ class PostsPublishActivity : BaseActivity() {
     override fun initData(savedInstanceState: Bundle?) {
         model = PostsPublishModel()
         val topic = intent.getSerializableExtra("topic") as Topic?
+        if (intent.hasExtra("from")) {
+            from = intent.getSerializableExtra("from") as Int?
+        }
+        clubID = intent.getSerializableExtra("clubID") as Int?
         model.topic = topic
         mainActContainer = findViewById(R.id.main_act_container)
         mainContentVp = findViewById(R.id.main_content_vp)
@@ -119,6 +135,15 @@ class PostsPublishActivity : BaseActivity() {
 
         postsSongView = findViewById(R.id.posts_song_view)
         songDelIv = findViewById(R.id.song_del_iv)
+
+        publishTypeCheckbox = findViewById(R.id.publish_type_checkbox)
+        publishTypeTv = findViewById(R.id.publish_type_tv)
+
+        if (from == PublishFrom.POST.value) {
+            publishTypeTv.text = "同步到家族主页"
+        } else if (from == PublishFrom.CLUB.value) {
+            publishTypeTv.text = "同步到帖子"
+        }
 
         redPkgVp = findViewById(R.id.red_pkg_vp)
         redPkgIv = findViewById(R.id.red_pkg_iv)
@@ -466,6 +491,18 @@ class PostsPublishActivity : BaseActivity() {
         }
 
         map["topicID"] = model.topic?.topicID ?: 0
+        // 0 只给广场帖子展示 1 只给家族帖子展示 2 广场&家族都展示
+        if (publishTypeCheckbox.isChecked) {
+            map["show"] = 2
+        } else if (from == PublishFrom.CLUB.value) {
+            map["show"] = 1
+        } else if (from == PublishFrom.POST.value) {
+            map["show"] = 0
+        }
+
+        if (from == PublishFrom.CLUB.value) {
+            map["clubID"] = clubID!!
+        }
 
         model?.songId?.let {
             if (it > 0) {

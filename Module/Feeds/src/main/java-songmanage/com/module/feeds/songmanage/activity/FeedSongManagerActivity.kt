@@ -23,6 +23,7 @@ import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.make.FROM_CLUB_PAGE
 import com.module.feeds.songmanage.FeedSongManageServerApi
 import com.module.feeds.songmanage.model.FeedSongTagModel
 import com.module.feeds.songmanage.view.FeedDraftsView
@@ -127,7 +128,7 @@ class FeedSongManagerActivity : BaseActivity() {
             }
 
             override fun getCount(): Int {
-                return list.size + 1
+                return if(from == FROM_CLUB_PAGE) list.size else list.size + 1
             }
 
             override fun isViewFromObject(view: View, `object`: Any): Boolean {

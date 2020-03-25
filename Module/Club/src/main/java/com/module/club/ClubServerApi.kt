@@ -153,4 +153,47 @@ interface ClubServerApi {
     @PUT("http://dev.api.inframe.mobi/v1/club/send-invitation")
     fun sendInvitation(@Body body: RequestBody): Call<ApiResult>
 
+    /**
+     * 查询家族照片墙
+     *
+     * @param userID
+     * @param offset
+     * @param cnt
+     * @return
+     */
+    @GET("/v1/club/list-pic")
+    fun getClubPhotos(@Query("familyID") familyID: Long,
+                      @Query("offset") offset: Int,
+                      @Query("cnt") cnt: Int): Observable<ApiResult>
+
+    /**
+     * 家族新增照片
+     *
+     * @param body
+     * "familyID": 0,
+     * "pic": [
+     * {
+     *     "picPath": "string"
+     * }
+     * ]
+     * @return
+     */
+    @PUT("/v1/club/add-pic")
+    fun addPhoto(@Body body: RequestBody): Observable<ApiResult>
+
+    /**
+     * 删除家族照片
+     *
+     * @param body
+     * "familyID": 0,
+     * "pic": [
+     * {
+     *     "picPath": "string"
+     * }
+     * ]
+     * @return
+     */
+    @PUT("/v1/club/del-pic")
+    fun delPhoto(@Body body: RequestBody): Observable<ApiResult>
+
 }

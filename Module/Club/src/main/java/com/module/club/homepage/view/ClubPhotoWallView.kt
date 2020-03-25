@@ -1,41 +1,41 @@
-package com.component.person.photo.view
+package com.module.club.homepage.view
 
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import android.widget.RelativeLayout
-
-import com.common.base.BaseFragment
+import com.common.base.BaseActivity
 import com.common.callback.Callback
+import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.log.MyLog
 import com.component.busilib.R
+import com.component.person.photo.adapter.PhotoAdapter
+import com.component.person.photo.model.PhotoModel
+import com.component.person.photo.view.IPhotoWallView
 import com.component.person.view.RequestCallBack
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
+import com.module.club.homepage.ClubPhotoCorePresenter
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
 import com.respicker.model.ImageItem
-import com.component.person.photo.adapter.PhotoAdapter
-import com.component.person.photo.model.PhotoModel
-import com.component.person.photo.presenter.PhotoCorePresenter
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * 照片墙view
  */
-class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: RequestCallBack?) : RelativeLayout(mFragment.context), IPhotoWallView {
+class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCallBack: RequestCallBack?, val clubMemberInfo: ClubMemberInfo?) : RelativeLayout(mBaseActivity), IPhotoWallView {
 
-    val TAG = "PhotoWallView"
+    val TAG = "ClubPhotoWallView"
 
     internal var DEFAUAT_CNT = 20       // 默认拉取一页的数量
     var mHasMore = false
 
     private val mPhotoView: RecyclerView
     internal val mPhotoAdapter: PhotoAdapter
-    internal val mPhotoCorePresenter: PhotoCorePresenter
+    internal val mPhotoCorePresenter: ClubPhotoCorePresenter
 
     private var mLastUpdateInfo: Long = 0    //上次更新成功时间
 
@@ -43,19 +43,19 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
         View.inflate(context, R.layout.photo_wall_view_layout, this)
         mPhotoView = findViewById<View>(R.id.photo_view) as RecyclerView
 
-        mPhotoCorePresenter = PhotoCorePresenter(this, mFragment)
+        mPhotoCorePresenter = ClubPhotoCorePresenter(this, context as BaseActivity, clubMemberInfo!!)
 
         mPhotoView.isFocusableInTouchMode = false
         val gridLayoutManager = GridLayoutManager(context, 3)
         mPhotoView.layoutManager = gridLayoutManager
-        mPhotoAdapter = PhotoAdapter(PhotoAdapter.TYPE_PERSON_CENTER)
+        mPhotoAdapter = PhotoAdapter(PhotoAdapter.TYPE_CLUB_PHOTO)
 
         mPhotoAdapter.mOnClickAddPhotoListener = {
             goAddPhotoFragment()
         }
         mPhotoAdapter.mOnClickPhotoListener = { _, _, model ->
             // 跳到看大图
-            BigImageBrowseFragment.open(true, mFragment.activity, object : DefaultImageBrowserLoader<PhotoModel>() {
+            BigImageBrowseFragment.open(true, mBaseActivity, object : DefaultImageBrowserLoader<PhotoModel>() {
                 override fun init() {
 
                 }
@@ -140,11 +140,15 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
         }
     }
 
-    fun getMorePhotos() {
-        mPhotoCorePresenter!!.getPhotos(mPhotoAdapter.successNum, DEFAUAT_CNT)
+    fun getMorePhotos(callback: () -> Unit?) {
+        mPhotoCorePresenter!!.getPhotos(mPhotoAdapter.successNum, DEFAUAT_CNT, object : Callback<List<PhotoModel>> {
+            override fun onCallback(r: Int, obj: List<PhotoModel>?) {
+                callback.invoke()
+            }
+        })
     }
 
-    internal fun goAddPhotoFragment() {
+    fun goAddPhotoFragment() {
         ResPicker.getInstance().params = ResPicker.newParamsBuilder()
                 .setMultiMode(true)
                 .setShowCamera(true)
@@ -152,7 +156,7 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
                 .setSelectLimit(9)
                 .setIncludeGif(false)
                 .build()
-        ResPickerActivity.open(mFragment.activity)
+        ResPickerActivity.open(mBaseActivity)
     }
 
 
@@ -182,6 +186,14 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
                 // 没有数据
             }
         }
+    }
+
+    fun loadData(flag: Boolean, callback: () -> Unit?) {
+        getPhotos(flag)
+    }
+
+    fun loadMoreData(callback: () -> Unit?) {
+        getMorePhotos(callback)
     }
 
     override fun insertPhoto(photoModel: PhotoModel) {

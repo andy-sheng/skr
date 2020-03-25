@@ -1,65 +1,35 @@
-package com.component.person.photo.presenter
+package com.module.club.homepage
 
 import android.os.Handler
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.common.anim.ObjectPlayControlTemplate
-import com.common.base.BaseFragment
+import com.common.base.BaseActivity
 import com.common.callback.Callback
-import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.userinfo.UserInfoServerApi
+import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.log.MyLog
+import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.*
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.utils.U
-import com.component.person.photo.manager.PhotoDataManager
+import com.component.person.photo.manager.ClubPhotoDataManager
 import com.component.person.photo.model.PhotoModel
 import com.component.person.photo.view.IPhotoWallView
+import com.module.club.ClubServerApi
 import com.respicker.model.ImageItem
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.*
 
-open class PhotoCorePresenter(var mView: IPhotoWallView, private var mFragment: BaseFragment?) {
-
-    val TAG = "PhotoCorePresenter"
-
-    val mUserInfoServerApi: UserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
-
-    internal var mUiHandler: Handler? = Handler()
-
-    internal var mUploadingPhoto = false
-    internal var mExceedLimit = false
-
-    internal var mPlayControlTemplate: ObjectPlayControlTemplate<PhotoModel, PhotoCorePresenter> = object : ObjectPlayControlTemplate<PhotoModel, PhotoCorePresenter>() {
-        override fun accept(cur: PhotoModel): PhotoCorePresenter? {
-            MyLog.d(TAG, "accept cur=$cur mUploadingPhoto=$mUploadingPhoto")
-            if (mUploadingPhoto) {
-                return null
-            } else {
-                mUploadingPhoto = true
-                return this@PhotoCorePresenter
-            }
-        }
-
-        override fun onStart(pm: PhotoModel, personFragment2: PhotoCorePresenter) {
-            MyLog.d(TAG, "onStart" + "开始上传 PhotoModel=" + pm + " 队列还有 mPlayControlTemplate.getSize()=" + this.size)
-            execUploadPhoto(pm)
-        }
-
-        override fun onEnd(pm: PhotoModel?) {
-            MyLog.d(TAG, "onEnd 上传结束 PhotoModel=$pm")
-        }
-    }
-
-    init {
-    }
+class ClubPhotoCorePresenter(val mView: IPhotoWallView, val mBaseActivity: BaseActivity, val mClubMemberInfo: ClubMemberInfo) : RxLifeCyclePresenter() {
+    private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
 
     @JvmOverloads
-    open fun getPhotos(offset: Int, cnt: Int, callback: Callback<List<PhotoModel>>? = null) {
+    fun getPhotos(offset: Int, cnt: Int, callback: Callback<List<PhotoModel>>? = null) {
         MyLog.d(TAG, "getPhotos offset=$offset cnt=$cnt callback=$callback")
-        ApiMethods.subscribe(mUserInfoServerApi.getPhotos(MyUserInfoManager.uid.toInt().toLong(), offset, cnt), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(clubServerApi.getClubPhotos(mClubMemberInfo?.club?.clubID?.toLong()
+                ?: 0, offset, cnt), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult?) {
                 if (result!!.errno == 0) {
                     if (result != null && result.errno == 0) {
@@ -87,7 +57,36 @@ open class PhotoCorePresenter(var mView: IPhotoWallView, private var mFragment: 
                 super.onNetworkError(errorType)
                 mView!!.loadDataFailed()
             }
-        }, mFragment, RequestControl("getPhotos", ControlType.CancelThis))
+        }, mBaseActivity, RequestControl("getPhotos", ControlType.CancelThis))
+    }
+
+    internal var mUiHandler: Handler? = Handler()
+
+    internal var mUploadingPhoto = false
+    internal var mExceedLimit = false
+
+    internal var mPlayControlTemplate: ObjectPlayControlTemplate<PhotoModel, ClubPhotoCorePresenter> = object : ObjectPlayControlTemplate<PhotoModel, ClubPhotoCorePresenter>() {
+        override fun accept(cur: PhotoModel): ClubPhotoCorePresenter? {
+            MyLog.d(TAG, "accept cur=$cur mUploadingPhoto=$mUploadingPhoto")
+            if (mUploadingPhoto) {
+                return null
+            } else {
+                mUploadingPhoto = true
+                return this@ClubPhotoCorePresenter
+            }
+        }
+
+        override fun onStart(pm: PhotoModel, personFragment2: ClubPhotoCorePresenter) {
+            MyLog.d(TAG, "onStart" + "开始上传 PhotoModel=" + pm + " 队列还有 mPlayControlTemplate.getSize()=" + this.size)
+            execUploadPhoto(pm)
+        }
+
+        override fun onEnd(pm: PhotoModel?) {
+            MyLog.d(TAG, "onEnd 上传结束 PhotoModel=$pm")
+        }
+    }
+
+    init {
     }
 
     fun uploadPhotoList(imageItems: List<ImageItem>) {
@@ -107,7 +106,7 @@ open class PhotoCorePresenter(var mView: IPhotoWallView, private var mFragment: 
         MyLog.d(TAG, "uploadPhotoList photoModels=$photoModels")
         if (photoModels != null && photoModels.size > 0) {
             // 数据库中的zhukey怎么定，数据库中只存未上传成功的
-            PhotoDataManager.insertOrUpdate(photoModels)
+            ClubPhotoDataManager.insertOrUpdate(photoModels)
             for (photoModel in photoModels) {
                 photoModel.status = PhotoModel.STATUS_WAIT_UPLOAD
                 if (reupload) {
@@ -157,9 +156,10 @@ open class PhotoCorePresenter(var mView: IPhotoWallView, private var mFragment: 
                         jsonObject["picPath"] = url
                         pics.add(jsonObject)
                         map["pic"] = pics
+                        map["familyID"] = mClubMemberInfo.club?.clubID ?: 0
                         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
 
-                        ApiMethods.subscribe(mUserInfoServerApi.addPhoto(body), object : ApiObserver<ApiResult>() {
+                        ApiMethods.subscribe(clubServerApi.addPhoto(body), object : ApiObserver<ApiResult>() {
                             override fun process(obj: ApiResult) {
                                 mUploadingPhoto = false
                                 mPlayControlTemplate.endCurrent(photo)
@@ -174,7 +174,7 @@ open class PhotoCorePresenter(var mView: IPhotoWallView, private var mFragment: 
                                         photo.status = PhotoModel.STATUS_SUCCESS
                                         mView!!.updatePhoto(photo)
                                         // 删除数据中的
-                                        PhotoDataManager.delete(photo)
+                                        ClubPhotoDataManager.delete(photo)
                                         return
                                     }
                                 }
@@ -216,7 +216,7 @@ open class PhotoCorePresenter(var mView: IPhotoWallView, private var mFragment: 
             val map = HashMap<String, Any>()
             map["picID"] = photoModel.picID
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            ApiMethods.subscribe(mUserInfoServerApi.deletePhoto(body), object : ApiObserver<ApiResult>() {
+            ApiMethods.subscribe(clubServerApi.delPhoto(body), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult) {
                     if (obj.errno == 0) {
                         if (mView != null) {
@@ -231,7 +231,7 @@ open class PhotoCorePresenter(var mView: IPhotoWallView, private var mFragment: 
             })
         } else {
             photoModel.status = PhotoModel.STATUS_DELETE
-            PhotoDataManager.delete(photoModel)
+            ClubPhotoDataManager.delete(photoModel)
             // 还没上传成功，本地删除就好，// 上传队列还得删除
             if (mView != null) {
                 mView!!.deletePhoto(photoModel, false)
@@ -240,7 +240,7 @@ open class PhotoCorePresenter(var mView: IPhotoWallView, private var mFragment: 
     }
 
     fun loadUnSuccessPhotoFromDB() {
-        PhotoDataManager.getAllPhotoFromDB { r, list ->
+        ClubPhotoDataManager.getAllPhotoFromDB { r, list ->
             for (photoModel in list) {
                 MyLog.d(TAG, "loadUnSuccessPhotoFromDB photoModel=$photoModel")
                 mView!!.insertPhoto(photoModel)
@@ -249,11 +249,10 @@ open class PhotoCorePresenter(var mView: IPhotoWallView, private var mFragment: 
         }
     }
 
-    fun destroy() {
+    override fun destroy() {
+        super.destroy()
         if (mUiHandler != null) {
             mUiHandler!!.removeCallbacksAndMessages(null)
         }
     }
 }
-
-

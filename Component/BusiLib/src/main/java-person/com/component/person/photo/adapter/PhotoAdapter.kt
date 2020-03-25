@@ -4,15 +4,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.common.log.MyLog
 import com.component.busilib.R
 import com.component.person.photo.holder.EmptyPhotoHolder
 import com.component.person.photo.holder.PhotoAddHolder
 import com.component.person.photo.holder.PhotoViewHolder
 import com.component.person.photo.model.PhotoModel
-
-import java.util.ArrayList
+import java.util.*
 
 class PhotoAdapter(internal var mType: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -108,7 +106,10 @@ class PhotoAdapter(internal var mType: Int) : RecyclerView.Adapter<RecyclerView.
         }
 
         if (mHasUpdate) {
-            if (position != 0) {
+            if (mType == TYPE_CLUB_PHOTO) {
+                val photoModel = mDataList!![position]
+                (holder as PhotoViewHolder).bindData(photoModel, position)
+            } else if (position != 0) {
                 val photoModel = mDataList!![position - 1]
                 (holder as PhotoViewHolder).bindData(photoModel, position)
             }
@@ -123,7 +124,9 @@ class PhotoAdapter(internal var mType: Int) : RecyclerView.Adapter<RecyclerView.
             return PHOTO_ITEM_EMPTY
         }
 
-        return if (position == 0 && mHasUpdate) {
+        return if (TYPE_CLUB_PHOTO == mType) {
+            PHOTO_ITEM_TYPE
+        } else if (position == 0 && mHasUpdate) {
             PHOTO_ADD_TYPE
         } else
             PHOTO_ITEM_TYPE
@@ -228,5 +231,6 @@ class PhotoAdapter(internal var mType: Int) : RecyclerView.Adapter<RecyclerView.
         val TYPE_PERSON_CENTER = 2 // 个人中心
         val TYPE_OTHER_PERSON_CENTER = 3//他人个人中心
         val TYPE_PERSON_CENTER_VIEW = 4   // 个人中心和他人中心共用的view
+        val TYPE_CLUB_PHOTO = 5   // 家族相册
     }
 }
