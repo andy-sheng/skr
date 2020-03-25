@@ -29,12 +29,14 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
             @Override
             public void onCreateAllTables(Database db, boolean ifNotExists) {
                 PhotoModelDBDao.createTable(db, ifNotExists);
+                ClubPhotoModelDBDao.createTable(db, ifNotExists);
             }
 
             @Override
             public void onDropAllTables(Database db, boolean ifExists) {
                 PhotoModelDBDao.dropTable(db, ifExists);
+                ClubPhotoModelDBDao.dropTable(db, ifExists);
             }
-        }, PhotoModelDBDao.class);
+        }, PhotoModelDBDao.class, ClubPhotoModelDBDao.class);
     }
 }
