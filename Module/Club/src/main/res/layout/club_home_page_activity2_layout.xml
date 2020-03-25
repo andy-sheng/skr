@@ -381,6 +381,4 @@
             android:textSize="@dimen/textsize_10_dp" />
     </com.common.view.ex.ExLinearLayout>
 
->>>>>>> 添加家族照片墙和帖子发布
-
 </RelativeLayout>
