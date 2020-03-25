@@ -81,12 +81,14 @@ import io.rong.imkit.RongContext;
 import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.manager.IUnReadMessageObserver;
+import io.rong.imkit.mention.RongMentionManager;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imkit.widget.provider.UnknownMessageItemProvider;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Group;
+import io.rong.imlib.model.MentionedInfo;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
@@ -371,10 +373,10 @@ public class RongMsgManager implements RongIM.UserInfoProvider, RongIM.GroupInfo
                         @Override
                         public boolean onGetServer(UserInfoModel infoModel) {
                             //非好友不会弹出消息通知栏 查看是否在免打扰名单中
-                            if(infoModel != null && infoModel.isFriend()) {
+                            if(infoModel != null) {
                                 boolean isNoRemind;
                                 if(message.getConversationType().equals(Conversation.ConversationType.PRIVATE)){
-                                    isNoRemind = NoRemindManager.INSTANCE.isFriendNoRemind(infoModel.getUserId());
+                                    isNoRemind = infoModel.isFriend() && NoRemindManager.INSTANCE.isFriendNoRemind(infoModel.getUserId());
                                 }else{
                                     ClubInfo clubInfo = infoModel.getClubInfo().getClub();
                                     isNoRemind = clubInfo != null && NoRemindManager.INSTANCE.isClubNoRemind(clubInfo.getClubID());
@@ -400,6 +402,18 @@ public class RongMsgManager implements RongIM.UserInfoProvider, RongIM.GroupInfo
             }
         }
     };
+
+    public void mentionedAllClubMembers(Message message, MentionedInfo mentionedInfo){
+        if (mentionedInfo != null) {
+            // 特殊定义 -1 为 @所有人
+            if (mentionedInfo.getMentionedUserIdList().contains("-1")) {
+                mentionedInfo.setType(MentionedInfo.MentionedType.ALL);
+            } else {
+                mentionedInfo.setType(MentionedInfo.MentionedType.PART);
+            }
+            RongIM.getInstance().sendMessage(message, mentionedInfo.getMentionedContent(), null, (IRongCallback.ISendMessageCallback) null);
+        }
+    }
 
     private void dispatchCustomRoomMsg(MessageContent messageContent) {
         if (messageContent instanceof CustomChatRoomMsg) {

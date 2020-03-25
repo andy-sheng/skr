@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/club_home_right_op_bg"
+    android:paddingStart="@dimen/view_20_dp"
+    android:paddingEnd="@dimen/view_20_dp"
+    android:paddingTop="@dimen/view_12_dp"
+    android:paddingBottom="@dimen/view_18_dp"
+    >
+
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/club_right_apply_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/club_home_apply2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="申请"
+        android:textSize="10sp"
+        android:textAlignment="gravity"
+        android:gravity="center_horizontal"
+        android:layout_marginStart="@dimen/view_10_dp"
+        android:clickable="true"
+        android:focusable="true"
+        />
+
+
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/club_right_conversation_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/club_home_conversation"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/club_right_apply_tv"
+        android:layout_marginStart="@dimen/view_20_dp"
+        android:text="群聊"
+        android:textSize="10sp"
+        android:textAlignment="gravity"
+        android:gravity="center_horizontal"
+        android:clickable="true"
+        android:focusable="true"
+        />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/club_right_post_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/club_home_post"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/club_right_conversation_tv"
+        android:layout_marginStart="@dimen/view_20_dp"
+        android:text="发布"
+        android:textSize="10sp"
+        android:textAlignment="gravity"
+        android:gravity="center_horizontal"
+        android:clickable="true"
+        android:focusable="true"
+        />
+
+</android.support.constraint.ConstraintLayout>

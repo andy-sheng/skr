@@ -32,10 +32,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
-import com.module.club.homepage.view.ClubDynamicView
-import com.module.club.homepage.view.ClubIntroView
-import com.module.club.homepage.view.ClubPhotoView
-import com.module.club.homepage.view.ClubWorksView
+import com.module.club.homepage.view.*
 import com.module.club.manage.setting.ClubManageActivity
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
@@ -89,6 +86,7 @@ class ClubHomepageActivity2 : BaseActivity() {
     private var clubDynamicView: ClubDynamicView? = null
     private var clubPhotoWallView: ClubPhotoView? = null
     private var clubWorksView: ClubWorksView? = null
+    private var clubRightOpView: ClubRightOpView? = null
 
     override fun useEventBus(): Boolean {
         return false
@@ -120,6 +118,8 @@ class ClubHomepageActivity2 : BaseActivity() {
 
         if (isMyClub) {
             applyTv.visibility = View.GONE
+            clubRightOpView?.show()
+            clubRightOpView?.bindData(clubMemberInfo)
         } else {
             applyTv.visibility = View.VISIBLE
             applyTv.text = "申请加入"
@@ -270,6 +270,7 @@ class ClubHomepageActivity2 : BaseActivity() {
         clubTab = findViewById(R.id.club_tab)
         clubVp = findViewById(R.id.club_vp)
 
+        clubRightOpView = ClubRightOpView(findViewById(R.id.club_home_page_right_op))
         clubTab.setCustomTabView(R.layout.club_tab_view, R.id.tab_tv)
         clubTab.setSelectedIndicatorColors(Color.parseColor("#FF9B9B"))
         clubTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)

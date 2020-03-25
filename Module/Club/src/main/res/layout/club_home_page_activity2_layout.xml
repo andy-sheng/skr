@@ -298,4 +298,13 @@
         android:padding="@dimen/view_16_dp"
         android:src="@drawable/common_more_icon" />
 
+    <ViewStub
+        android:id="@+id/club_home_page_right_op"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout="@layout/club_home_page_right_op_view_layout"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        />
+
 </RelativeLayout>

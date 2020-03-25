@@ -196,6 +196,19 @@ public class ConversationActivity extends BaseActivity {
                 }
             });
             checkMsgTimes();
+        }else{
+            RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {
+                @Override
+                public Message onSend(Message message) {
+                    return message;
+                }
+
+                @Override
+                public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
+                    return false;
+                }
+
+            });
         }
     }
 
@@ -223,63 +236,68 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void showConfirmOptions() {
+        final List<String> channels = new ArrayList<>();
+        if(mConversationType.equals(Conversation.ConversationType.PRIVATE.getName())) {
+            int nUserId = Integer.valueOf(mUserId);
 
-        int nUserId = Integer.valueOf(mUserId);
+            UserInfoManager.getInstance().getBlacklistStatus(nUserId, new ResponseCallBack() {
+                @Override
+                public void onServerSucess(Object obj) {
+                    if (obj != null) {
+                        boolean isBlack = (boolean) obj;
 
-        UserInfoManager.getInstance().getBlacklistStatus(nUserId, new ResponseCallBack() {
-            @Override
-            public void onServerSucess(Object obj) {
-                if (obj != null) {
-                    boolean isBlack = (boolean) obj;
-                    final List<String> channels = new ArrayList<>();
-
-                    // 群聊没有黑名单选项
-                    if(!mConversationType.equals(Conversation.ConversationType.GROUP.getName())) {
-                        if (isBlack) {
-                            channels.add(getString(R.string.remove_from_black_list));
-                        } else {
-                            channels.add(getString(R.string.add_to_black_list));
-                        }
-                    }
-                    if (NoRemindManager.INSTANCE.open()) {
-                        noRemindDisposable = Observable.create(new ObservableOnSubscribe<Boolean>() {
-                            @Override
-                            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
-                                if(!mConversationType.equals(Conversation.ConversationType.GROUP.getName())){
-                                    emitter.onNext(NoRemindManager.INSTANCE.isFriendNoRemind(nUserId));
-                                }else{
-                                    emitter.onNext(NoRemindManager.INSTANCE.isClubNoRemind(nUserId));
-                                }
-                                emitter.onComplete();
+                        // 群聊没有黑名单选项
+                        if (!mConversationType.equals(Conversation.ConversationType.GROUP.getName())) {
+                            if (isBlack) {
+                                channels.add(getString(R.string.remove_from_black_list));
+                            } else {
+                                channels.add(getString(R.string.add_to_black_list));
                             }
-                        }).subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(aBoolean -> {
-                                    if (aBoolean) {
-                                        channels.add("关闭消息免打扰");
-                                    } else {
-                                        channels.add("开启消息免打扰");
-                                    }
-                                    showConfirmOptions(channels);
+                        }
 
-                                }, throwable -> {
-                                    MyLog.e(throwable);
-                                    showConfirmOptions(channels);
-                                });
-                    } else {
-                        showConfirmOptions(channels);
+                        showOptionsWithNoRemind(channels, nUserId);
+
                     }
                 }
-            }
 
-            @Override
-            public void onServerFailed() {
+                @Override
+                public void onServerFailed() {
 
-            }
-        });
+                }
+            });
+        }else if(mClubId != null){
+            showOptionsWithNoRemind(channels, Integer.valueOf(mClubId));
+        }
     }
 
-    private void showConfirmOptions(List<String> channels) {
+    private void showOptionsWithNoRemind(List<String> channels, int targetID){
+        noRemindDisposable = Observable.create(new ObservableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+                if(!mConversationType.equals(Conversation.ConversationType.GROUP.getName())){
+                    emitter.onNext(NoRemindManager.INSTANCE.isFriendNoRemind(targetID));
+                }else{
+                    emitter.onNext(NoRemindManager.INSTANCE.isClubNoRemind(targetID));
+                }
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        channels.add("关闭消息免打扰");
+                    } else {
+                        channels.add("开启消息免打扰");
+                    }
+                    showConfirmOptions(channels, targetID);
+
+                }, throwable -> {
+                    MyLog.e(throwable);
+                    showConfirmOptions(channels, targetID);
+                });
+    }
+
+    private void showConfirmOptions(List<String> channels, int targetId) {
         U.getKeyBoardUtils().hideSoftInputKeyBoard(this);
 
         listDialog = new ListDialog(this);
@@ -290,7 +308,7 @@ public class ConversationActivity extends BaseActivity {
                 @Override
                 public void run() {
 
-                    handleMenuItemClick(channel);
+                    handleMenuItemClick(channel, targetId);
 
                     listDialog.dissmiss();
                 }
@@ -305,14 +323,12 @@ public class ConversationActivity extends BaseActivity {
         listDialog.showList(listItems);
     }
 
-    private void handleMenuItemClick(String channel){
-
-        int nUserId = Integer.valueOf(mUserId);
+    private void handleMenuItemClick(String channel, int targetId){
 
         switch (channel){
             case "加入黑名单":
 
-                UserInfoManager.getInstance().addToBlacklist(nUserId, new ResponseCallBack() {
+                UserInfoManager.getInstance().addToBlacklist(targetId, new ResponseCallBack() {
                     @Override
                     public void onServerSucess(Object o) {
                         U.getToastUtil().showShort("加入黑名单成功");
@@ -327,7 +343,7 @@ public class ConversationActivity extends BaseActivity {
 
             case "移除黑名单":
 
-                UserInfoManager.getInstance().removeBlackList(nUserId, new ResponseCallBack() {
+                UserInfoManager.getInstance().removeBlackList(targetId, new ResponseCallBack() {
                     @Override
                     public void onServerSucess(Object o) {
                         U.getToastUtil().showShort("移除黑名单成功");
@@ -341,10 +357,10 @@ public class ConversationActivity extends BaseActivity {
                 break;
 
             case "开启消息免打扰":
-                setNoRemind(nUserId, true);
+                setNoRemind(targetId, true);
                 break;
             case "关闭消息免打扰":
-                setNoRemind(nUserId, false);
+                setNoRemind(targetId, false);
                 break;
 
         }
