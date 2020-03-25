@@ -179,6 +179,11 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
+    public void getClubUnReadCount(ICallback iCallback, String targetId) {
+        RongMsgManager.getInstance().getUnReadCount(Conversation.ConversationType.GROUP, targetId, iCallback);
+    }
+
+    @Override
     public void init(Context context) {
 
     }

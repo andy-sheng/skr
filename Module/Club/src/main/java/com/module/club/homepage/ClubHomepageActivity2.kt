@@ -39,7 +39,6 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
-import com.zq.live.proto.Common.EClubMemberRoleType
 
 class ClubHomepageActivity2 : BaseActivity() {
 
@@ -426,5 +425,11 @@ class ClubHomepageActivity2 : BaseActivity() {
         clubDynamicView?.destroy()
         clubPhotoWallView?.destroy()
         clubWorksView?.destroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //返回页面更新未读消息数
+        clubRightOpView?.updateUnreadMsgCount()
     }
 }

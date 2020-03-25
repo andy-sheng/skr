@@ -126,4 +126,6 @@ public interface IMsgService extends IProvider {
     void sendTxtMsg(String userID,String content);
 
     boolean isPrivateMsg(String conversationType);
+
+    void getClubUnReadCount(ICallback iCallback, String targetId);
 }

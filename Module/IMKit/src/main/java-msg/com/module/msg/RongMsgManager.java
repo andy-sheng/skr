@@ -24,6 +24,7 @@ import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
+import com.common.notification.event.RongClubMsgEvent;
 import com.common.notification.event.RongMsgNotifyEvent;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.LogUploadUtils;
@@ -80,6 +81,7 @@ import io.rong.imkit.IExtensionModule;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imkit.mention.RongMentionManager;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
@@ -378,6 +380,10 @@ public class RongMsgManager implements RongIM.UserInfoProvider, RongIM.GroupInfo
                                 if(message.getConversationType().equals(Conversation.ConversationType.PRIVATE)){
                                     isNoRemind = infoModel.isFriend() && NoRemindManager.INSTANCE.isFriendNoRemind(infoModel.getUserId());
                                 }else{
+                                    //
+                                    RongClubMsgEvent event = new RongClubMsgEvent(content, infoModel, message.getConversationType().getName());
+                                    EventBus.getDefault().post(event);
+
                                     ClubInfo clubInfo = infoModel.getClubInfo().getClub();
                                     isNoRemind = clubInfo != null && NoRemindManager.INSTANCE.isClubNoRemind(clubInfo.getClubID());
                                 }
@@ -887,9 +893,22 @@ public class RongMsgManager implements RongIM.UserInfoProvider, RongIM.GroupInfo
         }
     };
 
+    public void getUnReadCount(Conversation.ConversationType conversationType, String targetId, ICallback iCallback){
+
+        RongIMClient.getInstance().getUnreadCount(conversationType, targetId, new RongIMClient.ResultCallback<Integer>() {
+            public void onSuccess(Integer integer) {
+                iCallback.onSucess(integer);
+            }
+
+            public void onError(RongIMClient.ErrorCode e) {
+                iCallback.onFailed(e, 0, "");
+            }
+        });
+    }
+
     public void addUnReadMessageCountChangedObserver(ICallback callback) {
         mUnreadCallbacks.add(callback);
-        RongIM.getInstance().addUnReadMessageCountChangedObserver(mIUnReadMessageObserver, Conversation.ConversationType.PRIVATE);
+        RongIM.getInstance().addUnReadMessageCountChangedObserver(mIUnReadMessageObserver, Conversation.ConversationType.PRIVATE, Conversation.ConversationType.GROUP);
     }
 
     public void removeUnReadMessageCountChangedObserver(ICallback callback) {
