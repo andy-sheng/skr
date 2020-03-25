@@ -7,6 +7,19 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface ClubServerApi {
+
+    /**
+     * 检查是否申请加入该家族
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/has-applied-join")
+    fun hasAppliedJoin(@Query("clubID") clubID: Int): Call<ApiResult>
+
+    /**
+     * 取消申请加入
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/club/cancel-applied-join")
+    fun cancelApplyJoin(@Body body: RequestBody): Call<ApiResult>
+
     /**
      * 获得家族Banner信息
      */

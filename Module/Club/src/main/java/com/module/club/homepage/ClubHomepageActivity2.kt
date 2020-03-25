@@ -15,16 +15,21 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExLinearLayout
 import com.common.view.ex.ExTextView
+import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
@@ -47,6 +52,9 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 
 class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
 
@@ -83,6 +91,7 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
     private var clubMemberInfo: ClubMemberInfo? = null
     private var clubID: Int = 0
     private var isMyClub = false
+    private var hasApplied = false
 
     private var appbarListener: AppBarLayout.OnOffsetChangedListener? = null
     private var srollDivider = U.getDisplayUtils().dip2px(122f)  // 滑到分界线的时候
@@ -132,18 +141,67 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
         initBottomCrlView()
 
         if (isMyClub) {
-            applyTv.visibility = View.GONE
             clubRightOpView?.show()
             clubRightOpView?.bindData(clubMemberInfo)
             clubRightOpView?.setPhotoClickListener {
                 clubPhotoWallView?.goAddPhotoFragment()
             }
         } else {
-            applyTv.visibility = View.VISIBLE
-            applyTv.text = "申请加入"
+            hasAppliedJoin()
         }
+
         refreshClubInfo()
-        //todo 如果不是自己的家族，需要去拿申请状态
+    }
+
+    private fun hasAppliedJoin() {
+        launch {
+            val result = subscribe(RequestControl("hasAppliedJoin", ControlType.CancelThis)) {
+                clubServerApi.hasAppliedJoin(clubID)
+            }
+            if (result.errno == 0) {
+                hasApplied = result.data.getBooleanValue("yes")
+                refreshApplyStatus()
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
+    }
+
+    private fun cancelJoinApply() {
+        launch {
+            val map = mapOf(
+                    "clubID" to clubID
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("cancelJoinApply", ControlType.CancelThis)) {
+                clubServerApi.cancelApplyJoin(body)
+            }
+            if (result.errno == 0) {
+                hasApplied = false
+                refreshApplyStatus()
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
+    }
+
+    private fun applyJoinClub() {
+        launch {
+            val map = mapOf(
+                    "clubID" to clubID,
+                    "text" to ""
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("applyJoinClub", ControlType.CancelThis)) {
+                clubServerApi.applyJoinClub(body)
+            }
+            if (result.errno == 0) {
+                hasApplied = true
+                refreshApplyStatus()
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
     }
 
     private fun initBottomCrlView() {
@@ -190,6 +248,25 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
         clubHotTv.text = StringFromatUtils.formatTenThousand(clubInfo?.hot ?: 0)
         clubIdTv.text = "ID: ${clubInfo?.clubID}"
         clubLevelTv.text = "金牌等级"
+    }
+
+    private fun refreshApplyStatus() {
+        applyTv.visibility = View.VISIBLE
+        if (hasApplied) {
+            applyTv.text = "取消申请"
+            applyTv.background = DrawableCreator.Builder()
+                    .setSolidColor(U.getColor(R.color.black_trans_10))
+                    .setStrokeColor(Color.WHITE)
+                    .setStrokeWidth(1.dp().toFloat())
+                    .setCornersRadius(21.dp().toFloat())
+                    .build()
+        } else {
+            applyTv.text = "申请加入"
+            applyTv.background = DrawableCreator.Builder()
+                    .setSolidColor(Color.parseColor("#FF9B9B"))
+                    .setCornersRadius(21.dp().toFloat())
+                    .build()
+        }
     }
 
     private fun initAppBarScroll() {
@@ -300,6 +377,14 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_CLUB_RANK)
                     .withInt("clubID", clubMemberInfo?.club?.clubID ?: 0)
                     .navigation()
+        }
+
+        applyTv.setDebounceViewClickListener {
+            if (hasApplied) {
+                cancelJoinApply()
+            } else {
+                applyJoinClub()
+            }
         }
     }
 

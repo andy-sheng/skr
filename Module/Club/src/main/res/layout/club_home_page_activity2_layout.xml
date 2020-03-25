@@ -212,7 +212,9 @@
                             android:id="@+id/apply_tv"
                             android:layout_width="@dimen/view_0_dp"
                             android:layout_height="@dimen/view_32_dp"
+                            android:layout_marginLeft="@dimen/view_20_dp"
                             android:layout_marginTop="@dimen/view_20_dp"
+                            android:layout_marginRight="@dimen/view_20_dp"
                             android:gravity="center"
                             android:textColor="@color/white"
                             android:textSize="@dimen/textsize_14_dp"
@@ -302,17 +304,16 @@
         android:id="@+id/club_home_page_right_op"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout="@layout/club_home_page_right_op_view_layout"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        />
+        android:layout_alignParentBottom="true"
+        android:layout="@layout/club_home_page_right_op_view_layout" />
 
     <com.common.view.ex.ExLinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/view_100_dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/view_100_dp"
         app:bl_corners_bottomLeftRadius="@dimen/view_15_dp"
         app:bl_corners_topLeftRadius="@dimen/view_15_dp"
         app:bl_solid_color="@color/white">
