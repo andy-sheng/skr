@@ -311,6 +311,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/view_100_dp"
         android:layout_alignParentBottom="true"
         app:bl_corners_bottomLeftRadius="@dimen/view_15_dp"
         app:bl_corners_topLeftRadius="@dimen/view_15_dp"

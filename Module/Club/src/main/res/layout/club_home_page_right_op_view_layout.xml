@@ -10,72 +10,147 @@
     android:paddingTop="@dimen/view_12_dp"
     android:paddingBottom="@dimen/view_18_dp">
 
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/club_right_apply_tv"
+    <LinearLayout
+        android:id="@+id/club_right_other_actions_panel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@drawable/club_home_apply2"
+        app:layout_constraintEnd_toStartOf="@+id/club_right_post"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="申请"
-        android:textSize="10sp"
-        android:textAlignment="gravity"
-        android:gravity="center_horizontal"
-        android:layout_marginStart="@dimen/view_10_dp"
+        android:orientation="horizontal"
         android:clickable="true"
         android:focusable="true"
-        />
+        >
+        <com.common.view.ex.ExTextView
+            android:id="@+id/club_right_apply_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/club_home_apply2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/club_right_conversation_tv"
+            android:text="申请"
+            android:textSize="10sp"
+            android:textAlignment="gravity"
+            android:gravity="center_horizontal"
+            android:layout_marginEnd="@dimen/view_20_dp"
+            android:clickable="true"
+            android:focusable="true"
+            />
 
+        <com.common.view.ex.ExTextView
+            android:id="@+id/club_right_conversation_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/club_home_conversation"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/club_right_post"
+            android:layout_marginEnd="@dimen/view_20_dp"
+            android:text="群聊"
+            android:textSize="10sp"
+            android:textAlignment="gravity"
+            android:gravity="center_horizontal"
+            android:clickable="true"
+            android:focusable="true"
+            />
 
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/club_right_conversation_tv"
+        <com.common.view.ex.ExTextView
+            android:id="@+id/club_conversation_unread_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_14_dp"
+            app:layout_constraintTop_toTopOf="@id/club_right_conversation_tv"
+            app:layout_constraintEnd_toEndOf="@+id/club_right_conversation_tv"
+            android:gravity="center"
+            android:paddingLeft="@dimen/view_4_dp"
+            android:paddingRight="@dimen/view_4_dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_10_dp"
+            android:visibility="gone"
+            app:bl_corners_radius="@dimen/view_9_dp"
+            app:bl_shape="rectangle"
+            tools:text="100"
+            app:bl_solid_color="#FE7575" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/club_right_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@drawable/club_home_conversation"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/club_right_apply_tv"
-        android:layout_marginStart="@dimen/view_20_dp"
-        android:text="群聊"
-        android:textSize="10sp"
-        android:textAlignment="gravity"
-        android:gravity="center_horizontal"
-        android:clickable="true"
-        android:focusable="true"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+        <com.common.view.ex.ExImageView
+            android:id="@+id/club_right_post_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/club_home_post"
+            android:text="发布"
+            android:textSize="10sp"
+            android:textAlignment="gravity"
+            android:gravity="center_horizontal"
+            />
+        <com.common.view.ex.ExTextView
+            android:id="@+id/club_right_post_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="发布"
+            android:textSize="10sp"
+            android:textAlignment="gravity"
+            android:gravity="center_horizontal"
+            />
+    </LinearLayout>
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/club_conversation_unread_num_tv"
+
+    <LinearLayout
+        android:id="@+id/club_right_post_panel"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_14_dp"
-        app:layout_constraintTop_toTopOf="@id/club_right_conversation_tv"
-        app:layout_constraintEnd_toEndOf="@id/club_right_conversation_tv"
-        android:gravity="center"
-        android:paddingLeft="@dimen/view_4_dp"
-        android:paddingRight="@dimen/view_4_dp"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_10_dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/club_right_post"
+        app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"
-        app:bl_corners_radius="@dimen/view_9_dp"
-        app:bl_shape="rectangle"
-        tools:text="100"
-        app:bl_solid_color="#FE7575" />
+        >
+        <com.common.view.ex.ExTextView
+            android:id="@+id/club_right_post_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/club_home_post_action"
+            android:layout_marginEnd="@dimen/view_20_dp"
+            android:text="动态"
+            android:textSize="10sp"
+            android:textAlignment="gravity"
+            android:gravity="center_horizontal"
+            android:clickable="true"
+            android:focusable="true"
+            />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/club_right_post_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="@drawable/club_home_post"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/club_right_conversation_tv"
-        android:layout_marginStart="@dimen/view_20_dp"
-        android:text="发布"
-        android:textSize="10sp"
-        android:textAlignment="gravity"
-        android:gravity="center_horizontal"
-        android:clickable="true"
-        android:focusable="true"
-        />
+        <com.common.view.ex.ExTextView
+            android:id="@+id/club_right_post_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/club_home_post_photo"
+            android:layout_marginEnd="@dimen/view_20_dp"
+            android:text="照片"
+            android:textSize="10sp"
+            android:textAlignment="gravity"
+            android:gravity="center_horizontal"
+            android:clickable="true"
+            android:focusable="true"
+            />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/club_right_post_opus_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/club_home_post_opus"
+            android:layout_marginEnd="@dimen/view_20_dp"
+            android:text="作品"
+            android:textSize="10sp"
+            android:textAlignment="gravity"
+            android:gravity="center_horizontal"
+            android:clickable="true"
+            android:focusable="true"
+            />
+
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

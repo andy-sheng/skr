@@ -135,6 +135,9 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
             applyTv.visibility = View.GONE
             clubRightOpView?.show()
             clubRightOpView?.bindData(clubMemberInfo)
+            clubRightOpView?.setPhotoClickListener {
+                clubPhotoWallView?.goAddPhotoFragment()
+            }
         } else {
             applyTv.visibility = View.VISIBLE
             applyTv.text = "申请加入"
