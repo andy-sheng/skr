@@ -374,11 +374,12 @@ public class RongMsgManager implements RongIM.UserInfoProvider, RongIM.GroupInfo
 
                         @Override
                         public boolean onGetServer(UserInfoModel infoModel) {
-                            //非好友不会弹出消息通知栏 查看是否在免打扰名单中
+
                             if(infoModel != null) {
                                 boolean isNoRemind;
                                 if(message.getConversationType().equals(Conversation.ConversationType.PRIVATE)){
-                                    isNoRemind = infoModel.isFriend() && NoRemindManager.INSTANCE.isFriendNoRemind(infoModel.getUserId());
+                                    //非好友不会弹出消息通知栏 查看是否在免打扰名单中
+                                    isNoRemind = !infoModel.isFriend() || NoRemindManager.INSTANCE.isFriendNoRemind(infoModel.getUserId());
                                 }else{
                                     //
                                     RongClubMsgEvent event = new RongClubMsgEvent(content, infoModel, message.getConversationType().getName());

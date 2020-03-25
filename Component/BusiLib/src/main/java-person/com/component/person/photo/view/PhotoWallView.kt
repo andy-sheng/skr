@@ -214,7 +214,7 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
         mPhotoCorePresenter?.destroy()
     }
 
-    fun destory() {
+    fun destroy() {
 
     }
 }

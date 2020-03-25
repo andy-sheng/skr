@@ -1,9 +1,7 @@
 package com.component.person.photo.presenter
 
 import android.os.Handler
-
 import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseFragment
@@ -14,20 +12,16 @@ import com.common.log.MyLog
 import com.common.rxretrofit.*
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
-import com.common.upload.UploadTask
 import com.common.utils.U
 import com.component.person.photo.manager.PhotoDataManager
-import com.respicker.model.ImageItem
 import com.component.person.photo.model.PhotoModel
 import com.component.person.photo.view.IPhotoWallView
-
-import java.util.ArrayList
-import java.util.HashMap
-
+import com.respicker.model.ImageItem
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import java.util.*
 
-class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragment: BaseFragment) {
+open class PhotoCorePresenter(var mView: IPhotoWallView, private var mFragment: BaseFragment?) {
 
     val TAG = "PhotoCorePresenter"
 
@@ -63,7 +57,7 @@ class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragme
     }
 
     @JvmOverloads
-    fun getPhotos(offset: Int, cnt: Int, callback: Callback<List<PhotoModel>>? = null) {
+    open fun getPhotos(offset: Int, cnt: Int, callback: Callback<List<PhotoModel>>? = null) {
         MyLog.d(TAG, "getPhotos offset=$offset cnt=$cnt callback=$callback")
         ApiMethods.subscribe(mUserInfoServerApi.getPhotos(MyUserInfoManager.uid.toInt().toLong(), offset, cnt), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult?) {
