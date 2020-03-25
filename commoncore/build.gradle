@@ -32,6 +32,7 @@ android {
             java.srcDirs += 'src/main/java-notification'
 
 //            aidl.srcDirs += 'src/main/java-webview'
+            java.srcDirs += 'src/main/java-gt3'
 
             if(MiLianYun.toBoolean()) {
                 java.srcDirs += 'src/main/java-miLianYun'
@@ -96,6 +97,8 @@ dependencies {
         implementation files('libs/protobuf-java-2.6.1.jar')
         implementation files('libs/org.apache.http.legacy.jar')
     }
+    implementation (name:'geetest_sensebot_android_v4.1.8.1_20200317', ext:'aar')
+
 }
 
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录

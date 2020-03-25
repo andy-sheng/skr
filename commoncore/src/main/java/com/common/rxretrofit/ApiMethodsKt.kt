@@ -13,7 +13,7 @@ import retrofit2.await
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-val requestMap = ArrayMap<String, Call<ApiResult>>()
+val requestMap = ArrayMap<String, Call<out Any>>()
 
 const val ERROR_NETWORK_BROKEN = -2
 const val ERROR_JOB_CANCELED = -3
@@ -112,7 +112,7 @@ private suspend fun subscribe(apiKey: String? = null, api: () -> Call<ApiResult>
 }
 
 @Suppress("BlockingMethodInNonBlockingContext")
-private suspend fun callReal(apiKey: String?, api: () -> Call<ApiResult>, syncMode: Boolean): ApiResult {
+private suspend fun <T:Any> callReal(apiKey: String?, api: () -> Call<T>, syncMode: Boolean): T {
     MyLog.d("ApiObserverKt", "$apiKey 开始请求")
     try {
         val call = api.invoke()
