@@ -2,8 +2,10 @@ package com.module.club.homepage.utils
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.drawable.DrawableCreator
+import com.module.club.R
 import com.zq.live.proto.Common.EClubMemberRoleType
 
 object ClubRoleUtils {
@@ -13,7 +15,7 @@ object ClubRoleUtils {
             EClubMemberRoleType.ECMRT_Founder.value -> leaderDrawable
             EClubMemberRoleType.ECMRT_CoFounder.value -> secondLeaderDrawable
             EClubMemberRoleType.ECMRT_Hostman.value -> hostDrawable
-            else -> null
+            else -> memberDrawable
         }
     }
 
@@ -22,25 +24,31 @@ object ClubRoleUtils {
             EClubMemberRoleType.ECMRT_Founder.value -> leaderTextColor
             EClubMemberRoleType.ECMRT_CoFounder.value -> secondLeaderTextColor
             EClubMemberRoleType.ECMRT_Hostman.value -> hostTextColor
-            else -> null
+            else -> memberTextColor
         }
     }
 
-    val leaderDrawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#FFB02C"))
+    private val leaderDrawable: Drawable = DrawableCreator.Builder()
+            .setGradientColor(Color.parseColor("#FF9C72"), Color.parseColor("#FF7939"))
             .setCornersRadius(4.dp().toFloat())
             .build()
-    val leaderTextColor = Color.parseColor("#8B572A")
+    private val leaderTextColor = Color.parseColor("#ccffffff")
 
-    val secondLeaderDrawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#FFD287"))
+    private val secondLeaderDrawable: Drawable = DrawableCreator.Builder()
+            .setGradientColor(Color.parseColor("#FFD382"), Color.parseColor("#FFAB39"))
             .setCornersRadius(4.dp().toFloat())
             .build()
-    val secondLeaderTextColor = Color.parseColor("#8B572A")
+    private val secondLeaderTextColor = Color.parseColor("#ccffffff")
 
-    val hostDrawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#B8E986"))
+    private val hostDrawable: Drawable = DrawableCreator.Builder()
+            .setGradientColor(Color.parseColor("#A6E6AC"), Color.parseColor("#86D07E"))
             .setCornersRadius(4.dp().toFloat())
             .build()
-    val hostTextColor = Color.parseColor("#417505")
+    private val hostTextColor = Color.parseColor("#ccffffff")
+
+    private val memberDrawable: Drawable = DrawableCreator.Builder()
+            .setGradientColor(Color.parseColor("#C9B4FF"), Color.parseColor("#AC95E6"))
+            .setCornersRadius(4.dp().toFloat())
+            .build()
+    private val memberTextColor = Color.parseColor("#ccffffff")
 }

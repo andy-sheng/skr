@@ -232,7 +232,7 @@
                                     android:id="@+id/member_tv"
                                     android:layout_width="@dimen/view_88_dp"
                                     android:layout_height="@dimen/view_36_dp"
-                                    android:drawableLeft="@drawable/club_home_member"
+                                    android:drawableLeft="@drawable/club_home_intro"
                                     android:gravity="center"
                                     android:paddingLeft="@dimen/view_12_dp"
                                     android:text="成员"

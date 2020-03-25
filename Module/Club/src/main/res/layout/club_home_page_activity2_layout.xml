@@ -180,7 +180,7 @@
                             android:paddingLeft="@dimen/view_10_dp"
                             android:paddingRight="@dimen/view_24_dp"
                             android:text="金牌家族"
-                            android:textColor="@color/white"
+                            android:textColor="@color/white_trans_80"
                             android:textSize="@dimen/textsize_12_dp"
                             android:textStyle="bold"
                             app:bl_corners_radius="@dimen/view_16_dp"
@@ -195,11 +195,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/view_24_dp"
                             android:layout_marginLeft="@dimen/view_10_dp"
+                            android:drawableLeft="@drawable/club_home_contr"
+                            android:drawablePadding="@dimen/view_5_dp"
                             android:gravity="center"
                             android:paddingLeft="@dimen/view_10_dp"
-                            android:paddingRight="@dimen/view_24_dp"
-                            android:text="贡献帮"
-                            android:textColor="@color/white"
+                            android:paddingRight="@dimen/view_36_dp"
+                            android:text="贡献榜"
+                            android:textColor="@color/white_trans_80"
                             android:textSize="@dimen/textsize_12_dp"
                             android:textStyle="bold"
                             app:bl_corners_radius="@dimen/view_16_dp"
@@ -207,6 +209,15 @@
                             app:bl_solid_color="@color/black_trans_50"
                             app:layout_constraintLeft_toRightOf="@id/club_level_tv"
                             app:layout_constraintTop_toTopOf="@id/club_level_tv" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/view_20_dp"
+                            android:background="@drawable/person_right_arrow_white"
+                            app:layout_constraintBottom_toBottomOf="@id/club_contri_tv"
+                            app:layout_constraintRight_toRightOf="@id/club_contri_tv"
+                            app:layout_constraintTop_toTopOf="@id/club_contri_tv" />
 
                         <TextView
                             android:id="@+id/apply_tv"
