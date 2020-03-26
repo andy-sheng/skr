@@ -20,7 +20,9 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
-public class GiftBigAnimationView {
+import org.jetbrains.annotations.NotNull;
+
+public class GiftBigAnimationView implements GiftBaseAnimationView{
 
     public final String TAG = "GiftBigAnimationView";
 
@@ -30,7 +32,7 @@ public class GiftBigAnimationView {
     static final int STATUS_PLAYING = 2;
     int mStatus = STATUS_IDLE;
 
-    Listener mListener;
+    GiftBaseAnimationView.Listener mListener;
 
     SVGAImageView mSVGAImageView;
     GiftPlayModel mGiftPlayModel;
@@ -49,11 +51,12 @@ public class GiftBigAnimationView {
         init();
     }
 
-    private void init() {
+    public void init() {
         mSVGAImageView = new SVGAImageView(U.app());
     }
 
-    public void play(RelativeLayout parent, GiftPlayModel giftPlayModel) {
+    @Override
+    public void play(ViewGroup parent, GiftPlayModel giftPlayModel) {
         // TODO: 2019/5/8  播放动画 差个偏移量
         mGiftPlayModel = giftPlayModel;
         BaseGift baseGift = mGiftPlayModel.getGift();
@@ -68,7 +71,7 @@ public class GiftBigAnimationView {
         }
     }
 
-    private void load(RelativeLayout parent, String url, AnimationGift.AnimationPrams animationPrams) {
+    private void load(ViewGroup parent, String url, AnimationGift.AnimationPrams animationPrams) {
         if (TextUtils.isEmpty(url)) {
             onFinish();
             return;
@@ -86,7 +89,7 @@ public class GiftBigAnimationView {
         });
     }
 
-    private void onLoadComplete(RelativeLayout parent, AnimationGift.AnimationPrams animationPrams, SVGAVideoEntity videoItem) {
+    private void onLoadComplete(ViewGroup parent, AnimationGift.AnimationPrams animationPrams, SVGAVideoEntity videoItem) {
         SVGADrawable drawable = new SVGADrawable(videoItem);
         if (parent.indexOfChild(mSVGAImageView) < 0) {
             // 确定尺寸和位置
@@ -207,10 +210,6 @@ public class GiftBigAnimationView {
         return mStatus == STATUS_IDLE;
     }
 
-    public void setListener(Listener listener) {
-        mListener = listener;
-    }
-
     public void destroy() {
         if (mSVGAImageView != null) {
             mSVGAImageView.setCallback(null);
@@ -223,6 +222,11 @@ public class GiftBigAnimationView {
         if (mSVGAImageView != null) {
             mSVGAImageView.stopAnimation(true);
         }
+    }
+
+    @Override
+    public void setListener(@NotNull GiftBaseAnimationView.Listener listener) {
+        this.mListener = listener;
     }
 
     public interface Listener {

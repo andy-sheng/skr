@@ -29,7 +29,7 @@ public class GiftOverlayAnimationViewGroup extends RelativeLayout {
 
     static final int MAX_CONSUMER_NUM = 3;
 
-    private List<GiftOverlayAnimationView> mFeedGiftAnimationViews = new ArrayList<>(MAX_CONSUMER_NUM);
+    private List<GiftBaseAnimationView> mFeedGiftAnimationViews = new ArrayList<>(MAX_CONSUMER_NUM);
     private BaseRoomData mRoomData;
 
     public GiftOverlayAnimationViewGroup(Context context) {
@@ -47,15 +47,15 @@ public class GiftOverlayAnimationViewGroup extends RelativeLayout {
         init(context);
     }
 
-    ObjectPlayControlTemplate<GiftPlayModel, GiftOverlayAnimationView> mGiftPlayControlTemplate = new ObjectPlayControlTemplate<GiftPlayModel, GiftOverlayAnimationView>() {
+    ObjectPlayControlTemplate<GiftPlayModel, GiftBaseAnimationView> mGiftPlayControlTemplate = new ObjectPlayControlTemplate<GiftPlayModel, GiftBaseAnimationView>() {
 
         @Override
-        protected GiftOverlayAnimationView accept(GiftPlayModel cur) {
+        protected GiftBaseAnimationView accept(GiftPlayModel cur) {
             return isIdle();
         }
 
         @Override
-        public void onStart(GiftPlayModel model, GiftOverlayAnimationView giftBigAnimationView) {
+        public void onStart(GiftPlayModel model, GiftBaseAnimationView giftBigAnimationView) {
             giftBigAnimationView.play(GiftOverlayAnimationViewGroup.this, model);
         }
 
@@ -88,22 +88,22 @@ public class GiftOverlayAnimationViewGroup extends RelativeLayout {
         super.onDetachedFromWindow();
         EventBus.getDefault().unregister(this);
         mGiftPlayControlTemplate.destroy();
-        for (GiftOverlayAnimationView giftBigAnimationView : mFeedGiftAnimationViews) {
+        for (GiftBaseAnimationView giftBigAnimationView : mFeedGiftAnimationViews) {
             giftBigAnimationView.destroy();
         }
     }
 
-    private GiftOverlayAnimationView isIdle() {
-        for (GiftOverlayAnimationView giftContinuousView : mFeedGiftAnimationViews) {
+    private GiftBaseAnimationView isIdle() {
+        for (GiftBaseAnimationView giftContinuousView : mFeedGiftAnimationViews) {
             if (giftContinuousView.isIdle()) {
                 return giftContinuousView;
             }
         }
         if (mFeedGiftAnimationViews.size() < MAX_CONSUMER_NUM) {
             GiftOverlayAnimationView giftBigAnimationView = new GiftOverlayAnimationView(getContext());
-            giftBigAnimationView.setListener(new GiftOverlayAnimationView.Listener() {
+            giftBigAnimationView.setListener(new GiftBaseAnimationView.Listener() {
                 @Override
-                public void onFinished(GiftOverlayAnimationView giftBigAnimationView, GiftPlayModel giftPlayModel) {
+                public void onFinished(GiftBaseAnimationView giftBigAnimationView, GiftPlayModel giftPlayModel) {
                     //把view移除
                     mGiftPlayControlTemplate.endCurrent(giftPlayModel);
                 }

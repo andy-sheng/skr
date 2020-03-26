@@ -42,6 +42,7 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
 
     private OnCompletionListener mOnCompletionListener;
 
+
     public interface OnCompletionListener {
         void onCompletion(ZqAnimatedVideoPlayer player);
     }
@@ -59,6 +60,7 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
         mMediaPlayer.setOnPreparedListener(mOnMediaPlayerPreparedListener);
         mMediaPlayer.setOnCompletionListener(mOnMediaPlayerCompletionListener);
         mMediaPlayer.setOnSeekCompleteListener(mOnMediaPlayerSeekCompleteListener);
+        mMediaPlayer.setOnErrorListener(mOnErrorListener);
 
         mImgTexSrcPin.connect(mImgTexAlphaFrameFilter.getSinkPin());
         mImgTexAlphaFrameFilter.getSrcPin().connect(mImgTexScaleFilter.getSinkPin());
@@ -143,6 +145,11 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
         mImgTexSrcPin.onFormatChanged(mImgTexFormat);
 
         mMediaPlayer.start();
+    };
+
+    private MediaPlayer.OnErrorListener mOnErrorListener = (mp, what, extra) -> {
+        Log.d(TAG, "mOnErrorListener: " + what + " " + extra);
+        return false;
     };
 
     private MediaPlayer.OnCompletionListener mOnMediaPlayerCompletionListener = mp -> {
