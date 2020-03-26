@@ -1,7 +1,5 @@
 package com.module.playways.room.gift.model;
 
-import android.text.TextUtils;
-
 import com.module.playways.room.gift.GiftDB;
 
 import java.io.Serializable;
@@ -29,7 +27,10 @@ public class GiftServerModel implements Serializable {
     private String giftURL;
     private int price;
     private String sourceURL;
-    private String sourceURL2;
+    private String sourceBaseURL; // 礼物资源URL前缀
+    private String sourceMp4;  // mp4格式
+    private String sourceH265; // h256格式，ios13用
+    private Boolean noticeAll; // 是否飘屏
     private int sortID;
     private int giftType;
     private boolean canContinue;
@@ -40,6 +41,7 @@ public class GiftServerModel implements Serializable {
     private int displayType;
     private String extra;
     private int balance;
+
 
     public int getBalance() {
         return balance;
@@ -85,12 +87,36 @@ public class GiftServerModel implements Serializable {
         return sourceURL;
     }
 
-    public String getSourceURL2() {
-        return sourceURL2;
+    public String getSourceBaseURL() {
+        return sourceBaseURL;
     }
 
-    public void setSourceURL2(String sourceURL2) {
-        this.sourceURL2 = sourceURL2;
+    public void setSourceBaseURL(String sourceBaseURL) {
+        this.sourceBaseURL = sourceBaseURL;
+    }
+
+    public String getSourceMp4() {
+        return sourceMp4;
+    }
+
+    public void setSourceMp4(String sourceMp4) {
+        this.sourceMp4 = sourceMp4;
+    }
+
+    public String getSourceH265() {
+        return sourceH265;
+    }
+
+    public void setSourceH265(String sourceH265) {
+        this.sourceH265 = sourceH265;
+    }
+
+    public Boolean getNoticeAll() {
+        return noticeAll;
+    }
+
+    public void setNoticeAll(Boolean noticeAll) {
+        this.noticeAll = noticeAll;
     }
 
     public int getSortID() {
@@ -182,7 +208,10 @@ public class GiftServerModel implements Serializable {
         giftDB.setSortID(giftServerModel.getSortID());
         giftDB.setDescription(giftServerModel.getDescription());
         giftDB.setSourceURL(giftServerModel.getSourceURL());
-        giftDB.setSourceURL2(giftServerModel.getSourceURL2());
+        giftDB.setSourceBaseURL(giftServerModel.getSourceBaseURL());
+        giftDB.setSourceMp4(giftServerModel.getSourceMp4());
+        giftDB.setSourceH265(giftServerModel.getSourceH265());
+        giftDB.setNoticeAll(giftServerModel.getNoticeAll());
         giftDB.setPlay(giftServerModel.isPlay());
         giftDB.setDisplayType(giftServerModel.getDisplayType());
         giftDB.setExtra(giftServerModel.getExtra());

@@ -1,8 +1,6 @@
 package com.module.playways.room.room.gift
 
 import android.content.Context
-import android.media.MediaMetadataRetriever
-import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
@@ -29,6 +27,8 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
     private lateinit var mGiftPlayModel: GiftPlayModel
     private var mTextureView:TextureView = TextureView(context)
     private val mPlayer:ZqAnimatedVideoPlayer = ZqAnimatedVideoPlayer()
+
+    internal val TRANSPARENT_VIDEO_SIZE_RATE = 2
 
     internal val STATUS_IDLE = 1
     internal val STATUS_PLAYING = 2
@@ -62,13 +62,12 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
 
     override fun play(parentView: ViewGroup, giftPlayModel: GiftPlayModel) {
         mGiftPlayModel = giftPlayModel
-        val baseGift = mGiftPlayModel.getGift()
+        val baseGift = mGiftPlayModel.gift
 
         if (baseGift is AnimationGift) {
-            val animationGift = baseGift as AnimationGift
-            val giftParamModel = animationGift.animationPrams
+            val giftParamModel = baseGift.animationPrams
             mStatus = STATUS_PLAYING
-            load(parentView, animationGift.sourceURL2, giftParamModel)
+            load(parentView, "${baseGift.sourceBaseURL}${baseGift.sourceMp4}", giftParamModel)
             mUiHanlder.removeMessages(MSG_ENSURE_FINISH)
             //视频结束时间容错，防止一直不结束
             mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_FINISH, giftParamModel.duration + 5000)
@@ -76,7 +75,7 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
     }
 
     override fun isSupport(giftPlayModel: GiftPlayModel): Boolean {
-        val source = giftPlayModel.gift.sourceURL2
+        val source = giftPlayModel.gift.sourceMp4
         return source != null && !TextUtils.isEmpty(source)
     }
 
@@ -99,15 +98,16 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
         MyLog.d(TAG, "获取视频礼物动画: $url")
 
         MainScope().launch (Dispatchers.IO){
-            val retriever = MediaMetadataRetriever()
+//            val retriever = MediaMetadataRetriever()
+//
+//            retriever.setDataSource(context, Uri.parse("/sdcard/animated.mp4"))
 
-            retriever.setDataSource(context, Uri.parse("/sdcard/animated.mp4"))
-
-            val wVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)
-            val hVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)
+//            val wVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)
+//            val hVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)
 
             MainScope().launch (Dispatchers.Main){
-                onLoadComplete(parent, "/sdcard/animated.mp4", animationPrams, Pair(wVideo.toDouble(), hVideo.toDouble()))
+                // TODO 临时使用本地固定视频地址，服务端修改后使用服务端地址
+                onLoadComplete(parent, "/sdcard/animated.mp4", animationPrams, Pair(animationPrams.width.toDouble(), animationPrams.height.toDouble()))
             }
         }
     }
@@ -124,7 +124,7 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
                     // 横向平铺
                     if (realWidth != 0.0) {
                         //透明视频分为两部分 各存储一部分信息 非全屏状态 分辨率要乘二倍
-                        val width = U.getDisplayUtils().screenWidth * 2
+                        val width = U.getDisplayUtils().screenWidth * TRANSPARENT_VIDEO_SIZE_RATE
                         val height = (realHeight * (width / realWidth)).toInt()
                         val lp = RelativeLayout.LayoutParams(width, height)
 
@@ -150,7 +150,7 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
                 } else {
                     // 纵向平铺
                     if (realHeight != 0.0) {
-                        val height = U.getDisplayUtils().screenHeight
+                        val height = U.getDisplayUtils().screenHeight * 2
                         val width = (realWidth * height / realHeight).toInt()
                         val lp = RelativeLayout.LayoutParams(width, height)
 

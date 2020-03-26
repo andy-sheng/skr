@@ -56,9 +56,13 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
 
   public static final Integer DEFAULT_BALANCE = 0;
 
-  public static final String DEFAULT_SOURCEURL2 = "";
-
   public static final Boolean DEFAULT_NOTICEALL = false;
+
+  public static final String DEFAULT_SOURCEBASEURL = "";
+
+  public static final String DEFAULT_SOURCEMP4 = "";
+
+  public static final String DEFAULT_SOURCEH265 = "";
 
   /**
    * 礼物id
@@ -187,34 +191,54 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
   private final Integer balance;
 
   /**
-   * 礼物资源，使用效果, mp4格式
+   * 是否飘屏
    */
   @WireField(
       tag = 16,
-      adapter = "com.squareup.wire.ProtoAdapter#STRING"
-  )
-  private final String sourceURL2;
-
-  /**
-   * 是否飘
-   */
-  @WireField(
-      tag = 17,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
   private final Boolean noticeAll;
 
+  /**
+   * 礼物资源URL前缀
+   */
+  @WireField(
+      tag = 17,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String sourceBaseURL;
+
+  /**
+   * mp4格式
+   */
+  @WireField(
+      tag = 18,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String sourceMp4;
+
+  /**
+   * h256格式，ios13用
+   */
+  @WireField(
+      tag = 19,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String sourceH265;
+
   public GiftInfo(Integer giftID, String giftName, String giftURL, Long price, String sourceURL,
       Integer sortID, EGiftType giftType, Boolean canContinue, String description, Float realPrice,
       Boolean play, Integer textContinueCount, EGiftDisplayType displayType, GiftExtraInfo extra,
-      Integer balance, String sourceURL2, Boolean noticeAll) {
-    this(giftID, giftName, giftURL, price, sourceURL, sortID, giftType, canContinue, description, realPrice, play, textContinueCount, displayType, extra, balance, sourceURL2, noticeAll, ByteString.EMPTY);
+      Integer balance, Boolean noticeAll, String sourceBaseURL, String sourceMp4,
+      String sourceH265) {
+    this(giftID, giftName, giftURL, price, sourceURL, sortID, giftType, canContinue, description, realPrice, play, textContinueCount, displayType, extra, balance, noticeAll, sourceBaseURL, sourceMp4, sourceH265, ByteString.EMPTY);
   }
 
   public GiftInfo(Integer giftID, String giftName, String giftURL, Long price, String sourceURL,
       Integer sortID, EGiftType giftType, Boolean canContinue, String description, Float realPrice,
       Boolean play, Integer textContinueCount, EGiftDisplayType displayType, GiftExtraInfo extra,
-      Integer balance, String sourceURL2, Boolean noticeAll, ByteString unknownFields) {
+      Integer balance, Boolean noticeAll, String sourceBaseURL, String sourceMp4, String sourceH265,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.giftID = giftID;
     this.giftName = giftName;
@@ -231,8 +255,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     this.displayType = displayType;
     this.extra = extra;
     this.balance = balance;
-    this.sourceURL2 = sourceURL2;
     this.noticeAll = noticeAll;
+    this.sourceBaseURL = sourceBaseURL;
+    this.sourceMp4 = sourceMp4;
+    this.sourceH265 = sourceH265;
   }
 
   @Override
@@ -253,8 +279,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     builder.displayType = displayType;
     builder.extra = extra;
     builder.balance = balance;
-    builder.sourceURL2 = sourceURL2;
     builder.noticeAll = noticeAll;
+    builder.sourceBaseURL = sourceBaseURL;
+    builder.sourceMp4 = sourceMp4;
+    builder.sourceH265 = sourceH265;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -280,8 +308,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
         && Internal.equals(displayType, o.displayType)
         && Internal.equals(extra, o.extra)
         && Internal.equals(balance, o.balance)
-        && Internal.equals(sourceURL2, o.sourceURL2)
-        && Internal.equals(noticeAll, o.noticeAll);
+        && Internal.equals(noticeAll, o.noticeAll)
+        && Internal.equals(sourceBaseURL, o.sourceBaseURL)
+        && Internal.equals(sourceMp4, o.sourceMp4)
+        && Internal.equals(sourceH265, o.sourceH265);
   }
 
   @Override
@@ -304,8 +334,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
       result = result * 37 + (displayType != null ? displayType.hashCode() : 0);
       result = result * 37 + (extra != null ? extra.hashCode() : 0);
       result = result * 37 + (balance != null ? balance.hashCode() : 0);
-      result = result * 37 + (sourceURL2 != null ? sourceURL2.hashCode() : 0);
       result = result * 37 + (noticeAll != null ? noticeAll.hashCode() : 0);
+      result = result * 37 + (sourceBaseURL != null ? sourceBaseURL.hashCode() : 0);
+      result = result * 37 + (sourceMp4 != null ? sourceMp4.hashCode() : 0);
+      result = result * 37 + (sourceH265 != null ? sourceH265.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -329,8 +361,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     if (displayType != null) builder.append(", displayType=").append(displayType);
     if (extra != null) builder.append(", extra=").append(extra);
     if (balance != null) builder.append(", balance=").append(balance);
-    if (sourceURL2 != null) builder.append(", sourceURL2=").append(sourceURL2);
     if (noticeAll != null) builder.append(", noticeAll=").append(noticeAll);
+    if (sourceBaseURL != null) builder.append(", sourceBaseURL=").append(sourceBaseURL);
+    if (sourceMp4 != null) builder.append(", sourceMp4=").append(sourceMp4);
+    if (sourceH265 != null) builder.append(", sourceH265=").append(sourceH265);
     return builder.replace(0, 2, "GiftInfo{").append('}').toString();
   }
 
@@ -486,23 +520,43 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
   }
 
   /**
-   * 礼物资源，使用效果, mp4格式
-   */
-  public String getSourceURL2() {
-    if(sourceURL2==null){
-        return DEFAULT_SOURCEURL2;
-    }
-    return sourceURL2;
-  }
-
-  /**
-   * 是否飘
+   * 是否飘屏
    */
   public Boolean getNoticeAll() {
     if(noticeAll==null){
         return DEFAULT_NOTICEALL;
     }
     return noticeAll;
+  }
+
+  /**
+   * 礼物资源URL前缀
+   */
+  public String getSourceBaseURL() {
+    if(sourceBaseURL==null){
+        return DEFAULT_SOURCEBASEURL;
+    }
+    return sourceBaseURL;
+  }
+
+  /**
+   * mp4格式
+   */
+  public String getSourceMp4() {
+    if(sourceMp4==null){
+        return DEFAULT_SOURCEMP4;
+    }
+    return sourceMp4;
+  }
+
+  /**
+   * h256格式，ios13用
+   */
+  public String getSourceH265() {
+    if(sourceH265==null){
+        return DEFAULT_SOURCEH265;
+    }
+    return sourceH265;
   }
 
   /**
@@ -602,17 +656,31 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
   }
 
   /**
-   * 礼物资源，使用效果, mp4格式
-   */
-  public boolean hasSourceURL2() {
-    return sourceURL2!=null;
-  }
-
-  /**
-   * 是否飘
+   * 是否飘屏
    */
   public boolean hasNoticeAll() {
     return noticeAll!=null;
+  }
+
+  /**
+   * 礼物资源URL前缀
+   */
+  public boolean hasSourceBaseURL() {
+    return sourceBaseURL!=null;
+  }
+
+  /**
+   * mp4格式
+   */
+  public boolean hasSourceMp4() {
+    return sourceMp4!=null;
+  }
+
+  /**
+   * h256格式，ios13用
+   */
+  public boolean hasSourceH265() {
+    return sourceH265!=null;
   }
 
   public static final class Builder extends Message.Builder<GiftInfo, Builder> {
@@ -646,9 +714,13 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
 
     private Integer balance;
 
-    private String sourceURL2;
-
     private Boolean noticeAll;
+
+    private String sourceBaseURL;
+
+    private String sourceMp4;
+
+    private String sourceH265;
 
     public Builder() {
     }
@@ -765,24 +837,40 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     }
 
     /**
-     * 礼物资源，使用效果, mp4格式
-     */
-    public Builder setSourceURL2(String sourceURL2) {
-      this.sourceURL2 = sourceURL2;
-      return this;
-    }
-
-    /**
-     * 是否飘
+     * 是否飘屏
      */
     public Builder setNoticeAll(Boolean noticeAll) {
       this.noticeAll = noticeAll;
       return this;
     }
 
+    /**
+     * 礼物资源URL前缀
+     */
+    public Builder setSourceBaseURL(String sourceBaseURL) {
+      this.sourceBaseURL = sourceBaseURL;
+      return this;
+    }
+
+    /**
+     * mp4格式
+     */
+    public Builder setSourceMp4(String sourceMp4) {
+      this.sourceMp4 = sourceMp4;
+      return this;
+    }
+
+    /**
+     * h256格式，ios13用
+     */
+    public Builder setSourceH265(String sourceH265) {
+      this.sourceH265 = sourceH265;
+      return this;
+    }
+
     @Override
     public GiftInfo build() {
-      return new GiftInfo(giftID, giftName, giftURL, price, sourceURL, sortID, giftType, canContinue, description, realPrice, play, textContinueCount, displayType, extra, balance, sourceURL2, noticeAll, super.buildUnknownFields());
+      return new GiftInfo(giftID, giftName, giftURL, price, sourceURL, sortID, giftType, canContinue, description, realPrice, play, textContinueCount, displayType, extra, balance, noticeAll, sourceBaseURL, sourceMp4, sourceH265, super.buildUnknownFields());
     }
   }
 
@@ -808,8 +896,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
           + EGiftDisplayType.ADAPTER.encodedSizeWithTag(13, value.displayType)
           + GiftExtraInfo.ADAPTER.encodedSizeWithTag(14, value.extra)
           + ProtoAdapter.UINT32.encodedSizeWithTag(15, value.balance)
-          + ProtoAdapter.STRING.encodedSizeWithTag(16, value.sourceURL2)
-          + ProtoAdapter.BOOL.encodedSizeWithTag(17, value.noticeAll)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(16, value.noticeAll)
+          + ProtoAdapter.STRING.encodedSizeWithTag(17, value.sourceBaseURL)
+          + ProtoAdapter.STRING.encodedSizeWithTag(18, value.sourceMp4)
+          + ProtoAdapter.STRING.encodedSizeWithTag(19, value.sourceH265)
           + value.unknownFields().size();
     }
 
@@ -830,8 +920,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
       EGiftDisplayType.ADAPTER.encodeWithTag(writer, 13, value.displayType);
       GiftExtraInfo.ADAPTER.encodeWithTag(writer, 14, value.extra);
       ProtoAdapter.UINT32.encodeWithTag(writer, 15, value.balance);
-      ProtoAdapter.STRING.encodeWithTag(writer, 16, value.sourceURL2);
-      ProtoAdapter.BOOL.encodeWithTag(writer, 17, value.noticeAll);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 16, value.noticeAll);
+      ProtoAdapter.STRING.encodeWithTag(writer, 17, value.sourceBaseURL);
+      ProtoAdapter.STRING.encodeWithTag(writer, 18, value.sourceMp4);
+      ProtoAdapter.STRING.encodeWithTag(writer, 19, value.sourceH265);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -870,8 +962,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
           }
           case 14: builder.setExtra(GiftExtraInfo.ADAPTER.decode(reader)); break;
           case 15: builder.setBalance(ProtoAdapter.UINT32.decode(reader)); break;
-          case 16: builder.setSourceURL2(ProtoAdapter.STRING.decode(reader)); break;
-          case 17: builder.setNoticeAll(ProtoAdapter.BOOL.decode(reader)); break;
+          case 16: builder.setNoticeAll(ProtoAdapter.BOOL.decode(reader)); break;
+          case 17: builder.setSourceBaseURL(ProtoAdapter.STRING.decode(reader)); break;
+          case 18: builder.setSourceMp4(ProtoAdapter.STRING.decode(reader)); break;
+          case 19: builder.setSourceH265(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

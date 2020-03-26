@@ -196,8 +196,10 @@ message GiftInfo
     EGiftDisplayType displayType = 13;
     GiftExtraInfo extra          = 14;
     uint32 balance               = 15; //剩余数目
-    string sourceURL2            = 16; //礼物资源，使用效果, mp4格式
-    bool noticeAll               = 17; //是否飘
+    bool noticeAll               = 16; //是否飘屏
+    string sourceBaseURL         = 17; //礼物资源URL前缀
+    string sourceMp4             = 18; //mp4格式
+    string sourceH265            = 19; //h256格式，ios13用
 }
 
 

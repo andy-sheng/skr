@@ -193,7 +193,7 @@ public class GiftOverlayAnimationView implements GiftBaseAnimationView{
 
     @Override
     public boolean isSupport(@NotNull GiftPlayModel giftPlayModel) {
-        String source = giftPlayModel.getGift().getSourceURL2();
+        String source = giftPlayModel.getGift().getSourceMp4();
         return source == null || TextUtils.isEmpty(source);
     }
 

@@ -28,13 +28,17 @@ public class GiftDB implements Serializable {
     private Integer textContinueCount;
     private Integer displayType;
     private String extra;
-    private String sourceURL2;
-    @Generated(hash = 228631418)
+    private String sourceBaseURL; // 礼物资源URL前缀
+    private String sourceMp4;  // mp4格式
+    private String sourceH265; // h256格式，ios13用
+    private Boolean noticeAll; // 是否飘屏
+    @Generated(hash = 2023922111)
     public GiftDB(Long giftID, Boolean canContinue, String description,
             String giftName, Integer giftType, String giftURL, Integer price,
             Integer sortID, String sourceURL, Float realPrice, Boolean play,
             Integer textContinueCount, Integer displayType, String extra,
-            String sourceURL2) {
+            String sourceBaseURL, String sourceMp4, String sourceH265,
+            Boolean noticeAll) {
         this.giftID = giftID;
         this.canContinue = canContinue;
         this.description = description;
@@ -49,7 +53,10 @@ public class GiftDB implements Serializable {
         this.textContinueCount = textContinueCount;
         this.displayType = displayType;
         this.extra = extra;
-        this.sourceURL2 = sourceURL2;
+        this.sourceBaseURL = sourceBaseURL;
+        this.sourceMp4 = sourceMp4;
+        this.sourceH265 = sourceH265;
+        this.noticeAll = noticeAll;
     }
     @Generated(hash = 2046579016)
     public GiftDB() {
@@ -138,11 +145,29 @@ public class GiftDB implements Serializable {
     public void setExtra(String extra) {
         this.extra = extra;
     }
-    public String getSourceURL2() {
-        return this.sourceURL2;
+    public String getSourceBaseURL() {
+        return this.sourceBaseURL;
     }
-    public void setSourceURL2(String sourceURL2) {
-        this.sourceURL2 = sourceURL2;
+    public void setSourceBaseURL(String sourceBaseURL) {
+        this.sourceBaseURL = sourceBaseURL;
+    }
+    public String getSourceMp4() {
+        return this.sourceMp4;
+    }
+    public void setSourceMp4(String sourceMp4) {
+        this.sourceMp4 = sourceMp4;
+    }
+    public String getSourceH265() {
+        return this.sourceH265;
+    }
+    public void setSourceH265(String sourceH265) {
+        this.sourceH265 = sourceH265;
+    }
+    public Boolean getNoticeAll() {
+        return this.noticeAll;
+    }
+    public void setNoticeAll(Boolean noticeAll) {
+        this.noticeAll = noticeAll;
     }
 
 

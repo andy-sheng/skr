@@ -84,13 +84,13 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
 
         if (mFeedGiftAnimationViews.size() < MAX_CONSUMER_NUM) {
             GiftBaseAnimationView giftBigAnimationView;
-
-            if(cur.getGift().getSourceURL2() == null || TextUtils.isEmpty(cur.getGift().getSourceURL2())){
+            //根据格式使用不同的播发方式
+            if(cur.getGift().getSourceMp4() == null || TextUtils.isEmpty(cur.getGift().getSourceMp4())){
                 giftBigAnimationView = new GiftBigAnimationView(getContext());
                 MyLog.d(TAG, "使用了svga动画：" + cur.getGift().getSourceURL());
             }else{
                 giftBigAnimationView = new GiftBigVideoAnimationView(getContext());
-                MyLog.d(TAG, "使用了视频动画：" + cur.getGift().getSourceURL2());
+                MyLog.d(TAG, "使用了视频动画：" + cur.getGift().getSourceMp4());
             }
 
             giftBigAnimationView.setListener(new GiftBaseAnimationView.Listener() {
@@ -100,7 +100,9 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
                     mGiftPlayControlTemplate.endCurrent(giftPlayModel);
                 }
             });
+
             mFeedGiftAnimationViews.add(giftBigAnimationView);
+
             return giftBigAnimationView;
         }
         return null;

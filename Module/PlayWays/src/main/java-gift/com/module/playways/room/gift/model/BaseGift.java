@@ -29,7 +29,10 @@ public abstract class BaseGift {
     private float realPrice;
     private int sortID;
     private String sourceURL;// 礼物动画资源
-    private String sourceURL2;// 礼物视频动画资源
+    private String sourceBaseURL; // 礼物资源URL前缀
+    private String sourceMp4;  // mp4格式
+    private String sourceH265; // h256格式，ios13用
+    private Boolean noticeAll; // 是否飘屏
     //有没有动画
     private boolean play;
     //连送展示几个，0为不展示，-1，为一直展示，
@@ -129,12 +132,36 @@ public abstract class BaseGift {
         this.sourceURL = sourceURL;
     }
 
-    public String getSourceURL2() {
-        return sourceURL2;
+    public String getSourceBaseURL() {
+        return sourceBaseURL;
     }
 
-    public void setSourceURL2(String sourceURL2) {
-        this.sourceURL2 = sourceURL2;
+    public void setSourceBaseURL(String sourceBaseURL) {
+        this.sourceBaseURL = sourceBaseURL;
+    }
+
+    public String getSourceMp4() {
+        return sourceMp4;
+    }
+
+    public void setSourceMp4(String sourceMp4) {
+        this.sourceMp4 = sourceMp4;
+    }
+
+    public String getSourceH265() {
+        return sourceH265;
+    }
+
+    public void setSourceH265(String sourceH265) {
+        this.sourceH265 = sourceH265;
+    }
+
+    public Boolean getNoticeAll() {
+        return noticeAll;
+    }
+
+    public void setNoticeAll(Boolean noticeAll) {
+        this.noticeAll = noticeAll;
     }
 
     //
@@ -239,7 +266,10 @@ public abstract class BaseGift {
         setSortID(giftServerModel.getSortID());
         setDescription(giftServerModel.getDescription());
         setSourceURL(giftServerModel.getSourceURL());
-        setSourceURL2(giftServerModel.getSourceURL2());
+        setSourceBaseURL(giftServerModel.getSourceBaseURL());
+        setSourceMp4(giftServerModel.getSourceMp4());
+        setSourceH265(giftServerModel.getSourceH265());
+        setNoticeAll(giftServerModel.getNoticeAll());
         setPlay(giftServerModel.isPlay());
         setDisplayType(giftServerModel.getDisplayType());
         setBalance(giftServerModel.getBalance());
@@ -259,7 +289,10 @@ public abstract class BaseGift {
         setSortID(giftDB.getSortID());
         setDescription(giftDB.getDescription());
         setSourceURL(giftDB.getSourceURL());
-        setSourceURL2(giftDB.getSourceURL2());
+        setSourceBaseURL(giftDB.getSourceBaseURL());
+        setSourceMp4(giftDB.getSourceMp4());
+        setSourceH265(giftDB.getSourceH265());
+        setNoticeAll(giftDB.getNoticeAll());
         setPlay(giftDB.getPlay());
         setDisplayType(giftDB.getDisplayType());
 
@@ -279,7 +312,10 @@ public abstract class BaseGift {
         setSortID(giftPB.getSortID());
         setDescription(giftPB.getDescription());
         setSourceURL(giftPB.getSourceURL());
-        setSourceURL2(giftPB.getSourceURL2());
+        setSourceBaseURL(giftPB.getSourceBaseURL());
+        setSourceMp4(giftPB.getSourceMp4());
+        setSourceH265(giftPB.getSourceH265());
+        setNoticeAll(giftPB.getNoticeAll());
         setPlay(giftPB.getPlay());
         setDisplayType(giftPB.getDisplayType().getValue());
 
