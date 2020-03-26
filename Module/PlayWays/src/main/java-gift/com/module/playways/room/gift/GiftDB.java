@@ -28,11 +28,13 @@ public class GiftDB implements Serializable {
     private Integer textContinueCount;
     private Integer displayType;
     private String extra;
-    @Keep
+    private String sourceURL2;
+    @Generated(hash = 228631418)
     public GiftDB(Long giftID, Boolean canContinue, String description,
             String giftName, Integer giftType, String giftURL, Integer price,
             Integer sortID, String sourceURL, Float realPrice, Boolean play,
-            Integer textContinueCount, Integer displayType, String extra) {
+            Integer textContinueCount, Integer displayType, String extra,
+            String sourceURL2) {
         this.giftID = giftID;
         this.canContinue = canContinue;
         this.description = description;
@@ -47,8 +49,9 @@ public class GiftDB implements Serializable {
         this.textContinueCount = textContinueCount;
         this.displayType = displayType;
         this.extra = extra;
+        this.sourceURL2 = sourceURL2;
     }
-    @Keep
+    @Generated(hash = 2046579016)
     public GiftDB() {
     }
     public Long getGiftID() {
@@ -135,6 +138,13 @@ public class GiftDB implements Serializable {
     public void setExtra(String extra) {
         this.extra = extra;
     }
+    public String getSourceURL2() {
+        return this.sourceURL2;
+    }
+    public void setSourceURL2(String sourceURL2) {
+        this.sourceURL2 = sourceURL2;
+    }
+
 
 }
 

@@ -20,15 +20,17 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Random;
 
-public class GiftOverlayAnimationView {
+public class GiftOverlayAnimationView implements GiftBaseAnimationView{
     static final int MSG_ENSURE_FINISH = 91;
 
     static final int STATUS_IDLE = 1;
     static final int STATUS_PLAYING = 2;
     int mStatus = STATUS_IDLE;
-    Listener mListener;
+    GiftBaseAnimationView.Listener mListener;
 
     SVGAImageView mSVGAImageView;
     GiftPlayModel mGiftPlayModel;
@@ -49,11 +51,11 @@ public class GiftOverlayAnimationView {
         init();
     }
 
-    private void init() {
+    public void init() {
         mSVGAImageView = new SVGAImageView(U.app());
     }
 
-    public void play(RelativeLayout parent, GiftPlayModel giftPlayModel) {
+    public void play(ViewGroup parent, GiftPlayModel giftPlayModel) {
         mStatus = STATUS_PLAYING;
         mGiftPlayModel = giftPlayModel;
         String url = null;
@@ -76,7 +78,7 @@ public class GiftOverlayAnimationView {
         mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_FINISH, 5000);
     }
 
-    private void load(String url, RelativeLayout parent, GiftPlayModel giftPlayModel) {
+    private void load(String url, ViewGroup parent, GiftPlayModel giftPlayModel) {
         if (TextUtils.isEmpty(url)) {
             onFinish();
             return;
@@ -94,7 +96,7 @@ public class GiftOverlayAnimationView {
         });
     }
 
-    private void onLoadComplete(SVGAVideoEntity videoItem, RelativeLayout parent, GiftPlayModel giftPlayModel) {
+    private void onLoadComplete(SVGAVideoEntity videoItem, ViewGroup parent, GiftPlayModel giftPlayModel) {
         SVGADrawable drawable = new SVGADrawable(videoItem);
         if (parent.indexOfChild(mSVGAImageView) < 0) {
             int translateX = U.getDisplayUtils().dip2px(mRandom.nextInt(200) - 100);
@@ -172,7 +174,7 @@ public class GiftOverlayAnimationView {
         return mStatus == STATUS_IDLE;
     }
 
-    public void setListener(Listener listener) {
+    public void setListener(GiftBaseAnimationView.Listener listener) {
         mListener = listener;
     }
 
@@ -182,6 +184,17 @@ public class GiftOverlayAnimationView {
             mSVGAImageView.stopAnimation(true);
         }
         mUiHanlder.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
+    public boolean isSupport(@NotNull GiftPlayModel giftPlayModel) {
+        String source = giftPlayModel.getGift().getSourceURL2();
+        return source == null || TextUtils.isEmpty(source);
     }
 
 

@@ -29,6 +29,7 @@ public abstract class BaseGift {
     private float realPrice;
     private int sortID;
     private String sourceURL;// 礼物动画资源
+    private String sourceURL2;// 礼物视频动画资源
     //有没有动画
     private boolean play;
     //连送展示几个，0为不展示，-1，为一直展示，
@@ -127,7 +128,16 @@ public abstract class BaseGift {
     public void setSourceURL(String sourceURL) {
         this.sourceURL = sourceURL;
     }
-//
+
+    public String getSourceURL2() {
+        return sourceURL2;
+    }
+
+    public void setSourceURL2(String sourceURL2) {
+        this.sourceURL2 = sourceURL2;
+    }
+
+    //
 //    public String getExtra() {
 //        return extra;
 //    }
@@ -229,6 +239,7 @@ public abstract class BaseGift {
         setSortID(giftServerModel.getSortID());
         setDescription(giftServerModel.getDescription());
         setSourceURL(giftServerModel.getSourceURL());
+        setSourceURL2(giftServerModel.getSourceURL2());
         setPlay(giftServerModel.isPlay());
         setDisplayType(giftServerModel.getDisplayType());
         setBalance(giftServerModel.getBalance());
@@ -248,6 +259,7 @@ public abstract class BaseGift {
         setSortID(giftDB.getSortID());
         setDescription(giftDB.getDescription());
         setSourceURL(giftDB.getSourceURL());
+        setSourceURL2(giftDB.getSourceURL2());
         setPlay(giftDB.getPlay());
         setDisplayType(giftDB.getDisplayType());
 
@@ -267,6 +279,7 @@ public abstract class BaseGift {
         setSortID(giftPB.getSortID());
         setDescription(giftPB.getDescription());
         setSourceURL(giftPB.getSourceURL());
+        setSourceURL2(giftPB.getSourceURL2());
         setPlay(giftPB.getPlay());
         setDisplayType(giftPB.getDisplayType().getValue());
 

@@ -38,6 +38,7 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
         public final static Property TextContinueCount = new Property(11, Integer.class, "textContinueCount", false, "TEXT_CONTINUE_COUNT");
         public final static Property DisplayType = new Property(12, Integer.class, "displayType", false, "DISPLAY_TYPE");
         public final static Property Extra = new Property(13, String.class, "extra", false, "EXTRA");
+        public final static Property SourceURL2 = new Property(14, String.class, "sourceURL2", false, "SOURCE_URL2");
     }
 
 
@@ -66,7 +67,8 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
                 "\"PLAY\" INTEGER," + // 10: play
                 "\"TEXT_CONTINUE_COUNT\" INTEGER," + // 11: textContinueCount
                 "\"DISPLAY_TYPE\" INTEGER," + // 12: displayType
-                "\"EXTRA\" TEXT);"); // 13: extra
+                "\"EXTRA\" TEXT," + // 13: extra
+                "\"SOURCE_URL2\" TEXT);"); // 14: sourceURL2
     }
 
     /** Drops the underlying database table. */
@@ -148,6 +150,11 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
         if (extra != null) {
             stmt.bindString(14, extra);
         }
+ 
+        String sourceURL2 = entity.getSourceURL2();
+        if (sourceURL2 != null) {
+            stmt.bindString(15, sourceURL2);
+        }
     }
 
     @Override
@@ -223,6 +230,11 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
         if (extra != null) {
             stmt.bindString(14, extra);
         }
+ 
+        String sourceURL2 = entity.getSourceURL2();
+        if (sourceURL2 != null) {
+            stmt.bindString(15, sourceURL2);
+        }
     }
 
     @Override
@@ -246,7 +258,8 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
             cursor.isNull(offset + 10) ? null : cursor.getShort(offset + 10) != 0, // play
             cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // textContinueCount
             cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // displayType
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // extra
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // extra
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14) // sourceURL2
         );
         return entity;
     }
@@ -267,6 +280,7 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
         entity.setTextContinueCount(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
         entity.setDisplayType(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
         entity.setExtra(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setSourceURL2(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
      }
     
     @Override

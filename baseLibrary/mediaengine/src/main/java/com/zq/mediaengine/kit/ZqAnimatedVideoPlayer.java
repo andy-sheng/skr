@@ -41,9 +41,15 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
     private ImgTexScaleFilter mImgTexScaleFilter;
 
     private OnCompletionListener mOnCompletionListener;
+    private OnErrorListener mOnErrorListener;
+
 
     public interface OnCompletionListener {
         void onCompletion(ZqAnimatedVideoPlayer player);
+    }
+
+    public interface OnErrorListener {
+        boolean onError(MediaPlayer mp, int what, int extra);
     }
 
     public ZqAnimatedVideoPlayer() {
@@ -59,6 +65,7 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
         mMediaPlayer.setOnPreparedListener(mOnMediaPlayerPreparedListener);
         mMediaPlayer.setOnCompletionListener(mOnMediaPlayerCompletionListener);
         mMediaPlayer.setOnSeekCompleteListener(mOnMediaPlayerSeekCompleteListener);
+        mMediaPlayer.setOnErrorListener(mOnMediaPlayerErrorListener);
 
         mImgTexSrcPin.connect(mImgTexAlphaFrameFilter.getSinkPin());
         mImgTexAlphaFrameFilter.getSrcPin().connect(mImgTexScaleFilter.getSinkPin());
@@ -72,6 +79,10 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
 
     public void setOnCompletionListener(OnCompletionListener onCompletionListener) {
         mOnCompletionListener = onCompletionListener;
+    }
+
+    public void setOnErrorListener(OnErrorListener onErrorListener){
+        mOnErrorListener = onErrorListener;
     }
 
     public void setDisplay(TextureView textureView) {
@@ -143,6 +154,11 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
         mImgTexSrcPin.onFormatChanged(mImgTexFormat);
 
         mMediaPlayer.start();
+    };
+
+    private MediaPlayer.OnErrorListener mOnMediaPlayerErrorListener = (mp, what, extra) -> {
+        Log.d(TAG, "mOnErrorListener: " + what + " " + extra);
+        return mOnErrorListener != null && mOnErrorListener.onError(mp, what, extra);
     };
 
     private MediaPlayer.OnCompletionListener mOnMediaPlayerCompletionListener = mp -> {
