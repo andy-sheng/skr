@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.common.log.MyLog
 import com.common.utils.U
+import com.common.videocache.MediaCacheManager
 import com.module.playways.room.gift.model.AnimationGift
 import com.module.playways.room.room.gift.model.GiftPlayModel
 import com.zq.mediaengine.kit.ZqAnimatedVideoPlayer
@@ -107,7 +108,9 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
             val hVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)
 
             MainScope().launch (Dispatchers.Main){
-                onLoadComplete(parent, "/sdcard/animated.mp4", animationPrams, Pair(wVideo.toDouble(), hVideo.toDouble()))
+                var urlProxy = MediaCacheManager.getProxyUrl(url,true)
+//                "http://res-static.inframe.mobi/pkgs/android/animated.mp4"
+                onLoadComplete(parent, urlProxy, animationPrams, Pair(wVideo.toDouble(), hVideo.toDouble()))
             }
         }
     }

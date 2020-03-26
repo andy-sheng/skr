@@ -41,6 +41,7 @@ class HttpProxyCache extends ProxyCache {
     public void processRequest(GetRequest request, Socket socket) throws IOException, ProxyCacheException {
         OutputStream out = new BufferedOutputStream(socket.getOutputStream());
         String responseHeaders = newResponseHeaders(request);
+        // 我是代理B，我先把我从A处得到http头信息写给C
         out.write(responseHeaders.getBytes("UTF-8"));
 
         long offset = request.rangeOffset;
@@ -52,10 +53,11 @@ class HttpProxyCache extends ProxyCache {
     }
 
     private boolean isUseCache(GetRequest request) throws ProxyCacheException {
-        long sourceLength = source.length();
+        long sourceLength = source.length(); // 请求文件的总长度
         boolean sourceLengthKnown = sourceLength > 0;
-        long cacheAvailable = cache.available();
+        long cacheAvailable = cache.available(); // 已经缓存的长度
         // do not use cache for partial requests which too far from available cache. It seems user seek video.
+        // 如果
         return !sourceLengthKnown || !request.partial || request.rangeOffset <= cacheAvailable + sourceLength * NO_CACHE_BARRIER;
     }
 

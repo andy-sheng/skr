@@ -13,6 +13,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
+import android.view.TextureView;
 import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
@@ -36,6 +37,7 @@ import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
+import com.common.videocache.MediaCacheManager;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExLinearLayout;
@@ -66,6 +68,7 @@ import com.module.playways.IPlaywaysModeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.zq.live.proto.Common.EGameModeType;
 import com.zq.live.proto.broadcast.PresentGift;
+import com.zq.mediaengine.kit.ZqAnimatedVideoPlayer;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -241,20 +244,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         });
 
-        if (MyLog.isDebugLogOpen()) {
-            mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-//                    MyLog.w(TAG, "  mGameArea.setOnLongClickListener");
-//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_ROOM)
-//                            .navigation();
-                    PresentGift presentGift = new PresentGift(0, EGameModeType.PartyMode,"sdadasad",true,"http://res-static.inframe.mobi/gift/img/falali.png","111","222","333");
-                    EventBus.getDefault().post(presentGift);
-                    return true;
-                }
-            });
-        }
-
         mPartyArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
@@ -365,6 +354,33 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         });
 
         NoRemindManager.INSTANCE.refreshNoRemindCacheIfNeeded();
+
+
+        if (MyLog.isDebugLogOpen()) {
+            TextureView textureView = new TextureView(this);
+            textureView.setOpaque(true);
+            mMainActContainer.addView(textureView);
+
+            ZqAnimatedVideoPlayer zqAnimatedVideoPlayer = new ZqAnimatedVideoPlayer();
+            zqAnimatedVideoPlayer.setDisplay(textureView);
+//        zqAnimatedVideoPlayer.setEnableLoop(true);
+            zqAnimatedVideoPlayer.setOnCompletionListener(new ZqAnimatedVideoPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(ZqAnimatedVideoPlayer player) {
+                    U.getToastUtil().showShort("onCompletion");
+                }
+            });
+
+            mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    U.getToastUtil().showShort("onLongClick");
+                    String url = MediaCacheManager.INSTANCE.getProxyUrl("http://res-static.inframe.mobi/pkgs/android/animated.mp4",true);
+                    zqAnimatedVideoPlayer.start(url);
+                    return true;
+                }
+            });
+        }
     }
 
     private void showNewFunctionDialog() {

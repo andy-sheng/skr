@@ -12,7 +12,13 @@ import java.io.File
 
 object MediaCacheManager {
     private val TAG = "MediaCacheManager"
-    private val saveFile = U.getAppInfoUtils().getSubDirFile("acc2")
+
+    /**
+     * 希望能指定缓存的文件夹
+     * 希望能指定缓存的大小
+     * 目前不好弄，要弄只能url里带信息
+     */
+    private val saveFile = U.getAppInfoUtils().getSubDirFile("media_cache")
     private val fileNameGenerator = FileNameGenerator { url ->
         MyLog.d(TAG, "url=$url")
         var url2 = getOriginCdnUrl(url)
