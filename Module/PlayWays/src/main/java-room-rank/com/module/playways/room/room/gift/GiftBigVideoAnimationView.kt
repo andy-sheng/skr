@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.common.log.MyLog
 import com.common.utils.U
+import com.common.videocache.MediaCacheManager
 import com.module.playways.room.gift.model.AnimationGift
 import com.module.playways.room.room.gift.model.GiftPlayModel
 import com.zq.mediaengine.kit.ZqAnimatedVideoPlayer
@@ -106,8 +107,13 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
 //            val hVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)
 
             MainScope().launch (Dispatchers.Main){
-                // TODO 临时使用本地固定视频地址，服务端修改后使用服务端地址
-                onLoadComplete(parent, "/sdcard/animated.mp4", animationPrams, Pair(animationPrams.width.toDouble(), animationPrams.height.toDouble()))
+                // 测试可使用此地址
+//                val urlProxy = MediaCacheManager.getProxyUrl("http://res-static.inframe.mobi/pkgs/android/animated.mp4",true)
+//                animationPrams.width = 640
+//                animationPrams.height = 496
+
+                 val urlProxy = MediaCacheManager.getProxyUrl(url, true)
+                onLoadComplete(parent, urlProxy, animationPrams, Pair(animationPrams.width.toDouble(), animationPrams.height.toDouble()))
             }
         }
     }
@@ -120,7 +126,7 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
                 val realWidth = videoItem.first
                 val realHeight = videoItem.second
 
-                if (animationPrams.isFullX()) {
+                if (animationPrams.isFullX) {
                     // 横向平铺
                     if (realWidth != 0.0) {
                         //透明视频分为两部分 各存储一部分信息 非全屏状态 分辨率要乘二倍

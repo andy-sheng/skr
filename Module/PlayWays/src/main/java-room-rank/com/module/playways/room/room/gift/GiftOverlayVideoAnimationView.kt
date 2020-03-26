@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.common.log.MyLog
 import com.common.utils.U
+import com.common.videocache.MediaCacheManager
 import com.module.playways.room.gift.model.AnimationGift
 import com.module.playways.room.room.gift.model.GiftPlayModel
 import com.zq.mediaengine.kit.ZqAnimatedVideoPlayer
@@ -96,6 +97,7 @@ class GiftOverlayVideoAnimationView(val context:Context): GiftBaseAnimationView 
 
 
     private fun load(parent: ViewGroup, url:String?, giftPlayModel: GiftPlayModel){
+        val url = url?:onFinish().let { return }
 
         MyLog.d(TAG, "获取视频礼物动画: $url")
 
@@ -108,10 +110,11 @@ class GiftOverlayVideoAnimationView(val context:Context): GiftBaseAnimationView 
 //            val hVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)
 
             MainScope().launch (Dispatchers.Main){
-                // TODO 临时使用本地固定视频地址，服务端修改后使用服务端地址
+
                 val baseGift = giftPlayModel.gift
                 if (baseGift is AnimationGift) {
-                    onLoadComplete(parent, "/sdcard/animated.mp4", giftPlayModel, Pair(baseGift.animationPrams.width.toDouble(), baseGift.animationPrams.height.toDouble()))
+                    val urlProxy = MediaCacheManager.getProxyUrl(url,true)
+                    onLoadComplete(parent, urlProxy, giftPlayModel, Pair(baseGift.animationPrams.width.toDouble(), baseGift.animationPrams.height.toDouble()))
                 }
 
             }
