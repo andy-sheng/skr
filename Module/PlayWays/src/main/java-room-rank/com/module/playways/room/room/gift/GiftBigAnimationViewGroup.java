@@ -1,10 +1,12 @@
 package com.module.playways.room.room.gift;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.anim.ObjectPlayControlTemplate;
+import com.common.log.MyLog;
 import com.module.playways.BaseRoomData;
 import com.module.playways.R;
 import com.module.playways.grab.room.event.SwitchRoomEvent;
@@ -52,7 +54,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
 
         @Override
         protected GiftBaseAnimationView accept(GiftPlayModel cur) {
-            return isIdle();
+            return isIdle(cur);
         }
 
         @Override
@@ -73,14 +75,24 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
         inflate(context, R.layout.gift_big_animation_view_group_layout, this);
     }
 
-    private GiftBaseAnimationView isIdle() {
+    private GiftBaseAnimationView isIdle(GiftPlayModel cur) {
         for (GiftBaseAnimationView giftBigAnimationView : mFeedGiftAnimationViews) {
-            if (giftBigAnimationView.isIdle()) {
+            if (giftBigAnimationView.isIdle() && giftBigAnimationView.isSupport(cur)) {
                 return giftBigAnimationView;
             }
         }
+
         if (mFeedGiftAnimationViews.size() < MAX_CONSUMER_NUM) {
-            GiftBigAnimationView giftBigAnimationView = new GiftBigAnimationView(getContext());
+            GiftBaseAnimationView giftBigAnimationView;
+
+            if(cur.getGift().getSourceURL2() == null || TextUtils.isEmpty(cur.getGift().getSourceURL2())){
+                giftBigAnimationView = new GiftBigAnimationView(getContext());
+                MyLog.d(TAG, "使用了svga动画：" + cur.getGift().getSourceURL());
+            }else{
+                giftBigAnimationView = new GiftBigVideoAnimationView(getContext());
+                MyLog.d(TAG, "使用了视频动画：" + cur.getGift().getSourceURL2());
+            }
+
             giftBigAnimationView.setListener(new GiftBaseAnimationView.Listener() {
                 @Override
                 public void onFinished(GiftBaseAnimationView giftBigAnimationView, GiftPlayModel giftPlayModel) {

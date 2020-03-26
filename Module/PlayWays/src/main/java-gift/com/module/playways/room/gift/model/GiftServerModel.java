@@ -29,6 +29,7 @@ public class GiftServerModel implements Serializable {
     private String giftURL;
     private int price;
     private String sourceURL;
+    private String sourceURL2;
     private int sortID;
     private int giftType;
     private boolean canContinue;
@@ -82,6 +83,14 @@ public class GiftServerModel implements Serializable {
 
     public String getSourceURL() {
         return sourceURL;
+    }
+
+    public String getSourceURL2() {
+        return sourceURL2;
+    }
+
+    public void setSourceURL2(String sourceURL2) {
+        this.sourceURL2 = sourceURL2;
     }
 
     public int getSortID() {
@@ -173,6 +182,7 @@ public class GiftServerModel implements Serializable {
         giftDB.setSortID(giftServerModel.getSortID());
         giftDB.setDescription(giftServerModel.getDescription());
         giftDB.setSourceURL(giftServerModel.getSourceURL());
+        giftDB.setSourceURL2(giftServerModel.getSourceURL2());
         giftDB.setPlay(giftServerModel.isPlay());
         giftDB.setDisplayType(giftServerModel.getDisplayType());
         giftDB.setExtra(giftServerModel.getExtra());

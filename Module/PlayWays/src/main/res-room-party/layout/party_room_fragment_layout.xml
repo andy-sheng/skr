@@ -225,7 +225,12 @@
     <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
         android:id="@+id/gift_big_animation_vg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+        <TextureView
+            android:id="@+id/textureview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.module.playways.room.room.gift.GiftBigAnimationViewGroup>
 
     <!--大礼物连送-->
     <com.module.playways.room.room.gift.GiftBigContinuousView

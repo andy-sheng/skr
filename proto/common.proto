@@ -178,22 +178,26 @@ enum EMiniGamePlayType
     EMGP_SONG_DETAIL = 3; //歌曲详情
 }
 
+// 礼物信息
 message GiftInfo
 {
-    uint32 giftID      = 1; //礼物id
-    string giftName    = 2; //礼物名称
-    string giftURL     = 3; //礼物的图片
-    uint64 price       = 4; //1000分之一钻单位 或者金币
-    string sourceURL   = 5; //礼物资源，使用效果
-    uint32 sortID      = 6; //排序id
-    EGiftType giftType = 7; //礼物类型，钻石礼物、金币礼物
-    bool canContinue   = 8; //是否可以连击
-    string description = 9; //礼物描述
-    float realPrice    = 10; //真实价格
+    uint32 giftID                = 1; //礼物id
+    string giftName              = 2; //礼物名称
+    string giftURL               = 3; //礼物的图片
+    uint64 price                 = 4; //1000分之一钻单位 或者金币
+    string sourceURL             = 5; //礼物资源，使用效果
+    uint32 sortID                = 6; //排序id
+    EGiftType giftType           = 7; //礼物类型，钻石礼物、金币礼物
+    bool canContinue             = 8; //是否可以连击
+    string description           = 9; //礼物描述
+    float realPrice              = 10; //真实价格
     bool play                    = 11; //是否需要播放
     sint32 textContinueCount     = 12;
     EGiftDisplayType displayType = 13;
     GiftExtraInfo extra          = 14;
+    uint32 balance               = 15; //剩余数目
+    string sourceURL2            = 16; //礼物资源，使用效果, mp4格式
+    bool noticeAll               = 17; //是否飘
 }
 
 

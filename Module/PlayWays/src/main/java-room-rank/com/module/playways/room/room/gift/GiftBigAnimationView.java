@@ -229,6 +229,12 @@ public class GiftBigAnimationView implements GiftBaseAnimationView{
         this.mListener = listener;
     }
 
+    @Override
+    public boolean isSupport(@NotNull GiftPlayModel giftPlayModel) {
+        String source = giftPlayModel.getGift().getSourceURL2();
+        return source == null || TextUtils.isEmpty(source);
+    }
+
     public interface Listener {
         void onFinished(GiftBigAnimationView animationView, GiftPlayModel giftPlayModel);
     }
