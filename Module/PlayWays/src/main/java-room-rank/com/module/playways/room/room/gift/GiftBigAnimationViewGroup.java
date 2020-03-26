@@ -48,6 +48,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
     public GiftBigAnimationViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
+        
     }
 
     ObjectPlayControlTemplate<GiftPlayModel, GiftBaseAnimationView> mGiftPlayControlTemplate = new ObjectPlayControlTemplate<GiftPlayModel, GiftBaseAnimationView>() {
