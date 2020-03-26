@@ -175,6 +175,10 @@ class ClubInfo : Serializable {
     var memberCnt: Int = 0       //家族人数
     @JSONField(name = "hot")
     var hot: Int = 0             //家族人气
+    @JSONField(name = "level")
+    var level: Int = 0            //家族级别
+    @JSONField(name = "levelDesc")
+    var levelDesc: String = ""    //家族级别
 
     companion object {
         fun parseFromPB(clubInfo: com.zq.live.proto.Common.ClubInfo): ClubInfo {
@@ -186,6 +190,8 @@ class ClubInfo : Serializable {
             result.notice = clubInfo.notice
             result.memberCnt = clubInfo.memberCnt
             result.hot = clubInfo.hot
+            result.level = clubInfo.level
+            result.levelDesc = clubInfo.levelDesc
             return result
         }
 

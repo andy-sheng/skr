@@ -121,13 +121,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
-                    android:paddingBottom="@dimen/view_20_dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/user_info_area"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/view_20_dp">
 
                         <com.facebook.drawee.view.SimpleDraweeView
                             android:id="@+id/club_logo_sdv"
@@ -250,7 +250,7 @@
                             android:id="@+id/toolbar_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="#404A9A"
+                            android:background="#7D76DA"
                             android:visibility="gone">
 
                             <com.common.view.ex.ExTextView

@@ -43,6 +43,9 @@ message ClubInfo
 
     uint32 memberCnt = 6; //家族人数
     uint32 hot       = 7; //人气
+
+    uint32 level     = 8; //家族等级
+    string levelDesc = 9; //家族等级描述
 }
 
 // 用户家族信息

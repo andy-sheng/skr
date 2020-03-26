@@ -90,7 +90,7 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
     private var hasApplied = false
 
     private var appbarListener: AppBarLayout.OnOffsetChangedListener? = null
-    private var srollDivider = U.getDisplayUtils().dip2px(122f)  // 滑到分界线的时候
+    private var srollDivider = U.getDisplayUtils().dip2px(20f)  // 滑到分界线的时候
     private var lastVerticalOffset = Integer.MAX_VALUE
 
     private var clubTabAdapter: PagerAdapter? = null
@@ -142,7 +142,9 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
             clubRightOpView?.setPhotoClickListener {
                 clubPhotoWallView?.goAddPhotoFragment()
             }
+            moreBtn.visibility = View.VISIBLE
         } else {
+            moreBtn.visibility = View.GONE
             hasAppliedJoin()
         }
 
@@ -244,7 +246,8 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
         clubNameTv.text = clubInfo?.name
         clubHotTv.text = StringFromatUtils.formatTenThousand(clubInfo?.hot ?: 0)
         clubIdTv.text = "ID: ${clubInfo?.clubID}"
-        clubLevelTv.text = "金牌等级"
+        clubLevelTv.text = clubInfo?.levelDesc
+        srlTitleTv.text = clubInfo?.name
     }
 
     private fun refreshApplyStatus() {
