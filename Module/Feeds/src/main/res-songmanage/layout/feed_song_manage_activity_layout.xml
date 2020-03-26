@@ -18,6 +18,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftDrawable="@drawable/img_back_black"
         app:leftType="textView"
+        app:rightTextColor="@color/black_trans_80"
+        app:rightTextSize="@dimen/textsize_14_dp"
+        app:rightType="textView"
         app:showBottomLine="false"
         app:statusBarColor="@color/transparent"
         app:titleBarColor="@color/transparent" />

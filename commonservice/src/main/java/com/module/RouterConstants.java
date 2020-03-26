@@ -83,6 +83,7 @@ public interface RouterConstants {
     String ACTIVITY_FEEDS_LYRIC_MAKE = "/feeds/FeedsLyricMakeActivity";
     String ACTIVITY_FEEDS_EDITOR = "/feeds/FeedsEditorActivity";
     String ACTIVITY_FEEDS_PUBLISH = "/feeds/FeedsPublishActivity";
+    String ACTIVITY_CLUB_UPLOAD_SONG = "/feeds/ClubUploadSongActivity";
     String ACTIVITY_FEEDS_SHARE = "/feeds/FeedsShareActivity";
     String ACTIVITY_FEEDS_REPORT = "/feeds/FeedsReportActivity";
     String ACTIVITY_FEEDS_COPY_REPORT = "/feeds/FeedCopyReportActivity";
@@ -170,5 +171,6 @@ public interface RouterConstants {
     String FLUTTER_PAGE_TEST = "SkrTestPage";
     String FLUTTER_PAGE_RELAY_RESULT = "RelayResultPage";
     String FLUTTER_PAGE_PARTY_BGM_PAGE = "PartyBgMusicManagerPage";
+    String FLUTTER_PAGE_PARTY_LOCAL_PAGE = "PartyBgMusicLocalPage";
     String FLUTTER_PAGE_SETTING = "SettingManagerPage";
 }

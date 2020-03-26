@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
-import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
@@ -35,12 +34,9 @@ import com.component.lyrics.widget.TxtLyricScrollView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.make.FeedsMakeLocalApi
-import com.module.feeds.make.FeedsMakeModel
-import com.module.feeds.make.createCustomZrce2ReaderByTxt
+import com.module.feeds.make.*
 import com.module.feeds.make.make.FeedsMakeActivity
 import com.module.feeds.make.publish.FeedsPublishActivity
-import com.module.feeds.make.sFeedsMakeModelHolder
 import com.module.feeds.make.view.FeedsEditorVoiceControlPanelView
 import com.module.feeds.make.view.VocalAlignControlPannelView
 import com.module.feeds.songmanage.activity.FeedSongManagerActivity
@@ -80,6 +76,10 @@ class FeedsEditorActivity : BaseActivity() {
     var cdRotateAnimator: ObjectAnimator? = null
 
     var tipsDialogView: TipsDialogView? = null
+
+    var mFrom: Int? = null
+
+    var familyID: Int? = null
 
     val voiceControlPanelViewDialog by lazy {
         val view = FeedsEditorVoiceControlPanelView(this).apply {
@@ -121,6 +121,14 @@ class FeedsEditorActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        if (intent.hasExtra("from")) {
+            mFrom = intent.getIntExtra("from", 0)
+        }
+
+        if (intent.hasExtra("familyID")) {
+            familyID = intent.getIntExtra("familyID", 0)
+        }
+
         mFeedsMakeModel = sFeedsMakeModelHolder
         sFeedsMakeModelHolder = null
         MyLog.d(TAG, "mFeedsMakeModel=$mFeedsMakeModel")
@@ -297,6 +305,21 @@ class FeedsEditorActivity : BaseActivity() {
                                 this@FeedsEditorActivity.finish()
                             } else {
                                 U.getToastUtil().showShort("生成歌曲失败")
+                            }
+                        }
+                    } else if (mFrom == FROM_CLUB_PAGE) {
+                        progressView.setProgressDrwable(U.getDrawable(R.drawable.common_progress_complete_icon))
+                        progressView.setProgressText("合成完成")
+                        progressView.visibility = View.GONE
+                        sFeedsMakeModelHolder = mFeedsMakeModel
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_CLUB_UPLOAD_SONG)
+                                .withInt("familyID", familyID!!)
+                                .withInt("category", 1)
+                                .navigation(this@FeedsEditorActivity, 9)
+                        finish()
+                        for (ac in U.getActivityUtils().activityList) {
+                            if (ac is FeedsMakeActivity) {
+                                ac.finish()
                             }
                         }
                     } else {

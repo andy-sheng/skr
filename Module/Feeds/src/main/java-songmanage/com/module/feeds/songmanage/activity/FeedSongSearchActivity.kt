@@ -11,7 +11,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
-
 import com.common.base.BaseActivity
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -29,9 +28,11 @@ import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.FROM_CHANGE_SING
+import com.module.feeds.make.FROM_CLUB_PAGE
 import com.module.feeds.make.FROM_POSTS
 import com.module.feeds.make.FROM_QUICK_SING
 import com.module.feeds.make.make.openFeedsMakeActivityFromChangeSong
+import com.module.feeds.make.make.openFeedsMakeActivityFromClub
 import com.module.feeds.make.make.openFeedsMakeActivityFromPosts
 import com.module.feeds.make.make.openFeedsMakeActivityFromQuickSong
 import com.module.feeds.songmanage.FeedSongManageServerApi
@@ -63,6 +64,7 @@ class FeedSongSearchActivity : BaseActivity() {
     private var lastSearchContent = ""     // 记录最近搜索内容
     private var mLoadService: LoadService<*>? = null
     private var from = FROM_QUICK_SING
+    private var familyID = 0
     private val feedSongManageServerApi = ApiManager.getInstance().createService(FeedSongManageServerApi::class.java)
 
     override fun initView(savedInstanceState: Bundle?): Int {
@@ -70,7 +72,10 @@ class FeedSongSearchActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        from = intent.getIntExtra("from",FROM_QUICK_SING)
+        from = intent.getIntExtra("from", FROM_QUICK_SING)
+        if (from == FROM_CLUB_PAGE) {
+            familyID = intent.getIntExtra("familyID", 0)
+        }
         mTitlebar = findViewById(R.id.titlebar)
         mCancleTv = findViewById(R.id.cancle_tv)
         mSearchContent = findViewById(R.id.search_content)
@@ -98,12 +103,14 @@ class FeedSongSearchActivity : BaseActivity() {
         mAdapter = FeedSongManageAdapter(object : FeedSongManageListener {
             override fun onClickSing(position: Int, model: FeedSongInfoModel?) {
                 model?.let {
-                    if(from== FROM_QUICK_SING){
+                    if (from == FROM_QUICK_SING) {
                         openFeedsMakeActivityFromQuickSong(it.song)
-                    }else if (from== FROM_CHANGE_SING){
+                    } else if (from == FROM_CHANGE_SING) {
                         openFeedsMakeActivityFromChangeSong(it.song)
-                    }else if(from == FROM_POSTS){
+                    } else if (from == FROM_POSTS) {
                         openFeedsMakeActivityFromPosts(it.song)
+                    } else if (from == FROM_CLUB_PAGE) {
+                        openFeedsMakeActivityFromClub(it.song, familyID)
                     }
                 }
             }
@@ -165,11 +172,22 @@ class FeedSongSearchActivity : BaseActivity() {
                 .switchMap { key ->
                     isAutoSearch = key.isAutoSearch
                     lastSearchContent = key.searchContent
-                    feedSongManageServerApi.searchFeedSong(key.searchContent)
+                    if (from == FROM_CLUB_PAGE) {
+                        feedSongManageServerApi.searchClubSong(key.searchContent)
+                    } else {
+                        feedSongManageServerApi.searchFeedSong(key.searchContent)
+                    }
                 }.retry(100), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
-                    val list = JSON.parseArray(obj.data.getString("songs"), FeedSongInfoModel::class.java)
+                    var key = ""
+                    if (from == FROM_CLUB_PAGE) {
+                        key = "items"
+                    } else {
+                        key = "songs"
+                    }
+
+                    val list = JSON.parseArray(obj.data.getString(key), FeedSongInfoModel::class.java)
                     mAdapter.mDataList.clear()
                     if (!list.isNullOrEmpty()) {
                         mAdapter.mDataList.addAll(list)

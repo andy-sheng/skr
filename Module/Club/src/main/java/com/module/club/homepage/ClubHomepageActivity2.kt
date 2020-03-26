@@ -40,10 +40,6 @@ import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
 import com.module.club.homepage.view.*
-import com.module.club.homepage.view.ClubDynamicView
-import com.module.club.homepage.view.ClubIntroView
-import com.module.club.homepage.view.ClubPhotoWallView
-import com.module.club.homepage.view.ClubWorksView
 import com.module.club.manage.setting.ClubManageActivity
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
@@ -234,6 +230,7 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
         worksTv.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
                     .withInt("from", 10)
+                    .withInt("familyID", clubMemberInfo?.club?.clubID ?: 0)
                     .navigation()
         }
     }

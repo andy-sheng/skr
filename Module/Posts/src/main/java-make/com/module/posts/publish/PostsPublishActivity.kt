@@ -17,6 +17,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseActivity
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
@@ -140,7 +141,13 @@ class PostsPublishActivity : BaseActivity() {
         publishTypeTv = findViewById(R.id.publish_type_tv)
 
         if (from == PublishFrom.POST.value) {
-            publishTypeTv.text = "同步到家族主页"
+            if (MyUserInfoManager.myUserInfo?.clubInfo != null) {
+                publishTypeTv.text = "同步到家族主页"
+            } else {
+                publishTypeCheckbox.isChecked = false
+                publishTypeCheckbox.visibility = View.GONE
+                publishTypeTv.visibility = View.GONE
+            }
         } else if (from == PublishFrom.CLUB.value) {
             publishTypeTv.text = "同步到帖子"
         }

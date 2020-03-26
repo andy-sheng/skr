@@ -52,4 +52,10 @@ interface FeedsMakeServerApi {
      */
     @PUT("/v1/feed/gaibian-upload")
     fun uploadHitChangeFeeds(@Body requestBody: RequestBody): Call<ApiResult>
+
+    /**
+     * 打榜上传改编
+     */
+    @PUT("/v1/club/add-works")
+    fun addClubWork(@Body requestBody: RequestBody): Call<ApiResult>
 }
