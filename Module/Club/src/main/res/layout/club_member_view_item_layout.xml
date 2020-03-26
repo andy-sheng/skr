@@ -7,24 +7,22 @@
 
     <com.component.busilib.view.AvatarView
         android:id="@+id/avatar_view"
-        android:layout_width="@dimen/view_42_dp"
-        android:layout_height="@dimen/view_42_dp"
-        app:layout_constraintBottom_toTopOf="@id/role_tag_tv"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_40_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        avatarView:borderColor="@color/white"
-        avatarView:borderWidth="@dimen/view_1_dp" />
+        avatarView:borderColor="#C9B4FF"
+        avatarView:borderWidth="@dimen/view_2_dp" />
 
     <TextView
         android:id="@+id/role_tag_tv"
-        android:layout_width="@dimen/view_40_dp"
+        android:layout_width="@dimen/view_36_dp"
         android:layout_height="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_8_dp"
         android:gravity="center"
         android:textSize="@dimen/textsize_10_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/avatar_view"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/avatar_view" />

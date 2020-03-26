@@ -13,9 +13,11 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.module.feeds.R
 import com.module.feeds.make.FROM_CHANGE_SING
+import com.module.feeds.make.FROM_CLUB_PAGE
 import com.module.feeds.make.FROM_POSTS
 import com.module.feeds.make.FROM_QUICK_SING
 import com.module.feeds.make.make.openFeedsMakeActivityFromChangeSong
+import com.module.feeds.make.make.openFeedsMakeActivityFromClub
 import com.module.feeds.make.make.openFeedsMakeActivityFromPosts
 import com.module.feeds.make.make.openFeedsMakeActivityFromQuickSong
 import com.module.feeds.songmanage.FeedSongManageServerApi
@@ -30,6 +32,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import java.util.*
 
 
 class FeedSongManageView(context: Context, val model: FeedSongTagModel, val from: Int) : ConstraintLayout(context), CoroutineScope by MainScope() {
@@ -43,6 +48,8 @@ class FeedSongManageView(context: Context, val model: FeedSongTagModel, val from
     var mHasMore = true
 
     val adapter: FeedSongManageAdapter
+
+    var familyID: Int? = 0
 
     init {
         View.inflate(context, R.layout.feed_song_manager_view_layout, this)
@@ -73,6 +80,8 @@ class FeedSongManageView(context: Context, val model: FeedSongTagModel, val from
                         openFeedsMakeActivityFromChangeSong(it.song)
                     } else if (from == FROM_POSTS) {
                         openFeedsMakeActivityFromPosts(it.song)
+                    } else if (from == FROM_CLUB_PAGE) {
+                        openFeedsMakeActivityFromClub(it.song, familyID!!)
                     }
                 }
             }
@@ -96,7 +105,10 @@ class FeedSongManageView(context: Context, val model: FeedSongTagModel, val from
                 result = subscribe { feedSongManageServerApi.getFeedQuickSongList(offset, mCNT, model.tagType) }
             } else if (from == FROM_CHANGE_SING) {
                 result = subscribe { feedSongManageServerApi.getFeedChangeSongList(offset, mCNT, model.tagType) }
+            } else if (from == FROM_CLUB_PAGE) {
+                result = subscribe { feedSongManageServerApi.getClubSongList(offset, mCNT, model.tagType) }
             }
+
             if (result?.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("songs"), FeedSongInfoModel::class.java)
                 mOffset = result.data.getIntValue("offset")

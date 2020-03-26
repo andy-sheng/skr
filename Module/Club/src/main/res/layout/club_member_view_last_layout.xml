@@ -6,30 +6,34 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/total_num_tv"
-        android:layout_width="@dimen/view_42_dp"
-        android:layout_height="@dimen/view_42_dp"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_40_dp"
         android:gravity="center"
-        android:text="25人"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_12_dp"
+        android:textColor="#C9B4FF"
+        android:textSize="@dimen/textsize_14_dp"
         app:bl_shape="oval"
-        app:bl_solid_color="#526AE3"
-        app:bl_stroke_color="@color/white"
-        app:bl_stroke_width="@dimen/view_1_dp"
-        app:layout_constraintBottom_toTopOf="@id/more_iv"
+        app:bl_solid_color="@color/white"
+        app:bl_stroke_color="#C9B4FF"
+        app:bl_stroke_width="@dimen/view_2_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <ImageView
-        android:id="@+id/more_iv"
-        android:layout_width="wrap_content"
+    <com.common.view.ex.ExTextView
+        android:layout_width="@dimen/view_36_dp"
         android:layout_height="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_8_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
+        android:text="成员"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_9_dp"
+        app:bl_corners_radius="@dimen/view_4_dp"
+        app:bl_gradient_endColor="#AC95E6"
+        app:bl_gradient_startColor="#C9B4FF"
+        app:bl_shape="rectangle"
+        app:layout_constraintBottom_toBottomOf="@id/total_num_tv"
+        app:layout_constraintLeft_toLeftOf="@id/total_num_tv"
+        app:layout_constraintRight_toRightOf="@id/total_num_tv"
         app:layout_constraintTop_toBottomOf="@id/total_num_tv" />
 
 </android.support.constraint.ConstraintLayout>

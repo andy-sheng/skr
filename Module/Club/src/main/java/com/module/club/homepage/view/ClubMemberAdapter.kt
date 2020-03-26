@@ -95,10 +95,9 @@ class ClubMemberAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class LastViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
         val totalNumTv: ExTextView = item.findViewById(R.id.total_num_tv)
-        val moreIv: ImageView = item.findViewById(R.id.more_iv)
 
         fun bindData(position: Int, total: Int) {
-            totalNumTv.text = "${total}人"
+            totalNumTv.text = "${total}"
         }
     }
 }

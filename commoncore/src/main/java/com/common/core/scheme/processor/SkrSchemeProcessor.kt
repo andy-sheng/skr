@@ -179,7 +179,18 @@ object SkrSchemeProcessor : ISchemeProcessor {
         if (uri.path == "/home") {
             ModuleServiceManager.getInstance().clubService?.tryGoClubHomePage(SchemeUtils.getInt(uri, "clubID", 0))
         } else if (uri.path == "/listPage") {
-            EventBus.getDefault().post(JumpHomeFromSchemeEvent(0,"club"))
+            EventBus.getDefault().post(JumpHomeFromSchemeEvent(0, "club"))
+        } else if (uri.path == "/clubUpload") {
+            val category = SchemeUtils.getInt(uri, "category", 0)
+            val title = SchemeUtils.getString(uri, "title")
+            val path = SchemeUtils.getString(uri, "path")
+            val familyID = SchemeUtils.getInt(uri, "familyID", 0)
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_CLUB_UPLOAD_SONG)
+                    .withInt("category", category)
+                    .withString("title", title)
+                    .withString("path", path)
+                    .withInt("familyID", familyID)
+                    .navigation()
         }
     }
 

@@ -1,7 +1,6 @@
 package com.module.feeds.songmanage.activity
 
 import android.os.Bundle
-import android.os.Debug
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.View
@@ -9,8 +8,9 @@ import android.view.ViewGroup
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
-
 import com.common.base.BaseActivity
+import com.common.core.view.setDebounceViewClickListener
+import com.common.flutter.boost.FlutterBoostController
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ERROR_NETWORK_BROKEN
 import com.common.rxretrofit.subscribe
@@ -43,6 +43,8 @@ class FeedSongManagerActivity : BaseActivity() {
     var from = 1
     private lateinit var pagerAdapter: PagerAdapter
 
+    private var familyID: Int? = 0
+
     private var songManageViews: HashMap<Int, FeedSongManageView> = HashMap()
     private val feedDraftsView: FeedDraftsView by lazy { FeedDraftsView(this, from) }
 
@@ -53,7 +55,10 @@ class FeedSongManagerActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        from = intent.getIntExtra("from",0)
+        from = intent.getIntExtra("from", 0)
+        if (intent.hasExtra("familyID")) {
+            familyID = intent.getIntExtra("familyID", 0)
+        }
         titlebar = findViewById(R.id.titlebar)
         searchSongIv = findViewById(R.id.search_song_iv)
         tagTab = findViewById(R.id.tag_tab)
@@ -61,9 +66,14 @@ class FeedSongManagerActivity : BaseActivity() {
 
         searchSongIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_SEARCH)
-                        .withInt("from",from)
-                        .navigation()
+                val postcard = ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_SEARCH)
+                        .withInt("from", from)
+
+                familyID?.let {
+                    postcard.withInt("familyID", it)
+                }
+
+                postcard.navigation()
             }
         })
 
@@ -73,8 +83,21 @@ class FeedSongManagerActivity : BaseActivity() {
             }
         })
 
+        if (from == FROM_CLUB_PAGE) {
+            titlebar.rightTextView.text = "本地上传"
+            titlebar.rightTextView.setDebounceViewClickListener {
+                FlutterBoostController.openFlutterPage(FeedSongManagerActivity@ this, RouterConstants.FLUTTER_PAGE_PARTY_LOCAL_PAGE, mutableMapOf(Pair("from", "club"), Pair("familyID", familyID!!)))
+            }
+        }
+
         launch {
-            val result = subscribe { feedSongManageServerApi.getFeedSongTagList() }
+            val result = subscribe {
+                if (from == FROM_CLUB_PAGE) {
+                    feedSongManageServerApi.getClubSongTagList()
+                } else {
+                    feedSongManageServerApi.getFeedSongTagList()
+                }
+            }
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("tags"), FeedSongTagModel::class.java)
                 showSongTagList(list)
@@ -109,7 +132,10 @@ class FeedSongManagerActivity : BaseActivity() {
                 if (position < list.size) {
                     val songTagModel = list[position]
                     if (!songManageViews.containsKey(songTagModel.tagType)) {
-                        songManageViews[songTagModel.tagType] = FeedSongManageView(this@FeedSongManagerActivity, songTagModel,from)
+                        songManageViews[songTagModel.tagType] = FeedSongManageView(this@FeedSongManagerActivity, songTagModel, from)
+                        if (from == FROM_CLUB_PAGE) {
+                            songManageViews[songTagModel.tagType]?.familyID = familyID
+                        }
                     }
                     val view = songManageViews[songTagModel.tagType]
                     if (position == 0) {
@@ -128,7 +154,7 @@ class FeedSongManagerActivity : BaseActivity() {
             }
 
             override fun getCount(): Int {
-                return if(from == FROM_CLUB_PAGE) list.size else list.size + 1
+                return if (from == FROM_CLUB_PAGE) list.size else list.size + 1
             }
 
             override fun isViewFromObject(view: View, `object`: Any): Boolean {

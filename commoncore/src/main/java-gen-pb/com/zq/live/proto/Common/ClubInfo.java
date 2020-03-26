@@ -39,6 +39,10 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
 
   public static final Integer DEFAULT_HOT = 0;
 
+  public static final Integer DEFAULT_LEVEL = 0;
+
+  public static final String DEFAULT_LEVELDESC = "";
+
   /**
    * 家族ID
    */
@@ -102,13 +106,31 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
   )
   private final Integer hot;
 
+  /**
+   * 家族等级
+   */
+  @WireField(
+      tag = 8,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer level;
+
+  /**
+   * 家族等级描述
+   */
+  @WireField(
+      tag = 9,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String levelDesc;
+
   public ClubInfo(Integer clubID, String name, String logo, String desc, String notice,
-      Integer memberCnt, Integer hot) {
-    this(clubID, name, logo, desc, notice, memberCnt, hot, ByteString.EMPTY);
+      Integer memberCnt, Integer hot, Integer level, String levelDesc) {
+    this(clubID, name, logo, desc, notice, memberCnt, hot, level, levelDesc, ByteString.EMPTY);
   }
 
   public ClubInfo(Integer clubID, String name, String logo, String desc, String notice,
-      Integer memberCnt, Integer hot, ByteString unknownFields) {
+      Integer memberCnt, Integer hot, Integer level, String levelDesc, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.clubID = clubID;
     this.name = name;
@@ -117,6 +139,8 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
     this.notice = notice;
     this.memberCnt = memberCnt;
     this.hot = hot;
+    this.level = level;
+    this.levelDesc = levelDesc;
   }
 
   @Override
@@ -129,6 +153,8 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
     builder.notice = notice;
     builder.memberCnt = memberCnt;
     builder.hot = hot;
+    builder.level = level;
+    builder.levelDesc = levelDesc;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -145,7 +171,9 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
         && Internal.equals(desc, o.desc)
         && Internal.equals(notice, o.notice)
         && Internal.equals(memberCnt, o.memberCnt)
-        && Internal.equals(hot, o.hot);
+        && Internal.equals(hot, o.hot)
+        && Internal.equals(level, o.level)
+        && Internal.equals(levelDesc, o.levelDesc);
   }
 
   @Override
@@ -160,6 +188,8 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
       result = result * 37 + (notice != null ? notice.hashCode() : 0);
       result = result * 37 + (memberCnt != null ? memberCnt.hashCode() : 0);
       result = result * 37 + (hot != null ? hot.hashCode() : 0);
+      result = result * 37 + (level != null ? level.hashCode() : 0);
+      result = result * 37 + (levelDesc != null ? levelDesc.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -175,6 +205,8 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
     if (notice != null) builder.append(", notice=").append(notice);
     if (memberCnt != null) builder.append(", memberCnt=").append(memberCnt);
     if (hot != null) builder.append(", hot=").append(hot);
+    if (level != null) builder.append(", level=").append(level);
+    if (levelDesc != null) builder.append(", levelDesc=").append(levelDesc);
     return builder.replace(0, 2, "ClubInfo{").append('}').toString();
   }
 
@@ -259,6 +291,26 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
   }
 
   /**
+   * 家族等级
+   */
+  public Integer getLevel() {
+    if(level==null){
+        return DEFAULT_LEVEL;
+    }
+    return level;
+  }
+
+  /**
+   * 家族等级描述
+   */
+  public String getLevelDesc() {
+    if(levelDesc==null){
+        return DEFAULT_LEVELDESC;
+    }
+    return levelDesc;
+  }
+
+  /**
    * 家族ID
    */
   public boolean hasClubID() {
@@ -307,6 +359,20 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
     return hot!=null;
   }
 
+  /**
+   * 家族等级
+   */
+  public boolean hasLevel() {
+    return level!=null;
+  }
+
+  /**
+   * 家族等级描述
+   */
+  public boolean hasLevelDesc() {
+    return levelDesc!=null;
+  }
+
   public static final class Builder extends Message.Builder<ClubInfo, Builder> {
     private Integer clubID;
 
@@ -321,6 +387,10 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
     private Integer memberCnt;
 
     private Integer hot;
+
+    private Integer level;
+
+    private String levelDesc;
 
     public Builder() {
     }
@@ -381,9 +451,25 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
       return this;
     }
 
+    /**
+     * 家族等级
+     */
+    public Builder setLevel(Integer level) {
+      this.level = level;
+      return this;
+    }
+
+    /**
+     * 家族等级描述
+     */
+    public Builder setLevelDesc(String levelDesc) {
+      this.levelDesc = levelDesc;
+      return this;
+    }
+
     @Override
     public ClubInfo build() {
-      return new ClubInfo(clubID, name, logo, desc, notice, memberCnt, hot, super.buildUnknownFields());
+      return new ClubInfo(clubID, name, logo, desc, notice, memberCnt, hot, level, levelDesc, super.buildUnknownFields());
     }
   }
 
@@ -401,6 +487,8 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
           + ProtoAdapter.STRING.encodedSizeWithTag(5, value.notice)
           + ProtoAdapter.UINT32.encodedSizeWithTag(6, value.memberCnt)
           + ProtoAdapter.UINT32.encodedSizeWithTag(7, value.hot)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(8, value.level)
+          + ProtoAdapter.STRING.encodedSizeWithTag(9, value.levelDesc)
           + value.unknownFields().size();
     }
 
@@ -413,6 +501,8 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
       ProtoAdapter.STRING.encodeWithTag(writer, 5, value.notice);
       ProtoAdapter.UINT32.encodeWithTag(writer, 6, value.memberCnt);
       ProtoAdapter.UINT32.encodeWithTag(writer, 7, value.hot);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 8, value.level);
+      ProtoAdapter.STRING.encodeWithTag(writer, 9, value.levelDesc);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -429,6 +519,8 @@ public final class ClubInfo extends Message<ClubInfo, ClubInfo.Builder> {
           case 5: builder.setNotice(ProtoAdapter.STRING.decode(reader)); break;
           case 6: builder.setMemberCnt(ProtoAdapter.UINT32.decode(reader)); break;
           case 7: builder.setHot(ProtoAdapter.UINT32.decode(reader)); break;
+          case 8: builder.setLevel(ProtoAdapter.UINT32.decode(reader)); break;
+          case 9: builder.setLevelDesc(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

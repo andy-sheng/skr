@@ -40,10 +40,6 @@ import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
 import com.module.club.homepage.view.*
-import com.module.club.homepage.view.ClubDynamicView
-import com.module.club.homepage.view.ClubIntroView
-import com.module.club.homepage.view.ClubPhotoWallView
-import com.module.club.homepage.view.ClubWorksView
 import com.module.club.manage.setting.ClubManageActivity
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
@@ -94,7 +90,7 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
     private var hasApplied = false
 
     private var appbarListener: AppBarLayout.OnOffsetChangedListener? = null
-    private var srollDivider = U.getDisplayUtils().dip2px(122f)  // 滑到分界线的时候
+    private var srollDivider = U.getDisplayUtils().dip2px(20f)  // 滑到分界线的时候
     private var lastVerticalOffset = Integer.MAX_VALUE
 
     private var clubTabAdapter: PagerAdapter? = null
@@ -146,7 +142,9 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
             clubRightOpView?.setPhotoClickListener {
                 clubPhotoWallView?.goAddPhotoFragment()
             }
+            moreBtn.visibility = View.VISIBLE
         } else {
+            moreBtn.visibility = View.GONE
             hasAppliedJoin()
         }
 
@@ -234,6 +232,7 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
         worksTv.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
                     .withInt("from", 10)
+                    .withInt("familyID", clubMemberInfo?.club?.clubID ?: 0)
                     .navigation()
         }
     }
@@ -247,7 +246,8 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
         clubNameTv.text = clubInfo?.name
         clubHotTv.text = StringFromatUtils.formatTenThousand(clubInfo?.hot ?: 0)
         clubIdTv.text = "ID: ${clubInfo?.clubID}"
-        clubLevelTv.text = "金牌等级"
+        clubLevelTv.text = clubInfo?.levelDesc
+        srlTitleTv.text = clubInfo?.name
     }
 
     private fun refreshApplyStatus() {

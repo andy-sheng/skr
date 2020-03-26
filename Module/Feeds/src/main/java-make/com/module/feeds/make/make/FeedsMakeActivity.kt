@@ -26,6 +26,8 @@ import com.common.view.DiffuseView
 import com.common.view.countdown.RecordProgressBarView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.model.FeedSongModel
+import com.component.busilib.model.FeedSongTpl
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.LyricsReader
@@ -41,8 +43,6 @@ import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.*
 import com.module.feeds.make.editor.FeedsEditorActivity
-import com.component.busilib.model.FeedSongModel
-import com.component.busilib.model.FeedSongTpl
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.Subscribe
@@ -77,6 +77,10 @@ class FeedsMakeActivity : BaseActivity() {
     var bgmFileJob: Deferred<File>? = null
 
     var countDownJob: Job? = null
+
+    var familyID: Int? = null
+
+    var from: Int? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_make_activity_layout
@@ -178,9 +182,11 @@ class FeedsMakeActivity : BaseActivity() {
             }
         })
 
-
-        val from = intent.getIntExtra("from", FROM_CHALLENGE)
+        from = intent.getIntExtra("from", FROM_CHALLENGE)
         val isDraft = intent.getBooleanExtra("isDraft", false)
+        if (intent.hasExtra("familyID")) {
+            familyID = intent.getIntExtra("familyID", 0)
+        }
         if (!isDraft) {
             if (from == FROM_CHALLENGE) {
                 val challengeID = intent.getLongExtra("challengeID", 0)
@@ -214,7 +220,7 @@ class FeedsMakeActivity : BaseActivity() {
                         }
                     }
                 }
-            } else if (from == FROM_QUICK_SING || from == FROM_CHANGE_SING || from == FROM_POSTS) {
+            } else if (from == FROM_QUICK_SING || from == FROM_CHANGE_SING || from == FROM_POSTS || from == FROM_CLUB_PAGE) {
                 val feedSongModel = intent.getSerializableExtra("feedSongModel") as FeedSongModel?
                 mFeedsMakeModel = FeedsMakeModel()
                 if (from == FROM_QUICK_SING || from == FROM_POSTS) {
@@ -549,7 +555,7 @@ class FeedsMakeActivity : BaseActivity() {
         }
     }
 
-    private fun recordOk(from:String) {
+    private fun recordOk(from: String) {
         MyLog.d(TAG, "recordOk from = $from")
         stopRecord()
         mFeedsMakeModel?.apply {
@@ -558,6 +564,10 @@ class FeedsMakeActivity : BaseActivity() {
         }
         sFeedsMakeModelHolder = mFeedsMakeModel
         val intent = Intent(this, FeedsEditorActivity::class.java)
+        intent.putExtra("from", FeedsMakeActivity@ this.from)
+        familyID?.let {
+            intent.putExtra("familyID", it)
+        }
         startActivityForResult(intent, 100)
     }
 
@@ -705,6 +715,15 @@ class FeedsMakeActivity : BaseActivity() {
         finishPage()
         return true
     }
+}
+
+fun openFeedsMakeActivityFromClub(model: FeedSongModel?, familyID: Int) {
+    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
+            .withInt("from", FROM_CLUB_PAGE)
+            .withBoolean("isDraft", false)
+            .withSerializable("feedSongModel", model)
+            .withInt("familyID", familyID)
+            .navigation()
 }
 
 fun openFeedsMakeActivityFromChallenge(challenge: Long?) {
