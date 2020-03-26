@@ -487,7 +487,7 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
                 } else if (position == 2) {
                     return "相册"
                 } else if (position == 3) {
-                    return "帖子"
+                    return "作品"
                 }
                 return ""
             }
