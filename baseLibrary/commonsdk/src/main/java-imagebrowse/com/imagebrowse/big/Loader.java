@@ -1,5 +1,7 @@
 package com.imagebrowse.big;
 
+import android.widget.TextView;
+
 import com.common.callback.Callback;
 import com.dialog.list.DialogListItem;
 import com.imagebrowse.ImageBrowseView;
@@ -10,6 +12,8 @@ public interface Loader<T> {
     void init();
 
     void load(ImageBrowseView imageBrowseView, int position, T item);
+
+    void loadUpdater(TextView textView, int position, T item);
 
     int getInitCurrentItemPostion();
 

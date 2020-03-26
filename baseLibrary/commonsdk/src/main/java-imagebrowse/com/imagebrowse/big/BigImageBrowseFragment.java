@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.common.base.BaseFragment;
 import com.common.base.R;
@@ -46,6 +47,7 @@ public class BigImageBrowseFragment extends BaseFragment {
     CommonTitleBar mTitlebar;
     SlideCloseLayout mSlideCloseLayout;
     ViewPager mImagesVp;
+    TextView mUpdaterTv;
     //ArrayList<IMAGE_DATA> mDataList = new ArrayList<>();
     Loader mLoader;
     int mLastPostion = 0;
@@ -58,6 +60,7 @@ public class BigImageBrowseFragment extends BaseFragment {
             ImageBrowseView imageBrowseView = new ImageBrowseView(container.getContext());
             if (mLoader != null) {
                 mLoader.load(imageBrowseView, position, item);
+                mLoader.loadUpdater(mUpdaterTv, position, item);
             } else {
                 //imageBrowseView.load(data);
             }
@@ -98,6 +101,7 @@ public class BigImageBrowseFragment extends BaseFragment {
         mTitlebar = getRootView().findViewById(R.id.titlebar);
         mSlideCloseLayout = getRootView().findViewById(R.id.slide_close_layout);
         mImagesVp = getRootView().findViewById(R.id.images_vp);
+        mUpdaterTv = getRootView().findViewById(R.id.updater_tv);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -233,7 +237,7 @@ public class BigImageBrowseFragment extends BaseFragment {
                 }
             }
         });
-        
+
         getActivity().getWindow().getDecorView().setBackgroundColor(Color.BLACK);
         mSlideCloseLayout.setGradualBackground(getActivity().getWindow().getDecorView().getBackground());
         mImageBg.getBackground().setAlpha(255);

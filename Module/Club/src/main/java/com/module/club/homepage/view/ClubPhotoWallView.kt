@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import android.widget.RelativeLayout
+import android.widget.TextView
 import com.common.base.BaseActivity
 import com.common.callback.Callback
 import com.common.core.userinfo.model.ClubMemberInfo
@@ -68,6 +69,10 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
                     }
                 }
 
+                override fun loadUpdater(textView: TextView, position: Int, item: PhotoModel?) {
+                    loadDataUpdater(item, textView)
+                }
+
                 override fun getInitCurrentItemPostion(): Int {
                     return mPhotoAdapter.getPostionOfItem(model)
                 }
@@ -120,6 +125,21 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
         }
         mPhotoView.adapter = mPhotoAdapter
         mPhotoCorePresenter.loadUnSuccessPhotoFromDB()
+    }
+
+    private fun loadDataUpdater(item: PhotoModel?, textView: TextView) {
+        if (item?.picID != null && item.picID != 0) {
+            mPhotoCorePresenter.getPicDetail(item.picID) { model ->
+                if (!TextUtils.isEmpty(model?.nickName)) {
+                    textView.visibility = View.VISIBLE
+                    textView.text = model?.nickName
+                } else {
+                    textView.visibility = View.GONE
+                }
+            }
+        } else {
+            textView.visibility = View.GONE
+        }
     }
 
     fun uploadPhotoList(imageItems: List<ImageItem>) {

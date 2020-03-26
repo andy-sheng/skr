@@ -179,6 +179,10 @@ interface ClubServerApi {
                       @Query("offset") offset: Int,
                       @Query("cnt") cnt: Int): Observable<ApiResult>
 
+
+    @GET("/v1/club/list-pic")
+    fun getClubPhotoDetail(@Query("picID") picID: Int): Observable<ApiResult>
+
     /**
      * 家族新增照片
      *

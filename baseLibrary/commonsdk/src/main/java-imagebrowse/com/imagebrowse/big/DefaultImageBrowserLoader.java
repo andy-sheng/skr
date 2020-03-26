@@ -1,7 +1,8 @@
 package com.imagebrowse.big;
 
+import android.widget.TextView;
+
 import com.common.callback.Callback;
-import com.dialog.list.DialogListItem;
 import com.imagebrowse.ImageBrowseView;
 
 import java.util.List;
@@ -14,6 +15,11 @@ public class DefaultImageBrowserLoader<T> implements Loader<T> {
 
     @Override
     public void load(ImageBrowseView imageBrowseView, int position, T item) {
+
+    }
+
+    @Override
+    public void loadUpdater(TextView textView, int position, T item) {
 
     }
 

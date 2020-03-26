@@ -60,6 +60,24 @@ class ClubPhotoCorePresenter(val mView: IPhotoWallView, val mBaseActivity: BaseA
         }, mBaseActivity, RequestControl("getPhotos", ControlType.CancelThis))
     }
 
+    fun getPicDetail(picID: Int, callback: (ClubPhotoDetail?) -> Unit?) {
+        ApiMethods.subscribe(clubServerApi.getClubPhotoDetail(picID), object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult?) {
+                if (result?.errno == 0) {
+                    val model = JSON.parseObject(result.data.toJSONString(), ClubPhotoDetail::class.java)
+                    callback.invoke(model)
+                } else {
+                    callback.invoke(null)
+                }
+            }
+
+            override fun onNetworkError(errorType: ApiObserver.ErrorType) {
+                super.onNetworkError(errorType)
+
+            }
+        }, mBaseActivity, RequestControl("getPicDetail", ControlType.CancelThis))
+    }
+
     internal var mUiHandler: Handler? = Handler()
 
     internal var mUploadingPhoto = false
