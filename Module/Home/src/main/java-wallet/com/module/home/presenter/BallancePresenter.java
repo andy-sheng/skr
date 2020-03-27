@@ -21,7 +21,6 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.module.home.WalletServerApi;
 import com.module.home.inter.IBallanceView;
@@ -32,7 +31,6 @@ import java.util.List;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
-import kotlin.jvm.functions.Function3;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -42,6 +40,7 @@ public class BallancePresenter extends RxLifeCyclePresenter {
 
     public static final int IDLE = 0;
     public static final int SEND_ORDER = 1;
+    public static final int CHECKING_ORDER = 2;
     public int mPayState = IDLE;
 
     PayApi mPayApi;
@@ -62,7 +61,7 @@ public class BallancePresenter extends RxLifeCyclePresenter {
         @Override
         public void handleMessage(Message msg) {
             MyLog.d(TAG, "handleMessage" + " msg=" + msg.what);
-            if (msg.what == MSG_CHECK_ORDER && mPayState == SEND_ORDER) {
+            if (msg.what == MSG_CHECK_ORDER && mPayState == CHECKING_ORDER) {
                 checkOrder();
             }
         }
@@ -81,15 +80,18 @@ public class BallancePresenter extends RxLifeCyclePresenter {
                 } else {
                     mIBallanceView.rechargeFailed("取消支付");
                 }
-
                 clearOrderState();
             }
 
             @Override
             public void onSuccess() {
                 MyLog.w(TAG, "pay onSuccess");
-                mIBallanceView.rechargeSuccess();
-                clearOrderState();
+                if(mPayBaseReq.mEPayPlatform != EPayPlatform.ALI_PAY) {
+                    mIBallanceView.rechargeSuccess();
+                    clearOrderState();
+                }else if(mPayState == IDLE){ //阿里支付在回调成功时，IDLE 说明成功回调前过早检查了订单状态，需要重新检查下
+                    mIBallanceView.rechargeSuccess();
+                }
             }
 
             @Override
@@ -105,8 +107,9 @@ public class BallancePresenter extends RxLifeCyclePresenter {
     public void resume() {
         super.resume();
         if (mPayState == SEND_ORDER) {
+            mPayState = CHECKING_ORDER;
             mUiHandler.removeMessages(MSG_CHECK_ORDER);
-            mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(MSG_CHECK_ORDER), 3000);
+            mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(MSG_CHECK_ORDER), 3000); //订单有结果了，不需要延迟
         }
     }
 
@@ -149,11 +152,14 @@ public class BallancePresenter extends RxLifeCyclePresenter {
         String ts = System.currentTimeMillis() + "";
         map.put("goodsID", goodsID);
         map.put("timeMs", ts);
-        String sign = U.getMD5Utils().MD5_32("skrer|"
-                + MyUserInfoManager.INSTANCE.getUid() + "|"
-                + goodsID + "|"
-                + "dbf555fe9347eef8c74c5ff6b9f047dd" + "|"
-                + ts);
+        HashMap<String, Object> signMap = new HashMap<>();
+        signMap.put("goodsID", goodsID);
+        signMap.put("skrer", "skrer");
+        signMap.put("userID", MyUserInfoManager.INSTANCE.getUid());
+        signMap.put("timeMs", ts);
+        signMap.put("appSecret", "dbf555fe9347eef8c74c5ff6b9f047dd");
+
+        String sign = U.getMD5Utils().signReq(signMap);
         map.put("signV2", sign);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
@@ -165,7 +171,7 @@ public class BallancePresenter extends RxLifeCyclePresenter {
                 if (obj.getErrno() == 0) {
                     orderID = obj.getData().getString("orderID");
                     String orderInfo = obj.getData().getString("paySign");
-                    mPayApi.pay(new AliPayReq(orderInfo));
+                    mPayApi.pay(new AliPayReq(orderInfo, orderID));
                 } else {
                     U.getToastUtil().showShort(obj.getErrmsg());
                 }
@@ -293,7 +299,10 @@ public class BallancePresenter extends RxLifeCyclePresenter {
 
         if (mPayBaseReq.getEPayPlatform() == EPayPlatform.WX_PAY) {
             checkWxOrder(((WxPayReq) mPayBaseReq).getOrderID());
+        }else if(mPayBaseReq.getEPayPlatform() == EPayPlatform.ALI_PAY){
+            checkAliOrder(((AliPayReq)mPayBaseReq).getOrderID());
         }
+        clearOrderState();
     }
 
     private void checkWxOrder(String orderId) {
@@ -313,7 +322,6 @@ public class BallancePresenter extends RxLifeCyclePresenter {
                     mIBallanceView.rechargeFailed(obj.getErrmsg());
                 }
 
-                clearOrderState();
             }
 
             @Override
@@ -328,19 +336,22 @@ public class BallancePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    private void checkAliOrder(String goodsID) {
+    private void checkAliOrder(String orderID) {
         HashMap<String, Object> map = new HashMap<>();
         String ts = System.currentTimeMillis() + "";
-        map.put("orderID", goodsID);
-        map.put("tradeNo", ts);
+        map.put("orderID", orderID);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mWalletServerApi.aliOrderCheck(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
+                MyLog.d(TAG, "checkAliOrder process" + " obj=" + obj);
                 if (obj.getErrno() == 0) {
-
+                    mIBallanceView.rechargeSuccess();
+                } else {
+                    mIBallanceView.rechargeFailed(obj.getErrmsg());
                 }
+
             }
         }, this);
     }

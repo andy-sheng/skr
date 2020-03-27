@@ -6,6 +6,7 @@ public class PayResultEvent {
     String errorMsg;
 
     EPayPlatform mEPayPlatform;
+    Object extra;
 
     // 0  成功
     // -1 错误，支付失败
@@ -40,5 +41,13 @@ public class PayResultEvent {
 
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
+    }
+
+    public Object getExtra() {
+        return extra;
+    }
+
+    public void setExtra(Object extra) {
+        this.extra = extra;
     }
 }

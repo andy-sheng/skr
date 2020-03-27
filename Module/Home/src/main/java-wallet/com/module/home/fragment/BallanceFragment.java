@@ -64,6 +64,7 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
 
     FrameLayout mWeixinRechargeArea;
     FrameLayout mXiaomiRechargeArea;
+    FrameLayout mZhiFuBaoRechargeArea;
     ExTextView mBtbXiaomi;
     ExImageView mIvXiaomiFlag;
 
@@ -157,15 +158,16 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
         mBtbZhifubao.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                mEPayPlatform = EPayPlatform.MI_PAY;
+                mEPayPlatform = EPayPlatform.ALI_PAY;
                 mIvWeixinFlag.setVisibility(View.GONE);
                 mZhifubaoFlag.setVisibility(View.VISIBLE);
             }
         });
 
         mWeixinRechargeArea = (FrameLayout)getRootView().findViewById(R.id.weixin_recharge_area);
-
         mXiaomiRechargeArea = (FrameLayout)getRootView().findViewById(R.id.xiaomi_recharge_area);
+        mZhiFuBaoRechargeArea = (FrameLayout)getRootView().findViewById(R.id.zhifubao_recharge_area);
+
         mBtbXiaomi = (ExTextView)getRootView().findViewById(R.id.btb_xiaomi);
         mIvXiaomiFlag = (ExImageView)getRootView().findViewById(R.id.iv_xiaomi_flag);
 
@@ -175,12 +177,14 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
         mBallencePresenter.getZSBalance();
         if(MiLianYunManager.INSTANCE.lianYunOpen()){
             MiLianYunManager.INSTANCE.loginAuto();
+            mZhiFuBaoRechargeArea.setVisibility(View.GONE);
             mWeixinRechargeArea.setVisibility(View.GONE);
             mXiaomiRechargeArea.setVisibility(View.VISIBLE);
             mEPayPlatform = EPayPlatform.MI_PAY;
             mIvWeixinFlag.setVisibility(View.GONE);
             mIvXiaomiFlag.setVisibility(View.VISIBLE);
         }else{
+            mZhiFuBaoRechargeArea.setVisibility(View.VISIBLE);
             mWeixinRechargeArea.setVisibility(View.VISIBLE);
             mXiaomiRechargeArea.setVisibility(View.GONE);
             mEPayPlatform = EPayPlatform.WX_PAY;

@@ -355,32 +355,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         NoRemindManager.INSTANCE.refreshNoRemindCacheIfNeeded();
 
-
-        if (MyLog.isDebugLogOpen()) {
-            TextureView textureView = new TextureView(this);
-            textureView.setOpaque(true);
-            mMainActContainer.addView(textureView);
-
-            ZqAnimatedVideoPlayer zqAnimatedVideoPlayer = new ZqAnimatedVideoPlayer();
-            zqAnimatedVideoPlayer.setDisplay(textureView);
-//        zqAnimatedVideoPlayer.setEnableLoop(true);
-            zqAnimatedVideoPlayer.setOnCompletionListener(new ZqAnimatedVideoPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(ZqAnimatedVideoPlayer player) {
-                    U.getToastUtil().showShort("onCompletion");
-                }
-            });
-
-            mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    U.getToastUtil().showShort("onLongClick");
-                    String url = MediaCacheManager.INSTANCE.getProxyUrl("http://res-static.inframe.mobi/pkgs/android/animated.mp4",true);
-                    zqAnimatedVideoPlayer.start(url);
-                    return true;
-                }
-            });
-        }
     }
 
     private void showNewFunctionDialog() {
