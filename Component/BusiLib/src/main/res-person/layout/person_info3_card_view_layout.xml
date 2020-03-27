@@ -128,9 +128,9 @@
         android:textColor="@color/black_trans_20"
         android:textSize="@dimen/textsize_14_dp"
         android:visibility="visible"
+        app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="@color/black_trans_20"
-        app:bl_corners_radius="@dimen/view_16_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/person_tag_view" />
@@ -154,58 +154,11 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/relation_barrier" />
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/photo_view_bg"
-        android:layout_width="@dimen/view_0_dp"
-        android:layout_height="@dimen/view_0_dp"
-        android:visibility="gone"
-        app:bl_corners_radius="@dimen/view_8_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="@color/black_trans_5"
-        app:layout_constraintBottom_toBottomOf="@id/photo_view"
-        app:layout_constraintLeft_toLeftOf="@id/photo_view"
-        app:layout_constraintRight_toRightOf="@id/photo_view"
-        app:layout_constraintTop_toTopOf="@id/photo_view" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/photo_view"
-        android:layout_width="@dimen/view_0_dp"
-        android:layout_height="@dimen/view_116_dp"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:visibility="gone"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/person_club_name" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/photo_num_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_18_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:layout_marginBottom="@dimen/view_16_dp"
-        android:gravity="center"
-        android:paddingLeft="@dimen/view_8_dp"
-        android:paddingRight="@dimen/view_8_dp"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_10_dp"
-        android:visibility="gone"
-        app:bl_corners_radius="@dimen/view_4_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="@color/black_trans_50"
-        app:layout_constraintBottom_toBottomOf="@id/photo_view"
-        app:layout_constraintRight_toRightOf="@id/photo_view" />
-
-    <View
-        android:id="@+id/divider"
+    <com.component.person.view.PhotoHorizView
+        android:id="@+id/photo_horiz_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_1_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
-        android:background="@color/black_trans_10"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/photo_view" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/person_club_name" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/invite_iv"
@@ -226,7 +179,7 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/follow_iv"
-        app:layout_constraintTop_toBottomOf="@id/photo_view" />
+        app:layout_constraintTop_toBottomOf="@id/photo_horiz_view" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/follow_iv"
@@ -245,7 +198,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/invite_iv"
         app:layout_constraintRight_toLeftOf="@id/gift_iv"
-        app:layout_constraintTop_toBottomOf="@id/photo_view" />
+        app:layout_constraintTop_toBottomOf="@id/photo_horiz_view" />
 
 
     <com.common.view.ex.ExTextView
@@ -264,7 +217,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/follow_iv"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/photo_view" />
+        app:layout_constraintTop_toBottomOf="@id/photo_horiz_view" />
 
 
     <TextView
