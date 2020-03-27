@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
+import com.component.club.model.ClubMemberInfoModel
 import com.module.club.R
-import com.module.club.homepage.utils.ClubRoleUtils
+import com.component.club.ClubRoleUtils
 import com.zq.live.proto.Common.EClubMemberRoleType
 
 class ClubMemberListAdapter(var myRoleType: Int, var listener: Listener) : RecyclerView.Adapter<ClubMemberListAdapter.ClubMemberViewHolder>() {

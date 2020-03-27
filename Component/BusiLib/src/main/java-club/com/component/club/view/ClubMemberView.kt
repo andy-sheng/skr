@@ -1,7 +1,6 @@
-package com.module.club.homepage.view
+package com.component.club.view
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.GridLayoutManager
@@ -10,16 +9,15 @@ import android.util.AttributeSet
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.utils.dp
+import com.component.busilib.R
+import com.component.club.ClubMemberServerApi
+import com.component.club.model.ClubMemberInfoModel
 import com.module.RouterConstants
-import com.module.club.ClubServerApi
-import com.module.club.R
-import com.module.club.member.ClubMemberInfoModel
+import com.module.club.homepage.view.ClubMemberAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -35,7 +33,7 @@ class ClubMemberView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
 
     var clubID: Int = 0
     var memberCnt: Int = 0
-    private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
+    private val clubServerApi = ApiManager.getInstance().createService(ClubMemberServerApi::class.java)
     private var offset = 0
     private val cnt = 15
 

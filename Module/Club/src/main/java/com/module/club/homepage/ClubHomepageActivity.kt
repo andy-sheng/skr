@@ -37,7 +37,7 @@
 //import com.module.club.R
 //import com.module.club.homepage.event.ClubInfoChangeEvent
 //import com.module.club.homepage.room.ClubPartyRoomView
-//import com.module.club.homepage.view.ClubMemberView
+//import ClubMemberView
 //import com.module.club.manage.setting.ClubManageActivity
 //import com.scwang.smartrefresh.layout.SmartRefreshLayout
 //import com.scwang.smartrefresh.layout.api.RefreshHeader

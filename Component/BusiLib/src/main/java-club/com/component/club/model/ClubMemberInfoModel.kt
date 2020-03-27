@@ -1,4 +1,4 @@
-package com.module.club.member
+package com.component.club.model
 
 import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.userinfo.model.UserInfoModel

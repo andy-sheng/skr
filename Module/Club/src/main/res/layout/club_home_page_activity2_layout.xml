@@ -138,14 +138,23 @@
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
+                        <com.common.view.ex.ExTextView
                             android:id="@+id/club_hot_tv"
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/view_0_dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/view_8_dp"
                             android:drawableLeft="@drawable/party_hot_icon"
+                            android:drawablePadding="@dimen/view_3_dp"
+                            android:paddingLeft="@dimen/view_8_dp"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/textsize_12_dp"
+                            app:bl_corners_bottomLeftRadius="@dimen/view_8_dp"
+                            app:bl_corners_bottomRightRadius="@dimen/view_8_dp"
+                            app:bl_shape="rectangle"
+                            app:bl_solid_color="@color/black_trans_20"
+                            app:layout_constrainedWidth="true"
                             app:layout_constraintBottom_toBottomOf="@id/club_logo_sdv"
-                            app:layout_constraintLeft_toLeftOf="@id/club_logo_sdv" />
+                            app:layout_constraintLeft_toLeftOf="@id/club_logo_sdv"
+                            app:layout_constraintRight_toRightOf="@id/club_logo_sdv" />
 
                         <TextView
                             android:id="@+id/club_name_tv"

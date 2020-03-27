@@ -1,11 +1,9 @@
-package com.module.club.homepage.utils
+package com.component.club
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.drawable.DrawableCreator
-import com.module.club.R
 import com.zq.live.proto.Common.EClubMemberRoleType
 
 object ClubRoleUtils {

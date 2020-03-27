@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setDebounceViewClickListener
 import com.component.busilib.view.AvatarView
 import com.component.person.utils.StringFromatUtils
 import com.module.club.R
-import com.module.club.homepage.utils.ClubRoleUtils
+import com.component.club.ClubRoleUtils
 
 class ClubRankAdapter(val listener: Listener) : RecyclerView.Adapter<ClubRankAdapter.ClubRankViewHolder>() {
 

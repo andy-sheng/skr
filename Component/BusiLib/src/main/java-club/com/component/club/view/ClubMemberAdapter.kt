@@ -4,14 +4,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExTextView
+import com.component.busilib.R
 import com.component.busilib.view.AvatarView
-import com.module.club.R
-import com.module.club.homepage.utils.ClubRoleUtils
-import com.module.club.member.ClubMemberInfoModel
+import com.component.club.ClubRoleUtils
+import com.component.club.model.ClubMemberInfoModel
 
 class ClubMemberAdapter(val showNums: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

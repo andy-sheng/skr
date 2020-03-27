@@ -16,6 +16,7 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
+import com.component.club.model.ClubMemberInfoModel
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi

@@ -68,7 +68,7 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
     lateinit var contentLayout: CollapsingToolbarLayout
     lateinit var userInfoArea: ConstraintLayout
     lateinit var clubLogoSdv: SimpleDraweeView
-    lateinit var clubHotTv: TextView
+    lateinit var clubHotTv: ExTextView
     lateinit var clubNameTv: TextView
     lateinit var clubIdTv: TextView
     lateinit var clubLevelTv: ExTextView

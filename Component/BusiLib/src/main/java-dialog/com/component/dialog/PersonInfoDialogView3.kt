@@ -142,7 +142,7 @@ class PersonInfoDialogView3 internal constructor(val mContext: Context, userID: 
         giftIv.setDebounceViewClickListener { clickListener?.onClickSendGift(mUserInfoModel) }
 
         personClubName.setDebounceViewClickListener {
-            clickListener?.showClubInfoCard(mUserInfoModel.clubInfo?.club?.clubID ?: 0)
+            clickListener?.showClubInfoCard(mUserInfoModel.clubInfo)
         }
 
         // 关系

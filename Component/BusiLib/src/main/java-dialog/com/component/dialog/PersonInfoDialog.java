@@ -12,6 +12,8 @@ import com.common.base.BaseActivity;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.event.RelationChangeEvent;
+import com.common.core.userinfo.model.ClubInfo;
+import com.common.core.userinfo.model.ClubMemberInfo;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -171,11 +173,13 @@ public class PersonInfoDialog {
             }
 
             @Override
-            public void showClubInfoCard(int clubID) {
+            public void showClubInfoCard(ClubMemberInfo clubMemberInfo) {
                 if (mDialogPlus != null) {
                     mDialogPlus.dismiss(false);
                 }
-                showClubInfoCardDialog(clubID);
+                if (clubMemberInfo != null) {
+                    showClubInfoCardDialog(clubMemberInfo.getClub());
+                }
             }
 
             @Override
@@ -198,14 +202,14 @@ public class PersonInfoDialog {
                 .create();
     }
 
-    private void showClubInfoCardDialog(int clubID) {
-        ClubCardDialogView clubCardDialogView = new ClubCardDialogView(mActivity, clubID);
+    private void showClubInfoCardDialog(ClubInfo clubInfo) {
+        ClubCardDialogView clubCardDialogView = new ClubCardDialogView(mActivity, clubInfo);
         mDialogPlus = DialogPlus.newDialog(mActivity)
                 .setContentHolder(new ViewHolder(clubCardDialogView))
-                .setGravity(Gravity.CENTER)
+                .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
+                .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), U.getDisplayUtils().dip2px(16f))
                 .setExpanded(false)
                 .setCancelable(true)
                 .create();
@@ -532,7 +536,7 @@ public class PersonInfoDialog {
 
         void showSpFollowDialog(int userID, boolean isSpFollow);
 
-        void showClubInfoCard(int clubID);
+        void showClubInfoCard(ClubMemberInfo clubMemberInfo);
 
         void onClickSendGift(UserInfoModel userInfoModel);
     }

@@ -45,6 +45,7 @@ class PhotoHorizView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
 
     var userID: Int = 0   //给个人卡片的照片上用的
     var clubID: Int = 0   //给家族卡片的照片上用的
+    private var isMyClub = false
 
     private val userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
 
@@ -106,6 +107,13 @@ class PhotoHorizView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
                     } else false
                 }
             })
+        }
+    }
+
+    fun setIsMyClub(flag: Boolean) {
+        this.isMyClub = flag
+        if (isMyClub) {
+            divider.visibility = View.GONE
         }
     }
 
@@ -188,7 +196,11 @@ class PhotoHorizView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
         if (photoAdapter?.mDataList?.isNullOrEmpty() == true) {
             photoView.visibility = View.GONE
             photoViewBg.visibility = View.GONE
-            divider.visibility = View.VISIBLE
+            if (isMyClub) {
+                divider.visibility = View.GONE
+            } else {
+                divider.visibility = View.VISIBLE
+            }
         } else {
             photoView.visibility = View.VISIBLE
             photoViewBg.visibility = View.VISIBLE

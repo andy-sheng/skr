@@ -44,6 +44,9 @@ android {
 
             java.srcDirs += 'src/main/java-operate'
             res.srcDirs += 'src/main/res-operate'
+
+            java.srcDirs += 'src/main/java-club'
+            res.srcDirs += 'src/main/res-club'
         }
     }
 }

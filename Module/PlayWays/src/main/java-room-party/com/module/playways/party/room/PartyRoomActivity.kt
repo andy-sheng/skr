@@ -835,8 +835,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 
             override fun showClubInfoCard() {
                 dismissDialog()
-                mClubCardDialogView = ClubCardDialogView(this@PartyRoomActivity, mRoomData.clubInfo?.clubID
-                        ?: 0)
+                mClubCardDialogView = ClubCardDialogView(this@PartyRoomActivity, mRoomData.clubInfo)
                 mClubCardDialogView?.showByDialog()
             }
         }

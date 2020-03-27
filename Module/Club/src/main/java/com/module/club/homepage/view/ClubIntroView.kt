@@ -1,30 +1,19 @@
 package com.module.club.homepage.view
 
 import android.content.Context
-import android.os.Bundle
 import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
-import com.alibaba.fastjson.JSON
 import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.view.setDebounceViewClickListener
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ControlType
-import com.common.rxretrofit.RequestControl
-import com.common.rxretrofit.subscribe
+import com.component.club.view.ClubMemberView
 import com.module.RouterConstants
-import com.module.club.ClubServerApi
 import com.module.club.R
-import com.module.club.member.ClubMemberInfoModel
-import com.zq.live.proto.Common.EClubMemberRoleType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 
 // 家族简介
 class ClubIntroView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : ConstraintLayout(context, attrs, defStyleAttr), CoroutineScope by MainScope() {

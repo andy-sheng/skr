@@ -12,7 +12,7 @@ import com.common.utils.U
 import com.module.RouterConstants
 import com.module.club.home.ClubHomeView
 import com.module.club.homepage.ClubHomepageActivity2
-import com.module.club.member.ClubMemberInfoModel
+import com.component.club.model.ClubMemberInfoModel
 import com.module.common.ICallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
