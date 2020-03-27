@@ -1,6 +1,7 @@
 package com.module.club.homepage.view
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.GridLayoutManager
@@ -14,6 +15,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.dp
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
@@ -37,12 +39,20 @@ class ClubMemberView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
     private var offset = 0
     private val cnt = 15
 
+    private var showNums = 0
+
     init {
         View.inflate(context, R.layout.club_member_view_layout, this)
 
+        val array = context.obtainStyledAttributes(attrs, R.styleable.ClubMemberView)
+        array?.let {
+            showNums = it.getInt(R.styleable.ClubMemberView_showNums, 6)
+        }
+        array?.recycle()
+
         recyclerView = this.findViewById(R.id.recycler_view)
-        adapter = ClubMemberAdapter()
-        recyclerView.layoutManager = GridLayoutManager(context, 6)
+        adapter = ClubMemberAdapter(showNums)
+        recyclerView.layoutManager = GridLayoutManager(context, showNums)
         recyclerView.adapter = adapter
 
         adapter.listener = { position, model ->
@@ -57,7 +67,7 @@ class ClubMemberView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         }
     }
 
-    fun initData() {
+    fun loadData(callback: () -> Unit?) {
         launch {
             val result = subscribe(RequestControl("initData", ControlType.CancelThis)) {
                 clubServerApi.getClubMemberList(clubID, 0, cnt)
@@ -74,12 +84,7 @@ class ClubMemberView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         }
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
+    fun destroy() {
         cancel()
     }
 }

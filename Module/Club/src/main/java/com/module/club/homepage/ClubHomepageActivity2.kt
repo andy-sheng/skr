@@ -385,7 +385,7 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
                         if (clubIntroView == null) {
                             clubIntroView = ClubIntroView(this@ClubHomepageActivity2)
                         }
-                        clubIntroView?.clubMemberInfo = clubMemberInfo
+                        clubIntroView?.setData(clubMemberInfo)
                         clubIntroView?.loadData(false) {}
                         if (container.indexOfChild(clubIntroView) == -1) {
                             container.addView(clubIntroView)

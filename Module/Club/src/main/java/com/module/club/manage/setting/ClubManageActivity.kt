@@ -1,12 +1,10 @@
 package com.module.club.manage.setting
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
-import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.myinfo.event.MyUserInfoEvent
 import com.common.core.userinfo.model.ClubMemberInfo
@@ -23,8 +21,7 @@ import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
-import com.module.club.homepage.ClubHomepageActivity
-import com.zq.live.proto.Common.ClubInfo
+import com.module.club.homepage.ClubHomepageActivity2
 import com.zq.live.proto.Common.EClubMemberRoleType
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
@@ -153,7 +150,7 @@ class ClubManageActivity : BaseActivity() {
                 // 解散成功
                 U.getToastUtil().showShort("家族解散成功")
                 for (activity in U.getActivityUtils().activityList) {
-                    if (activity is ClubHomepageActivity) {
+                    if (activity is ClubHomepageActivity2) {
                         activity.finish()
                     }
                 }
@@ -176,7 +173,7 @@ class ClubManageActivity : BaseActivity() {
                 MyUserInfoManager.myUserInfo?.clubInfo = null
                 EventBus.getDefault().post(MyUserInfoEvent.UserInfoChangeEvent())
                 for (activity in U.getActivityUtils().activityList) {
-                    if (activity is ClubHomepageActivity) {
+                    if (activity is ClubHomepageActivity2) {
                         activity.finish()
                     }
                 }

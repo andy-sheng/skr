@@ -13,7 +13,7 @@ import com.module.club.R
 import com.module.club.homepage.utils.ClubRoleUtils
 import com.module.club.member.ClubMemberInfoModel
 
-class ClubMemberAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ClubMemberAdapter(val showNums: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var mDataList = ArrayList<ClubMemberInfoModel>()
     var mTotal = 0
@@ -34,8 +34,8 @@ class ClubMemberAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return if (mDataList.size > 5) {
-            6  // 最多就6个
+        return if (mDataList.size > (showNums - 1)) {
+            showNums // 最多就showNums个
         } else {
             mDataList.size + 1
         }

@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 // 家族简介
 class ClubIntroView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : ConstraintLayout(context, attrs, defStyleAttr), CoroutineScope by MainScope() {
 
-    var clubMemberInfo: ClubMemberInfo? = null
+    private var clubMemberInfo: ClubMemberInfo? = null
 
     constructor(context: Context) : this(context, null, 0)
 
@@ -43,13 +43,7 @@ class ClubIntroView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
     val introContentTv: TextView
     val memberTitleTv: TextView
     val memberAllTv: TextView
-    val recyclerView: RecyclerView
-
-    private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
-    private var offset = 0
-    private val cnt = 15
-
-    private val adapter: ClubMemberAdapter
+    val memberView: ClubMemberView
 
     init {
         View.inflate(context, R.layout.club_tab_intro_view_layout, this)
@@ -62,22 +56,8 @@ class ClubIntroView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
         introContentTv = this.findViewById(R.id.intro_content_tv)
         memberTitleTv = this.findViewById(R.id.member_title_tv)
         memberAllTv = this.findViewById(R.id.member_all_tv)
-        recyclerView = this.findViewById(R.id.recycler_view)
 
-        adapter = ClubMemberAdapter()
-        recyclerView.layoutManager = GridLayoutManager(context, 6)
-        recyclerView.adapter = adapter
-
-        adapter.listener = { position, model ->
-            model?.userInfoModel?.userId?.let {
-                val bundle = Bundle()
-                bundle.putInt("bundle_user_id", it)
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
-                        .with(bundle)
-                        .navigation()
-            }
-        }
+        memberView = this.findViewById(R.id.member_view)
 
         memberAllTv.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_MEMBER)
@@ -85,6 +65,12 @@ class ClubIntroView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
                     .navigation()
         }
 
+    }
+
+    fun setData(clubMemberInfo: ClubMemberInfo?) {
+        this.clubMemberInfo = clubMemberInfo
+        memberView.clubID = clubMemberInfo?.club?.clubID ?: 0
+        memberView.memberCnt = clubMemberInfo?.club?.memberCnt ?: 0
     }
 
     fun loadData(flag: Boolean, callback: () -> Unit?) {
@@ -96,20 +82,8 @@ class ClubIntroView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
     }
 
     private fun loadData(callback: () -> Unit?) {
-        launch {
-            val result = subscribe(RequestControl("initData", ControlType.CancelThis)) {
-                clubServerApi.getClubMemberList(clubMemberInfo?.club?.clubID ?: 0, 0, cnt)
-            }
-            if (result.errno == 0) {
-                val list = JSON.parseArray(result.data.getString("items"), ClubMemberInfoModel::class.java)
-                adapter.mTotal = clubMemberInfo?.club?.memberCnt ?: 0
-                adapter.mDataList.clear()
-                if (!list.isNullOrEmpty()) {
-                    adapter.mDataList.addAll(list)
-                }
-                adapter.notifyDataSetChanged()
-            }
-            refreshUI()
+        refreshUI()
+        memberView.loadData {
             callback.invoke()
         }
     }
@@ -126,6 +100,7 @@ class ClubIntroView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
     }
 
     fun destroy() {
+        memberView.destroy()
         cancel()
     }
 }
