@@ -100,12 +100,6 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
     private var clubWorksView: ClubWorksView? = null
     private var clubRightOpView: ClubRightOpView? = null
 
-    lateinit var alyTv: ExTextView
-    lateinit var groupChatTv: ExTextView
-    lateinit var actionTv: ExTextView
-    lateinit var picTv: ExTextView
-    lateinit var worksTv: ExTextView
-
     override fun useEventBus(): Boolean {
         return false
     }
@@ -133,8 +127,6 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
 
         initContentView()
         initAppBarScroll()
-
-        initBottomCrlView()
 
         if (isMyClub) {
             clubRightOpView?.show()
@@ -199,41 +191,6 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }
-        }
-    }
-
-    private fun initBottomCrlView() {
-        alyTv = findViewById(R.id.aly_tv)
-        groupChatTv = findViewById(R.id.group_chat_tv)
-        actionTv = findViewById(R.id.action_tv)
-        picTv = findViewById(R.id.pic_tv)
-        worksTv = findViewById(R.id.works_tv)
-
-        alyTv.setDebounceViewClickListener {
-
-        }
-
-        groupChatTv.setDebounceViewClickListener {
-
-        }
-
-        actionTv.setDebounceViewClickListener {
-            ARouter.getInstance()
-                    .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
-                    .withInt("from", 2)
-                    .withInt("clubID", clubID)
-                    .navigation()
-        }
-
-        picTv.setDebounceViewClickListener {
-            clubPhotoWallView?.goAddPhotoFragment()
-        }
-
-        worksTv.setDebounceViewClickListener {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
-                    .withInt("from", 10)
-                    .withInt("familyID", clubMemberInfo?.club?.clubID ?: 0)
-                    .navigation()
         }
     }
 
