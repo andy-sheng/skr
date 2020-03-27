@@ -40,7 +40,6 @@ public class BallancePresenter extends RxLifeCyclePresenter {
 
     public static final int IDLE = 0;
     public static final int SEND_ORDER = 1;
-    public static final int CHECKING_ORDER = 2;
     public int mPayState = IDLE;
 
     PayApi mPayApi;
@@ -61,7 +60,7 @@ public class BallancePresenter extends RxLifeCyclePresenter {
         @Override
         public void handleMessage(Message msg) {
             MyLog.d(TAG, "handleMessage" + " msg=" + msg.what);
-            if (msg.what == MSG_CHECK_ORDER && mPayState == CHECKING_ORDER) {
+            if (msg.what == MSG_CHECK_ORDER && mPayState == SEND_ORDER) {
                 checkOrder();
             }
         }
@@ -107,9 +106,8 @@ public class BallancePresenter extends RxLifeCyclePresenter {
     public void resume() {
         super.resume();
         if (mPayState == SEND_ORDER) {
-            mPayState = CHECKING_ORDER;
             mUiHandler.removeMessages(MSG_CHECK_ORDER);
-            mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(MSG_CHECK_ORDER), 3000); //订单有结果了，不需要延迟
+            mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(MSG_CHECK_ORDER), 3000);
         }
     }
 
