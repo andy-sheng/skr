@@ -249,6 +249,22 @@ public interface UserInfoServerApi {
 
 
     /**
+     * 查询家族照片墙
+     *
+     * @param familyID
+     * @param offset
+     * @param cnt
+     * @return
+     */
+    @GET("/v1/club/list-pic")
+    Observable<ApiResult> getClubPhotos(@Query("familyID") long familyID,
+                                        @Query("offset") int offset,
+                                        @Query("cnt") int cnt);
+
+    @GET("/v1/club/list-pic")
+    Observable<ApiResult> getClubPhotoDetail(@Query("picID") int picID);
+
+    /**
      * 查询照片墙
      *
      * @param userID
@@ -473,7 +489,7 @@ public interface UserInfoServerApi {
      */
     @GET("/v1/mate/no-remind-msg-user-list")
     Call<ApiResult> getNoRemindList(@Query("userID") int uid,
-                                          @Query("remindMsgType") int remindMsgType,
-                                          @Query("offset") int offset,
-                                          @Query("cnt") int cnt);
+                                    @Query("remindMsgType") int remindMsgType,
+                                    @Query("offset") int offset,
+                                    @Query("cnt") int cnt);
 }

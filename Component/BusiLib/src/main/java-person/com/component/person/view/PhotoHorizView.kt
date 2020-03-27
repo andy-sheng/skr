@@ -8,14 +8,13 @@ import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
+import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.common.callback.Callback
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.busilib.R
@@ -24,6 +23,7 @@ import com.component.person.photo.model.PhotoModel
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
+import io.reactivex.Observable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 
@@ -43,7 +43,8 @@ class PhotoHorizView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     private var mOffset = 0
     private var DEFAULT_CNT = 10
 
-    var userID: Int = 0
+    var userID: Int = 0   //给个人卡片的照片上用的
+    var clubID: Int = 0   //给家族卡片的照片上用的
 
     private val userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
 
@@ -70,6 +71,13 @@ class PhotoHorizView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
                         imageBrowseView.load(item.localPath)
                     } else {
                         imageBrowseView.load(item.picPath)
+                    }
+                }
+
+                override fun loadUpdater(textView: TextView, position: Int, item: PhotoModel?) {
+                    if (clubID != 0) {
+                        // 这是家族的卡片
+                        loadDataUpdater(item, textView)
                     }
                 }
 
@@ -101,8 +109,43 @@ class PhotoHorizView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
         }
     }
 
+    private fun loadDataUpdater(item: PhotoModel?, textView: TextView) {
+        if (item?.picID != null && item.picID != 0) {
+            ApiMethods.subscribe(userInfoServerApi.getClubPhotoDetail(item.picID), object : ApiObserver<ApiResult>() {
+                override fun process(result: ApiResult?) {
+                    if (result?.errno == 0) {
+                        val nickName = result.data.getString("nickName")
+                        val userID = result.data.getJSONObject("picInfo").getIntValue("userID")
+                        val remarkName = UserInfoManager.getInstance().getRemarkName(userID, nickName)
+                        if (!TextUtils.isEmpty(remarkName)) {
+                            textView.visibility = View.VISIBLE
+                            textView.text = remarkName
+                        } else {
+                            textView.visibility = View.GONE
+                        }
+                    } else {
+                        textView.visibility = View.GONE
+                    }
+                }
+
+                override fun onNetworkError(errorType: ApiObserver.ErrorType) {
+                    super.onNetworkError(errorType)
+                    textView.visibility = View.GONE
+                }
+            }, RequestControl("getPicDetail", ControlType.CancelThis))
+        } else {
+            textView.visibility = View.GONE
+        }
+    }
+
     internal fun getPhotos(off: Int, callback: Callback<List<PhotoModel>>? = null) {
-        ApiMethods.subscribe(userInfoServerApi.getPhotos(userID.toLong(), off, DEFAULT_CNT), object : ApiObserver<ApiResult>() {
+        val observable = if (clubID != 0) {
+            userInfoServerApi?.getClubPhotos(clubID.toLong(), off, DEFAULT_CNT)
+        } else {
+            userInfoServerApi?.getPhotos(userID.toLong(), off, DEFAULT_CNT)
+        }
+
+        ApiMethods.subscribe(observable, object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult?) {
                 if (result != null && result.errno == 0) {
                     mOffset = result.data!!.getIntValue("offset")

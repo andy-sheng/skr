@@ -73,6 +73,7 @@ class ClubPhotoCorePresenter(val mView: IPhotoWallView, val mBaseActivity: BaseA
 
             override fun onNetworkError(errorType: ApiObserver.ErrorType) {
                 super.onNetworkError(errorType)
+                callback.invoke(null)
 
             }
         }, mBaseActivity, RequestControl("getPicDetail", ControlType.CancelThis))

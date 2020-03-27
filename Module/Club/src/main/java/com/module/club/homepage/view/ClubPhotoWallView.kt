@@ -8,6 +8,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.common.base.BaseActivity
 import com.common.callback.Callback
+import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.log.MyLog
 import com.component.busilib.R
@@ -130,9 +131,11 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
     private fun loadDataUpdater(item: PhotoModel?, textView: TextView) {
         if (item?.picID != null && item.picID != 0) {
             mPhotoCorePresenter.getPicDetail(item.picID) { model ->
-                if (!TextUtils.isEmpty(model?.nickName)) {
+                val remarkName = UserInfoManager.getInstance().getRemarkName(model?.picInfo?.userID
+                        ?: 0, model?.nickName)
+                if (!TextUtils.isEmpty(remarkName)) {
                     textView.visibility = View.VISIBLE
-                    textView.text = model?.nickName
+                    textView.text = remarkName
                 } else {
                     textView.visibility = View.GONE
                 }
