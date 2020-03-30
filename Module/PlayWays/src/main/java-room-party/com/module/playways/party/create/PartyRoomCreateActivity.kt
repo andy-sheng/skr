@@ -314,6 +314,7 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }
+            titlebar.rightTextView.isClickable = true
         }
     }
 
@@ -404,7 +405,7 @@ class PartyRoomCreateActivity : BaseActivity(), View.OnTouchListener {
                     U.getToastUtil().showShort(result.errmsg)
                 }
             }
-
+            titlebar.rightTextView.isClickable = true
         }
     }
 
