@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.ImageView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
-import com.common.core.myinfo.event.MyUserInfoEvent
 import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.log.MyLog
 import com.common.player.SinglePlayer
@@ -20,6 +19,7 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.component.busilib.callback.EmptyCallback
+import com.component.busilib.event.DynamicPostsEvent
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -119,40 +119,40 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
                 //                roomServerApi.getPartyRoomList(off, cnt, model.gameMode)
                 clubServerApi.getClubWorkList(off, cnt, clubMemberInfo?.club?.clubID!!)
             }
-             if (result.errno == 0) {
-                 offset = result.data.getIntValue("offset")
-                 hasMore = result.data.getBooleanValue("hasMore")
-                 var list: MutableList<WorkModel> = ArrayList()
-                 if (isClean) {
-                      list = JSON.parseArray(result.data.getString("auditingWorks"), WorkModel::class.java)
-                     list?.let {
+            if (result.errno == 0) {
+                offset = result.data.getIntValue("offset")
+                hasMore = result.data.getBooleanValue("hasMore")
+                var list: MutableList<WorkModel> = ArrayList()
+                if (isClean) {
+                    list = JSON.parseArray(result.data.getString("auditingWorks"), WorkModel::class.java)
+                    list?.let {
                         for (i in 0 until list.size) {
                             list[i].auditing = true
                         }
                     }
-                 }
-                 val works = JSON.parseArray(result.data.getString("works"), WorkModel::class.java)
-                 if(!list.isNullOrEmpty() && !works.isNullOrEmpty()){
-                     list.addAll(works)
-                 }
-                 addList(list, isClean)
-             }
-             if (result.errno == -2) {
-                 U.getToastUtil().showShort("网络出错了，请检查网络后重试")
-             }
-
-          /*  val list: MutableList<WorkModel> = ArrayList()
-            for (i in 0..19) {
-                val model = WorkModel()
-                model.artist = i.toString() + "1test1"
-                model.nickName = "$i 1test1 "
-                model.songName = "$i 1test1 "
-                model.worksURL = "http://res-static.inframe.mobi/app/skr-redpacket-20190304.png"
-                model.avatar = "http://res-static.inframe.mobi/app/skr-redpacket-20190304.png"
-                list.add(model)
+                }
+                val works = JSON.parseArray(result.data.getString("works"), WorkModel::class.java)
+                if (!list.isNullOrEmpty() && !works.isNullOrEmpty()) {
+                    list.addAll(works)
+                }
                 addList(list, isClean)
             }
-*/
+            if (result.errno == -2) {
+                U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+            }
+
+            /*  val list: MutableList<WorkModel> = ArrayList()
+              for (i in 0..19) {
+                  val model = WorkModel()
+                  model.artist = i.toString() + "1test1"
+                  model.nickName = "$i 1test1 "
+                  model.songName = "$i 1test1 "
+                  model.worksURL = "http://res-static.inframe.mobi/app/skr-redpacket-20190304.png"
+                  model.avatar = "http://res-static.inframe.mobi/app/skr-redpacket-20190304.png"
+                  list.add(model)
+                  addList(list, isClean)
+              }
+  */
             callBack?.invoke(hasMore)
         }
     }
@@ -229,7 +229,8 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: MyUserInfoEvent.UserInfoChangeEvent) {
-        loadList(0, true, null)
+    fun onEvent(event: DynamicPostsEvent) {
+        if (event.type == DynamicPostsEvent.EVENT_WORK)
+            loadList(0, true, null)
     }
 }
