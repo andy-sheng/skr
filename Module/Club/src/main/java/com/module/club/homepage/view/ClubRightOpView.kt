@@ -25,24 +25,24 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * 家族首页底部操作按钮
  */
-class ClubRightOpView(viewStub: ViewStub): ExViewStub(viewStub), ICallback {
+class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
 
     private val TAG = "ClubRightOpView"
-    private var mApplyTv:ExTextView? = null
-    private var mConversationTv:ExTextView? = null
+    private var mApplyTv: ExTextView? = null
+    private var mConversationTv: ExTextView? = null
     private var mPostView: LinearLayout? = null
     private var mPostImg: ExImageView? = null
     private var mPostTv: ExTextView? = null
-    private var mConversationUnreadNumTv:ExTextView? = null
-    private var mClubMemberInfo:ClubMemberInfo? = null
-    private var mClubPostPanel:LinearLayout? = null
-    private var mClubOtherActionsPanel:LinearLayout? = null
-    private var mClubPostActionTv:ExTextView? = null
-    private var mClubPostPhotoTv:ExTextView? = null
-    private var mClubPostOpusTv:ExTextView? = null
+    private var mConversationUnreadNumTv: ExTextView? = null
+    private var mClubMemberInfo: ClubMemberInfo? = null
+    private var mClubPostPanel: LinearLayout? = null
+    private var mClubOtherActionsPanel: LinearLayout? = null
+    private var mClubPostActionTv: ExTextView? = null
+    private var mClubPostPhotoTv: ExTextView? = null
+    private var mClubPostOpusTv: ExTextView? = null
 
-    private var mPostPanelShowAni:Animation? = null
-    private var mPostPanelHideAni:Animation? = null
+    private var mPostPanelShowAni: Animation? = null
+    private var mPostPanelHideAni: Animation? = null
 
     override fun init(parentView: View) {
         mApplyTv = parentView.findViewById(R.id.club_right_apply_tv)
@@ -72,28 +72,31 @@ class ClubRightOpView(viewStub: ViewStub): ExViewStub(viewStub), ICallback {
         mPostPanelHideAni?.interpolator = AccelerateInterpolator()
     }
 
-    fun bindData(clubMemberInfo:ClubMemberInfo?){
+    fun bindData(clubMemberInfo: ClubMemberInfo?) {
         mClubMemberInfo = clubMemberInfo
 
-        mApplyTv?.setDebounceViewClickListener{
+        mApplyTv?.setDebounceViewClickListener {
 
         }
         mClubPostActionTv?.setDebounceViewClickListener {
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
                     .withInt("from", 2)
-                    .withInt("clubID", clubMemberInfo?.club?.clubID?:return@setDebounceViewClickListener)
+                    .withInt("familyID", clubMemberInfo?.club?.clubID
+                            ?: return@setDebounceViewClickListener)
                     .navigation()
         }
 
         mClubPostOpusTv?.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
                     .withInt("from", 10)
+                    .withInt("familyID", clubMemberInfo?.club?.clubID
+                            ?: return@setDebounceViewClickListener)
                     .navigation()
         }
-        mConversationTv?.setDebounceViewClickListener {view->
-            view?:return@setDebounceViewClickListener
-            val club = clubMemberInfo?.club?: MyLog.e(TAG, "未获取到家族信息").let {
+        mConversationTv?.setDebounceViewClickListener { view ->
+            view ?: return@setDebounceViewClickListener
+            val club = clubMemberInfo?.club ?: MyLog.e(TAG, "未获取到家族信息").let {
                 return@setDebounceViewClickListener
             }
 
@@ -101,7 +104,7 @@ class ClubRightOpView(viewStub: ViewStub): ExViewStub(viewStub), ICallback {
                 ModuleServiceManager.getInstance().msgService.startClubChat(view.context, club.clubID.toString(), it)
             }
         }
-        mPostView?.setDebounceViewClickListener { view->
+        mPostView?.setDebounceViewClickListener { view ->
             togglePostPanel()
         }
 
@@ -116,14 +119,14 @@ class ClubRightOpView(viewStub: ViewStub): ExViewStub(viewStub), ICallback {
         mPostPanelShowAni?.reset()
         mPostPanelHideAni?.reset()
 
-        if(mClubPostPanel?.visibility == View.GONE){
+        if (mClubPostPanel?.visibility == View.GONE) {
             mClubPostPanel?.visibility = View.VISIBLE
             mClubOtherActionsPanel?.visibility = View.GONE
             mPostTv?.visibility = View.INVISIBLE
 
             mPostImg?.startAnimation(mPostPanelShowAni)
 
-        }else{
+        } else {
             mClubPostPanel?.visibility = View.GONE
             mClubOtherActionsPanel?.visibility = View.VISIBLE
             mPostTv?.visibility = View.VISIBLE
@@ -132,7 +135,7 @@ class ClubRightOpView(viewStub: ViewStub): ExViewStub(viewStub), ICallback {
         }
     }
 
-    fun setPhotoClickListener(click: (view: View?) -> Unit){
+    fun setPhotoClickListener(click: (view: View?) -> Unit) {
         mClubPostPhotoTv?.setDebounceViewClickListener(click)
     }
 
@@ -140,15 +143,15 @@ class ClubRightOpView(viewStub: ViewStub): ExViewStub(viewStub), ICallback {
         return R.layout.club_home_page_right_op_view_layout
     }
 
-    fun show(){
+    fun show() {
         setVisibility(View.VISIBLE)
     }
 
-    fun hide(){
+    fun hide() {
         setVisibility(View.GONE)
     }
 
-    fun updateUnreadMsgCount(){
+    fun updateUnreadMsgCount() {
         //获取未读消息数
         mClubMemberInfo?.club?.let {
             ModuleServiceManager.getInstance().msgService.getClubUnReadCount(this, it.clubID.toString())
@@ -160,10 +163,10 @@ class ClubRightOpView(viewStub: ViewStub): ExViewStub(viewStub), ICallback {
      */
     override fun onSucess(obj: Any?) {
         obj?.let { it as? Int }?.let {
-            if(it > 0) {
+            if (it > 0) {
                 mConversationUnreadNumTv?.text = it.toString()
                 mConversationUnreadNumTv?.visibility = View.VISIBLE
-            }else{
+            } else {
                 mConversationUnreadNumTv?.text = ""
                 mConversationUnreadNumTv?.visibility = View.GONE
             }
@@ -171,11 +174,11 @@ class ClubRightOpView(viewStub: ViewStub): ExViewStub(viewStub), ICallback {
     }
 
     override fun onFailed(obj: Any?, errcode: Int, message: String?) {
-        MyLog.e(TAG, "获取未读消息数失败 errode: " + obj.toString() )
+        MyLog.e(TAG, "获取未读消息数失败 errode: " + obj.toString())
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RongClubMsgEvent){
+    fun onEvent(event: RongClubMsgEvent) {
         updateUnreadMsgCount()
     }
 

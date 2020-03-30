@@ -264,17 +264,18 @@
 
                             <com.common.view.ex.ExTextView
                                 android:id="@+id/srl_title_tv"
-                                android:layout_width="wrap_content"
+                                android:layout_width="@dimen/view_0_dp"
                                 android:layout_height="@dimen/view_25_dp"
-                                android:layout_marginBottom="@dimen/view_15_dp"
+                                android:layout_marginLeft="@dimen/view_65_dp"
+                                android:layout_marginBottom="@dimen/view_5_dp"
                                 android:ellipsize="end"
-                                android:gravity="left|center_vertical"
                                 android:maxEms="7"
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/textsize_18_dp"
                                 android:textStyle="bold"
+                                app:layout_constrainedWidth="true"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toRightOf="parent" />

@@ -61,24 +61,27 @@ class ClubManageActivity : BaseActivity() {
         clubDissolveTv = findViewById(R.id.club_dissolve_tv)
         clubExitTv = findViewById(R.id.club_exit_tv)
 
-        clubTransferTv?.visibility = View.GONE
+
         when {
             clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value -> {
                 clubInfoSettingTv?.visibility = View.VISIBLE
                 clubNoticeTv?.visibility = View.VISIBLE
                 clubDissolveTv?.visibility = View.VISIBLE
+                clubTransferTv?.visibility = View.VISIBLE
                 clubExitTv?.visibility = View.GONE
             }
             clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_CoFounder.value -> {
                 clubInfoSettingTv?.visibility = View.VISIBLE
                 clubNoticeTv?.visibility = View.VISIBLE
                 clubDissolveTv?.visibility = View.GONE
+                clubTransferTv?.visibility = View.GONE
                 clubExitTv?.visibility = View.VISIBLE
             }
             else -> {
                 clubInfoSettingTv?.visibility = View.GONE
                 clubNoticeTv?.visibility = View.GONE
                 clubDissolveTv?.visibility = View.GONE
+                clubTransferTv?.visibility = View.GONE
                 clubExitTv?.visibility = View.VISIBLE
             }
         }
@@ -136,6 +139,13 @@ class ClubManageActivity : BaseActivity() {
                     }
                     .build()
             mTipsDialogView?.showByDialog()
+        }
+
+        clubTransferTv?.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_MEMBER)
+                    .withSerializable("clubMemberInfo", clubMemberInfo)
+                    .withInt("clubMemberType", 2)
+                    .navigation()
         }
 
     }

@@ -123,7 +123,7 @@ class PostsPublishActivity : BaseActivity() {
         if (intent.hasExtra("from")) {
             from = intent.getSerializableExtra("from") as Int?
         }
-        clubID = intent.getSerializableExtra("clubID") as Int?
+        clubID = intent.getSerializableExtra("familyID") as Int?
         model.topic = topic
         mainActContainer = findViewById(R.id.main_act_container)
         mainContentVp = findViewById(R.id.main_content_vp)

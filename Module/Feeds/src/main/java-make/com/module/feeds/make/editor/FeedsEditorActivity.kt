@@ -33,6 +33,7 @@ import com.component.lyrics.widget.ManyLyricsView
 import com.component.lyrics.widget.TxtLyricScrollView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
+import com.module.club.IClubModuleService
 import com.module.feeds.R
 import com.module.feeds.make.*
 import com.module.feeds.make.make.FeedsMakeActivity
@@ -316,6 +317,10 @@ class FeedsEditorActivity : BaseActivity() {
                                 .withInt("familyID", familyID!!)
                                 .withInt("category", 1)
                                 .navigation(this@FeedsEditorActivity, 9)
+
+                        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
+                        iRankingModeService.finishClubPostUpload()
+
                         finish()
                         for (ac in U.getActivityUtils().activityList) {
                             if (ac is FeedsMakeActivity) {

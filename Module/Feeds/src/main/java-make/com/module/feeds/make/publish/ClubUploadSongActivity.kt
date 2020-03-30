@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
@@ -17,6 +18,7 @@ import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.SkrProgressView
 import com.module.RouterConstants
+import com.module.club.IClubModuleService
 import com.module.feeds.R
 import com.module.feeds.make.FeedsMakeServerApi
 import com.module.feeds.make.sFeedsMakeModelHolder
@@ -176,6 +178,9 @@ class ClubUploadSongActivity : BaseActivity() {
             if (result.errno == 0) {
                 U.getToastUtil().showShort("发布成功")
                 finish()
+
+                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_CLUB).navigation() as IClubModuleService
+                iRankingModeService.finishClubWorkUpload()
             } else {
                 U.getToastUtil().showShort(result.errmsg)
                 titlebar.rightTextView.isEnabled = true
