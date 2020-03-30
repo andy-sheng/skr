@@ -105,6 +105,12 @@ interface ClubServerApi {
     fun delClubMember(@Body body: RequestBody): Call<ApiResult>
 
     /**
+     * 刷新家族成员 {"userID": 0}
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/club/give-club-to")
+    fun transferClub(@Body body: RequestBody): Call<ApiResult>
+
+    /**
      * 设置家族成员信息 {"userID": 0, "role": 0}
      */
     @PUT("http://dev.api.inframe.mobi/v1/club/member-info")

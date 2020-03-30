@@ -100,6 +100,22 @@
         app:layout_constraintRight_toLeftOf="@id/remove_tv"
         app:layout_constraintTop_toTopOf="@id/name_tv" />
 
+    <TextView
+        android:id="@+id/transfer_tv"
+        android:layout_width="@dimen/view_80_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@drawable/common_yellow_button_icon"
+        android:gravity="center"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:text="转让"
+        android:textColor="#94612F"
+        android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"

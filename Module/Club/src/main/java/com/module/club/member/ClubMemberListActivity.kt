@@ -48,12 +48,20 @@ class ClubMemberListActivity : BaseActivity() {
     private var mTipsDialogView: TipsDialogView? = null
     private var mClubMemberTitleDialog: ClubMemberTitleDialog? = null
 
+    companion object {
+        const val CLUB_LIST_TITLE = 1      //家族成员
+        const val CLUB_LIST_TRANSFER = 2    //转让家族列表
+    }
+
+    var type = CLUB_LIST_TITLE  //默认家族成员
+
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.club_member_list_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
         clubMemberInfo = intent.getSerializableExtra("clubMemberInfo") as ClubMemberInfo?
+        type = intent.getIntExtra("clubMemberType", CLUB_LIST_TITLE)
         if (clubMemberInfo == null) {
             finish()
         } else {
@@ -64,8 +72,31 @@ class ClubMemberListActivity : BaseActivity() {
         refreshLayout = findViewById(R.id.refreshLayout)
         contentRv = findViewById(R.id.content_rv)
 
-        adapter = ClubMemberListAdapter(clubMemberInfo?.roleType
+        if (type == CLUB_LIST_TRANSFER) {
+            titlebar.centerTextView.text = "转让家族"
+        }
+
+        adapter = ClubMemberListAdapter(type, clubMemberInfo?.roleType
                 ?: 0, object : ClubMemberListAdapter.Listener {
+            override fun onClickTransfer(position: Int, model: ClubMemberInfoModel?) {
+                model?.userInfoModel?.userId?.let { userID ->
+                    mTipsDialogView?.dismiss(false)
+                    mTipsDialogView = TipsDialogView.Builder(this@ClubMemberListActivity)
+                            .setMessageTip("确定将家族移交给 ${model?.userInfoModel?.nicknameRemark}\n移交后你将不再担任本家族族长")
+                            .setConfirmTip("确定移交")
+                            .setCancelTip("取消")
+                            .setConfirmBtnClickListener {
+                                mTipsDialogView?.dismiss()
+                                transferMember(position, model, userID)
+                            }
+                            .setCancelBtnClickListener {
+                                mTipsDialogView?.dismiss()
+                            }
+                            .build()
+                    mTipsDialogView?.showByDialog()
+                }
+            }
+
             override fun onClickAvatar(position: Int, model: ClubMemberInfoModel?) {
                 model?.userInfoModel?.userId?.let {
                     val bundle = Bundle()
@@ -178,7 +209,19 @@ class ClubMemberListActivity : BaseActivity() {
                 offset = result.data.getIntValue("offset")
                 hasMore = result.data.getBooleanValue("hasMore")
                 val list = JSON.parseArray(result.data.getString("items"), ClubMemberInfoModel::class.java)
-                addClubMemberList(list, isClean)
+                if (type == CLUB_LIST_TRANSFER) {
+                    val newList = ArrayList<ClubMemberInfoModel>()
+                    list?.forEach {
+                        if (it.userInfoModel?.clubInfo?.isFounder() == true) {
+                            // 过滤所以族长
+                        } else {
+                            newList.add(it)
+                        }
+                    }
+                    addClubMemberList(newList, isClean)
+                } else {
+                    addClubMemberList(list, isClean)
+                }
             }
             finishRefreshAndLoadMore()
         }
@@ -203,6 +246,23 @@ class ClubMemberListActivity : BaseActivity() {
                 adapter.mDataList.addAll(list)
                 val newSize = adapter.mDataList.size
                 adapter.notifyItemRangeInserted(size, newSize - size)
+            }
+        }
+    }
+
+    private fun transferMember(position: Int, model: ClubMemberInfoModel, userID: Int) {
+        launch {
+            val map = mapOf(
+                    "userID" to userID
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("transferMember", ControlType.CancelThis)) {
+                clubServerApi.transferClub(body)
+            }
+            if (result.errno == 0) {
+                U.getToastUtil().showShort("转让家族成功")
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
             }
         }
     }

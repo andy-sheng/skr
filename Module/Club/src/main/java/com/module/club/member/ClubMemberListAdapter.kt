@@ -14,7 +14,7 @@ import com.module.club.R
 import com.component.club.ClubRoleUtils
 import com.zq.live.proto.Common.EClubMemberRoleType
 
-class ClubMemberListAdapter(var myRoleType: Int, var listener: Listener) : RecyclerView.Adapter<ClubMemberListAdapter.ClubMemberViewHolder>() {
+class ClubMemberListAdapter(var type: Int, var myRoleType: Int, var listener: Listener) : RecyclerView.Adapter<ClubMemberListAdapter.ClubMemberViewHolder>() {
 
     var mDataList = ArrayList<ClubMemberInfoModel>()
 
@@ -39,6 +39,7 @@ class ClubMemberListAdapter(var myRoleType: Int, var listener: Listener) : Recyc
         private val nameTv: TextView = item.findViewById(R.id.name_tv)
         private val statusTv: TextView = item.findViewById(R.id.status_tv)
         private val roleTagTv: TextView = item.findViewById(R.id.role_tag_tv)
+        private val transferTv: TextView = item.findViewById(R.id.transfer_tv)
 
         var mPos = -1
         var mModel: ClubMemberInfoModel? = null
@@ -63,6 +64,9 @@ class ClubMemberListAdapter(var myRoleType: Int, var listener: Listener) : Recyc
             titleTv.setDebounceViewClickListener {
                 listener.onClickTitle(mPos, mModel)
             }
+            transferTv.setDebounceViewClickListener {
+                listener.onClickTransfer(mPos, mModel)
+            }
         }
 
         fun bindData(position: Int, model: ClubMemberInfoModel) {
@@ -86,19 +90,26 @@ class ClubMemberListAdapter(var myRoleType: Int, var listener: Listener) : Recyc
                 roleTagTv.visibility = View.INVISIBLE
             }
 
-            if ((myRoleType == EClubMemberRoleType.ECMRT_Founder.value || myRoleType == EClubMemberRoleType.ECMRT_CoFounder.value)
-                    && myRoleType < (model.userInfoModel?.clubInfo?.roleType ?: 0)) {
-                // 族长或副族长，只能操作权限低的人
-                removeTv.visibility = View.VISIBLE
-                titleTv.visibility = View.VISIBLE
-            } else {
-                removeTv.visibility = View.GONE
-                titleTv.visibility = View.GONE
-            }
+            if (type == ClubMemberListActivity.CLUB_LIST_TITLE) {
+                if ((myRoleType == EClubMemberRoleType.ECMRT_Founder.value || myRoleType == EClubMemberRoleType.ECMRT_CoFounder.value)
+                        && myRoleType < (model.userInfoModel?.clubInfo?.roleType ?: 0)) {
+                    // 族长或副族长，只能操作权限低的人
+                    removeTv.visibility = View.VISIBLE
+                    titleTv.visibility = View.VISIBLE
+                } else {
+                    removeTv.visibility = View.GONE
+                    titleTv.visibility = View.GONE
+                }
 
-            if (model.userInfoModel?.userId == MyUserInfoManager.uid.toInt() || model.userInfoModel?.clubInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value) {
+                if (model.userInfoModel?.userId == MyUserInfoManager.uid.toInt() || model.userInfoModel?.clubInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value) {
+                    removeTv.visibility = View.GONE
+                    titleTv.visibility = View.GONE
+                }
+                transferTv.visibility = View.GONE
+            } else if (type == ClubMemberListActivity.CLUB_LIST_TRANSFER) {
                 removeTv.visibility = View.GONE
                 titleTv.visibility = View.GONE
+                transferTv.visibility = View.VISIBLE
             }
         }
     }
@@ -107,5 +118,6 @@ class ClubMemberListAdapter(var myRoleType: Int, var listener: Listener) : Recyc
         fun onClickAvatar(position: Int, model: ClubMemberInfoModel?)
         fun onClickRemove(position: Int, model: ClubMemberInfoModel?)
         fun onClickTitle(position: Int, model: ClubMemberInfoModel?)
+        fun onClickTransfer(position: Int, model: ClubMemberInfoModel?)
     }
 }
