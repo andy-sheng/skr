@@ -1,13 +1,17 @@
 package com.module.club.homepage.view
 
 import android.content.Context
+import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.userinfo.model.ClubMemberInfo
+import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -17,6 +21,7 @@ import com.component.busilib.callback.EmptyCallback
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import com.module.RouterConstants
 import com.module.club.ClubServerApi
 import com.module.club.R
 import com.module.club.work.ClubWorkAdapter
@@ -36,6 +41,7 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
 
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
 
+    val TAG = "ClubWorksView"
     private var offset = 0
     private val cnt = 15
     var hasMore = true
@@ -43,17 +49,34 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
     private val mLoadService: LoadService<*>
     private val adapter: ClubWorkAdapter
     private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
+    private val playerTag = TAG + hashCode()
+    var isPlaying = false
 
     init {
         View.inflate(context, R.layout.club_tab_works_view_layout, this)
         recycleView = this.findViewById(R.id.recycler_view)
 
-        adapter = ClubWorkAdapter()
+        adapter = ClubWorkAdapter(object : ClubWorkAdapter.WorkListener {
+            override fun onClickPostsAvatar(position: Int, model: WorkModel?) {
+                model?.let {
+                    recordClick(model)
+                    openOtherPersonCenter(it.userID)
+                }
+
+            }
+
+        })
         recycleView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recycleView.adapter = adapter
 
-        adapter.clickListener = { position, model ->
+        adapter.clickListener = { position, model, playView ->
             Toast.makeText(context, "position = " + position + " : model = " + model, Toast.LENGTH_SHORT).show();
+            if (isPlaying) {
+                stopPlay(position, playView)
+            } else {
+                play(position, model, playView)
+            }
+
         }
         U.getCommonUtils().setSupportsChangeAnimations(recycleView, false)
         val mLoadSir = LoadSir.Builder()
@@ -64,6 +87,23 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
         })
     }
 
+
+    fun recordClick(model: WorkModel?) {
+        /*  if (type != TYPE_POST_PERSON) {
+              model?.posts?.postsID?.let {
+                  PostsStatistics.addCurClick(it.toInt())
+              }
+          }*/
+    }
+
+    private fun openOtherPersonCenter(userID: Int) {
+        val bundle = Bundle()
+        bundle.putInt("bundle_user_id", userID)
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                .with(bundle)
+                .navigation()
+    }
 
     private fun loadList(off: Int, isClean: Boolean, callBack: ((hasMore: Boolean) -> Unit)?) {
         launch {
@@ -128,8 +168,33 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
         loadList(offset, false, callback)
     }
 
-    fun stopPlay() {
 
+    private fun play(position: Int, model: WorkModel, playView: ImageView) {
+        isPlaying = true
+        playView.background = U.getDrawable(R.drawable.like_record_pause_icon)
+        adapter.mCurrentPlayModel = model
+        adapter.notifyItemChanged(position)
+        model?.worksURL?.let {
+            SinglePlayer.startPlay(playerTag, it)
+        }
+    }
+
+
+    fun stopPlay(position: Int, playView: ImageView) {
+        if (isPlaying) {
+            isPlaying = false
+            playView.background = U.getDrawable(R.drawable.like_record_play_icon)
+            adapter.mCurrentPlayModel = null
+            adapter.notifyItemChanged(position)
+            SinglePlayer.pause(playerTag)
+        }
+    }
+
+    fun stopPlay() {
+        if (isPlaying) {
+            isPlaying = false
+            SinglePlayer.pause(playerTag)
+        }
     }
 
     fun destroy() {

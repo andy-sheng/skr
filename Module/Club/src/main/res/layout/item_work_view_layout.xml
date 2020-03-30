@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <com.component.busilib.view.AvatarView
         android:id="@+id/cover_sdv"
         android:layout_width="@dimen/view_60_dp"
         android:layout_height="@dimen/view_60_dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        />
 
 
     <TextView
