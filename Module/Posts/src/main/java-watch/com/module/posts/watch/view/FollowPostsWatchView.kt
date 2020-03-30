@@ -13,7 +13,7 @@ import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.launch
 
 // 关注
-class FollowPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(activity, TYPE_POST_FOLLOW) {
+open class FollowPostsWatchView(activity: FragmentActivity, type: Int) : BasePostsWatchView(activity, type) {
 
     override fun selected() {
         super.selected()

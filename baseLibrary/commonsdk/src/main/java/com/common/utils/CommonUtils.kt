@@ -7,7 +7,10 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
+import android.view.ViewGroup
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -104,5 +107,48 @@ class CommonUtils internal constructor() {
         return packageInfo != null
     }
 
+
+    fun setSupportsChangeAnimations(recycler: RecyclerView?, support: Boolean) {
+        if (recycler == null) {
+            return
+        }
+        val animator = recycler.itemAnimator
+        if (animator is SimpleItemAnimator) {
+            animator.supportsChangeAnimations = support
+        }
+    }
+
+
+    fun setViewHeight(view: View?, height: Int) {
+        if (view == null) {
+            return
+        }
+        val layoutParams: ViewGroup.LayoutParams? = view.layoutParams
+        if (layoutParams != null && layoutParams.height !== height) {
+            layoutParams.height = height
+            view.requestLayout()
+        }
+    }
+
+    fun setViewSize(view: View?, width: Int, height: Int) {
+        if (view == null) {
+            return
+        }
+        val lp: ViewGroup.LayoutParams? = view.layoutParams
+        if (lp != null) {
+            var hasDiff = false
+            if (lp.width !== width) {
+                lp.width = width
+                hasDiff = true
+            }
+            if (lp.height !== height) {
+                lp.height = height
+                hasDiff = true
+            }
+            if (hasDiff) {
+                view.requestLayout()
+            }
+        }
+    }
 
 }

@@ -25,6 +25,7 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.event.PostsWatchTabRefreshEvent
 import com.module.RouterConstants
 import com.module.posts.statistics.PostsStatistics
+import com.module.posts.watch.view.BasePostsWatchView.Companion.TYPE_POST_FOLLOW
 import com.module.posts.watch.view.FollowPostsWatchView
 import com.module.posts.watch.view.LastPostsWatchView
 import com.module.posts.watch.view.RecommendPostsWatchView
@@ -47,7 +48,7 @@ class PostsWatchFragment : BaseFragment() {
 
     private var tabPagerAdapter: PagerAdapter? = null
 
-    val followPostsWatchView: FollowPostsWatchView by lazy { FollowPostsWatchView(this.activity!!) }
+    val followPostsWatchView: FollowPostsWatchView by lazy { FollowPostsWatchView(this.activity!!,TYPE_POST_FOLLOW)}
     val recommendPostsWatchView: RecommendPostsWatchView by lazy { RecommendPostsWatchView(this.activity!!) }
     val lastPostsWatchView: LastPostsWatchView by lazy { LastPostsWatchView(this.activity!!) }
 

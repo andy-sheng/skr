@@ -41,6 +41,7 @@ import com.module.club.ClubServerApi
 import com.module.club.R
 import com.module.club.homepage.view.*
 import com.module.club.manage.setting.ClubManageActivity
+import com.module.common.IBooleanCallback
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -398,6 +399,7 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
                             clubDynamicView = ClubDynamicView(this@ClubHomepageActivity2)
                         }
                         clubDynamicView?.clubMemberInfo = clubMemberInfo
+                        clubDynamicView?.loadData(false , IBooleanCallback { })
                         if (container.indexOfChild(clubDynamicView) == -1) {
                             container.addView(clubDynamicView)
                         }
@@ -496,9 +498,8 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
             0 -> clubIntroView?.loadData(flag) {
                 finishRefreshAndLoadMore()
             }
-            1 -> clubDynamicView?.loadData(flag) {
-                finishRefreshAndLoadMore()
-            }
+            1 -> clubDynamicView?.loadData(flag , IBooleanCallback {  finishRefreshAndLoadMore()})
+
             2 -> clubPhotoWallView?.loadData(flag) {
                 finishRefreshAndLoadMore()
             }
@@ -513,9 +514,8 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
             0 -> clubIntroView?.loadMoreData {
                 finishRefreshAndLoadMore()
             }
-            1 -> clubDynamicView?.loadMoreData {
-                finishRefreshAndLoadMore()
-            }
+            1 -> clubDynamicView?.loadMoreData (IBooleanCallback { finishRefreshAndLoadMore() })
+
             2 -> clubPhotoWallView?.loadMoreData {
                 finishRefreshAndLoadMore()
             }

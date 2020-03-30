@@ -83,4 +83,12 @@ interface PostsWatchServerApi {
 
     @PUT("/v1/posts/vote-add")
     fun votePosts(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 查询家族成员剧场
+     */
+    @GET("http://dev.api.inframe.mobi/v1/club/list-member-party")
+    fun getClubMemberPartyDetail(@Query("clubID") clubID: Int, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
+
+
 }

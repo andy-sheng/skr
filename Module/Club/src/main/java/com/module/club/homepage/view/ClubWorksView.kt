@@ -2,13 +2,30 @@ package com.module.club.homepage.view
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
+import android.widget.Toast
 import com.common.core.userinfo.model.ClubMemberInfo
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
+import com.common.utils.U
+import com.component.busilib.callback.EmptyCallback
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
+import com.module.club.ClubServerApi
 import com.module.club.R
+import com.module.club.work.ClubWorkAdapter
+import com.module.club.work.WorkModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import java.util.*
 
 // 家族作品
 class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : ConstraintLayout(context, attrs, defStyleAttr), CoroutineScope by MainScope() {
@@ -19,25 +36,105 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
 
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
 
+    private var offset = 0
+    private val cnt = 15
+    var hasMore = true
+    val recycleView: RecyclerView
+    private val mLoadService: LoadService<*>
+    private val adapter: ClubWorkAdapter
+    private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
+
     init {
         View.inflate(context, R.layout.club_tab_works_view_layout, this)
+        recycleView = this.findViewById(R.id.recycler_view)
 
+        adapter = ClubWorkAdapter()
+        recycleView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recycleView.adapter = adapter
+
+        adapter.clickListener = { position, model ->
+            Toast.makeText(context, "position = " + position + " : model = " + model, Toast.LENGTH_SHORT).show();
+        }
+        U.getCommonUtils().setSupportsChangeAnimations(recycleView, false)
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.loading_empty2, "暂无房间", "#99FFFFFF"))
+                .build()
+        mLoadService = mLoadSir.register(recycleView, Callback.OnReloadListener {
+            loadList(0, true, null)
+        })
     }
 
-    fun loadData(flag: Boolean, callback: () -> Unit?) {
-        callback.invoke()
+
+    private fun loadList(off: Int, isClean: Boolean, callBack: ((hasMore: Boolean) -> Unit)?) {
+        launch {
+            val result = subscribe(RequestControl("loadClubWorkList", ControlType.CancelThis)) {
+                //                roomServerApi.getPartyRoomList(off, cnt, model.gameMode)
+                clubServerApi.getClubWorkList(off, cnt, 0)
+            }
+            /* if (result.errno == 0) {
+                 offset = result.data.getIntValue("offset")
+                 hasMore = result.data.getBooleanValue("hasMore")
+                 val list = JSON.parseArray(result.data.getString("works"), WorkModel::class.java)
+                 addRoomList(list, isClean)
+             }*/
+
+
+            val list: MutableList<WorkModel> = ArrayList()
+            for (i in 0..19) {
+                val model = WorkModel()
+                model.artist = i.toString() + "1test1"
+                model.nickName = "$i 1test1 "
+                model.songName = "$i 1test1 "
+                model.worksURL = "http://res-static.inframe.mobi/app/skr-redpacket-20190304.png"
+                model.avatar = "http://res-static.inframe.mobi/app/skr-redpacket-20190304.png"
+                list.add(model)
+                addList(list, isClean)
+            }
+
+            callBack?.invoke(hasMore)
+        }
     }
 
-    fun loadMoreData(callback: () -> Unit?) {
-        callback.invoke()
+
+    private fun addList(list: List<WorkModel>?, isClean: Boolean) {
+        if (isClean) {
+            adapter.mDataList.clear()
+            if (!list.isNullOrEmpty()) {
+                adapter.mDataList.addAll(list)
+            }
+            adapter.notifyDataSetChanged()
+        } else {
+            if (!list.isNullOrEmpty()) {
+                val size = adapter.mDataList.size
+                adapter.mDataList.addAll(list)
+                val newSize = adapter.mDataList.size
+                adapter.notifyItemRangeInserted(size, newSize - size)
+            }
+        }
+        //列表空显示
+        if (adapter.mDataList.isNullOrEmpty()) {
+            mLoadService.showCallback(EmptyCallback::class.java)
+        } else {
+            mLoadService.showSuccess()
+        }
     }
 
-    fun stopPlay(){
+
+    fun loadData(flag: Boolean, callback: ((hasMore: Boolean) -> Unit)?) {
+        loadList(0, true, callback)
+    }
+
+    fun loadMoreData(callback: ((hasMore: Boolean) -> Unit)?) {
+        loadList(offset, false, callback)
+    }
+
+    fun stopPlay() {
 
     }
 
     fun destroy() {
         stopPlay()
         cancel()
+
     }
 }

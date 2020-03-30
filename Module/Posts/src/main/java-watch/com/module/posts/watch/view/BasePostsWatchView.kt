@@ -66,6 +66,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         TYPE_POST_LAST -> "LastPostsWatchView"
         TYPE_POST_PERSON -> "PersonPostsWatchView"
         TYPE_POST_TOPIC -> "TopicPostsWatchView"
+        TYPE_POST_DYNAMIC -> "DynamicPostsWatchView"
         else -> "BasePostsWatchView"
     }
 
@@ -75,6 +76,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         const val TYPE_POST_LAST = 3       // 最新
         const val TYPE_POST_PERSON = 4     // 个人中心
         const val TYPE_POST_TOPIC = 5      // 话题
+        const val TYPE_POST_DYNAMIC = 6    // 动态
     }
 
     val postsWatchServerApi = ApiManager.getInstance().createService(PostsWatchServerApi::class.java)
@@ -131,7 +133,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         classicsHeader = this.findViewById(R.id.classics_header)
         recyclerView = this.findViewById(R.id.recycler_view)
 
-        adapter = PostsWatchViewAdapter(type, object : PostsWatchListener {
+        adapter = PostsWatchViewAdapter(context,type, object : PostsWatchListener {
             override fun onClickPostsDetail(position: Int, model: PostsWatchModel?) {
                 if (model != null && model.isAudit()) {
                     recordClick(model)

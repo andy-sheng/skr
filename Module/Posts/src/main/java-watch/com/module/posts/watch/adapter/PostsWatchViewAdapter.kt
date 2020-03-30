@@ -1,5 +1,6 @@
 package com.module.posts.watch.adapter
 
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.support.v7.widget.RecyclerView
@@ -7,16 +8,22 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.common.log.MyLog
 import com.facebook.imagepipeline.memory.NoOpPoolStatsTracker
+import com.module.common.IBooleanCallback
 import com.module.posts.R
 import com.module.posts.watch.model.PostsWatchModel
 import com.module.posts.watch.view.BasePostsWatchView
-import com.module.posts.watch.viewholder.PostsEmptyWallViewHolder
-import com.module.posts.watch.viewholder.PostsViewHolder
-import com.module.posts.watch.viewholder.PostsWallViewHolder
-import com.module.posts.watch.viewholder.PostsWatchViewHolder
+import com.module.posts.watch.view.DynamicRoomView
+import com.module.posts.watch.viewholder.*
 import java.util.*
 
-class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PostsWatchViewAdapter(val activity: Context, val type: Int, val listener: PostsWatchListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+
+    private val dHolder: DynamicPostsViewHolder by lazy {
+        DynamicPostsViewHolder(DynamicRoomView(activity), listener)
+    }
+
+
 
     var mDataList = ArrayList<PostsWatchModel>()
 
@@ -44,6 +51,8 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
         const val TYPE_POSTS_WATCH = 1
         const val TYPE_POSTS_WALL = 2
         const val TYPE_POSTS_WALL_EMPTY = 3
+        const val TYPE_POSTS_WALL_ROOM = 4
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -56,6 +65,9 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.posts_wall_view_item_layout, parent, false)
                 PostsWallViewHolder(view, listener)
             }
+            TYPE_POSTS_WALL_ROOM -> {
+                dHolder
+            }
             else -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.posts_watch_view_item_layout, parent, false)
                 PostsWatchViewHolder(view, listener, type)
@@ -64,6 +76,10 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
     }
 
     override fun getItemCount(): Int {
+        if (type == BasePostsWatchView.TYPE_POST_DYNAMIC) {
+            return mDataList.size + 1
+        }
+
         if (type == BasePostsWatchView.TYPE_POST_PERSON && mDataList.size == 0) {
             return 1
         }
@@ -77,7 +93,13 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
             } else {
                 TYPE_POSTS_WALL_EMPTY
             }
-        } else {
+        } else if (type == BasePostsWatchView.TYPE_POST_DYNAMIC) {
+            if (position == 0) {
+                TYPE_POSTS_WALL_ROOM
+            } else {
+                TYPE_POSTS_WALL
+            }
+        }else {
             TYPE_POSTS_WATCH
         }
     }
@@ -88,10 +110,15 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
         if (holder is PostsViewHolder) {
+            var newPosition = position
+            if (type == BasePostsWatchView.TYPE_POST_DYNAMIC) {
+                 newPosition = position - 1
+            }
+
             MyLog.d(mTag, "onBindViewHolder holder = $holder, position = $position, payloads = $payloads")
             if (payloads.isEmpty()) {
-                holder.bindData(position, mDataList[position])
-                if (mCurrentPlayModel == mDataList[position]) {
+                holder.bindData(newPosition, mDataList[newPosition])
+                if (mCurrentPlayModel == mDataList[newPosition]) {
                     holder.startPlay(playStatus)
                 } else {
                     holder.stopPlay()
@@ -102,7 +129,7 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
                     if (refreshType is Int) {
                         when (refreshType) {
                             REFRESH_POSTS_ALL -> {
-                                if (mCurrentPlayModel == mDataList[position]) {
+                                if (mCurrentPlayModel == mDataList[newPosition]) {
                                     holder.startPlay(playStatus)
                                 } else {
                                     holder.stopPlay()
@@ -114,8 +141,8 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
                                 holder.refreshCommentCnt()
                             }
                             REFRESH_POSTS_PLAY -> {
-                                MyLog.d(mTag, "onBindViewHolder REFRESH_POSTS_PLAY position = $position")
-                                if (mCurrentPlayModel == mDataList[position]) {
+                                MyLog.d(mTag, "onBindViewHolder REFRESH_POSTS_PLAY position = $newPosition")
+                                if (mCurrentPlayModel == mDataList[newPosition]) {
                                     holder.startPlay(playStatus)
                                 } else {
                                     holder.stopPlay()
@@ -219,6 +246,28 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
         data?.numeric = update.numeric
         data?.user = update.user
     }
+
+
+    fun cancel() {
+        if (type == BasePostsWatchView.TYPE_POST_DYNAMIC) {
+            dHolder?.cancel()
+        }
+    }
+
+    fun loadData(clubId: Int, callback: IBooleanCallback) {
+        if (type == BasePostsWatchView.TYPE_POST_DYNAMIC) {
+            dHolder?.loadData(clubId, callback)
+        }
+    }
+
+    fun loadMoreData(callback: IBooleanCallback) {
+        if (type == BasePostsWatchView.TYPE_POST_DYNAMIC) {
+            dHolder?.loadMoreData(callback)
+        }
+    }
+
+
+
 }
 
 interface PostsWatchListener {
