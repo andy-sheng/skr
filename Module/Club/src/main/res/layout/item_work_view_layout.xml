@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="92dp">
 
     <com.component.busilib.view.AvatarView
         android:id="@+id/cover_sdv"
         android:layout_width="@dimen/view_60_dp"
         android:layout_height="@dimen/view_60_dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         />
 
 
@@ -20,10 +18,10 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_22_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_22_dp"
+        android:layout_marginTop="@dimen/view_24_dp"
         android:layout_toRightOf="@id/cover_sdv"
         android:ellipsize="end"
-        android:layout_marginRight="1dp"
+        android:layout_marginRight="5dp"
         android:lines="1"
         android:textColor="#ff000000"
         android:textSize="16dp"
@@ -37,7 +35,7 @@
         android:layout_toRightOf="@id/name_tv"
         android:ellipsize="end"
         android:lines="1"
-        android:textColor="#33ff0000"
+        android:textColor="#ff000000"
         android:textSize="16dp"
         tools:text="蓝精灵" />
 
@@ -48,7 +46,7 @@
         android:layout_height="20dp"
         android:layout_below="@id/name_tv"
         android:layout_alignLeft="@id/name_tv"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:lines="1"
         android:layout_marginLeft="2dp"
@@ -59,13 +57,24 @@
 
     <ImageView
         android:id="@+id/record_play_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_32_dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:paddingLeft="@dimen/view_20_dp"
-        android:paddingRight="@dimen/view_20_dp"
-        android:src="@drawable/play_btn" />
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:background="@drawable/work_record_play_icon"
+        />
+
+
+    <View
+        android:layout_alignParentBottom="true"
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
+        android:background="@color/black_trans_10"
+        tools:ignore="MissingConstraints" />
 
 </RelativeLayout>
 

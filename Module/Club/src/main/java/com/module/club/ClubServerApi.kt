@@ -223,7 +223,7 @@ interface ClubServerApi {
      * 获取家族作品
      *
      */
-    @GET("http://dev.api.inframe.mobi/v1/club/list-member-in-rank")
+    @GET("/v1/club/list-works")
     fun getClubWorkList(@Query("offset") offset: Int, @Query("cnt") cnt: Int,
                         @Query("familyID") familyID: Int): Call<ApiResult>
 

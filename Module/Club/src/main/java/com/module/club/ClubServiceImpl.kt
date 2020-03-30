@@ -9,14 +9,17 @@ import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.rxretrofit.*
 import com.common.utils.U
+import com.component.busilib.event.DynamicPostsEvent
+import com.component.busilib.event.PostsWatchTabRefreshEvent
+import com.component.club.model.ClubMemberInfoModel
 import com.module.RouterConstants
 import com.module.club.home.ClubHomeView
 import com.module.club.homepage.ClubHomepageActivity2
-import com.component.club.model.ClubMemberInfoModel
 import com.module.common.ICallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 
 @Route(path = RouterConstants.SERVICE_CLUB, name = "测试服务")
 class ClubServiceImpl : IClubModuleService, CoroutineScope by MainScope() {
@@ -95,10 +98,10 @@ class ClubServiceImpl : IClubModuleService, CoroutineScope by MainScope() {
     }
 
     override fun finishClubWorkUpload() {
-
+        EventBus.getDefault().post(DynamicPostsEvent(DynamicPostsEvent.EVENT_WORK))
     }
 
     override fun finishClubPostUpload() {
-
+        EventBus.getDefault().post(DynamicPostsEvent(DynamicPostsEvent.EVENT_POST))
     }
 }

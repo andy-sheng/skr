@@ -8,9 +8,11 @@ import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.event.MyUserInfoEvent
 import com.common.core.userinfo.model.ClubMemberInfo
+import com.common.log.MyLog
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
@@ -30,7 +32,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import java.util.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 // 家族作品
 class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : ConstraintLayout(context, attrs, defStyleAttr), CoroutineScope by MainScope() {
@@ -53,6 +57,10 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
     var isPlaying = false
 
     init {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+
         View.inflate(context, R.layout.club_tab_works_view_layout, this)
         recycleView = this.findViewById(R.id.recycler_view)
 
@@ -70,7 +78,7 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
         recycleView.adapter = adapter
 
         adapter.clickListener = { position, model, playView ->
-            Toast.makeText(context, "position = " + position + " : model = " + model, Toast.LENGTH_SHORT).show();
+            MyLog.d("lijianqun", "position = $position + : model = $model")
             if (isPlaying) {
                 stopPlay(position, playView)
             } else {
@@ -109,17 +117,31 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
         launch {
             val result = subscribe(RequestControl("loadClubWorkList", ControlType.CancelThis)) {
                 //                roomServerApi.getPartyRoomList(off, cnt, model.gameMode)
-                clubServerApi.getClubWorkList(off, cnt, 0)
+                clubServerApi.getClubWorkList(off, cnt, clubMemberInfo?.club?.clubID!!)
             }
-            /* if (result.errno == 0) {
+             if (result.errno == 0) {
                  offset = result.data.getIntValue("offset")
                  hasMore = result.data.getBooleanValue("hasMore")
-                 val list = JSON.parseArray(result.data.getString("works"), WorkModel::class.java)
-                 addRoomList(list, isClean)
-             }*/
+                 var list: MutableList<WorkModel> = ArrayList()
+                 if (isClean) {
+                      list = JSON.parseArray(result.data.getString("auditingWorks"), WorkModel::class.java)
+                     list?.let {
+                        for (i in 0 until list.size) {
+                            list[i].auditing = true
+                        }
+                    }
+                 }
+                 val works = JSON.parseArray(result.data.getString("works"), WorkModel::class.java)
+                 if(!list.isNullOrEmpty() && !works.isNullOrEmpty()){
+                     list.addAll(works)
+                 }
+                 addList(list, isClean)
+             }
+             if (result.errno == -2) {
+                 U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+             }
 
-
-            val list: MutableList<WorkModel> = ArrayList()
+          /*  val list: MutableList<WorkModel> = ArrayList()
             for (i in 0..19) {
                 val model = WorkModel()
                 model.artist = i.toString() + "1test1"
@@ -130,7 +152,7 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
                 list.add(model)
                 addList(list, isClean)
             }
-
+*/
             callBack?.invoke(hasMore)
         }
     }
@@ -171,9 +193,9 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
 
     private fun play(position: Int, model: WorkModel, playView: ImageView) {
         isPlaying = true
-        playView.background = U.getDrawable(R.drawable.like_record_pause_icon)
+        playView.background = U.getDrawable(R.drawable.work_record_pause_icon)
         adapter.mCurrentPlayModel = model
-        adapter.notifyItemChanged(position)
+        adapter.notifyDataSetChanged()
         model?.worksURL?.let {
             SinglePlayer.startPlay(playerTag, it)
         }
@@ -183,9 +205,9 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
     fun stopPlay(position: Int, playView: ImageView) {
         if (isPlaying) {
             isPlaying = false
-            playView.background = U.getDrawable(R.drawable.like_record_play_icon)
+            playView.background = U.getDrawable(R.drawable.work_record_play_icon)
             adapter.mCurrentPlayModel = null
-            adapter.notifyItemChanged(position)
+            adapter.notifyDataSetChanged()
             SinglePlayer.pause(playerTag)
         }
     }
@@ -200,6 +222,14 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
     fun destroy() {
         stopPlay()
         cancel()
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
+    }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MyUserInfoEvent.UserInfoChangeEvent) {
+        loadList(0, true, null)
     }
 }

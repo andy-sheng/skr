@@ -3,6 +3,7 @@ package com.module.posts.watch.view
 import android.support.v4.app.FragmentActivity
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.myinfo.event.MyUserInfoEvent
 import com.common.log.MyLog
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -15,12 +16,23 @@ import com.module.posts.more.PostsMoreDialogView
 import com.module.posts.watch.model.PostsModel
 import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.ArrayList
 
 // 动态
 class DynamicPostsWatchView(activity: FragmentActivity, type: Int) : FollowPostsWatchView(activity, type), IDynamicPostsView {
-    var clubID: Int? = 0
+    var clubID: Int = 0
 
+
+
+
+    init {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+    }
     //TODO 动态的上报
     override fun selected() {
         super.selected()
@@ -33,6 +45,7 @@ class DynamicPostsWatchView(activity: FragmentActivity, type: Int) : FollowPosts
         getFollowPosts(0, true,callback)
     }
 
+
     override fun loadMoreData(callback: IBooleanCallback) {
         adapter?.loadMoreData (callback)
         if (hasMore) {
@@ -40,6 +53,10 @@ class DynamicPostsWatchView(activity: FragmentActivity, type: Int) : FollowPosts
         } else {
             U.getToastUtil().showShort("没有更多了")
         }
+    }
+
+    override fun isHasMore(): Boolean {
+         return hasMore
     }
 
 
@@ -50,20 +67,19 @@ class DynamicPostsWatchView(activity: FragmentActivity, type: Int) : FollowPosts
             }
             if (result.errno == 0) {
                 mHasInitData = true
-//                val list = JSON.parseArray(result.data.getString("details"), PostsWatchModel::class.java)
+                   val list = JSON.parseArray(result.data.getString("details"), PostsWatchModel::class.java)
                 mOffset = result.data.getIntValue("offset")
                 hasMore = result.data.getBoolean("hasMore")
 
 
 
-
-                val list: MutableList<PostsWatchModel> = ArrayList()
-                for (i in 0..29) {
+            /*    val list: MutableList<PostsWatchModel> = ArrayList()
+                for (i in 0..39) {
                     val model = PostsWatchModel()
                     model.isLiked = true
                     model.posts = PostsModel()
                     list.add(model)
-                }
+                }*/
 
                 MyLog.d("lijianqun DynamicRoomView loadRoomListData() list = " + list?.size)
 
@@ -76,7 +92,7 @@ class DynamicPostsWatchView(activity: FragmentActivity, type: Int) : FollowPosts
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络出错了，请检查网络后重试")
                 }
-                val list: MutableList<PostsWatchModel> = ArrayList()
+                /*val list: MutableList<PostsWatchModel> = ArrayList()
                 for (i in 0..29) {
                     val model = PostsWatchModel()
                     model.isLiked = true
@@ -86,19 +102,22 @@ class DynamicPostsWatchView(activity: FragmentActivity, type: Int) : FollowPosts
 
                 MyLog.d("lijianqun DynamicRoomView loadRoomListData() list = " + list?.size)
 
-
-
-
-                addWatchPosts(list, isClear)
+                addWatchPosts(list, isClear)*/
                 callback.result(hasMore)
             }
             finishRefreshOrLoadMore()
         }
     }
 
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MyUserInfoEvent.UserInfoChangeEvent) {
+        loadData(clubID,{})
+    }
 
 
     override fun cancel() {
         adapter?.cancel()
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
     }}

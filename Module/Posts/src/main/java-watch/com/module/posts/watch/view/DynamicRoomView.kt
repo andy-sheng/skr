@@ -8,12 +8,12 @@ import android.support.v7.widget.RecyclerView.OnItemTouchListener
 import android.view.MotionEvent
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.component.busilib.callback.EmptyCallback
 import com.component.busilib.model.PartyRoomInfoModel
@@ -27,7 +27,6 @@ import com.module.posts.R
 import com.module.posts.watch.PostsWatchServerApi
 import com.module.posts.watch.adapter.DynamicPostsRoomAdapter
 import kotlinx.coroutines.*
-import java.util.*
 
 /**
  * horizon
@@ -66,9 +65,9 @@ class DynamicRoomView(context: Context) : ConstraintLayout(context), CoroutineSc
                 val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                 iRankingModeService.tryGoPartyRoom(it, 1, model.roomtype ?: 0)
 
-                val map = HashMap<String, String>()
-                map["roomType"] = model.roomtype.toString()
-                StatisticsAdapter.recordCountEvent("party", "recommend", map)
+                /* val map = HashMap<String, String>()
+                 map["roomType"] = model.roomtype.toString()
+                 StatisticsAdapter.recordCountEvent("party", "recommend", map)*/
             }
         }
 
@@ -81,7 +80,7 @@ class DynamicRoomView(context: Context) : ConstraintLayout(context), CoroutineSc
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    starTimer(recommendInterval, IBooleanCallback {  })
+                    starTimer(recommendInterval, IBooleanCallback { })
                 } else {
                     stopTimer()
                 }
@@ -114,18 +113,17 @@ class DynamicRoomView(context: Context) : ConstraintLayout(context), CoroutineSc
         })
 
 
-
         val mLoadSir = LoadSir.Builder()
                 .addCallback(EmptyCallback(R.drawable.loading_empty2, "暂无房间", "#99FFFFFF"))
                 .build()
         mLoadService = mLoadSir.register(recyclerView, Callback.OnReloadListener {
-            initData(true, IBooleanCallback {  })
+            initData(true, IBooleanCallback { })
         })
-        initData(true, IBooleanCallback {  })
+        initData(true, IBooleanCallback { })
     }
 
 
-    fun loadRoomListData(off: Int, isClean: Boolean,callback: IBooleanCallback) {
+    fun loadRoomListData(off: Int, isClean: Boolean, callback: IBooleanCallback) {
 
         MyLog.d("lijianqun DynamicRoomView loadRoomListData() ")
 
@@ -141,10 +139,10 @@ class DynamicRoomView(context: Context) : ConstraintLayout(context), CoroutineSc
                 lastLoadDateTime = System.currentTimeMillis()
                 offset = result.data.getIntValue("offset")
                 hasMore = result.data.getBooleanValue("hasMore")
-              /*  val list = JSON.parseArray(result.data.getString("roomInfo"), PartyRoomInfoModel::class.java)
+                val list = JSON.parseArray(result.data.getString("roomInfo"), PartyRoomInfoModel::class.java)
                 MyLog.d("lijianqun DynamicRoomView loadRoomListData() list = " + list?.size)
-                addRoomList(list, isClean)*/
-
+                addRoomList(list, isClean)
+/*
                 val list: MutableList<PartyRoomInfoModel> = ArrayList()
                 for (i in 0..19) {
                     val model = PartyRoomInfoModel()
@@ -155,17 +153,21 @@ class DynamicRoomView(context: Context) : ConstraintLayout(context), CoroutineSc
                     model.avatarUrl= "http://res-static.inframe.mobi/app/skr-redpacket-20190304.png"
                     list.add(model)
                 }
-
                 MyLog.d("lijianqun DynamicRoomView loadRoomListData() list = " + list?.size)
                 addRoomList(list, isClean)
 
-
-
-                callback.result(hasMore)
+*/
             }
+
+            if (result.errno == -2) {
+                U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+            }
+
+
+            callback.result(hasMore)
             if (!isClean) {
                 // 是加载更多
-                starTimer(recommendInterval,callback)
+                starTimer(recommendInterval, callback)
             }
         }
 
@@ -204,12 +206,12 @@ class DynamicRoomView(context: Context) : ConstraintLayout(context), CoroutineSc
         }
     }
 
-    private fun starTimer(delayTime: Long,callback: IBooleanCallback) {
+    private fun starTimer(delayTime: Long, callback: IBooleanCallback) {
         roomJob?.cancel()
         roomJob = launch {
             delay(delayTime)
             repeat(Int.MAX_VALUE) {
-                loadRoomListData(0, true,callback)
+                loadRoomListData(0, true, callback)
 //                if (type == TYPE_GAME_HOME) {
 //                    loadClubListData()
 //                }
@@ -222,17 +224,17 @@ class DynamicRoomView(context: Context) : ConstraintLayout(context), CoroutineSc
         roomJob?.cancel()
     }
 
-    fun initData(flag: Boolean,callback: IBooleanCallback) {
+    fun initData(flag: Boolean, callback: IBooleanCallback) {
         if (!flag) {
             var now = System.currentTimeMillis();
             if ((now - lastLoadDateTime) > recommendInterval) {
-                starTimer(0,callback)
+                starTimer(0, callback)
             } else {
                 var delayTime = recommendInterval - (now - lastLoadDateTime)
-                starTimer(delayTime,callback)
+                starTimer(delayTime, callback)
             }
         } else {
-            starTimer(0,callback)
+            starTimer(0, callback)
         }
     }
 
@@ -244,16 +246,12 @@ class DynamicRoomView(context: Context) : ConstraintLayout(context), CoroutineSc
 
     fun loadData(clubId: Int, callback: IBooleanCallback) {
         this.clubID = clubId
-        initData(true,callback)
+        initData(true, callback)
     }
 
     fun loadMoreData(callback: IBooleanCallback) {
-        loadRoomListData(offset, false,callback)
+        loadRoomListData(offset, false, callback)
     }
-
-
-
-
 
 
 }

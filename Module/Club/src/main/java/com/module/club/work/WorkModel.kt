@@ -15,6 +15,7 @@ class WorkModel : Serializable {
     var familyID: Int = 0
     var avatar: String? = null
     var artist: String? = null
+    var auditing: Boolean = false
 
     companion object {
         const val TYPE_STAND_NORMAL = 1    // 一唱到底

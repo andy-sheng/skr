@@ -12,7 +12,6 @@ import com.alibaba.fastjson.JSON
 import com.common.callback.Callback
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
-import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
@@ -56,7 +55,7 @@ import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.HashMap
+import java.util.*
 
 abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int) : ConstraintLayout(activity), CoroutineScope by MainScope() {
 
@@ -133,7 +132,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         classicsHeader = this.findViewById(R.id.classics_header)
         recyclerView = this.findViewById(R.id.recycler_view)
 
-        adapter = PostsWatchViewAdapter(context,type, object : PostsWatchListener {
+        adapter = PostsWatchViewAdapter(context, type, object : PostsWatchListener {
             override fun onClickPostsDetail(position: Int, model: PostsWatchModel?) {
                 if (model != null && model.isAudit()) {
                     recordClick(model)
@@ -341,8 +340,8 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
         })
         refreshLayout.apply {
-            setEnableRefresh(type != TYPE_POST_TOPIC)
-            setEnableLoadMore(type != TYPE_POST_TOPIC)
+            setEnableRefresh(type != TYPE_POST_TOPIC && type != TYPE_POST_DYNAMIC)
+            setEnableLoadMore(type != TYPE_POST_TOPIC && type != TYPE_POST_DYNAMIC)
             setEnableLoadMoreWhenContentNotFull(false)
             setEnableOverScrollDrag(type != TYPE_POST_TOPIC)
             setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {

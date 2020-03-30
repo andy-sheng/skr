@@ -9,5 +9,6 @@ public interface IDynamicPostsView {
     void loadMoreData(IBooleanCallback callback);
 
     void cancel();
+    boolean isHasMore();
 
 }
