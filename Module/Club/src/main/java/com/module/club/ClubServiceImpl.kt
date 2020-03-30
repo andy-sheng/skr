@@ -19,7 +19,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 @Route(path = RouterConstants.SERVICE_CLUB, name = "测试服务")
-class ClubServiceImpl : IClubModuleService, CoroutineScope by MainScope(){
+class ClubServiceImpl : IClubModuleService, CoroutineScope by MainScope() {
 
 
     val TAG = "ClubServiceImpl"
@@ -53,12 +53,13 @@ class ClubServiceImpl : IClubModuleService, CoroutineScope by MainScope(){
 
 
                     userInfoList.addAll(list.map {
-                        val userInfoModel = it.userInfoModel?: return@map mutableMapOf<String, String>()
+                        val userInfoModel = it.userInfoModel
+                                ?: return@map mutableMapOf<String, String>()
                         mutableMapOf(Pair("userId", userInfoModel.userId.toString()),
                                 Pair("nickname", userInfoModel.nickname),
                                 Pair("avatar", userInfoModel.avatar))
                     })
-                }else{
+                } else {
                     callback.onFailed(userInfoList, result.errno, result.errmsg)
                     break
                 }
@@ -91,5 +92,13 @@ class ClubServiceImpl : IClubModuleService, CoroutineScope by MainScope(){
 
     override fun getClubHomeView(context: Context): IClubHomeView {
         return ClubHomeView(context)
+    }
+
+    override fun finishClubWorkUpload() {
+
+    }
+
+    override fun finishClubPostUpload() {
+
     }
 }
