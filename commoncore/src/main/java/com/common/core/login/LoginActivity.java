@@ -21,6 +21,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.core.policy.PrivacyPolicyDialog;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.IHomeService;
@@ -66,6 +67,8 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         }
+
+        new PrivacyPolicyDialog(this).show();
     }
 
     @Override

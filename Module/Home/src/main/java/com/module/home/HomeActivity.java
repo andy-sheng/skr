@@ -26,6 +26,7 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.login.LoginActivity;
 import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.core.permission.SkrSdcardPermission;
+import com.common.core.policy.PrivacyPolicyDialog;
 import com.common.core.scheme.event.InviteRelationCardSchemeEvent;
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
@@ -227,6 +228,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }, 3000);
             // 没有账号 跳到登陆页面
             LoginActivity.open(this);
+        }else{ //未登录不现实保护协议弹框，在登录页面显示
+            new PrivacyPolicyDialog(this).show();
         }
 
         mCheckInPresenter = new CheckInPresenter(this);
@@ -354,7 +357,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         });
 
         NoRemindManager.INSTANCE.refreshNoRemindCacheIfNeeded();
-
     }
 
     private void showNewFunctionDialog() {
