@@ -27,9 +27,27 @@ class ClubServiceImpl : IClubModuleService, CoroutineScope by MainScope() {
 
     val TAG = "ClubServiceImpl"
 
+    private val PREF_KEY_CLUB_APPLY_COUNT_WATER = "CLUB_APPLY_COUNT_WATER"
     private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
 
     override fun init(context: Context?) {
+    }
+
+    override fun getClubApplyCount(clubID: Int, callback: ICallback) {
+        // 水位持久化
+        val waterLevel = U.getPreferenceUtils().getSettingLong(PREF_KEY_CLUB_APPLY_COUNT_WATER, 0L)
+        launch {
+            val apiResult = subscribe (RequestControl("", ControlType.CancelThis)){
+                clubServerApi.getCountMemberApply(clubID, waterLevel)
+            }
+
+            if(apiResult.errno == 0){
+                callback.onSucess(apiResult.data["total"])
+                U.getPreferenceUtils().setSettingLong(PREF_KEY_CLUB_APPLY_COUNT_WATER, apiResult.data["timeMs"].toString().toLong())
+            }else{
+                callback.onFailed(null, apiResult.errno, apiResult.errmsg)
+            }
+        }
     }
 
     override fun getClubMembers(clubID: Int, callback: ICallback) {

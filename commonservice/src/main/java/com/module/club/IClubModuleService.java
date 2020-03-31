@@ -13,6 +13,8 @@ public interface IClubModuleService extends IProvider {
 
     void getClubMembers(int clubID, ICallback callback);
 
+    void getClubApplyCount(int clubID, ICallback callback);
+
     //发布家族作品完成
     void finishClubWorkUpload();
 

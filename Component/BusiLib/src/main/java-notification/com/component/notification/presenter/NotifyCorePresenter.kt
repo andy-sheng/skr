@@ -62,6 +62,7 @@ import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.Notification.*
+import com.zq.live.proto.broadcast.PartyDiamondbox
 import com.zq.live.proto.broadcast.PresentGift
 import io.reactivex.Observable
 import okhttp3.MediaType
@@ -133,6 +134,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
                 floatWindowData.mType == FloatWindowData.Type.RELAY_INVITE -> showRelayInviteFromRoomFloatWindow(floatWindowData)
                 floatWindowData.mType == FloatWindowData.Type.RONG_MSG_NOTIFY -> showRongMsgNotifyFloatWindow(floatWindowData)
                 floatWindowData.mType == FloatWindowData.Type.BIG_GIFT_NOTIFY -> showBigGiftNotifyFloatWindow(floatWindowData)
+                floatWindowData.mType == FloatWindowData.Type.DIAMOND_BOX_NOTIFY -> showDiamondNotifyFloatWindow(floatWindowData)
             }
         }
 
@@ -415,7 +417,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
     fun onEvent(event: PresentGift) {
         if (U.getActivityUtils().isAppForeground) {
             val floatWindowData = FloatWindowData(FloatWindowData.Type.BIG_GIFT_NOTIFY)
-            val obj = JSONObject();
+            val obj = JSONObject()
             obj.put("content", event.content)
             obj.put("couldEnter", event.couldEnter)
             obj.put("sourceURL", event.sourceURL)
@@ -423,6 +425,15 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
             obj.put("mode", event.mode.value)
             obj.put("roomID", event.roomID)
             floatWindowData.extra = obj.toJSONString()
+            mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyDiamondbox){
+        if (U.getActivityUtils().isAppForeground) {
+            val floatWindowData = FloatWindowData(FloatWindowData.Type.DIAMOND_BOX_NOTIFY)
+            floatWindowData.extra = JSON.toJSONString(event)
             mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
         }
     }
@@ -1118,6 +1129,14 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         }
     }
 
+    internal fun showDiamondNotifyFloatWindow(floatWindowData: FloatWindowData) {
+        val diamondBoxNotifyView = DiamondBoxNotifyView(U.app())
+        floatWindowData.extra?.let {
+            diamondBoxNotifyView.bindData(it)
+        }?:MyLog.e("宝箱信息为空")
+
+    }
+
     internal fun showBigGiftNotifyFloatWindow(floatWindowData: FloatWindowData) {
         val relationNotifyView = BigGiftNotifyView(U.app())
         val obj = JSONObject.parseObject(floatWindowData.extra)
@@ -1342,6 +1361,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
             RELAY_INVITE,
             RONG_MSG_NOTIFY,
             BIG_GIFT_NOTIFY,
+            DIAMOND_BOX_NOTIFY
         }
     }
 

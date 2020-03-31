@@ -41,6 +41,7 @@ import com.zq.live.proto.Notification.PostsCommentLikeMsg;
 import com.zq.live.proto.Notification.PostsLikeMsg;
 import com.zq.live.proto.Notification.SysWarningMsg;
 import com.zq.live.proto.broadcast.ERoomBroadcastMsgType;
+import com.zq.live.proto.broadcast.PartyDiamondbox;
 import com.zq.live.proto.broadcast.RoomBroadcastMsg;
 import com.zq.live.proto.broadcast.StandFullStar;
 
@@ -92,6 +93,8 @@ public class NotificationPushManager {
             }
         } else if (msg.getMsgType() == ERoomBroadcastMsgType.RBRT_PRESENT_GIFT) {
             EventBus.getDefault().post(msg.getPresentGift());
+        } else if(msg.getMsgType() == ERoomBroadcastMsgType.RBRT_PARTY_DIAMONDBOX){
+            EventBus.getDefault().post(msg.getPartyDiamondbox());
         }
     }
 

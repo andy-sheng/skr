@@ -541,6 +541,6 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
     override fun onResume() {
         super.onResume()
         //返回页面更新未读消息数
-        clubRightOpView?.updateUnreadMsgCount()
+        clubRightOpView?.resume()
     }
 }

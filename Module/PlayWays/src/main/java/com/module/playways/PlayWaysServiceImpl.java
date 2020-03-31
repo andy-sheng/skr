@@ -65,6 +65,7 @@ import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Common.EGameModeType;
 import com.zq.live.proto.MicRoom.EJoinRoomSrc;
 import com.zq.live.proto.Notification.ERInviteType;
+import com.zq.live.proto.broadcast.PartyDiamondbox;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -74,6 +75,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -309,8 +311,9 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         return new PartyRoomView(context, PartyRoomView.TYPE_GAME_HOME);
     }
 
+
     @Override
-    public void tryGoPartyRoom(int roomID, int joinSrc, int roomType) {
+    public void tryGoDiamondBoxPartyRoom(int roomID, int joinSrc, int roomType, @Nullable  String extra) {
         // 列表添加 JRS_LIST    = 1;  邀请添加 JRS_INVITE  = 2;
         // roomType RT_PERSONAL = 1;普通房间  RT_FAMILY = 2;家族剧场
         HashMap map = new HashMap();
@@ -320,6 +323,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         if (roomType != 0) {
             map.put("roomType", roomType);
         }
+
         skrAudioPermission.ensurePermission(new Runnable() {
             @Override
             public void run() {
@@ -343,6 +347,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                             }
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_ROOM)
                                     .withSerializable("JoinPartyRoomRspModel", rsp)
+                                    .withString("diamond_box", extra)
                                     .navigation();
                         } else {
                             U.getToastUtil().showShort(result.getErrmsg());
@@ -361,6 +366,10 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 });
             }
         }, true);
+    }
+    @Override
+    public void tryGoPartyRoom(int roomID, int joinSrc, int roomType) {
+        tryGoDiamondBoxPartyRoom(roomID, joinSrc, roomType, null);
     }
 
     //在外面（抢唱，party，小k房里面）邀请别人一起合唱之后当被邀请的人同意之后邀请人收到push之后调用的这个

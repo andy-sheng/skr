@@ -29,6 +29,8 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
 
     private val TAG = "ClubRightOpView"
     private var mApplyTv: ExTextView? = null
+    private var mApplyCountTv: ExTextView? = null
+
     private var mConversationTv: ExTextView? = null
     private var mPostView: LinearLayout? = null
     private var mPostImg: ExImageView? = null
@@ -46,6 +48,7 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
 
     override fun init(parentView: View) {
         mApplyTv = parentView.findViewById(R.id.club_right_apply_tv)
+        mApplyCountTv = parentView.findViewById(R.id.club_right_apply_num_tv)
         mConversationTv = parentView.findViewById(R.id.club_right_conversation_tv)
         mPostView = parentView.findViewById(R.id.club_right_post)
         mPostImg = parentView.findViewById(R.id.club_right_post_img)
@@ -76,8 +79,11 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
         mClubMemberInfo = clubMemberInfo
 
         mApplyTv?.setDebounceViewClickListener {
-
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_APPLY_CLUB)
+                    .withSerializable("clubApplyList", clubMemberInfo)
+                    .navigation()
         }
+
         mClubPostActionTv?.setDebounceViewClickListener {
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
@@ -109,6 +115,7 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
         }
 
         updateUnreadMsgCount()
+        updateApplyCount()
     }
 
     /**
@@ -158,6 +165,26 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
         }
     }
 
+    private fun updateApplyCount(){
+        //获取未读消息数
+        mClubMemberInfo?.club?.let {
+            ModuleServiceManager.getInstance().clubService.getClubApplyCount(it.clubID, object :ICallback{
+                override fun onSucess(obj: Any?) {
+                    obj?.toString()?.toInt()?.takeIf { it > 0 }?.let {
+                        mApplyCountTv?.text = it.toString()
+                        mApplyCountTv?.visibility = View.VISIBLE
+                    }?:mApplyCountTv?.apply {
+                        mApplyCountTv?.visibility = View.GONE
+                    }
+                }
+
+                override fun onFailed(obj: Any?, errcode: Int, message: String?) {
+
+                }
+
+            })
+        }
+    }
     /**
      * 获取并显示未读消息数量
      */
@@ -194,5 +221,10 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
+    }
+
+    fun resume(){
+        updateApplyCount()
+        updateUnreadMsgCount()
     }
 }

@@ -24,14 +24,14 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.flutter.boost.FlutterBoostController
 import com.common.log.DebugLogView
 import com.common.log.MyLog
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.common.view.ex.ExConstraintLayout
+import com.common.view.ex.ExTextView
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.ClubCardDialogView
@@ -95,8 +95,10 @@ import com.module.playways.room.room.view.InputContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.live.proto.Common.PBeginDiamondbox
 import com.zq.live.proto.PartyRoom.*
 import io.reactivex.Observable
+import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -176,6 +178,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private var mPartyMemberPanelView: PartyMemberPanelView? = null
     private var mConfirmDialog: ConfirmDialog? = null
     private var mClubCardDialogView: ClubCardDialogView? = null
+    private var mPartyDiamondBoxView: PartyDiamondBoxView? = null
+    private var mSendDiamondBoxTv:ExTextView? = null
 
     private var mVipEnterPresenter: VipEnterPresenter? = null
 
@@ -187,6 +191,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     internal var mSkrAudioPermission = SkrAudioPermission()
 
     internal var mHostOpTipImageView: ImageView? = null
+
+    private val mPartyRoomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
 
     val SP_KEY_HOST_TIP_TIMES = "sp_key_host_tips_show_times"
     val REMOVE_HOST_OP_TIP_MSG = 0x01     // 主持人操作提示
@@ -247,6 +253,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         initVipEnterView()
         initChangeRoomTransitionView()
         initPunishView()
+        initDiamondBoxView()
         mCorePresenter.onOpeningAnimationOver()
 
         mUiHandler.postDelayed(Runnable {
@@ -280,6 +287,32 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         U.getStatusBarUtil().setTransparentBar(this, false)
         showHostOpTips()
         checkGoMicTips()
+    }
+
+    private fun initDiamondBoxView() {
+
+        mPartyDiamondBoxView = PartyDiamondBoxView(findViewById(R.id.diamon_box_waiting))
+        mSendDiamondBoxTv = findViewById(R.id.send_diamond_box_tv)
+
+        mSendDiamondBoxTv?.setDebounceViewClickListener {
+            val map = mutableMapOf("roomID" to H.partyRoomData?.gameId)
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+
+            launch {
+                val apiResult = subscribe (RequestControl("beginDiamonBox", ControlType.CancelThis)){
+                    mPartyRoomServerApi.beginDiamonBox(body)
+                }
+
+                if(apiResult.errno == 0){
+                    val box = apiResult.data.getString("pBeginDiamondbox")
+                    val pBeginDiamondbox = JSON.parseObject(box, PBeginDiamondbox::class.java)
+                    mPartyDiamondBoxView?.setVisibility(View.VISIBLE)
+                    mPartyDiamondBoxView?.bindData(pBeginDiamondbox)
+                }
+            }
+        }
+
+
     }
 
     private fun checkGoMicTips() {

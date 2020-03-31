@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/view_12_dp"
     android:paddingBottom="@dimen/view_18_dp">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/club_right_other_actions_panel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,12 +37,28 @@
             />
 
         <com.common.view.ex.ExTextView
+            android:id="@+id/club_right_apply_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_14_dp"
+            app:layout_constraintTop_toTopOf="@id/club_right_apply_tv"
+            app:layout_constraintEnd_toEndOf="@+id/club_right_apply_tv"
+            android:gravity="center"
+            android:paddingLeft="@dimen/view_4_dp"
+            android:paddingRight="@dimen/view_4_dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_10_dp"
+            android:visibility="gone"
+            app:bl_corners_radius="@dimen/view_9_dp"
+            app:bl_shape="rectangle"
+            tools:text="0"
+            app:bl_solid_color="#FE7575" />
+        <com.common.view.ex.ExTextView
             android:id="@+id/club_right_conversation_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/club_home_conversation"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/club_right_post"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="@dimen/view_20_dp"
             android:text="群聊"
             android:textSize="10sp"
@@ -66,9 +82,9 @@
             android:visibility="gone"
             app:bl_corners_radius="@dimen/view_9_dp"
             app:bl_shape="rectangle"
-            tools:text="100"
+            tools:text="0"
             app:bl_solid_color="#FE7575" />
-    </LinearLayout>
+    </>
     <LinearLayout
         android:id="@+id/club_right_post"
         android:layout_width="wrap_content"

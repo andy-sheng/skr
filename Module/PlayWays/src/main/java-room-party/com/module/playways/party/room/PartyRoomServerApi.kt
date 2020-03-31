@@ -410,4 +410,6 @@ interface PartyRoomServerApi {
     fun getPartyRankList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int,
                          @Query("roomID") roomID: Int, @Query("tagType") tagType: Int): Call<ApiResult>
 
+    @PUT("/v1/partygame/begin-diamondbox")
+    fun beginDiamonBox(@Body body: RequestBody):Call<ApiResult>
 }
