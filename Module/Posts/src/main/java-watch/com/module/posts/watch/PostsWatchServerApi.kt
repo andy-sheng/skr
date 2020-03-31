@@ -17,6 +17,16 @@ interface PostsWatchServerApi {
     @GET("/v1/posts/follow-list")
     fun getPostsFollowList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Call<ApiResult>
 
+
+    /**
+     * 查询家族中的动态
+     */
+    @GET("http://dev.api.inframe.mobi/v1/posts/club-posts-list")
+    fun getClubPostsList(@Query("clubID") clubID: Int?, @Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Call<ApiResult>
+
+
+
+
     /**
      * 获取推荐列表
      */

@@ -124,18 +124,25 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
                 hasMore = result.data.getBooleanValue("hasMore")
                 var list: MutableList<WorkModel> = ArrayList()
                 if (isClean) {
-                    list = JSON.parseArray(result.data.getString("auditingWorks"), WorkModel::class.java)
-                    list?.let {
-                        for (i in 0 until list.size) {
-                            list[i].auditing = true
+                    if (result.data.getString("auditingWorks") != null) {
+                        list = JSON.parseArray(result.data.getString("auditingWorks"), WorkModel::class.java)
+                        list?.let {
+                            for (i in 0 until list.size) {
+                                list[i].auditing = true
+                            }
                         }
                     }
+
                 }
-                val works = JSON.parseArray(result.data.getString("works"), WorkModel::class.java)
-                if (!list.isNullOrEmpty() && !works.isNullOrEmpty()) {
-                    list.addAll(works)
+                if (result.data.getString("works") != null) {
+                    val works = JSON.parseArray(result.data.getString("works"), WorkModel::class.java)
+                    if (!list.isNullOrEmpty() && !works.isNullOrEmpty()) {
+                        list.addAll(works)
+                    }
                 }
-                addList(list, isClean)
+                if (list != null) {
+                    addList(list, isClean)
+                }
             }
             if (result.errno == -2) {
                 U.getToastUtil().showShort("网络出错了，请检查网络后重试")

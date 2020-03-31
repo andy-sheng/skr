@@ -59,7 +59,7 @@ class DynamicPostsWatchView(activity: FragmentActivity, type: Int) : FollowPosts
     private fun getFollowPosts(off: Int, isClear: Boolean, callback: IBooleanCallback) {
         launch {
             val result = subscribe(RequestControl("getFollowPosts", ControlType.CancelThis)) {
-                postsWatchServerApi.getPostsFollowList(off, mCNT, MyUserInfoManager.uid.toInt())
+                postsWatchServerApi.getClubPostsList(clubID,off, mCNT, MyUserInfoManager.uid.toInt())
             }
             if (result.errno == 0) {
                 mHasInitData = true
