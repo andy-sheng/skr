@@ -454,6 +454,20 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
+    @Override
+    public void onNetworkQuality(int uid, int txQuality, int rxQuality) {
+        txQuality = (txQuality >= 7) ? 0 : txQuality;
+        rxQuality = (rxQuality >= 7) ? 0 : rxQuality;
+        if (txQuality > 3 || rxQuality > 3) {
+            MyLog.i(TAG, "onNetworkQuality uid: " + uid + " tx: " + txQuality + " rx: " + rxQuality);
+        }
+
+        EngineEvent.NetworkQualityInfo info = new EngineEvent.NetworkQualityInfo(uid, txQuality, rxQuality);
+        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_USER_NETWORK_QUALITY_INDICATION);
+        engineEvent.obj = info;
+        EventBus.getDefault().post(engineEvent);
+    }
+
     /**
      * state	状态码：
      * MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY(710)：音乐文件正常播放

@@ -1,5 +1,7 @@
 package com.engine;
 
+import android.support.annotation.NonNull;
+
 public class EngineEvent {
     public static final int TYPE_USER_SELF_JOIN_SUCCESS = 21;
     public static final int TYPE_USER_JOIN = 1;
@@ -11,6 +13,7 @@ public class EngineEvent {
     public static final int TYPE_USER_ROLE_CHANGE = 7;
     public static final int TYPE_USER_VIDEO_ENABLE = 8;
     public static final int TYPE_USER_AUDIO_VOLUME_INDICATION = 9;
+    public static final int TYPE_USER_NETWORK_QUALITY_INDICATION = 22;
 
     public static final int TYPE_MUSIC_PLAY_START = 10;// 伴奏开始
     public static final int TYPE_MUSIC_PLAY_PAUSE = 11;// 伴奏暂停
@@ -187,6 +190,25 @@ public class EngineEvent {
 
     }
 
+    public static class NetworkQualityInfo {
+        int uid;
+        // >=4 时提醒用户
+        int txQuality;
+        int rxQuality;
+
+        public NetworkQualityInfo(int uid, int txQuality, int rxQuality) {
+            this.uid = uid;
+            this.txQuality = txQuality;
+            this.rxQuality = rxQuality;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "NetworkQualityInfo uid: " + uid + " tx: " + txQuality + " rx: " + rxQuality;
+        }
+    }
+
     String getTypeDesc(int type) {
         switch (type) {
             case TYPE_USER_SELF_JOIN_SUCCESS:
@@ -209,6 +231,8 @@ public class EngineEvent {
                 return "VIDEO_ENABLE";
             case TYPE_USER_AUDIO_VOLUME_INDICATION:
                 return "AUDIO_VOLUME_INDICATION";
+            case TYPE_USER_NETWORK_QUALITY_INDICATION:
+                return "NETWORK_QUALITY_INDICATION";
             case TYPE_MUSIC_PLAY_START:
                 return "MUSIC_PLAY_START";
             case TYPE_MUSIC_PLAY_PAUSE:
