@@ -457,6 +457,14 @@ public class AgoraRTCAdapter {
                 mOutCallback.onError(error);
             }
         }
+
+        @Override
+        public void onNetworkQuality(int uid, int txQuality, int rxQuality) {
+            super.onNetworkQuality(uid, txQuality, rxQuality);
+            if (mOutCallback != null) {
+                mOutCallback.onNetworkQuality(uid, txQuality, rxQuality);
+            }
+        }
     };
 
     public void setOutCallback(AgoraOutCallback outCallback) {
