@@ -507,8 +507,8 @@ class PostsPublishActivity : BaseActivity() {
             map["show"] = 0
         }
 
-        if (from == PublishFrom.CLUB.value) {
-            map["clubID"] = clubID!!
+        if (publishTypeCheckbox.isChecked || from == PublishFrom.CLUB.value) {
+            map["clubID"] = MyUserInfoManager.myUserInfo?.clubInfo?.club?.clubID ?: 0
         }
 
         model?.songId?.let {
