@@ -67,18 +67,28 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
   )
   private final PresentGift presentGift;
 
+  /**
+   * 派对房：发出宝箱通知
+   */
+  @WireField(
+      tag = 12,
+      adapter = "com.zq.live.proto.broadcast.PartyDiamondbox#ADAPTER"
+  )
+  private final PartyDiamondbox partyDiamondbox;
+
   public RoomBroadcastMsg(Long timeMs, ERoomBroadcastMsgType msgType, StandFullStar standFullStar,
-      PresentGift presentGift) {
-    this(timeMs, msgType, standFullStar, presentGift, ByteString.EMPTY);
+      PresentGift presentGift, PartyDiamondbox partyDiamondbox) {
+    this(timeMs, msgType, standFullStar, presentGift, partyDiamondbox, ByteString.EMPTY);
   }
 
   public RoomBroadcastMsg(Long timeMs, ERoomBroadcastMsgType msgType, StandFullStar standFullStar,
-      PresentGift presentGift, ByteString unknownFields) {
+      PresentGift presentGift, PartyDiamondbox partyDiamondbox, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
     this.standFullStar = standFullStar;
     this.presentGift = presentGift;
+    this.partyDiamondbox = partyDiamondbox;
   }
 
   @Override
@@ -88,6 +98,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
     builder.msgType = msgType;
     builder.standFullStar = standFullStar;
     builder.presentGift = presentGift;
+    builder.partyDiamondbox = partyDiamondbox;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -101,7 +112,8 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
         && Internal.equals(timeMs, o.timeMs)
         && Internal.equals(msgType, o.msgType)
         && Internal.equals(standFullStar, o.standFullStar)
-        && Internal.equals(presentGift, o.presentGift);
+        && Internal.equals(presentGift, o.presentGift)
+        && Internal.equals(partyDiamondbox, o.partyDiamondbox);
   }
 
   @Override
@@ -113,6 +125,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
       result = result * 37 + (msgType != null ? msgType.hashCode() : 0);
       result = result * 37 + (standFullStar != null ? standFullStar.hashCode() : 0);
       result = result * 37 + (presentGift != null ? presentGift.hashCode() : 0);
+      result = result * 37 + (partyDiamondbox != null ? partyDiamondbox.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -125,6 +138,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
     if (msgType != null) builder.append(", msgType=").append(msgType);
     if (standFullStar != null) builder.append(", standFullStar=").append(standFullStar);
     if (presentGift != null) builder.append(", presentGift=").append(presentGift);
+    if (partyDiamondbox != null) builder.append(", partyDiamondbox=").append(partyDiamondbox);
     return builder.replace(0, 2, "RoomBroadcastMsg{").append('}').toString();
   }
 
@@ -179,6 +193,16 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
   }
 
   /**
+   * 派对房：发出宝箱通知
+   */
+  public PartyDiamondbox getPartyDiamondbox() {
+    if(partyDiamondbox==null){
+        return new PartyDiamondbox.Builder().build();
+    }
+    return partyDiamondbox;
+  }
+
+  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -206,6 +230,13 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
     return presentGift!=null;
   }
 
+  /**
+   * 派对房：发出宝箱通知
+   */
+  public boolean hasPartyDiamondbox() {
+    return partyDiamondbox!=null;
+  }
+
   public static final class Builder extends Message.Builder<RoomBroadcastMsg, Builder> {
     private Long timeMs;
 
@@ -214,6 +245,8 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
     private StandFullStar standFullStar;
 
     private PresentGift presentGift;
+
+    private PartyDiamondbox partyDiamondbox;
 
     public Builder() {
     }
@@ -250,9 +283,17 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
       return this;
     }
 
+    /**
+     * 派对房：发出宝箱通知
+     */
+    public Builder setPartyDiamondbox(PartyDiamondbox partyDiamondbox) {
+      this.partyDiamondbox = partyDiamondbox;
+      return this;
+    }
+
     @Override
     public RoomBroadcastMsg build() {
-      return new RoomBroadcastMsg(timeMs, msgType, standFullStar, presentGift, super.buildUnknownFields());
+      return new RoomBroadcastMsg(timeMs, msgType, standFullStar, presentGift, partyDiamondbox, super.buildUnknownFields());
     }
   }
 
@@ -267,6 +308,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
           + ERoomBroadcastMsgType.ADAPTER.encodedSizeWithTag(2, value.msgType)
           + StandFullStar.ADAPTER.encodedSizeWithTag(10, value.standFullStar)
           + PresentGift.ADAPTER.encodedSizeWithTag(11, value.presentGift)
+          + PartyDiamondbox.ADAPTER.encodedSizeWithTag(12, value.partyDiamondbox)
           + value.unknownFields().size();
     }
 
@@ -276,6 +318,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
       ERoomBroadcastMsgType.ADAPTER.encodeWithTag(writer, 2, value.msgType);
       StandFullStar.ADAPTER.encodeWithTag(writer, 10, value.standFullStar);
       PresentGift.ADAPTER.encodeWithTag(writer, 11, value.presentGift);
+      PartyDiamondbox.ADAPTER.encodeWithTag(writer, 12, value.partyDiamondbox);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -296,6 +339,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
           }
           case 10: builder.setStandFullStar(StandFullStar.ADAPTER.decode(reader)); break;
           case 11: builder.setPresentGift(PresentGift.ADAPTER.decode(reader)); break;
+          case 12: builder.setPartyDiamondbox(PartyDiamondbox.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -312,6 +356,7 @@ public final class RoomBroadcastMsg extends Message<RoomBroadcastMsg, RoomBroadc
       Builder builder = value.newBuilder();
       if (builder.standFullStar != null) builder.standFullStar = StandFullStar.ADAPTER.redact(builder.standFullStar);
       if (builder.presentGift != null) builder.presentGift = PresentGift.ADAPTER.redact(builder.presentGift);
+      if (builder.partyDiamondbox != null) builder.partyDiamondbox = PartyDiamondbox.ADAPTER.redact(builder.partyDiamondbox);
       builder.clearUnknownFields();
       return builder.build();
     }

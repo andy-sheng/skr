@@ -21,7 +21,12 @@ public enum ERoomBroadcastMsgType implements WireEnum {
   /**
    * 赠送礼物
    */
-  RBRT_PRESENT_GIFT(2);
+  RBRT_PRESENT_GIFT(2),
+
+  /**
+   * 派对房：发出宝箱通知
+   */
+  RBRT_PARTY_DIAMONDBOX(3);
 
   public static final ProtoAdapter<ERoomBroadcastMsgType> ADAPTER = new ProtoAdapter_ERoomBroadcastMsgType();
 
@@ -39,6 +44,7 @@ public enum ERoomBroadcastMsgType implements WireEnum {
       case 0: return RBRT_UNKNOWN;
       case 1: return RBRT_STAND_FULL_STAR;
       case 2: return RBRT_PRESENT_GIFT;
+      case 3: return RBRT_PARTY_DIAMONDBOX;
       default: return null;
     }
   }

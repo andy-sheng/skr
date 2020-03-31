@@ -2,8 +2,8 @@ package com.module.playways.party.room.model
 
 import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
-import com.zq.live.proto.PartyRoom.EPUserRole
-import com.zq.live.proto.PartyRoom.POnlineInfo
+import com.zq.live.proto.Common.EPUserRole
+import com.zq.live.proto.Common.POnlineInfo
 import java.util.*
 import kotlin.collections.ArrayList
 import java.lang.StringBuilder

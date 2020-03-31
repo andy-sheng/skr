@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.PBeginDiamondbox;
 import java.io.IOException;
 import java.lang.Integer;
 import java.lang.Long;
@@ -385,6 +386,33 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
   )
   private final PChangeGetSeatMode pChangeGetSeatMode;
 
+  /**
+   * sprint35: 设置cdn流地址
+   */
+  @WireField(
+      tag = 46,
+      adapter = "com.zq.live.proto.PartyRoom.PSetCDNStream#ADAPTER"
+  )
+  private final PSetCDNStream pSetCDNStream;
+
+  /**
+   * 下发宝箱
+   */
+  @WireField(
+      tag = 47,
+      adapter = "com.zq.live.proto.Common.PBeginDiamondbox#ADAPTER"
+  )
+  private final PBeginDiamondbox pBeginDiamondbox;
+
+  /**
+   * 发宝箱结果
+   */
+  @WireField(
+      tag = 48,
+      adapter = "com.zq.live.proto.PartyRoom.PResultDiamondbox#ADAPTER"
+  )
+  private final PResultDiamondbox pResultDiamondbox;
+
   public PartyRoomMsg(Long timeMs, EPartyRoomMsgType msgType, Integer roomID,
       PJoinNoticeMsg pJoinNoticeMsg, PFixRoomNoticeMsg pFixRoomNoticeMsg,
       PSetRoomAdminMsg pSetRoomAdminMsg, PSetAllMemberMicMsg pSetAllMemberMicMsg,
@@ -402,8 +430,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PResponseQuickAnswer pResponseQuickAnswer, PResultQuickAnswer pResultQuickAnswer,
       PBeginVote pBeginVote, PResponseVote pResponseVote, PResultVote pResultVote,
       PRoomWarningMsg pRoomWarningMsg, PRoomLockedMsg pRoomLockedMsg, PBeginPunish pBeginPunish,
-      PChangeGetSeatMode pChangeGetSeatMode) {
-    this(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, pInviteBeGuestMsg, pRspInviteBeGuestMsg, pKTVStopMsg, pBeginQuickAnswer, pResponseQuickAnswer, pResultQuickAnswer, pBeginVote, pResponseVote, pResultVote, pRoomWarningMsg, pRoomLockedMsg, pBeginPunish, pChangeGetSeatMode, ByteString.EMPTY);
+      PChangeGetSeatMode pChangeGetSeatMode, PSetCDNStream pSetCDNStream,
+      PBeginDiamondbox pBeginDiamondbox, PResultDiamondbox pResultDiamondbox) {
+    this(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, pInviteBeGuestMsg, pRspInviteBeGuestMsg, pKTVStopMsg, pBeginQuickAnswer, pResponseQuickAnswer, pResultQuickAnswer, pBeginVote, pResponseVote, pResultVote, pRoomWarningMsg, pRoomLockedMsg, pBeginPunish, pChangeGetSeatMode, pSetCDNStream, pBeginDiamondbox, pResultDiamondbox, ByteString.EMPTY);
   }
 
   public PartyRoomMsg(Long timeMs, EPartyRoomMsgType msgType, Integer roomID,
@@ -423,7 +452,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PResponseQuickAnswer pResponseQuickAnswer, PResultQuickAnswer pResultQuickAnswer,
       PBeginVote pBeginVote, PResponseVote pResponseVote, PResultVote pResultVote,
       PRoomWarningMsg pRoomWarningMsg, PRoomLockedMsg pRoomLockedMsg, PBeginPunish pBeginPunish,
-      PChangeGetSeatMode pChangeGetSeatMode, ByteString unknownFields) {
+      PChangeGetSeatMode pChangeGetSeatMode, PSetCDNStream pSetCDNStream,
+      PBeginDiamondbox pBeginDiamondbox, PResultDiamondbox pResultDiamondbox,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -464,6 +495,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     this.pRoomLockedMsg = pRoomLockedMsg;
     this.pBeginPunish = pBeginPunish;
     this.pChangeGetSeatMode = pChangeGetSeatMode;
+    this.pSetCDNStream = pSetCDNStream;
+    this.pBeginDiamondbox = pBeginDiamondbox;
+    this.pResultDiamondbox = pResultDiamondbox;
   }
 
   @Override
@@ -508,6 +542,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     builder.pRoomLockedMsg = pRoomLockedMsg;
     builder.pBeginPunish = pBeginPunish;
     builder.pChangeGetSeatMode = pChangeGetSeatMode;
+    builder.pSetCDNStream = pSetCDNStream;
+    builder.pBeginDiamondbox = pBeginDiamondbox;
+    builder.pResultDiamondbox = pResultDiamondbox;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -556,7 +593,10 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
         && Internal.equals(pRoomWarningMsg, o.pRoomWarningMsg)
         && Internal.equals(pRoomLockedMsg, o.pRoomLockedMsg)
         && Internal.equals(pBeginPunish, o.pBeginPunish)
-        && Internal.equals(pChangeGetSeatMode, o.pChangeGetSeatMode);
+        && Internal.equals(pChangeGetSeatMode, o.pChangeGetSeatMode)
+        && Internal.equals(pSetCDNStream, o.pSetCDNStream)
+        && Internal.equals(pBeginDiamondbox, o.pBeginDiamondbox)
+        && Internal.equals(pResultDiamondbox, o.pResultDiamondbox);
   }
 
   @Override
@@ -603,6 +643,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       result = result * 37 + (pRoomLockedMsg != null ? pRoomLockedMsg.hashCode() : 0);
       result = result * 37 + (pBeginPunish != null ? pBeginPunish.hashCode() : 0);
       result = result * 37 + (pChangeGetSeatMode != null ? pChangeGetSeatMode.hashCode() : 0);
+      result = result * 37 + (pSetCDNStream != null ? pSetCDNStream.hashCode() : 0);
+      result = result * 37 + (pBeginDiamondbox != null ? pBeginDiamondbox.hashCode() : 0);
+      result = result * 37 + (pResultDiamondbox != null ? pResultDiamondbox.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -650,6 +693,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     if (pRoomLockedMsg != null) builder.append(", pRoomLockedMsg=").append(pRoomLockedMsg);
     if (pBeginPunish != null) builder.append(", pBeginPunish=").append(pBeginPunish);
     if (pChangeGetSeatMode != null) builder.append(", pChangeGetSeatMode=").append(pChangeGetSeatMode);
+    if (pSetCDNStream != null) builder.append(", pSetCDNStream=").append(pSetCDNStream);
+    if (pBeginDiamondbox != null) builder.append(", pBeginDiamondbox=").append(pBeginDiamondbox);
+    if (pResultDiamondbox != null) builder.append(", pResultDiamondbox=").append(pResultDiamondbox);
     return builder.replace(0, 2, "PartyRoomMsg{").append('}').toString();
   }
 
@@ -1054,6 +1100,36 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
   }
 
   /**
+   * sprint35: 设置cdn流地址
+   */
+  public PSetCDNStream getPSetCDNStream() {
+    if(pSetCDNStream==null){
+        return new PSetCDNStream.Builder().build();
+    }
+    return pSetCDNStream;
+  }
+
+  /**
+   * 下发宝箱
+   */
+  public PBeginDiamondbox getPBeginDiamondbox() {
+    if(pBeginDiamondbox==null){
+        return new PBeginDiamondbox.Builder().build();
+    }
+    return pBeginDiamondbox;
+  }
+
+  /**
+   * 发宝箱结果
+   */
+  public PResultDiamondbox getPResultDiamondbox() {
+    if(pResultDiamondbox==null){
+        return new PResultDiamondbox.Builder().build();
+    }
+    return pResultDiamondbox;
+  }
+
+  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -1326,6 +1402,27 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     return pChangeGetSeatMode!=null;
   }
 
+  /**
+   * sprint35: 设置cdn流地址
+   */
+  public boolean hasPSetCDNStream() {
+    return pSetCDNStream!=null;
+  }
+
+  /**
+   * 下发宝箱
+   */
+  public boolean hasPBeginDiamondbox() {
+    return pBeginDiamondbox!=null;
+  }
+
+  /**
+   * 发宝箱结果
+   */
+  public boolean hasPResultDiamondbox() {
+    return pResultDiamondbox!=null;
+  }
+
   public static final class Builder extends Message.Builder<PartyRoomMsg, Builder> {
     private Long timeMs;
 
@@ -1404,6 +1501,12 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
     private PBeginPunish pBeginPunish;
 
     private PChangeGetSeatMode pChangeGetSeatMode;
+
+    private PSetCDNStream pSetCDNStream;
+
+    private PBeginDiamondbox pBeginDiamondbox;
+
+    private PResultDiamondbox pResultDiamondbox;
 
     public Builder() {
     }
@@ -1721,9 +1824,33 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       return this;
     }
 
+    /**
+     * sprint35: 设置cdn流地址
+     */
+    public Builder setPSetCDNStream(PSetCDNStream pSetCDNStream) {
+      this.pSetCDNStream = pSetCDNStream;
+      return this;
+    }
+
+    /**
+     * 下发宝箱
+     */
+    public Builder setPBeginDiamondbox(PBeginDiamondbox pBeginDiamondbox) {
+      this.pBeginDiamondbox = pBeginDiamondbox;
+      return this;
+    }
+
+    /**
+     * 发宝箱结果
+     */
+    public Builder setPResultDiamondbox(PResultDiamondbox pResultDiamondbox) {
+      this.pResultDiamondbox = pResultDiamondbox;
+      return this;
+    }
+
     @Override
     public PartyRoomMsg build() {
-      return new PartyRoomMsg(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, pInviteBeGuestMsg, pRspInviteBeGuestMsg, pKTVStopMsg, pBeginQuickAnswer, pResponseQuickAnswer, pResultQuickAnswer, pBeginVote, pResponseVote, pResultVote, pRoomWarningMsg, pRoomLockedMsg, pBeginPunish, pChangeGetSeatMode, super.buildUnknownFields());
+      return new PartyRoomMsg(timeMs, msgType, roomID, pJoinNoticeMsg, pFixRoomNoticeMsg, pSetRoomAdminMsg, pSetAllMemberMicMsg, pSetUserMicMsg, pSetSeatStatusMsg, pApplyForGuest, pGetSeatMsg, pBackSeatMsg, pInviteUserMsg, pChangeSeatMsg, pKickoutUserMsg, pNextRoundMsg, pPExitGameMsg, pSyncMsg, pDynamicEmojiMsg, pGameOverMsg, pChangeRoomTopicMsg, pChangeRoomEnterPermissionMsg, pUpdatePopularityMsg, pClubGameStopMsg, pClubBecomeHostMsg, pClubChangeHostMsg, pInviteBeGuestMsg, pRspInviteBeGuestMsg, pKTVStopMsg, pBeginQuickAnswer, pResponseQuickAnswer, pResultQuickAnswer, pBeginVote, pResponseVote, pResultVote, pRoomWarningMsg, pRoomLockedMsg, pBeginPunish, pChangeGetSeatMode, pSetCDNStream, pBeginDiamondbox, pResultDiamondbox, super.buildUnknownFields());
     }
   }
 
@@ -1773,6 +1900,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
           + PRoomLockedMsg.ADAPTER.encodedSizeWithTag(43, value.pRoomLockedMsg)
           + PBeginPunish.ADAPTER.encodedSizeWithTag(44, value.pBeginPunish)
           + PChangeGetSeatMode.ADAPTER.encodedSizeWithTag(45, value.pChangeGetSeatMode)
+          + PSetCDNStream.ADAPTER.encodedSizeWithTag(46, value.pSetCDNStream)
+          + PBeginDiamondbox.ADAPTER.encodedSizeWithTag(47, value.pBeginDiamondbox)
+          + PResultDiamondbox.ADAPTER.encodedSizeWithTag(48, value.pResultDiamondbox)
           + value.unknownFields().size();
     }
 
@@ -1817,6 +1947,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       PRoomLockedMsg.ADAPTER.encodeWithTag(writer, 43, value.pRoomLockedMsg);
       PBeginPunish.ADAPTER.encodeWithTag(writer, 44, value.pBeginPunish);
       PChangeGetSeatMode.ADAPTER.encodeWithTag(writer, 45, value.pChangeGetSeatMode);
+      PSetCDNStream.ADAPTER.encodeWithTag(writer, 46, value.pSetCDNStream);
+      PBeginDiamondbox.ADAPTER.encodeWithTag(writer, 47, value.pBeginDiamondbox);
+      PResultDiamondbox.ADAPTER.encodeWithTag(writer, 48, value.pResultDiamondbox);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1872,6 +2005,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
           case 43: builder.setPRoomLockedMsg(PRoomLockedMsg.ADAPTER.decode(reader)); break;
           case 44: builder.setPBeginPunish(PBeginPunish.ADAPTER.decode(reader)); break;
           case 45: builder.setPChangeGetSeatMode(PChangeGetSeatMode.ADAPTER.decode(reader)); break;
+          case 46: builder.setPSetCDNStream(PSetCDNStream.ADAPTER.decode(reader)); break;
+          case 47: builder.setPBeginDiamondbox(PBeginDiamondbox.ADAPTER.decode(reader)); break;
+          case 48: builder.setPResultDiamondbox(PResultDiamondbox.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1922,6 +2058,9 @@ public final class PartyRoomMsg extends Message<PartyRoomMsg, PartyRoomMsg.Build
       if (builder.pRoomLockedMsg != null) builder.pRoomLockedMsg = PRoomLockedMsg.ADAPTER.redact(builder.pRoomLockedMsg);
       if (builder.pBeginPunish != null) builder.pBeginPunish = PBeginPunish.ADAPTER.redact(builder.pBeginPunish);
       if (builder.pChangeGetSeatMode != null) builder.pChangeGetSeatMode = PChangeGetSeatMode.ADAPTER.redact(builder.pChangeGetSeatMode);
+      if (builder.pSetCDNStream != null) builder.pSetCDNStream = PSetCDNStream.ADAPTER.redact(builder.pSetCDNStream);
+      if (builder.pBeginDiamondbox != null) builder.pBeginDiamondbox = PBeginDiamondbox.ADAPTER.redact(builder.pBeginDiamondbox);
+      if (builder.pResultDiamondbox != null) builder.pResultDiamondbox = PResultDiamondbox.ADAPTER.redact(builder.pResultDiamondbox);
       builder.clearUnknownFields();
       return builder.build();
     }

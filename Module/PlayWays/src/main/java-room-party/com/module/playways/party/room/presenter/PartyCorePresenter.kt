@@ -47,6 +47,7 @@ import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.comment.model.CommentTextModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.zq.live.proto.Common.EClubMemberRoleType
+import com.zq.live.proto.Common.EPUserRole
 import com.zq.live.proto.PartyRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.GlobalScope

@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.POnlineInfo;
 import java.io.IOException;
 import java.lang.Integer;
 import java.lang.Object;
@@ -60,7 +61,7 @@ public final class PSetUserMicMsg extends Message<PSetUserMicMsg, PSetUserMicMsg
    */
   @WireField(
       tag = 4,
-      adapter = "com.zq.live.proto.PartyRoom.POnlineInfo#ADAPTER"
+      adapter = "com.zq.live.proto.Common.POnlineInfo#ADAPTER"
   )
   private final POnlineInfo opUser;
 

@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.POnlineInfo;
 import java.io.IOException;
 import java.lang.Boolean;
 import java.lang.Integer;
@@ -32,7 +33,7 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
    */
   @WireField(
       tag = 1,
-      adapter = "com.zq.live.proto.PartyRoom.POnlineInfo#ADAPTER"
+      adapter = "com.zq.live.proto.Common.POnlineInfo#ADAPTER"
   )
   private final POnlineInfo user;
 
@@ -59,7 +60,7 @@ public final class PApplyForGuest extends Message<PApplyForGuest, PApplyForGuest
    */
   @WireField(
       tag = 4,
-      adapter = "com.zq.live.proto.PartyRoom.POnlineInfo#ADAPTER"
+      adapter = "com.zq.live.proto.Common.POnlineInfo#ADAPTER"
   )
   private final POnlineInfo opUser;
 

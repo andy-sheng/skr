@@ -3,7 +3,7 @@ package com.module.playways.battle.room.model
 import com.alibaba.fastjson.annotation.JSONField
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.BattleRoom.BUserStatus
-import com.zq.live.proto.PartyRoom.POnlineInfo
+import com.zq.live.proto.Common.POnlineInfo
 import java.io.Serializable
 
 class BattlePlayerInfoModel : PlayerInfoModel() {

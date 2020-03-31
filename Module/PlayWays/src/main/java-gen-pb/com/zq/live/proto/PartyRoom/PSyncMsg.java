@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.POnlineInfo;
 import java.io.IOException;
 import java.lang.Integer;
 import java.lang.Long;
@@ -31,6 +32,8 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
   public static final Integer DEFAULT_ONLINEUSERCNT = 0;
 
   public static final Integer DEFAULT_APPLYUSERCNT = 0;
+
+  public static final EGetSeatMode DEFAULT_GETSEATMODE = EGetSeatMode.EGSM_NEED_APPLY;
 
   /**
    * 状态同步时的毫秒时间戳
@@ -92,20 +95,38 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
    */
   @WireField(
       tag = 7,
-      adapter = "com.zq.live.proto.PartyRoom.POnlineInfo#ADAPTER",
+      adapter = "com.zq.live.proto.Common.POnlineInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
   private final List<POnlineInfo> users;
 
+  /**
+   * 最新的上麦方式
+   */
+  @WireField(
+      tag = 8,
+      adapter = "com.zq.live.proto.PartyRoom.EGetSeatMode#ADAPTER"
+  )
+  private final EGetSeatMode getSeatMode;
+
+  /**
+   * sprint35: cdn拉流地址
+   */
+  @WireField(
+      tag = 9,
+      adapter = "com.zq.live.proto.PartyRoom.PSetCDNStream#ADAPTER"
+  )
+  private final PSetCDNStream pSetCDNStream;
+
   public PSyncMsg(Long syncStatusTimeMs, Long passedTimeMs, Integer onlineUserCnt,
-      Integer applyUserCnt, List<SeatInfo> seats, PRoundInfo currentRound,
-      List<POnlineInfo> users) {
-    this(syncStatusTimeMs, passedTimeMs, onlineUserCnt, applyUserCnt, seats, currentRound, users, ByteString.EMPTY);
+      Integer applyUserCnt, List<SeatInfo> seats, PRoundInfo currentRound, List<POnlineInfo> users,
+      EGetSeatMode getSeatMode, PSetCDNStream pSetCDNStream) {
+    this(syncStatusTimeMs, passedTimeMs, onlineUserCnt, applyUserCnt, seats, currentRound, users, getSeatMode, pSetCDNStream, ByteString.EMPTY);
   }
 
   public PSyncMsg(Long syncStatusTimeMs, Long passedTimeMs, Integer onlineUserCnt,
       Integer applyUserCnt, List<SeatInfo> seats, PRoundInfo currentRound, List<POnlineInfo> users,
-      ByteString unknownFields) {
+      EGetSeatMode getSeatMode, PSetCDNStream pSetCDNStream, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.syncStatusTimeMs = syncStatusTimeMs;
     this.passedTimeMs = passedTimeMs;
@@ -114,6 +135,8 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
     this.seats = Internal.immutableCopyOf("seats", seats);
     this.currentRound = currentRound;
     this.users = Internal.immutableCopyOf("users", users);
+    this.getSeatMode = getSeatMode;
+    this.pSetCDNStream = pSetCDNStream;
   }
 
   @Override
@@ -126,6 +149,8 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
     builder.seats = Internal.copyOf("seats", seats);
     builder.currentRound = currentRound;
     builder.users = Internal.copyOf("users", users);
+    builder.getSeatMode = getSeatMode;
+    builder.pSetCDNStream = pSetCDNStream;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -142,7 +167,9 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
         && Internal.equals(applyUserCnt, o.applyUserCnt)
         && seats.equals(o.seats)
         && Internal.equals(currentRound, o.currentRound)
-        && users.equals(o.users);
+        && users.equals(o.users)
+        && Internal.equals(getSeatMode, o.getSeatMode)
+        && Internal.equals(pSetCDNStream, o.pSetCDNStream);
   }
 
   @Override
@@ -157,6 +184,8 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
       result = result * 37 + seats.hashCode();
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + users.hashCode();
+      result = result * 37 + (getSeatMode != null ? getSeatMode.hashCode() : 0);
+      result = result * 37 + (pSetCDNStream != null ? pSetCDNStream.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -172,6 +201,8 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
     if (!seats.isEmpty()) builder.append(", seats=").append(seats);
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (!users.isEmpty()) builder.append(", users=").append(users);
+    if (getSeatMode != null) builder.append(", getSeatMode=").append(getSeatMode);
+    if (pSetCDNStream != null) builder.append(", pSetCDNStream=").append(pSetCDNStream);
     return builder.replace(0, 2, "PSyncMsg{").append('}').toString();
   }
 
@@ -256,6 +287,26 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
   }
 
   /**
+   * 最新的上麦方式
+   */
+  public EGetSeatMode getGetSeatMode() {
+    if(getSeatMode==null){
+        return new EGetSeatMode.Builder().build();
+    }
+    return getSeatMode;
+  }
+
+  /**
+   * sprint35: cdn拉流地址
+   */
+  public PSetCDNStream getPSetCDNStream() {
+    if(pSetCDNStream==null){
+        return new PSetCDNStream.Builder().build();
+    }
+    return pSetCDNStream;
+  }
+
+  /**
    * 状态同步时的毫秒时间戳
    */
   public boolean hasSyncStatusTimeMs() {
@@ -304,6 +355,20 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
     return users!=null;
   }
 
+  /**
+   * 最新的上麦方式
+   */
+  public boolean hasGetSeatMode() {
+    return getSeatMode!=null;
+  }
+
+  /**
+   * sprint35: cdn拉流地址
+   */
+  public boolean hasPSetCDNStream() {
+    return pSetCDNStream!=null;
+  }
+
   public static final class Builder extends Message.Builder<PSyncMsg, Builder> {
     private Long syncStatusTimeMs;
 
@@ -318,6 +383,10 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
     private PRoundInfo currentRound;
 
     private List<POnlineInfo> users;
+
+    private EGetSeatMode getSeatMode;
+
+    private PSetCDNStream pSetCDNStream;
 
     public Builder() {
       seats = Internal.newMutableList();
@@ -382,9 +451,25 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
       return this;
     }
 
+    /**
+     * 最新的上麦方式
+     */
+    public Builder setGetSeatMode(EGetSeatMode getSeatMode) {
+      this.getSeatMode = getSeatMode;
+      return this;
+    }
+
+    /**
+     * sprint35: cdn拉流地址
+     */
+    public Builder setPSetCDNStream(PSetCDNStream pSetCDNStream) {
+      this.pSetCDNStream = pSetCDNStream;
+      return this;
+    }
+
     @Override
     public PSyncMsg build() {
-      return new PSyncMsg(syncStatusTimeMs, passedTimeMs, onlineUserCnt, applyUserCnt, seats, currentRound, users, super.buildUnknownFields());
+      return new PSyncMsg(syncStatusTimeMs, passedTimeMs, onlineUserCnt, applyUserCnt, seats, currentRound, users, getSeatMode, pSetCDNStream, super.buildUnknownFields());
     }
   }
 
@@ -402,6 +487,8 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
           + SeatInfo.ADAPTER.asRepeated().encodedSizeWithTag(5, value.seats)
           + PRoundInfo.ADAPTER.encodedSizeWithTag(6, value.currentRound)
           + POnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(7, value.users)
+          + EGetSeatMode.ADAPTER.encodedSizeWithTag(8, value.getSeatMode)
+          + PSetCDNStream.ADAPTER.encodedSizeWithTag(9, value.pSetCDNStream)
           + value.unknownFields().size();
     }
 
@@ -414,6 +501,8 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
       SeatInfo.ADAPTER.asRepeated().encodeWithTag(writer, 5, value.seats);
       PRoundInfo.ADAPTER.encodeWithTag(writer, 6, value.currentRound);
       POnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 7, value.users);
+      EGetSeatMode.ADAPTER.encodeWithTag(writer, 8, value.getSeatMode);
+      PSetCDNStream.ADAPTER.encodeWithTag(writer, 9, value.pSetCDNStream);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -430,6 +519,15 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
           case 5: builder.seats.add(SeatInfo.ADAPTER.decode(reader)); break;
           case 6: builder.setCurrentRound(PRoundInfo.ADAPTER.decode(reader)); break;
           case 7: builder.users.add(POnlineInfo.ADAPTER.decode(reader)); break;
+          case 8: {
+            try {
+              builder.setGetSeatMode(EGetSeatMode.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 9: builder.setPSetCDNStream(PSetCDNStream.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -447,6 +545,7 @@ public final class PSyncMsg extends Message<PSyncMsg, PSyncMsg.Builder> {
       Internal.redactElements(builder.seats, SeatInfo.ADAPTER);
       if (builder.currentRound != null) builder.currentRound = PRoundInfo.ADAPTER.redact(builder.currentRound);
       Internal.redactElements(builder.users, POnlineInfo.ADAPTER);
+      if (builder.pSetCDNStream != null) builder.pSetCDNStream = PSetCDNStream.ADAPTER.redact(builder.pSetCDNStream);
       builder.clearUnknownFields();
       return builder.build();
     }

@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.GameMode;
 import java.io.IOException;
 import java.lang.Integer;
 import java.lang.Object;
@@ -66,17 +67,28 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
   )
   private final EPGameType ruleType;
 
-  public PGameRule(Integer ruleID, String ruleName, String ruleDesc, EPGameType ruleType) {
-    this(ruleID, ruleName, ruleDesc, ruleType, ByteString.EMPTY);
+  /**
+   * 游戏模式
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.zq.live.proto.Common.GameMode#ADAPTER"
+  )
+  private final GameMode gameMode;
+
+  public PGameRule(Integer ruleID, String ruleName, String ruleDesc, EPGameType ruleType,
+      GameMode gameMode) {
+    this(ruleID, ruleName, ruleDesc, ruleType, gameMode, ByteString.EMPTY);
   }
 
   public PGameRule(Integer ruleID, String ruleName, String ruleDesc, EPGameType ruleType,
-      ByteString unknownFields) {
+      GameMode gameMode, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.ruleID = ruleID;
     this.ruleName = ruleName;
     this.ruleDesc = ruleDesc;
     this.ruleType = ruleType;
+    this.gameMode = gameMode;
   }
 
   @Override
@@ -86,6 +98,7 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
     builder.ruleName = ruleName;
     builder.ruleDesc = ruleDesc;
     builder.ruleType = ruleType;
+    builder.gameMode = gameMode;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -99,7 +112,8 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
         && Internal.equals(ruleID, o.ruleID)
         && Internal.equals(ruleName, o.ruleName)
         && Internal.equals(ruleDesc, o.ruleDesc)
-        && Internal.equals(ruleType, o.ruleType);
+        && Internal.equals(ruleType, o.ruleType)
+        && Internal.equals(gameMode, o.gameMode);
   }
 
   @Override
@@ -111,6 +125,7 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
       result = result * 37 + (ruleName != null ? ruleName.hashCode() : 0);
       result = result * 37 + (ruleDesc != null ? ruleDesc.hashCode() : 0);
       result = result * 37 + (ruleType != null ? ruleType.hashCode() : 0);
+      result = result * 37 + (gameMode != null ? gameMode.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -123,6 +138,7 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
     if (ruleName != null) builder.append(", ruleName=").append(ruleName);
     if (ruleDesc != null) builder.append(", ruleDesc=").append(ruleDesc);
     if (ruleType != null) builder.append(", ruleType=").append(ruleType);
+    if (gameMode != null) builder.append(", gameMode=").append(gameMode);
     return builder.replace(0, 2, "PGameRule{").append('}').toString();
   }
 
@@ -177,6 +193,16 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
   }
 
   /**
+   * 游戏模式
+   */
+  public GameMode getGameMode() {
+    if(gameMode==null){
+        return new GameMode.Builder().build();
+    }
+    return gameMode;
+  }
+
+  /**
    * 游戏规则标识
    */
   public boolean hasRuleID() {
@@ -204,6 +230,13 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
     return ruleType!=null;
   }
 
+  /**
+   * 游戏模式
+   */
+  public boolean hasGameMode() {
+    return gameMode!=null;
+  }
+
   public static final class Builder extends Message.Builder<PGameRule, Builder> {
     private Integer ruleID;
 
@@ -212,6 +245,8 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
     private String ruleDesc;
 
     private EPGameType ruleType;
+
+    private GameMode gameMode;
 
     public Builder() {
     }
@@ -248,9 +283,17 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
       return this;
     }
 
+    /**
+     * 游戏模式
+     */
+    public Builder setGameMode(GameMode gameMode) {
+      this.gameMode = gameMode;
+      return this;
+    }
+
     @Override
     public PGameRule build() {
-      return new PGameRule(ruleID, ruleName, ruleDesc, ruleType, super.buildUnknownFields());
+      return new PGameRule(ruleID, ruleName, ruleDesc, ruleType, gameMode, super.buildUnknownFields());
     }
   }
 
@@ -265,6 +308,7 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
           + ProtoAdapter.STRING.encodedSizeWithTag(2, value.ruleName)
           + ProtoAdapter.STRING.encodedSizeWithTag(3, value.ruleDesc)
           + EPGameType.ADAPTER.encodedSizeWithTag(4, value.ruleType)
+          + GameMode.ADAPTER.encodedSizeWithTag(5, value.gameMode)
           + value.unknownFields().size();
     }
 
@@ -274,6 +318,7 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
       ProtoAdapter.STRING.encodeWithTag(writer, 2, value.ruleName);
       ProtoAdapter.STRING.encodeWithTag(writer, 3, value.ruleDesc);
       EPGameType.ADAPTER.encodeWithTag(writer, 4, value.ruleType);
+      GameMode.ADAPTER.encodeWithTag(writer, 5, value.gameMode);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -294,6 +339,7 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
             }
             break;
           }
+          case 5: builder.setGameMode(GameMode.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -308,6 +354,7 @@ public final class PGameRule extends Message<PGameRule, PGameRule.Builder> {
     @Override
     public PGameRule redact(PGameRule value) {
       Builder builder = value.newBuilder();
+      if (builder.gameMode != null) builder.gameMode = GameMode.ADAPTER.redact(builder.gameMode);
       builder.clearUnknownFields();
       return builder.build();
     }

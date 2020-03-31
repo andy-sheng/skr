@@ -13,7 +13,7 @@ import com.module.playways.room.data.H
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.EPRoundStatus
-import com.zq.live.proto.PartyRoom.EPUserRole
+import com.zq.live.proto.Common.EPUserRole
 import com.zq.live.proto.PartyRoom.ESeatStatus
 import org.greenrobot.eventbus.EventBus
 

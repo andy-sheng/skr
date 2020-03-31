@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.EKTVStatus;
 import com.zq.live.proto.Common.MusicInfo;
 import java.io.IOException;
 import java.lang.Boolean;
@@ -32,18 +33,29 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
 
   public static final Integer DEFAULT_SINGTIMEMS = 0;
 
+  public static final EKTVStatus DEFAULT_STATUS = EKTVStatus.EKS_GOING;
+
+  /**
+   * 表演曲目
+   */
   @WireField(
       tag = 1,
       adapter = "com.zq.live.proto.Common.MusicInfo#ADAPTER"
   )
   private final MusicInfo music;
 
+  /**
+   * 是否有下首曲目
+   */
   @WireField(
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
   private final Boolean hasNextMusic;
 
+  /**
+   * 曲目数量
+   */
   @WireField(
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
@@ -68,19 +80,29 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
   )
   private final Integer singTimeMs;
 
+  /**
+   * ktv状态
+   */
+  @WireField(
+      tag = 6,
+      adapter = "com.zq.live.proto.Common.EKTVStatus#ADAPTER"
+  )
+  private final EKTVStatus status;
+
   public PKTVScene(MusicInfo music, Boolean hasNextMusic, Integer musicCnt, Integer userID,
-      Integer singTimeMs) {
-    this(music, hasNextMusic, musicCnt, userID, singTimeMs, ByteString.EMPTY);
+      Integer singTimeMs, EKTVStatus status) {
+    this(music, hasNextMusic, musicCnt, userID, singTimeMs, status, ByteString.EMPTY);
   }
 
   public PKTVScene(MusicInfo music, Boolean hasNextMusic, Integer musicCnt, Integer userID,
-      Integer singTimeMs, ByteString unknownFields) {
+      Integer singTimeMs, EKTVStatus status, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.music = music;
     this.hasNextMusic = hasNextMusic;
     this.musicCnt = musicCnt;
     this.userID = userID;
     this.singTimeMs = singTimeMs;
+    this.status = status;
   }
 
   @Override
@@ -91,6 +113,7 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
     builder.musicCnt = musicCnt;
     builder.userID = userID;
     builder.singTimeMs = singTimeMs;
+    builder.status = status;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -105,7 +128,8 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
         && Internal.equals(hasNextMusic, o.hasNextMusic)
         && Internal.equals(musicCnt, o.musicCnt)
         && Internal.equals(userID, o.userID)
-        && Internal.equals(singTimeMs, o.singTimeMs);
+        && Internal.equals(singTimeMs, o.singTimeMs)
+        && Internal.equals(status, o.status);
   }
 
   @Override
@@ -118,6 +142,7 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
       result = result * 37 + (musicCnt != null ? musicCnt.hashCode() : 0);
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (singTimeMs != null ? singTimeMs.hashCode() : 0);
+      result = result * 37 + (status != null ? status.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -131,6 +156,7 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
     if (musicCnt != null) builder.append(", musicCnt=").append(musicCnt);
     if (userID != null) builder.append(", userID=").append(userID);
     if (singTimeMs != null) builder.append(", singTimeMs=").append(singTimeMs);
+    if (status != null) builder.append(", status=").append(status);
     return builder.replace(0, 2, "PKTVScene{").append('}').toString();
   }
 
@@ -144,6 +170,9 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
     return c;
   }
 
+  /**
+   * 表演曲目
+   */
   public MusicInfo getMusic() {
     if(music==null){
         return new MusicInfo.Builder().build();
@@ -151,6 +180,9 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
     return music;
   }
 
+  /**
+   * 是否有下首曲目
+   */
   public Boolean getHasNextMusic() {
     if(hasNextMusic==null){
         return DEFAULT_HASNEXTMUSIC;
@@ -158,6 +190,9 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
     return hasNextMusic;
   }
 
+  /**
+   * 曲目数量
+   */
   public Integer getMusicCnt() {
     if(musicCnt==null){
         return DEFAULT_MUSICCNT;
@@ -185,14 +220,33 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
     return singTimeMs;
   }
 
+  /**
+   * ktv状态
+   */
+  public EKTVStatus getStatus() {
+    if(status==null){
+        return new EKTVStatus.Builder().build();
+    }
+    return status;
+  }
+
+  /**
+   * 表演曲目
+   */
   public boolean hasMusic() {
     return music!=null;
   }
 
+  /**
+   * 是否有下首曲目
+   */
   public boolean hasHasNextMusic() {
     return hasNextMusic!=null;
   }
 
+  /**
+   * 曲目数量
+   */
   public boolean hasMusicCnt() {
     return musicCnt!=null;
   }
@@ -211,6 +265,13 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
     return singTimeMs!=null;
   }
 
+  /**
+   * ktv状态
+   */
+  public boolean hasStatus() {
+    return status!=null;
+  }
+
   public static final class Builder extends Message.Builder<PKTVScene, Builder> {
     private MusicInfo music;
 
@@ -222,19 +283,30 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
 
     private Integer singTimeMs;
 
+    private EKTVStatus status;
+
     public Builder() {
     }
 
+    /**
+     * 表演曲目
+     */
     public Builder setMusic(MusicInfo music) {
       this.music = music;
       return this;
     }
 
+    /**
+     * 是否有下首曲目
+     */
     public Builder setHasNextMusic(Boolean hasNextMusic) {
       this.hasNextMusic = hasNextMusic;
       return this;
     }
 
+    /**
+     * 曲目数量
+     */
     public Builder setMusicCnt(Integer musicCnt) {
       this.musicCnt = musicCnt;
       return this;
@@ -256,9 +328,17 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
       return this;
     }
 
+    /**
+     * ktv状态
+     */
+    public Builder setStatus(EKTVStatus status) {
+      this.status = status;
+      return this;
+    }
+
     @Override
     public PKTVScene build() {
-      return new PKTVScene(music, hasNextMusic, musicCnt, userID, singTimeMs, super.buildUnknownFields());
+      return new PKTVScene(music, hasNextMusic, musicCnt, userID, singTimeMs, status, super.buildUnknownFields());
     }
   }
 
@@ -274,6 +354,7 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.musicCnt)
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.userID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.singTimeMs)
+          + EKTVStatus.ADAPTER.encodedSizeWithTag(6, value.status)
           + value.unknownFields().size();
     }
 
@@ -284,6 +365,7 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.musicCnt);
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.userID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.singTimeMs);
+      EKTVStatus.ADAPTER.encodeWithTag(writer, 6, value.status);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -298,6 +380,14 @@ public final class PKTVScene extends Message<PKTVScene, PKTVScene.Builder> {
           case 3: builder.setMusicCnt(ProtoAdapter.UINT32.decode(reader)); break;
           case 4: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 5: builder.setSingTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 6: {
+            try {
+              builder.setStatus(EKTVStatus.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

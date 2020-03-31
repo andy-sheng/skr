@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.POnlineInfo;
 import java.io.IOException;
 import java.lang.Object;
 import java.lang.Override;
@@ -35,7 +36,7 @@ public final class PDynamicEmojiMsg extends Message<PDynamicEmojiMsg, PDynamicEm
    */
   @WireField(
       tag = 2,
-      adapter = "com.zq.live.proto.PartyRoom.POnlineInfo#ADAPTER"
+      adapter = "com.zq.live.proto.Common.POnlineInfo#ADAPTER"
   )
   private final POnlineInfo user;
 

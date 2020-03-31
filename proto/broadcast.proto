@@ -16,12 +16,14 @@ message RoomBroadcastMsg
     ERoomBroadcastMsgType msgType = 2; //消息类型
     StandFullStar standFullStar   = 10; //歌单战：5星评级通知
     PresentGift presentGift       = 11; //赠送礼物：全站通知
+    PartyDiamondbox partyDiamondbox = 12; //派对房：发出宝箱通知
 }
 
 enum ERoomBroadcastMsgType {
     RBRT_UNKNOWN         = 0; //未知消息
     RBRT_STAND_FULL_STAR = 1; //歌单战5星评级
     RBRT_PRESENT_GIFT    = 2; //赠送礼物
+    RBRT_PARTY_DIAMONDBOX  = 3; //派对房：发出宝箱通知
 }
 
 message StandFullStar
@@ -41,3 +43,8 @@ message PresentGift
     string enterScheme      = 8;
 }
 
+message PartyDiamondbox
+{
+    uint32 roomID           = 1; //房间id
+    Common.PBeginDiamondbox pBeginDiamondbox                                       = 2; //下发宝箱
+}

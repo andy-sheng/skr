@@ -352,3 +352,53 @@ enum EGameModeType {
     PartyMode         = 11; //[正常]:派对模式 (派对房)
     BattleMode        = 12; //[正常]:2v2团战模式
 }
+
+message CdnStreamURL
+{
+    string tag = 1;
+    string url = 2;
+}
+
+enum EGameMode {
+    ERM_UNKNOWN     = 0; //未知, 默认连麦模式
+    ERM_SING_PK     = 1; //K歌 模式
+    ERM_GMAE_PK     = 2; //游戏PK 模式
+    ERM_MAKE_FRIEND = 3; //相亲交友 模式
+    ERM_ALL         = 100; //所有模式
+}
+
+enum EKTVStatus {
+    EKS_GOING = 0; //进行中
+    EKS_STOP  = 1; //暂停态
+}
+
+enum EPUserRole {
+    EPUR_UNKNOWN  = 0; //未知角色
+    EPUR_HOST     = 1; //主持人
+    EPUR_ADMIN    = 2; //管理员
+    EPUR_GUEST    = 3; //嘉宾
+    EPUR_AUDIENCE = 4; //观众
+}
+
+message GameMode
+{
+    EGameMode mode = 1; //模式类别
+    string name    = 2; //模式名字
+}
+
+message PBeginDiamondbox
+{
+    string diamondboxTag = 1; //宝箱标识
+    POnlineInfo user     = 2; //发送宝箱用户
+    sint64 createTimeMs  = 3; //创建宝箱时间戳，绝对时间(创建后，经过倒计时(beginTimeMs-createTimeMs)，再开始抢宝箱)
+    sint64 beginTimeMs   = 4; //开始抢宝箱时间戳，绝对时间
+    sint64 endTimeMs     = 5; //结束抢宝箱时间戳，绝对时间
+    uint64 zsCnt         = 6; //钻石数量
+}
+
+message POnlineInfo
+{
+    Common.UserInfo userInfo        = 1; //用户信息
+    repeated EPUserRole role = 2; //用户角色
+    uint32 popularity        = 3; //人气
+}

@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.POnlineInfo;
 import java.io.IOException;
 import java.lang.Object;
 import java.lang.Override;
@@ -28,7 +29,7 @@ public final class PKickoutUserMsg extends Message<PKickoutUserMsg, PKickoutUser
    */
   @WireField(
       tag = 1,
-      adapter = "com.zq.live.proto.PartyRoom.POnlineInfo#ADAPTER"
+      adapter = "com.zq.live.proto.Common.POnlineInfo#ADAPTER"
   )
   private final POnlineInfo kickUser;
 
@@ -46,7 +47,7 @@ public final class PKickoutUserMsg extends Message<PKickoutUserMsg, PKickoutUser
    */
   @WireField(
       tag = 3,
-      adapter = "com.zq.live.proto.PartyRoom.POnlineInfo#ADAPTER"
+      adapter = "com.zq.live.proto.Common.POnlineInfo#ADAPTER"
   )
   private final POnlineInfo opUser;
 

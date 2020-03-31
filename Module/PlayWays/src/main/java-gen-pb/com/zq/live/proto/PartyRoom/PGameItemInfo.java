@@ -21,8 +21,6 @@ public final class PGameItemInfo extends Message<PGameItemInfo, PGameItemInfo.Bu
 
   private static final long serialVersionUID = 0L;
 
-  public static final EPGameType DEFAULT_GAMETYPE = EPGameType.PGT_Unknown;
-
   /**
    * 游戏规则
    */
@@ -30,78 +28,44 @@ public final class PGameItemInfo extends Message<PGameItemInfo, PGameItemInfo.Bu
       tag = 1,
       adapter = "com.zq.live.proto.PartyRoom.PGameRule#ADAPTER"
   )
-  private final PGameRule gameRule;
-
-  /**
-   * 游戏类型
-   */
-  @WireField(
-      tag = 2,
-      adapter = "com.zq.live.proto.PartyRoom.EPGameType#ADAPTER"
-  )
-  private final EPGameType gameType;
+  private final PGameRule rule;
 
   /**
    * 剧本类游戏数据
    */
   @WireField(
-      tag = 3,
-      adapter = "com.zq.live.proto.PartyRoom.PPlayScene#ADAPTER"
+      tag = 2,
+      adapter = "com.zq.live.proto.PartyRoom.PGamePlay#ADAPTER"
   )
-  private final PPlayScene play;
+  private final PGamePlay play;
 
   /**
    * 问答类游戏数据
    */
   @WireField(
-      tag = 4,
-      adapter = "com.zq.live.proto.PartyRoom.PQuestionScene#ADAPTER"
+      tag = 3,
+      adapter = "com.zq.live.proto.PartyRoom.PGameQuestion#ADAPTER"
   )
-  private final PQuestionScene question;
+  private final PGameQuestion question;
 
-  /**
-   * 自由主持类游戏
-   */
-  @WireField(
-      tag = 5,
-      adapter = "com.zq.live.proto.PartyRoom.PFreeScene#ADAPTER"
-  )
-  private final PFreeScene free;
-
-  /**
-   * ktv唱歌类游戏
-   */
-  @WireField(
-      tag = 6,
-      adapter = "com.zq.live.proto.PartyRoom.PKTVScene#ADAPTER"
-  )
-  private final PKTVScene ktv;
-
-  public PGameItemInfo(PGameRule gameRule, EPGameType gameType, PPlayScene play,
-      PQuestionScene question, PFreeScene free, PKTVScene ktv) {
-    this(gameRule, gameType, play, question, free, ktv, ByteString.EMPTY);
+  public PGameItemInfo(PGameRule rule, PGamePlay play, PGameQuestion question) {
+    this(rule, play, question, ByteString.EMPTY);
   }
 
-  public PGameItemInfo(PGameRule gameRule, EPGameType gameType, PPlayScene play,
-      PQuestionScene question, PFreeScene free, PKTVScene ktv, ByteString unknownFields) {
+  public PGameItemInfo(PGameRule rule, PGamePlay play, PGameQuestion question,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
-    this.gameRule = gameRule;
-    this.gameType = gameType;
+    this.rule = rule;
     this.play = play;
     this.question = question;
-    this.free = free;
-    this.ktv = ktv;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
-    builder.gameRule = gameRule;
-    builder.gameType = gameType;
+    builder.rule = rule;
     builder.play = play;
     builder.question = question;
-    builder.free = free;
-    builder.ktv = ktv;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -112,12 +76,9 @@ public final class PGameItemInfo extends Message<PGameItemInfo, PGameItemInfo.Bu
     if (!(other instanceof PGameItemInfo)) return false;
     PGameItemInfo o = (PGameItemInfo) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(gameRule, o.gameRule)
-        && Internal.equals(gameType, o.gameType)
+        && Internal.equals(rule, o.rule)
         && Internal.equals(play, o.play)
-        && Internal.equals(question, o.question)
-        && Internal.equals(free, o.free)
-        && Internal.equals(ktv, o.ktv);
+        && Internal.equals(question, o.question);
   }
 
   @Override
@@ -125,12 +86,9 @@ public final class PGameItemInfo extends Message<PGameItemInfo, PGameItemInfo.Bu
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
-      result = result * 37 + (gameRule != null ? gameRule.hashCode() : 0);
-      result = result * 37 + (gameType != null ? gameType.hashCode() : 0);
+      result = result * 37 + (rule != null ? rule.hashCode() : 0);
       result = result * 37 + (play != null ? play.hashCode() : 0);
       result = result * 37 + (question != null ? question.hashCode() : 0);
-      result = result * 37 + (free != null ? free.hashCode() : 0);
-      result = result * 37 + (ktv != null ? ktv.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -139,12 +97,9 @@ public final class PGameItemInfo extends Message<PGameItemInfo, PGameItemInfo.Bu
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (gameRule != null) builder.append(", gameRule=").append(gameRule);
-    if (gameType != null) builder.append(", gameType=").append(gameType);
+    if (rule != null) builder.append(", rule=").append(rule);
     if (play != null) builder.append(", play=").append(play);
     if (question != null) builder.append(", question=").append(question);
-    if (free != null) builder.append(", free=").append(free);
-    if (ktv != null) builder.append(", ktv=").append(ktv);
     return builder.replace(0, 2, "PGameItemInfo{").append('}').toString();
   }
 
@@ -161,29 +116,19 @@ public final class PGameItemInfo extends Message<PGameItemInfo, PGameItemInfo.Bu
   /**
    * 游戏规则
    */
-  public PGameRule getGameRule() {
-    if(gameRule==null){
+  public PGameRule getRule() {
+    if(rule==null){
         return new PGameRule.Builder().build();
     }
-    return gameRule;
-  }
-
-  /**
-   * 游戏类型
-   */
-  public EPGameType getGameType() {
-    if(gameType==null){
-        return new EPGameType.Builder().build();
-    }
-    return gameType;
+    return rule;
   }
 
   /**
    * 剧本类游戏数据
    */
-  public PPlayScene getPlay() {
+  public PGamePlay getPlay() {
     if(play==null){
-        return new PPlayScene.Builder().build();
+        return new PGamePlay.Builder().build();
     }
     return play;
   }
@@ -191,45 +136,18 @@ public final class PGameItemInfo extends Message<PGameItemInfo, PGameItemInfo.Bu
   /**
    * 问答类游戏数据
    */
-  public PQuestionScene getQuestion() {
+  public PGameQuestion getQuestion() {
     if(question==null){
-        return new PQuestionScene.Builder().build();
+        return new PGameQuestion.Builder().build();
     }
     return question;
   }
 
   /**
-   * 自由主持类游戏
-   */
-  public PFreeScene getFree() {
-    if(free==null){
-        return new PFreeScene.Builder().build();
-    }
-    return free;
-  }
-
-  /**
-   * ktv唱歌类游戏
-   */
-  public PKTVScene getKtv() {
-    if(ktv==null){
-        return new PKTVScene.Builder().build();
-    }
-    return ktv;
-  }
-
-  /**
    * 游戏规则
    */
-  public boolean hasGameRule() {
-    return gameRule!=null;
-  }
-
-  /**
-   * 游戏类型
-   */
-  public boolean hasGameType() {
-    return gameType!=null;
+  public boolean hasRule() {
+    return rule!=null;
   }
 
   /**
@@ -246,32 +164,12 @@ public final class PGameItemInfo extends Message<PGameItemInfo, PGameItemInfo.Bu
     return question!=null;
   }
 
-  /**
-   * 自由主持类游戏
-   */
-  public boolean hasFree() {
-    return free!=null;
-  }
-
-  /**
-   * ktv唱歌类游戏
-   */
-  public boolean hasKtv() {
-    return ktv!=null;
-  }
-
   public static final class Builder extends Message.Builder<PGameItemInfo, Builder> {
-    private PGameRule gameRule;
+    private PGameRule rule;
 
-    private EPGameType gameType;
+    private PGamePlay play;
 
-    private PPlayScene play;
-
-    private PQuestionScene question;
-
-    private PFreeScene free;
-
-    private PKTVScene ktv;
+    private PGameQuestion question;
 
     public Builder() {
     }
@@ -279,23 +177,15 @@ public final class PGameItemInfo extends Message<PGameItemInfo, PGameItemInfo.Bu
     /**
      * 游戏规则
      */
-    public Builder setGameRule(PGameRule gameRule) {
-      this.gameRule = gameRule;
-      return this;
-    }
-
-    /**
-     * 游戏类型
-     */
-    public Builder setGameType(EPGameType gameType) {
-      this.gameType = gameType;
+    public Builder setRule(PGameRule rule) {
+      this.rule = rule;
       return this;
     }
 
     /**
      * 剧本类游戏数据
      */
-    public Builder setPlay(PPlayScene play) {
+    public Builder setPlay(PGamePlay play) {
       this.play = play;
       return this;
     }
@@ -303,30 +193,14 @@ public final class PGameItemInfo extends Message<PGameItemInfo, PGameItemInfo.Bu
     /**
      * 问答类游戏数据
      */
-    public Builder setQuestion(PQuestionScene question) {
+    public Builder setQuestion(PGameQuestion question) {
       this.question = question;
-      return this;
-    }
-
-    /**
-     * 自由主持类游戏
-     */
-    public Builder setFree(PFreeScene free) {
-      this.free = free;
-      return this;
-    }
-
-    /**
-     * ktv唱歌类游戏
-     */
-    public Builder setKtv(PKTVScene ktv) {
-      this.ktv = ktv;
       return this;
     }
 
     @Override
     public PGameItemInfo build() {
-      return new PGameItemInfo(gameRule, gameType, play, question, free, ktv, super.buildUnknownFields());
+      return new PGameItemInfo(rule, play, question, super.buildUnknownFields());
     }
   }
 
@@ -337,23 +211,17 @@ public final class PGameItemInfo extends Message<PGameItemInfo, PGameItemInfo.Bu
 
     @Override
     public int encodedSize(PGameItemInfo value) {
-      return PGameRule.ADAPTER.encodedSizeWithTag(1, value.gameRule)
-          + EPGameType.ADAPTER.encodedSizeWithTag(2, value.gameType)
-          + PPlayScene.ADAPTER.encodedSizeWithTag(3, value.play)
-          + PQuestionScene.ADAPTER.encodedSizeWithTag(4, value.question)
-          + PFreeScene.ADAPTER.encodedSizeWithTag(5, value.free)
-          + PKTVScene.ADAPTER.encodedSizeWithTag(6, value.ktv)
+      return PGameRule.ADAPTER.encodedSizeWithTag(1, value.rule)
+          + PGamePlay.ADAPTER.encodedSizeWithTag(2, value.play)
+          + PGameQuestion.ADAPTER.encodedSizeWithTag(3, value.question)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, PGameItemInfo value) throws IOException {
-      PGameRule.ADAPTER.encodeWithTag(writer, 1, value.gameRule);
-      EPGameType.ADAPTER.encodeWithTag(writer, 2, value.gameType);
-      PPlayScene.ADAPTER.encodeWithTag(writer, 3, value.play);
-      PQuestionScene.ADAPTER.encodeWithTag(writer, 4, value.question);
-      PFreeScene.ADAPTER.encodeWithTag(writer, 5, value.free);
-      PKTVScene.ADAPTER.encodeWithTag(writer, 6, value.ktv);
+      PGameRule.ADAPTER.encodeWithTag(writer, 1, value.rule);
+      PGamePlay.ADAPTER.encodeWithTag(writer, 2, value.play);
+      PGameQuestion.ADAPTER.encodeWithTag(writer, 3, value.question);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -363,19 +231,9 @@ public final class PGameItemInfo extends Message<PGameItemInfo, PGameItemInfo.Bu
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setGameRule(PGameRule.ADAPTER.decode(reader)); break;
-          case 2: {
-            try {
-              builder.setGameType(EPGameType.ADAPTER.decode(reader));
-            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
-              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
-            }
-            break;
-          }
-          case 3: builder.setPlay(PPlayScene.ADAPTER.decode(reader)); break;
-          case 4: builder.setQuestion(PQuestionScene.ADAPTER.decode(reader)); break;
-          case 5: builder.setFree(PFreeScene.ADAPTER.decode(reader)); break;
-          case 6: builder.setKtv(PKTVScene.ADAPTER.decode(reader)); break;
+          case 1: builder.setRule(PGameRule.ADAPTER.decode(reader)); break;
+          case 2: builder.setPlay(PGamePlay.ADAPTER.decode(reader)); break;
+          case 3: builder.setQuestion(PGameQuestion.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -390,11 +248,9 @@ public final class PGameItemInfo extends Message<PGameItemInfo, PGameItemInfo.Bu
     @Override
     public PGameItemInfo redact(PGameItemInfo value) {
       Builder builder = value.newBuilder();
-      if (builder.gameRule != null) builder.gameRule = PGameRule.ADAPTER.redact(builder.gameRule);
-      if (builder.play != null) builder.play = PPlayScene.ADAPTER.redact(builder.play);
-      if (builder.question != null) builder.question = PQuestionScene.ADAPTER.redact(builder.question);
-      if (builder.free != null) builder.free = PFreeScene.ADAPTER.redact(builder.free);
-      if (builder.ktv != null) builder.ktv = PKTVScene.ADAPTER.redact(builder.ktv);
+      if (builder.rule != null) builder.rule = PGameRule.ADAPTER.redact(builder.rule);
+      if (builder.play != null) builder.play = PGamePlay.ADAPTER.redact(builder.play);
+      if (builder.question != null) builder.question = PGameQuestion.ADAPTER.redact(builder.question);
       builder.clearUnknownFields();
       return builder.build();
     }
