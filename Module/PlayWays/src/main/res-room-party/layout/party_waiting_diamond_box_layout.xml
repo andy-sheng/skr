@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
-    <EditText
+    <com.common.view.ex.ExTextView
         android:id="@+id/diamond_sender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,9 +23,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="歇斯底里的最好年华"
+        android:textColor="#FFFFFFFF"
         />
 
-    <EditText
+    <com.common.view.ex.ExTextView
         android:id="@+id/diamond_countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,6 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="2:24"
+        android:textColor="#FFFFFFFF"
         />
 
 

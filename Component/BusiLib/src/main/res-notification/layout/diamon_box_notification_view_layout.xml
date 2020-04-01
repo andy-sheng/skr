@@ -22,16 +22,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <com.common.image.fresco.BaseImageView
+    <com.common.view.ex.ExImageView
         android:id="@+id/gift_iv"
-        android:layout_width="@dimen/view_44_dp"
-        android:layout_height="@dimen/view_44_dp"
+        android:layout_width="@dimen/view_58_dp"
+        android:layout_height="@dimen/view_46_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         app:layout_constraintBottom_toBottomOf="@+id/bg"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bg"
         avatarView:borderColor="@color/white"
-        avatarView:borderWidth="@dimen/view_2_dp" />
+        avatarView:borderWidth="@dimen/view_2_dp"
+        android:src="@drawable/party_diamond_box_icon"
+        />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/content_tv"
@@ -54,7 +56,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_6_dp"
-        android:background="@drawable/gotoroom_icon"
+        android:background="@drawable/part_diamond_box_grab_diamond"
         android:gravity="center"
         android:textColor="#AD6C00"
         android:textStyle="bold"

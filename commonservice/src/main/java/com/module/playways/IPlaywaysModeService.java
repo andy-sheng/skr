@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 
 import com.alibaba.android.arouter.facade.template.IProvider;
 
+import java.io.Serializable;
+
 /**
  * channel module 对外提供服务的接口
  */

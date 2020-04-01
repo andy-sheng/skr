@@ -9,6 +9,8 @@ import com.common.rxretrofit.cookie.cache.SetCookieCache;
 import com.common.rxretrofit.cookie.persistence.SharedPrefsCookiePersistor;
 import com.common.rxretrofit.interceptor.UserAgentInterceptor;
 import com.common.utils.U;
+import com.moczul.ok2curl.CurlInterceptor;
+import com.moczul.ok2curl.logger.Loggable;
 
 import java.util.LinkedHashSet;
 import java.util.concurrent.TimeUnit;
@@ -230,6 +232,12 @@ public class ApiManager {
                     });
                     httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
                     defaultClient.addInterceptor(httpLoggingInterceptor);
+                    defaultClient.addNetworkInterceptor(new CurlInterceptor(new Loggable() {
+                        @Override
+                        public void log(String message) {
+                            MyLog.d(TAG, message);
+                        }
+                    }));
                     this.okHttpClient = defaultClient.build();
                     /*创建retrofit对象*/
                     mDefaultRetrofit = new Retrofit.Builder()

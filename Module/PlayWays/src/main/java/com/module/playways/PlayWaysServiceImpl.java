@@ -69,6 +69,7 @@ import com.zq.live.proto.broadcast.PartyDiamondbox;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -313,7 +314,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
 
     @Override
-    public void tryGoDiamondBoxPartyRoom(int roomID, int joinSrc, int roomType, @Nullable  String extra) {
+    public void tryGoDiamondBoxPartyRoom(int roomID, int joinSrc, int roomType, @Nullable String extra) {
         // 列表添加 JRS_LIST    = 1;  邀请添加 JRS_INVITE  = 2;
         // roomType RT_PERSONAL = 1;普通房间  RT_FAMILY = 2;家族剧场
         HashMap map = new HashMap();
@@ -347,7 +348,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                             }
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_ROOM)
                                     .withSerializable("JoinPartyRoomRspModel", rsp)
-                                    .withString("diamond_box", extra)
+                                    .withString("extra", extra)
                                     .navigation();
                         } else {
                             U.getToastUtil().showShort(result.getErrmsg());

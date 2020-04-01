@@ -410,6 +410,19 @@ interface PartyRoomServerApi {
     fun getPartyRankList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int,
                          @Query("roomID") roomID: Int, @Query("tagType") tagType: Int): Call<ApiResult>
 
-    @PUT("/v1/partygame/begin-diamondbox")
-    fun beginDiamonBox(@Body body: RequestBody):Call<ApiResult>
+    /**
+     * 发宝箱
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/begin-diamondbox")
+    fun beginDiamondBox(@Body body: RequestBody):Call<ApiResult>
+
+    /**
+     * 获取可以发送的宝箱配置
+     */
+    @GET("http://dev.game.inframe.mobi/v1/partygame/list-diamondbox")
+    fun getDiamondBoxList(@Query("roomID") roomID: Int,
+                          @Query("userID") userID: Long,
+                          @Query("nickName") nickName:String
+                          ):Call<ApiResult>
+
 }

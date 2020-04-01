@@ -56,7 +56,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_6_dp"
-        android:background="@drawable/part_diamond_box_grap_diamond"
+        android:background="@drawable/part_diamond_box_grab_diamond"
         app:layout_constraintBottom_toBottomOf="@+id/bg"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bg" />

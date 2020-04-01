@@ -113,22 +113,15 @@
         android:layout="@layout/relay_sing_card_view_layout"
         app:layout_constraintBottom_toTopOf="@+id/bottom_container_view" />
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/send_diamond_box_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/party_diamond_box_send_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
-
     <ViewStub
-        android:id="@+id/diamon_box_waiting"
+        android:id="@+id/diamond_box_waiting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout="@layout/party_waiting_diamond_box_layout"
         android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/comment_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/view_10_dp"
         />
 
     <!--底部右边操作区域-->
@@ -302,4 +295,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout="@layout/party_punish_view_layout" />
+
 </com.common.view.ex.ExConstraintLayout>

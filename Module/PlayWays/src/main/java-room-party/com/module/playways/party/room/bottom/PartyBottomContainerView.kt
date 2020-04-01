@@ -40,6 +40,7 @@ class PartyBottomContainerView : BottomContainerView {
 
     private var moreBtn: ExImageView? = null
     private var partyEmojiTv: ExImageView? = null
+    private var mDiamondBoxImg: ExImageView? = null
 
     var roomData: PartyRoomData? = null
     var settingOpen = false
@@ -64,6 +65,7 @@ class PartyBottomContainerView : BottomContainerView {
         super.init()
         moreBtn = this.findViewById(R.id.more_btn)
         partyEmojiTv = this.findViewById(R.id.party_emoji_tv)
+        mDiamondBoxImg = this.findViewById(R.id.diamond_box_sender)
 
         mInputBtn?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -175,6 +177,13 @@ class PartyBottomContainerView : BottomContainerView {
         }
 
         refreshInputMic()
+    }
+
+    fun enableDiamondBoxSenderBtn(sendDiamondBoxClick:(() ->Unit)){
+        mDiamondBoxImg?.visibility = View.VISIBLE
+        mDiamondBoxImg?.setDebounceViewClickListener {
+            sendDiamondBoxClick.invoke()
+        }
     }
 
     private fun refreshInputMic() {

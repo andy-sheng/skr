@@ -29,9 +29,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.utils.dp
-import com.common.view.AnimateClickListener
 import com.common.view.ex.ExConstraintLayout
-import com.common.view.ex.ExTextView
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.view.GameEffectBgView
 import com.component.dialog.ClubCardDialogView
@@ -42,8 +40,6 @@ import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
 import com.component.toast.CommonToastView
 import com.dialog.view.TipsDialogView
-import com.idlefish.flutterboost.FlutterBoostPlugin
-import com.idlefish.flutterboost.FlutterViewContainerManager
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.BaseRoomData
@@ -60,6 +56,7 @@ import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.party.bgmusic.getLocalMusicInfo
 import com.module.playways.party.home.PartyHomeActivity
 import com.module.playways.party.match.model.JoinPartyRoomRspModel
+import com.module.playways.party.room.view.PartySendDiamondBoxDialogView
 import com.module.playways.party.room.actor.PartyApplyPanelView
 import com.module.playways.party.room.actor.PartyMemberPanelView
 import com.module.playways.party.room.bottom.PartyBottomContainerView
@@ -67,6 +64,7 @@ import com.module.playways.party.room.event.PartyHostChangeEvent
 import com.module.playways.party.room.event.PartySelectSongEvent
 import com.module.playways.party.room.fragment.PartyRoomSettingFragment
 import com.module.playways.party.room.model.PartyActorInfoModel
+import com.module.playways.party.room.model.PartyDiamondboxModel
 import com.module.playways.party.room.model.PartyPlayerInfoModel
 import com.module.playways.party.room.model.PartyRoundInfoModel
 import com.module.playways.party.room.presenter.PartyCorePresenter
@@ -97,8 +95,8 @@ import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.PBeginDiamondbox
 import com.zq.live.proto.PartyRoom.*
+import com.zq.live.proto.broadcast.PartyDiamondbox
 import io.reactivex.Observable
-import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -161,6 +159,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     var mPartySettingView: PartySettingView? = null
     var mPartyEmojiView: PartyEmojiView? = null
     var mChangeRoomTransitionView: GrabChangeRoomTransitionView? = null
+    var mPartySendDiamondBoxView: PartySendDiamondBoxDialogView? = null
 
     lateinit var mAddSongIv: ImageView
     lateinit var mChangeSongIv: ImageView
@@ -179,7 +178,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     private var mConfirmDialog: ConfirmDialog? = null
     private var mClubCardDialogView: ClubCardDialogView? = null
     private var mPartyDiamondBoxView: PartyDiamondBoxView? = null
-    private var mSendDiamondBoxTv:ExTextView? = null
 
     private var mVipEnterPresenter: VipEnterPresenter? = null
 
@@ -191,8 +189,6 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
     internal var mSkrAudioPermission = SkrAudioPermission()
 
     internal var mHostOpTipImageView: ImageView? = null
-
-    private val mPartyRoomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi::class.java)
 
     val SP_KEY_HOST_TIP_TIMES = "sp_key_host_tips_show_times"
     val REMOVE_HOST_OP_TIP_MSG = 0x01     // 主持人操作提示
@@ -223,6 +219,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             mRoomData.loadFromRsp(it)
             MyLog.d(TAG, "initData mRoomData=$mRoomData")
         }
+        intent.getStringExtra("extra")?.let {
+            mRoomData.partyDiamondboxModel = JSON.parseObject(it, PartyDiamondboxModel::class.java)
+        }
+
         H.partyRoomData = mRoomData
         H.setType(GameModeType.GAME_MODE_PARTY, "PartyRoomActivity")
 
@@ -254,6 +254,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         initChangeRoomTransitionView()
         initPunishView()
         initDiamondBoxView()
+
         mCorePresenter.onOpeningAnimationOver()
 
         mUiHandler.postDelayed(Runnable {
@@ -287,33 +288,29 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         U.getStatusBarUtil().setTransparentBar(this, false)
         showHostOpTips()
         checkGoMicTips()
+
     }
 
     private fun initDiamondBoxView() {
 
-        mPartyDiamondBoxView = PartyDiamondBoxView(findViewById(R.id.diamon_box_waiting))
-        mSendDiamondBoxTv = findViewById(R.id.send_diamond_box_tv)
-
-        mSendDiamondBoxTv?.setDebounceViewClickListener {
-            val map = mutableMapOf("roomID" to H.partyRoomData?.gameId)
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-
-            launch {
-                val apiResult = subscribe (RequestControl("beginDiamonBox", ControlType.CancelThis)){
-                    mPartyRoomServerApi.beginDiamonBox(body)
-                }
-
-                if(apiResult.errno == 0){
-                    val box = apiResult.data.getString("pBeginDiamondbox")
-                    val pBeginDiamondbox = JSON.parseObject(box, PBeginDiamondbox::class.java)
-                    mPartyDiamondBoxView?.setVisibility(View.VISIBLE)
-                    mPartyDiamondBoxView?.bindData(pBeginDiamondbox)
-                }
-            }
+        mPartyDiamondBoxView = PartyDiamondBoxView(findViewById(R.id.diamond_box_waiting))
+        mBottomContainerView.enableDiamondBoxSenderBtn {
+            mPartySendDiamondBoxView = mPartySendDiamondBoxView?: PartySendDiamondBoxDialogView(this)
+            mPartySendDiamondBoxView?.show(this, mRoomData.gameId)
         }
 
+        // 存在宝箱，展示宝箱
+        mRoomData.partyDiamondboxModel?.let {
+            showDiamondBoxCuntDown(it)
+        }
 
     }
+
+    private fun showDiamondBoxCuntDown(partyDiamondboxModel: PartyDiamondboxModel){
+        mPartyDiamondBoxView?.setVisibility(View.VISIBLE)
+        mPartyDiamondBoxView?.bindData(partyDiamondboxModel)
+    }
+
 
     private fun checkGoMicTips() {
         if (mRoomData.joinSrc == JoinPartyRoomRspModel.JRS_QUICK_JOIN || mRoomData.joinSrc == JoinPartyRoomRspModel.JRS_CHANGE_ROOM) {
@@ -1001,6 +998,12 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         }
 
         mPartyPunishView.showWithGuest(event)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PartyDiamondboxModel){
+        mRoomData.partyDiamondboxModel = event
+        showDiamondBoxCuntDown(event)
     }
 
     private fun getPartyManageHostDialogView(): PartyManageHostDialogView {

@@ -84,7 +84,7 @@
             app:bl_shape="rectangle"
             tools:text="0"
             app:bl_solid_color="#FE7575" />
-    </>
+    </android.support.constraint.ConstraintLayout>
     <LinearLayout
         android:id="@+id/club_right_post"
         android:layout_width="wrap_content"

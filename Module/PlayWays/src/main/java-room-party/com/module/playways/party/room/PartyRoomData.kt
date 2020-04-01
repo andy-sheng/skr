@@ -14,6 +14,7 @@ import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.zq.live.proto.PartyRoom.EMicStatus
 import com.zq.live.proto.PartyRoom.EPRoundStatus
 import com.zq.live.proto.Common.EPUserRole
+import com.zq.live.proto.Common.PBeginDiamondbox
 import com.zq.live.proto.PartyRoom.ESeatStatus
 import org.greenrobot.eventbus.EventBus
 
@@ -21,6 +22,8 @@ import org.greenrobot.eventbus.EventBus
 class PartyRoomData : BaseRoomData<PartyRoundInfoModel>() {
 
     var clubInfo: ClubInfo? = null   // 家族信息
+
+    var partyDiamondboxModel:PartyDiamondboxModel? = null //宝箱信息
 
     var gameMode = 0 //  ERM_SING_PK = 1 : K歌 模式 - ERM_GMAE_PK = 2 : 游戏PK 模式 - ERM_MAKE_FRIEND = 3 : 相亲交友 模式string
 

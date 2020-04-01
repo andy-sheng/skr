@@ -22,6 +22,7 @@
             android:scaleType="centerInside"
             app:src_unPressed_drawable="@drawable/biaoqing" />
 
+
         <com.common.view.ex.ExImageView
             android:id="@+id/party_emoji_tv"
             android:layout_width="@dimen/view_39_dp"
@@ -43,12 +44,21 @@
             app:src_unPressed_drawable="@drawable/party_more_icon" />
 
         <com.common.view.ex.ExImageView
+            android:id="@+id/diamond_box_sender"
+            android:layout_width="@dimen/view_39_dp"
+            android:layout_height="@dimen/view_35_dp"
+            android:src="@drawable/party_diamond_box_icon"
+            android:layout_toRightOf="@id/more_btn"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:visibility="gone"
+            />
+        <com.common.view.ex.ExImageView
             android:id="@+id/gift_mall_btn"
             android:layout_width="@dimen/view_36_dp"
             android:layout_height="@dimen/view_35_dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_10_dp"
-            android:layout_toRightOf="@id/more_btn"
+            android:layout_toRightOf="@id/diamond_box_sender"
             android:scaleType="fitXY"
             app:src_unPressed_drawable="@drawable/outer_gift" />
 

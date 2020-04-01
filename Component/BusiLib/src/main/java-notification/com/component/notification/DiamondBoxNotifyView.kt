@@ -1,6 +1,7 @@
 package com.component.notification
 
 import android.content.Context
+import android.graphics.Color
 import android.support.constraint.ConstraintLayout
 import android.text.Html
 import android.util.AttributeSet
@@ -14,6 +15,8 @@ import com.common.image.fresco.BaseImageView
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
+import com.common.log.MyLog
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -24,11 +27,13 @@ import com.module.RouterConstants
 import com.module.playways.IPlaywaysModeService
 import com.zq.live.proto.broadcast.PartyDiamondbox
 
+/**
+ * 钻石宝箱通知
+ */
 class DiamondBoxNotifyView : ConstraintLayout {
 
-    private val TAG = DiamondBoxNotifyView::class.simpleName
+    private val TAG = DiamondBoxNotifyView::class.java.simpleName
     lateinit var mBg: ExImageView
-    lateinit var mGiftIv: BaseImageView
     lateinit var mEnterTv: ExTextView
     lateinit var mContentTv: ExTextView
 
@@ -46,16 +51,14 @@ class DiamondBoxNotifyView : ConstraintLayout {
     fun init() {
         View.inflate(context, R.layout.diamon_box_notification_view_layout, this)
 
-        View.inflate(context, com.component.busilib.R.layout.big_gift_notification_view_layout, this)
-        mBg = findViewById<View>(com.component.busilib.R.id.bg) as ExImageView
-        mGiftIv = findViewById<View>(com.component.busilib.R.id.gift_iv) as BaseImageView
-        mEnterTv = findViewById<View>(com.component.busilib.R.id.enter_tv) as ExTextView
-        mContentTv = findViewById<View>(com.component.busilib.R.id.content_tv) as ExTextView
+        mBg = findViewById<View>(R.id.bg) as ExImageView
+        mEnterTv = findViewById<View>(R.id.enter_tv) as ExTextView
+        mContentTv = findViewById<View>(R.id.content_tv) as ExTextView
 
     }
 
     fun bindData(diamondBoxData:String){
-
+        MyLog.e("显示钻石宝箱 $diamondBoxData")
         val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f)
         animation.duration = 600
@@ -64,18 +67,29 @@ class DiamondBoxNotifyView : ConstraintLayout {
         animation.fillAfter = true
         startAnimation(animation)
 
-        val partyDiamondbox = JSON.parseObject(diamondBoxData, PartyDiamondbox::class.java)
-
-
+        val partyDiamondbox = JSON.parseObject(diamondBoxData)
+        val roomID = partyDiamondbox.getLong("roomID")
+        val pBeginDiamondbox = partyDiamondbox.getJSONObject("pBeginDiamondbox")
+        val user = pBeginDiamondbox.getJSONObject("user")
+        val userInfo = user.getJSONObject("userInfo")
+        val nickname = userInfo.getString("nickName")
+        
         mEnterTv.visibility = View.VISIBLE
         mEnterTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
+                MyLog.e("点击进入钻石宝箱房间")
                 val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                iRankingModeService.tryGoDiamondBoxPartyRoom(partyDiamondbox.roomID, 1, 0, diamondBoxData)
+                iRankingModeService.tryGoDiamondBoxPartyRoom(roomID.toInt(), 1, 0, diamondBoxData)
             }
         })
 
-        mContentTv.text = partyDiamondbox.pBeginDiamondbox.user.userInfo.nickName
+        val contentStr = SpanUtils().append(nickname)
+                .setBackgroundColor(Color.parseColor("#FFFFC970"))
+                .appendSpace(1)
+                .append("在主题房送出【钻石大宝箱】")
+                .setBackgroundColor(Color.parseColor("#CCFFFFFF"))
+                .create()
+        mContentTv.text = contentStr
 
     }
 
