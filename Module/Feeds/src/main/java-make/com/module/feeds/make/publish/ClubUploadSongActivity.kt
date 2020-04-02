@@ -113,7 +113,8 @@ class ClubUploadSongActivity : BaseActivity() {
 
     private fun uploadAudio(path: String, call: (String?) -> Unit) {
         UploadParams.newBuilder(path)
-                .setFileType(UploadParams.FileType.feed)
+                .setFileType(UploadParams.FileType.audioAi)
+                .setId(familyID!!)
                 .startUploadAsync(object : UploadCallback {
                     override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
                     }

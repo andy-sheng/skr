@@ -79,6 +79,7 @@ class ClubMemberView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
                 }
                 adapter.notifyDataSetChanged()
             }
+            callback.invoke()
         }
     }
 

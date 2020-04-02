@@ -13,6 +13,7 @@ import com.component.lyrics.formats.lrc.LrcLyricsFileReader;
 import com.component.lyrics.formats.lrc.LrcLyricsFileWriter;
 import com.component.lyrics.formats.zrce.ZrceLyricsFileReader;
 import com.component.lyrics.formats.zrce.ZrceLyricsFileReader2;
+import com.component.lyrics.formats.zrce.ZrceLyricsFileReader3;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,15 +29,16 @@ public class LyricsIOUtils {
 	private static ArrayList<LyricsFileWriter> writers;
 
 	static {
-		readers = new ArrayList<LyricsFileReader>();
+		readers = new ArrayList<>();
 		readers.add(new HrcLyricsFileReader());
 		readers.add(new KscLyricsFileReader());
 		readers.add(new KrcLyricsFileReader());
 		readers.add(new LrcLyricsFileReader());
 		readers.add(new ZrceLyricsFileReader());
 		readers.add(new ZrceLyricsFileReader2());
+		readers.add(new ZrceLyricsFileReader3());
 		//
-		writers = new ArrayList<LyricsFileWriter>();
+		writers = new ArrayList<>();
 		writers.add(new HrcLyricsFileWriter());
 		writers.add(new KscLyricsFileWriter());
 		writers.add(new KrcLyricsFileWriter());

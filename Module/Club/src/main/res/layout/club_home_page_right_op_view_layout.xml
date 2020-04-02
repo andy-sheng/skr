@@ -36,6 +36,17 @@
             android:focusable="true"
             />
 
+        <com.common.view.ex.ExImageView
+            android:id="@+id/apply_red_iv"
+            android:layout_width="@dimen/view_10_dp"
+            android:layout_height="@dimen/view_10_dp"
+            android:visibility="gone"
+            app:bl_corners_radius="@dimen/view_5_dp"
+            app:bl_shape="rectangle"
+            app:bl_solid_color="#FF5959"
+            app:layout_constraintRight_toRightOf="@id/club_right_apply_tv"
+            app:layout_constraintTop_toTopOf="@id/club_right_apply_tv" />
+
         <com.common.view.ex.ExTextView
             android:id="@+id/club_right_conversation_tv"
             android:layout_width="wrap_content"

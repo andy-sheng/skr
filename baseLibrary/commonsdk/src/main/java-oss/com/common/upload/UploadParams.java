@@ -78,14 +78,14 @@ public class UploadParams {
         customGame("user_upload_music"), msgAudio("msg-audio"), feed("feed"),
         posts("posts");
 
-        private String ossSavaDir;
+        private String ossSaveDir;
 
         FileType(String d) {
-            ossSavaDir = d;
+            ossSaveDir = d;
         }
 
-        public String getOssSavaDir() {
-            return ossSavaDir;
+        public String getOssSaveDir() {
+            return ossSaveDir;
         }
     }
 
