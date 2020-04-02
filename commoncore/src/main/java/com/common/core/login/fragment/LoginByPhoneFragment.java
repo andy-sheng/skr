@@ -220,7 +220,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
 //            mGt3Manager.startVerify(phoneNumber);
 //            return;
 //        }
-        MyLog.d(getTAG(), "sendSmsVerifyCode" + " phoneNumber=" + phoneNumber);
+        MyLog.d(getTAG(), "sendSmsVerifyCode" + " phoneNumber=" + phoneNumber+" deviceId="+U.getDeviceUtils().getDeviceID());
         if(deep>3){
             return;
         }
@@ -234,7 +234,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
         }
 
         long timeMs = System.currentTimeMillis();
-        String sign = U.getMD5Utils().MD5_32("skr2020|phoneNumber|" +
+        String sign = U.getMD5Utils().MD5_32("skr2020|"+phoneNumber+"|" +
                 U.getDeviceUtils().getDeviceID()+ "|" +
                 timeMs);
 
