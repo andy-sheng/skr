@@ -50,12 +50,14 @@ class ClubPhotoCorePresenter(val mView: IPhotoWallView, val mBaseActivity: BaseA
                     }
                 } else {
                     mView!!.loadDataFailed()
+                    callback?.onCallback(3, null)
                 }
             }
 
             override fun onNetworkError(errorType: ApiObserver.ErrorType) {
                 super.onNetworkError(errorType)
                 mView!!.loadDataFailed()
+                callback?.onCallback(3, null)
             }
         }, mBaseActivity, RequestControl("getPhotos", ControlType.CancelThis))
     }

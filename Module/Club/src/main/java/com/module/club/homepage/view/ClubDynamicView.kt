@@ -55,7 +55,7 @@ class ClubDynamicView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
     }
 
     fun loadData(flag: Boolean, callBack: IBooleanCallback) {
-        dynamicView.loadData(clubMemberInfo?.club?.clubID!!, IBooleanCallback {  })
+        dynamicView.loadData(clubMemberInfo?.club?.clubID!!, callBack)
     }
 
     fun loadMoreData( callBack: IBooleanCallback) {

@@ -127,7 +127,14 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
         }
 
         updateUnreadMsgCount()
-        checkApplyRed()
+        if(mClubMemberInfo?.isFounder()==true || mClubMemberInfo?.isCoFounder()==true ){
+            mApplyTv?.visibility = View.VISIBLE
+            checkApplyRed()
+        }else{
+            mApplyTv?.visibility = View.GONE
+            applyRedIv?.visibility = View.GONE
+        }
+
     }
 
     /**

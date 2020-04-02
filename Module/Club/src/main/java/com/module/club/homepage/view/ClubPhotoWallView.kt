@@ -149,7 +149,7 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
         mPhotoCorePresenter.uploadPhotoList(imageItems)
     }
 
-    fun getPhotos(isFlag: Boolean) {
+    fun getPhotos(isFlag: Boolean,callback:()->Unit?) {
         MyLog.d(TAG, "getPhotos isFlag = $isFlag")
         val now = System.currentTimeMillis()
         if (!isFlag) {
@@ -159,7 +159,9 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
             }
         }
         if (mPhotoAdapter.successNum == 0) {
-            mPhotoCorePresenter!!.getPhotos(0, DEFAUAT_CNT)
+            mPhotoCorePresenter!!.getPhotos(0, DEFAUAT_CNT, Callback { r, obj -> callback.invoke() })
+        }else{
+            callback.invoke()
         }
     }
 
@@ -212,7 +214,7 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
     }
 
     fun loadData(flag: Boolean, callback: () -> Unit?) {
-        getPhotos(flag)
+        getPhotos(flag,callback)
     }
 
     fun loadMoreData(callback: () -> Unit?) {
