@@ -170,6 +170,7 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
             if (result.errno == 0) {
                 hasApplied = false
                 refreshApplyStatus()
+                U.getToastUtil().showShort("已取消申请")
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }
@@ -189,6 +190,7 @@ class ClubHomepageActivity2 : BaseActivity(), RequestCallBack {
             if (result.errno == 0) {
                 hasApplied = true
                 refreshApplyStatus()
+                U.getToastUtil().showShort("申请成功")
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }

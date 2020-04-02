@@ -88,7 +88,7 @@ class ClubWorksView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
         }
         U.getCommonUtils().setSupportsChangeAnimations(recycleView, false)
         val mLoadSir = LoadSir.Builder()
-                .addCallback(EmptyCallback(R.drawable.loading_empty2, "暂无房间", "#99FFFFFF"))
+                .addCallback(EmptyCallback(R.drawable.loading_empty2, "暂无房间", "#99000000"))
                 .build()
         mLoadService = mLoadSir.register(recycleView, Callback.OnReloadListener {
             loadList(0, true, null)

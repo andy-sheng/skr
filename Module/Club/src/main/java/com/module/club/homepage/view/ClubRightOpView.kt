@@ -12,13 +12,20 @@ import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.notification.event.RongClubMsgEvent
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
+import com.common.utils.U
 import com.common.view.ExViewStub
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.ModuleServiceManager
 import com.module.RouterConstants
+import com.module.club.ClubServerApi
 import com.module.club.R
 import com.module.common.ICallback
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -27,6 +34,11 @@ import org.greenrobot.eventbus.ThreadMode
  * 家族首页底部操作按钮
  */
 class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
+
+    private val SP_KEY_APPLY_WATER_LEVEL = "sp_key_apply_water_level"               // 申请水位
+    private val SP_KEY_APPLY_WATER_LEVEL_CLUBID = "sp_key_apply_water_level_clubid" // 申请水位对应的clubID
+    private var applyTimeMs: Long = 0
+    private var applyRedCount: Int = 0
 
     private val TAG = "ClubRightOpView"
     private var mApplyTv: ExTextView? = null
@@ -43,6 +55,7 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
     private var mClubPostActionTv: ExTextView? = null
     private var mClubPostPhotoTv: ExTextView? = null
     private var mClubPostOpusTv: ExTextView? = null
+    private var applyRedIv: View? = null
 
     private var mPostPanelShowAni: Animation? = null
     private var mPostPanelHideAni: Animation? = null
@@ -60,7 +73,7 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
         mClubPostActionTv = parentView.findViewById(R.id.club_right_post_action)
         mClubPostPhotoTv = parentView.findViewById(R.id.club_right_post_photo)
         mClubPostOpusTv = parentView.findViewById(R.id.club_right_post_opus_tv)
-
+        applyRedIv = parentView.findViewById(R.id.apply_red_iv)
         initAnimations()
     }
 
@@ -80,6 +93,8 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
         mClubMemberInfo = clubMemberInfo
 
         mApplyTv?.setDebounceViewClickListener {
+            U.getPreferenceUtils().setSettingLong(SP_KEY_APPLY_WATER_LEVEL, applyTimeMs)
+            applyRedIv?.visibility = View.GONE
             ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_APPLY_CLUB)
                     .withSerializable("clubMemberInfo", clubMemberInfo)
                     .navigation()
@@ -89,7 +104,7 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
                     .withInt("from", 2)
-                    .withInt("familyID", clubMemberInfo?.club?.clubID
+                    .withInt("familyID", mClubMemberInfo?.club?.clubID
                             ?: return@setDebounceViewClickListener)
                     .navigation()
         }
@@ -117,6 +132,14 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
 
         updateUnreadMsgCount()
         updateApplyCount()
+        if(mClubMemberInfo?.isFounder()==true || mClubMemberInfo?.isCoFounder()==true ){
+            mApplyTv?.visibility = View.VISIBLE
+            checkApplyRed()
+        }else{
+            mApplyTv?.visibility = View.GONE
+            applyRedIv?.visibility = View.GONE
+        }
+
     }
 
     /**
@@ -227,5 +250,33 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
     fun resume(){
         updateApplyCount()
         updateUnreadMsgCount()
+    }
+
+    private fun checkApplyRed() {
+        if (U.getPreferenceUtils().getSettingInt(SP_KEY_APPLY_WATER_LEVEL_CLUBID, 0) != mClubMemberInfo?.club?.clubID) {
+            // clubID变了，重置一下数据
+            mClubMemberInfo?.club?.clubID?.let {
+                U.getPreferenceUtils().setSettingInt(SP_KEY_APPLY_WATER_LEVEL_CLUBID, it)
+            }
+            U.getPreferenceUtils().setSettingLong(SP_KEY_APPLY_WATER_LEVEL, 0)
+        }
+
+        launch {
+            val lastTimeMs = U.getPreferenceUtils().getSettingLong(SP_KEY_APPLY_WATER_LEVEL, 0)
+            val result = subscribe(RequestControl("getCountMemberApply", ControlType.CancelThis)) {
+                ApiManager.getInstance().createService(ClubServerApi::class.java).getCountMemberApply(mClubMemberInfo?.club?.clubID!!, lastTimeMs)
+            }
+            if (result.errno == 0) {
+                applyTimeMs = result.data.getLongValue("timeMs")
+                applyRedCount = result.data.getIntValue("total")
+
+                // 是否显示红点
+                if (applyRedCount > 0) {
+                    applyRedIv?.visibility = View.VISIBLE
+                } else {
+                    applyRedIv?.visibility = View.GONE
+                }
+            }
+        }
     }
 }

@@ -149,7 +149,7 @@ class PostsPublishActivity : BaseActivity() {
                 publishTypeTv.visibility = View.GONE
             }
         } else if (from == PublishFrom.CLUB.value) {
-            publishTypeTv.text = "同步到帖子"
+            publishTypeTv.text = "同步到广场"
         }
 
         redPkgVp = findViewById(R.id.red_pkg_vp)
