@@ -39,7 +39,7 @@ public class ZrceLyricsFileReader3 extends ZrceLyricsFileReader {
 
     @Override
     public boolean isFileSupported(String ext) {
-        return ext.equalsIgnoreCase("zrce2");
+        return ext.equalsIgnoreCase("zqlrc");
     }
 
     @Override
