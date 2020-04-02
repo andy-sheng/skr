@@ -52,6 +52,7 @@ import com.module.playways.party.match.model.JoinPartyRoomRspModel;
 import com.module.playways.party.room.PartyRoomActivity;
 import com.module.playways.party.room.PartyRoomServerApi;
 import com.module.playways.party.room.event.PartyChangeRoomEvent;
+import com.module.playways.party.room.event.RoomChangingEvent;
 import com.module.playways.relay.match.model.JoinRelayRoomRspModel;
 import com.module.playways.relay.room.RelayRoomActivity;
 import com.module.playways.relay.room.RelayRoomData;
@@ -314,7 +315,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
 
     @Override
-    public void tryGoDiamondBoxPartyRoom(int roomID, int joinSrc, int roomType, @Nullable String extra) {
+    public void tryGoDiamondBoxPartyRoom(int roomID, int joinSrc, int roomType, @Nullable Serializable extra) {
         // 列表添加 JRS_LIST    = 1;  邀请添加 JRS_INVITE  = 2;
         // roomType RT_PERSONAL = 1;普通房间  RT_FAMILY = 2;家族剧场
         HashMap map = new HashMap();
@@ -329,6 +330,9 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
             @Override
             public void run() {
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                //防止触发GameOver消息
+                EventBus.getDefault().post(new RoomChangingEvent());
+
                 PartyRoomServerApi roomServerApi = ApiManager.getInstance().createService(PartyRoomServerApi.class);
                 ApiMethods.subscribe(roomServerApi.joinRoom(body), new ApiObserver<ApiResult>() {
                     @Override
@@ -342,13 +346,13 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                             for (Activity activity : U.getActivityUtils().getActivityList()) {
                                 if (activity instanceof PartyRoomActivity) {
                                     MyLog.d(TAG, " 存在派对房页面了，发event刷新view");
-                                    EventBus.getDefault().post(new PartyChangeRoomEvent(rsp));
+                                    EventBus.getDefault().post(new PartyChangeRoomEvent(rsp, extra));
                                     return;
                                 }
                             }
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_PARTY_ROOM)
                                     .withSerializable("JoinPartyRoomRspModel", rsp)
-                                    .withString("extra", extra)
+                                    .withSerializable("extra", extra)
                                     .navigation();
                         } else {
                             U.getToastUtil().showShort(result.getErrmsg());
@@ -368,6 +372,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
             }
         }, true);
     }
+
     @Override
     public void tryGoPartyRoom(int roomID, int joinSrc, int roomType) {
         tryGoDiamondBoxPartyRoom(roomID, joinSrc, roomType, null);

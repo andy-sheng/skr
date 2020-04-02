@@ -205,6 +205,7 @@ public class ConversationActivity extends BaseActivity {
 
                 @Override
                 public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
+
                     return false;
                 }
 

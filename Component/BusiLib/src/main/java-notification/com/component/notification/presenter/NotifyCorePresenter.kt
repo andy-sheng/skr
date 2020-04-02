@@ -70,6 +70,7 @@ import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.io.Serializable
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -437,7 +438,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
     fun onEvent(event: PartyDiamondbox){
         if (U.getActivityUtils().isAppForeground) {
             val floatWindowData = FloatWindowData(FloatWindowData.Type.DIAMOND_BOX_NOTIFY)
-            floatWindowData.extra = JSON.toJSONString(event)
+            floatWindowData.extra1 = event
             mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
         }
     }
@@ -1138,7 +1139,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
 
         val windowTag = TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW + System.currentTimeMillis()
 
-        floatWindowData.extra?.let {
+        floatWindowData.extra1?.let {
             diamondBoxNotifyView.bindData(it){
                 mUiHandler.removeMessages(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW)
                 FloatWindow.destroy(windowTag)
@@ -1365,6 +1366,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         var mediaType: Int = 0
         var extra: String? = null
         var actionType:String? = null
+        var extra1:Serializable? = null
 
         override fun toString(): String {
             return "FloatWindowData{" +

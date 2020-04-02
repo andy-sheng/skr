@@ -9,7 +9,7 @@ class POnlineInfoModel : Serializable{
     @JSONField(name = "popularity")
     var popularity: Int? = null
     @JSONField(name = "role")
-    var role: List<Int?>? = null
+    var role: List<String>? = null
     @JSONField(name = "userInfo")
     var userInfo: UserInfoModel? = null
     companion object{
@@ -19,7 +19,7 @@ class POnlineInfoModel : Serializable{
             pOnlineInfoModel.userInfo = UserInfoModel.parseFromPB(pOnlineInfo.userInfo)
             pOnlineInfoModel.popularity = pOnlineInfo.popularity
             pOnlineInfoModel.role = pOnlineInfo.roleList.map {
-                it.value
+                it.name
             }
             return pOnlineInfoModel
         }

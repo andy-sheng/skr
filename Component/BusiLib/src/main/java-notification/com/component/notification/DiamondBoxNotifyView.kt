@@ -26,6 +26,7 @@ import com.module.ModuleServiceManager
 import com.module.RouterConstants
 import com.module.playways.IPlaywaysModeService
 import com.zq.live.proto.broadcast.PartyDiamondbox
+import java.io.Serializable
 
 /**
  * 钻石宝箱通知
@@ -57,7 +58,7 @@ class DiamondBoxNotifyView : ConstraintLayout {
 
     }
 
-    fun bindData(diamondBoxData:String, clickCallback:(() -> Unit)){
+    fun bindData(diamondBoxData:Serializable, clickCallback:(() -> Unit)){
         MyLog.e("显示钻石宝箱 $diamondBoxData")
         val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f)
@@ -67,12 +68,12 @@ class DiamondBoxNotifyView : ConstraintLayout {
         animation.fillAfter = true
         startAnimation(animation)
 
-        val partyDiamondbox = JSON.parseObject(diamondBoxData)
-        val roomID = partyDiamondbox.getLong("roomID")
-        val pBeginDiamondbox = partyDiamondbox.getJSONObject("pBeginDiamondbox")
-        val user = pBeginDiamondbox.getJSONObject("user")
-        val userInfo = user.getJSONObject("userInfo")
-        val nickname = userInfo.getString("nickName")
+        val partyDiamondbox = diamondBoxData as PartyDiamondbox
+        val roomID = partyDiamondbox.roomID
+        val pBeginDiamondbox = partyDiamondbox.pBeginDiamondbox
+        val user = pBeginDiamondbox.user
+        val userInfo = user.userInfo
+        val nickname = userInfo.nickName
         
         mEnterTv.visibility = View.VISIBLE
         mEnterTv.setOnClickListener(object : DebounceViewClickListener() {

@@ -29,10 +29,7 @@ import com.module.playways.party.match.model.JoinPartyRoomRspModel
 import com.module.playways.party.room.PartyRoomData
 import com.module.playways.party.room.PartyRoomServerApi
 import com.module.playways.party.room.event.*
-import com.module.playways.party.room.model.PartyPlayerInfoModel
-import com.module.playways.party.room.model.PartyQuickAnswerResult
-import com.module.playways.party.room.model.PartyRoundInfoModel
-import com.module.playways.party.room.model.PartySeatInfoModel
+import com.module.playways.party.room.model.*
 import com.module.playways.party.room.ui.IPartyRoomView
 import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
@@ -49,6 +46,7 @@ import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.zq.live.proto.Common.EClubMemberRoleType
 import com.zq.live.proto.Common.EPUserRole
 import com.zq.live.proto.PartyRoom.*
+import com.zq.live.proto.broadcast.PartyDiamondbox
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -76,6 +74,8 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     //上次显示投票的时间
     var voteDialogTs = 0L
+
+    var changing = false
 
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -654,8 +654,15 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyChangeRoomEvent) {
         mRoomData.loadFromRsp(event.mJoinGrabRoomRspModel)
+        event.extra?.let { it as? PartyDiamondbox }?.let {
+            mRoomData.partyDiamondboxModel = PartyDiamondboxModel.parseFromPB(it)
+        }
+
         joinRoomAndInit(true)
         onOpeningAnimationOver()
+
+        // 关闭阻止接收 GameOver 消息标志
+        changing = false
     }
 
     private fun onChangeRoomSuccess(rspModel: JoinPartyRoomRspModel?) {
@@ -1200,10 +1207,21 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PGameOverMsg) {
+        if(changing){
+            MyLog.i("正在切换房间，不可结束游戏")
+            return
+        }
         MyLog.d(TAG, "onEvent event = $event")
         mRoomData.expectRoundInfo = null
         mRoomData.checkRoundInEachMode()
     }
+
+
+    @Subscribe
+    fun onEvent(event: RoomChangingEvent) {
+        changing = true
+    }
+
 
     /**
      * 轮次变化

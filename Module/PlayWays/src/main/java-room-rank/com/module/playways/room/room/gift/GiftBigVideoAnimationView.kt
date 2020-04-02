@@ -131,7 +131,7 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
                     if (realWidth != 0.0) {
                         //透明视频分为两部分 各存储一部分信息 非全屏状态 分辨率要乘二倍
                         val width = U.getDisplayUtils().screenWidth * TRANSPARENT_VIDEO_SIZE_RATE
-                        val height = (realHeight * (width / realWidth)).toInt()
+                        val height =  U.getDisplayUtils().screenHeight  * TRANSPARENT_VIDEO_SIZE_RATE
                         val lp = RelativeLayout.LayoutParams(width, height)
 
                         // 确定位置
@@ -156,7 +156,8 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
                 } else {
                     // 纵向平铺
                     if (realHeight != 0.0) {
-                        val height = U.getDisplayUtils().screenHeight * 2
+                        //透明视频分为两部分 各存储一部分信息 非全屏状态 分辨率要乘二倍
+                        val height = U.getDisplayUtils().screenHeight * TRANSPARENT_VIDEO_SIZE_RATE
                         val width = (realWidth * height / realHeight).toInt()
                         val lp = RelativeLayout.LayoutParams(width, height)
 

@@ -299,6 +299,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             mPartySendDiamondBoxView?.show(this, mRoomData.gameId)
         }
 
+        refreshDiamondBox()
+    }
+
+    private fun refreshDiamondBox(){
         // 存在宝箱，展示宝箱
         mRoomData.partyDiamondboxModel?.let {
             showDiamondBoxCuntDown(it)
@@ -1176,6 +1180,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
      */
     override fun gameBegin(thisRound: PartyRoundInfoModel?) {
         mPartyGameMainView?.updateRound(thisRound)
+        refreshDiamondBox()
     }
 
     override fun showVoteView(event: PBeginVote) {

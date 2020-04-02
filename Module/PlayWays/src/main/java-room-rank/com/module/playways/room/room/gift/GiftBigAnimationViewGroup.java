@@ -18,6 +18,7 @@ import com.module.playways.room.room.gift.model.GiftPlayModel;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,22 +78,24 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
     }
 
     private GiftBaseAnimationView isIdle(GiftPlayModel cur) {
+        // 同时只能有一个大礼物动画 必须所有动画都空闲时可播放
         for (GiftBaseAnimationView giftBigAnimationView : mFeedGiftAnimationViews) {
-            if (giftBigAnimationView.isIdle() && giftBigAnimationView.isSupport(cur)) {
+            if (!giftBigAnimationView.isIdle()) {
+                return null;
+            }
+        }
+
+        // 选择指定动画View播放动画
+        for (GiftBaseAnimationView giftBigAnimationView : mFeedGiftAnimationViews) {
+            if (giftBigAnimationView.isSupport(cur)) {
                 return giftBigAnimationView;
             }
         }
 
+        // 控制只有一组可用动画
         if (mFeedGiftAnimationViews.size() < MAX_CONSUMER_NUM) {
-            GiftBaseAnimationView giftBigAnimationView;
-            //根据格式使用不同的播发方式
-            if(cur.getGift().getSourceMp4() == null || TextUtils.isEmpty(cur.getGift().getSourceMp4())){
-                giftBigAnimationView = new GiftBigAnimationView(getContext());
-                MyLog.d(TAG, "使用了svga动画：" + cur.getGift().getSourceURL());
-            }else{
-                giftBigAnimationView = new GiftBigVideoAnimationView(getContext());
-                MyLog.d(TAG, "使用了视频动画：" + cur.getGift().getSourceMp4());
-            }
+            GiftBaseAnimationView giftBigAnimationView = new GiftBigAnimationView(getContext());
+            GiftBaseAnimationView giftBigVideoAnimationView = new GiftBigVideoAnimationView(getContext());
 
             giftBigAnimationView.setListener(new GiftBaseAnimationView.Listener() {
                 @Override
@@ -102,9 +105,25 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
                 }
             });
 
-            mFeedGiftAnimationViews.add(giftBigAnimationView);
+            giftBigVideoAnimationView.setListener(new GiftBaseAnimationView.Listener() {
+                @Override
+                public void onFinished(@NotNull GiftBaseAnimationView animationView, @NotNull GiftPlayModel giftPlayModel) {
+                    //把view移除
+                    mGiftPlayControlTemplate.endCurrent(giftPlayModel);
+                }
+            });
 
-            return giftBigAnimationView;
+            mFeedGiftAnimationViews.add(giftBigAnimationView);
+            mFeedGiftAnimationViews.add(giftBigVideoAnimationView);
+
+            //根据格式使用不同的播发方式
+            if(cur.getGift().getSourceMp4() == null || TextUtils.isEmpty(cur.getGift().getSourceMp4())){
+                MyLog.d(TAG, "使用了svga动画：" + cur.getGift().getSourceURL());
+                return giftBigAnimationView;
+            }else{
+                MyLog.d(TAG, "使用了视频动画：" + cur.getGift().getSourceMp4());
+                return giftBigVideoAnimationView;
+            }
         }
         return null;
     }
