@@ -1,6 +1,7 @@
 package com.module.club.manage.setting
 
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
@@ -15,6 +16,7 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.dialog.view.TipsDialogView
@@ -30,13 +32,20 @@ import org.greenrobot.eventbus.EventBus
 
 class ClubManageActivity : BaseActivity() {
 
-    private var titlebar: CommonTitleBar? = null
+    var mainActContainer: ConstraintLayout?=null
+    var titlebar:CommonTitleBar?=null
+    var bgIv: ExImageView?=null
+    var clubInfoSettingTv:ExTextView?=null
+    var clubInfoSettingLine:View?=null
+    var clubNoticeTv:ExTextView?=null
+    var clubNoticeLine:View?=null
+    var clubTransferTv:ExTextView?=null
+    var clubTransferLine:View?=null
+    var clubDissolveTv:ExTextView?=null
+    var clubDissolveLine:View?=null
+    var clubExitTv:ExTextView?=null
+    var clubExitLine:View?=null
 
-    private var clubInfoSettingTv: ExTextView? = null
-    private var clubNoticeTv: ExTextView? = null
-    private var clubTransferTv: ExTextView? = null
-    private var clubDissolveTv: ExTextView? = null
-    private var clubExitTv: ExTextView? = null
 
     private val clubServerApi = ApiManager.getInstance().createService(ClubServerApi::class.java)
 
@@ -54,35 +63,57 @@ class ClubManageActivity : BaseActivity() {
             finish()
         }
 
-        titlebar = findViewById(R.id.titlebar)
-        clubInfoSettingTv = findViewById(R.id.club_info_setting_tv)
-        clubNoticeTv = findViewById(R.id.club_notice_tv)
-        clubTransferTv = findViewById(R.id.club_transfer_tv)
-        clubDissolveTv = findViewById(R.id.club_dissolve_tv)
-        clubExitTv = findViewById(R.id.club_exit_tv)
+        mainActContainer = this.findViewById(R.id.main_act_container)
+        titlebar = this.findViewById(R.id.titlebar)
+        bgIv = this.findViewById(R.id.bg_iv)
+        clubInfoSettingTv = this.findViewById(R.id.club_info_setting_tv)
+        clubInfoSettingLine = this.findViewById(R.id.club_info_setting_line)
+        clubNoticeTv = this.findViewById(R.id.club_notice_tv)
+        clubNoticeLine = this.findViewById(R.id.club_notice_line)
+        clubTransferTv = this.findViewById(R.id.club_transfer_tv)
+        clubTransferLine = this.findViewById(R.id.club_transfer_line)
+        clubDissolveTv = this.findViewById(R.id.club_dissolve_tv)
+        clubDissolveLine = this.findViewById(R.id.club_dissolve_line)
+        clubExitTv = this.findViewById(R.id.club_exit_tv)
+        clubExitLine = this.findViewById(R.id.club_exit_line)
 
 
         when {
             clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_Founder.value -> {
                 clubInfoSettingTv?.visibility = View.VISIBLE
+                clubInfoSettingLine?.visibility = View.VISIBLE
                 clubNoticeTv?.visibility = View.VISIBLE
+                clubNoticeLine?.visibility = View.VISIBLE
                 clubDissolveTv?.visibility = View.VISIBLE
+                clubDissolveLine?.visibility = View.VISIBLE
                 clubTransferTv?.visibility = View.VISIBLE
+                clubTransferLine?.visibility = View.VISIBLE
                 clubExitTv?.visibility = View.GONE
+                clubExitLine?.visibility = View.GONE
             }
             clubMemberInfo?.roleType == EClubMemberRoleType.ECMRT_CoFounder.value -> {
                 clubInfoSettingTv?.visibility = View.VISIBLE
+                clubInfoSettingLine?.visibility = View.VISIBLE
                 clubNoticeTv?.visibility = View.VISIBLE
+                clubNoticeLine?.visibility = View.VISIBLE
                 clubDissolveTv?.visibility = View.GONE
+                clubDissolveLine?.visibility = View.VISIBLE
                 clubTransferTv?.visibility = View.GONE
+                clubTransferLine?.visibility = View.VISIBLE
                 clubExitTv?.visibility = View.VISIBLE
+                clubExitLine?.visibility = View.VISIBLE
             }
             else -> {
                 clubInfoSettingTv?.visibility = View.GONE
+                clubInfoSettingLine?.visibility = View.GONE
                 clubNoticeTv?.visibility = View.GONE
+                clubNoticeLine?.visibility = View.GONE
                 clubDissolveTv?.visibility = View.GONE
+                clubDissolveLine?.visibility = View.GONE
                 clubTransferTv?.visibility = View.GONE
+                clubTransferLine?.visibility = View.GONE
                 clubExitTv?.visibility = View.VISIBLE
+                clubExitLine?.visibility = View.VISIBLE
             }
         }
 

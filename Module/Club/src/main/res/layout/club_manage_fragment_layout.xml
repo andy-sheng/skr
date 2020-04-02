@@ -57,6 +57,7 @@
         app:layout_constraintTop_toTopOf="@+id/bg_iv" />
 
     <View
+        android:id="@+id/club_info_setting_line"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
@@ -83,6 +84,7 @@
         app:layout_constraintTop_toBottomOf="@+id/club_info_setting_tv" />
 
     <View
+        android:id="@+id/club_notice_line"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
@@ -109,6 +111,7 @@
         app:layout_constraintTop_toBottomOf="@+id/club_notice_tv" />
 
     <View
+        android:id="@+id/club_transfer_line"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
@@ -135,6 +138,7 @@
         app:layout_constraintTop_toBottomOf="@+id/club_transfer_tv" />
 
     <View
+        android:id="@+id/club_dissolve_line"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
@@ -161,6 +165,7 @@
         app:layout_constraintTop_toBottomOf="@+id/club_dissolve_tv" />
 
     <View
+        android:id="@+id/club_exit_line"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
