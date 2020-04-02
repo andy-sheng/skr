@@ -81,9 +81,7 @@ import io.rong.imkit.IExtensionModule;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
-import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imkit.manager.IUnReadMessageObserver;
-import io.rong.imkit.mention.RongMentionManager;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imkit.widget.provider.UnknownMessageItemProvider;
 import io.rong.imlib.IRongCallback;
@@ -1063,12 +1061,12 @@ public class RongMsgManager implements RongIM.UserInfoProvider, RongIM.GroupInfo
      * @param conversationID 会话ID，e.g. 单聊UserID 群聊ClubID
      * @return  false 已存在相同会话无需打开  true 已清理会话或会话不存在
      */
-    private boolean stopExpireConversation(String conversationID){
+    private boolean stopOtherConversation(String conversationID){
         for (Activity activity : U.getActivityUtils().getActivityList()) {
             if (activity instanceof ConversationActivity) {
                 // 已经有会话页面了
                 ConversationActivity conversationActivity = (ConversationActivity) activity;
-                if (conversationActivity.isExpireConversation(conversationID)) {
+                if (conversationActivity.isConversationExist(conversationID)) {
                     // 正好期望会话的人，已经有一个与这个人的会话Activity存在了
                     return false;
                 } else {
@@ -1087,7 +1085,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider, RongIM.GroupInfo
                 throw new ExceptionInInitializerError("RongCloud SDK not init");
             }else{
                 //已存在相同会话
-                if(!stopExpireConversation(clubID)) return true;
+                if(stopOtherConversation(clubID)) return true;
 
                 Uri uri = Uri.parse("rong://" + context.getApplicationInfo().packageName).buildUpon()
                         .appendPath("conversation").appendPath(Conversation.ConversationType.GROUP.getName().toLowerCase(Locale.US))
@@ -1108,7 +1106,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider, RongIM.GroupInfo
             } else {
 
                 //已存在相同会话
-                if(!stopExpireConversation(targetUserId)) return true;
+                if(!stopOtherConversation(targetUserId)) return true;
 
                 Uri uri = Uri.parse("rong://" + context.getApplicationInfo().packageName).buildUpon()
                         .appendPath("conversation").appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase(Locale.US))

@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/view_240_dp"
-    android:layout_height="@dimen/view_280_dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="23dp"
+    android:paddingBottom="@dimen/view_23_dp"
+    android:paddingStart="@dimen/view_60_dp"
+    android:paddingEnd="@dimen/view_60_dp"
+    >
 
+    <com.common.view.ex.ExView
+        android:id="@+id/grab_diamond_bg"
+        android:layout_width="@dimen/view_300_dp"
+        android:layout_height="@dimen/view_350_dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:background="@drawable/party_diamond_dialog_bg"
+        />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/grab_diamond_result_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/grab_diamond_img"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="别气馁，下次再试试"
+        android:textColor="#FF8B572A"
+        android:textStyle="bold"
+        android:visibility="gone"
+        />
     <com.common.view.ex.ExImageView
         android:id="@+id/grab_diamond_img"
         android:layout_width="@dimen/view_164_dp"
@@ -11,22 +40,37 @@
         android:src="@drawable/party_grab_diamond_begin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/grab_diamond_btn_img"
+        app:layout_constraintTop_toBottomOf="@id/grab_diamond_result_title_tv"
+        app:layout_constraintBottom_toTopOf="@+id/grab_diamond_result_tv"
         app:layout_constraintVertical_chainStyle="packed"
+        android:layout_marginTop="@dimen/view_18_dp"
         />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/grab_diamond_result_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/grab_diamond_img"
+        app:layout_constraintBottom_toTopOf="@+id/grab_diamond_btn_img"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="别气馁，下次再试试"
+        android:layout_marginTop="@dimen/view_18_dp"
+        android:visibility="gone"
+        />
     <com.common.view.ex.ExImageView
         android:id="@+id/grab_diamond_btn_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/grab_diamond_img"
+        app:layout_constraintTop_toBottomOf="@id/grab_diamond_result_tv"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/party_grab_diamond_collect"
         app:layout_constraintVertical_chainStyle="packed"
         android:visibility="gone"
+        android:layout_marginTop="@dimen/view_18_dp"
         />
 
 </android.support.constraint.ConstraintLayout>

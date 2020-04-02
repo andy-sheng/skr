@@ -54,7 +54,7 @@
         app:layout_constraintTop_toTopOf="@id/diamond_box_icon_bg"
         app:layout_constraintBottom_toTopOf="@id/diamond_box_sender_nick_name"
         app:layout_constraintVertical_chainStyle="packed"
-        android:src="@drawable/party_diamond_box_icon"
+        android:src="@drawable/party_diamond_box_closed"
         />
 
     <com.common.view.ex.ExTextView

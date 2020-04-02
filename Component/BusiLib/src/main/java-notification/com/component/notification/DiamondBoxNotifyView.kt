@@ -57,7 +57,7 @@ class DiamondBoxNotifyView : ConstraintLayout {
 
     }
 
-    fun bindData(diamondBoxData:String){
+    fun bindData(diamondBoxData:String, clickCallback:(() -> Unit)){
         MyLog.e("显示钻石宝箱 $diamondBoxData")
         val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f)
@@ -80,14 +80,15 @@ class DiamondBoxNotifyView : ConstraintLayout {
                 MyLog.e("点击进入钻石宝箱房间")
                 val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                 iRankingModeService.tryGoDiamondBoxPartyRoom(roomID.toInt(), 1, 0, diamondBoxData)
+                clickCallback.invoke()
             }
         })
 
         val contentStr = SpanUtils().append(nickname)
-                .setBackgroundColor(Color.parseColor("#FFFFC970"))
+                .setForegroundColor(Color.parseColor("#FFFFC970"))
                 .appendSpace(1)
                 .append("在主题房送出【钻石大宝箱】")
-                .setBackgroundColor(Color.parseColor("#CCFFFFFF"))
+                .setForegroundColor(Color.parseColor("#CCFFFFFF"))
                 .create()
         mContentTv.text = contentStr
 

@@ -105,6 +105,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
                 MSG_DISMISS_RELAY_INVITE_FLOAT_WINDOW -> FloatWindow.destroy(TAG_RELAY_INVITE_FLOAT_WINDOW, 2)
                 MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW -> FloatWindow.destroy(TAG_RONG_MSG_NOTIFY_FLOAT_WINDOW, 2)
                 MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW -> FloatWindow.destroy(msg.obj as String, 2)
+                MSG_DISMISS_DIAMOND_BOX_NOTIFY_FLOAT_WINDOW -> FloatWindow.destroy(msg.obj as String, 2)
             }
         }
     }
@@ -429,6 +430,9 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         }
     }
 
+    /**
+     * 收到宝箱通知消息
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyDiamondbox){
         if (U.getActivityUtils().isAppForeground) {
@@ -1131,10 +1135,74 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
 
     internal fun showDiamondNotifyFloatWindow(floatWindowData: FloatWindowData) {
         val diamondBoxNotifyView = DiamondBoxNotifyView(U.app())
+
+        val windowTag = TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW + System.currentTimeMillis()
+
         floatWindowData.extra?.let {
-            diamondBoxNotifyView.bindData(it)
+            diamondBoxNotifyView.bindData(it){
+                mUiHandler.removeMessages(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW)
+                FloatWindow.destroy(windowTag)
+            }
         }?:MyLog.e("宝箱信息为空")
 
+        //超时关闭通知
+        mUiHandler.removeMessages(MSG_DISMISS_DIAMOND_BOX_NOTIFY_FLOAT_WINDOW)
+        val msg = mUiHandler.obtainMessage(MSG_DISMISS_DIAMOND_BOX_NOTIFY_FLOAT_WINDOW)
+        msg.obj = windowTag
+        mUiHandler.sendMessageDelayed(msg, 10000)
+
+        FloatWindow.with(U.app())
+                .setView(diamondBoxNotifyView)
+                .setMoveType(MoveType.canRemove)
+                .setX(Screen.width,1f)
+                .setY(Screen.height,0.05f)
+                .setWidth(Screen.width, 1f)                               //设置控件宽高
+                .setHeight(Screen.height, 0.1f)
+                .setMoveType(MoveType.inactive)
+                .setViewStateListener(object : ViewStateListenerAdapter() {
+                    override fun onDismiss(dismissReason: Int) {
+                        mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.endCurrent(floatWindowData)
+                    }
+
+                    override fun onPositionUpdate(x: Int, y: Int) {
+                        super.onPositionUpdate(x, y)
+                        mUiHandler.removeMessages(MSG_DISMISS_DIAMOND_BOX_NOTIFY_FLOAT_WINDOW)
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_DIAMOND_BOX_NOTIFY_FLOAT_WINDOW, 5000)
+                    }
+                })
+                .setDesktopShow(false)                        //桌面显示
+                .setCancelIfExist(false)
+                .setReqPermissionIfNeed(false)
+                .setTag(windowTag)
+                .build()
+
+        var ob = ValueAnimator.ofFloat(1f,0f,-1f)
+        ob.addUpdateListener {
+            l->
+            val v = l.animatedValue as Float
+            FloatWindow.get(windowTag)?.updateX(Screen.width,v)
+//            if(v==0f){
+//                mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.endCurrent(floatWindowData)
+//            }
+        }
+        ob.duration = 10*1000
+        ob.addListener(object:Animator.AnimatorListener{
+            override fun onAnimationRepeat(animation: Animator?) {
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                mUiHandler.removeMessages(MSG_DISMISS_DIAMOND_BOX_NOTIFY_FLOAT_WINDOW)
+                FloatWindow.destroy(windowTag)
+                mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.endCurrent(floatWindowData)
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+            }
+
+            override fun onAnimationStart(animation: Animator?) {
+            }
+        })
+        ob.start()
     }
 
     internal fun showBigGiftNotifyFloatWindow(floatWindowData: FloatWindowData) {
@@ -1381,6 +1449,7 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         internal const val TAG_RELAY_INVITE_FLOAT_WINDOW = "TAG_RELAY_INVITE_FLOAT_WINDOW"
         internal const val TAG_RONG_MSG_NOTIFY_FLOAT_WINDOW = "TAG_RONG_MSG_NOTIFY_FLOAT_WINDOW"
         internal const val TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW = "TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW"
+        internal const val TAG_DIAMOND_BOX_NOTIFY_FLOAT_WINDOW = "TAG_DIAMOND_BOX_NOTIFY_FLOAT_WINDOW"
 
         internal const val MSG_DISMISS_INVITE_FLOAT_WINDOW = 2
         internal const val MSG_DISMISS_RELATION_FLOAT_WINDOW = 3
@@ -1393,5 +1462,6 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
         internal const val MSG_DISMISS_RELAY_INVITE_FLOAT_WINDOW = 10      // 普通邀请
         internal const val MSG_DISMISS_RONG_MSG_NOTIFY_FLOAT_WINDOW = 11 // 融云消息
         internal const val MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW = 12 // 大礼物通知
+        internal const val MSG_DISMISS_DIAMOND_BOX_NOTIFY_FLOAT_WINDOW = 13 // 大礼物通知
     }
 }

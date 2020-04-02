@@ -1253,6 +1253,9 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
 //            adjustSelectSongView()
             // 换房间也要弹窗
             checkGoMicTips()
+
+            //换房间要销毁前一个Room的宝箱
+            mPartyDiamondBoxView?.destroy()
         }
     }
 

@@ -1,5 +1,6 @@
 package com.module.club.homepage.view
 
+import android.support.constraint.ConstraintLayout
 import android.view.View
 import android.view.ViewStub
 import android.view.animation.AccelerateInterpolator
@@ -38,7 +39,7 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
     private var mConversationUnreadNumTv: ExTextView? = null
     private var mClubMemberInfo: ClubMemberInfo? = null
     private var mClubPostPanel: LinearLayout? = null
-    private var mClubOtherActionsPanel: LinearLayout? = null
+    private var mClubOtherActionsPanel: ConstraintLayout? = null
     private var mClubPostActionTv: ExTextView? = null
     private var mClubPostPhotoTv: ExTextView? = null
     private var mClubPostOpusTv: ExTextView? = null
@@ -80,7 +81,7 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
 
         mApplyTv?.setDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_LIST_APPLY_CLUB)
-                    .withSerializable("clubApplyList", clubMemberInfo)
+                    .withSerializable("clubMemberInfo", clubMemberInfo)
                     .navigation()
         }
 

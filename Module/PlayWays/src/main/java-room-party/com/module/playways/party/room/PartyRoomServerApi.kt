@@ -425,4 +425,14 @@ interface PartyRoomServerApi {
                           @Query("nickName") nickName:String
                           ):Call<ApiResult>
 
+    /**
+     * 打开宝箱，抢钻石
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/partygame/response-diamondbox")
+    fun grabDiamondBox(@Body body: RequestBody):Call<ApiResult>
+
+    @GET("http://dev.game.inframe.mobi/v1/partygame/result-diamondbox")
+    fun checkGrabDiamondBoxResult(@Query("roomID") roomID: Int,
+                                  @Query("diamondboxTag") diamondboxTag: String):Call<ApiResult>
+
 }

@@ -477,7 +477,7 @@ public class ConversationActivity extends BaseActivity {
         }
     }
 
-    public boolean isExpireConversation(String id) {
-        return mUserId == null || !mUserId.equals(id);
+    public boolean isConversationExist(String id) {
+        return (mUserId != null && mUserId.equals(id)) || (mClubId != null && mClubId.equals(id));
     }
 }
