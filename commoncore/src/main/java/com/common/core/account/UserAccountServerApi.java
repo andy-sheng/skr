@@ -33,7 +33,10 @@ public interface UserAccountServerApi {
     Observable<ApiResult> sendSmsVerifyCode2(@Query("phone") String phone,
                                              @Query("challenge") String challenge,
                                              @Query("validate") String validate,
-                                             @Query("seccode") String seccode);
+                                             @Query("seccode") String seccode,
+                                             @Query("timeMs") long timeMs,
+                                             @Query("sign") String sign
+    );
 
     /**
      * 登陆

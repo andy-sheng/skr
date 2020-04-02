@@ -43,6 +43,8 @@ getPid
 
 echo pid:$pid
 
+
+
 #force GC
 #adb root
 adb shell kill -10 $pid
@@ -56,8 +58,9 @@ sleep 10s
 #  sleep 4s
 #  check
 #done
-rm -rf memory
-mkdir memory
+memDir=memory1
+rm -rf $memDir
+mkdir $memDir
 date1=`date +%Y_%m_%d-%H_%M_%S`
 outputfile="memory1/$packageName$date1.hprof"
 echo $outputfile
@@ -67,11 +70,11 @@ pull_heap_dump
 
 #convert
 sleep 2s
-fff=convert
+fff=convert-for-mat
 outputfile2="memory1/$packageName$date1$fff.hprof"
 $ANDROID_SDK/platform-tools/hprof-conv  $outputfile $outputfile2
 echo "$ANDROID_SDK/platform-tools/hprof-conv  $outputfile $outputfile2"
-open memory
+open $memDir
 #java -jar hprof_bitmap_dump.jar $outputfile
 echo java -jar hprof_bitmap_dump.jar $outputfile2
 java -jar hprof_bitmap_dump.jar $outputfile2
