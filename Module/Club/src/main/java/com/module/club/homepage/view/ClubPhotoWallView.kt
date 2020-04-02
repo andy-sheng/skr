@@ -12,6 +12,7 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.log.MyLog
 import com.component.busilib.R
+import com.component.busilib.callback.EmptyCallback
 import com.component.person.photo.adapter.PhotoAdapter
 import com.component.person.photo.model.PhotoModel
 import com.component.person.photo.view.IPhotoWallView
@@ -19,6 +20,8 @@ import com.component.person.view.RequestCallBack
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.club.homepage.ClubPhotoCorePresenter
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
@@ -40,6 +43,8 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
     internal val mPhotoCorePresenter: ClubPhotoCorePresenter
 
     private var mLastUpdateInfo: Long = 0    //上次更新成功时间
+
+    private val mLoadService: LoadService<*>
 
     init {
         View.inflate(context, R.layout.photo_wall_view_layout, this)
@@ -126,6 +131,13 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
         }
         mPhotoView.adapter = mPhotoAdapter
         mPhotoCorePresenter.loadUnSuccessPhotoFromDB()
+
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(EmptyCallback(com.module.club.R.drawable.loading_empty2, "暂无相片", "#99000000"))
+                .build()
+        mLoadService = mLoadSir.register(mPhotoView, com.kingja.loadsir.callback.Callback.OnReloadListener {
+            loadData(true,null)
+        })
     }
 
     private fun loadDataUpdater(item: PhotoModel?, textView: TextView) {
@@ -149,7 +161,7 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
         mPhotoCorePresenter.uploadPhotoList(imageItems)
     }
 
-    fun getPhotos(isFlag: Boolean,callback:()->Unit?) {
+    fun getPhotos(isFlag: Boolean,callback:(()->Unit?)?) {
         MyLog.d(TAG, "getPhotos isFlag = $isFlag")
         val now = System.currentTimeMillis()
         if (!isFlag) {
@@ -159,9 +171,9 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
             }
         }
         if (mPhotoAdapter.successNum == 0) {
-            mPhotoCorePresenter!!.getPhotos(0, DEFAUAT_CNT, Callback { r, obj -> callback.invoke() })
+            mPhotoCorePresenter!!.getPhotos(0, DEFAUAT_CNT, Callback { r, obj -> callback?.invoke() })
         }else{
-            callback.invoke()
+            callback?.invoke()
         }
     }
 
@@ -201,6 +213,7 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
             } else {
                 mPhotoAdapter.insertLast(list)
             }
+            mLoadService.showSuccess()
         } else {
             mCallBack?.onRequestSucess(false)
             mHasMore = false
@@ -209,11 +222,12 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
                 // 没有更多了
             } else {
                 // 没有数据
+                mLoadService.showCallback(EmptyCallback::class.java)
             }
         }
     }
 
-    fun loadData(flag: Boolean, callback: () -> Unit?) {
+    fun loadData(flag: Boolean, callback: (() -> Unit?)?) {
         getPhotos(flag,callback)
     }
 

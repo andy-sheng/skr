@@ -100,7 +100,7 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
                     .withInt("from", 2)
-                    .withInt("familyID", clubMemberInfo?.club?.clubID
+                    .withInt("familyID", mClubMemberInfo?.club?.clubID
                             ?: return@setDebounceViewClickListener)
                     .navigation()
         }
