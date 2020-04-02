@@ -233,10 +233,14 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
             return;
         }
 
-        UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
+        long timeMs = System.currentTimeMillis();
+        String sign = U.getMD5Utils().MD5_32("skr2020|phoneNumber|" +
+                U.getDeviceUtils().getDeviceID()+ "|" +
+                timeMs);
 
+        UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         if (userAccountServerApi != null) {
-            ApiMethods.subscribe(userAccountServerApi.sendSmsVerifyCode2(phoneNumber, challenge, validate,seccode), new ApiObserver<ApiResult>() {
+            ApiMethods.subscribe(userAccountServerApi.sendSmsVerifyCode2(phoneNumber, challenge, validate,seccode,timeMs,sign), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
