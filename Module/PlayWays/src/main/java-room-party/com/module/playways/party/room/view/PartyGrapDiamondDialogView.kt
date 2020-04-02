@@ -132,7 +132,7 @@ class PartyGrapDiamondDialogView :ConstraintLayout{
 
         mDiamondButton?.setOnClickListener{
             MyLog.d(TAG,"领取宝箱")
-            showFailedView()
+            mDialogPlus?.dismiss()
         }
 
         //从上一个Dialog中移除当前View
@@ -158,6 +158,7 @@ class PartyGrapDiamondDialogView :ConstraintLayout{
 
         mDiamondButton?.setOnClickListener{
             MyLog.d(TAG,"关闭宝箱")
+            mDialogPlus?.dismiss()
         }
 
         mUiHandler.removeCallbacks(delayRunnable)
