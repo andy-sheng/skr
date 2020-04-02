@@ -4,10 +4,6 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="23dp"
-    android:paddingBottom="@dimen/view_23_dp"
-    android:paddingStart="@dimen/view_60_dp"
-    android:paddingEnd="@dimen/view_60_dp"
     >
 
     <com.common.view.ex.ExView
@@ -15,7 +11,9 @@
         android:layout_width="@dimen/view_300_dp"
         android:layout_height="@dimen/view_350_dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:background="@drawable/party_diamond_dialog_bg"
         />
 
