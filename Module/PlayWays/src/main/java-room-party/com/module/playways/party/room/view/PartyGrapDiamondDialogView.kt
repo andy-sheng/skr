@@ -61,6 +61,8 @@ class PartyGrapDiamondDialogView :ConstraintLayout{
         mDiamondImage = findViewById(R.id.grab_diamond_img)
         mDiamondButton = findViewById(R.id.grab_diamond_btn_img)
         mDiamondBg = findViewById(R.id.grab_diamond_bg)
+        mDiamondResultTv = findViewById(R.id.grab_diamond_result_tv)
+        mDiamondResultTitleTv = findViewById(R.id.grab_diamond_result_title_tv)
     }
 
     fun showBeginGrabView(partyDiamondbox: PartyDiamondboxModel){
@@ -117,13 +119,13 @@ class PartyGrapDiamondDialogView :ConstraintLayout{
     }
 
     private fun showSuccessfulView(diamondCout:Int){
-        mDiamondBg?.setBackgroundResource(R.drawable.party_diamond_dialog_bg)
-        mDiamondImage?.setImageResource(R.drawable.party_diamond_box_full)
-        mDiamondButton?.setImageResource(R.drawable.party_grab_diamond_collect)
-
         mDiamondButton?.visibility = View.VISIBLE
         mDiamondResultTitleTv?.visibility = View.VISIBLE
         mDiamondResultTv?.visibility = View.VISIBLE
+
+        mDiamondBg?.setBackgroundResource(R.drawable.party_diamond_dialog_bg)
+        mDiamondImage?.setImageResource(R.drawable.party_diamond_box_full)
+        mDiamondButton?.setImageResource(R.drawable.party_grab_diamond_collect)
 
         mDiamondResultTitleTv?.text = "恭喜你"
         mDiamondResultTv?.text = "抢到${diamondCout}红钻"
@@ -135,21 +137,20 @@ class PartyGrapDiamondDialogView :ConstraintLayout{
             mDialogPlus?.dismiss()
         }
 
-        //从上一个Dialog中移除当前View
-        parent?.let { it as ViewGroup }?.removeAllViews()
-
         mUiHandler.removeCallbacks(delayRunnable)
         mUiHandler.postDelayed(delayRunnable, closeDelay)
     }
 
     private fun showFailedView(){
-        mDiamondBg?.setBackgroundResource(R.drawable.party_diamond_dialog_bg)
-        mDiamondImage?.setImageResource(R.drawable.party_diamond_box_empty)
-        mDiamondButton?.setImageResource(R.drawable.party_grab_diamond_known)
+
 
         mDiamondButton?.visibility = View.VISIBLE
         mDiamondResultTitleTv?.visibility = View.VISIBLE
         mDiamondResultTv?.visibility = View.VISIBLE
+
+        mDiamondBg?.setBackgroundResource(R.drawable.party_diamond_dialog_bg)
+        mDiamondImage?.setImageResource(R.drawable.party_diamond_box_empty)
+        mDiamondButton?.setImageResource(R.drawable.party_grab_diamond_known)
 
         mDiamondResultTitleTv?.text = "很遗憾"
         mDiamondResultTv?.text = "别气馁，下次再试试"
