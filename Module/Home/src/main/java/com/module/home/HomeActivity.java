@@ -13,6 +13,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 import android.view.Window;
@@ -35,6 +36,7 @@ import com.common.core.userinfo.noremind.NoRemindManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.flutter.boost.FlutterBoostController;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
@@ -76,6 +78,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.locks.ReentrantLock;
 
 import useroperate.OperateFriendActivity;
 import useroperate.inter.AbsRelationOperate;
@@ -228,7 +231,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }, 3000);
             // 没有账号 跳到登陆页面
             LoginActivity.open(this);
-        }else{ //未登录不现实保护协议弹框，在登录页面显示
+        } else { //未登录不现实保护协议弹框，在登录页面显示
             new PrivacyPolicyDialog(this).show();
         }
 
@@ -357,6 +360,126 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         });
 
         NoRemindManager.INSTANCE.refreshNoRemindCacheIfNeeded();
+        if (MyLog.isDebugLogOpen()) {
+            mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Object lockA = new Object();
+                    Object lockB = new Object();
+                    Thread a = new Thread("threadAAA") {
+                        @Override
+                        public void run() {
+                            synchronized (lockA) {
+                                for (int i = 0; ; i++) {
+                                    if (i % 100 == 0) {
+                                        synchronized (lockB) {
+
+                                        }
+                                    }
+                                    Log.d("CSM", "i1=" + i);
+                                }
+                            }
+                        }
+                    };
+                    a.start();
+                    Thread b = new Thread("threadBBB") {
+                        @Override
+                        public void run() {
+                            synchronized (lockB) {
+                                for (int i = 0; ; i++) {
+                                    if (i % 100 == 0) {
+                                        synchronized (lockA) {
+
+                                        }
+                                    }
+                                    Log.d("CSM", "i2=" + i);
+                                }
+                            }
+                        }
+                    };
+                    b.start();
+                    return false;
+                }
+            });
+
+            mPartyArea.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    ReentrantLock lockA = new ReentrantLock();
+                    ReentrantLock lockB = new ReentrantLock();
+                    Thread a = new Thread("threadCCC") {
+                        @Override
+                        public void run() {
+                            lockA.lock();
+                                for (int i = 0; i>=0; i++) {
+                                    if (i % 100 == 0) {
+                                        lockB.lock();
+
+                                        lockB.unlock();
+                                    }
+                                    Log.d("CSM", "i1=" + i);
+                                }
+                            lockA.unlock();
+                        }
+                    };
+                    a.start();
+                    Thread b = new Thread("threadDDD") {
+                        @Override
+                        public void run() {
+                            lockB.lock();
+                            for (int i = 0; i>=0; i++) {
+                                if (i % 100 == 0) {
+                                    lockA.lock();
+                                    lockA.unlock();
+                                }
+                                Log.d("CSM", "i2=" + i);
+                            }
+                            lockB.unlock();
+                        }
+                    };
+                    b.start();
+                    return false;
+                }
+            });
+
+            mMessageArea.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Object lockA = new Object();
+                    Object lockB = new Object();
+                    Thread a = new Thread("threadEEE") {
+                        @Override
+                        public void run() {
+                            synchronized (lockA){
+                                try {
+                                    lockA.wait();
+                                    Log.d("CSM", "i1=" + 1);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    };
+                    a.start();
+//                    Thread b = new Thread("threadFFF") {
+//                        @Override
+//                        public void run() {
+//                            lockB.lock();
+//                            for (int i = 0; i>=0; i++) {
+//                                if (i % 100 == 0) {
+//                                    lockA.lock();
+//                                    lockA.unlock();
+//                                }
+//                                Log.d("CSM", "i2=" + i);
+//                            }
+//                            lockB.unlock();
+//                        }
+//                    };
+//                    b.start();
+                    return false;
+                }
+            });
+        }
     }
 
     private void showNewFunctionDialog() {

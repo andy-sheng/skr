@@ -32,7 +32,7 @@ public class GiftDB implements Serializable {
     private String sourceMp4;  // mp4格式
     private String sourceH265; // h256格式，ios13用
     private Boolean noticeAll; // 是否飘屏
-    @Generated(hash = 2023922111)
+    @Keep
     public GiftDB(Long giftID, Boolean canContinue, String description,
             String giftName, Integer giftType, String giftURL, Integer price,
             Integer sortID, String sourceURL, Float realPrice, Boolean play,
@@ -58,7 +58,7 @@ public class GiftDB implements Serializable {
         this.sourceH265 = sourceH265;
         this.noticeAll = noticeAll;
     }
-    @Generated(hash = 2046579016)
+    @Keep
     public GiftDB() {
     }
     public Long getGiftID() {

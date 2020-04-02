@@ -1,5 +1,7 @@
 package com.component.lyrics.formats.lrc;
 
+import android.os.Process;
+
 import com.component.lyrics.formats.LyricsFileReader;
 import com.component.lyrics.model.LyricsInfo;
 import com.component.lyrics.utils.TimeUtils;
