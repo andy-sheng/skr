@@ -75,7 +75,7 @@ class UploadTask(private val mUploadParams: UploadParams) {
         }
         // 在移动端建议使用STS的方式初始化OSSClient，更多信息参考：[访问控制]
         val uploadAppServerApi = ApiManager.getInstance().createService(UploadAppServerApi::class.java)
-        ossParams.mOssSavaDir = mUploadParams.fileType.ossSavaDir
+        ossParams.mOssSavaDir = mUploadParams.fileType.ossSaveDir
         if (ossParams.mOssSavaDir == lastUploadOssParams?.mOssSavaDir) {
             val timeOk = (System.currentTimeMillis() - (lastUploadOssParams?.recordTs
                     ?: 0L) < 90 * 1000L)
@@ -253,7 +253,7 @@ class UploadTask(private val mUploadParams: UploadParams) {
                 fileName = "$fileName.$ext"
             }
             if (TextUtils.isEmpty(ossParams.mDir)) {
-                mObjectId = mUploadParams.fileType.ossSavaDir + fileName
+                mObjectId = mUploadParams.fileType.ossSaveDir + fileName
             } else {
                 mObjectId = ossParams.mDir + fileName
             }
