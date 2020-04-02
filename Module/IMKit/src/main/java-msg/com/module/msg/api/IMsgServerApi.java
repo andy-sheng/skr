@@ -4,6 +4,7 @@ import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
@@ -25,5 +26,8 @@ public interface IMsgServerApi {
 
     @PUT("http://dev.api.inframe.mobi/v1/club/accept-invitation")
     Observable<ApiResult> clubAgree(@Body RequestBody requestBody);
+
+    @PUT("/v1/club/on-send-groupchat-msg")
+    Observable<ApiResult> onSentGroupChatMsg(@Body RequestBody requestBody);
 
 }

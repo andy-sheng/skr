@@ -77,6 +77,9 @@ public class ConversationActivity extends BaseActivity {
 
     Disposable noRemindDisposable;
 
+
+    IMsgServerApi iMsgServerApi = ApiManager.getInstance().createService(IMsgServerApi.class);
+
     public ConversationActivity() {
 
     }
@@ -205,7 +208,16 @@ public class ConversationActivity extends BaseActivity {
 
                 @Override
                 public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
+                    RequestBody requestBody =  RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(message));
 
+                    ApiMethods.subscribe(iMsgServerApi.onSentGroupChatMsg(requestBody), new ApiObserver<ApiResult>() {
+                        @Override
+                        public void process(ApiResult obj) {
+                            if(obj.getErrno() != 0 ){
+                                MyLog.e("信息上报出错 " + obj.getErrno() + " " + obj.getErrmsg() );
+                            }
+                        }
+                    });
                     return false;
                 }
 

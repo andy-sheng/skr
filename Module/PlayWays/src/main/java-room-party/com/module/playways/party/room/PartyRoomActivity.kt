@@ -364,7 +364,7 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
                 val layoutParams = ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 layoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
                 layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
-                layoutParams.rightMargin = 15.dp()
+                layoutParams.rightMargin = 61.dp()
                 layoutParams.bottomMargin = 50.dp()
                 mMainActContainer?.addView(mHostOpTipImageView, layoutParams)
                 mUiHandler.removeMessages(REMOVE_HOST_OP_TIP_MSG)
