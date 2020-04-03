@@ -202,15 +202,15 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
 
     private fun onFinish() {
         if (mStatus == STATUS_PLAYING) {
+            mUiHanlder.removeMessages(MSG_ENSURE_FINISH)
             mUiHanlder.post {
                 MyLog.d(TAG, "onFinish " + " videoWidth: " + mPlayer.mediaPlayer.videoWidth + " videoHeight: " + mPlayer.mediaPlayer.videoHeight)
-                if (mListener != null) {
-                    mListener?.onFinished(this@GiftBigVideoAnimationView, mGiftPlayModel)
-                }
                 mStatus = STATUS_IDLE
                 val vg = mTextureView.parent as? ViewGroup
                 vg?.removeView(mTextureView)
-                mUiHanlder.removeCallbacksAndMessages(MSG_ENSURE_FINISH)
+                if (mListener != null) {
+                    mListener?.onFinished(this@GiftBigVideoAnimationView, mGiftPlayModel)
+                }
             }
         }
     }

@@ -85,7 +85,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
             }
         }
 
-        // 选择指定动画View播放动画
+        // 全都空闲 选择指定动画View播放动画
         for (GiftBaseAnimationView giftBigAnimationView : mFeedGiftAnimationViews) {
             if (giftBigAnimationView.isSupport(cur)) {
                 return giftBigAnimationView;
@@ -113,16 +113,13 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
                 }
             });
 
-            mFeedGiftAnimationViews.add(giftBigAnimationView);
+            // 优先用video播
             mFeedGiftAnimationViews.add(giftBigVideoAnimationView);
-
-            //根据格式使用不同的播发方式
-            if(cur.getGift().getSourceMp4() == null || TextUtils.isEmpty(cur.getGift().getSourceMp4())){
-                MyLog.d(TAG, "使用了svga动画：" + cur.getGift().getSourceURL());
-                return giftBigAnimationView;
-            }else{
-                MyLog.d(TAG, "使用了视频动画：" + cur.getGift().getSourceMp4());
+            mFeedGiftAnimationViews.add(giftBigAnimationView);
+            if(giftBigVideoAnimationView.isSupport(cur)){
                 return giftBigVideoAnimationView;
+            }else{
+                return giftBigAnimationView;
             }
         }
         return null;
