@@ -8,12 +8,15 @@ import com.imagebrowse.ImageBrowseView;
 
 import java.util.List;
 
+import kotlin.Function;
+import kotlin.jvm.functions.Function1;
+
 public interface Loader<T> {
     void init();
 
     void load(ImageBrowseView imageBrowseView, int position, T item);
 
-    void loadUpdater(TextView textView, int position, T item);
+    void loadUpdater(TextView textView, int position, T item, Callback function);
 
     int getInitCurrentItemPostion();
 

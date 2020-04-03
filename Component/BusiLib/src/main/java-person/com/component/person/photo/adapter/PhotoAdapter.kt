@@ -214,7 +214,7 @@ class PhotoAdapter(internal var mType: Int) : RecyclerView.Adapter<RecyclerView.
         }
     }
 
-    fun getPostionOfItem(model: PhotoModel?): Int {
+    fun getPositionOfItem(model: PhotoModel?): Int {
         for (i in mDataList!!.indices) {
             val m = mDataList!![i]
             if (m == model) {

@@ -8,6 +8,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.common.base.BaseActivity
 import com.common.callback.Callback
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.ClubMemberInfo
 import com.common.log.MyLog
@@ -63,6 +64,8 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
         mPhotoAdapter.mOnClickPhotoListener = { _, _, model ->
             // 跳到看大图
             BigImageBrowseFragment.open(true, mBaseActivity, object : DefaultImageBrowserLoader<PhotoModel>() {
+                var ownerId:Int = 0
+
                 override fun init() {
 
                 }
@@ -75,12 +78,28 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
                     }
                 }
 
-                override fun loadUpdater(textView: TextView, position: Int, item: PhotoModel?) {
-                    loadDataUpdater(item, textView)
+                override fun loadUpdater(textView: TextView, position: Int, item: PhotoModel?,callback: Callback<*>?) {
+                    if (item?.picID != null && item.picID != 0) {
+                        mPhotoCorePresenter.getPicDetail(item.picID) { model ->
+                            val remarkName = UserInfoManager.getInstance().getRemarkName(model?.picInfo?.userID
+                                    ?: 0, model?.nickName)
+                            if (!TextUtils.isEmpty(remarkName)) {
+                                textView.visibility = View.VISIBLE
+                                textView.text = remarkName
+                            } else {
+                                textView.visibility = View.GONE
+                            }
+                            ownerId = model?.picInfo?.userID?:0
+                            null
+                        }
+                    } else {
+                        textView.visibility = View.GONE
+                    }
+                    callback?.onCallback(1,null)
                 }
 
                 override fun getInitCurrentItemPostion(): Int {
-                    return mPhotoAdapter.getPostionOfItem(model)
+                    return mPhotoAdapter.getPositionOfItem(model)
                 }
 
                 override fun getInitList(): List<PhotoModel>? {
@@ -107,7 +126,7 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
                 }
 
                 override fun hasDeleteMenu(): Boolean {
-                    return true
+                    return ownerId == MyUserInfoManager.uid.toInt() || (clubMemberInfo.isFounder() || clubMemberInfo.isCoFounder())
                 }
 
                 override fun getDeleteListener(): Callback<PhotoModel>? {
@@ -140,22 +159,6 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
         })
     }
 
-    private fun loadDataUpdater(item: PhotoModel?, textView: TextView) {
-        if (item?.picID != null && item.picID != 0) {
-            mPhotoCorePresenter.getPicDetail(item.picID) { model ->
-                val remarkName = UserInfoManager.getInstance().getRemarkName(model?.picInfo?.userID
-                        ?: 0, model?.nickName)
-                if (!TextUtils.isEmpty(remarkName)) {
-                    textView.visibility = View.VISIBLE
-                    textView.text = remarkName
-                } else {
-                    textView.visibility = View.GONE
-                }
-            }
-        } else {
-            textView.visibility = View.GONE
-        }
-    }
 
     fun uploadPhotoList(imageItems: List<ImageItem>) {
         mPhotoCorePresenter.uploadPhotoList(imageItems)
@@ -170,7 +173,7 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
                 return
             }
         }
-        if (mPhotoAdapter.successNum == 0) {
+        if (mPhotoAdapter.successNum == 0 || isFlag) {
             mPhotoCorePresenter!!.getPhotos(0, DEFAUAT_CNT, Callback { r, obj -> callback?.invoke() })
         }else{
             callback?.invoke()

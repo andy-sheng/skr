@@ -36,6 +36,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.Function;
+
 /**
  * 看大图的Fragment
  */
@@ -60,7 +62,14 @@ public class BigImageBrowseFragment extends BaseFragment {
             ImageBrowseView imageBrowseView = new ImageBrowseView(container.getContext());
             if (mLoader != null) {
                 mLoader.load(imageBrowseView, position, item);
-                mLoader.loadUpdater(mUpdaterTv, position, item);
+                mLoader.loadUpdater(mUpdaterTv, position, item, new Callback() {
+                    @Override
+                    public void onCallback(int r, Object obj) {
+                        if(r==1){
+                            setRightBtnStatus();
+                        }
+                    }
+                });
             } else {
                 //imageBrowseView.load(data);
             }
@@ -110,83 +119,7 @@ public class BigImageBrowseFragment extends BaseFragment {
             }
         });
 
-        if (mLoader.hasDeleteMenu() || mLoader.hasSaveMenu()) {
-            mTitlebar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    mMenuDialog = new ListDialog(getContext());
-                    List<DialogListItem> listItems = new ArrayList<>();
 
-
-                    if (mLoader.hasSaveMenu()) {
-                        listItems.add(new DialogListItem("保存", new Runnable() {
-                            @Override
-                            public void run() {
-                                ImageBrowseView curView = (ImageBrowseView) mPagerAdapter.getPrimaryItem();
-                                Uri uri = curView.getBaseImage().getUri();
-                                File file = FrescoWorker.getCacheFileFromFrescoDiskCache(uri);
-                                if (file != null && file.exists()) {
-                                    String ext = U.getFileUtils().getSuffixFromUrl(uri.getPath(), "jpg");
-                                    File dst = U.getFileUtils().createFileByTs(U.getAppInfoUtils().getSubDirFile("save"), "IMG_", "." + ext);
-                                    U.getIOUtils().copy(file, dst);
-
-                                    // 其次把文件插入到系统图库
-                                    try {
-                                        MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
-                                                dst.getAbsolutePath(), dst.getName(), null);
-                                    } catch (FileNotFoundException e) {
-                                        return;
-                                    }
-                                    // 最后通知图库更新
-                                    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                                    Uri uri2 = Uri.fromFile(dst);
-                                    intent.setData(uri2);
-                                    getContext().sendBroadcast(intent);
-                                    /**
-                                     * 会在save 与 手机的pictures 相册目录各存一份
-                                     */
-                                    mMenuDialog.dissmiss();
-                                    U.getToastUtil().showLong("已保存至相册，路径为 " + dst.getPath());
-                                } else {
-                                    U.getToastUtil().showShort("等待文件加载成功才可保存");
-                                }
-                            }
-                        }));
-                    }
-
-                    if (mLoader.hasDeleteMenu()) {
-                        listItems.add(new DialogListItem("删除", new Runnable() {
-                            @Override
-                            public void run() {
-                                int cp = mImagesVp.getCurrentItem();
-                                if (mLoader.getDeleteListener() != null) {
-                                    mLoader.getDeleteListener().onCallback(cp, mPagerAdapter.getItem(cp));
-                                }
-                                if (mPagerAdapter.getCount() > 0) {
-                                    mPagerAdapter.remove(cp);
-                                }
-                                mMenuDialog.dissmiss();
-                                if (mPagerAdapter.getCount() <= 0) {
-                                    finish();
-                                }
-                            }
-                        }));
-                    }
-
-                    listItems.add(new DialogListItem("取消", new Runnable() {
-                        @Override
-                        public void run() {
-                            if (mMenuDialog != null) {
-                                mMenuDialog.dissmiss();
-                            }
-                        }
-                    }));
-                    mMenuDialog.showList(listItems);
-                }
-            });
-        } else {
-            mTitlebar.getRightImageButton().setVisibility(View.GONE);
-        }
 
 
         mPagerAdapter.addAll(mLoader.getInitList());
@@ -271,7 +204,87 @@ public class BigImageBrowseFragment extends BaseFragment {
                 return true;
             }
         });
+        setRightBtnStatus();
+    }
 
+    void setRightBtnStatus(){
+        if (mLoader.hasDeleteMenu() || mLoader.hasSaveMenu()) {
+            mTitlebar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    mMenuDialog = new ListDialog(getContext());
+                    List<DialogListItem> listItems = new ArrayList<>();
+
+
+                    if (mLoader.hasSaveMenu()) {
+                        listItems.add(new DialogListItem("保存", new Runnable() {
+                            @Override
+                            public void run() {
+                                ImageBrowseView curView = (ImageBrowseView) mPagerAdapter.getPrimaryItem();
+                                Uri uri = curView.getBaseImage().getUri();
+                                File file = FrescoWorker.getCacheFileFromFrescoDiskCache(uri);
+                                if (file != null && file.exists()) {
+                                    String ext = U.getFileUtils().getSuffixFromUrl(uri.getPath(), "jpg");
+                                    File dst = U.getFileUtils().createFileByTs(U.getAppInfoUtils().getSubDirFile("save"), "IMG_", "." + ext);
+                                    U.getIOUtils().copy(file, dst);
+
+                                    // 其次把文件插入到系统图库
+                                    try {
+                                        MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
+                                                dst.getAbsolutePath(), dst.getName(), null);
+                                    } catch (FileNotFoundException e) {
+                                        return;
+                                    }
+                                    // 最后通知图库更新
+                                    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                    Uri uri2 = Uri.fromFile(dst);
+                                    intent.setData(uri2);
+                                    getContext().sendBroadcast(intent);
+                                    /**
+                                     * 会在save 与 手机的pictures 相册目录各存一份
+                                     */
+                                    mMenuDialog.dissmiss();
+                                    U.getToastUtil().showLong("已保存至相册，路径为 " + dst.getPath());
+                                } else {
+                                    U.getToastUtil().showShort("等待文件加载成功才可保存");
+                                }
+                            }
+                        }));
+                    }
+
+                    if (mLoader.hasDeleteMenu()) {
+                        listItems.add(new DialogListItem("删除", new Runnable() {
+                            @Override
+                            public void run() {
+                                int cp = mImagesVp.getCurrentItem();
+                                if (mLoader.getDeleteListener() != null) {
+                                    mLoader.getDeleteListener().onCallback(cp, mPagerAdapter.getItem(cp));
+                                }
+                                if (mPagerAdapter.getCount() > 0) {
+                                    mPagerAdapter.remove(cp);
+                                }
+                                mMenuDialog.dissmiss();
+                                if (mPagerAdapter.getCount() <= 0) {
+                                    finish();
+                                }
+                            }
+                        }));
+                    }
+
+                    listItems.add(new DialogListItem("取消", new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mMenuDialog != null) {
+                                mMenuDialog.dissmiss();
+                            }
+                        }
+                    }));
+                    mMenuDialog.showList(listItems);
+                }
+            });
+        } else {
+            mTitlebar.getRightImageButton().setVisibility(View.GONE);
+        }
     }
 
     void loadMore(boolean backward, int postion) {

@@ -4,12 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
 import com.common.callback.Callback
@@ -21,10 +19,7 @@ import com.component.busilib.callback.EmptyCallback
 import com.component.person.photo.adapter.PhotoAdapter
 import com.component.person.photo.model.PhotoModel
 import com.component.person.photo.presenter.PersonPhotoPresenter
-import com.component.person.photo.presenter.PhotoCorePresenter
 import com.component.person.photo.view.IPhotoWallView
-import com.component.person.photo.view.OtherPhotoWallView
-import com.component.person.photo.view.PhotoWallView
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
@@ -130,7 +125,7 @@ class PersonPhotoActivity : BaseActivity(), IPhotoWallView {
 
                 override fun getInitCurrentItemPostion(): Int {
                     return if (userID == MyUserInfoManager.uid.toInt()) {
-                        adapter?.getPostionOfItem(model) ?: 0
+                        adapter?.getPositionOfItem(model) ?: 0
                     } else {
                         position
                     }

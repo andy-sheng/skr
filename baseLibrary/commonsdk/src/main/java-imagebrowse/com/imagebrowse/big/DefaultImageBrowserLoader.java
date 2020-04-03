@@ -7,6 +7,9 @@ import com.imagebrowse.ImageBrowseView;
 
 import java.util.List;
 
+import kotlin.Function;
+import kotlin.jvm.functions.Function1;
+
 public class DefaultImageBrowserLoader<T> implements Loader<T> {
     @Override
     public void init() {
@@ -19,7 +22,7 @@ public class DefaultImageBrowserLoader<T> implements Loader<T> {
     }
 
     @Override
-    public void loadUpdater(TextView textView, int position, T item) {
+    public void loadUpdater(TextView textView, int position, T item, Callback function) {
 
     }
 

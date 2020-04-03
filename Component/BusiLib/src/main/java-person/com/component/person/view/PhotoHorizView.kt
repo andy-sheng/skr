@@ -75,10 +75,35 @@ class PhotoHorizView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
                     }
                 }
 
-                override fun loadUpdater(textView: TextView, position: Int, item: PhotoModel?) {
+                override fun loadUpdater(textView: TextView, position: Int, item: PhotoModel?,callback: Callback<*>) {
                     if (clubID != 0) {
                         // 这是家族的卡片
-                        loadDataUpdater(item, textView)
+                        if (item?.picID != null && item.picID != 0) {
+                            ApiMethods.subscribe(userInfoServerApi.getClubPhotoDetail(item.picID), object : ApiObserver<ApiResult>() {
+                                override fun process(result: ApiResult?) {
+                                    if (result?.errno == 0) {
+                                        val nickName = result.data.getString("nickName")
+                                        val userID = result.data.getJSONObject("picInfo").getIntValue("userID")
+                                        val remarkName = UserInfoManager.getInstance().getRemarkName(userID, nickName)
+                                        if (!TextUtils.isEmpty(remarkName)) {
+                                            textView.visibility = View.VISIBLE
+                                            textView.text = remarkName
+                                        } else {
+                                            textView.visibility = View.GONE
+                                        }
+                                    } else {
+                                        textView.visibility = View.GONE
+                                    }
+                                }
+
+                                override fun onNetworkError(errorType: ApiObserver.ErrorType) {
+                                    super.onNetworkError(errorType)
+                                    textView.visibility = View.GONE
+                                }
+                            }, RequestControl("getPicDetail", ControlType.CancelThis))
+                        } else {
+                            textView.visibility = View.GONE
+                        }
                     }
                 }
 
@@ -117,34 +142,6 @@ class PhotoHorizView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
         }
     }
 
-    private fun loadDataUpdater(item: PhotoModel?, textView: TextView) {
-        if (item?.picID != null && item.picID != 0) {
-            ApiMethods.subscribe(userInfoServerApi.getClubPhotoDetail(item.picID), object : ApiObserver<ApiResult>() {
-                override fun process(result: ApiResult?) {
-                    if (result?.errno == 0) {
-                        val nickName = result.data.getString("nickName")
-                        val userID = result.data.getJSONObject("picInfo").getIntValue("userID")
-                        val remarkName = UserInfoManager.getInstance().getRemarkName(userID, nickName)
-                        if (!TextUtils.isEmpty(remarkName)) {
-                            textView.visibility = View.VISIBLE
-                            textView.text = remarkName
-                        } else {
-                            textView.visibility = View.GONE
-                        }
-                    } else {
-                        textView.visibility = View.GONE
-                    }
-                }
-
-                override fun onNetworkError(errorType: ApiObserver.ErrorType) {
-                    super.onNetworkError(errorType)
-                    textView.visibility = View.GONE
-                }
-            }, RequestControl("getPicDetail", ControlType.CancelThis))
-        } else {
-            textView.visibility = View.GONE
-        }
-    }
 
     internal fun getPhotos(off: Int, callback: Callback<List<PhotoModel>>? = null) {
         val observable = if (clubID != 0) {

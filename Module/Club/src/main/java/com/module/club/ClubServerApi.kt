@@ -186,7 +186,7 @@ interface ClubServerApi {
                       @Query("cnt") cnt: Int): Observable<ApiResult>
 
 
-    @GET("/v1/club/list-pic")
+    @GET("/v1/club/get-pic")
     fun getClubPhotoDetail(@Query("picID") picID: Int): Observable<ApiResult>
 
     /**

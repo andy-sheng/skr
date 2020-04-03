@@ -69,7 +69,7 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
                 }
 
                 override fun getInitCurrentItemPostion(): Int {
-                    return mPhotoAdapter.getPostionOfItem(model)
+                    return mPhotoAdapter.getPositionOfItem(model)
                 }
 
                 override fun getInitList(): List<PhotoModel>? {
