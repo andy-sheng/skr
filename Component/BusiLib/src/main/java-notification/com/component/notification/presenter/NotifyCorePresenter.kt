@@ -1137,11 +1137,11 @@ class NotifyCorePresenter() : RxLifeCyclePresenter() {
     internal fun showDiamondNotifyFloatWindow(floatWindowData: FloatWindowData) {
         val diamondBoxNotifyView = DiamondBoxNotifyView(U.app())
 
-        val windowTag = TAG_BIG_GIFT_NOTIFY_FLOAT_WINDOW + System.currentTimeMillis()
+        val windowTag = TAG_DIAMOND_BOX_NOTIFY_FLOAT_WINDOW + System.currentTimeMillis()
 
         floatWindowData.extra1?.let {
             diamondBoxNotifyView.bindData(it){
-                mUiHandler.removeMessages(MSG_DISMISS_BIG_GIFT_NOTIFY_FLOAT_WINDOW)
+                mUiHandler.removeMessages(MSG_DISMISS_DIAMOND_BOX_NOTIFY_FLOAT_WINDOW)
                 FloatWindow.destroy(windowTag)
             }
         }?:MyLog.e("宝箱信息为空")

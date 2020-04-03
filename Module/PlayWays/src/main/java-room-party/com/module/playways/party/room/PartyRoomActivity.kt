@@ -219,8 +219,8 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             mRoomData.loadFromRsp(it)
             MyLog.d(TAG, "initData mRoomData=$mRoomData")
         }
-        intent.getStringExtra("extra")?.let {
-            mRoomData.partyDiamondboxModel = JSON.parseObject(it, PartyDiamondboxModel::class.java)
+        intent.getSerializableExtra("extra")?.let { it as PartyDiamondbox }?.let {
+            mRoomData.partyDiamondboxModel = PartyDiamondboxModel.parseFromPB(it)
         }
 
         H.partyRoomData = mRoomData
@@ -302,9 +302,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
         refreshDiamondBox()
     }
 
-    private fun refreshDiamondBox(){
+    override fun refreshDiamondBox(){
         // 存在宝箱，展示宝箱
         mRoomData.partyDiamondboxModel?.let {
+            mRoomData.partyDiamondboxModel = null //防止重复刷新
             showDiamondBoxCuntDown(it)
         }
 
@@ -1262,6 +1263,10 @@ class PartyRoomActivity : BaseActivity(), IPartyRoomView, IGrabVipView {
             //换房间要销毁前一个Room的宝箱
             mPartyDiamondBoxView?.destroy()
         }
+    }
+
+    fun isAlreadyInRoom(roomId:Int):Boolean{
+        return roomId == mRoomData.gameId
     }
 
     override fun canGoPersonPage(): Boolean {

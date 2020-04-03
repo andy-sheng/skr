@@ -10,31 +10,28 @@
     <com.common.view.ex.ExTextView
         android:id="@+id/apply_list"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_32_dp"
         android:gravity="center"
         android:paddingLeft="@dimen/view_10_dp"
         android:paddingRight="@dimen/view_10_dp"
         android:textColor="@color/white_trans_80"
-        android:textSize="@dimen/textsize_12_dp"
-        app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_gradient_endColor="#6047D3"
-        app:bl_gradient_startColor="#835DFD"
-        app:bl_shape="rectangle"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:textSize="10sp"
+        android:background="@drawable/party_mic_apply_bg"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="麦序管理\n10人申请"
+        android:paddingStart="@dimen/view_64_dp"
+        />
 
     <!--申请上麦 取消申请 下麦-->
     <com.common.view.ex.ExTextView
         android:id="@+id/op_mic_tv"
         android:layout_width="@dimen/view_60_dp"
-        android:layout_height="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_32_dp"
         android:layout_marginTop="@dimen/view_5_dp"
         android:gravity="center"
         android:textColor="@color/white_trans_80"
-        android:textSize="@dimen/textsize_12_dp"
-        app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_gradient_endColor="#6047D3"
-        app:bl_gradient_startColor="#835DFD"
-        app:bl_shape="rectangle"
+        android:textSize="8sp"
+        android:background="@drawable/party_mic_apply_bg"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/apply_list" />
 

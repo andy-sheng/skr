@@ -49,6 +49,8 @@ public interface IPlaywaysModeService extends IProvider {
 
     void tryGoDiamondBoxPartyRoom(int roomID, int joinSrc, int roomType, Serializable extra);
 
+    void displayDiamondBox(int roomID, Serializable extra);
+
     void tryToRelayRoomByOuterInvite(Object o);
 
     void tryToRelayRoomByRedPacketInvite(Object o);

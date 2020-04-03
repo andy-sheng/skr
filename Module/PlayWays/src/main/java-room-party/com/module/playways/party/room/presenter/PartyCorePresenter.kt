@@ -653,16 +653,25 @@ class PartyCorePresenter(var mRoomData: PartyRoomData, var roomView: IPartyRoomV
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PartyChangeRoomEvent) {
-        mRoomData.loadFromRsp(event.mJoinGrabRoomRspModel)
-        event.extra?.let { it as? PartyDiamondbox }?.let {
-            mRoomData.partyDiamondboxModel = PartyDiamondboxModel.parseFromPB(it)
+        if(mRoomData.gameId == event.mJoinGrabRoomRspModel.roomID ){
+            //正在当前房间无需切换
+            event.extra?.let { it as? PartyDiamondbox }?.let {
+                mRoomData.partyDiamondboxModel = PartyDiamondboxModel.parseFromPB(it)
+            }
+
+            roomView.refreshDiamondBox()
+        }else {
+            mRoomData.loadFromRsp(event.mJoinGrabRoomRspModel)
+            event.extra?.let { it as? PartyDiamondbox }?.let {
+                mRoomData.partyDiamondboxModel = PartyDiamondboxModel.parseFromPB(it)
+            }
+
+            joinRoomAndInit(true)
+            onOpeningAnimationOver()
+
+            // 关闭阻止接收 GameOver 消息标志
+            changing = false
         }
-
-        joinRoomAndInit(true)
-        onOpeningAnimationOver()
-
-        // 关闭阻止接收 GameOver 消息标志
-        changing = false
     }
 
     private fun onChangeRoomSuccess(rspModel: JoinPartyRoomRspModel?) {

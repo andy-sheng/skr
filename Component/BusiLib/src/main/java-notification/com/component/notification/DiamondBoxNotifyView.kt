@@ -25,6 +25,7 @@ import com.component.busilib.R
 import com.module.ModuleServiceManager
 import com.module.RouterConstants
 import com.module.playways.IPlaywaysModeService
+import com.zq.live.proto.Common.EGameModeType
 import com.zq.live.proto.broadcast.PartyDiamondbox
 import java.io.Serializable
 
@@ -80,7 +81,11 @@ class DiamondBoxNotifyView : ConstraintLayout {
             override fun clickValid(v: View) {
                 MyLog.e("点击进入钻石宝箱房间")
                 val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                iRankingModeService.tryGoDiamondBoxPartyRoom(roomID.toInt(), 1, 0, diamondBoxData)
+                if(iRankingModeService.isInRoom(EGameModeType.PartyMode.value, roomID)){
+                    iRankingModeService.displayDiamondBox(roomID, diamondBoxData)
+                }else {
+                    iRankingModeService.tryGoDiamondBoxPartyRoom(roomID.toInt(), 1, 0, diamondBoxData)
+                }
                 clickCallback.invoke()
             }
         })

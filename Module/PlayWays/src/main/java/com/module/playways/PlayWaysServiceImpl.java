@@ -313,6 +313,18 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         return new PartyRoomView(context, PartyRoomView.TYPE_GAME_HOME);
     }
 
+    /**
+     * 如果已经在房间了，如果此时点击抢钻石，不必再加入房间，直接刷新，这样不会触发加入房间消息
+     * @param roomID
+     * @param extra
+     */
+    @Override
+    public void displayDiamondBox(int roomID, Serializable extra){
+        // 已在房间内只需要根据roomID 比较是否在当前房间
+        JoinPartyRoomRspModel joinPartyRoomRspModel = new JoinPartyRoomRspModel();
+        joinPartyRoomRspModel.setRoomID(roomID);
+        EventBus.getDefault().post(new PartyChangeRoomEvent(joinPartyRoomRspModel, extra));
+    }
 
     @Override
     public void tryGoDiamondBoxPartyRoom(int roomID, int joinSrc, int roomType, @Nullable Serializable extra) {

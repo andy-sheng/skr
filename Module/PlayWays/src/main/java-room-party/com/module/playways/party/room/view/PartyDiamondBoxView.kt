@@ -62,6 +62,7 @@ class PartyDiamondBoxView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
         if(refreshCount > 0){
             MyLog.e(TAG, "开始倒计时 $leftMs $refreshCount")
+            countDownDisposable?.dispose()
             countDownDisposable = Observable.intervalRange(0, refreshCount, 0, timeRefreshDelay, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe( {

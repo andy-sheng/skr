@@ -12,7 +12,9 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.party.room.PartyRoomServerApi
@@ -199,7 +201,7 @@ class PartyRightOpView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
                 }
             }
         }
-        applyList.text = "申请${H.partyRoomData?.applyUserCnt}人"
+        applyList.text = SpanUtils().append("麦序管理").setFontSize(10, true).append("\n${H.partyRoomData?.applyUserCnt}人申请").setFontSize(8, true).create()
         refreshMicStatus("bindData isInit=$isInit")
     }
 
