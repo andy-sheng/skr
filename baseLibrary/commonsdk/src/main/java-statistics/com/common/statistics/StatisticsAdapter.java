@@ -22,6 +22,12 @@ public class StatisticsAdapter {
 
 //    static boolean useXiaomi = false;
     static boolean userUmeng = true;
+
+    static {
+        if(U.getChannelUtils().getChannel().equals("MI_SHOP")){
+            userUmeng = false;
+        }
+    }
     /**
      * 去抖动，防止因为某些bug，快速的重复打某个点，
      * 比如某些情况下 Fragment 的 onresume 调用了多次
