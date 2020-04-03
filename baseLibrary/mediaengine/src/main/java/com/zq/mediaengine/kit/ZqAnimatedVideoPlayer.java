@@ -69,7 +69,7 @@ public class ZqAnimatedVideoPlayer implements SurfaceTexture.OnFrameAvailableLis
 
         mImgTexSrcPin.connect(mImgTexAlphaFrameFilter.getSinkPin());
         mImgTexAlphaFrameFilter.getSrcPin().connect(mImgTexScaleFilter.getSinkPin());
-        mImgTexScaleFilter.setScalingMode(ImgTexScaleFilter.SCALING_MODE_BEST_FIT);
+        mImgTexScaleFilter.setScalingMode(ImgTexScaleFilter.SCALING_MODE_FULL_FILL);
         mImgTexScaleFilter.setIsRender(true);
     }
 

@@ -112,26 +112,27 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
 //                animationPrams.width = 640
 //                animationPrams.height = 496
 
-                 val urlProxy = MediaCacheManager.getProxyUrl(url, true)
-                onLoadComplete(parent, urlProxy, animationPrams, Pair(animationPrams.width.toDouble(), animationPrams.height.toDouble()))
+                val urlProxy = MediaCacheManager.getProxyUrl(url, true)
+                onLoadComplete(parent, urlProxy, animationPrams)
             }
         }
     }
 
-    private fun onLoadComplete(parent: ViewGroup, url:String, animationPrams: AnimationGift.AnimationPrams, videoItem:Pair<Double, Double>) {
+    private fun onLoadComplete(parent: ViewGroup, url:String, animationPrams: AnimationGift.AnimationPrams) {
         if (parent.indexOfChild(mTextureView) < 0) {
             // 确定尺寸和位置
             if (animationPrams.isFullScreen) {
                 // 全屏
-                val realWidth = videoItem.first
-                val realHeight = videoItem.second
+                val realWidth = animationPrams.width
+                val realHeight = animationPrams.height
 
                 if (animationPrams.isFullX) {
                     // 横向平铺
-                    if (realWidth != 0.0) {
+                    if (realWidth != 0) {
                         //透明视频分为两部分 各存储一部分信息 非全屏状态 分辨率要乘二倍
-                        val width = U.getDisplayUtils().screenWidth * TRANSPARENT_VIDEO_SIZE_RATE
-                        val height =  U.getDisplayUtils().screenHeight  * TRANSPARENT_VIDEO_SIZE_RATE
+                        val width = U.getDisplayUtils().screenWidth
+                        val height =  width * realHeight / realWidth
+                        MyLog.d(TAG, "animation size: ${width}x${height}")
                         val lp = RelativeLayout.LayoutParams(width, height)
 
                         // 确定位置
@@ -151,14 +152,15 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
                             parent.addView(mTextureView, lp)
                         }
                     } else {
-                        MyLog.w(TAG, "onLoadComplete parent=$parent animationPrams=$animationPrams videoItem=$videoItem realWidth = 0")
+                        MyLog.w(TAG, "onLoadComplete parent=$parent animationPrams=$animationPrams realWidth = 0")
                     }
                 } else {
                     // 纵向平铺
-                    if (realHeight != 0.0) {
+                    if (realHeight != 0) {
                         //透明视频分为两部分 各存储一部分信息 非全屏状态 分辨率要乘二倍
-                        val height = U.getDisplayUtils().screenHeight * TRANSPARENT_VIDEO_SIZE_RATE
-                        val width = (realWidth * height / realHeight).toInt()
+                        val height = U.getDisplayUtils().screenHeight
+                        val width = realWidth * height / realHeight
+                        MyLog.d(TAG, "animation size: ${width}x${height}")
                         val lp = RelativeLayout.LayoutParams(width, height)
 
                         // 确定位置
@@ -178,7 +180,7 @@ class GiftBigVideoAnimationView (val context:Context) : GiftBaseAnimationView{
                             parent.addView(mTextureView, lp)
                         }
                     } else {
-                        MyLog.w(TAG, "onLoadComplete" + " parent=" + parent + " animationPrams=" + animationPrams + " videoItem=" + videoItem + "realHeight = 0")
+                        MyLog.w(TAG, "onLoadComplete" + " parent=" + parent + " animationPrams=" + animationPrams + "realHeight = 0")
                     }
                 }
             } else {
