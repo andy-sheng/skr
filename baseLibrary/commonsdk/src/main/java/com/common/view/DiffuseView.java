@@ -27,6 +27,10 @@ public class DiffuseView extends View {
      */
     private float mParallax;
     /**
+     * 底部偏移
+     */
+    private int mBottomTrans;
+    /**
      * 扩散圆圈颜色
      */
     private int mColor = 0;
@@ -83,6 +87,7 @@ public class DiffuseView extends View {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DiffuseView, defStyleAttr, 0);
         mRatio = a.getFloat(R.styleable.DiffuseView_diffuse_aspect, 1f);
         mParallax = a.getFloat(R.styleable.DiffuseView_diffuse_parallax, 0f);
+        mBottomTrans = a.getInt(R.styleable.DiffuseView_diffuse_bottomTrans, 0);
         mColor = a.getColor(R.styleable.DiffuseView_diffuse_color, mColor);
         mCoreColor = a.getColor(R.styleable.DiffuseView_diffuse_coreColor, mCoreColor);
 
@@ -142,7 +147,7 @@ public class DiffuseView extends View {
                 // 绘制扩散圆
                 int width = mWidths.get(i);
                 float r = mCoreRadius + width;
-                RectF rect = new RectF((int) (getWidth() / 2 - r), getHeight() / 2 - r / mRatio + r * mParallax, (int) (getWidth() / 2 + r), getHeight() / 2 + r / mRatio + 20 + r * mParallax);
+                RectF rect = new RectF((int) (getWidth() / 2 - r), getHeight() / 2 - r / mRatio + r * mParallax, (int) (getWidth() / 2 + r), getHeight() / 2 + r / mRatio + mBottomTrans + r * mParallax);
                 canvas.drawOval(rect, mPaint);
 //                canvas.drawCircle(getWidth() / 2, getHeight() / 2, r, mPaint);
                 float t = width / ((mMaxRadius - mCoreRadius) * 1.0f);

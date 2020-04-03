@@ -26,6 +26,8 @@
         <attr name="diffuse_aspect" />
         <!-- diffuse_parallax 视差因子 为0表示同心 -->
         <attr name="diffuse_parallax" />
+        <!-- diffuse_bottomTrans 底部偏移量，用来做水波纹效果的值 -->
+        <attr name="diffuse_bottomTrans" />
         <attr name="diffuse_color" />
         <attr name="diffuse_coreColor" />
         <attr name="diffuse_normalImage" />

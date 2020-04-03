@@ -225,6 +225,7 @@
         app:diffuse_maxRadius="@dimen/view_70_dp"
         app:diffuse_parallax="0.05f"
         app:diffuse_speed="@dimen/view_1_dp"
+        app:diffuse_bottomTrans="20"
         app:diffuse_stroke_width="@dimen/view_1_dp"
         app:layout_constraintLeft_toLeftOf="@+id/relay_energy_view"
         app:layout_constraintRight_toRightOf="@+id/relay_energy_view"
