@@ -117,14 +117,7 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
                     .navigation()
         }
         mConversationTv?.setDebounceViewClickListener { view ->
-            view ?: return@setDebounceViewClickListener
-            val club = clubMemberInfo?.club ?: MyLog.e(TAG, "未获取到家族信息").let {
-                return@setDebounceViewClickListener
-            }
-
-            club.name.let {
-                ModuleServiceManager.getInstance().msgService.startClubChat(view.context, club.clubID.toString(), it)
-            }
+            ModuleServiceManager.getInstance().msgService.startClubChat(view?.context, clubMemberInfo?.club?.clubID.toString(), clubMemberInfo?.club?.name)
         }
         mPostView?.setDebounceViewClickListener { view ->
             togglePostPanel()
@@ -132,10 +125,10 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
 
         updateUnreadMsgCount()
         updateApplyCount()
-        if(mClubMemberInfo?.isFounder()==true || mClubMemberInfo?.isCoFounder()==true ){
+        if (mClubMemberInfo?.isFounder() == true || mClubMemberInfo?.isCoFounder() == true) {
             mApplyTv?.visibility = View.VISIBLE
             checkApplyRed()
-        }else{
+        } else {
             mApplyTv?.visibility = View.GONE
             applyRedIv?.visibility = View.GONE
         }
@@ -189,15 +182,15 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
         }
     }
 
-    private fun updateApplyCount(){
+    private fun updateApplyCount() {
         //获取未读消息数
         mClubMemberInfo?.club?.let {
-            ModuleServiceManager.getInstance().clubService.getClubApplyCount(it.clubID, object :ICallback{
+            ModuleServiceManager.getInstance().clubService.getClubApplyCount(it.clubID, object : ICallback {
                 override fun onSucess(obj: Any?) {
                     obj?.toString()?.toInt()?.takeIf { it > 0 }?.let {
                         mApplyCountTv?.text = it.toString()
                         mApplyCountTv?.visibility = View.VISIBLE
-                    }?:mApplyCountTv?.apply {
+                    } ?: mApplyCountTv?.apply {
                         mApplyCountTv?.visibility = View.GONE
                     }
                 }
@@ -209,6 +202,7 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
             })
         }
     }
+
     /**
      * 获取并显示未读消息数量
      */
@@ -247,7 +241,7 @@ class ClubRightOpView(viewStub: ViewStub) : ExViewStub(viewStub), ICallback {
         }
     }
 
-    fun resume(){
+    fun resume() {
         updateApplyCount()
         updateUnreadMsgCount()
     }
