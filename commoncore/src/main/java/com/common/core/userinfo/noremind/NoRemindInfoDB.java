@@ -3,6 +3,7 @@ package com.common.core.userinfo.noremind;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Keep;
 
 @Entity
 public class NoRemindInfoDB {
@@ -11,13 +12,13 @@ public class NoRemindInfoDB {
 
     private int msgType;
 
-    @Generated(hash = 1521383658)
+    @Keep
     public NoRemindInfoDB(Long userId, int msgType) {
         this.userId = userId;
         this.msgType = msgType;
     }
 
-    @Generated(hash = 2074774081)
+    @Keep
     public NoRemindInfoDB() {
     }
 

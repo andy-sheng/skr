@@ -6,6 +6,7 @@ import org.greenrobot.greendao.annotation.Id;
 
 import java.io.Serializable;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Keep;
 
 /**
  * 个人信息(基础类)
@@ -32,7 +33,7 @@ public class UserInfoDB implements Serializable {
 
     private String ext; //待扩展
 
-    @Generated(hash = 1157054382)
+    @Keep
     public UserInfoDB(Long userId, String avatar, String userNickname,
             String userDisplayname, String letter, Long updateTime, Integer sex,
             String birthday, String signature, Integer relative, Integer block,
@@ -52,7 +53,7 @@ public class UserInfoDB implements Serializable {
         this.ext = ext;
     }
 
-    @Generated(hash = 1831215638)
+    @Keep
     public UserInfoDB() {
     }
 
