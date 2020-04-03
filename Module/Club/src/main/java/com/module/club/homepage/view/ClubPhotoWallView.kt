@@ -64,7 +64,7 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
         mPhotoAdapter.mOnClickPhotoListener = { _, _, model ->
             // 跳到看大图
             BigImageBrowseFragment.open(true, mBaseActivity, object : DefaultImageBrowserLoader<PhotoModel>() {
-                var ownerId:Int = 0
+                var ownerId: Int = 0
 
                 override fun init() {
 
@@ -78,7 +78,7 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
                     }
                 }
 
-                override fun loadUpdater(textView: TextView, position: Int, item: PhotoModel?,callback: Callback<*>?) {
+                override fun loadUpdater(textView: TextView, position: Int, item: PhotoModel?, callback: Callback<*>?) {
                     if (item?.picID != null && item.picID != 0) {
                         mPhotoCorePresenter.getPicDetail(item.picID) { model ->
                             val remarkName = UserInfoManager.getInstance().getRemarkName(model?.picInfo?.userID
@@ -89,13 +89,13 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
                             } else {
                                 textView.visibility = View.GONE
                             }
-                            ownerId = model?.picInfo?.userID?:0
+                            ownerId = model?.picInfo?.userID ?: 0
                             null
                         }
                     } else {
                         textView.visibility = View.GONE
                     }
-                    callback?.onCallback(1,null)
+                    callback?.onCallback(1, null)
                 }
 
                 override fun getInitCurrentItemPostion(): Int {
@@ -155,7 +155,7 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
                 .addCallback(EmptyCallback(com.module.club.R.drawable.loading_empty2, "暂无相片", "#99000000"))
                 .build()
         mLoadService = mLoadSir.register(mPhotoView, com.kingja.loadsir.callback.Callback.OnReloadListener {
-            loadData(true,null)
+            loadData(true, null)
         })
     }
 
@@ -164,7 +164,7 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
         mPhotoCorePresenter.uploadPhotoList(imageItems)
     }
 
-    fun getPhotos(isFlag: Boolean,callback:(()->Unit?)?) {
+    private fun getPhotos(isFlag: Boolean, callback: (() -> Unit?)?) {
         MyLog.d(TAG, "getPhotos isFlag = $isFlag")
         val now = System.currentTimeMillis()
         if (!isFlag) {
@@ -175,17 +175,13 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
         }
         if (mPhotoAdapter.successNum == 0 || isFlag) {
             mPhotoCorePresenter!!.getPhotos(0, DEFAUAT_CNT, Callback { r, obj -> callback?.invoke() })
-        }else{
+        } else {
             callback?.invoke()
         }
     }
 
-    fun getMorePhotos(callback: () -> Unit?) {
-        mPhotoCorePresenter!!.getPhotos(mPhotoAdapter.successNum, DEFAUAT_CNT, object : Callback<List<PhotoModel>> {
-            override fun onCallback(r: Int, obj: List<PhotoModel>?) {
-                callback.invoke()
-            }
-        })
+    private fun getMorePhotos(callback: () -> Unit?) {
+        mPhotoCorePresenter!!.getPhotos(mPhotoAdapter.successNum, DEFAUAT_CNT, Callback { r, obj -> callback.invoke() })
     }
 
     fun goAddPhotoFragment() {
@@ -231,7 +227,7 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
     }
 
     fun loadData(flag: Boolean, callback: (() -> Unit?)?) {
-        getPhotos(flag,callback)
+        getPhotos(flag, callback)
     }
 
     fun loadMoreData(callback: () -> Unit?) {
@@ -240,6 +236,7 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
 
     override fun insertPhoto(photoModel: PhotoModel) {
         mPhotoAdapter.insertFirst(photoModel)
+        mLoadService.showSuccess()
     }
 
     override fun deletePhoto(photoModel: PhotoModel, numchange: Boolean) {
@@ -248,6 +245,9 @@ class ClubPhotoWallView(private var mBaseActivity: BaseActivity, private var mCa
             //            setPhotoNum();
         }
         mPhotoAdapter.delete(photoModel)
+        if (mPhotoAdapter.dataList?.size == 0) {
+            mLoadService.showCallback(EmptyCallback::class.java)
+        }
     }
 
 
